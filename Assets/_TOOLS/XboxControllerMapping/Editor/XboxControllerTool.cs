@@ -7,12 +7,20 @@ public class XboxControllerTool : EditorWindow
     Texture XboxTexture = null;
     #endregion
 
-    #region Meths
-    [MenuItem("Tools/XBox Controller/Windows Mapping")]
-    public static void ShowWindow()
+    #region OS
+    [MenuItem("Tools/XBox Controller/Android Mapping")]
+    public static void ShowAndroid()
     {
         XboxControllerTool _window = (XboxControllerTool)GetWindow(typeof(XboxControllerTool));
-        _window.InitMenu("Windows");
+        _window.InitMenu("Android");
+        _window.Show();
+    }
+
+    [MenuItem("Tools/XBox Controller/Linux Mapping")]
+    public static void ShowLinux()
+    {
+        XboxControllerTool _window = (XboxControllerTool)GetWindow(typeof(XboxControllerTool));
+        _window.InitMenu("Linux");
         _window.Show();
     }
 
@@ -23,14 +31,16 @@ public class XboxControllerTool : EditorWindow
         _window.InitMenu("Mac");
         _window.Show();
     }
-
-    [MenuItem("Tools/XBox Controller/Linux Mapping")]
-    public static void ShowLinux()
-    {      
+    
+    [MenuItem("Tools/XBox Controller/Windows Mapping")]
+    #region oter
+    public static void ShowWindow()
+    {
         XboxControllerTool _window = (XboxControllerTool)GetWindow(typeof(XboxControllerTool));
-        _window.InitMenu("Linux");
+        _window.InitMenu("Windows");
         _window.Show();
     }
+
 
     void InitMenu(string _OS)
     {
@@ -64,5 +74,6 @@ public class XboxControllerTool : EditorWindow
             EditorGUILayout.HelpBox("No Texture founded!!!!", MessageType.Error);
         }
     }
+    #endregion
     #endregion
 }
