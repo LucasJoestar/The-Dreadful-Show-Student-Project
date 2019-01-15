@@ -1,9 +1,8 @@
 ﻿using Photon;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public class TDS_Damageable : PunBehaviour 
 {
     /* TDS_Damageable :
@@ -13,6 +12,7 @@ public class TDS_Damageable : PunBehaviour
 	 *	#####################
 	 *
 	 *	    Base class to inherit from to create any object with an amount of health that can take damage in the game "The Dreadful Show".
+     *	    
      *	    You can override inherited methods to implement specific behaviour on objects.
 	 *
 	 *	#####################
@@ -26,7 +26,7 @@ public class TDS_Damageable : PunBehaviour
 	 *
 	 *	Creation of the TDS_Damageable class.
      *	    - Added the OnDie, OnHealthChanged and OnTakeDamage event.
-     *	    - Added animator & collider fields, isDead field & property, IsIndestructible field, IsInvunlerable field, healthCurrent field & property, healthMax field & property, and photonID property.
+     *	    - Added animator & collider fields ; isDead field & property ; IsIndestructible field, IsInvunlerable field ; healthCurrent field & property ; healthMax field & property ; and photonID property.
      *	    - Added the Die and TakeDamage methods.
 	 *
 	 *	-----------------------------------
@@ -64,6 +64,18 @@ public class TDS_Damageable : PunBehaviour
     /// The main non-trigger collider of this object, used to detect collisions.
     /// </summary>
     [SerializeField] protected new BoxCollider collider = null;
+
+    /// <summary>Backing field for <see cref="Sprite"/></summary>
+    [SerializeField] protected SpriteRenderer sprite = null;
+
+    /// <summary>
+    /// The sprite renderer used to render this object in the scene.
+    /// </summary>
+    public SpriteRenderer Sprite
+    {
+        get { return sprite; }
+        private set { sprite = value; }
+    }
     #endregion
 
     #region Variables
@@ -155,6 +167,7 @@ public class TDS_Damageable : PunBehaviour
     #endregion
 
     #region Methods
+
     #region Original Methods
     /// <summary>
     /// Method called when the object dies.
@@ -179,6 +192,23 @@ public class TDS_Damageable : PunBehaviour
     #endregion
 
     #region Unity Methods
+    // Awake is called when the script instance is being loaded
+    protected virtual void Awake()
+    {
+        // Try yo get components references of they are missing
+        if (!animator) animator = GetComponent<Animator>();
+        if (!collider)
+        {
+            collider = GetComponent<BoxCollider>();
+            if (!collider) Debug.LogWarning("The Damageable " + name + " Collider is missing !");
+        }
+        if (!sprite)
+        {
+            sprite = GetComponent<SpriteRenderer>();
+            if (!sprite) Debug.LogWarning("The Damageable " + name + " SpriteRenderer is missing !");
+        }
+    }
+
     // Use this for initialization
     protected virtual void Start ()
     {
@@ -192,5 +222,6 @@ public class TDS_Damageable : PunBehaviour
         
 	}
 	#endregion
+
 	#endregion
 }
