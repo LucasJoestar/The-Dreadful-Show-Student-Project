@@ -67,10 +67,9 @@ public class TDS_Damageable : PunBehaviour
     #endregion
 
     #region Variables
-    /// <summary>
-    /// Backing field for <see cref="isDead"/>
-    /// </summary>
+    /// <summary>Backing field for <see cref="isDead"/></summary>
     [SerializeField] protected bool isDead = false;
+
     /// <summary>
     /// Is this damageable dead or still alive ?
     /// (Dies when its health goes below or equals zero.)
@@ -105,10 +104,9 @@ public class TDS_Damageable : PunBehaviour
     /// </summary>
     public bool IsInvulnerable = false;
 
-    /// <summary>
-    /// Backing field for <see cref="HealthCurrent"/>
-    /// </summary>
+    /// <summary>Backing field for <see cref="HealthCurrent"/></summary>
     [SerializeField] protected int healthCurrent = 0;
+
     /// <summary>
     /// The current health of the object.
     /// Its value cannot be less than zero or exceed <see cref="HealthMax"/>.
@@ -125,10 +123,9 @@ public class TDS_Damageable : PunBehaviour
         }
     }
 
-    /// <summary>
-    /// Backing field for <see cref="HealthMax"/>
-    /// </summary>
+    /// <summary>Backing field for <see cref="HealthMax"/></summary>
     [SerializeField] protected int healthMax = 0;
+
     /// <summary>
     /// The maximum health of the object.
     /// Its value cannot be less than or equal to zero.
