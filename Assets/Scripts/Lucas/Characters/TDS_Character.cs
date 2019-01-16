@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TDS_Character : TDS_Damageable 
+public class TDS_Character : TDS_Damageable
 {
     /* TDS_Character :
 	 *
@@ -10,7 +10,7 @@ public class TDS_Character : TDS_Damageable
 	 *	###### PURPOSE ######
 	 *	#####################
 	 *
-	 *	    Class to inherit from for all characters types, that is for Player and Enemy class.
+	 *	    Class to inherit from for all characters types, that is for Player and Enemy classes.
      *	    
      *	    Contains everything needed for both players and enemies they share in common.
 	 *
@@ -18,12 +18,23 @@ public class TDS_Character : TDS_Damageable
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[16 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Added the Attacks  & IsAttacking properties.
+     *	    - Renamed the CanAttack field in IsPacific.
+	 *
+	 *	-----------------------------------
+     * 
 	 *	Date :			[15 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
 	 *	Changes :
 	 *
 	 *	Creation of the TDS_Character class.
+     *	
      *	    - Added hitBox, healthBar & Throwable fields ; CanAttack field ; isFacingRight field & property ; IsParalyzed, SpeedAccelerationTime, SpeedCoef, speedCurrent, SpeedInitial & SpeedMax fields ; and attacks field.
      *	    - Added Flip method ; DropObject, GrabObject & ThrowObject empty methods to fill later, when the TDS_Throwable class will be fulfilled.
 	 *
@@ -55,10 +66,23 @@ public class TDS_Character : TDS_Damageable
     #endregion
 
     #region Variables
+    /// <summary>Backing field for <see cref="Attacks"/></summary>
+    [SerializeField] protected List<TDS_Attack> attacks = new List<TDS_Attack>();
+
     /// <summary>
-    /// Can this character currently attack or not ?
+    /// All attacks this character can perform.
+    /// Contains informations about their animation, damages, effect and others.
     /// </summary>
-    public bool CanAttack = true;
+    public List<TDS_Attack> Attacks
+    {
+        get { return attacks; }
+        protected set { attacks = value; }
+    }
+
+    /// <summary>
+    /// Can this character attack or not ?
+    /// </summary>
+    public bool IsAttacking { get; protected set; } = false;
 
     /// <summary>Backing field for <see cref="IsFacingRight"/></summary>
     protected bool isFacingRight = true;
@@ -70,11 +94,16 @@ public class TDS_Character : TDS_Damageable
     public bool IsFacingRight
     {
         get { return isFacingRight; }
-        private set { isFacingRight = value; }
+        protected set { isFacingRight = value; }
     }
 
     /// <summary>
-    /// If paralyzed, the character cannot move or attack.
+    /// If pacific, the character is private to attack.
+    /// </summary>
+    public bool IsPacific = false;
+
+    /// <summary>
+    /// If paralyzed, the character cannot move.
     /// </summary>
     public bool IsParalyzed = false;
 
@@ -107,12 +136,6 @@ public class TDS_Character : TDS_Damageable
     /// </summary>
     public float SpeedMax = 2;
     #endregion
-
-    /// <summary>
-    /// All attacks this character can perform.
-    /// Contains informations about their animation, damages, effect and others.
-    /// </summary>
-    [SerializeField] protected List<TDS_Attack> attacks = new List<TDS_Attack>();
 
     #endregion
 

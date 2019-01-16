@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class TDS_Damageable : PunBehaviour 
+public class TDS_Damageable : PunBehaviour
 {
     /* TDS_Damageable :
 	 *
@@ -19,12 +19,22 @@ public class TDS_Damageable : PunBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[16 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+     *      - Added the OnHeal event.
+     *      - Added the Heal method.
+	 *	-----------------------------------
+     * 
 	 *	Date :			[15 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
 	 *	Changes :
 	 *
 	 *	Creation of the TDS_Damageable class.
+     *	
      *	    - Added the OnDie, OnHealthChanged and OnTakeDamage event.
      *	    - Added animator & collider fields ; isDead field & property ; IsIndestructible field, IsInvunlerable field ; healthCurrent field & property ; healthMax field & property ; and photonID property.
      *	    - Added the Die and TakeDamage methods.
@@ -38,6 +48,12 @@ public class TDS_Damageable : PunBehaviour
     /// Called when this object just die, meaning when it is not indestructible and its health reach zero.
     /// </summary>
     public event Action OnDie = null;
+
+    /// <summary>
+    /// Heal event.
+    /// Called when the object is healed, with the amount as parameter
+    /// </summary>
+    public event Action<int> OnHeal = null;
 
     /// <summary>
     /// Health changed event.
@@ -176,7 +192,17 @@ public class TDS_Damageable : PunBehaviour
     protected virtual void Die() { }
 
     /// <summary>
-    /// Make this object take damage and decrease its health if it is not invulnerable.
+    /// Makes this object be healed and restore its health.
+    /// </summary>
+    /// <param name="_heal">Amount of health point to restore.</param>
+    public virtual void Heal(int _heal)
+    {
+        HealthCurrent += _heal;
+        OnHeal?.Invoke(_heal);
+    }
+
+    /// <summary>
+    /// Makes this object take damage and decrease its health if it is not invulnerable.
     /// </summary>
     /// <param name="_damage">Amount of damage this inflect to this object.</param>
     /// <returns>Returns true if some damages were inflicted, false if none.</returns>
