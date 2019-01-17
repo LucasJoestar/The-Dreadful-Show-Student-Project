@@ -155,7 +155,7 @@ public class TDS_HitBox : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // If the collider object should be hit, hit it
-
+        
         // Check tag instead of layer
         if (WhatHit != (WhatHit | (1 << other.gameObject.layer))) return;
 

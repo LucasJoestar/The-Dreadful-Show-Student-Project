@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class TDS_Character : TDS_Damageable
 {
     /* TDS_Character :
@@ -18,6 +19,15 @@ public class TDS_Character : TDS_Damageable
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[17 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Added the Rigidbody field ; the SpeedAccelerationTime, SpeedCoef, SpeedCurrent, SpeedInitial & SpeedMax properties.
+	 *
+	 *	-----------------------------------
+     * 
      *  Date :			[16 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -58,6 +68,12 @@ public class TDS_Character : TDS_Damageable
     /// Image used to display this character current health status.
     /// </summary>
     [SerializeField] protected UnityEngine.UI.Image healthBar = null;
+
+    /// <summary>
+    /// Rigidbody of this character.
+    /// Mainly used to project this one in the air.
+    /// </summary>
+    [SerializeField] protected new Rigidbody rigidbody = null;
 
     /// <summary>
     /// The throwable this character is currently wearing.
@@ -107,34 +123,89 @@ public class TDS_Character : TDS_Damageable
     /// </summary>
     public bool IsParalyzed = false;
 
+    /// <summary>Backing field for <see cref="SpeedAccelerationTime"/></summary>
+    [SerializeField] protected float speedAccelerationTime = .5f;
+
     /// <summary>
-    /// The time it takes for this character speed (<see cref="speedCurrent"/>) from its initial value when starting to move (<see cref="SpeedInitial"/>) to reach its limit (<see cref="SpeedMax"/>).
+    /// The time it takes (in seconds) for this character speed (<see cref="SpeedCurrent"/>) from its initial value when starting to move (<see cref="SpeedInitial"/>) to reach its limit (<see cref="SpeedMax"/>).
     /// </summary>
-    public float SpeedAccelerationTime = .5f;
+    public float SpeedAccelerationTime
+    {
+        get { return speedAccelerationTime; }
+        set
+        {
+            if (value < 0) value = 0;
+            speedAccelerationTime = value;
+        }
+    }
+
+    /// <summary>Backing field for <see cref="SpeedCoef"/></summary>
+    [SerializeField] protected float speedCoef = 1;
 
     /// <summary>
     /// Coefficient used to multiply all speed values of this character.
     /// Useful to slow down or speed up.
     /// </summary>
-    public float SpeedCoef = 1;
+    public float SpeedCoef
+    {
+        get { return speedCoef; }
+        set
+        {
+            if (value < 0) value = 0;
+            speedCoef = value;
+        }
+    }
+
+    /// <summary>Backing field for <see cref="speedCurrent"/></summary>
+    [SerializeField] protected float speedCurrent = 0;
 
     /// <summary>
     /// Current speed of the character movements.
     /// (Without taking into account the speed coefficient.)
     /// </summary>
-    protected float speedCurrent = 0;
+    public float SpeedCurrent
+    {
+        get { return speedCurrent; }
+        protected set
+        {
+            value = Mathf.Clamp(value, 0, SpeedMax);
+            speedCurrent = value;
+        }
+    }
+
+    /// <summary>Backing field for <see cref="SpeedInitial"/></summary>
+    [SerializeField] protected float speedInitial = 1;
 
     /// <summary>
     /// Initial speed of the character when starting moving.
     /// (Without taking into account the speed coefficient.)
     /// </summary>
-    public float SpeedInitial = 1;
+    public float SpeedInitial
+    {
+        get { return speedInitial; }
+        set
+        {
+            if (value < 0) value = 0;
+            speedInitial = value;
+        }
+    }
+
+    /// <summary>Backing field for <see cref="SpeedMax"/></summary>
+    [SerializeField] protected float speedMax = 2;
 
     /// <summary>
     /// Maximum speed of the character
     /// (Without taking into account the speed coefficient.)
     /// </summary>
-    public float SpeedMax = 2;
+    public float SpeedMax
+    {
+        get { return speedMax; }
+        set
+        {
+            if (value < 0) value = 0;
+            speedMax = value;
+        }
+    }
     #endregion
 
     #endregion
@@ -203,6 +274,11 @@ public class TDS_Character : TDS_Damageable
         {
             hitBox = GetComponentInChildren<TDS_HitBox>();
             if (!hitBox) Debug.LogWarning("The Character " + name + " HitBox is missing !");
+        }
+        if (!rigidbody)
+        {
+            rigidbody = GetComponent<Rigidbody>();
+            if (!rigidbody) Debug.LogWarning("The Character " + name + " Rigidbody is missing !");
         }
     }
 
