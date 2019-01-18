@@ -5,9 +5,11 @@ using System.Linq;
 using UnityEngine;
 using Photon;
 
-public class TDS_Networking : PunBehaviour
+
+[RequireComponent(typeof(PhotonView))]
+public class TDS_NetworkManager : PunBehaviour
 {
-	/* TDS_Networking :
+    /* NetworkManager :
 	 *
 	 *	#####################
 	 *	###### PURPOSE ######
@@ -29,21 +31,28 @@ public class TDS_Networking : PunBehaviour
 	 *	-----------------------------------
 	*/
 
-	#region Events
+    #region Events
 
-	#endregion
+    #endregion
 
-	#region Fields / Properties
+    #region Fields / Properties
+    public static TDS_NetworkManager Instance;
+    [SerializeField]
+    PhotonView photonView;
+    private bool canLeave = false;
+    #endregion
 
-	#endregion
+    #region Methods
+    #region Original Methods
 
-	#region Methods
-	#region Original Methods
+    #endregion
 
-	#endregion
-
-	#region Unity Methods
-	// Use this for initialization
+    #region Unity Methods
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
+    // Use this for initialization
     void Start ()
     {
 		
@@ -53,7 +62,7 @@ public class TDS_Networking : PunBehaviour
 	void Update ()
     {
         
-	}
-	#endregion
-	#endregion
+	}    
+    #endregion
+    #endregion
 }
