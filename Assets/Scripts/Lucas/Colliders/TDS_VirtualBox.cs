@@ -40,7 +40,7 @@ public class TDS_VirtualBox
     /// <summary>
     /// LayerMask of what to detect when using this box for overlap.
     /// </summary>
-    public LayerMask WhatTouch = new LayerMask();
+    public LayerMask WhatDetect = new LayerMask();
 
     /// <summary>
     /// Trigger Interaction when using this box for overlap.
@@ -85,7 +85,7 @@ public class TDS_VirtualBox
     /// <returns>Returns all colliders touching the box.</returns>
     public Collider[] Overlap(Vector3 _parentPosition)
     {
-        return Physics.OverlapBox(_parentPosition + LocalPosition, Extents, Quaternion.identity, WhatTouch, TriggerInteraction);
+        return Physics.OverlapBox(_parentPosition + LocalPosition, Extents, Quaternion.identity, WhatDetect, TriggerInteraction);
     }
     #endregion
 }

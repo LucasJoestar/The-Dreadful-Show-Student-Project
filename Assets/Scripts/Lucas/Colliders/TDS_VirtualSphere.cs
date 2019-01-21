@@ -45,7 +45,7 @@ public class TDS_VirtualSphere
     /// <summary>
     /// LayerMask of what to detect when using this sphere for overlap.
     /// </summary>
-    public LayerMask WhatTouch = new LayerMask();
+    public LayerMask WhatDetect = new LayerMask();
 
     /// <summary>
     /// Trigger Interaction when using this sphere for overlap.
@@ -80,7 +80,7 @@ public class TDS_VirtualSphere
     /// <returns>Returns all colliders touching the sphere.</returns>
     public Collider[] Overlap(Vector3 _parentPosition)
     {
-        return Physics.OverlapSphere(_parentPosition + LocalPosition, Radius, WhatTouch, TriggerInteraction);
+        return Physics.OverlapSphere(_parentPosition + LocalPosition, Radius, WhatDetect, TriggerInteraction);
     }
 	#endregion
 }
