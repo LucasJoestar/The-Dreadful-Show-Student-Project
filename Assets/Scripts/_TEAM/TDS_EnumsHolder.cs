@@ -10,12 +10,22 @@
  *	### MODIFICATIONS ###
  *	#####################
  *
- *	Date :			[DATE]
- *	Author :		[NAME]
+ *	Date :			[21 / 01 / 2019]
+ *	Author :		[Guibert Lucas]
  *
  *	Changes :
  *
- *	[CHANGES]
+ *  Initialization of the class.
+ *	    - Added the PlayerType enum.
  *
  *	-----------------------------------
 */
+
+public enum PlayerType
+{
+    BeardLady,
+    FatLady,
+    FireEater,
+    Juggler,
+    Unknown
+}

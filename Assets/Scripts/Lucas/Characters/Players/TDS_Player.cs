@@ -58,14 +58,14 @@ public class TDS_Player : TDS_Character
     public TDS_Summoner Summoner = null;
 
     /// <summary>
-    /// <see cref="TDS_Trigger"/> used to detect when the player touches the ground or not.
-    /// </summary>
-    [SerializeField] protected TDS_Trigger groundDetector = null;
-
-    /// <summary>
     /// <see cref="TDS_Trigger"/> used to detect when possible interactions with the environment are available.
     /// </summary>
     [SerializeField] protected TDS_Trigger interactionsDetector = null;
+
+    /// <summary>
+    /// Virtual box used to detect if the player is grounded or not.
+    /// </summary>
+    [SerializeField] protected TDS_VirtualBox groundDetectionBox = new TDS_VirtualBox();
     #endregion
 
     #region Inputs
@@ -206,6 +206,16 @@ public class TDS_Player : TDS_Character
     /// Maximum time length of a jump.
     /// </summary>
     public float JumpMaximumTime = 1.5f;
+
+    /// <summary>
+    /// LayerMask used to detect what is an obstacle for the player movements.
+    /// </summary>
+    public LayerMask WhatIsObstacle = new LayerMask();
+
+    /// <summary>
+    /// What character type this player is ?
+    /// </summary>
+    public PlayerType PlayerType { get; protected set; } = PlayerType.Unknown;
     #endregion
 
     #endregion
@@ -365,13 +375,36 @@ public class TDS_Player : TDS_Character
         // Adjust future position by checking possible collisions
         _newPosition = Vector3.Lerp(transform.position, _newPosition, Time.deltaTime * _speed);
 
-        // Raycast current collider without overlap --> Create a method for this
-        // Is something is touched, return ; the rigidbody will eject the player
-        // Next, raycast in the zone between this position and the future one ; priority order is X, Z then Y axis.
-        // If something is touched, use the raycast hit point to set the position against the obstacle.
+        // For X & Z axis, overlap in the zone between this position and the future one ; priority order is X, & Z.
+        // If something is touched, use the bounds of the collider to set the position of the player against the obstacle.
+
+        Vector3 _movementVector = _newPosition - transform.position;
+        Vector3 _colliderWorldPosition = transform.TransformPoint(collider.center);
+        Vector3 _colliderExtents = (collider.size / 2);
+
+        // X axis movement test
+
+        Collider[] _colliders = Physics.OverlapBox(new Vector3(_colliderWorldPosition.x + _movementVector.x, _colliderWorldPosition.y, _colliderWorldPosition.z), _colliderExtents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore);
+        bool _canMoveInX = _colliders.Length == 0;
+
+        if (!_canMoveInX)
+        {
+            Debug.Log("Oh no -X");
+            _newPosition.x = transform.position.x;
+        }
+
+        // Z axis movement test
+
+        _colliders = Physics.OverlapBox(new Vector3(_colliderWorldPosition.x + (_canMoveInX ? _movementVector.x : 0), _colliderWorldPosition.y, _colliderWorldPosition.z + _movementVector.z), _colliderExtents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore);
+
+        if (_colliders.Length > 0)
+        {
+            Debug.Log("Oh no -Z");
+            _newPosition.z = transform.position.z;
+        }
 
         // Move the player
-
+        transform.position = _newPosition;
     }
 
     /// <summary>
@@ -395,16 +428,23 @@ public class TDS_Player : TDS_Character
     protected override void Awake()
     {
         base.Awake();
-
-        // Subscribes to the linked TDS_Trigger classes events
-        if (groundDetector)
-        {
-            groundDetector.OnNothingDetected += () => IsGrounded = false;
-            groundDetector.OnSomethingDetected += () => IsGrounded = true;
-        }
     }
 
-	// Use this for initialization
+    // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations
+    protected virtual void FixedUpdate()
+    {
+        // Set the player as grounded if something is detected in the ground detection box
+        IsGrounded = groundDetectionBox.Overlap(transform.position).Length > 0;
+    }
+
+    // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
+    private void OnDrawGizmos()
+    {
+        // Draws the ground detection box gizmos
+        groundDetectionBox.DrawGizmos(transform.position);
+    }
+
+    // Use this for initialization
     protected override void Start ()
     {
         base.Start();
@@ -414,6 +454,10 @@ public class TDS_Player : TDS_Character
 	protected override void Update ()
     {
         base.Update();
+
+        // Check the player inputs
+        CheckMovementsInputs();
+        CheckActionsInputs();
 	}
 	#endregion
 
