@@ -19,6 +19,15 @@ public class TDS_Character : TDS_Damageable
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[22 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Added the IncreaseSpeed method.
+	 *
+	 *	-----------------------------------
+     * 
      *  Date :			[17 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -224,6 +233,18 @@ public class TDS_Character : TDS_Damageable
         sprite.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, sprite.transform.eulerAngles.y, sprite.transform.eulerAngles.z);
 
         isFacingRight = !isFacingRight;
+    }
+
+    /// <summary>
+    /// Automatically increases the speed of the character, according to all speed settings.
+    /// </summary>
+    protected void IncreaseSpeed()
+    {
+        if (speedCurrent == 0) SpeedCurrent = speedInitial;
+        else
+        {
+            SpeedCurrent += Time.deltaTime * ((speedMax - speedInitial) / speedAccelerationTime);
+        }
     }
 
     #region Throwable Object
