@@ -114,7 +114,7 @@ public class TDS_Character : TDS_Damageable
     }
 
     /// <summary>
-    /// If pacific, the character is private to attack.
+    /// If pacific, the character is deprived to attack.
     /// </summary>
     public bool IsPacific = false;
 
@@ -213,7 +213,6 @@ public class TDS_Character : TDS_Damageable
     #region Methods
 
     #region Original Methods
-
     /// <summary>
     /// Flips this character to have they looking at the opposite side.
     /// </summary>

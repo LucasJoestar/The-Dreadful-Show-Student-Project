@@ -22,12 +22,35 @@ public class TDS_Player : TDS_Character
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[22 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    
+     * 
+     *  -----------------------------------
+     * 
+     *  Date :			[21 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Fulfilled the Move & Jump methods.
+     *	    - Added the groundDetection & WhatIsObstacle fields.
+     *	    - Added the AdjustPositionOnRigidbody method.
+     *	    - Removed the groundDetector field.
+     * 
+     *  -----------------------------------
+     * 
      *  Date :			[17 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
 	 *	Changes :
      *	
-     *	    - Added the CatchButton, DodgeButton, HeavyAttackButton, HorizontalAxis, InteractButton, JumpButton, LightAttackButton, SuperAttackButton, ThrowButton, VerticalAxis, IsJumping, JumpForce, JumpMaximumTime & jumpCoroutine fields.
+     *	    Made the first version of the controller.
+     *	
+     *	    - Added the CatchButton, DodgeButton, HeavyAttackButton, HorizontalAxis, InteractButton, JumpButton, LightAttackButton, SuperAttackButton, ThrowButton, VerticalAxis, IsJumping, JumpForce, JumpMaximumTime, jumpCoroutine, interactionDetector & groundDetector fields.
      *	    - Added the CheckActionsInputs & CheckMovementsInputs methods ; Jump coroutine ; Move methods with one overload.
      *	    - Removed the CheckInputs method.
 	 *
