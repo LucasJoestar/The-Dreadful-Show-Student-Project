@@ -117,6 +117,8 @@ public class TDS_Damageable : PunBehaviour
                 OnDie?.Invoke();
                 Die();
             }
+
+            isDead = value;
         }
     }
 
@@ -152,7 +154,7 @@ public class TDS_Damageable : PunBehaviour
     }
 
     /// <summary>Backing field for <see cref="HealthMax"/></summary>
-    [SerializeField] protected int healthMax = 0;
+    [SerializeField] protected int healthMax = 1;
 
     /// <summary>
     /// The maximum health of the object.
@@ -161,7 +163,7 @@ public class TDS_Damageable : PunBehaviour
     /// </summary>
     public int HealthMax
     {
-        get { return HealthMax; }
+        get { return healthMax; }
         set
         {
             if (value <= 0) value = 1;
