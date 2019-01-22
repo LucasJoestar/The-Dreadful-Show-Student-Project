@@ -29,3 +29,12 @@ public enum PlayerType
     Juggler,
     Unknown
 }
+
+public enum EnemyState
+{
+    Searching, 
+    ComputingPath, 
+    GettingInRange, 
+    Attacking, 
+    HoldingObject 
+}
