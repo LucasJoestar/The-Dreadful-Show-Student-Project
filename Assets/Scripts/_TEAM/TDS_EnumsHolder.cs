@@ -19,6 +19,14 @@
  *	    - Added the PlayerType enum.
  *
  *	-----------------------------------
+ *	
+ *	Date :			[22 / 01 / 2019]
+ *	Author :		[THIEBAUT Alexis]
+ *
+ *	Changes :
+ *
+ *  Adding more enums.
+ *  	- Added the EnemyState enum.
 */
 
 public enum PlayerType

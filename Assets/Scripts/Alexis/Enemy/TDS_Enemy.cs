@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CustomNavMeshAgent))]
 public class TDS_Enemy : TDS_Character 
 {
     /* TDS_Enemy :
@@ -11,9 +12,9 @@ public class TDS_Enemy : TDS_Character
 	 *	###### PURPOSE ######
 	 *	#####################
 	 *
-	 *	- Class to inherit from for all kind of enemies ( Minion and Boss)
+	 *	- Class to inherit from for all kind of enemies ( Minion and Boss).
      *	
-     *	- Contains the common parts between Minions and bosses
+     *	- Contains the common parts between Minions and bosses.
 	 *
 	 *	#####################
 	 *	### MODIFICATIONS ###
@@ -26,7 +27,7 @@ public class TDS_Enemy : TDS_Character
 	 *
 	 *	[Creation of the enemy class]
 	 *
-     *  - Adding a custom NavMesh agent, EnemyState, bool canBeDown and canThrow, detection Range and EnemyName
+     *  - Adding a custom NavMesh agent, EnemyState, bool canBeDown and canThrow, detection Range and EnemyName.
      * 
 	 *	-----------------------------------
 	*/
