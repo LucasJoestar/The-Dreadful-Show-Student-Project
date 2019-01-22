@@ -247,6 +247,18 @@ public class TDS_Character : TDS_Damageable
     }
 
     /// <summary>
+    /// Automatically increases the speed of the character, according to all speed settings.
+    /// </summary>
+    protected void IncreaseSpeed()
+    {
+        if (speedCurrent == 0) SpeedCurrent = speedInitial;
+        else
+        {
+            SpeedCurrent += Time.deltaTime * ((speedMax - speedInitial) / speedAccelerationTime);
+        }
+    }
+
+    /// <summary>
     /// Throws the weared throwable.
     /// </summary>
     /// <param name="_targetPosition">Position where the object should land</param>

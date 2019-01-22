@@ -339,6 +339,7 @@ public class TDS_Player : TDS_Character
         float _vertical = Input.GetAxis(VerticalAxis);
 
         if (_horizontal != 0 || _vertical != 0) Move(new Vector3(_horizontal, 0, _vertical), true);
+        else SpeedCurrent = 0;
 
         // When pressing the jump method, check if on ground ; If it's all good, then let's jump
         if (Input.GetButtonDown(JumpButton) && IsGrounded)
@@ -434,11 +435,7 @@ public class TDS_Player : TDS_Character
         // Increases speed if needed
         if (speedCurrent < SpeedMax)
         {
-            if (speedCurrent == 0) SpeedCurrent = speedInitial;
-            else
-            {
-                SpeedCurrent += Time.deltaTime * ((speedMax - speedInitial) / speedAccelerationTime);
-            }
+            IncreaseSpeed();
         }
 
         float _speed = speedCurrent * speedCoef;
