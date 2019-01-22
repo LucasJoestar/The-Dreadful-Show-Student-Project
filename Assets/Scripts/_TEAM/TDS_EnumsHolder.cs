@@ -41,6 +41,7 @@ public enum PlayerType
 public enum EnemyState
 {
     Searching, 
+    MakingDecision, 
     ComputingPath, 
     GettingInRange, 
     Attacking, 

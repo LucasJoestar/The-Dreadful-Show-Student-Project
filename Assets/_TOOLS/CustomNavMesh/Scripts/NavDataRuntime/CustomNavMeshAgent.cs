@@ -19,29 +19,37 @@ public class CustomNavMeshAgent : MonoBehaviour
     #endregion
 
     #region float
+    [Header("Agent Settings")]
     [SerializeField, Range(.1f, 5)] float height = 1;
+    public float Height { get { return height/2;  } }
+
     [SerializeField, Range(.5f, 2)] float radius = 1;
+    public float Radius { get { return radius*.75f;  } }
+
     [SerializeField, Range(-5, 5)] float offset = 0;
+
     [SerializeField, Range(.5f, 10)] float speed = 1;
+
     [SerializeField, Range(1, 15)] float detectionRange = 5; 
     #endregion
 
     #region Path
-    [SerializeField] CustomNavPath currentPath;
+    [SerializeField] private CustomNavPath currentPath = new CustomNavPath();
     public CustomNavPath CurrentPath { get { return currentPath; } }
     #endregion
 
     #region CalculatingState
-    CalculatingState pathState = CalculatingState.Waiting;
+    private CalculatingState pathState = CalculatingState.Waiting;
     public CalculatingState PathState { get { return pathState; } }
     #endregion
 
     #region Vector3
     public Vector3 OffsetSize { get { return new Vector3(radius, height, radius);  } }
     public Vector3 OffsetPosition { get { return new Vector3(0, (height / 2) + offset, 0);  } }
-    #endregion 
 
-    [SerializeField] Transform target; 
+    public Vector3 LastPosition { get { return currentPath.PathPoints.Last() + OffsetPosition; } }
+    public Vector3 TargetedPosition { get { return currentPath.PathPoints.First() + OffsetPosition; } }
+    #endregion 
     #endregion
 
     #region Methods
@@ -60,15 +68,32 @@ public class CustomNavMeshAgent : MonoBehaviour
     }
 
     /// <summary>
+    /// Check if the destination can be reached
+    /// </summary>
+    /// <param name="_position">destination to reach</param>
+    /// <returns>if the destination can be reached</returns>
+    public bool CheckDestination(Vector3 _position)
+    {
+        pathState = CalculatingState.Calculating;
+        bool _canBeReached = PathCalculator.CalculatePath(transform.position, _position, currentPath, CustomNavMeshManager.Instance.Triangles);
+        if (_canBeReached)
+        {
+            pathState = CalculatingState.Ready;
+            StartCoroutine(FollowPath());
+        }
+        else pathState = CalculatingState.Waiting; 
+        return _canBeReached; 
+    }
+
+    /// <summary>
     /// Make the agent follows the path
     /// </summary>
     /// <param name="_speed">speed</param>
     /// <returns></returns>
-    public IEnumerator FollowPath()
+    IEnumerator FollowPath()
     {
         isMoving = true;
-        List<Vector3> _pathToFollow = CurrentPath.PathPoints;
-        RaycastHit _hit;
+        //RaycastHit _hit;
         /* STEERING 
         Vector3 _desiredVelocity = Vector3.Normalize(_pathToFollow.First() - transform.position) * speed;
         Vector3 _currentVelocity = Vector3.Normalize(transform.forward) * speed;
@@ -77,16 +102,16 @@ public class CustomNavMeshAgent : MonoBehaviour
         Vector3 _steering = Vector3.zero; 
         */
 
-        while (Vector3.Distance(transform.position - OffsetPosition, _pathToFollow.Last()) > .5f)
+        while (Vector3.Distance(transform.position, LastPosition) > radius)
         {
             /* STEERING
             _hit = default(RaycastHit);
             _avoidanceForce = Vector3.zero;
             */
 
-            if (Vector3.Distance(transform.position - OffsetPosition, _pathToFollow.First()) <= .5f)
+            if (Vector3.Distance(transform.position, TargetedPosition) <= Height)
             {
-                _pathToFollow.RemoveAt(0); 
+                currentPath.PathPoints.RemoveAt(0); 
                 //_desiredVelocity = Vector3.Normalize(_pathToFollow.First() - transform.position) * speed;
                 continue; 
             }
@@ -102,7 +127,7 @@ public class CustomNavMeshAgent : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, transform.position + _steering + OffsetPosition , Time.deltaTime * _speed);
             //transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, _steering + OffsetPosition, Time.deltaTime * _speed);
             */
-            transform.position = Vector3.MoveTowards(transform.position, _pathToFollow.First() + OffsetPosition, Time.deltaTime * speed); 
+            transform.position = Vector3.MoveTowards(transform.position, TargetedPosition, Time.deltaTime * speed); 
             yield return new WaitForEndOfFrame();
         }
         yield return new WaitForEndOfFrame();
@@ -115,23 +140,17 @@ public class CustomNavMeshAgent : MonoBehaviour
     #region UnityMethods
     private void Start()
     {
-
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0))
-            SetDestination(target.position);
-
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(transform.position, OffsetSize); 
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position - OffsetPosition, .1f);
-        if (currentPath.PathPoints.Count == 0) return; 
+        if (currentPath == null || currentPath.PathPoints == null || currentPath.PathPoints.Count == 0) return; 
         for (int i = 0; i < currentPath.PathPoints.Count; i++)
         {
             Gizmos.DrawSphere(currentPath.PathPoints[i], .2f); 
