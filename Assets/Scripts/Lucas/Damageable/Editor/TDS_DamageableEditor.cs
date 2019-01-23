@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEditor;
 
@@ -21,6 +20,18 @@ public class TDS_DamageableEditor : Editor
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[23 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    First incomplete version of the editor, but it's cool.
+     *	    
+     *	    - Added the animator, collider, sprite, isDead, isIndestructible, isInvulnerable, healthCurrent& healthMax fields ; the areDamagComponentsUnfolded, areDamagVariableUnfolded, isDamageableUnfolded fields ; and the damageable, damageables & isMultiEditing fields.
+     *	    - Added the DrawComponentsAndReferences, DrawDamageableEditor & DrawVariables methods.
+	 *
+	 *	-----------------------------------
+     * 
 	 *	Date :			[22 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -33,11 +44,70 @@ public class TDS_DamageableEditor : Editor
 
     #region Fields / Properties
 
+    #region SerializedProperties
+
+    #region Components & References
+    /// <summary>SerializedProperty for <see cref="TDS_Damageable.animator"/> of type <see cref="Animator"/>.</summary>
+    private SerializedProperty animator = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Damageable.collider"/> of type <see cref="BoxCollider"/>.</summary>
+    private SerializedProperty collider = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Damageable.sprite"/> of type <see cref="SpriteRenderer"/>.</summary>
+    private SerializedProperty sprite = null;
+    #endregion
+
+    #region Variables
+    /// <summary>SerializedProperty for <see cref="TDS_Damageable.isDead"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isDead = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Damageable.isIndestructible"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isIndestructible = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Damageable.IsInvulnerable"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isInvulnerable = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Damageable.healthCurrent"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty healthCurrent = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Damageable.healthMax"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty healthMax = null;
+    #endregion
+
+    #endregion
+
     #region Foldouts
+    /// <summary>
+    /// Are the components of the Damageable class unfolded for editor ?
+    /// </summary>
+    protected bool areDamagComponentsUnfolded = true;
+
+    /// <summary>
+    /// Are the variables of the Damageable class unfolded for editor ?
+    /// </summary>
+    protected bool areDamagVariableUnfolded = true;
+
     /// <summary>
     /// Indicates if the editor for the Damageable class is unfolded or not.
     /// </summary>
     protected bool isDamageableUnfolded = true;
+    #endregion
+
+    #region Target Scripts Infos
+    /// <summary>
+    /// The editing instance of the class, if only editing one.
+    /// </summary>
+    protected TDS_Damageable damageable = null;
+
+    /// <summary>
+    /// All editing instances of the class, if multi editing.
+    /// </summary>
+    protected List<TDS_Damageable> damageables = new List<TDS_Damageable>();
+
+    /// <summary>
+    /// Is the user currently editing multiple instances of this class ?
+    /// </summary>
+    protected bool isMultiEditing = false;
     #endregion
 
     #endregion
@@ -45,37 +115,141 @@ public class TDS_DamageableEditor : Editor
     #region Methods
 
     #region Original Methods
+    /// <summary>
+    /// Draws the editor for Damageable class components & references
+    /// </summary>
+    private void DrawComponentsAndReferences()
+    {
+        TDS_EditorUtility.ObjectField("Animator", "Animator of this object", animator, typeof(Animator));
+        TDS_EditorUtility.ObjectField("Collider", "Non-trigger BoxCollider of this object, used to detect collisions", collider, typeof(BoxCollider));
+        TDS_EditorUtility.ObjectField("Sprite", "Main SpriteRenderer used to render this object", sprite, typeof(SpriteRenderer));
 
+        GUILayout.Space(3);
+    }
+
+    /// <summary>
+    /// Draws the editor for the editing damageable classes
+    /// </summary>
+    protected void DrawDamageableEditor()
+    {
+        // Make a space at the beginning of the editor
+        GUILayout.Space(10);
+
+        GUI.backgroundColor = new Color(.55f, .55f, .55f);
+        EditorGUILayout.BeginVertical("HelpBox");
+
+        // Button to show or not the Damageable class settings
+        if (TDS_EditorUtility.Button("Damageable", "Wrap / unwrap Damageable class settings", TDS_EditorUtility.HeaderStyle)) isDamageableUnfolded = !isDamageableUnfolded;
+
+        // If unfolded, draws the custom editor for the Damageable class
+        if (isDamageableUnfolded)
+        {
+            // Records any changements on the editing objects to allow undo
+            Undo.RecordObjects(targets, "Damageable script(s) settings");
+
+            // Updates the SerializedProperties to get the latest values
+            serializedObject.Update();
+
+            GUI.backgroundColor = new Color(.9f, .9f, .9f);
+            EditorGUILayout.BeginVertical("Box");
+
+            // Button to show or not the Damageable class settings
+            if (TDS_EditorUtility.Button("Components & References", "Wrap / unwrap Components & References settings", TDS_EditorUtility.HeaderStyle)) areDamagComponentsUnfolded = !areDamagComponentsUnfolded;
+
+            // If unfolded, draws the custom editor for the Components & References
+            if (areDamagComponentsUnfolded)
+            {
+                DrawComponentsAndReferences();
+            }
+
+            EditorGUILayout.EndVertical();
+            GUILayout.Space(15);
+            EditorGUILayout.BeginVertical("Box");
+
+            // Button to show or not the Damageable class settings
+            if (TDS_EditorUtility.Button("Variables", "Wrap / unwrap Variables settings", TDS_EditorUtility.HeaderStyle)) areDamagVariableUnfolded = !areDamagVariableUnfolded;
+
+            // If unfolded, draws the custom editor for the Components & References
+            if (areDamagVariableUnfolded)
+            {
+                DrawVariables();
+            }
+
+            EditorGUILayout.EndVertical();
+
+            // Applies all modified properties on the SerializedObjects
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        EditorGUILayout.EndVertical();
+    }
+
+    /// <summary>
+    /// Draws the editor for Damageable class variables
+    /// </summary>
+    private void DrawVariables()
+    {
+        // If the serializedProperty is changed, triggers the property of the field
+        // After the property has been used, update the object so that serializedProperties can be refresh
+        if (TDS_EditorUtility.IntSlider("Health", "Current health of this object", healthCurrent, 0, healthMax.intValue))
+        {
+            damageables.ForEach(d => d.HealthCurrent = healthCurrent.intValue);
+            serializedObject.Update();
+        }
+
+        if (!healthCurrent.hasMultipleDifferentValues)
+        {
+            TDS_EditorUtility.ProgressBar(25, (float)healthCurrent.intValue / healthMax.intValue, "Health");
+        }
+
+        if (TDS_EditorUtility.IntField("Max Health", "Maximum health of the object ; its health cannot exceed this value", healthMax))
+        {
+            damageables.ForEach(d => d.HealthMax = healthMax.intValue);
+            serializedObject.Update();
+        }
+
+        if (TDS_EditorUtility.Toggle("Dead", "Indicates if the object is dead, or not", isDead))
+        {
+            damageables.ForEach(d => d.IsDead = isDead.boolValue);
+            serializedObject.Update();
+        }
+
+        if (TDS_EditorUtility.Toggle("Indestructible", "When indestructible, the object will not be dead when its health reach zero", isIndestructible))
+        {
+            damageables.ForEach(d => d.IsIndestructible = isIndestructible.boolValue);
+            serializedObject.Update();
+        }
+
+        TDS_EditorUtility.Toggle("Invulnerable", "When invulnerable, the object cannot take any damage", isInvulnerable);
+    }
     #endregion
 
     #region Unity Methods
     // This function is called when the object is loaded
     private void OnEnable()
     {
+        // Get the target editing scripts
+        damageable = (TDS_Damageable)target;
+        targets.ToList().ForEach(t => damageables.Add((TDS_Damageable)t));
+        if (targets.Length == 1) isMultiEditing = false;
+        else isMultiEditing = true;
+
+        // Get the serializedProperties from the serializedObject
+        animator = serializedObject.FindProperty("animator");
+        collider = serializedObject.FindProperty("collider");
+        sprite = serializedObject.FindProperty("sprite");
+
+        isDead = serializedObject.FindProperty("isDead");
+        isIndestructible = serializedObject.FindProperty("isIndestructible");
+        isInvulnerable = serializedObject.FindProperty("IsInvulnerable");
+        healthCurrent = serializedObject.FindProperty("healthCurrent");
+        healthMax = serializedObject.FindProperty("healthMax");
     }
 
     // Implement this function to make a custom inspector
     public override void OnInspectorGUI()
     {
-        // Records any changements on the editing objects to allow undo
-        Undo.RecordObjects(targets, "Damageable script settings");
-
-        // Updates the SerializedProperties to get the latest values
-        serializedObject.Update();
-
-        GUILayout.Space(10);
-
-        isDamageableUnfolded = EditorGUILayout.Foldout(isDamageableUnfolded, "Damageable", true);
-
-        // If unfolded, draws the custom editor for the Damageable class
-        if (isDamageableUnfolded)
-        {
-            ((TDS_Damageable)target).HealthCurrent = EditorGUILayout.IntField("Health", ((TDS_Damageable)target).HealthCurrent);
-            ((TDS_Damageable)target).HealthMax = EditorGUILayout.IntField("Health Max", ((TDS_Damageable)target).HealthMax);
-        }
-
-        // Applies all modified properties on the SerializedObjects
-        serializedObject.ApplyModifiedProperties();
+        DrawDamageableEditor();
     }
     #endregion
 

@@ -211,10 +211,10 @@ MonoBehaviour:
   collider: {fileID: 0}
   sprite: {fileID: 0}
   isDead: 0
-  IsIndestructible: 0
-  IsInvulnerable: 0
-  healthCurrent: 0
-  healthMax: 0
+  isIndestructible: 0
+  IsInvulnerable: 1
+  healthCurrent: 4
+  healthMax: 10
 --- !u!65 &231318948
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -372,7 +372,7 @@ MonoBehaviour:
   collider: {fileID: 0}
   sprite: {fileID: 0}
   isDead: 0
-  IsIndestructible: 0
+  isIndestructible: 0
   IsInvulnerable: 0
   healthCurrent: 0
   healthMax: 0
