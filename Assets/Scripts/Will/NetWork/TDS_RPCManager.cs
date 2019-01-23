@@ -38,25 +38,18 @@ public class TDS_RPCManager : MonoBehaviour
 
     #region Methods
     #region Original Methods
+    [PunRPC]
+    public void AddPlayer(int _playerCharacter)
+    {
 
+    }
     #endregion
 
     #region Unity Methods
-    private void Awake()
+    void Awake()
     {      
         if (!Instance) Instance = this;        
     }
-    // Use this for initialization
-    void Start ()
-    {
-		
-    }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-        
-	}
 	#endregion
 	#endregion
 }
