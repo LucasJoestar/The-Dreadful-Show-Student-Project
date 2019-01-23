@@ -19,6 +19,15 @@ public class TDS_Damageable : PunBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[23 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+     *      - Added the IsIndestructible property.
+     *      - Modified the IsDead, & HealthCurrent properties.
+     *      - Removed the Sprite property.
+	 *	-----------------------------------
      *	Date :			[16 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -81,17 +90,8 @@ public class TDS_Damageable : PunBehaviour
     /// </summary>
     [SerializeField] protected new BoxCollider collider = null;
 
-    /// <summary>Backing field for <see cref="Sprite"/></summary>
+    /// <summary>The sprite renderer used to render this object in the scene.</summary>
     [SerializeField] protected SpriteRenderer sprite = null;
-
-    /// <summary>
-    /// The sprite renderer used to render this object in the scene.
-    /// </summary>
-    public SpriteRenderer Sprite
-    {
-        get { return sprite; }
-        private set { sprite = value; }
-    }
     #endregion
 
     #region Variables
@@ -110,6 +110,11 @@ public class TDS_Damageable : PunBehaviour
             // If the damageable is indestructible, it cannot be dead
             // So, return
             if (IsIndestructible && value == true) return;
+            isDead = value;
+
+            #if UNITY_EDITOR
+            if (!UnityEditor.EditorApplication.isPlaying) return;
+            #endif
 
             animator?.SetBool("IsDead", value);
             if (value == true)
@@ -120,11 +125,22 @@ public class TDS_Damageable : PunBehaviour
         }
     }
 
+    /// <summary>Backing field for <see cref="IsIndestructible"/></summary>
+    [SerializeField] protected bool isIndestructible = false;
+
     /// <summary>
     /// When indestructible, the damageable cannot be destroyed, even if its life goes below or equals zero.
     /// Useful for an never-end life punching ball.
     /// </summary>
-    public bool IsIndestructible = false;
+    public bool IsIndestructible
+    {
+        get { return isIndestructible; }
+        set
+        {
+            isIndestructible = value;
+            if (healthCurrent == 0) IsDead = true;
+        }
+    }
 
     /// <summary>
     /// When invulnerable, the object cannot take any damage and its health will not decrease.
@@ -148,11 +164,14 @@ public class TDS_Damageable : PunBehaviour
             healthCurrent = value;
 
             OnHealthChanged?.Invoke(value);
+
+            if (value == 0) IsDead = true;
+            else if (isDead) IsDead = false;
         }
     }
 
     /// <summary>Backing field for <see cref="HealthMax"/></summary>
-    [SerializeField] protected int healthMax = 0;
+    [SerializeField] protected int healthMax = 1;
 
     /// <summary>
     /// The maximum health of the object.
@@ -161,11 +180,13 @@ public class TDS_Damageable : PunBehaviour
     /// </summary>
     public int HealthMax
     {
-        get { return HealthMax; }
+        get { return healthMax; }
         set
         {
             if (value <= 0) value = 1;
             healthMax = value;
+
+            if (healthCurrent > value) HealthCurrent = value;
         }
     }
     #endregion
