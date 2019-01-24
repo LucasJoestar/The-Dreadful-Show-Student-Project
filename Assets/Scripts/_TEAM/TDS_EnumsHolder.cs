@@ -45,5 +45,6 @@ public enum EnemyState
     ComputingPath, 
     GettingInRange, 
     Attacking, 
-    HoldingObject 
+    GrabingObject, 
+    ThrowingObject
 }
