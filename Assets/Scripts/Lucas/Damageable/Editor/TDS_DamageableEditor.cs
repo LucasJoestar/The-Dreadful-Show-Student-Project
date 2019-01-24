@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(TDS_Damageable), false), CanEditMultipleObjects]
-public class TDS_DamageableEditor : Editor 
+public class TDS_DamageableEditor : Editor
 {
     /* TDS_DamageableEditor :
 	 *
@@ -30,7 +30,9 @@ public class TDS_DamageableEditor : Editor
      *	    
      *	    - Added the damageValue & healValue fields.
      *	    - Added the DrawLifeButtons method.
+     *	    - Renamed the foldout and target scripts infos variables so they now have "Damag" in their name. (Unity serialization error)
      *	    - Renamed the DrawVariables method in DrawLifeSettings.
+     *	    - Set the fields as private instead of protected
 	 *
 	 *	-----------------------------------
      *	
@@ -94,17 +96,17 @@ public class TDS_DamageableEditor : Editor
     /// <summary>
     /// Are the components of the Damageable class unfolded for editor ?
     /// </summary>
-    protected bool areDamagComponentsUnfolded = true;
+    private static bool areDamagComponentsUnfolded = true;
 
     /// <summary>
-    /// Are the life settings of the Damageable class unfolded for editor ?
+    /// Are the settings of the Damageable class unfolded for editor ?
     /// </summary>
-    protected bool areDamagLifeSettingsUnfolded = true;
+    private static bool areDamagSettingsUnfolded = true;
 
     /// <summary>
     /// Indicates if the editor for the Damageable class is unfolded or not.
     /// </summary>
-    protected bool isDamageableUnfolded = true;
+    private static bool isDamagUnfolded = true;
     #endregion
 
     #region Editor Variables
@@ -121,19 +123,14 @@ public class TDS_DamageableEditor : Editor
 
     #region Target Scripts Infos
     /// <summary>
-    /// The editing instance of the class, if only editing one.
-    /// </summary>
-    protected TDS_Damageable damageable = null;
-
-    /// <summary>
-    /// All editing instances of the class, if multi editing.
-    /// </summary>
-    protected List<TDS_Damageable> damageables = new List<TDS_Damageable>();
-
-    /// <summary>
     /// Is the user currently editing multiple instances of this class ?
     /// </summary>
-    protected bool isMultiEditing = false;
+    private bool isDamagMultiEditing = false;
+
+    /// <summary>
+    /// All editing instances of the Damageable class.
+    /// </summary>
+    private List<TDS_Damageable> damageables = new List<TDS_Damageable>();
     #endregion
 
     #endregion
@@ -154,21 +151,22 @@ public class TDS_DamageableEditor : Editor
     }
 
     /// <summary>
-    /// Draws the editor for the editing damageable classes
+    /// Draws the editor for the editing Damageable classes
     /// </summary>
     protected void DrawDamageableEditor()
     {
         // Make a space at the beginning of the editor
         GUILayout.Space(10);
+        Color _originalColor = GUI.backgroundColor;
 
-        GUI.backgroundColor = new Color(.55f, .55f, .55f);
+        GUI.backgroundColor = TDS_EditorUtility.BoxDarkColor;
         EditorGUILayout.BeginVertical("HelpBox");
 
         // Button to show or not the Damageable class settings
-        if (TDS_EditorUtility.Button("Damageable", "Wrap / unwrap Damageable class settings", TDS_EditorUtility.HeaderStyle)) isDamageableUnfolded = !isDamageableUnfolded;
+        if (TDS_EditorUtility.Button("Damageable", "Wrap / unwrap Damageable class settings", TDS_EditorUtility.HeaderStyle)) isDamagUnfolded = !isDamagUnfolded;
 
         // If unfolded, draws the custom editor for the Damageable class
-        if (isDamageableUnfolded)
+        if (isDamagUnfolded)
         {
             // Records any changements on the editing objects to allow undo
             Undo.RecordObjects(targets, "Damageable script(s) settings");
@@ -176,10 +174,10 @@ public class TDS_DamageableEditor : Editor
             // Updates the SerializedProperties to get the latest values
             serializedObject.Update();
 
-            GUI.backgroundColor = new Color(.9f, .9f, .9f);
+            GUI.backgroundColor = TDS_EditorUtility.BoxLightColor;
             EditorGUILayout.BeginVertical("Box");
 
-            // Button to show or not the Damageable class settings
+            // Button to show or not the Damageable class components
             if (TDS_EditorUtility.Button("Components & References", "Wrap / unwrap Components & References settings", TDS_EditorUtility.HeaderStyle)) areDamagComponentsUnfolded = !areDamagComponentsUnfolded;
 
             // If unfolded, draws the custom editor for the Components & References
@@ -193,12 +191,12 @@ public class TDS_DamageableEditor : Editor
             EditorGUILayout.BeginVertical("Box");
 
             // Button to show or not the Damageable class settings
-            if (TDS_EditorUtility.Button("Life", "Wrap / unwrap life settings", TDS_EditorUtility.HeaderStyle)) areDamagLifeSettingsUnfolded = !areDamagLifeSettingsUnfolded;
+            if (TDS_EditorUtility.Button("Life", "Wrap / unwrap life settings", TDS_EditorUtility.HeaderStyle)) areDamagSettingsUnfolded = !areDamagSettingsUnfolded;
 
             // If unfolded, draws the custom editor for the life sttings
-            if (areDamagLifeSettingsUnfolded)
+            if (areDamagSettingsUnfolded)
             {
-                DrawLifeSettings();
+                DrawSettings();
             }
 
             EditorGUILayout.EndVertical();
@@ -208,6 +206,7 @@ public class TDS_DamageableEditor : Editor
         }
 
         EditorGUILayout.EndVertical();
+        GUI.backgroundColor = _originalColor;
     }
 
     /// <summary>
@@ -273,9 +272,9 @@ public class TDS_DamageableEditor : Editor
     }
 
     /// <summary>
-    /// Draws the editor for Damageable class life settings
+    /// Draws the editor for Damageable class settings
     /// </summary>
-    private void DrawLifeSettings()
+    private void DrawSettings()
     {
         // If the serializedProperty is changed, triggers the property of the field
         // After the property has been used, update the object so that serializedProperties can be refresh
@@ -321,13 +320,12 @@ public class TDS_DamageableEditor : Editor
 
     #region Unity Methods
     // This function is called when the object is loaded
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         // Get the target editing scripts
-        damageable = (TDS_Damageable)target;
         targets.ToList().ForEach(t => damageables.Add((TDS_Damageable)t));
-        if (targets.Length == 1) isMultiEditing = false;
-        else isMultiEditing = true;
+        if (targets.Length == 1) isDamagMultiEditing = false;
+        else isDamagMultiEditing = true;
 
         // Get the serializedProperties from the serializedObject
         animator = serializedObject.FindProperty("animator");
@@ -344,6 +342,7 @@ public class TDS_DamageableEditor : Editor
     // Implement this function to make a custom inspector
     public override void OnInspectorGUI()
     {
+        // Draws the inspector for the Damageable class
         DrawDamageableEditor();
     }
     #endregion

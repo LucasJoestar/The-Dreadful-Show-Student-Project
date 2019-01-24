@@ -24,6 +24,7 @@ public class TDS_Character : TDS_Damageable
 	 *
 	 *	Changes :
      *	
+     *	    - Modified the SpeedMax & SpeedInitial properties.
      *	    - Modified the debugs for component missing in Awake.
      *	    - Removed the attacks field & property.
 	 *
@@ -107,7 +108,7 @@ public class TDS_Character : TDS_Damageable
     public bool IsAttacking { get; protected set; } = false;
 
     /// <summary>Backing field for <see cref="IsFacingRight"/></summary>
-    protected bool isFacingRight = true;
+    [SerializeField] protected bool isFacingRight = true;
 
     /// <summary>
     /// Indicates which side the character is facing.
@@ -191,7 +192,7 @@ public class TDS_Character : TDS_Damageable
         get { return speedInitial; }
         set
         {
-            if (value < 0) value = 0;
+            value = Mathf.Clamp(value, 0, speedMax);
             speedInitial = value;
         }
     }
@@ -210,6 +211,8 @@ public class TDS_Character : TDS_Damageable
         {
             if (value < 0) value = 0;
             speedMax = value;
+
+            if (speedCurrent > value) SpeedCurrent = value;
         }
     }
     #endregion
@@ -224,12 +227,11 @@ public class TDS_Character : TDS_Damageable
     /// </summary>
     public void Flip()
     {
+        isFacingRight = !isFacingRight;
         transform.Rotate(Vector3.up, 180);
 
         // Rotates the sprite transform in X axis to match the camera orientation
         sprite.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, sprite.transform.eulerAngles.y, sprite.transform.eulerAngles.z);
-
-        isFacingRight = !isFacingRight;
     }
 
     /// <summary>
