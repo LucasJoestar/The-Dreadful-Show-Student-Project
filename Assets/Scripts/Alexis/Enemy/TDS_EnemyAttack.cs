@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine; 
 
+[Serializable]
 public class TDS_EnemyAttack : TDS_Attack 
 {
     /* TDS_EnemyAttack :
@@ -41,7 +42,7 @@ public class TDS_EnemyAttack : TDS_Attack
     /// <summary>
     /// Backing field of <see cref="IsDistanceAttack"/> 
     /// </summary>
-    private bool isDistanceAttack = false;
+    [SerializeField]private bool isDistanceAttack = false;
     /// <summary>
     /// Is the attack distance or not 
     /// </summary>
@@ -85,7 +86,7 @@ public class TDS_EnemyAttack : TDS_Attack
     /// <summary>
     /// Backing field <see cref="PredictedRange"/>
     /// </summary>
-    private float predictedRange = 0;
+    [SerializeField] private float predictedRange = 0;
     /// <summary>
     /// Predicted Range of the attack. 
     /// Used in debug and to check if the enemy is in range to cast this attack
@@ -105,7 +106,7 @@ public class TDS_EnemyAttack : TDS_Attack
     /// <summary>
     /// Probability to cast this attack over 100.
     /// </summary>
-    private float probability = 100;
+    [SerializeField] private float probability = 100;
     /// <summary>
     /// Probability to cast this attack divided by the number of consecutive uses +1.
     /// </summary>
