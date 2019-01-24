@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(TDS_Damageable), true), CanEditMultipleObjects]
+[CustomEditor(typeof(TDS_Damageable), false), CanEditMultipleObjects]
 public class TDS_DamageableEditor : Editor 
 {
     /* TDS_DamageableEditor :

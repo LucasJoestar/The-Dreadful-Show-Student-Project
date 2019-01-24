@@ -318,13 +318,12 @@ MonoBehaviour:
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 0
-  healthMax: 1
+  healthCurrent: 500
+  healthMax: 999
   hitBox: {fileID: 0}
   healthBar: {fileID: 0}
   rigidbody: {fileID: 0}
   Throwable: {fileID: 0}
-  attacks: []
   IsPacific: 0
   IsParalyzed: 0
   speedAccelerationTime: 0.5
@@ -469,7 +468,6 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   rigidbody: {fileID: 0}
   Throwable: {fileID: 0}
-  attacks: []
   IsPacific: 0
   IsParalyzed: 0
   speedAccelerationTime: 0.5
@@ -498,6 +496,7 @@ MonoBehaviour:
   ThrowButton: Throw
   UseObjectButton: Use Object
   VerticalAxis: Vertical
+  attacks: []
   comboCurrent: 
   comboMax: 3
   comboResetTime: 2
