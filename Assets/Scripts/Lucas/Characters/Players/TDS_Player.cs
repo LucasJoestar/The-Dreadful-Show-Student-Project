@@ -22,12 +22,22 @@ public class TDS_Player : TDS_Character
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[24 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Added the attacks field & property.
+     * 
+     *  -----------------------------------
+     * 
      *  Date :			[22 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
 	 *	Changes :
      *	
-     *	    
+     *	    - Added the previousPosition field.
+     *	    - Fulfilled the AdjustPositionOnRigidbody method.
      * 
      *  -----------------------------------
      * 
@@ -157,6 +167,19 @@ public class TDS_Player : TDS_Character
     #endregion
 
     #region Variables
+    /// <summary>Backing field for <see cref="Attacks"/></summary>
+    [SerializeField] protected List<TDS_Attack> attacks = new List<TDS_Attack>();
+
+    /// <summary>
+    /// All attacks this player can perform.
+    /// Contains informations about their animation, damages, effect and others.
+    /// </summary>
+    public List<TDS_Attack> Attacks
+    {
+        get { return attacks; }
+        protected set { attacks = value; }
+    }
+
     /// <summary>
     /// Is the player touching the ground ?
     /// If true, jump is enabled.
@@ -240,6 +263,13 @@ public class TDS_Player : TDS_Character
     /// What character type this player is ?
     /// </summary>
     public PlayerType PlayerType { get; protected set; } = PlayerType.Unknown;
+    #endregion
+
+    #region Debug & Script memory Variables
+    /// <summary>
+    /// The position of the player at the previous frame
+    /// </summary>
+    private Vector3 previousPosition = Vector3.zero;
     #endregion
 
     #endregion
@@ -374,32 +404,142 @@ public class TDS_Player : TDS_Character
         // If the player rigidbody velocity is null, return
         if (rigidbody.velocity == Vector3.zero) return;
 
-        // For each axis where the player rigidbody velocity is non null, adjust the player position if it is in another collider
+        // Get all touching colliders ; if none, return
+        Collider[] _touchedColliders = Physics.OverlapBox(collider.bounds.center, collider.bounds.extents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore);
 
-        Collider[] _touchedColliders = new Collider[] { }; 
+        if (_touchedColliders.Length == 0) return;
+
+        // For each axis where the player rigidbody velocity is non null, adjust the player position if it is in another collider
+        // To do this, use the previous position and overlap from this in the actual position for each axis where the velocity is not null
+
+        Vector3 _newPosition = transform.position;
+        Vector3 _newVelocity = rigidbody.velocity;
+        Vector3 _movementVector = transform.position - previousPosition;
+        Vector3 _colliderWorldPosition = collider.bounds.center;
+        Vector3 _colliderExtents = collider.bounds.extents - (Vector3.one * .0001f);
+        Vector3 _overlapCenter = Vector3.zero;
+        Vector3 _overlapExtents = Vector3.one;
 
         // X axis adjustment
         if (rigidbody.velocity.x != 0)
         {
+            // Get the extents & center position for the overlap
+            _overlapExtents = new Vector3(Mathf.Abs(_movementVector.x) / 2, _colliderExtents.y, _colliderExtents.z);
 
+            _overlapCenter = new Vector3(previousPosition.x + ((_colliderExtents.x + _overlapExtents.x) * (rigidbody.velocity.x > 0 ? 1 : -1)), previousPosition.y, previousPosition.z);
+
+            // Overlap in the zone where the player would be from the previous position after the movement on the Y axis.
+            // If something is touched, then adjust the position of the player against it
+            _touchedColliders = Physics.OverlapBox(_overlapCenter, _overlapExtents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore);
+
+            if (_touchedColliders.Length > 0)
+            {
+                Debug.Log("Get back in X");
+
+                float _xLimit = 0;
+
+                // Get the Y position of the nearest collider limit, and set the position of the player against it
+                if (_movementVector.x > 0)
+                {
+                    _xLimit = _touchedColliders.Select(c => c.bounds.center.x - c.bounds.extents.x).OrderBy(c => c).First();
+
+                    _newPosition.x = _xLimit - _colliderExtents.x - collider.center.x - .0001f;
+                }
+                else
+                {
+                    _xLimit = _touchedColliders.Select(c => c.bounds.center.x + c.bounds.extents.x).OrderBy(c => c).Last();
+
+                    _newPosition.x = _xLimit + _colliderExtents.x + collider.center.x + .0001f;
+                }
+
+                _movementVector.x = _newPosition.x - previousPosition.x;
+
+                // Reset the Y velocity
+                _newVelocity.x = 0;
+            }
         }
 
         // Y axis adjustment
         if (rigidbody.velocity.y != 0)
         {
-            _touchedColliders = Physics.OverlapBox(collider.bounds.center, collider.bounds.extents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore);
+            // Get the extents & center position for the overlap
+            _overlapExtents = new Vector3(_colliderExtents.x, Mathf.Abs(_movementVector.y) / 2, _colliderExtents.z);
+
+            _overlapCenter = new Vector3(previousPosition.x, previousPosition.y + ((_colliderExtents.y + _overlapExtents.y) * (rigidbody.velocity.y > 0 ? 1 : -1)), previousPosition.z);
+
+            // Overlap in the zone where the player would be from the previous position after the movement on the Y axis.
+            // If something is touched, then adjust the position of the player against it
+            _touchedColliders = Physics.OverlapBox(_overlapCenter, _overlapExtents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore);
 
             if (_touchedColliders.Length > 0)
             {
+                Debug.Log("Get back in Y");
 
+                float _yLimit = 0;
+
+                // Get the Y position of the nearest collider limit, and set the position of the player against it
+                if (_movementVector.y > 0)
+                {
+                    _yLimit = _touchedColliders.Select(c => c.bounds.center.y - c.bounds.extents.y).OrderBy(c => c).First();
+
+                    _newPosition.y = _yLimit - _colliderExtents.y - collider.center.y - .0001f;
+                }
+                else
+                {
+                    _yLimit = _touchedColliders.Select(c => c.bounds.center.y + c.bounds.extents.y).OrderBy(c => c).Last();
+
+                    _newPosition.y = _yLimit + _colliderExtents.y + collider.center.y + .0001f;
+                }
+
+                _movementVector.y = _newPosition.y - previousPosition.y;
+
+                // Reset the Y velocity
+                _newVelocity.y = 0;
             }
         }
 
         // Z axis adjustment
         if (rigidbody.velocity.z != 0)
         {
+            // Get the extents & center position for the overlap
+            _overlapExtents = new Vector3(_colliderExtents.x, _colliderExtents.y, Mathf.Abs(_movementVector.z) / 2);
 
+            _overlapCenter = new Vector3(previousPosition.x, previousPosition.y, previousPosition.z + ((_colliderExtents.z + _overlapExtents.z) * (rigidbody.velocity.z > 0 ? 1 : -1)));
+
+            // Overlap in the zone where the player would be from the previous position after the movement on the Y axis.
+            // If something is touched, then adjust the position of the player against it
+            _touchedColliders = Physics.OverlapBox(_overlapCenter, _overlapExtents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore);
+
+            if (_touchedColliders.Length > 0)
+            {
+                Debug.Log("Get back in Z");
+
+                float _zLimit = 0;
+
+                // Get the Y position of the nearest collider limit, and set the position of the player against it
+                if (_movementVector.z > 0)
+                {
+                    _zLimit = _touchedColliders.Select(c => c.bounds.center.z - c.bounds.extents.z).OrderBy(c => c).First();
+
+                    _newPosition.z = _zLimit - _colliderExtents.z - collider.center.z - .0001f;
+                }
+                else
+                {
+                    _zLimit = _touchedColliders.Select(c => c.bounds.center.z + c.bounds.extents.z).OrderBy(c => c).Last();
+
+                    _newPosition.z = _zLimit + _colliderExtents.z + collider.center.z + .0001f;
+                }
+
+                _movementVector.z = _newPosition.z - previousPosition.z;
+
+                // Reset the Y velocity
+                _newVelocity.z = 0;
+            }
         }
+
+        // Set the position of the player as the new calculated one, and reset the velocity for the recalculated axis
+        transform.position = _newPosition;
+        rigidbody.velocity = _newVelocity;
     }
 
     /// <summary>
@@ -471,7 +611,6 @@ public class TDS_Player : TDS_Character
             // If the player cannot move in X, set its position against the nearest collider
             if (!_canMoveInX)
             {
-                Debug.Log("Oh no -X");
                 float _xLimit = 0;
 
                 // Get the X position of the nearest collider limit, and set the position of the player against it
@@ -483,7 +622,7 @@ public class TDS_Player : TDS_Character
                 }
                 else
                 {
-                    _xLimit = _touchedColliders.Select(c => c.bounds.center.x + c.bounds.extents.x).OrderBy(c => c).First();
+                    _xLimit = _touchedColliders.Select(c => c.bounds.center.x + c.bounds.extents.x).OrderBy(c => c).Last();
 
                     _newPosition.x = _xLimit + _colliderExtents.x + collider.center.x + .001f;
                 }
@@ -508,7 +647,6 @@ public class TDS_Player : TDS_Character
             // If the player cannot move in Z, set its position against the nearest collider
             if (_touchedColliders.Length > 0)
             {
-                Debug.Log("Oh no -Z");
                 float _zLimit = 0;
 
                 // Get the Z position of the nearest collider limit, and set the position of the player against it
@@ -520,7 +658,7 @@ public class TDS_Player : TDS_Character
                 }
                 else
                 {
-                    _zLimit = _touchedColliders.Select(c => c.bounds.center.z + c.bounds.extents.z).OrderBy(c => c).First();
+                    _zLimit = _touchedColliders.Select(c => c.bounds.center.z + c.bounds.extents.z).OrderBy(c => c).Last();
 
                     _newPosition.z = _zLimit + _colliderExtents.z + collider.center.z + .001f;
                 }
@@ -561,6 +699,13 @@ public class TDS_Player : TDS_Character
         IsGrounded = groundDetectionBox.Overlap(transform.position).Length > 0;
     }
 
+    // LateUpdate is called every frame, if the Behaviour is enabled
+    private void LateUpdate()
+    {
+        // At the end of the frame, set the previous position as this one
+        previousPosition = transform.position;
+    }
+
     // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
     private void OnDrawGizmos()
     {
@@ -581,7 +726,6 @@ public class TDS_Player : TDS_Character
 
         // Adjust the position of the player for each axis of the rigidbody velocity where a force is exercised
         AdjustPositionOnRigidbody();
-        
 
         // Check the player inputs
         CheckMovementsInputs();
