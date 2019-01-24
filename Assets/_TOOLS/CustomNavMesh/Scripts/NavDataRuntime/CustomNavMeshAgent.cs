@@ -1,10 +1,30 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq; 
+using System.Linq;
 using UnityEngine;
 
 
+/*
+[Script Header] CustomNavMeshAgent Version 0.0.1
+Created by: Thiebaut Alexis 
+Date: 14/01/2019
+Description: - Agent of the customNavMesh, they can Follow a path stocked in their CustomNavPath
+             - They can check if their path can be compute before following a path
+             - They have an offset and a size that allow them to be on the navmesh
+
+///
+[UPDATES]
+Update n°: 001
+Updated by: Thiebaut Alexis 
+Date: 14/01/2019
+Description: Rebasing the agent on a previously created agent
+
+Update n°: 002
+Updated By Thiebaut Alexis
+Date: 21/01/2019
+Description: Try to add steering to the agent
+*/
 public class CustomNavMeshAgent : MonoBehaviour
 {
     #region Events
@@ -21,16 +41,16 @@ public class CustomNavMeshAgent : MonoBehaviour
     #region float
     [Header("Agent Settings")]
     [SerializeField, Range(.1f, 5)] float height = 1;
-    public float Height { get { return height/2;  } }
+    public float Height { get { return height / 2; } }
 
     [SerializeField, Range(.5f, 2)] float radius = 1;
-    public float Radius { get { return radius*.75f;  } }
+    public float Radius { get { return radius * .75f; } }
 
     [SerializeField, Range(-5, 5)] float offset = 0;
 
     [SerializeField, Range(.5f, 10)] float speed = 1;
 
-    [SerializeField, Range(1, 15)] float detectionRange = 5; 
+    [SerializeField, Range(1, 15)] float detectionRange = 5;
     #endregion
 
     #region Path
@@ -44,12 +64,13 @@ public class CustomNavMeshAgent : MonoBehaviour
     #endregion
 
     #region Vector3
-    public Vector3 OffsetSize { get { return new Vector3(radius, height, radius);  } }
-    public Vector3 OffsetPosition { get { return new Vector3(0, (height / 2) + offset, 0);  } }
+    public Vector3 OffsetSize { get { return new Vector3(radius, height, radius); } }
+    public Vector3 OffsetPosition { get { return new Vector3(0, (height / 2) + offset, 0); } }
 
     public Vector3 LastPosition { get { return currentPath.PathPoints.Last() + OffsetPosition; } }
     public Vector3 TargetedPosition { get { return currentPath.PathPoints.First() + OffsetPosition; } }
     #endregion 
+    [SerializeField] Transform target; 
     #endregion
 
     #region Methods
@@ -63,7 +84,7 @@ public class CustomNavMeshAgent : MonoBehaviour
         if (PathCalculator.CalculatePath(transform.position, _position, currentPath, CustomNavMeshManager.Instance.Triangles))
         {
             pathState = CalculatingState.Ready;
-            StartCoroutine(FollowPath()); 
+            StartCoroutine(FollowPath());
         }
     }
 
@@ -81,8 +102,8 @@ public class CustomNavMeshAgent : MonoBehaviour
             pathState = CalculatingState.Ready;
             StartCoroutine(FollowPath());
         }
-        else pathState = CalculatingState.Waiting; 
-        return _canBeReached; 
+        else pathState = CalculatingState.Waiting;
+        return _canBeReached;
     }
 
     /// <summary>
@@ -111,9 +132,9 @@ public class CustomNavMeshAgent : MonoBehaviour
 
             if (Vector3.Distance(transform.position, TargetedPosition) <= Height)
             {
-                currentPath.PathPoints.RemoveAt(0); 
+                currentPath.PathPoints.RemoveAt(0);
                 //_desiredVelocity = Vector3.Normalize(_pathToFollow.First() - transform.position) * speed;
-                continue; 
+                continue;
             }
 
             /*STEERING
@@ -127,13 +148,13 @@ public class CustomNavMeshAgent : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, transform.position + _steering + OffsetPosition , Time.deltaTime * _speed);
             //transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, _steering + OffsetPosition, Time.deltaTime * _speed);
             */
-            transform.position = Vector3.MoveTowards(transform.position, TargetedPosition, Time.deltaTime * speed); 
+            transform.position = Vector3.MoveTowards(transform.position, TargetedPosition, Time.deltaTime * speed);
             yield return new WaitForEndOfFrame();
         }
         yield return new WaitForEndOfFrame();
         pathState = CalculatingState.Waiting;
         isMoving = false;
-        OnDestinationReached?.Invoke(); 
+        OnDestinationReached?.Invoke();
     }
     #endregion
 
@@ -150,22 +171,22 @@ public class CustomNavMeshAgent : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position - OffsetPosition, .1f);
-        if (currentPath == null || currentPath.PathPoints == null || currentPath.PathPoints.Count == 0) return; 
+        if (currentPath == null || currentPath.PathPoints == null || currentPath.PathPoints.Count == 0) return;
         for (int i = 0; i < currentPath.PathPoints.Count; i++)
         {
-            Gizmos.DrawSphere(currentPath.PathPoints[i], .2f); 
+            Gizmos.DrawSphere(currentPath.PathPoints[i], .2f);
         }
         Gizmos.DrawLine(transform.position - OffsetPosition, currentPath.PathPoints.First());
-        for (int i = 0; i < currentPath.PathPoints.Count - 1 ; i++)
+        for (int i = 0; i < currentPath.PathPoints.Count - 1; i++)
         {
-            Gizmos.DrawLine(currentPath.PathPoints[i], currentPath.PathPoints[i + 1]); 
+            Gizmos.DrawLine(currentPath.PathPoints[i], currentPath.PathPoints[i + 1]);
         }
     }
     #endregion
 }
 public enum CalculatingState
 {
-    Waiting, 
-    Calculating, 
+    Waiting,
+    Calculating,
     Ready
 }

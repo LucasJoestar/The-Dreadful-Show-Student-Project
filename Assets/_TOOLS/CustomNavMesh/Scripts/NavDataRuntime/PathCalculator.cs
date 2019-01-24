@@ -6,16 +6,31 @@ using UnityEngine;
 
 /*
 [Script Header] PathCalculator Version 0.0.1
-Created by:
-Date: 
-Description:
+Created by: Thiebaut Alexis
+Date: 14/01/2019
+Description: 
+Script that search and compute the path using a* algorithm
+Simplify the a* path using funnel algorithm             
 
 ///
 [UPDATES]
-Update n°:
-Updated by:
-Date:
-Description:
+Update n°: 001
+Updated by: Thiebaut Alexis
+Date: 14/01/2019
+Description: 
+ - First creation of the a* algorithm
+ - Create all necessary methods to calcuulate a* path
+
+Update n°: 002
+Updated by: Thiebaut Alexis
+Date: 14/01/2019
+Description: Implementation of the funnel algorithm
+
+Update n°: 003
+Updated by: Thiebaut Alexis
+Date: 24/01/2019
+Description: Completing the funnel algorithm. Now the path is completly smoothed
+
 */
 
 public static class PathCalculator 
@@ -171,19 +186,6 @@ public static class PathCalculator
 
     #region float 
     /// <summary>
-    /// Return the heuristic cost between 2 points
-    /// Heuristic cost is the distance between 2 points
-    /// => Can add a multiplier to change the cost of the movement depending on the point 
-    /// </summary>
-    /// <param name="_a">First Point</param>
-    /// <param name="_b">Second Point</param>
-    /// <returns>Heuristic Cost between 2 points</returns>
-    static float HeuristicCost(Vertex _a, Vertex _b)
-    {
-        return Vector3.Distance(_a.Position, _b.Position);
-    }
-
-    /// <summary>
     /// Return the heuristic cost between 2 triangles
     /// Heuristic cost is the distance between 2 points
     /// => Can add a multiplier to change the cost of the movement depending on the point 
@@ -205,7 +207,7 @@ public static class PathCalculator
     /// </summary>
     /// <param name="_position">Position</param>
     /// <returns>Triangle where the position is contained</returns>
-    static public Triangle GetTriangleContainingPosition(Vector3 _position, List<Triangle> triangles)
+    static Triangle GetTriangleContainingPosition(Vector3 _position, List<Triangle> triangles)
     {
         RaycastHit _hit;
         if (Physics.Raycast(_position, Vector3.down, out _hit, 5))
@@ -220,24 +222,6 @@ public static class PathCalculator
             }
         }
         return triangles.OrderBy(t => Vector3.Distance(t.CenterPosition, _position)).FirstOrDefault();
-    }
-
-    /// <summary>
-    /// Get all triangles that contains the point P
-    /// </summary>
-    /// <param name="_point">Point P</param>
-    /// <returns>List of all linked triangles of the point P</returns>
-    static Triangle[] GetTrianglesFromPoint(Vertex _point, List<Triangle> triangles)
-    {
-        List<Triangle> _containingTriangles = new List<Triangle>();
-        foreach (Triangle triangle in triangles)
-        {
-            if (IsInTriangle(_point.Position, triangle))
-            {
-                _containingTriangles.Add(triangle);
-            }
-        }
-        return _containingTriangles.ToArray();
     }
 
     /// <summary>
@@ -400,26 +384,33 @@ public static class PathCalculator
         #endregion
 
         //Step through the channel
-        Vector3 _currentVertex;
-        Vector3 _nextVertex;
+        Vector3 _currentLeftVertex;
+        Vector3 _nextLeftVertex;
+        Vector3 _currentRightVertex;
+        Vector3 _nextRightVertex;
 
-        for (int i = 2; i < _leftVertices.Length || i < _rightVertices.Length ; i++) 
+        for (int i = 2; i < _absoluteTrianglePath.Count + 1 ; i++) 
         {
-            _currentVertex = _leftVertices[_leftIndex];
-            _nextVertex = _leftVertices[i];
+            _currentLeftVertex = _leftVertices[_leftIndex];
+            _nextLeftVertex = _leftVertices[i];
+
+            _currentRightVertex = _rightVertices[_rightIndex];
+            _nextRightVertex = _rightVertices[i];
+
             //If the new left vertex is different process
-            if (_nextVertex != _currentVertex && i > _leftIndex)
+            if (_nextLeftVertex != _currentLeftVertex && i > _leftIndex)
             {
                 //If the next point does not widden funnel, update 
-                if (AngleSign(_apex, _currentVertex, _nextVertex) >= 0)  
+                if (AngleSign(_apex, _currentLeftVertex, _nextLeftVertex) >= 0)  
                 {
                     //if next side cross the other side, place new apex
-                    if (AngleSign(_apex, _rightVertices[_rightIndex], _nextVertex) > 0) 
+                    if (AngleSign(_apex, _currentRightVertex, _nextLeftVertex) > 0) 
                     {
                         // Set the new Apex
-                        _apex = _rightVertices[_rightIndex];
+                        _apex = _currentRightVertex;
                         _simplifiedPath.Add(_apex);
-
+                        //Set i to the apex index to be at the good index on the next loop 
+                        i = _rightIndex; 
 
                         // Find new right vertex.
                         for (int j = _rightIndex; j < _rightVertices.Length; j++)
@@ -430,7 +421,6 @@ public static class PathCalculator
                                 break;
                             }
                         }
-                        i = _rightIndex;
                     }
                     // else skip to the next vertex
                     else
@@ -442,22 +432,21 @@ public static class PathCalculator
             }
             //else skip
 
-            _currentVertex = _rightVertices[_rightIndex];
-            _nextVertex = _rightVertices[i];
 
             // If the right vertex is different process
-            if (_nextVertex != _currentVertex && i > _rightIndex)
+            if (_nextRightVertex != _currentRightVertex && i > _rightIndex)
             {
                 //If the next point does not widden funnel, update 
-                if (AngleSign(_apex, _currentVertex, _nextVertex) <= 0)
+                if (AngleSign(_apex, _currentRightVertex, _nextRightVertex) <= 0)
                 {
                     //if next side cross the other side, place new apex
-                    if (AngleSign(_apex, _leftVertices[_leftIndex], _nextVertex) < 0)
+                    if (AngleSign(_apex, _currentLeftVertex, _nextRightVertex) < 0)
                     {
                         //Set the new Apex
-                        _apex = _leftVertices[_leftIndex];
+                        _apex = _currentLeftVertex;
                         _simplifiedPath.Add(_apex);
-
+                        //Set i to the apex index to be at the good index on the next loop 
+                        i = _leftIndex;
 
                         // Find next Left Index.
                         for (int j = _leftIndex; j < _leftVertices.Length; j++)
