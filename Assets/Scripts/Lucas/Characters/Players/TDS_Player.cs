@@ -22,6 +22,15 @@ public class TDS_Player : TDS_Character
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[24 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Added the attacks field & property.
+     * 
+     *  -----------------------------------
+     * 
      *  Date :			[22 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -158,6 +167,19 @@ public class TDS_Player : TDS_Character
     #endregion
 
     #region Variables
+    /// <summary>Backing field for <see cref="Attacks"/></summary>
+    [SerializeField] protected List<TDS_Attack> attacks = new List<TDS_Attack>();
+
+    /// <summary>
+    /// All attacks this player can perform.
+    /// Contains informations about their animation, damages, effect and others.
+    /// </summary>
+    public List<TDS_Attack> Attacks
+    {
+        get { return attacks; }
+        protected set { attacks = value; }
+    }
+
     /// <summary>
     /// Is the player touching the ground ?
     /// If true, jump is enabled.

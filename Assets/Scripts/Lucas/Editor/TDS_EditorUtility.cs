@@ -16,6 +16,16 @@ public sealed class TDS_EditorUtility
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[24 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Added a button method overload.
+     *	    - Changed the button method.
+	 *
+	 *	-----------------------------------
+     *	
 	 *	Date :			[23 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -93,7 +103,7 @@ public sealed class TDS_EditorUtility
 
     #region GUI
     /// <summary>
-    /// Makes a button taking all inspector width.
+    /// Makes a custom button.
     /// </summary>
     /// <param name="_label">Label to dispaly.</param>
     /// <param name="_tooltip">Tooltip displayed when mouse oveR.</param>
@@ -101,9 +111,26 @@ public sealed class TDS_EditorUtility
     /// <returns>Returns true if the user clicked on it, false otherwise.</returns>
     public static bool Button(string _label, string _tooltip, GUIStyle _guiStyle)
     {
-        GUIContent _labelContent = new GUIContent(_label, _tooltip);
-        if (GUI.Button(GUILayoutUtility.GetRect(_labelContent, _guiStyle), _labelContent, _guiStyle))
+        if (GUILayout.Button(new GUIContent(_label, _tooltip), _guiStyle))
         {
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Makes a custom button.
+    /// </summary>
+    /// <param name="_label">Label to dispaly.</param>
+    /// <param name="_tooltip">Tooltip displayed when mouse oveR.</param>
+    /// <param name="_guiStyle">GUIStyle to use to display the label.</param>
+    /// <param name="_callback">Method to invoke when clicking on the button.</param>
+    /// <returns>Returns true if the user clicked on it, false otherwise.</returns>
+    public static bool Button(string _label, string _tooltip, GUIStyle _guiStyle, Action _callback)
+    {
+        if (GUILayout.Button(new GUIContent(_label, _tooltip), _guiStyle))
+        {
+            _callback.Invoke();
             return true;
         }
         return false;
@@ -214,14 +241,12 @@ public sealed class TDS_EditorUtility
     /// <param name="_label">Label to display on the bar.</param>
     public static void ProgressBar(int _height, float _percent, string _label)
     {
-        GUILayout.Space(5);
         EditorGUILayout.BeginHorizontal();
 
         GUILayout.Space(labelStyle.padding.left);
         EditorGUI.ProgressBar(GUILayoutUtility.GetRect(_height, _height), _percent, _label);
 
         EditorGUILayout.EndHorizontal();
-        GUILayout.Space(10);
     }
 
     /// <summary>

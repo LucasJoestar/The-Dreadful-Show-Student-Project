@@ -19,6 +19,16 @@ public class TDS_Character : TDS_Damageable
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[24 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Modified the debugs for component missing in Awake.
+     *	    - Removed the attacks field & property.
+	 *
+	 *	-----------------------------------
+     * 
      *  Date :			[22 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -91,21 +101,8 @@ public class TDS_Character : TDS_Damageable
     #endregion
 
     #region Variables
-    /// <summary>Backing field for <see cref="Attacks"/></summary>
-    [SerializeField] protected List<TDS_Attack> attacks = new List<TDS_Attack>();
-
     /// <summary>
-    /// All attacks this character can perform.
-    /// Contains informations about their animation, damages, effect and others.
-    /// </summary>
-    public List<TDS_Attack> Attacks
-    {
-        get { return attacks; }
-        protected set { attacks = value; }
-    }
-
-    /// <summary>
-    /// Can this character attack or not ?
+    /// Is this character currently attacking, or not ?
     /// </summary>
     public bool IsAttacking { get; protected set; } = false;
 
@@ -293,12 +290,12 @@ public class TDS_Character : TDS_Damageable
         if (!hitBox)
         {
             hitBox = GetComponentInChildren<TDS_HitBox>();
-            if (!hitBox) Debug.LogWarning("The Character " + name + " HitBox is missing !");
+            if (!hitBox) Debug.LogWarning("The HitBox of \"" + name + "\" for script TDS_Character is missing !");
         }
         if (!rigidbody)
         {
             rigidbody = GetComponent<Rigidbody>();
-            if (!rigidbody) Debug.LogWarning("The Character " + name + " Rigidbody is missing !");
+            if (!rigidbody) Debug.LogWarning("The Rigidbody of \"" + name + "\" for script TDS_Character is missing !");
         }
     }
 

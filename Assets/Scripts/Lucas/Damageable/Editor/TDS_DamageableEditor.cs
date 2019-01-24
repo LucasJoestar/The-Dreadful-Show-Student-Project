@@ -20,6 +20,20 @@ public class TDS_DamageableEditor : Editor
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     * 
+     *	Date :			[24 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    Second, pretty complete, version of the editor, and it's cool.
+     *	    
+     *	    - Added the damageValue & healValue fields.
+     *	    - Added the DrawLifeButtons method.
+     *	    - Renamed the DrawVariables method in DrawLifeSettings.
+	 *
+	 *	-----------------------------------
+     *	
      *	Date :			[23 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -83,14 +97,26 @@ public class TDS_DamageableEditor : Editor
     protected bool areDamagComponentsUnfolded = true;
 
     /// <summary>
-    /// Are the variables of the Damageable class unfolded for editor ?
+    /// Are the life settings of the Damageable class unfolded for editor ?
     /// </summary>
-    protected bool areDamagVariableUnfolded = true;
+    protected bool areDamagLifeSettingsUnfolded = true;
 
     /// <summary>
     /// Indicates if the editor for the Damageable class is unfolded or not.
     /// </summary>
     protected bool isDamageableUnfolded = true;
+    #endregion
+
+    #region Editor Variables
+    /// <summary>
+    /// Value used to damage the object
+    /// </summary>
+    private int damageValue = 0;
+
+    /// <summary>
+    /// Value used to heal the object
+    /// </summary>
+    private int healValue = 0;
     #endregion
 
     #region Target Scripts Infos
@@ -167,12 +193,12 @@ public class TDS_DamageableEditor : Editor
             EditorGUILayout.BeginVertical("Box");
 
             // Button to show or not the Damageable class settings
-            if (TDS_EditorUtility.Button("Variables", "Wrap / unwrap Variables settings", TDS_EditorUtility.HeaderStyle)) areDamagVariableUnfolded = !areDamagVariableUnfolded;
+            if (TDS_EditorUtility.Button("Life", "Wrap / unwrap life settings", TDS_EditorUtility.HeaderStyle)) areDamagLifeSettingsUnfolded = !areDamagLifeSettingsUnfolded;
 
-            // If unfolded, draws the custom editor for the Components & References
-            if (areDamagVariableUnfolded)
+            // If unfolded, draws the custom editor for the life sttings
+            if (areDamagLifeSettingsUnfolded)
             {
-                DrawVariables();
+                DrawLifeSettings();
             }
 
             EditorGUILayout.EndVertical();
@@ -185,9 +211,71 @@ public class TDS_DamageableEditor : Editor
     }
 
     /// <summary>
-    /// Draws the editor for Damageable class variables
+    /// Draws buttons allowing to heal or damage the object
     /// </summary>
-    private void DrawVariables()
+    private void DrawLifeButtons()
+    {
+        // Get the colors & option used for the buttons width
+        Color _originalColor = GUI.color;
+        Color _originalBackgroundcolor = GUI.backgroundColor;
+        Color _newBackgroundColor = new Color(.75f, .75f, .75f);
+        GUILayoutOption _buttonWidth = GUILayout.Width(Screen.width / 2.5f);
+        GUILayoutOption _fieldWidth = GUILayout.Width(Screen.width / 10f);
+
+        // Draws the heal & damage buttons, with two int fields for the value to use
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(TDS_EditorUtility.LabelStyle.padding.left);
+
+        // Heal button
+        GUI.backgroundColor = _newBackgroundColor;
+        EditorGUILayout.BeginVertical("Box", _buttonWidth);
+        GUI.backgroundColor = _originalColor;
+        GUI.color = new Color(.25f, 1, .25f);
+        if (GUILayout.Button(new GUIContent("Heal", "Heal this object using the below value"), EditorStyles.miniButton))
+        {
+            damageables.ForEach(d => d.Heal(healValue));
+        }
+        GUI.color = _originalColor;
+
+        // Int field to edit the value used to heal the object
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+
+        GUI.backgroundColor = _originalColor;
+        healValue = EditorGUILayout.IntField(healValue, _fieldWidth);
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.EndVertical();
+
+        GUILayout.FlexibleSpace();
+
+        // Damage buttpn
+        GUI.backgroundColor = _newBackgroundColor;
+        EditorGUILayout.BeginVertical("Box", _buttonWidth);
+        GUI.backgroundColor = _originalColor;
+        GUI.color = new Color(1, .25f, .25f);
+        if (GUILayout.Button(new GUIContent("Damage", "Damage this object using the below value"), EditorStyles.miniButton))
+        {
+            damageables.ForEach(d => d.TakeDamage(damageValue));
+        }
+        GUI.color = _originalColor;
+
+        // Int field to edit the value used to damage the object
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+
+        GUI.backgroundColor = _originalColor;
+        damageValue = EditorGUILayout.IntField(damageValue, _fieldWidth);
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.EndHorizontal();
+        GUILayout.Space(10);
+    }
+
+    /// <summary>
+    /// Draws the editor for Damageable class life settings
+    /// </summary>
+    private void DrawLifeSettings()
     {
         // If the serializedProperty is changed, triggers the property of the field
         // After the property has been used, update the object so that serializedProperties can be refresh
@@ -199,8 +287,15 @@ public class TDS_DamageableEditor : Editor
 
         if (!healthCurrent.hasMultipleDifferentValues)
         {
+            GUILayout.Space(5);
+
             TDS_EditorUtility.ProgressBar(25, (float)healthCurrent.intValue / healthMax.intValue, "Health");
+
+            GUILayout.Space(5);
         }
+
+        // If the application is playing, draws two button next to each other allowing the heal & damage the object
+        if (EditorApplication.isPlaying) DrawLifeButtons();
 
         if (TDS_EditorUtility.IntField("Max Health", "Maximum health of the object ; its health cannot exceed this value", healthMax))
         {
