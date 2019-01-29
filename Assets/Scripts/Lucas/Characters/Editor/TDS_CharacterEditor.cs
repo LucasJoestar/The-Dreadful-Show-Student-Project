@@ -2,10 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
-[CustomEditor(typeof(TDS_Character), true), CanEditMultipleObjects]
+[CustomEditor(typeof(TDS_Character), false), CanEditMultipleObjects]
 public class TDS_CharacterEditor : TDS_DamageableEditor 
 {
     /* TDS_CharacterEditor :
@@ -22,14 +22,24 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[29 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Added the AreCharaComponentsUnfolded, AreCharaSettingsUnfolded & IsCharaUnfolded properties.
+	 *
+	 *	-----------------------------------
+     * 
 	 *	Date :			[24 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
 	 *	Changes :
 	 *
-	 *	Creation of the TDS_Character editor class.
+	 *	Creation of the TDS_CharacterEditor class.
      *	
-     *	    - Added 
+     *	    - Added the hitBox, healthBar, rigidbody, throwable, isFacingRight, isPacific, isParalyzed, speedAccelerationTime, speedCoef, speedCurrent, speedInitial, speedMax, areCharaComponentsUnfolded, areCharaSettingsUnfolded, isCharaUnfolded, isCharaMultiEditing & characters fields.
+     *	    - Added the DrawCharacterEditor, DrawComponentsAndReferences & DrawSettings methods.
 	 *
 	 *	-----------------------------------
 	*/
@@ -81,20 +91,59 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
     #endregion
 
     #region Foldouts
+    /// <summary>Backing field for <see cref="AreCharaComponentsUnfolded"/></summary>
+    private bool areCharaComponentsUnfolded = false;
+
     /// <summary>
     /// Are the components of the Character class unfolded for editor ?
     /// </summary>
-    private static bool areCharaComponentsUnfolded = false;
+    public bool AreCharaComponentsUnfolded
+    {
+        get { return areCharaComponentsUnfolded; }
+        set
+        {
+            areCharaComponentsUnfolded = value;
+
+            // Saves this value
+            EditorPrefs.SetBool("areCharaComponentsUnfolded", value);
+        }
+    }
+
+    /// <summary>Backing field for <see cref="AreCharaSettingsUnfolded"/></summary>
+    private bool areCharaSettingsUnfolded = false;
 
     /// <summary>
     /// Are the settings of the Character class unfolded for the editor ?
     /// </summary>
-    private static bool areCharaSettingsUnfolded = false;
+    public bool AreCharaSettingsUnfolded
+    {
+        get { return areCharaSettingsUnfolded; }
+        set
+        {
+            areCharaSettingsUnfolded = value;
+
+            // Saves this value
+            EditorPrefs.SetBool("areCharaSettingsUnfolded", value);
+        }
+    }
+
+    /// <summary>Backing field for <see cref="IsCharaUnfolded"/></summary>
+    private bool isCharaUnfolded = false;
 
     /// <summary>
     /// Indicates if the editor for the Character class is unfolded or not.
     /// </summary>
-    private static bool isCharaUnfolded = false;
+    public bool IsCharaUnfolded
+    {
+        get { return isCharaUnfolded; }
+        set
+        {
+            isCharaUnfolded = value;
+
+            // Saves this value
+            EditorPrefs.SetBool("isCharaUnfolded", value);
+        }
+    }
     #endregion
 
     #region Target Scripts Infos
@@ -127,7 +176,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
         EditorGUILayout.BeginVertical("HelpBox");
 
         // Button to show or not the Character class settings
-        if (TDS_EditorUtility.Button("Character", "Wrap / unwrap Character class settings", TDS_EditorUtility.HeaderStyle)) isCharaUnfolded = !isCharaUnfolded;
+        if (TDS_EditorUtility.Button("Character", "Wrap / unwrap Character class settings", TDS_EditorUtility.HeaderStyle)) IsCharaUnfolded = !isCharaUnfolded;
 
         // If unfolded, draws the custom editor for the Character class
         if (isCharaUnfolded)
@@ -142,7 +191,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
             EditorGUILayout.BeginVertical("Box");
 
             // Button to show or not the Character class components
-            if (TDS_EditorUtility.Button("Components & References", "Wrap / unwrap Components & References settings", TDS_EditorUtility.HeaderStyle)) areCharaComponentsUnfolded = !areCharaComponentsUnfolded;
+            if (TDS_EditorUtility.Button("Components & References", "Wrap / unwrap Components & References settings", TDS_EditorUtility.HeaderStyle)) AreCharaComponentsUnfolded = !areCharaComponentsUnfolded;
 
             // If unfolded, draws the custom editor for the Components & References
             if (areCharaComponentsUnfolded)
@@ -155,7 +204,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
             EditorGUILayout.BeginVertical("Box");
 
             // Button to show or not the Character class settings
-            if (TDS_EditorUtility.Button("Settings", "Wrap / unwrap settings", TDS_EditorUtility.HeaderStyle)) areCharaSettingsUnfolded = !areCharaSettingsUnfolded;
+            if (TDS_EditorUtility.Button("Settings", "Wrap / unwrap settings", TDS_EditorUtility.HeaderStyle)) AreCharaSettingsUnfolded = !areCharaSettingsUnfolded;
 
             // If unfolded, draws the custom editor for the sttings
             if (areCharaSettingsUnfolded)
@@ -264,6 +313,8 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
             characters.ForEach(c => c.SpeedCoef = speedCoef.floatValue);
             serializedObject.Update();
         }
+
+        GUILayout.Space(3);
     }
     #endregion
 
@@ -292,6 +343,11 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
         speedCurrent = serializedObject.FindProperty("speedCurrent");
         speedInitial = serializedObject.FindProperty("speedInitial");
         speedMax = serializedObject.FindProperty("speedMax");
+
+        // Loads the editor folded a unfolded values of this class
+        isCharaUnfolded = EditorPrefs.GetBool("isCharaUnfolded", isCharaUnfolded);
+        areCharaComponentsUnfolded = EditorPrefs.GetBool("areCharaComponentsUnfolded", areCharaComponentsUnfolded);
+        areCharaSettingsUnfolded = EditorPrefs.GetBool("areCharaSettingsUnfolded", areCharaSettingsUnfolded);
     }
 
     // Implement this function to make a custom inspector

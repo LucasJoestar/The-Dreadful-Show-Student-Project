@@ -22,6 +22,15 @@ public class TDS_Player : TDS_Character
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[29 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Added the isGrounded, isJumping & playerType fields ; and the JumpMaximumTime property.
+     * 
+     *  -----------------------------------
+     * 
      *  Date :			[24 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -92,7 +101,7 @@ public class TDS_Player : TDS_Character
     public TDS_Summoner Summoner = null;
 
     /// <summary>
-    /// <see cref="TDS_Trigger"/> used to detect when possible interactions with the environment are available.
+    /// <see cref="TDS_Trigger"/> used to detect when possible interactions with the environment are availables.
     /// </summary>
     [SerializeField] protected TDS_Trigger interactionsDetector = null;
 
@@ -180,16 +189,36 @@ public class TDS_Player : TDS_Character
         protected set { attacks = value; }
     }
 
+    /// <summary>Backing field for <see cref="IsGrounded"/></summary>
+    [SerializeField] private bool isGrounded = true;
+
     /// <summary>
     /// Is the player touching the ground ?
     /// If true, jump is enabled.
     /// </summary>
-    public bool IsGrounded { get; protected set; } = true;
+    public bool IsGrounded
+    {
+        get { return isGrounded; }
+        protected set
+        {
+            isGrounded = value;
+        }
+    }
+
+    /// <summary>Backing field for <see cref="IsJumping"/></summary>
+    [SerializeField] private bool isJumping = false;
 
     /// <summary>
     /// Is the player actually performing a jump ?
     /// </summary>
-    public bool IsJumping { get; protected set; } = false;
+    public bool IsJumping
+    {
+        get { return isJumping; }
+        protected set
+        {
+            isJumping = value;
+        }
+    }
 
     /// <summary>Backing field for <see cref="ComboCurrent"/></summary>
     [SerializeField] protected List<bool> comboCurrent = new List<bool>();
@@ -226,6 +255,7 @@ public class TDS_Player : TDS_Character
         set
         {
             if (value < 1) value = 1;
+            comboMax = value;
         }
     }
 
@@ -241,6 +271,7 @@ public class TDS_Player : TDS_Character
         set
         {
             if (value < 0) value = 0;
+            comboResetTime = value;
         }
     }
 
@@ -249,20 +280,41 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public float JumpForce = 1;
 
+    /// <summary>Backing field for <see cref="JumpMaximumTime"/></summary>
+    [SerializeField] private float jumpMaximumTime = 1.5f;
+
     /// <summary>
     /// Maximum time length of a jump.
     /// </summary>
-    public float JumpMaximumTime = 1.5f;
+    public float JumpMaximumTime
+    {
+        get { return jumpMaximumTime; }
+        set
+        {
+            if (value < 0) value = 0;
+            jumpMaximumTime = value;
+        }
+    }
 
     /// <summary>
     /// LayerMask used to detect what is an obstacle for the player movements.
     /// </summary>
     public LayerMask WhatIsObstacle = new LayerMask();
 
+    /// <summary>Backing field for <see cref="PlayerType"/></summary>
+    [SerializeField] private PlayerType playerType = PlayerType.Unknown;
+
     /// <summary>
     /// What character type this player is ?
     /// </summary>
-    public PlayerType PlayerType { get; protected set; } = PlayerType.Unknown;
+    public PlayerType PlayerType
+    {
+        get { return playerType; }
+        protected set
+        {
+            playerType = value;
+        }
+    }
     #endregion
 
     #region Debug & Script memory Variables
@@ -554,6 +606,8 @@ public class TDS_Player : TDS_Character
         // Creates a float to use as timer
         float _timer = 0;
 
+        isJumping = true;
+
         // Adds a base vertical force to the rigidbody to expels the player in the air
         rigidbody.AddForce(Vector3.up * JumpForce);
 
@@ -564,6 +618,8 @@ public class TDS_Player : TDS_Character
 
             _timer += Time.deltaTime;
         }
+
+        isJumping = false;
     }
 
     /// <summary>
