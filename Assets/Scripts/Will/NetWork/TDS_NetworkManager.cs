@@ -50,6 +50,9 @@ public class TDS_NetworkManager : PunBehaviour
     #region Player     
     //Player type in local
     PlayerType localPlayer = PlayerType.BeardLady;
+    bool isHost = false;
+    public bool IsHost { get { return isHost; } }
+
     //Player name in local
     //[SerializeField]
     //string playerName = "Player";
@@ -74,6 +77,36 @@ public class TDS_NetworkManager : PunBehaviour
         };
         PhotonNetwork.JoinOrCreateRoom("TDS_EPIIC",_options,null);
     }
+    #region PhotonMethods
+    /// <summary>
+    /// When the player is connected to master, he joins the room
+    /// </summary>
+    public override void OnConnectedToMaster()
+    {
+        base.OnConnectedToMaster();
+        JoinRoom();
+    }
+    /// <summary>
+    /// When the player create a room, he's the host of the game
+    /// </summary>
+    public override void OnCreatedRoom()
+    {
+        base.OnCreatedRoom();
+        isHost = true;
+    }
+    /// <summary>
+    /// When the player joins the room, instantiate a prefab for the player and set its name with the player name
+    /// </summary>
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
+
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("SendInGamePlayers", PhotonTargets.MasterClient);
+        }
+    }
+    #endregion
     #endregion
 
     #region Unity Methods
@@ -89,6 +122,7 @@ public class TDS_NetworkManager : PunBehaviour
     void Start ()
     {
         InitConnection();
+        if(!photonView)
         photonView = GetComponent<PhotonView>();
     }	
 	void Update ()

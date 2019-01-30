@@ -37,12 +37,7 @@ public class TDS_RPCManager : MonoBehaviour
     #endregion
 
     #region Methods
-    #region Original Methods
-    [PunRPC]
-    public void AddPlayer(int _playerCharacter)
-    {
-
-    }
+    #region Original Methods    
     #endregion
 
     #region Unity Methods
@@ -50,6 +45,11 @@ public class TDS_RPCManager : MonoBehaviour
     {      
         if (!Instance) Instance = this;        
     }
-	#endregion
-	#endregion
+    void Start()
+    {
+        if (!RPCPhotonView)
+            RPCPhotonView = GetComponent<PhotonView>();
+    }
+    #endregion
+    #endregion
 }
