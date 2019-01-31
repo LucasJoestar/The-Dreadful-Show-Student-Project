@@ -78,7 +78,9 @@ public class TDS_Enemy : TDS_Character
     /// <summary>
     /// The target of the enemy
     /// </summary>
-    protected TDS_Player playerTarget = null; 
+    protected TDS_Player playerTarget = null;
+
+    [SerializeField] protected TDS_EnemyAttack[] attacks; 
 
     /* THINGS TO ADD IN THE FUTURE
      * --> Add a spawner Owner 
@@ -98,6 +100,8 @@ public class TDS_Enemy : TDS_Character
     #region Methods
 
     #region Original Methods
+
+
 
     #region IEnumerator
     /// <summary>
@@ -146,13 +150,14 @@ public class TDS_Enemy : TDS_Character
                     enemyState = EnemyState.Searching;
                     goto case EnemyState.Searching; 
                 }
-                _distance = _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+                _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
                 yield return new WaitForEndOfFrame();
-                //If there is an attack that can be cast, go to attack case
-                //Check if the agent can grab an object, 
-                //if so goto case GrabObject if it can be grab 
-                // if it can't be grabbed directly, getting in range
-                if (/*attacks.Any(a => _distance < a.range)*/ _distance < 2)
+                /* If there is an attack that can be cast, go to attack case
+                 * Check if the agent can grab an object, 
+                 * if so goto case GrabObject if it can be grab 
+                 * if it can't be grabbed directly, getting in range
+                */
+                if (attacks.Any(a => _distance < a.PredictedRange))
                 {
                     enemyState = EnemyState.Attacking;
                     goto case EnemyState.Attacking; 
@@ -193,6 +198,7 @@ public class TDS_Enemy : TDS_Character
             #region Getting In Range
             case EnemyState.GettingInRange:
                 // Wait some time before calling again Behaviour(); 
+                // Still has to increase speed of the agent
                 yield return new WaitForSeconds(.1f);
                 _distance = Vector3.Distance(agent.LastPosition, playerTarget.transform.position);
                 if (_distance > .5f)
@@ -200,22 +206,42 @@ public class TDS_Enemy : TDS_Character
                     enemyState = EnemyState.ComputingPath; 
                     goto case EnemyState.ComputingPath;
                 }
+                /*
+                _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+                if (attacks.Any(a => _distance < a.PredictedRange))
+                {
+                    enemyState = EnemyState.Attacking;
+                    goto case EnemyState.Attacking;
+                }*/
                 break;
             #endregion
             #region Attacking
             case EnemyState.Attacking:
                 //Throw attack
                 //Select the best attack to cast
-                if(Throwable)
+                if (Throwable)
                 {
                     enemyState = EnemyState.ThrowingObject;
                     goto case EnemyState.ThrowingObject;
                 }
-                Debug.Log("Attack");
-                while(IsAttacking)
+                else
                 {
-                    Debug.Log("Wait end of attack"); 
-                    yield return new WaitForEndOfFrame();
+                    _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+                    TDS_EnemyAttack _attack =  GetAttack(_distance);
+                    if(_attack == null)
+                    {
+                        enemyState = EnemyState.MakingDecision;
+                        goto case EnemyState.MakingDecision;
+                    }
+                    Debug.Log(_attack.Name);
+                    //Cast Attack
+                    IsAttacking = true;
+                    while (IsAttacking)
+                    {
+                        // yield return new WaitForEndOfFrame(); 
+                        yield return new WaitForSeconds(5);
+                        IsAttacking = false;
+                    }
                 }
                 enemyState = EnemyState.MakingDecision;
                 goto case EnemyState.MakingDecision;
@@ -238,6 +264,35 @@ public class TDS_Enemy : TDS_Character
         yield return new WaitForEndOfFrame();
         StartCoroutine(Behaviour());
         yield break; 
+    }
+    #endregion
+
+    #region TDS_EnemyAttack()
+    /// <summary>
+    /// Select the attack to cast
+    /// If there is no attack return null
+    /// Selection is based on the Range and on the Probability of an attack
+    /// </summary>
+    /// <param name="_distance">Distance between the agent and its target</param>
+    /// <returns>Attack to cast</returns>
+    protected TDS_EnemyAttack GetAttack(float _distance)
+    {
+        //If the enemy has no attack, return null
+        if (attacks == null || attacks.Length == 0) return null;
+        // Get all attacks that can hit the target
+        TDS_EnemyAttack[] _availableAttacks = attacks.Where(a => a.IsDistanceAttack || a.PredictedRange > _distance).ToArray();
+        // If there is no attack in Range, return null
+        if (_availableAttacks.Length == 0) return null;
+        // Set a random to compare with the probabilities of the attackes
+        float _random = UnityEngine.Random.Range(0, _availableAttacks.Max(a => a.Probability));
+        // If a probability is less than the random, this attack can be selected
+        _availableAttacks = _availableAttacks.Where(a => a.Probability >= _random).ToArray();
+        Debug.Log(_availableAttacks.Length); 
+        // If there is no attack, return null
+        if (_availableAttacks.Length == 0) return null;
+        // Get a random Index to cast a random attack
+        int _randomIndex = UnityEngine.Random.Range(0, _availableAttacks.Length);   
+        return _availableAttacks[_randomIndex]; 
     }
     #endregion
 
