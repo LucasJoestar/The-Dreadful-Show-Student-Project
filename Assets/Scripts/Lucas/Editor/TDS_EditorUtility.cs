@@ -16,6 +16,15 @@ public sealed class TDS_EditorUtility
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[04 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Added the Vector3Field method.
+     * 
+     *  -----------------------------------
+     * 
      *  Date :			[29 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -470,6 +479,46 @@ public sealed class TDS_EditorUtility
         if (_hasChanged && _autoSetProperty)
         {
             _serializedProperty.boolValue = _newValue;
+        }
+
+        return _hasChanged;
+    }
+
+    /// <summary>
+    /// Draws a custom vector3 field.
+    /// </summary>
+    /// <param name="_label">Label to display.</param>
+    /// <param name="_tooltip">Tooltip displayed when mouse over.</param>
+    /// <param name="_serializedProperty">SerializedProperty to use.</param>
+    /// <param name="_type">Type of the object that can be assigned.</param>
+    /// <returns>Returns true if the value(s) has changed, false otherwise.</returns>
+    public static bool Vector3Field(string _label, string _tooltip, SerializedProperty _serializedProperty)
+    {
+        // Get the original width of the labels for EditorGUI, and reduce it so that it will no longer take so much space
+        float _originalWidth = EditorGUIUtility.labelWidth;
+        EditorGUIUtility.labelWidth -= labelStyle.padding.left;
+
+        EditorGUILayout.BeginHorizontal();
+
+        // Draws a label, and the int field next to it
+        EditorGUILayout.LabelField(new GUIContent(_label, _tooltip), labelStyle, GUILayout.MaxWidth(EditorGUIUtility.labelWidth));
+
+        EditorGUI.showMixedValue = _serializedProperty.hasMultipleDifferentValues;
+
+        EditorGUI.BeginChangeCheck();
+        Vector3 _newValue = EditorGUILayout.Vector3Field(string.Empty, _serializedProperty.vector3Value, GUILayout.MinWidth(EditorGUIUtility.fieldWidth));
+        bool _hasChanged = EditorGUI.EndChangeCheck();
+
+        EditorGUI.showMixedValue = false;
+
+        EditorGUILayout.EndHorizontal();
+
+        // Restore the original widths for EditorGUI labels
+        EditorGUIUtility.labelWidth = _originalWidth;
+
+        if (_hasChanged)
+        {
+            _serializedProperty.vector3Value = _newValue;
         }
 
         return _hasChanged;

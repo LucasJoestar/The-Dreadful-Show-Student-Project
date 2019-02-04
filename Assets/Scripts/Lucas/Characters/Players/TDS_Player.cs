@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -22,6 +21,16 @@ public class TDS_Player : TDS_Character
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[04 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Added the cancelThrowButton & aimCoroutine fields & throwAimingPoint ; and the isAiming & aimAngle fields & properties.
+     *	    - Added the Aim, CancelThrow, PrepareThrow & UseObject methods.
+     * 
+     *  -----------------------------------
+     * 
      *  Date :			[29 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -118,6 +127,11 @@ public class TDS_Player : TDS_Character
     public string CatchButton = "Catch";
 
     /// <summary>
+    /// Name of the button used to cancel a throw.
+    /// </summary>
+    public string CancelThrowButton = "Cancel Throw";
+
+    /// <summary>
     /// Name of the button used to dodge.
     /// </summary>
     public string DodgeButton = "Dodge";
@@ -170,6 +184,11 @@ public class TDS_Player : TDS_Character
 
     #region Coroutines
     /// <summary>
+    /// Reference of the current coroutine of the aim method.
+    /// </summary>
+    private Coroutine aimCoroutine = null;
+
+    /// <summary>
     /// References the current coroutine of the jump method. Null if none is actually running.
     /// </summary>
     protected Coroutine jumpCoroutine = null;
@@ -189,6 +208,21 @@ public class TDS_Player : TDS_Character
         protected set { attacks = value; }
     }
 
+    /// <summary>Backing field for <see cref="IsAiming"/>.</summary>
+    [SerializeField] private bool isAiming = false;
+
+    /// <summary>
+    /// Indicates if the player is currently aiming or not.
+    /// </summary>
+    public bool IsAiming
+    {
+        get { return isAiming; }
+        protected set
+        {
+            isAiming = value;
+        }
+    }
+
     /// <summary>Backing field for <see cref="IsGrounded"/></summary>
     [SerializeField] private bool isGrounded = true;
 
@@ -205,7 +239,7 @@ public class TDS_Player : TDS_Character
         }
     }
 
-    /// <summary>Backing field for <see cref="IsJumping"/></summary>
+    /// <summary>Backing field for <see cref="IsJumping"/>.</summary>
     [SerializeField] private bool isJumping = false;
 
     /// <summary>
@@ -220,7 +254,7 @@ public class TDS_Player : TDS_Character
         }
     }
 
-    /// <summary>Backing field for <see cref="ComboCurrent"/></summary>
+    /// <summary>Backing field for <see cref="ComboCurrent"/>.</summary>
     [SerializeField] protected List<bool> comboCurrent = new List<bool>();
 
     /// <summary>
@@ -242,7 +276,23 @@ public class TDS_Player : TDS_Character
         }
     }
 
-    /// <summary>Backing field for <see cref="ComboMax"/></summary>
+    /// <summary>Backing field for <see cref="AimAngle"/>.</summary>
+    [SerializeField] private int aimAngle = 45;
+
+    /// <summary>
+    /// Angle used to aim and throw objects.
+    /// </summary>
+    public int AimAngle
+    {
+        get { return aimAngle; }
+        set
+        {
+            value = Mathf.Clamp(value, 0, 360);
+            aimAngle = value;
+        }
+    }
+
+    /// <summary>Backing field for <see cref="ComboMax"/>.</summary>
     [SerializeField] protected int comboMax = 3;
 
     /// <summary>
@@ -259,7 +309,7 @@ public class TDS_Player : TDS_Character
         }
     }
 
-    /// <summary>Backing field for <see cref="ComboResetTime"/></summary>
+    /// <summary>Backing field for <see cref="ComboResetTime"/>.</summary>
     [SerializeField] protected float comboResetTime = 2;
 
     /// <summary>
@@ -315,6 +365,11 @@ public class TDS_Player : TDS_Character
             playerType = value;
         }
     }
+
+    /// <summary>
+    /// Point where the character is aiming to throw (in local space).
+    /// </summary>
+    [SerializeField] protected Vector3 throwAimingPoint = Vector3.zero;
     #endregion
 
     #region Debug & Script memory Variables
@@ -332,6 +387,16 @@ public class TDS_Player : TDS_Character
 
     #region Attacks & Actions
     /// <summary>
+    /// Makes the character aim for a throw. When releasing the thorw button, throw the selected object.
+    /// If the cancel throw button is pressed, cancel the throw, as it name indicate it.
+    /// </summary>
+    /// <returns></returns>
+    protected virtual IEnumerator Aim()
+    {
+        yield break;
+    }
+
+    /// <summary>
     /// Makes the player perform and light or heavy attack.
     /// </summary>
     /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
@@ -340,6 +405,19 @@ public class TDS_Player : TDS_Character
         // Attack !
 
         IsAttacking = true;
+    }
+
+    /// <summary>
+    /// Cancels the preparing throw, if preparing one.
+    /// </summary>
+    /// <returns>Returns true if canceled the throw, false if there was nothing to cancel.</returns>
+    public virtual bool CancelThrow()
+    {
+        if (!isAiming && aimCoroutine == null) return false;
+
+        if (isAiming) isAiming = false;
+        if (aimCoroutine != null) StopCoroutine(aimCoroutine);
+        return true;
     }
 
     /// <summary>
@@ -359,6 +437,19 @@ public class TDS_Player : TDS_Character
         // Dodge !
 
         IsInvulnerable = true;
+    }
+
+    /// <summary>
+    /// Prepare a throw, if not already preparing one.
+    /// </summary>
+    /// <returns>Returns true if successfully prepared a throw ; false if one is already, or if cannot do this.</returns>
+    public bool PrepareThrow()
+    {
+        if (isAiming) return false;
+
+        isAiming = true;
+        aimCoroutine = StartCoroutine(Aim());
+        return true;
     }
 
     /// <summary>
@@ -397,6 +488,14 @@ public class TDS_Player : TDS_Character
     {
         // SUPER attack
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public virtual void UseObject()
+    {
+        // Use
+    }
     #endregion
 
     #region Inputs
@@ -405,7 +504,28 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void CheckActionsInputs()
     {
-        // Check
+        // Check non-agressive actions
+        if (Input.GetButtonDown(DodgeButton)) Dodge();
+
+        else if (Input.GetButtonDown(InteractButton)) Interact();
+
+        // If the character is pacific, forbid him to attack
+        if (IsPacific) return;
+
+        // Checks potentially agressives actions
+        if (Input.GetButtonDown(CatchButton)) Catch();
+
+        else if (Input.GetButtonDown(ThrowButton)) PrepareThrow();
+
+        else if (Input.GetButtonDown(CancelThrowButton)) CancelThrow();
+
+        else if (Input.GetButtonDown(LightAttackButton)) Attack(true);
+
+        else if (Input.GetButtonDown(HeavyAttackButton)) Attack(false);
+
+        else if (Input.GetButtonDown(SuperAttackButton)) SuperAttack();
+
+        else if (Input.GetButtonDown(UseObjectButton)) UseObject();
     }
 
     /// <summary>

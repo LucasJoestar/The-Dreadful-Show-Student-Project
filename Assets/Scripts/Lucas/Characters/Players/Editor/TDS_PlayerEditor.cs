@@ -20,6 +20,15 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[04 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Added the cancelThrowButton, isAiming, aimAngle & throwAimingPoint fields.
+	 *
+	 *	-----------------------------------
+     * 
 	 *	Date :			[29 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -52,6 +61,9 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     /// <summary>SerializedProperties for <see cref="TDS_Player.attacks"/> of type <see cref="List{TDS_Attack}"/>.</summary>
     private SerializedProperty attacks = null;
 
+    /// <summary>SerializedProperties for <see cref="TDS_Player.isAiming"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isAiming = null;
+
     /// <summary>SerializedProperties for <see cref="TDS_Player.isGrounded"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isGrounded = null;
 
@@ -60,6 +72,9 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.comboCurrent"/> of type <see cref="List{bool}"/>.</summary>
     private SerializedProperty comboCurrent = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.aimAngle"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty aimAngle = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.comboMax"/> of type <see cref="int"/>.</summary>
     private SerializedProperty comboMax = null;
@@ -78,11 +93,17 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.playerType"/> of type <see cref="PlayerType"/>.</summary>
     private SerializedProperty playerType = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.throwAimingPoint"/> of type <see cref="Vector3"/>.</summary>
+    private SerializedProperty throwAimingPoint = null;
     #endregion
 
     #region Inputs
     /// <summary>SerializedProperties for <see cref="TDS_Player.CatchButton"/> of type <see cref="string"/>.</summary>
     private SerializedProperty catchButton = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.CancelThrowButton"/> of type <see cref="string"/>.</summary>
+    private SerializedProperty cancelThrowButton = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.DodgeButton"/> of type <see cref="string"/>.</summary>
     private SerializedProperty dodgeButton = null;
@@ -235,6 +256,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         TDS_EditorUtility.TextField("Interact", "Name of the button input used to interact with the environment", interactButton);
         TDS_EditorUtility.TextField("Use Object", "Name of the button input used to use an object", useObjectButton);
         TDS_EditorUtility.TextField("Throw", "Name of the button input used to throw an object", throwButton);
+        TDS_EditorUtility.TextField("Cancel Throw", "Name of the button input used to cancel a throw", cancelThrowButton);
 
         GUILayout.Space(10);
 
@@ -322,11 +344,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     /// </summary>
     private void DrawSettings()
     {
-        // Draws a header for the player combos settings
-        EditorGUILayout.LabelField("Combo", TDS_EditorUtility.HeaderStyle);
-
-        GUILayout.Space(3);
-
         TDS_EditorUtility.PropertyField("Type of Player", "Type of character this player is", playerType);
         TDS_EditorUtility.PropertyField("Attacks", "All Attacks this player can perform", attacks);
 
@@ -372,6 +389,19 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
             serializedObject.Update();
         }
 
+        // Draws a header for the player aim settings
+        EditorGUILayout.LabelField("Aim", TDS_EditorUtility.HeaderStyle);
+
+        GUILayout.Space(3);
+
+        if (TDS_EditorUtility.IntSlider("Aiming Angle", "Angle used by this player to aim for a throw", aimAngle, 0, 360))
+        {
+            players.ForEach(p => p.AimAngle = aimAngle.intValue);
+            serializedObject.Update();
+        }
+
+        TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (Local space)", throwAimingPoint);
+
         // Draws debug informations if in play mode
         if (EditorApplication.isPlaying)
         {
@@ -380,8 +410,9 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
             GUILayout.Space(3);
 
-            TDS_EditorUtility.Toggle("Grounded", "Is this player on ground of not", isGrounded, false);
+            TDS_EditorUtility.Toggle("Grounded", "Is this player on ground or not", isGrounded, false);
             TDS_EditorUtility.Toggle("Jumping", "Is this player currently jumping or not", isJumping, false);
+            TDS_EditorUtility.Toggle("Aiming", "Is this player currently aiming for a throw or not", isAiming, false);
         }
     }
     #endregion
@@ -403,17 +434,21 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         groundDetectionBox = serializedObject.FindProperty("groundDetectionBox");
 
         attacks = serializedObject.FindProperty("attacks");
+        isAiming = serializedObject.FindProperty("isAiming");
         isGrounded = serializedObject.FindProperty("isGrounded");
         isJumping = serializedObject.FindProperty("isJumping");
         comboCurrent = serializedObject.FindProperty("comboCurrent");
+        aimAngle = serializedObject.FindProperty("aimAngle");
         comboMax = serializedObject.FindProperty("comboMax");
         comboResetTime = serializedObject.FindProperty("comboResetTime");
         jumpForce = serializedObject.FindProperty("JumpForce");
         jumpMaximumTime = serializedObject.FindProperty("jumpMaximumTime");
         whatIsObstacle = serializedObject.FindProperty("WhatIsObstacle");
         playerType = serializedObject.FindProperty("playerType");
+        throwAimingPoint = serializedObject.FindProperty("throwAimingPoint");
 
         catchButton = serializedObject.FindProperty("CatchButton");
+        cancelThrowButton = serializedObject.FindProperty("CancelThrowButton");
         dodgeButton = serializedObject.FindProperty("DodgeButton");
         heavyAttackButton = serializedObject.FindProperty("HeavyAttackButton");
         horizontalAxis = serializedObject.FindProperty("HorizontalAxis");
