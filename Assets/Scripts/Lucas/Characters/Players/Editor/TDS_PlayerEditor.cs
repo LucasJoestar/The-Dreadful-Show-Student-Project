@@ -453,7 +453,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         interactButton = serializedObject.FindProperty("InteractButton");
         jumpButton = serializedObject.FindProperty("JumpButton");
         lightAttackButton = serializedObject.FindProperty("LightAttackButton");
-        paradeButton = serializedObject.FindProperty("paradeButton");
+        paradeButton = serializedObject.FindProperty("ParadeButton");
         superAttackButton = serializedObject.FindProperty("SuperAttackButton");
         throwButton = serializedObject.FindProperty("ThrowButton");
         useObjectButton = serializedObject.FindProperty("UseObjectButton");
