@@ -24,7 +24,8 @@ public class TDS_Character : TDS_Damageable
 	 *
 	 *	Changes :
      *	
-     *	    - Added the throwAimingPoint field ; and the isAiming field & property.
+     *	    - Added the OnFlip event.
+     *	    - Added the throwAimingPoint field ; and the aimAngle field & property.
 	 *
 	 *	-----------------------------------
      * 
@@ -81,7 +82,10 @@ public class TDS_Character : TDS_Damageable
 	*/
 
     #region Events
-
+    /// <summary>
+    /// Event called when the character flip on the X axis.
+    /// </summary>
+    public event Action OnFlip = null;
     #endregion
 
     #region Fields / Properties
@@ -255,13 +259,12 @@ public class TDS_Character : TDS_Damageable
     /// <summary>
     /// Flips this character to have they looking at the opposite side.
     /// </summary>
-    public void Flip()
+    public virtual void Flip()
     {
         isFacingRight = !isFacingRight;
         transform.Rotate(Vector3.up, 180);
 
-        // Rotates the sprite transform in X axis to match the camera orientation
-        sprite.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, sprite.transform.eulerAngles.y, sprite.transform.eulerAngles.z);
+        OnFlip?.Invoke();
     }
 
     /// <summary>
@@ -294,6 +297,14 @@ public class TDS_Character : TDS_Damageable
     public virtual bool GrabObject(TDS_Throwable _throwable)
     {
         return true;
+    }
+
+    /// <summary>
+    /// Throws the weared throwable.
+    /// </summary>
+    public virtual void ThrowObject()
+    {
+        // Throw it
     }
 
     /// <summary>

@@ -100,7 +100,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
     private SerializedProperty aimAngle = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.throwAimingPoint"/> of type <see cref="Vector3"/>.</summary>
-    private SerializedProperty throwAimingPoint = null;
+    protected SerializedProperty throwAimingPoint = null;
     #endregion
 
     #endregion
@@ -340,7 +340,10 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
             serializedObject.Update();
         }
 
-        TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (Local space)", throwAimingPoint);
+        if (!EditorApplication.isPlaying)
+        {
+            TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (Local space)", throwAimingPoint);
+        }
 
         GUILayout.Space(3);
     }

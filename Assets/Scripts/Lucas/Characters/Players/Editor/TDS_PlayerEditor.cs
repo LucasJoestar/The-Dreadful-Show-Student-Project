@@ -26,7 +26,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 	 *	Changes :
 	 *
 	 *	    - Moved the aimAngle & throwAimingPoint fields to the TDS_CharacterEditor class.
-     *	    - Added the lineRenderer & paradeButton fields.
+     *	    - Added the lineRenderer, parryButton & throwPreviewPrecision fields.
 	 *
 	 *	-----------------------------------
      * 
@@ -86,9 +86,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     /// <summary>SerializedProperties for <see cref="TDS_Player.comboCurrent"/> of type <see cref="List{bool}"/>.</summary>
     private SerializedProperty comboCurrent = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Player.comboMax"/> of type <see cref="int"/>.</summary>
-    private SerializedProperty comboMax = null;
-
     /// <summary>SerializedProperties for <see cref="TDS_Player.comboResetTime"/> of type <see cref="float"/>.</summary>
     private SerializedProperty comboResetTime = null;
 
@@ -97,6 +94,12 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.jumpMaximumTime"/> of type <see cref="float"/>.</summary>
     private SerializedProperty jumpMaximumTime = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.comboMax"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty comboMax = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.throwPreviewPrecision"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty throwPreviewPrecision = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.WhatIsObstacle"/> of type <see cref="LayerMask"/>.</summary>
     private SerializedProperty whatIsObstacle = null;
@@ -130,8 +133,8 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     /// <summary>SerializedProperties for <see cref="TDS_Player.LightAttackButton"/> of type <see cref="string"/>.</summary>
     private SerializedProperty lightAttackButton = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Player.Parade"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty paradeButton = null;
+    /// <summary>SerializedProperties for <see cref="TDS_Player.Parry"/> of type <see cref="string"/>.</summary>
+    private SerializedProperty parryButton = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.SuperAttackButton"/> of type <see cref="string"/>.</summary>
     private SerializedProperty superAttackButton = null;
@@ -276,7 +279,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         TDS_EditorUtility.TextField("Super Attack", "Name of the button input used to perform a Super Attack", superAttackButton);
         TDS_EditorUtility.TextField("Catch", "Name of the button input used to perform the \"Catch\" Action", catchButton);
         TDS_EditorUtility.TextField("Dodge", "Name of the button input used to perform the \"Dodge\" Action", dodgeButton);
-        TDS_EditorUtility.TextField("Parade", "Name of the button input used to parry attacks", paradeButton);
+        TDS_EditorUtility.TextField("Parry", "Name of the button input used to parry attacks", parryButton);
     }
 
     /// <summary>
@@ -396,9 +399,28 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         TDS_EditorUtility.FloatField("Jump Force", "Maximum amount of attacks in one combo", jumpForce);
 
          if (TDS_EditorUtility.FloatField("Jump Maximum Time Length", "Maximum time for a jump the player can continue to add force", jumpMaximumTime))
-        {
+         {
             players.ForEach(p => p.JumpMaximumTime = jumpMaximumTime.floatValue);
             serializedObject.Update();
+         }
+
+        // Draws a header for the player jump settings
+        EditorGUILayout.LabelField("Jump", TDS_EditorUtility.HeaderStyle);
+
+        GUILayout.Space(3);
+
+        if (TDS_EditorUtility.IntField("Projectile Preview Precision", "Amount of points used to draw previews of the projectile trajectory", throwPreviewPrecision))
+        {
+            players.ForEach(p => p.ThrowPreviewPrecision = throwPreviewPrecision.intValue);
+            serializedObject.Update();
+        }
+
+        if (EditorApplication.isPlaying)
+        {
+            if (TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (Local space)", throwAimingPoint))
+            {
+                players.ForEach(p => p.ThrowAimingPoint = throwAimingPoint.vector3Value);
+            }
         }
 
         // Draws debug informations if in play mode
@@ -438,10 +460,11 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         isGrounded = serializedObject.FindProperty("isGrounded");
         isJumping = serializedObject.FindProperty("isJumping");
         comboCurrent = serializedObject.FindProperty("comboCurrent");
-        comboMax = serializedObject.FindProperty("comboMax");
         comboResetTime = serializedObject.FindProperty("comboResetTime");
         jumpForce = serializedObject.FindProperty("JumpForce");
         jumpMaximumTime = serializedObject.FindProperty("jumpMaximumTime");
+        comboMax = serializedObject.FindProperty("comboMax");
+        throwPreviewPrecision = serializedObject.FindProperty("throwPreviewPrecision");
         whatIsObstacle = serializedObject.FindProperty("WhatIsObstacle");
         playerType = serializedObject.FindProperty("playerType");
 
@@ -453,7 +476,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         interactButton = serializedObject.FindProperty("InteractButton");
         jumpButton = serializedObject.FindProperty("JumpButton");
         lightAttackButton = serializedObject.FindProperty("LightAttackButton");
-        paradeButton = serializedObject.FindProperty("ParadeButton");
+        parryButton = serializedObject.FindProperty("ParryButton");
         superAttackButton = serializedObject.FindProperty("SuperAttackButton");
         throwButton = serializedObject.FindProperty("ThrowButton");
         useObjectButton = serializedObject.FindProperty("UseObjectButton");

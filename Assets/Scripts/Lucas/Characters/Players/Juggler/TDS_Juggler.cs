@@ -28,6 +28,8 @@ public class TDS_Juggler : TDS_Player
 	 *	Changes :
 	 *
 	 *	Creation of the TDS_Juggler class.
+     *	
+     *	    - Added the selectedThrowableIndex, Throwables & ThrowPreviewTrajectory fields ; added the SelectedThrowable proeprty.
 	 *
 	 *	-----------------------------------
 	*/
@@ -56,11 +58,6 @@ public class TDS_Juggler : TDS_Player
     /// All throwables the juggler has in hands.
     /// </summary>
     public List<TDS_Throwable> Throwables = new List<TDS_Throwable>();
-
-    /// <summary>
-    /// Positions used to preview the preparing throw trajectory.
-    /// </summary>
-    private List<Vector3> throwPreviewTrajectory = new List<Vector3>();
     #endregion
 
     #endregion
@@ -69,21 +66,14 @@ public class TDS_Juggler : TDS_Player
 
     #region Original Methods
     /// <summary>
-    /// Make the juggler aim for a throw. When releasing the thorw button, throw the selected object.
+    /// Make the juggler aim for a throw. When releasing the throw button, throw the selected object.
     /// If the cancel throw button is pressed, cancel the throw, as it name indicate it.
     /// </summary>
     /// <returns></returns>
     protected override IEnumerator Aim()
     {
+        base.Aim();
         yield break;
-    }
-
-    /// <summary>
-    /// Draws the preview trajectory of the juggler throw, when aiming.
-    /// </summary>
-    private void DrawPreviewTrajectory()
-    {
-
     }
     #endregion
 
