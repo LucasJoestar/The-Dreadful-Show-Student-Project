@@ -332,6 +332,8 @@ MonoBehaviour:
   speedCurrent: 0
   speedInitial: 1.1
   speedMax: 5
+  aimAngle: 45
+  throwAimingPoint: {x: 0, y: 0, z: 0}
 --- !u!65 &542588207
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -419,7 +421,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: bdbef3de53123f742b89ba07f8d3ccbc, type: 2}
+  - {fileID: 2100000, guid: dd5c29eac8fb61840920ea1075bc2c32, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -477,6 +479,9 @@ MonoBehaviour:
   speedCurrent: 0
   speedInitial: 1
   speedMax: 2
+  aimAngle: 45
+  throwAimingPoint: {x: 0, y: 0, z: 0}
+  lineRenderer: {fileID: 0}
   Summoner: {fileID: 0}
   interactionsDetector: {fileID: 0}
   groundDetectionBox:
@@ -504,7 +509,6 @@ MonoBehaviour:
   isGrounded: 1
   isJumping: 0
   comboCurrent: 
-  aimAngle: 45
   comboMax: 3
   comboResetTime: 1.84
   JumpForce: 200
@@ -513,7 +517,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 32
   playerType: 4
-  throwAimingPoint: {x: 0, y: 0, z: 0}
 --- !u!4 &559157257
 Transform:
   m_ObjectHideFlags: 0
@@ -591,6 +594,8 @@ MonoBehaviour:
   speedCurrent: 0
   speedInitial: 1.1
   speedMax: 5
+  aimAngle: 45
+  throwAimingPoint: {x: 0, y: 0, z: 0}
 --- !u!65 &599322020
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -871,133 +876,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1571047991
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1571047995}
-  - component: {fileID: 1571047994}
-  - component: {fileID: 1571047993}
-  - component: {fileID: 1571047992}
-  m_Layer: 0
-  m_Name: Juggler
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1571047992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1571047991}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46afb548b06cab54da7400c370b424f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  collider: {fileID: 0}
-  sprite: {fileID: 0}
-  isDead: 0
-  isIndestructible: 0
-  IsInvulnerable: 0
-  healthCurrent: 0
-  healthMax: 1
-  hitBox: {fileID: 0}
-  healthBar: {fileID: 0}
-  rigidbody: {fileID: 0}
-  Throwable: {fileID: 0}
-  isFacingRight: 1
-  IsPacific: 0
-  IsParalyzed: 0
-  speedAccelerationTime: 0.5
-  speedCoef: 1
-  speedCurrent: 0
-  speedInitial: 1
-  speedMax: 2
-  Summoner: {fileID: 0}
-  interactionsDetector: {fileID: 0}
-  groundDetectionBox:
-    Color: {r: 0, g: 1, b: 0, a: 1}
-    WhatDetect:
-      serializedVersion: 2
-      m_Bits: 0
-    TriggerInteraction: 1
-    LocalPosition: {x: 0, y: 0, z: 0}
-    Size: {x: 1, y: 1, z: 1}
-  CatchButton: Catch
-  CancelThrowButton: Cancel Throw
-  DodgeButton: Dodge
-  HeavyAttackButton: Heavy Attack
-  HorizontalAxis: Horizontal
-  InteractButton: Interact
-  JumpButton: Jump
-  LightAttackButton: Light Attack
-  SuperAttackButton: Super Attack
-  ThrowButton: Throw
-  UseObjectButton: Use Object
-  VerticalAxis: Vertical
-  attacks: []
-  isAiming: 0
-  isGrounded: 1
-  isJumping: 0
-  comboCurrent: 
-  aimAngle: 45
-  comboMax: 3
-  comboResetTime: 2
-  JumpForce: 1
-  jumpMaximumTime: 1.5
-  WhatIsObstacle:
-    serializedVersion: 2
-    m_Bits: 0
-  playerType: 4
-  throwAimingPoint: {x: 0, y: 0, z: 0}
-  Throwables: []
---- !u!65 &1571047993
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1571047991}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &1571047994
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1571047991}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!4 &1571047995
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1571047991}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.59, y: 2.4390745, z: -0.9373863}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1627761209
 GameObject:
   m_ObjectHideFlags: 0
@@ -1169,6 +1047,178 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1883192561
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1883192567}
+  - component: {fileID: 1883192566}
+  - component: {fileID: 1883192565}
+  - component: {fileID: 1883192564}
+  - component: {fileID: 1883192563}
+  - component: {fileID: 1883192562}
+  m_Layer: 0
+  m_Name: Juggler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!23 &1883192562
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1883192561}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
+  m_Materials:
+  - {fileID: 2100000, guid: bdbef3de53123f742b89ba07f8d3ccbc, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &1883192563
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1883192561}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &1883192564
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1883192561}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
+--- !u!114 &1883192565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1883192561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46afb548b06cab54da7400c370b424f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  collider: {fileID: 0}
+  sprite: {fileID: 0}
+  isDead: 0
+  isIndestructible: 0
+  IsInvulnerable: 0
+  healthCurrent: 0
+  healthMax: 1
+  hitBox: {fileID: 0}
+  healthBar: {fileID: 0}
+  rigidbody: {fileID: 0}
+  Throwable: {fileID: 0}
+  isFacingRight: 1
+  IsPacific: 0
+  IsParalyzed: 0
+  speedAccelerationTime: 0.5
+  speedCoef: 1
+  speedCurrent: 0
+  speedInitial: 1
+  speedMax: 2
+  aimAngle: 45
+  throwAimingPoint: {x: 0, y: 0, z: 0}
+  lineRenderer: {fileID: 0}
+  Summoner: {fileID: 0}
+  interactionsDetector: {fileID: 0}
+  groundDetectionBox:
+    Color: {r: 0, g: 1, b: 0, a: 1}
+    WhatDetect:
+      serializedVersion: 2
+      m_Bits: 0
+    TriggerInteraction: 1
+    LocalPosition: {x: 0, y: 0, z: 0}
+    Size: {x: 1, y: 1, z: 1}
+  CatchButton: Catch
+  CancelThrowButton: Cancel Throw
+  DodgeButton: Dodge
+  HeavyAttackButton: Heavy Attack
+  HorizontalAxis: Horizontal
+  InteractButton: Interact
+  JumpButton: Jump
+  LightAttackButton: Light Attack
+  SuperAttackButton: Super Attack
+  ThrowButton: Throw
+  UseObjectButton: Use Object
+  VerticalAxis: Vertical
+  attacks: []
+  isAiming: 0
+  isGrounded: 1
+  isJumping: 0
+  comboCurrent: 
+  comboMax: 3
+  comboResetTime: 2
+  JumpForce: 1
+  jumpMaximumTime: 1.5
+  WhatIsObstacle:
+    serializedVersion: 2
+    m_Bits: 0
+  playerType: 4
+  Throwables: []
+--- !u!65 &1883192566
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1883192561}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1883192567
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1883192561}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.593, y: 2.12, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1983663569
 GameObject:

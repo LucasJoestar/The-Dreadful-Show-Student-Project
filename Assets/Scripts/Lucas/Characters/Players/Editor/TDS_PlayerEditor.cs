@@ -26,6 +26,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 	 *	Changes :
 	 *
 	 *	    - Moved the aimAngle & throwAimingPoint fields to the TDS_CharacterEditor class.
+     *	    - Added the lineRenderer & paradeButton fields.
 	 *
 	 *	-----------------------------------
      * 
@@ -56,6 +57,9 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     #region SerializedProperties
 
     #region Components & References
+    /// <summary>SerializedProperties for <see cref="TDS_Player.lineRenderer"/> of type <see cref="LineRenderer"/>.</summary>
+    private SerializedProperty lineRenderer = null;
+
     /// <summary>SerializedProperties for <see cref="TDS_Player.Summoner"/> of type <see cref="TDS_Summoner"/>.</summary>
     private SerializedProperty summoner = null;
 
@@ -125,6 +129,9 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.LightAttackButton"/> of type <see cref="string"/>.</summary>
     private SerializedProperty lightAttackButton = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.Parade"/> of type <see cref="string"/>.</summary>
+    private SerializedProperty paradeButton = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.SuperAttackButton"/> of type <see cref="string"/>.</summary>
     private SerializedProperty superAttackButton = null;
@@ -242,6 +249,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         GUILayout.Space(5);
 
         TDS_EditorUtility.ObjectField("Interaction detection Trigger", "Trigger used to detect the available interactions of the player", interactionsDetector, typeof(TDS_Trigger));
+        TDS_EditorUtility.ObjectField("Line Renderer", "Line Renderer used to draw the preparing throw preview", lineRenderer, typeof(LineRenderer));
         TDS_EditorUtility.ObjectField("Summoner object", "The Summoner the player is actually wearing", summoner, typeof(TDS_Summoner));
     }
 
@@ -268,6 +276,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         TDS_EditorUtility.TextField("Super Attack", "Name of the button input used to perform a Super Attack", superAttackButton);
         TDS_EditorUtility.TextField("Catch", "Name of the button input used to perform the \"Catch\" Action", catchButton);
         TDS_EditorUtility.TextField("Dodge", "Name of the button input used to perform the \"Dodge\" Action", dodgeButton);
+        TDS_EditorUtility.TextField("Parade", "Name of the button input used to parry attacks", paradeButton);
     }
 
     /// <summary>
@@ -419,6 +428,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         else isPlayerMultiEditing = true;
 
         // Get the serializedProperties from the serializedObject
+        lineRenderer = serializedObject.FindProperty("lineRenderer");
         summoner = serializedObject.FindProperty("Summoner");
         interactionsDetector = serializedObject.FindProperty("interactionsDetector");
         groundDetectionBox = serializedObject.FindProperty("groundDetectionBox");
@@ -443,6 +453,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         interactButton = serializedObject.FindProperty("InteractButton");
         jumpButton = serializedObject.FindProperty("JumpButton");
         lightAttackButton = serializedObject.FindProperty("LightAttackButton");
+        paradeButton = serializedObject.FindProperty("paradeButton");
         superAttackButton = serializedObject.FindProperty("SuperAttackButton");
         throwButton = serializedObject.FindProperty("ThrowButton");
         useObjectButton = serializedObject.FindProperty("UseObjectButton");
