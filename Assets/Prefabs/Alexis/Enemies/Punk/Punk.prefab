@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 54315097348852968}
   - component: {fileID: 65317177169650050}
   - component: {fileID: 114476461593783234}
+  - component: {fileID: 95117252439618552}
   m_Layer: 0
   m_Name: Punk
   m_TagString: Untagged
@@ -39,7 +40,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4851926840199904}
   - component: {fileID: 212749167570648662}
-  - component: {fileID: 95900425393890082}
   m_Layer: 0
   m_Name: Punk-Sprite
   m_TagString: Untagged
@@ -84,7 +84,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1341661741757368}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -5.945156, y: 1.243, z: -11.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4851926840199904}
@@ -99,7 +99,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1891691194565092}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1.16, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4175069985797766}
@@ -118,7 +118,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!65 &65303339487346324
 BoxCollider:
@@ -130,7 +130,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 2.4, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65317177169650050
 BoxCollider:
@@ -142,21 +142,21 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 2.4, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!95 &95900425393890082
+--- !u!95 &95117252439618552
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1891691194565092}
+  m_GameObject: {fileID: 1341661741757368}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e6ac87a0976497442b1a39b8f740a3f6, type: 2}
+  m_Controller: {fileID: 9100000, guid: 667ea011d9078c94aa47a303242c70bb, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -170,11 +170,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1978238354924764}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4b2b73425caff84d947e2da37336b51, type: 3}
+  m_Script: {fileID: 11500000, guid: 6ce2f74c12c896848b28f055a039f660, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 65303339487346324}
-  owner: {fileID: 114476461593783234}
+  owner: {fileID: 114936777912220844}
   WhatHit:
     serializedVersion: 2
     m_Bits: 0
@@ -186,10 +186,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 1341661741757368}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b56470c103b6fbc4b88e731e2a887288, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ec4ea4dfa2b1c645b75090a979ada43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
+  positionOffset: {x: 0, y: 0, z: 0}
+  height: 2.2
+  radius: 1
+  baseOffset: 0
+  speed: 1
+  detectionRange: 2
+  steerForce: 2
+  avoidanceForce: 2
+--- !u!114 &114936777912220844
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1341661741757368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdd01019a789be048b61bcae41c03548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 95117252439618552}
   collider: {fileID: 65317177169650050}
   sprite: {fileID: 212749167570648662}
   isDead: 0
@@ -211,37 +230,9 @@ MonoBehaviour:
   canBeDown: 1
   canThrow: 1
   enemyState: 0
-  detectionRange: 5
-  attacks:
-  - AnimationID: 0
-    Description: 
-    Name: 
-    isDistanceAttack: 0
-    predictedRange: 0
-    probability: 0
-  agent: {fileID: 114936777912220844}
-  hasEvolved: 0
---- !u!114 &114936777912220844
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1341661741757368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53bdbd26138585f4aa59027c60557c6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  height: 0.5
-  radius: 0.5
-  offset: 0
-  speed: 1
-  detectionRange: 2
-  steerForce: 0.1
-  avoidanceForce: 2
-  currentPath:
-    pathPoints: []
-  velocity: {x: 0, y: 0, z: 0}
+  detectionRange: 50
+  attacks: []
+  agent: {fileID: 114476461593783234}
 --- !u!212 &212749167570648662
 SpriteRenderer:
   m_ObjectHideFlags: 1
