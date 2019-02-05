@@ -19,6 +19,15 @@ public class TDS_Character : TDS_Damageable
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[05 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Added the throwAimingPoint field ; and the isAiming field & property.
+	 *
+	 *	-----------------------------------
+     * 
      *  Date :			[24 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -215,6 +224,27 @@ public class TDS_Character : TDS_Damageable
             if (speedCurrent > value) SpeedCurrent = value;
         }
     }
+
+    /// <summary>Backing field for <see cref="AimAngle"/>.</summary>
+    [SerializeField] protected int aimAngle = 45;
+
+    /// <summary>
+    /// Angle used to aim and throw objects.
+    /// </summary>
+    public int AimAngle
+    {
+        get { return aimAngle; }
+        set
+        {
+            value = Mathf.Clamp(value, 0, 360);
+            aimAngle = value;
+        }
+    }
+
+    /// <summary>
+    /// Point where the character is aiming to throw (Local space).
+    /// </summary>
+    [SerializeField] protected Vector3 throwAimingPoint = Vector3.zero;
     #endregion
 
     #endregion

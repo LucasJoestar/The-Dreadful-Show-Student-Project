@@ -20,6 +20,15 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[05 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Moved the aimAngle & throwAimingPoint fields to the TDS_CharacterEditor class.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[04 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -73,9 +82,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     /// <summary>SerializedProperties for <see cref="TDS_Player.comboCurrent"/> of type <see cref="List{bool}"/>.</summary>
     private SerializedProperty comboCurrent = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Player.aimAngle"/> of type <see cref="int"/>.</summary>
-    private SerializedProperty aimAngle = null;
-
     /// <summary>SerializedProperties for <see cref="TDS_Player.comboMax"/> of type <see cref="int"/>.</summary>
     private SerializedProperty comboMax = null;
 
@@ -93,9 +99,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.playerType"/> of type <see cref="PlayerType"/>.</summary>
     private SerializedProperty playerType = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.throwAimingPoint"/> of type <see cref="Vector3"/>.</summary>
-    private SerializedProperty throwAimingPoint = null;
     #endregion
 
     #region Inputs
@@ -389,19 +392,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
             serializedObject.Update();
         }
 
-        // Draws a header for the player aim settings
-        EditorGUILayout.LabelField("Aim", TDS_EditorUtility.HeaderStyle);
-
-        GUILayout.Space(3);
-
-        if (TDS_EditorUtility.IntSlider("Aiming Angle", "Angle used by this player to aim for a throw", aimAngle, 0, 360))
-        {
-            players.ForEach(p => p.AimAngle = aimAngle.intValue);
-            serializedObject.Update();
-        }
-
-        TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (Local space)", throwAimingPoint);
-
         // Draws debug informations if in play mode
         if (EditorApplication.isPlaying)
         {
@@ -438,14 +428,12 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         isGrounded = serializedObject.FindProperty("isGrounded");
         isJumping = serializedObject.FindProperty("isJumping");
         comboCurrent = serializedObject.FindProperty("comboCurrent");
-        aimAngle = serializedObject.FindProperty("aimAngle");
         comboMax = serializedObject.FindProperty("comboMax");
         comboResetTime = serializedObject.FindProperty("comboResetTime");
         jumpForce = serializedObject.FindProperty("JumpForce");
         jumpMaximumTime = serializedObject.FindProperty("jumpMaximumTime");
         whatIsObstacle = serializedObject.FindProperty("WhatIsObstacle");
         playerType = serializedObject.FindProperty("playerType");
-        throwAimingPoint = serializedObject.FindProperty("throwAimingPoint");
 
         catchButton = serializedObject.FindProperty("CatchButton");
         cancelThrowButton = serializedObject.FindProperty("CancelThrowButton");

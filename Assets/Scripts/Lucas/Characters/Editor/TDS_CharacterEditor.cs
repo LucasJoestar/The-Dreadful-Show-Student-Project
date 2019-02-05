@@ -22,6 +22,15 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[05 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Added the aimAngle & throwAimingPoint fields.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[29 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -86,6 +95,12 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 
     /// <summary>SerializedProperty for <see cref="TDS_Character.speedMax"/> of type <see cref="float"/>.</summary>
     private SerializedProperty speedMax = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.aimAngle"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty aimAngle = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.throwAimingPoint"/> of type <see cref="Vector3"/>.</summary>
+    private SerializedProperty throwAimingPoint = null;
     #endregion
 
     #endregion
@@ -314,6 +329,19 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
             serializedObject.Update();
         }
 
+        // Draws a header for the player aim settings
+        EditorGUILayout.LabelField("Aim", TDS_EditorUtility.HeaderStyle);
+
+        GUILayout.Space(3);
+
+        if (TDS_EditorUtility.IntSlider("Aiming Angle", "Angle used by this player to aim for a throw", aimAngle, 0, 360))
+        {
+            characters.ForEach(p => p.AimAngle = aimAngle.intValue);
+            serializedObject.Update();
+        }
+
+        TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (Local space)", throwAimingPoint);
+
         GUILayout.Space(3);
     }
     #endregion
@@ -343,6 +371,8 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
         speedCurrent = serializedObject.FindProperty("speedCurrent");
         speedInitial = serializedObject.FindProperty("speedInitial");
         speedMax = serializedObject.FindProperty("speedMax");
+        aimAngle = serializedObject.FindProperty("aimAngle");
+        throwAimingPoint = serializedObject.FindProperty("throwAimingPoint");
 
         // Loads the editor folded a unfolded values of this class
         isCharaUnfolded = EditorPrefs.GetBool("isCharaUnfolded", isCharaUnfolded);

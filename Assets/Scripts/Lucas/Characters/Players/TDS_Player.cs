@@ -21,12 +21,21 @@ public class TDS_Player : TDS_Character
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[05 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Moved the throwAimingPoint field ; and the aimAngle field & property to the TDS_Character class.
+     * 
+     *  -----------------------------------
+     * 
      *  Date :			[04 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
 	 *	Changes :
      *	
-     *	    - Added the cancelThrowButton & aimCoroutine fields & throwAimingPoint ; and the isAiming & aimAngle fields & properties.
+     *	    - Added the cancelThrowButton, aimCoroutine  & throwAimingPoint fields ; and the isAiming & aimAngle fields & properties.
      *	    - Added the Aim, CancelThrow, PrepareThrow & UseObject methods.
      * 
      *  -----------------------------------
@@ -276,22 +285,6 @@ public class TDS_Player : TDS_Character
         }
     }
 
-    /// <summary>Backing field for <see cref="AimAngle"/>.</summary>
-    [SerializeField] private int aimAngle = 45;
-
-    /// <summary>
-    /// Angle used to aim and throw objects.
-    /// </summary>
-    public int AimAngle
-    {
-        get { return aimAngle; }
-        set
-        {
-            value = Mathf.Clamp(value, 0, 360);
-            aimAngle = value;
-        }
-    }
-
     /// <summary>Backing field for <see cref="ComboMax"/>.</summary>
     [SerializeField] protected int comboMax = 3;
 
@@ -365,11 +358,6 @@ public class TDS_Player : TDS_Character
             playerType = value;
         }
     }
-
-    /// <summary>
-    /// Point where the character is aiming to throw (in local space).
-    /// </summary>
-    [SerializeField] protected Vector3 throwAimingPoint = Vector3.zero;
     #endregion
 
     #region Debug & Script memory Variables
