@@ -78,7 +78,9 @@ public class TDS_Enemy : TDS_Character
     /// <summary>
     /// The target of the enemy
     /// </summary>
-    protected TDS_Player playerTarget = null; 
+    protected TDS_Player playerTarget = null;
+
+    [SerializeField] protected TDS_EnemyAttack[] attacks; 
 
     /* THINGS TO ADD IN THE FUTURE
      * --> Add a spawner Owner 
@@ -98,7 +100,6 @@ public class TDS_Enemy : TDS_Character
     #region Methods
 
     #region Original Methods
-
     #region IEnumerator
     /// <summary>
     /// /!\ The behaviour includes only the Detection, Mouvement and Attacking Sequences
@@ -117,14 +118,12 @@ public class TDS_Enemy : TDS_Character
             #region Searching
             case EnemyState.Searching:
                 // If there is no target, search a new target
-                Debug.Log("Search");
                 //DETECTION
                 playerTarget = SearchTarget();
                 yield return new WaitForEndOfFrame();
                 //If a target is found -> Set the state to TakingDecision
                 if (playerTarget)
                 {
-                    Debug.Log("Target found");
                     enemyState = EnemyState.MakingDecision;
                     yield return new WaitForEndOfFrame();
                     goto case EnemyState.MakingDecision; 
@@ -132,8 +131,8 @@ public class TDS_Enemy : TDS_Character
                 //ELSE BREAK -> Set the state to Search
                 else
                 {
-                    Debug.Log("Target Not found");
                     enemyState = EnemyState.Searching;
+                    yield return new WaitForSeconds(1); 
                     break;
                 }
             #endregion
@@ -146,13 +145,15 @@ public class TDS_Enemy : TDS_Character
                     enemyState = EnemyState.Searching;
                     goto case EnemyState.Searching; 
                 }
-                _distance = _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+                _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
                 yield return new WaitForEndOfFrame();
-                //If there is an attack that can be cast, go to attack case
-                //Check if the agent can grab an object, 
-                //if so goto case GrabObject if it can be grab 
-                // if it can't be grabbed directly, getting in range
-                if (/*attacks.Any(a => _distance < a.range)*/ _distance < 2)
+                SetAnimationState(EnemyAnimationState.Idle); 
+                /* If there is an attack that can be cast, go to attack case
+                 * Check if the agent can grab an object, 
+                 * if so goto case GrabObject if it can be grab 
+                 * if it can't be grabbed directly, getting in range
+                */
+                if (attacks.Any(a => _distance < a.PredictedRange))
                 {
                     enemyState = EnemyState.Attacking;
                     goto case EnemyState.Attacking; 
@@ -192,13 +193,17 @@ public class TDS_Enemy : TDS_Character
             #endregion
             #region Getting In Range
             case EnemyState.GettingInRange:
+                SetAnimationState(EnemyAnimationState.Run);
                 // Wait some time before calling again Behaviour(); 
-                yield return new WaitForSeconds(.1f);
-                _distance = Vector3.Distance(agent.LastPosition, playerTarget.transform.position);
-                if (_distance > .5f)
+                // Still has to increase speed of the agent
+                yield return new WaitForSeconds(.5f);
+                
+                _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+                if (attacks.Any(a => _distance < a.PredictedRange))
                 {
-                    enemyState = EnemyState.ComputingPath; 
-                    goto case EnemyState.ComputingPath;
+                    agent.StopAgent(); 
+                    enemyState = EnemyState.Attacking;
+                    goto case EnemyState.Attacking;
                 }
                 break;
             #endregion
@@ -206,16 +211,29 @@ public class TDS_Enemy : TDS_Character
             case EnemyState.Attacking:
                 //Throw attack
                 //Select the best attack to cast
-                if(Throwable)
+                if (Throwable)
                 {
                     enemyState = EnemyState.ThrowingObject;
                     goto case EnemyState.ThrowingObject;
                 }
-                Debug.Log("Attack");
-                while(IsAttacking)
+                else
                 {
-                    Debug.Log("Wait end of attack"); 
-                    yield return new WaitForEndOfFrame();
+                    _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+                    TDS_EnemyAttack _attack =  GetAttack(_distance);
+                    if(_attack == null)
+                    {
+                        enemyState = EnemyState.MakingDecision;
+                        goto case EnemyState.MakingDecision;
+                    }
+                    //Cast Attack
+                    IsAttacking = true;
+                    SetAnimationState((EnemyAnimationState)_attack.AnimationID); 
+                    while (IsAttacking)
+                    {
+                        // yield return new WaitForEndOfFrame(); 
+                        yield return new WaitForSeconds(5);
+                        IsAttacking = false;
+                    }
                 }
                 enemyState = EnemyState.MakingDecision;
                 goto case EnemyState.MakingDecision;
@@ -241,6 +259,34 @@ public class TDS_Enemy : TDS_Character
     }
     #endregion
 
+    #region TDS_EnemyAttack()
+    /// <summary>
+    /// Select the attack to cast
+    /// If there is no attack return null
+    /// Selection is based on the Range and on the Probability of an attack
+    /// </summary>
+    /// <param name="_distance">Distance between the agent and its target</param>
+    /// <returns>Attack to cast</returns>
+    protected TDS_EnemyAttack GetAttack(float _distance)
+    {
+        //If the enemy has no attack, return null
+        if (attacks == null || attacks.Length == 0) return null;
+        // Get all attacks that can hit the target
+        TDS_EnemyAttack[] _availableAttacks = attacks.Where(a => a.IsDistanceAttack || a.PredictedRange > _distance).ToArray();
+        // If there is no attack in Range, return null
+        if (_availableAttacks.Length == 0) return null;
+        // Set a random to compare with the probabilities of the attackes
+        float _random = UnityEngine.Random.Range(0, _availableAttacks.Max(a => a.Probability));
+        // If a probability is less than the random, this attack can be selected
+        _availableAttacks = _availableAttacks.Where(a => a.Probability >= _random).ToArray();
+        // If there is no attack, return null
+        if (_availableAttacks.Length == 0) return null;
+        // Get a random Index to cast a random attack
+        int _randomIndex = UnityEngine.Random.Range(0, _availableAttacks.Length);   
+        return _availableAttacks[_randomIndex]; 
+    }
+    #endregion
+
     #region TDS_Player
     /// <summary>
     /// Search the best player to target
@@ -255,7 +301,7 @@ public class TDS_Enemy : TDS_Character
     }
     #endregion
 
-    #region void
+    #region Overridden Methods
     /// <summary>
     /// Overridden Grab Object Method
     /// </summary>
@@ -277,7 +323,19 @@ public class TDS_Enemy : TDS_Character
         base.ThrowObject(_targetPosition);
         // Does the agent has a different behaviour from the players? 
     }
-    #endregion 
+    #endregion
+
+    #region Void
+    /// <summary>
+    /// Set the animation of the enemy to the animationID
+    /// </summary>
+    /// <param name="_animationID"></param>
+    void SetAnimationState(EnemyAnimationState _animationID)
+    {
+        if (!animator) return;
+        animator.SetInteger("animationState", (int)_animationID); 
+    }
+    #endregion
 
     #endregion
 
