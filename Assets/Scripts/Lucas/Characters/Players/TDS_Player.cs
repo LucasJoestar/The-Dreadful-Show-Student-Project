@@ -27,6 +27,7 @@ public class TDS_Player : TDS_Character
 	 *	Changes :
      *	
      *	    - Moved the throwAimingPoint field ; and the aimAngle field & property to the TDS_Character class.
+     *	    - Added the lineRenderer field.
      * 
      *  -----------------------------------
      * 
@@ -114,6 +115,11 @@ public class TDS_Player : TDS_Character
 
     #region Components & References
     /// <summary>
+    /// Line renderer used to draw a preview for the preparing throw trajectory.
+    /// </summary>
+    [SerializeField] protected LineRenderer lineRenderer = null;
+
+    /// <summary>
     /// The summoner this player is currently carrying.
     /// </summary>
     public TDS_Summoner Summoner = null;
@@ -169,6 +175,11 @@ public class TDS_Player : TDS_Character
     /// Name of the button used to perform a light attack.
     /// </summary>
     public string LightAttackButton = "Light Attack";
+
+    /// <summary>
+    /// Name of the button used to parry.
+    /// </summary>
+    public string ParadeButton = "Parade";
 
     /// <summary>
     ///Name of the button used to perform the super attack.
@@ -381,6 +392,11 @@ public class TDS_Player : TDS_Character
     /// <returns></returns>
     protected virtual IEnumerator Aim()
     {
+        if (Input.GetButtonUp(ThrowButton))
+        {
+
+        }
+
         yield break;
     }
 
@@ -428,12 +444,21 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
+    /// Set the player in a parade position.
+    /// While parrying, the player avoid to take damages in front of him.
+    /// </summary>
+    public virtual void Parry()
+    {
+        // Parry
+    }
+
+    /// <summary>
     /// Prepare a throw, if not already preparing one.
     /// </summary>
     /// <returns>Returns true if successfully prepared a throw ; false if one is already, or if cannot do this.</returns>
-    public bool PrepareThrow()
+    public virtual bool PrepareThrow()
     {
-        if (isAiming) return false;
+        if (isAiming || !Throwable) return false;
 
         isAiming = true;
         aimCoroutine = StartCoroutine(Aim());
@@ -465,7 +490,6 @@ public class TDS_Player : TDS_Character
     public virtual void StopDodge()
     {
         // Stop dodging
-
         IsInvulnerable = false;
     }
 
@@ -854,6 +878,13 @@ public class TDS_Player : TDS_Character
     protected override void Awake()
     {
         base.Awake();
+
+        // Try to get components references if they are missing
+        if (!lineRenderer)
+        {
+            lineRenderer = GetComponent<LineRenderer>();
+            if (!lineRenderer) Debug.LogWarning("The LineRenderer of \"" + name + "\" for script TDS_Player is missing !");
+        }
     }
 
     // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations
