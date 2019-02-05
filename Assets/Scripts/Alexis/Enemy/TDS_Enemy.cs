@@ -100,9 +100,6 @@ public class TDS_Enemy : TDS_Character
     #region Methods
 
     #region Original Methods
-
-
-
     #region IEnumerator
     /// <summary>
     /// /!\ The behaviour includes only the Detection, Mouvement and Attacking Sequences
@@ -121,14 +118,12 @@ public class TDS_Enemy : TDS_Character
             #region Searching
             case EnemyState.Searching:
                 // If there is no target, search a new target
-                Debug.Log("Search");
                 //DETECTION
                 playerTarget = SearchTarget();
                 yield return new WaitForEndOfFrame();
                 //If a target is found -> Set the state to TakingDecision
                 if (playerTarget)
                 {
-                    Debug.Log("Target found");
                     enemyState = EnemyState.MakingDecision;
                     yield return new WaitForEndOfFrame();
                     goto case EnemyState.MakingDecision; 
@@ -136,8 +131,8 @@ public class TDS_Enemy : TDS_Character
                 //ELSE BREAK -> Set the state to Search
                 else
                 {
-                    Debug.Log("Target Not found");
                     enemyState = EnemyState.Searching;
+                    yield return new WaitForSeconds(1); 
                     break;
                 }
             #endregion
@@ -152,6 +147,7 @@ public class TDS_Enemy : TDS_Character
                 }
                 _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
                 yield return new WaitForEndOfFrame();
+                SetAnimationState(EnemyAnimationState.Idle); 
                 /* If there is an attack that can be cast, go to attack case
                  * Check if the agent can grab an object, 
                  * if so goto case GrabObject if it can be grab 
@@ -197,22 +193,18 @@ public class TDS_Enemy : TDS_Character
             #endregion
             #region Getting In Range
             case EnemyState.GettingInRange:
+                SetAnimationState(EnemyAnimationState.Run);
                 // Wait some time before calling again Behaviour(); 
                 // Still has to increase speed of the agent
-                yield return new WaitForSeconds(.1f);
-                _distance = Vector3.Distance(agent.LastPosition, playerTarget.transform.position);
-                if (_distance > .5f)
-                {
-                    enemyState = EnemyState.ComputingPath; 
-                    goto case EnemyState.ComputingPath;
-                }
-                /*
+                yield return new WaitForSeconds(.5f);
+                
                 _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
                 if (attacks.Any(a => _distance < a.PredictedRange))
                 {
+                    agent.StopAgent(); 
                     enemyState = EnemyState.Attacking;
                     goto case EnemyState.Attacking;
-                }*/
+                }
                 break;
             #endregion
             #region Attacking
@@ -233,9 +225,9 @@ public class TDS_Enemy : TDS_Character
                         enemyState = EnemyState.MakingDecision;
                         goto case EnemyState.MakingDecision;
                     }
-                    Debug.Log(_attack.Name);
                     //Cast Attack
                     IsAttacking = true;
+                    SetAnimationState((EnemyAnimationState)_attack.AnimationID); 
                     while (IsAttacking)
                     {
                         // yield return new WaitForEndOfFrame(); 
@@ -287,7 +279,6 @@ public class TDS_Enemy : TDS_Character
         float _random = UnityEngine.Random.Range(0, _availableAttacks.Max(a => a.Probability));
         // If a probability is less than the random, this attack can be selected
         _availableAttacks = _availableAttacks.Where(a => a.Probability >= _random).ToArray();
-        Debug.Log(_availableAttacks.Length); 
         // If there is no attack, return null
         if (_availableAttacks.Length == 0) return null;
         // Get a random Index to cast a random attack
@@ -310,7 +301,7 @@ public class TDS_Enemy : TDS_Character
     }
     #endregion
 
-    #region void
+    #region Overridden Methods
     /// <summary>
     /// Overridden Grab Object Method
     /// </summary>
@@ -332,7 +323,19 @@ public class TDS_Enemy : TDS_Character
         base.ThrowObject(_targetPosition);
         // Does the agent has a different behaviour from the players? 
     }
-    #endregion 
+    #endregion
+
+    #region Void
+    /// <summary>
+    /// Set the animation of the enemy to the animationID
+    /// </summary>
+    /// <param name="_animationID"></param>
+    void SetAnimationState(EnemyAnimationState _animationID)
+    {
+        if (!animator) return;
+        animator.SetInteger("animationState", (int)_animationID); 
+    }
+    #endregion
 
     #endregion
 
