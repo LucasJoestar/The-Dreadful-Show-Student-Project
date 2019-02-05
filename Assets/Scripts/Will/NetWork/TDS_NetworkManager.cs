@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using Photon;
 
-
+#pragma warning disable 0414
 [RequireComponent(typeof(PhotonView))]
 public class TDS_NetworkManager : PunBehaviour
 {
