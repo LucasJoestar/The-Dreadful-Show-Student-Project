@@ -153,7 +153,6 @@ public class TDS_Enemy : TDS_Character
                     goto case EnemyState.Searching; 
                 }
                 _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                SetAnimationState(EnemyAnimationState.Idle); 
                 /* If there is an attack that can be cast, go to attack case
                  * Check if the agent can grab an object, 
                  * if so goto case GrabObject if it can be grab 
@@ -330,6 +329,22 @@ public class TDS_Enemy : TDS_Character
         base.ThrowObject(_targetPosition);
         // Does the agent has a different behaviour from the players? 
     }
+
+    public override bool TakeDamage(int _damage)
+    {
+        bool _isTakingDamages = base.TakeDamage(_damage);
+        if(_isTakingDamages)
+        {
+            agent.StopAgent();
+            StopCoroutine(Behaviour());
+            enemyState = EnemyState.MakingDecision;
+            if (isDead)
+                SetAnimationState(EnemyAnimationState.Death);
+            else
+                SetAnimationState(EnemyAnimationState.Hit);
+        }
+        return _isTakingDamages; 
+    }
     #endregion
 
     #region Void
@@ -380,7 +395,8 @@ public class TDS_Enemy : TDS_Character
     // Update is called once per frame
     protected override void Update()
     {
-        base.Update(); 
+        base.Update();
+        if (Input.GetKeyDown(KeyCode.A)) TakeDamage(1); 
 	}
 	#endregion
 

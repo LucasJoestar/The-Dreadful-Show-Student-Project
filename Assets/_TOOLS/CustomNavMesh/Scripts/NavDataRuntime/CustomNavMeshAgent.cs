@@ -112,7 +112,7 @@ public class CustomNavMeshAgent : MonoBehaviour
         }
     }
 
-    private Vector3 velocity; 
+    [SerializeField] private Vector3 velocity; 
     public Vector3 Velocity { get { return velocity;} }
     #endregion
     #endregion
@@ -146,6 +146,7 @@ public class CustomNavMeshAgent : MonoBehaviour
     {
         isMoving = true;
         pathIndex = 1;
+        velocity = Vector3.zero; 
         List<Vector3> _followingPath = currentPath.PathPoints;  //List of points in the path
 
         /*STEERING*/
@@ -279,24 +280,14 @@ public class CustomNavMeshAgent : MonoBehaviour
     public void StopAgent()
     {
         StopCoroutine(FollowPath());
+        pathState = CalculatingState.Waiting;
+        pathIndex = 1;
         isMoving = false;
         velocity = Vector3.zero; 
-        currentPath.PathPoints.Clear(); 
     }
     #endregion
 
     #region UnityMethods
-    private void Update()
-    {
-        if(Input.GetKey(KeyCode.Mouse0))
-        {
-            RaycastHit _hit; 
-            if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out _hit))
-            {
-                SetDestination(_hit.point); 
-            }
-        }
-    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
