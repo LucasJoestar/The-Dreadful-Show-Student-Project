@@ -19,11 +19,21 @@ public class TDS_Character : TDS_Damageable
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[05 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Added the throwAimingPoint field ; and the isAiming field & property.
+	 *
+	 *	-----------------------------------
+     * 
      *  Date :			[24 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
 	 *	Changes :
      *	
+     *	    - Modified the SpeedMax & SpeedInitial properties.
      *	    - Modified the debugs for component missing in Awake.
      *	    - Removed the attacks field & property.
 	 *
@@ -107,7 +117,7 @@ public class TDS_Character : TDS_Damageable
     public bool IsAttacking { get; protected set; } = false;
 
     /// <summary>Backing field for <see cref="IsFacingRight"/></summary>
-    protected bool isFacingRight = true;
+    [SerializeField] protected bool isFacingRight = true;
 
     /// <summary>
     /// Indicates which side the character is facing.
@@ -191,7 +201,7 @@ public class TDS_Character : TDS_Damageable
         get { return speedInitial; }
         set
         {
-            if (value < 0) value = 0;
+            value = Mathf.Clamp(value, 0, speedMax);
             speedInitial = value;
         }
     }
@@ -210,8 +220,31 @@ public class TDS_Character : TDS_Damageable
         {
             if (value < 0) value = 0;
             speedMax = value;
+
+            if (speedCurrent > value) SpeedCurrent = value;
         }
     }
+
+    /// <summary>Backing field for <see cref="AimAngle"/>.</summary>
+    [SerializeField] protected int aimAngle = 45;
+
+    /// <summary>
+    /// Angle used to aim and throw objects.
+    /// </summary>
+    public int AimAngle
+    {
+        get { return aimAngle; }
+        set
+        {
+            value = Mathf.Clamp(value, 0, 360);
+            aimAngle = value;
+        }
+    }
+
+    /// <summary>
+    /// Point where the character is aiming to throw (Local space).
+    /// </summary>
+    [SerializeField] protected Vector3 throwAimingPoint = Vector3.zero;
     #endregion
 
     #endregion
@@ -224,12 +257,11 @@ public class TDS_Character : TDS_Damageable
     /// </summary>
     public void Flip()
     {
+        isFacingRight = !isFacingRight;
         transform.Rotate(Vector3.up, 180);
 
         // Rotates the sprite transform in X axis to match the camera orientation
         sprite.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, sprite.transform.eulerAngles.y, sprite.transform.eulerAngles.z);
-
-        isFacingRight = !isFacingRight;
     }
 
     /// <summary>
