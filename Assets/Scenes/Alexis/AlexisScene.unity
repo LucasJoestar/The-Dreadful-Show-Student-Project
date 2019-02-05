@@ -120,6 +120,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: attacks.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4175069985797766, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
       propertyPath: m_LocalPosition.x
       value: -5.945156
@@ -151,6 +156,36 @@ Prefab:
     - target: {fileID: 4175069985797766, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: attacks.Array.data[0].AnimationID
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: attacks.Array.data[0].Description
+      value: BONK!
+      objectReference: {fileID: 0}
+    - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: attacks.Array.data[0].Name
+      value: COUP DE BOULE!
+      objectReference: {fileID: 0}
+    - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: attacks.Array.data[0].predictedRange
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: attacks.Array.data[0].probability
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 114476461593783234, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: speed
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
@@ -538,6 +573,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   rigidbody: {fileID: 0}
   Throwable: {fileID: 0}
+  isFacingRight: 1
   IsPacific: 0
   IsParalyzed: 0
   speedAccelerationTime: 0.5
@@ -545,6 +581,8 @@ MonoBehaviour:
   speedCurrent: 0
   speedInitial: 1
   speedMax: 2
+  aimAngle: 45
+  throwAimingPoint: {x: 0, y: 0, z: 0}
   Summoner: {fileID: 0}
   interactionsDetector: {fileID: 0}
   groundDetectionBox:
@@ -556,6 +594,7 @@ MonoBehaviour:
     LocalPosition: {x: 0, y: 0, z: 0}
     Size: {x: 1, y: 1, z: 1}
   CatchButton: Catch
+  CancelThrowButton: Cancel Throw
   DodgeButton: Dodge
   HeavyAttackButton: Heavy Attack
   HorizontalAxis: Horizontal
@@ -567,14 +606,18 @@ MonoBehaviour:
   UseObjectButton: Use Object
   VerticalAxis: Vertical
   attacks: []
+  isAiming: 0
+  isGrounded: 1
+  isJumping: 0
   comboCurrent: 
   comboMax: 3
   comboResetTime: 2
   JumpForce: 1
-  JumpMaximumTime: 1.5
+  jumpMaximumTime: 1.5
   WhatIsObstacle:
     serializedVersion: 2
     m_Bits: 0
+  playerType: 4
 --- !u!54 &1121461184
 Rigidbody:
   m_ObjectHideFlags: 0

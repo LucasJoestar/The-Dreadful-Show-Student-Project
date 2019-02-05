@@ -273,10 +273,14 @@ public class CustomNavMeshAgent : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void StopAgent()
     {
         StopCoroutine(FollowPath());
         isMoving = false;
+        velocity = Vector3.zero; 
         currentPath.PathPoints.Clear(); 
     }
     #endregion
