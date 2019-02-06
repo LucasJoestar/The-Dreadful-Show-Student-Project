@@ -175,7 +175,7 @@ Prefab:
     - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
         type: 2}
       propertyPath: attacks.Array.data[0].predictedRange
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
         type: 2}
@@ -241,6 +241,21 @@ Prefab:
         type: 2}
       propertyPath: m_IsTrigger
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: attacks.Array.data[0].cooldown
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65303339487346324, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65303339487346324, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: m_Center.x
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114476461593783234, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
@@ -682,7 +697,7 @@ MonoBehaviour:
   InteractButton: Interact
   JumpButton: Jump
   LightAttackButton: Light Attack
-  ParadeButton: Parade
+  ParryButton: Parry
   SuperAttackButton: Super Attack
   ThrowButton: Throw
   UseObjectButton: Use Object
@@ -692,10 +707,11 @@ MonoBehaviour:
   isGrounded: 1
   isJumping: 0
   comboCurrent: 
-  comboMax: 3
   comboResetTime: 2
   JumpForce: 1
   jumpMaximumTime: 1.5
+  comboMax: 3
+  throwPreviewPrecision: 10
   WhatIsObstacle:
     serializedVersion: 2
     m_Bits: 0
@@ -776,7 +792,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1121461182}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.99, y: 0.56, z: -11.41}
+  m_LocalPosition: {x: 1.96, y: 0.56, z: -11.41}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

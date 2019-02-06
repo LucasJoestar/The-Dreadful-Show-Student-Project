@@ -19,19 +19,28 @@ public class TDS_Enemy : TDS_Character
 	 *
 	 *	#####################
 	 *	### MODIFICATIONS ###
-	 *	#####################
-	 *
-	 *	Date :			[22/01/2019]
-	 *	Author :		[THIEBAUT Alexis]
-	 *
-	 *	Changes :
-	 *
-	 *	[Creation of the enemy class]
-	 *
-     *  - Adding a custom NavMesh agent, EnemyState, bool canBeDown and canThrow, detection Range and EnemyName.
-     * 
-	 *	----------------------------------- 
+	 *	##################### 
      *	
+     *	 Date :          [06/02/2019]
+     *	Author:         [THIEBAUT Alexis]
+     *	
+     *	[Setting the attack method]
+     *	
+     *	- The Attack Method Activate the hit box and set the animation state of the animator to the animationId value of the attack
+     *	- Reset the consecutive uses of other attacks
+     *	- The Get Attack Methods search a attack that can be throw within a distance
+     *	
+     * 	-----------------------------------
+     * 	
+	 *  Date :          [05/02/2019]
+     *	Author:         [THIEBAUT Alexis]
+     *	
+     *	[Implementation of the SetAnimationState Method]
+     *	
+     *	- The SetAnimationState Method set the int "animation State" in the enemy animator to play a linked animation
+     *	
+     * 	-----------------------------------
+     * 	
      *	Date :          [24/01/2019]
      *	Author:         [THIEBAUT Alexis]
      *	
@@ -42,12 +51,15 @@ public class TDS_Enemy : TDS_Character
      *	
      *	-----------------------------------
      *	
-     *	Date :          [05/02/2019]
-     *	Author:         [THIEBAUT Alexis]
-     *	
-     *	[Implementation of the SetAnimationState Method]
-     *	
-     *	- The SetAnimationState Method set the int "animation State" in the enemy animator to play a linked animation
+	 *	Date :			[22/01/2019]
+	 *	Author :		[THIEBAUT Alexis]
+	 *
+	 *	Changes :
+	 *
+	 *	[Creation of the enemy class]
+	 *
+     *  - Adding a custom NavMesh agent, EnemyState, bool canBeDown and canThrow, detection Range and EnemyName.
+     *  
 	*/
 
     #region Events
@@ -93,6 +105,9 @@ public class TDS_Enemy : TDS_Character
     /// </summary>
     protected TDS_Player playerTarget = null;
 
+    /// <summary>
+    /// Array of attacks that can be called
+    /// </summary>
     [SerializeField] protected TDS_EnemyAttack[] attacks; 
     #endregion
 
@@ -237,9 +252,9 @@ public class TDS_Enemy : TDS_Character
                     Attack(_attack); 
                     while (IsAttacking)
                     {
-                        // yield return new WaitForEndOfFrame(); 
                         yield return new WaitForSeconds(.1f);
                     }
+                    yield return new WaitForSeconds(_attack.Cooldown); 
                 }
                 enemyState = EnemyState.MakingDecision;
                 goto case EnemyState.MakingDecision;
@@ -330,6 +345,16 @@ public class TDS_Enemy : TDS_Character
         // Does the agent has a different behaviour from the players? 
     }
 
+    /// <summary>
+    /// Overriden method to take damages
+    /// If the agent take damages
+    /// Stop the movments of the agent
+    /// Stop the Behaviour Method
+    /// Set the state to making decision 
+    /// Change the animation state of the agent
+    /// </summary>
+    /// <param name="_damage">amount of damages</param>
+    /// <returns>if the agent take damages</returns>
     public override bool TakeDamage(int _damage)
     {
         bool _isTakingDamages = base.TakeDamage(_damage);
@@ -344,6 +369,18 @@ public class TDS_Enemy : TDS_Character
                 SetAnimationState(EnemyAnimationState.Hit);
         }
         return _isTakingDamages; 
+    }
+
+    /// <summary>
+    /// Stop the current attack of the agent
+    /// Desactivate the hitbox
+    /// Set the bool IsAttacking to false
+    /// Set the animation state to idle
+    /// </summary>
+    public override void StopAttack()
+    {
+        SetAnimationState(EnemyAnimationState.Idle); 
+        base.StopAttack();
     }
     #endregion
 
@@ -366,7 +403,6 @@ public class TDS_Enemy : TDS_Character
     /// <param name="_attack">Attack to cast</param>
     protected virtual void Attack(TDS_EnemyAttack _attack)
     {
-        Debug.Log(_attack.AnimationID); 
         IsAttacking = true;
         _attack.ConsecutiveUses++;
         attacks.ToList().Where(a => a != _attack).ToList().ForEach(a => a.ConsecutiveUses = 0);
@@ -396,7 +432,6 @@ public class TDS_Enemy : TDS_Character
     protected override void Update()
     {
         base.Update();
-        if (Input.GetKeyDown(KeyCode.A)) TakeDamage(1); 
 	}
 	#endregion
 
