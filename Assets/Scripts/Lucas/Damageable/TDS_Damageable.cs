@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(BoxCollider), typeof(Animator))]
 public class TDS_Damageable : PunBehaviour
 {
     /* TDS_Damageable :
@@ -270,7 +270,11 @@ public class TDS_Damageable : PunBehaviour
     protected virtual void Awake()
     {
         // Try yo get components references of they are missing
-        if (!animator) animator = GetComponent<Animator>();
+        if (!animator)
+        {
+            animator = GetComponent<Animator>();
+            if (!animator) Debug.LogWarning("The Animator of \"" + name + "\" for script TDS_Damageable is missing !");
+        }
         if (!collider)
         {
             collider = GetComponent<BoxCollider>();
