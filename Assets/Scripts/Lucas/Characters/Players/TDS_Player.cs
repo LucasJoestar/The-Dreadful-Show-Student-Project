@@ -607,8 +607,17 @@ public class TDS_Player : TDS_Character
         // Stop it, please
         base.StopAttack();
     }
+
+    /// <summary>
+    /// Performs the Super attack if the gauge is filled enough.
+    /// </summary>
+    public virtual void SuperAttack()
+    {
+        // SUPER attack
+    }
     #endregion
 
+    #region Actions
     /// <summary>
     /// Performs the catch attack of this player.
     /// </summary>
@@ -647,20 +656,14 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
-    /// Performs the Super attack if the gauge is filled enough.
-    /// </summary>
-    public virtual void SuperAttack()
-    {
-        // SUPER attack
-    }
-
-    /// <summary>
     /// 
     /// </summary>
     public virtual void UseObject()
     {
         // Use
     }
+    #endregion
+
     #endregion
 
     #region Heal
