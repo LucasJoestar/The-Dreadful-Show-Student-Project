@@ -211,9 +211,8 @@ public class TDS_Enemy : TDS_Character
                     //yield return new WaitForEndOfFrame();
                     yield return new WaitForSeconds(.1f); 
                 }
-                agent.StopAgent(); 
-                enemyState = EnemyState.Attacking;
-                goto case EnemyState.Attacking;
+                agent.StopAgent();
+                break; 
             #endregion
             #region Attacking
             case EnemyState.Attacking:
