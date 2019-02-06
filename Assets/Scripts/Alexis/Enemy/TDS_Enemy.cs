@@ -153,7 +153,6 @@ public class TDS_Enemy : TDS_Character
                     goto case EnemyState.Searching; 
                 }
                 _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                SetAnimationState(EnemyAnimationState.Idle); 
                 /* If there is an attack that can be cast, go to attack case
                  * Check if the agent can grab an object, 
                  * if so goto case GrabObject if it can be grab 
@@ -212,9 +211,9 @@ public class TDS_Enemy : TDS_Character
                     //yield return new WaitForEndOfFrame();
                     yield return new WaitForSeconds(.1f); 
                 }
-                agent.StopAgent(); 
-                enemyState = EnemyState.Attacking;
-                goto case EnemyState.Attacking;
+                agent.StopAgent();
+                SetAnimationState(EnemyAnimationState.Idle); 
+                break; 
             #endregion
             #region Attacking
             case EnemyState.Attacking:
@@ -239,7 +238,7 @@ public class TDS_Enemy : TDS_Character
                     while (IsAttacking)
                     {
                         // yield return new WaitForEndOfFrame(); 
-                        yield return new WaitForSeconds(1);
+                        yield return new WaitForSeconds(.1f);
                     }
                 }
                 enemyState = EnemyState.MakingDecision;
@@ -330,6 +329,22 @@ public class TDS_Enemy : TDS_Character
         base.ThrowObject(_targetPosition);
         // Does the agent has a different behaviour from the players? 
     }
+
+    public override bool TakeDamage(int _damage)
+    {
+        bool _isTakingDamages = base.TakeDamage(_damage);
+        if(_isTakingDamages)
+        {
+            agent.StopAgent();
+            StopCoroutine(Behaviour());
+            enemyState = EnemyState.MakingDecision;
+            if (isDead)
+                SetAnimationState(EnemyAnimationState.Death);
+            else
+                SetAnimationState(EnemyAnimationState.Hit);
+        }
+        return _isTakingDamages; 
+    }
     #endregion
 
     #region Void
@@ -351,11 +366,11 @@ public class TDS_Enemy : TDS_Character
     /// <param name="_attack">Attack to cast</param>
     protected virtual void Attack(TDS_EnemyAttack _attack)
     {
+        Debug.Log(_attack.AnimationID); 
         IsAttacking = true;
         _attack.ConsecutiveUses++;
         attacks.ToList().Where(a => a != _attack).ToList().ForEach(a => a.ConsecutiveUses = 0);
-        //SetAnimationState((EnemyAnimationState)_attack.AnimationID);
-        SetAnimationState(EnemyAnimationState.Idle);
+        SetAnimationState((EnemyAnimationState)_attack.AnimationID);
         hitBox.Activate(_attack); 
     }
     #endregion
@@ -380,7 +395,8 @@ public class TDS_Enemy : TDS_Character
     // Update is called once per frame
     protected override void Update()
     {
-        base.Update(); 
+        base.Update();
+        if (Input.GetKeyDown(KeyCode.A)) TakeDamage(1); 
 	}
 	#endregion
 

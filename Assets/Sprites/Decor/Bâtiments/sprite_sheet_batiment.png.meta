@@ -1,49 +1,31 @@
 fileFormatVersion: 2
-guid: 8dfd914cb807d2e4589e16acccba25a7
+guid: 65c56ac6ff5d9be45a90f9a00ef9df7c
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Punk_Run01
-    21300002: Punk_Run02
-    21300004: Punk_Run03
-    21300006: Punk_Run04
-    21300008: Punk_Idle01
-    21300010: Punk_Idle02
-    21300012: Punk_Death01
-    21300014: Punk_Death02
-    21300016: Punk_Death03
-    21300018: Punk_Death04
-    21300020: Punk_Death05
-    21300022: Punk_Hit01
-    21300024: Punk_Grounded01
-    21300026: Punk_Grounded02
-    21300028: Punk_Grounded03
-    21300030: Punk_Grounded04
-    21300032: Punk_Grounded05
-    21300034: Punk_Grounded06
-    21300036: Punk_Grounded07
-    21300038: Punk_Grounded08
-    21300040: Punk_Grounded09
-    21300042: Punk_Run01
-    21300044: Punk_Run02
-    21300046: Punk_Run03
-    21300048: Punk_Run04
-    21300050: Punk_Idle01
-    21300052: Punk_Idle02
-    21300054: Punk_Death01
-    21300056: Punk_Death02
-    21300058: Punk_Death03
-    21300060: Punk_Death04
-    21300062: Punk_Death05
-    21300064: Punk_Hit
-    21300066: Punk_Grounded01
-    21300068: Punk_Headbutt01
-    21300070: Punk_Headbutt02
-    21300072: Punk_Heabutt3
-    21300074: Punk_Heabutt4
-    21300076: Punk_Heabutt03
-    21300078: Punk_Heabutt04
-    21300080: Punk_Headbutt03
-    21300082: Punk_Headbutt04
+    21300000: Frontage_1
+    21300002: Door_1
+    21300004: Door_2
+    21300006: Door_3
+    21300008: Frontage_2
+    21300010: DoorKnocker_1
+    21300012: DoorKnob_1
+    21300014: DoorKnocker_2
+    21300016: DoorKnocker_3
+    21300018: DoorKnob_2
+    21300020: Doorknob_3
+    21300022: DoorKnob_4
+    21300024: Window_1
+    21300026: Glass_1
+    21300028: Window_2
+    21300030: Glass_2
+    21300032: Window_3
+    21300034: Glass_3
+    21300036: Window_4
+    21300038: Glass_4
+    21300040: Window_5
+    21300042: Glass_5
+    21300044: Window_6
+    21300046: Glass_6
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -126,501 +108,481 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Punk_Run01
+      name: Frontage_1
       rect:
         serializedVersion: 2
-        x: 3
-        y: 1742
-        width: 187
-        height: 295
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 45
+        y: 1495
+        width: 1420
+        height: 497
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e83a22ec369961f44b2f5b16754c7791
+      spriteID: 6ef26326a054fd04c89d2d341de729dc
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Run02
+      name: Door_1
       rect:
         serializedVersion: 2
-        x: 228
-        y: 1743
-        width: 134
-        height: 253
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 48
+        y: 951
+        width: 223
+        height: 408
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4d3e4a768293a7746b7582d15bdd9c4d
+      spriteID: 2e106577f7e1418418bdfbb67a52e39d
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Run03
+      name: Door_2
       rect:
         serializedVersion: 2
-        x: 419
-        y: 1743
-        width: 176
-        height: 296
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 373
+        y: 946
+        width: 223
+        height: 411
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 57f783283c3a312489f78f225562f37c
+      spriteID: 71d7cdeaca8c7b24fa0db3e5a31e2c8c
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Run04
+      name: Door_3
       rect:
         serializedVersion: 2
-        x: 653
-        y: 1742
-        width: 143
-        height: 260
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 710
+        y: 946
+        width: 195
+        height: 412
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0332a2c23dedc9e428e32ec5de814e73
+      spriteID: 8936f3598b212f243bc4ff77444f2e6b
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Idle01
+      name: Frontage_2
       rect:
         serializedVersion: 2
-        x: 936
-        y: 1742
-        width: 154
-        height: 293
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 1034
+        y: 860
+        width: 959
+        height: 578
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 407f38687c485a74b88be65b76aea0f5
+      spriteID: 449385c6ef338bb488c36feaf5a7f5f7
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Idle02
+      name: DoorKnocker_1
       rect:
         serializedVersion: 2
-        x: 1147
-        y: 1742
-        width: 157
-        height: 292
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 42
+        y: 669
+        width: 60
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4df069c95e6db5046a6a2c422e777f7c
+      spriteID: 2e293a57ad2a3024c9c58b630efb96c0
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Death01
+      name: DoorKnob_1
       rect:
         serializedVersion: 2
-        x: 14
-        y: 1404
-        width: 166
-        height: 289
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 183
+        y: 675
+        width: 41
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42a24372879f39841ad257a097fcc4a3
+      spriteID: b804d43c641d377408262b690e5f36ac
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Death02
+      name: DoorKnocker_2
       rect:
         serializedVersion: 2
-        x: 228
-        y: 1404
-        width: 204
-        height: 200
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 284
+        y: 659
+        width: 69
+        height: 86
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8c81573ee7aa94e44ae802ebe9d78101
+      spriteID: 9e2c57d866a65de46b29bc7e78bc6acd
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Death03
+      name: DoorKnocker_3
       rect:
         serializedVersion: 2
-        x: 474
-        y: 1404
-        width: 284
-        height: 77
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 412
+        y: 664
+        width: 54
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3ae11918d8128e84caca0863bd913ac9
+      spriteID: 527f7b874f194284d8d575d8ef040b9d
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Death04
+      name: DoorKnob_2
       rect:
         serializedVersion: 2
-        x: 782
-        y: 1409
-        width: 255
-        height: 91
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 536
+        y: 603
+        width: 48
+        height: 145
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3490b84351f5038478001d30ebf9a881
+      spriteID: 4e2e7100cb114af43bc85da2974ce9c8
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Death05
+      name: Doorknob_3
       rect:
         serializedVersion: 2
-        x: 1068
-        y: 1404
-        width: 286
-        height: 77
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 641
+        y: 664
+        width: 67
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ba4096f61acb8124ab56d01e34f82b87
+      spriteID: 658bed5f72a69c845b5173e7fb0882b5
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Hit
+      name: DoorKnob_4
       rect:
         serializedVersion: 2
-        x: 1431
-        y: 1404
-        width: 180
-        height: 316
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 740
+        y: 700
+        width: 25
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3aab3fa740807e84eadfe11fc629f46a
+      spriteID: 3f64eebcb1cc6004ea0d7c8fb0d90f9f
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded01
+      name: Window_1
       rect:
         serializedVersion: 2
-        x: 3
-        y: 1030
-        width: 188
-        height: 328
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 83
+        y: 367
+        width: 146
+        height: 192
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5a76dbefd5a58b649a5d56549c2b87bf
+      spriteID: f88abfd1da2a2974eae694b969292f7b
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded02
+      name: Glass_1
       rect:
         serializedVersion: 2
-        x: 228
-        y: 1028
-        width: 231
-        height: 224
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 306
+        y: 348
+        width: 102
+        height: 165
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9d06782275915d046ae67f1e5d732a8a
+      spriteID: 6d8002beb5bc733448d2a1cc0ae8c696
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded03
+      name: Window_2
       rect:
         serializedVersion: 2
-        x: 501
-        y: 1028
-        width: 323
-        height: 88
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 499
+        y: 361
+        width: 245
+        height: 166
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 83a5c84b96796ba448c9482bf459003e
+      spriteID: 946953c8d5d1ad94fa597b4e66bec2b3
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded04
+      name: Glass_2
       rect:
         serializedVersion: 2
-        x: 893
-        y: 1032
-        width: 322
+        x: 868
+        y: 372
+        width: 218
         height: 87
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 37da3029fee8c9d4fba42fa72000f994
+      spriteID: a23582457e4c7fc41863d57a95957704
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded05
+      name: Window_3
       rect:
         serializedVersion: 2
-        x: 1263
-        y: 1028
-        width: 323
-        height: 88
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 1223
+        y: 303
+        width: 255
+        height: 242
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 02110b99d0904dc408754744b062a458
+      spriteID: 5b146ef1747cf5847a120af44e9752a5
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded06
+      name: Glass_3
       rect:
         serializedVersion: 2
-        x: 1652
-        y: 1023
-        width: 283
-        height: 141
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 1633
+        y: 345
+        width: 212
+        height: 197
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dc77729b91bd8894786b43c766e84774
+      spriteID: da92cc4b3ad1a864a8bc03ba58bccdab
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded07
+      name: Window_4
       rect:
         serializedVersion: 2
-        x: 14
-        y: 670
-        width: 194
-        height: 266
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 86
+        y: 59
+        width: 142
+        height: 211
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d916f4d072fe9c84dbe3aaaa5954f19b
+      spriteID: db9252f7f0ac13c4cb83c87f4989bb5b
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded08
+      name: Glass_4
       rect:
         serializedVersion: 2
-        x: 291
-        y: 671
-        width: 121
-        height: 259
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 320
+        y: 69
+        width: 129
+        height: 192
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 531e82284bacbae4eaa26cd374265575
+      spriteID: 8a4902416a93ab6448597b2c94b766e6
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded09
+      name: Window_5
       rect:
         serializedVersion: 2
-        x: 497
-        y: 671
-        width: 156
-        height: 315
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 535
+        y: 73
+        width: 146
+        height: 175
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9d5dfe43bf88b8241b3505926435645a
+      spriteID: ec1078601e41a3947b2c84d92a73ae65
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Headbutt01
+      name: Glass_5
       rect:
         serializedVersion: 2
-        x: 727
-        y: 666
-        width: 134
-        height: 315
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 731
+        y: 69
+        width: 115
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bb82ed7f574928540b6db23dfc249adc
+      spriteID: 1f989de0784f72c42904534b10226592
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Headbutt02
+      name: Window_6
       rect:
         serializedVersion: 2
-        x: 955
-        y: 665
-        width: 164
-        height: 305
-      alignment: 9
-      pivot: {x: 0.38, y: 0}
+        x: 944
+        y: 68
+        width: 108
+        height: 138
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 08862a3d12e8d304388baaf642cce152
+      spriteID: 2be0f2f10583b3b4dbee0cdf7a76e414
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Headbutt03
+      name: Glass_6
       rect:
         serializedVersion: 2
-        x: 1166
-        y: 666
-        width: 116
-        height: 305
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 1146
+        y: 74
+        width: 106
+        height: 135
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 512407a3162f8654f97ed27403adaf1b
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Punk_Headbutt04
-      rect:
-        serializedVersion: 2
-        x: 1320
-        y: 671
-        width: 177
-        height: 280
-      alignment: 9
-      pivot: {x: 0.75, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5ba5aaf0540ac2543891fbd703a29d05
+      spriteID: 7afc4f5e71649fb4c9bc47b9be1aba3a
       vertices: []
       indices: 
       edges: []
@@ -628,7 +590,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: afe99435c014f8e469a2835c92f6bf33
+    spriteID: d674ed1a9d2ab3d45a6be634a690404e
     vertices: []
     indices: 
     edges: []
