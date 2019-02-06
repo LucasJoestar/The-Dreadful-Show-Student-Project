@@ -405,22 +405,29 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
          }
 
         // Draws a header for the player jump settings
-        EditorGUILayout.LabelField("Jump", TDS_EditorUtility.HeaderStyle);
+        EditorGUILayout.LabelField("Aim", TDS_EditorUtility.HeaderStyle);
 
         GUILayout.Space(3);
+
+        if (EditorApplication.isPlaying)
+        {
+            if (TDS_EditorUtility.IntSlider("Aiming Angle", "Angle used by this player to aim for a throw", aimAngle, 0, 90))
+            {
+                players.ForEach(p => p.AimAngle = aimAngle.intValue);
+                players.ForEach(p => p.ThrowAimingPoint = p.ThrowAimingPoint);
+                serializedObject.Update();
+            }
+
+            if (TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (Local space)", throwAimingPoint))
+            {
+                players.ForEach(p => p.ThrowAimingPoint = throwAimingPoint.vector3Value);
+            }
+        }
 
         if (TDS_EditorUtility.IntField("Projectile Preview Precision", "Amount of points used to draw previews of the projectile trajectory", throwPreviewPrecision))
         {
             players.ForEach(p => p.ThrowPreviewPrecision = throwPreviewPrecision.intValue);
             serializedObject.Update();
-        }
-
-        if (EditorApplication.isPlaying)
-        {
-            if (TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (Local space)", throwAimingPoint))
-            {
-                players.ForEach(p => p.ThrowAimingPoint = throwAimingPoint.vector3Value);
-            }
         }
 
         // Draws debug informations if in play mode

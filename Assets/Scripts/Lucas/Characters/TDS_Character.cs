@@ -240,7 +240,7 @@ public class TDS_Character : TDS_Damageable
         get { return aimAngle; }
         set
         {
-            value = Mathf.Clamp(value, 0, 360);
+            value = Mathf.Clamp(value, 0, 90);
             aimAngle = value;
         }
     }
@@ -256,6 +256,15 @@ public class TDS_Character : TDS_Damageable
     #region Methods
 
     #region Original Methods
+    /// <summary>
+    /// Stop or ends the current attack of the character.
+    /// </summary>
+    public virtual void StopAttack()
+    {
+        IsAttacking = false;
+        hitBox.Desactivate();
+    }
+
     /// <summary>
     /// Flips this character to have they looking at the opposite side.
     /// </summary>

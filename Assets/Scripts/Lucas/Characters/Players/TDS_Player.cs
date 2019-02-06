@@ -109,6 +109,24 @@ public class TDS_Player : TDS_Character
 	 *	-----------------------------------
 	*/
 
+    #region Enums
+    protected enum PlayerAnimations
+    {
+        Idle,               //      =>      0
+        Run,                //      =>      1
+        Jump,               //      =>      2
+        Fall,               //      =>      3
+        Hit,                //      =>      4
+        Die,                //      =>      5
+        Dodge,              //      =>      6
+        Catch,              //      =>      7
+        Throw,              //      =>      8
+        Parade  ,           //      =>      9
+        IdleWithObject,     //      =>      10
+        RunWithObject       //      =>      11
+    }
+    #endregion
+
     #region Events
 
     #endregion
@@ -452,16 +470,6 @@ public class TDS_Player : TDS_Character
     /// <returns></returns>
     protected virtual IEnumerator Aim()
     {
-        // On flip, update the X value of the velocity & trajectory preview for the throw
-        /*OnFlip += () =>
-        {
-            throwVelocity.x *= -1;
-            for (int _i = 0; _i < throwTrajectoryMotionPoints.Length; _i++)
-            {
-                throwTrajectoryMotionPoints[_i].x *= -1;
-            }
-        };*/
-
         // While holding the throw button, aim a position
         while (Input.GetButton(ThrowButton))
         {
@@ -469,23 +477,35 @@ public class TDS_Player : TDS_Character
             RaycastHit _hit = new RaycastHit();
             Vector3[] _raycastedMotionPoints = throwTrajectoryMotionPoints;
 
-            for (int _i = 0; _i < throwTrajectoryMotionPoints.Length - 1; _i++)
+            for (int _i = 0; _i < _raycastedMotionPoints.Length - 1; _i++)
             {
+                // Get the points to raycast from & to in world space
+                Vector3 _from = transform.position + new Vector3(throwTrajectoryMotionPoints[_i].x * isFacingRight.ToSign(), throwTrajectoryMotionPoints[_i].y, throwTrajectoryMotionPoints[_i].z);
+                Vector3 _to = transform.position + new Vector3(throwTrajectoryMotionPoints[_i + 1].x * isFacingRight.ToSign(), throwTrajectoryMotionPoints[_i + 1].y, throwTrajectoryMotionPoints[_i + 1].z);
+
                 // If hit something, set the hit point as end of the preview trajectory
-                if (Physics.Linecast(_raycastedMotionPoints[_i], _raycastedMotionPoints[_i + 1], out _hit, WhatIsObstacle))
+                if (Physics.Linecast(_from, _to, out _hit, WhatIsObstacle))
                 {
                     _raycastedMotionPoints = new Vector3[_i + 2];
-                    for (int _j = 0; _j < _i; _j++)
+                    for (int _j = 0; _j <= _i; _j++)
                     {
                         _raycastedMotionPoints[_j] = throwTrajectoryMotionPoints[_j];
                     }
-                    _raycastedMotionPoints[_i + 1] = _hit.point;
+                    // Get the hit point as absolute value in local space ; so as distance
+                    _raycastedMotionPoints[_i + 1] = new Vector3(Mathf.Abs(_hit.point.x - transform.position.x), _hit.point.y - transform.position.y, Mathf.Abs(_hit.point.z - transform.position.z));
+
+                    // Adjust the sign of the hit point Vector3 according to the one of the aiming point
+
+                    /*if (Mathf.Sign(_raycastedMotionPoints[_i + 1].x) != Mathf.Sign(throwAimingPoint.x)) _raycastedMotionPoints[_i + 1].x *= -1;
+                    if (Mathf.Sign(_raycastedMotionPoints[_i + 1].y) != Mathf.Sign(throwAimingPoint.y)) _raycastedMotionPoints[_i + 1].y *= -1;
+                    if (Mathf.Sign(_raycastedMotionPoints[_i + 1].z) != Mathf.Sign(throwAimingPoint.z)) _raycastedMotionPoints[_i + 1].z *= -1;*/
+
                     break;
                 }
             }
 
             // Draws the trajectory preview
-            lineRenderer.DrawTrajectory(_raycastedMotionPoints.Select(p => transform.position + p).ToArray());
+            lineRenderer.DrawTrajectory(_raycastedMotionPoints);
 
             yield return new WaitForSeconds(.05f);
         }
@@ -510,15 +530,6 @@ public class TDS_Player : TDS_Character
         if (aimCoroutine != null)
         {
             StopCoroutine(aimCoroutine);
-
-            OnFlip -= () =>
-            {
-                throwVelocity.x *= -1;
-                for (int _i = 0; _i < throwTrajectoryMotionPoints.Length; _i++)
-                {
-                    throwTrajectoryMotionPoints[_i].x *= -1;
-                }
-            };
         }
 
         lineRenderer.DrawTrajectory(new Vector3[0]);
@@ -532,7 +543,7 @@ public class TDS_Player : TDS_Character
     public virtual bool PrepareThrow()
     {
         //if (isAiming || !Throwable) return false;
-
+    
         isAiming = true;
         aimCoroutine = StartCoroutine(Aim());
         return true;
@@ -546,9 +557,33 @@ public class TDS_Player : TDS_Character
     /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
     public virtual void Attack(bool _isLight)
     {
-        // Attack !
+        // If already attacking, return
+        if (IsAttacking) return;
 
+        CancelInvoke("ResetCombo");
+
+        // Attack !
         IsAttacking = true;
+
+        switch (comboCurrent.Count)
+        {
+            default:
+                break;
+        }
+        ComboCurrent.Add(_isLight);
+
+        if (comboCurrent.Count < comboMax)
+        {
+            Invoke("StopAttack", .5f);
+            Invoke("ResetCombo", comboResetTime);
+        }
+
+        else
+        {
+            Invoke("ResetCombo", .5f);
+        }
+
+        Debug.Log("Attack " + (_isLight ? "Light" : "Heavy") + " | Combo => " + comboCurrent.Count + " / " + comboMax);
     }
 
     /// <summary>
@@ -558,16 +593,19 @@ public class TDS_Player : TDS_Character
     {
         ComboCurrent = new List<bool>();
         IsAttacking = false;
+
+        Debug.Log("Reset Combo");
     }
 
     /// <summary>
     /// Stops this player's current attack if attacking
     /// </summary>
-    public virtual void StopAttack()
+    public override void StopAttack()
     {
         if (!IsAttacking) return;
 
         // Stop it, please
+        base.StopAttack();
     }
     #endregion
 
@@ -890,13 +928,8 @@ public class TDS_Player : TDS_Character
     {
         base.Flip();
 
-        // Also flip the aiming point, the velocity used to throw objects & the trajectory motion points used for preview
-        throwAimingPoint.x *= -1;
+        // Also flip the velocity used to throw objects
         throwVelocity.x *= -1;
-        for (int _i = 0; _i < throwTrajectoryMotionPoints.Length; _i++)
-        {
-            throwTrajectoryMotionPoints[_i].x *= -1;
-        }
     }
 
     /// <summary>
@@ -1051,6 +1084,15 @@ public class TDS_Player : TDS_Character
     private void DrawPreviewTrajectory()
     {
 
+    }
+
+    /// <summary>
+    /// Set this object animator to a new state.
+    /// </summary>
+    /// <param name="_state">ID of the new animator state. It is recommanded to use an animator enum value converted as int.</param>
+    public void SetAnimatorState(int _state)
+    {
+        animator.SetInteger("State", _state);
     }
     #endregion
 

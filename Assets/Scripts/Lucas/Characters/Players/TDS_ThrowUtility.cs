@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TDS_ThrowUtility 
 {
-	/* TDS_ThrowUtility :
+    /* TDS_ThrowUtility :
 	 *
 	 *	#####################
 	 *	###### PURPOSE ######
@@ -17,6 +17,15 @@ public class TDS_ThrowUtility
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[06 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+     *	    Finally converted the angle in radians, and it now works far much better. Yep.
+	 *
+	 *	-----------------------------------
+     * 
 	 *	Date :			[05 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -29,7 +38,7 @@ public class TDS_ThrowUtility
 	 *	-----------------------------------
 	*/
 
-	#region Methods
+    #region Methods
     /// <summary>
     /// Get motion point of a projectile trajectory.
     /// </summary>
@@ -41,11 +50,14 @@ public class TDS_ThrowUtility
     /// <returns></returns>
     public static Vector3[] GetThrowMotionPoints(Vector3 _from, Vector3 _to, float _velocity, float _angle, int _pointsAmount)
     {
+        // Converts the angle from degrees to radians
+        _angle *= Mathf.Deg2Rad;
+
         // Create and set variables
         if (_pointsAmount < 3) _pointsAmount = 3;
 
-        Vector3[] _motionPoints = new Vector3[_pointsAmount];
-        _motionPoints[0] = _from; _motionPoints[_pointsAmount - 1] = _to;
+        Vector3[] _motionPoints = new Vector3[_pointsAmount + 1];
+        _motionPoints[0] = _from; _motionPoints[_pointsAmount] = _to;
 
         // Get distance between in each point in x, z & on both
         float _xPointsDistance = (_to.x - _from.x) / _pointsAmount;
@@ -53,7 +65,7 @@ public class TDS_ThrowUtility
         float _xzPointsDistance = Mathf.Sqrt(Mathf.Pow(_xPointsDistance, 2) + Mathf.Pow(_zPointsDistance, 2));
 
         // Get each position
-        for (int _i = 1; _i < _pointsAmount - 1; _i++)
+        for (int _i = 1; _i < _pointsAmount; _i++)
         {
             float _t = (_xzPointsDistance * _i) / (_velocity * Mathf.Cos(_angle));
             float _x = _xPointsDistance * _i;
@@ -74,6 +86,9 @@ public class TDS_ThrowUtility
     /// <returns>Returns the velocity as a Vector3.</returns>
     public static Vector3 GetProjectileVelocityAsVector3(Vector3 _from, Vector3 _to, float _angle)
     {
+        // Converts the angle from degrees to radians
+        _angle *= Mathf.Deg2Rad;
+
         // Get the distance between the two points on x & z
         float _xzDistance = Mathf.Sqrt(Mathf.Pow(_to.x - _from.x, 2) + Mathf.Pow(_to.z - _from.z, 2));
 
