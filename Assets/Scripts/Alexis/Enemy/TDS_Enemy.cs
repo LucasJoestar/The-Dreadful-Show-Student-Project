@@ -212,6 +212,7 @@ public class TDS_Enemy : TDS_Character
                     yield return new WaitForSeconds(.1f); 
                 }
                 agent.StopAgent();
+                SetAnimationState(EnemyAnimationState.Idle); 
                 break; 
             #endregion
             #region Attacking
@@ -237,7 +238,7 @@ public class TDS_Enemy : TDS_Character
                     while (IsAttacking)
                     {
                         // yield return new WaitForEndOfFrame(); 
-                        yield return new WaitForSeconds(1);
+                        yield return new WaitForSeconds(.1f);
                     }
                 }
                 enemyState = EnemyState.MakingDecision;
@@ -365,11 +366,11 @@ public class TDS_Enemy : TDS_Character
     /// <param name="_attack">Attack to cast</param>
     protected virtual void Attack(TDS_EnemyAttack _attack)
     {
+        Debug.Log(_attack.AnimationID); 
         IsAttacking = true;
         _attack.ConsecutiveUses++;
         attacks.ToList().Where(a => a != _attack).ToList().ForEach(a => a.ConsecutiveUses = 0);
-        //SetAnimationState((EnemyAnimationState)_attack.AnimationID);
-        SetAnimationState(EnemyAnimationState.Idle);
+        SetAnimationState((EnemyAnimationState)_attack.AnimationID);
         hitBox.Activate(_attack); 
     }
     #endregion
