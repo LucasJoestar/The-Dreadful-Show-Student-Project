@@ -39,6 +39,15 @@ public class TDS_Enemy : TDS_Character
      *	
      *	- Adding the Method Behaviour 
      *	- This Method change the enemy state and call the necessary methods to make the agent act
+     *	
+     *	-----------------------------------
+     *	
+     *	Date :          [05/02/2019]
+     *	Author:         [THIEBAUT Alexis]
+     *	
+     *	[Implementation of the SetAnimationState Method]
+     *	
+     *	- The SetAnimationState Method set the int "animation State" in the enemy animator to play a linked animation
 	*/
 
     #region Events
@@ -46,6 +55,10 @@ public class TDS_Enemy : TDS_Character
     #endregion
 
     #region Fields / Properties
+
+    /* THINGS TO ADD IN THE FUTURE
+     * --> Add a spawner Owner 
+     */
 
     #region Variables
     /// <summary>
@@ -81,10 +94,6 @@ public class TDS_Enemy : TDS_Character
     protected TDS_Player playerTarget = null;
 
     [SerializeField] protected TDS_EnemyAttack[] attacks; 
-
-    /* THINGS TO ADD IN THE FUTURE
-     * --> Add a spawner Owner 
-     */
     #endregion
 
     #region Components and References
@@ -110,6 +119,7 @@ public class TDS_Enemy : TDS_Character
     {
         // If the enemy is dead or paralyzed, they can't behave
         if (isDead || IsParalyzed) yield break;
+        // If there is no target, the agent has to get one
         if (!playerTarget || playerTarget.IsDead)
             enemyState = EnemyState.Searching; 
         float _distance = 0;
@@ -118,14 +128,11 @@ public class TDS_Enemy : TDS_Character
             #region Searching
             case EnemyState.Searching:
                 // If there is no target, search a new target
-                //DETECTION
                 playerTarget = SearchTarget();
-                yield return new WaitForEndOfFrame();
                 //If a target is found -> Set the state to TakingDecision
                 if (playerTarget)
                 {
                     enemyState = EnemyState.MakingDecision;
-                    yield return new WaitForEndOfFrame();
                     goto case EnemyState.MakingDecision; 
                 }
                 //ELSE BREAK -> Set the state to Search
@@ -146,7 +153,6 @@ public class TDS_Enemy : TDS_Character
                     goto case EnemyState.Searching; 
                 }
                 _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                yield return new WaitForEndOfFrame();
                 SetAnimationState(EnemyAnimationState.Idle); 
                 /* If there is an attack that can be cast, go to attack case
                  * Check if the agent can grab an object, 
@@ -175,20 +181,21 @@ public class TDS_Enemy : TDS_Character
                 //Compute the path
                 // If there is something to throw, Move until reaching a position from where the player can be touched
                 // Be careful, the agent don't have to recalculate path when they have a Throwable
-                if(Throwable /*&& Check if the position can be reached*/ )
+
+                /*
+                if(Throwable && Check if the position can be reached )
                 {
                     // enemyState = EnemyState.GettingInRange;
                     // goto case EnemyState.GettingInRange;
                 }
+                */
+
                 if (agent.CheckDestination(playerTarget.transform.position))
                 {
                     enemyState = EnemyState.GettingInRange;
                     goto case EnemyState.GettingInRange; 
                 }
-                else //If can't be reached, search another target
-                {
-                    enemyState = EnemyState.Searching;
-                }
+                yield return new WaitForSeconds(1); 
                 break;
             #endregion
             #region Getting In Range
@@ -196,16 +203,18 @@ public class TDS_Enemy : TDS_Character
                 SetAnimationState(EnemyAnimationState.Run);
                 // Wait some time before calling again Behaviour(); 
                 // Still has to increase speed of the agent
-                yield return new WaitForSeconds(.5f);
-                
                 _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                if (attacks.Any(a => _distance < a.PredictedRange))
+                while(!attacks.Any(a => _distance < a.PredictedRange))
                 {
-                    agent.StopAgent(); 
-                    enemyState = EnemyState.Attacking;
-                    goto case EnemyState.Attacking;
+                    _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+                    if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
+                        Flip(); 
+                    //yield return new WaitForEndOfFrame();
+                    yield return new WaitForSeconds(.1f); 
                 }
-                break;
+                agent.StopAgent(); 
+                enemyState = EnemyState.Attacking;
+                goto case EnemyState.Attacking;
             #endregion
             #region Attacking
             case EnemyState.Attacking:
@@ -226,21 +235,19 @@ public class TDS_Enemy : TDS_Character
                         goto case EnemyState.MakingDecision;
                     }
                     //Cast Attack
-                    IsAttacking = true;
-                    SetAnimationState((EnemyAnimationState)_attack.AnimationID); 
+                    Attack(_attack); 
                     while (IsAttacking)
                     {
                         // yield return new WaitForEndOfFrame(); 
-                        yield return new WaitForSeconds(5);
-                        IsAttacking = false;
+                        yield return new WaitForSeconds(1);
                     }
                 }
                 enemyState = EnemyState.MakingDecision;
                 goto case EnemyState.MakingDecision;
             #endregion
             #region Grabbing Object
-            case EnemyState.GrabingObject:
-                //Grab an object
+            case EnemyState.PickingUpObject:
+                //Pick up an object
                 enemyState = EnemyState.MakingDecision;
                 goto case EnemyState.MakingDecision;
             #endregion
@@ -253,13 +260,13 @@ public class TDS_Enemy : TDS_Character
             default:
                 break;
         }
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(.1f);
         StartCoroutine(Behaviour());
         yield break; 
     }
     #endregion
 
-    #region TDS_EnemyAttack()
+    #region TDS_EnemyAttack
     /// <summary>
     /// Select the attack to cast
     /// If there is no attack return null
@@ -330,10 +337,26 @@ public class TDS_Enemy : TDS_Character
     /// Set the animation of the enemy to the animationID
     /// </summary>
     /// <param name="_animationID"></param>
-    void SetAnimationState(EnemyAnimationState _animationID)
+    protected void SetAnimationState(EnemyAnimationState _animationID)
     {
         if (!animator) return;
         animator.SetInteger("animationState", (int)_animationID); 
+    }
+
+    /// <summary>
+    /// Cast an attack: Add a use to the attack and activate the enemy hitbox with this attack
+    /// Set the animation to the animation state linked to the AnimationID of the attack 
+    /// Reset to 0 consecutive uses of the other attacks
+    /// </summary>
+    /// <param name="_attack">Attack to cast</param>
+    protected virtual void Attack(TDS_EnemyAttack _attack)
+    {
+        IsAttacking = true;
+        _attack.ConsecutiveUses++;
+        attacks.ToList().Where(a => a != _attack).ToList().ForEach(a => a.ConsecutiveUses = 0);
+        //SetAnimationState((EnemyAnimationState)_attack.AnimationID);
+        SetAnimationState(EnemyAnimationState.Idle);
+        hitBox.Activate(_attack); 
     }
     #endregion
 
