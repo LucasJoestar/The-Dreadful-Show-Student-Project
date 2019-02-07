@@ -22,6 +22,15 @@ public class TDS_Player : TDS_Character
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[07 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - 
+     * 
+     *  -----------------------------------
+     * 
      *  Date :			[05 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -108,24 +117,6 @@ public class TDS_Player : TDS_Character
 	 *
 	 *	-----------------------------------
 	*/
-
-    #region Enums
-    protected enum PlayerAnimations
-    {
-        Idle,               //      =>      0
-        Run,                //      =>      1
-        Jump,               //      =>      2
-        Fall,               //      =>      3
-        Hit,                //      =>      4
-        Die,                //      =>      5
-        Dodge,              //      =>      6
-        Catch,              //      =>      7
-        Throw,              //      =>      8
-        Parade  ,           //      =>      9
-        IdleWithObject,     //      =>      10
-        RunWithObject       //      =>      11
-    }
-    #endregion
 
     #region Events
 
@@ -291,6 +282,21 @@ public class TDS_Player : TDS_Character
         protected set
         {
             isJumping = value;
+        }
+    }
+
+    /// <summary>Backing field for <see cref="IsMoving"/>.</summary>
+    [SerializeField] protected bool isMoving = false;
+
+    /// <summary>
+    /// Is the player actually moving ?
+    /// </summary>
+    public bool IsMoving
+    {
+        get { return isMoving; }
+        protected set
+        {
+            isMoving = value;
         }
     }
 
@@ -519,6 +525,45 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
+    /// Drop the weared throwable.
+    /// </summary>
+    public override void DropObject()
+    {
+        base.DropObject();
+
+        // Updates the animator informations
+        SetAnimHasObject(true);
+    }
+
+    /// <summary>
+    /// Try to grab a throwable.
+    /// When grabbed, the object follows the character and can be thrown by this one.
+    /// </summary>
+    /// <param name="_throwable">Throwable to try to grab.</param>
+    /// <returns>Returns true if the throwable was successfully grabbed, false either.</returns>
+    public override bool GrabObject(TDS_Throwable _throwable)
+    {
+        bool _isGood = base.GrabObject(_throwable);
+        if (!_isGood) return false;
+
+        SetAnimHasObject(true);
+        return true;
+    }
+
+    /// <summary>
+    /// Prepare a throw, if not already preparing one.
+    /// </summary>
+    /// <returns>Returns true if successfully prepared a throw ; false if one is already, or if cannot do this.</returns>
+    public virtual bool PrepareThrow()
+    {
+        //if (isAiming || !Throwable) return false;
+    
+        isAiming = true;
+        aimCoroutine = StartCoroutine(Aim());
+        return true;
+    }
+
+    /// <summary>
     /// Stops the preparing throw, if preparing one.
     /// </summary>
     /// <returns>Returns true if canceled the throw, false if there was nothing to cancel.</returns>
@@ -537,16 +582,30 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
-    /// Prepare a throw, if not already preparing one.
+    /// Throws the weared throwable.
     /// </summary>
-    /// <returns>Returns true if successfully prepared a throw ; false if one is already, or if cannot do this.</returns>
-    public virtual bool PrepareThrow()
+    public override void ThrowObject()
     {
-        //if (isAiming || !Throwable) return false;
-    
-        isAiming = true;
-        aimCoroutine = StartCoroutine(Aim());
-        return true;
+        base.ThrowObject();
+
+        // Triggers the throw animation ;
+        // If not having throwable anymore (Always the case for players except for juggler), update the animator
+        SetAnimThrow();
+        if (!Throwable) SetAnimHasObject(false);
+    }
+
+    /// <summary>
+    /// Throws the weared throwable.
+    /// </summary>
+    /// <param name="_targetPosition">Position where the object should land</param>
+    public override void ThrowObject(Vector3 _targetPosition)
+    {
+        base.ThrowObject(_targetPosition);
+
+        // Triggers the throw animation ;
+        // If not having throwable anymore (Always the case for players except for juggler), update the animator
+        SetAnimThrow();
+        if (!Throwable) SetAnimHasObject(false);
     }
     #endregion
 
@@ -607,14 +666,26 @@ public class TDS_Player : TDS_Character
         // Stop it, please
         base.StopAttack();
     }
+
+    /// <summary>
+    /// Performs the Super attack if the gauge is filled enough.
+    /// </summary>
+    public virtual void SuperAttack()
+    {
+        // SUPER attack
+    }
     #endregion
 
+    #region Actions
     /// <summary>
     /// Performs the catch attack of this player.
     /// </summary>
     public virtual void Catch()
     {
         // Catch
+
+        // Triggers the associated animation
+        SetAnimCatch();
     }
 
     /// <summary>
@@ -624,8 +695,10 @@ public class TDS_Player : TDS_Character
     public virtual void Dodge()
     {
         // Dodge !
-
         IsInvulnerable = true;
+
+        // Triggers the associated animation
+        SetAnimDodge();
     }
 
     /// <summary>
@@ -647,14 +720,6 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
-    /// Performs the Super attack if the gauge is filled enough.
-    /// </summary>
-    public virtual void SuperAttack()
-    {
-        // SUPER attack
-    }
-
-    /// <summary>
     /// 
     /// </summary>
     public virtual void UseObject()
@@ -663,7 +728,9 @@ public class TDS_Player : TDS_Character
     }
     #endregion
 
-    #region Heal
+    #endregion
+
+    #region Health
     /// <summary>
     /// Method called when the object dies.
     /// Override this to implement code for a specific object.
@@ -671,6 +738,9 @@ public class TDS_Player : TDS_Character
     protected override void Die()
     {
         base.Die();
+
+        // Triggers associated animation
+        SetAnimDie();
     }
 
     /// <summary>
@@ -694,6 +764,9 @@ public class TDS_Player : TDS_Character
 
         // Is aiming, cancel the preparing throw
         if (isAiming) StopAiming();
+
+        // Triggers associated animation
+        SetAnimHit();
 
         return true;
     }
@@ -747,8 +820,23 @@ public class TDS_Player : TDS_Character
             if ((_horizontal > 0 && !isFacingRight) || (_horizontal < 0 && isFacingRight)) Flip();
 
             Move(new Vector3(_horizontal, 0, _vertical), true);
+
+            // If starting moving, update informations
+            if (!isMoving)
+            {
+                isMoving = true;
+
+                SetAnimIsMoving(true);
+            }
         }
-        else SpeedCurrent = 0;
+        // If stoping moving, update informations
+        else if (isMoving)
+        {
+            isMoving = false;
+            SpeedCurrent = 0;
+
+            SetAnimIsMoving(false);
+        }
 
         // When pressing the jump method, check if on ground ; If it's all good, then let's jump
         if (Input.GetButtonDown(JumpButton) && IsGrounded)
@@ -828,7 +916,7 @@ public class TDS_Player : TDS_Character
                 {
                     _xLimit = _touchedColliders.Select(c => c.bounds.center.x + c.bounds.extents.x).OrderBy(c => c).Last();
 
-                    _newPosition.x = _xLimit + _colliderExtents.x + collider.center.x + .0001f;
+                    _newPosition.x = _xLimit + (_colliderExtents.x - collider.center.x) + .0001f;
                 }
 
                 _movementVector.x = _newPosition.x - previousPosition.x;
@@ -867,7 +955,7 @@ public class TDS_Player : TDS_Character
                 {
                     _yLimit = _touchedColliders.Select(c => c.bounds.center.y + c.bounds.extents.y).OrderBy(c => c).Last();
 
-                    _newPosition.y = _yLimit + _colliderExtents.y + collider.center.y + .0001f;
+                    _newPosition.y = _yLimit + (_colliderExtents.y - collider.center.y) + .0001f;
                 }
 
                 _movementVector.y = _newPosition.y - previousPosition.y;
@@ -906,7 +994,7 @@ public class TDS_Player : TDS_Character
                 {
                     _zLimit = _touchedColliders.Select(c => c.bounds.center.z + c.bounds.extents.z).OrderBy(c => c).Last();
 
-                    _newPosition.z = _zLimit + _colliderExtents.z + collider.center.z + .0001f;
+                    _newPosition.z = _zLimit + (_colliderExtents.z - collider.center.z) + .0001f;
                 }
 
                 _movementVector.z = _newPosition.z - previousPosition.z;
@@ -1077,6 +1165,90 @@ public class TDS_Player : TDS_Character
     }
     #endregion
 
+    #region Animator
+
+    #region Triggers
+    /// <summary>
+    /// Set this player catch animation.
+    /// </summary>
+    public void SetAnimCatch()
+    {
+        animator.SetTrigger("Catch");
+    }
+
+    /// <summary>
+    /// Set this player dying animation.
+    /// </summary>
+    public void SetAnimDie()
+    {
+        animator.SetTrigger("Die");
+    }
+
+    /// <summary>
+    /// Set this player dodge animation.
+    /// </summary>
+    public void SetAnimDodge()
+    {
+        animator.SetTrigger("Dodge");
+    }
+
+    /// <summary>
+    /// Set this player hit animation.
+    /// </summary>
+    public void SetAnimHit()
+    {
+        animator.SetTrigger("Hit");
+    }
+
+    /// <summary>
+    /// Set this player throw animation.
+    /// </summary>
+    public void SetAnimThrow()
+    {
+        animator.SetTrigger("Throw");
+    }
+    #endregion
+
+    #region Others
+    /// <summary>
+    /// Set this player animator ground state.
+    /// </summary>
+    /// <param name="_state">Negative value when falling, null if on ground & positive if propelled in the air.</param>
+    public void SetAnimGroundState(int _state)
+    {
+        animator.SetInteger("GroundState", _state);
+    }
+
+    /// <summary>
+    /// Set this player animator information if has an object in hand or not.
+    /// </summary>
+    /// <param name="_hasObject">Does this player has an object in hands ?</param>
+    public void SetAnimHasObject(bool _hasObject)
+    {
+        animator.SetBool("HasObject", _hasObject);
+    }
+
+    /// <summary>
+    /// Set this player animator information if parrying or not.
+    /// </summary>
+    /// <param name="_isParrying">Is this player parrying or not ?</param>
+    public void SetAnimIsParrying(bool _isParrying)
+    {
+        animator.SetBool("IsParrying", _isParrying);
+    }
+
+    /// <summary>
+    /// Set this player animator information if moving or not.
+    /// </summary>
+    /// <param name="_isParrying">Is this player moving or not ?</param>
+    public void SetAnimIsMoving(bool _isMoving)
+    {
+        animator.SetBool("IsMoving", _isMoving);
+    }
+    #endregion
+
+    #endregion
+
     #region Others
     /// <summary>
     /// Draws the preview trajectory of the player throw, when aiming.
@@ -1084,15 +1256,6 @@ public class TDS_Player : TDS_Character
     private void DrawPreviewTrajectory()
     {
 
-    }
-
-    /// <summary>
-    /// Set this object animator to a new state.
-    /// </summary>
-    /// <param name="_state">ID of the new animator state. It is recommanded to use an animator enum value converted as int.</param>
-    public void SetAnimatorState(int _state)
-    {
-        animator.SetInteger("State", _state);
     }
     #endregion
 
@@ -1117,6 +1280,15 @@ public class TDS_Player : TDS_Character
     {
         // Set the player as grounded if something is detected in the ground detection box
         IsGrounded = groundDetectionBox.Overlap(transform.position).Length > 0;
+
+        // Updates the ground state information in the animator
+        int _groundState = 0;
+        if (!isGrounded)
+        {
+            _groundState = rigidbody.velocity.y < 0 ? -1 : 1;
+        }
+
+        SetAnimGroundState(_groundState);
     }
 
     // LateUpdate is called every frame, if the Behaviour is enabled
