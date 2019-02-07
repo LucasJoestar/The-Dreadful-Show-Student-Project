@@ -189,11 +189,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canBeTakeByEnemies: 0
   isHeld: 0
+  isHoldByPlayer: 0
   damageMaxObject: 7
   damageMinObject: 2
   objectDurability: 10
   rigidbody: {fileID: 0}
-  isHoldByPlayer: 0
+  whatEnemyCanHit:
+    serializedVersion: 2
+    m_Bits: 0
+  whatPlayerCanHit:
+    serializedVersion: 2
+    m_Bits: 0
   owner: {fileID: 0}
   rootCharacterObject: {fileID: 0}
 --- !u!212 &191476910
@@ -249,7 +255,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 191476905}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.3960495, y: 27.3, z: -5.110466}
+  m_LocalPosition: {x: -1.6, y: 27.3, z: -5.110466}
   m_LocalScale: {x: 10, y: 10, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

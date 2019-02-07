@@ -39,18 +39,16 @@ public class TDS_Throwable : MonoBehaviour
     [SerializeField]
     bool isHeld = false;
     [SerializeField]
-    int damageMaxObject = 7;
+    bool isHoldByPlayer = false;
     [SerializeField]
-    int damageMinObject = 2;
+    float objectSpeed = 15f;
     [SerializeField,Range(0,10)]
     int objectDurability = 10;
     [SerializeField]
-    new Rigidbody rigidbody = null;
+    new Rigidbody rigidbody = null;    
     #endregion
     #region PlayerSettings
-    [SerializeField, Header("Character settings")]
-    bool isHoldByPlayer = false;    
-    [SerializeField]
+    [SerializeField, Header("Character settings")]       
     TDS_Character owner;
     [SerializeField]
     Transform rootCharacterObject;
@@ -61,16 +59,34 @@ public class TDS_Throwable : MonoBehaviour
     #region Original Methods
     void Drop()
     {
-
+        if (!isHeld) return;
+        rigidbody.isKinematic = false;
+        isHeld = false;
     }
-    void PickUp()
+    void DestroyThrowableObject()
+    {
+        Destroy(gameObject);
+    }
+    void PickUp(TDS_Character _carrier)
     {
         //check here who PickUp the object
         //get the object root 
+        //if (!canBeTakeByEnemies) return;
+
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        rigidbody.isKinematic = true;
+        transform.position = rootCharacterObject.transform.position;
+        isHeld = true;
+        
+        if(_carrier is TDS_Player)
+        {
+            isHoldByPlayer = true;
+        }
+
     }
     void Throw(/*positionFinal (where throw the object)*/)
     {
-
+        rigidbody.velocity = transform.right * objectSpeed;
     }    
 	#endregion
 
