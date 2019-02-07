@@ -245,7 +245,7 @@ Prefab:
     - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
         type: 2}
       propertyPath: attacks.Array.data[0].cooldown
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 65303339487346324, guid: 1952cdc97814b8543ab7cc5e2027c418,
         type: 2}
@@ -256,6 +256,21 @@ Prefab:
         type: 2}
       propertyPath: m_Center.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: isFacingRight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: enemyState
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: detectionRange
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114476461593783234, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
@@ -296,7 +311,7 @@ GameObject:
   - component: {fileID: 154249905}
   - component: {fileID: 154249904}
   - component: {fileID: 154249903}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -381,7 +396,7 @@ GameObject:
   - component: {fileID: 317021161}
   - component: {fileID: 317021160}
   - component: {fileID: 317021159}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -466,7 +481,7 @@ GameObject:
   - component: {fileID: 438095086}
   - component: {fileID: 438095085}
   - component: {fileID: 438095084}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -551,7 +566,7 @@ GameObject:
   - component: {fileID: 460903697}
   - component: {fileID: 460903696}
   - component: {fileID: 460903695}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -714,7 +729,7 @@ MonoBehaviour:
   throwPreviewPrecision: 10
   WhatIsObstacle:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 48
   playerType: 4
 --- !u!54 &1121461184
 Rigidbody:
@@ -927,7 +942,7 @@ GameObject:
   - component: {fileID: 1410134310}
   - component: {fileID: 1410134309}
   - component: {fileID: 1410134308}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
