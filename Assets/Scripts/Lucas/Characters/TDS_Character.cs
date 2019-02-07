@@ -18,7 +18,17 @@ public class TDS_Character : TDS_Damageable
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	#####################
+     * 
+     *  Date :			[06 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
 	 *
+	 *	Changes :
+     *	
+     *	    - Added the isAttacking field.
+     *	    - Added the StopAttack method.
+	 *
+	 *	-----------------------------------
+     * 
      *  Date :			[05 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -115,12 +125,22 @@ public class TDS_Character : TDS_Damageable
     #endregion
 
     #region Variables
+    /// <summary>Backing field for <see cref="IsAttacking"/>.</summary>
+    [SerializeField] protected bool isAttacking = false;
+
     /// <summary>
     /// Is this character currently attacking, or not ?
     /// </summary>
-    public bool IsAttacking { get; protected set; } = false;
+    public bool IsAttacking
+    {
+        get { return isAttacking; }
+        protected set
+        {
+            isAttacking = value;
+        }
+    }
 
-    /// <summary>Backing field for <see cref="IsFacingRight"/></summary>
+    /// <summary>Backing field for <see cref="IsFacingRight"/>.</summary>
     [SerializeField] protected bool isFacingRight = true;
 
     /// <summary>

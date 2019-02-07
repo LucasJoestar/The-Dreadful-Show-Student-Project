@@ -31,13 +31,8 @@ public class TDS_Attack
 	*/
 
     #region Fields / Properties
-    /// <summary>
-    /// ID of the animation used to play this attack.
-    /// </summary>
-    public int AnimationID = 0;
-
     /// <summary>Backing field for <see cref="DamagesMax"/></summary>
-    protected int damagesMax = 1;
+    [SerializeField] protected int damagesMax = 1;
 
     /// <summary>
     /// The maximum amount of damages this attack can inflict.
@@ -56,7 +51,7 @@ public class TDS_Attack
     }
 
     /// <summary>Backing field for <see cref="DamagesMin"/></summary>
-    protected int damagesMin = 1;
+    [SerializeField] protected int damagesMin = 1;
 
     /// <summary>
     /// The minimum amount of damages this attack can inflict.
