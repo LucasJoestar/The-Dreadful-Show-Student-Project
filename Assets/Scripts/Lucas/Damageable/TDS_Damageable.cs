@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(BoxCollider), typeof(Animator))]
 public class TDS_Damageable : PunBehaviour
 {
     /* TDS_Damageable :
@@ -19,6 +19,26 @@ public class TDS_Damageable : PunBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     * 
+     *	Date :			[24 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+     *      - Modified the IsDead property.
+     *      - Modified the debugs for component missing in Awake.
+     *      
+	 *	-----------------------------------
+     *	Date :			[23 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+     *      - Added the IsIndestructible property.
+     *      - Modified the IsDead, & HealthCurrent properties.
+     *      - Removed the Sprite property.
+     *      
+	 *	-----------------------------------
      *	Date :			[16 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -26,6 +46,7 @@ public class TDS_Damageable : PunBehaviour
 	 *
      *      - Added the OnHeal event.
      *      - Added the Heal method.
+     *      
 	 *	-----------------------------------
      * 
 	 *	Date :			[15 / 01 / 2019]
@@ -81,17 +102,10 @@ public class TDS_Damageable : PunBehaviour
     /// </summary>
     [SerializeField] protected new BoxCollider collider = null;
 
-    /// <summary>Backing field for <see cref="Sprite"/></summary>
-    [SerializeField] protected SpriteRenderer sprite = null;
-
     /// <summary>
     /// The sprite renderer used to render this object in the scene.
     /// </summary>
-    public SpriteRenderer Sprite
-    {
-        get { return sprite; }
-        private set { sprite = value; }
-    }
+    [SerializeField] protected SpriteRenderer sprite = null;
     #endregion
 
     #region Variables
@@ -107,11 +121,29 @@ public class TDS_Damageable : PunBehaviour
         get { return isDead; }
         set
         {
-            // If the damageable is indestructible, it cannot be dead
-            // So, return
-            if (IsIndestructible && value == true) return;
+            // When setting the value, check some parameters and set values if needed
+            if (value == true)
+            {
+                // If the damageable is indestructible, it cannot be dead
+                // So, return
+                if (IsIndestructible) return;
+                if (healthCurrent > 0)
+                {
+                    HealthCurrent = 0;
+                    return;
+                }
+            }
+            else if (healthCurrent == 0)
+            {
+                HealthCurrent = 1;
+            }
+            isDead = value;
 
-            animator?.SetBool("IsDead", value);
+            #if UNITY_EDITOR
+            if (!UnityEditor.EditorApplication.isPlaying) return;
+            #endif
+
+            if (animator) animator.SetBool("IsDead", value);
             if (value == true)
             {
                 OnDie?.Invoke();
@@ -120,11 +152,22 @@ public class TDS_Damageable : PunBehaviour
         }
     }
 
+    /// <summary>Backing field for <see cref="IsIndestructible"/></summary>
+    [SerializeField] protected bool isIndestructible = false;
+
     /// <summary>
     /// When indestructible, the damageable cannot be destroyed, even if its life goes below or equals zero.
     /// Useful for an never-end life punching ball.
     /// </summary>
-    public bool IsIndestructible = false;
+    public bool IsIndestructible
+    {
+        get { return isIndestructible; }
+        set
+        {
+            isIndestructible = value;
+            if (healthCurrent == 0) IsDead = true;
+        }
+    }
 
     /// <summary>
     /// When invulnerable, the object cannot take any damage and its health will not decrease.
@@ -148,11 +191,14 @@ public class TDS_Damageable : PunBehaviour
             healthCurrent = value;
 
             OnHealthChanged?.Invoke(value);
+
+            if (value == 0) IsDead = true;
+            else if (isDead) IsDead = false;
         }
     }
 
     /// <summary>Backing field for <see cref="HealthMax"/></summary>
-    [SerializeField] protected int healthMax = 0;
+    [SerializeField] protected int healthMax = 1;
 
     /// <summary>
     /// The maximum health of the object.
@@ -161,11 +207,13 @@ public class TDS_Damageable : PunBehaviour
     /// </summary>
     public int HealthMax
     {
-        get { return HealthMax; }
+        get { return healthMax; }
         set
         {
             if (value <= 0) value = 1;
             healthMax = value;
+
+            if (healthCurrent > value) HealthCurrent = value;
         }
     }
     #endregion
@@ -222,16 +270,20 @@ public class TDS_Damageable : PunBehaviour
     protected virtual void Awake()
     {
         // Try yo get components references of they are missing
-        if (!animator) animator = GetComponent<Animator>();
+        if (!animator)
+        {
+            animator = GetComponent<Animator>();
+            if (!animator) Debug.LogWarning("The Animator of \"" + name + "\" for script TDS_Damageable is missing !");
+        }
         if (!collider)
         {
             collider = GetComponent<BoxCollider>();
-            if (!collider) Debug.LogWarning("The Damageable " + name + " Collider is missing !");
+            if (!collider) Debug.LogWarning("The Collider of \"" + name + "\" for script TDS_Damageable is missing !");
         }
         if (!sprite)
         {
             sprite = GetComponent<SpriteRenderer>();
-            if (!sprite) Debug.LogWarning("The Damageable " + name + " SpriteRenderer is missing !");
+            if (!sprite) Debug.LogWarning("The SpriteRenderer of \"" + name + "\" for script TDS_Damageable is missing !");
         }
     }
 

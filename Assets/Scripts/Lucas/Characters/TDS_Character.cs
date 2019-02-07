@@ -19,6 +19,27 @@ public class TDS_Character : TDS_Damageable
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[05 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Added the OnFlip event.
+     *	    - Added the throwAimingPoint field ; and the aimAngle field & property.
+	 *
+	 *	-----------------------------------
+     * 
+     *  Date :			[24 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Modified the SpeedMax & SpeedInitial properties.
+     *	    - Modified the debugs for component missing in Awake.
+     *	    - Removed the attacks field & property.
+	 *
+	 *	-----------------------------------
+     * 
      *  Date :			[22 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -61,7 +82,10 @@ public class TDS_Character : TDS_Damageable
 	*/
 
     #region Events
-
+    /// <summary>
+    /// Event called when the character flip on the X axis.
+    /// </summary>
+    public event Action OnFlip = null;
     #endregion
 
     #region Fields / Properties
@@ -91,26 +115,13 @@ public class TDS_Character : TDS_Damageable
     #endregion
 
     #region Variables
-    /// <summary>Backing field for <see cref="Attacks"/></summary>
-    [SerializeField] protected List<TDS_Attack> attacks = new List<TDS_Attack>();
-
     /// <summary>
-    /// All attacks this character can perform.
-    /// Contains informations about their animation, damages, effect and others.
-    /// </summary>
-    public List<TDS_Attack> Attacks
-    {
-        get { return attacks; }
-        protected set { attacks = value; }
-    }
-
-    /// <summary>
-    /// Can this character attack or not ?
+    /// Is this character currently attacking, or not ?
     /// </summary>
     public bool IsAttacking { get; protected set; } = false;
 
     /// <summary>Backing field for <see cref="IsFacingRight"/></summary>
-    protected bool isFacingRight = true;
+    [SerializeField] protected bool isFacingRight = true;
 
     /// <summary>
     /// Indicates which side the character is facing.
@@ -194,7 +205,7 @@ public class TDS_Character : TDS_Damageable
         get { return speedInitial; }
         set
         {
-            if (value < 0) value = 0;
+            value = Mathf.Clamp(value, 0, speedMax);
             speedInitial = value;
         }
     }
@@ -213,8 +224,31 @@ public class TDS_Character : TDS_Damageable
         {
             if (value < 0) value = 0;
             speedMax = value;
+
+            if (speedCurrent > value) SpeedCurrent = value;
         }
     }
+
+    /// <summary>Backing field for <see cref="AimAngle"/>.</summary>
+    [SerializeField] protected int aimAngle = 45;
+
+    /// <summary>
+    /// Angle used to aim and throw objects.
+    /// </summary>
+    public int AimAngle
+    {
+        get { return aimAngle; }
+        set
+        {
+            value = Mathf.Clamp(value, 0, 90);
+            aimAngle = value;
+        }
+    }
+
+    /// <summary>
+    /// Point where the character is aiming to throw (Local space).
+    /// </summary>
+    [SerializeField] protected Vector3 throwAimingPoint = Vector3.zero;
     #endregion
 
     #endregion
@@ -223,16 +257,23 @@ public class TDS_Character : TDS_Damageable
 
     #region Original Methods
     /// <summary>
+    /// Stop or ends the current attack of the character.
+    /// </summary>
+    public virtual void StopAttack()
+    {
+        IsAttacking = false;
+        hitBox.Desactivate();
+    }
+
+    /// <summary>
     /// Flips this character to have they looking at the opposite side.
     /// </summary>
-    public void Flip()
+    public virtual void Flip()
     {
+        isFacingRight = !isFacingRight;
         transform.Rotate(Vector3.up, 180);
 
-        // Rotates the sprite transform in X axis to match the camera orientation
-        sprite.transform.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, sprite.transform.eulerAngles.y, sprite.transform.eulerAngles.z);
-
-        isFacingRight = !isFacingRight;
+        OnFlip?.Invoke();
     }
 
     /// <summary>
@@ -270,6 +311,14 @@ public class TDS_Character : TDS_Damageable
     /// <summary>
     /// Throws the weared throwable.
     /// </summary>
+    public virtual void ThrowObject()
+    {
+        // Throw it
+    }
+
+    /// <summary>
+    /// Throws the weared throwable.
+    /// </summary>
     /// <param name="_targetPosition">Position where the object should land</param>
     public virtual void ThrowObject(Vector3 _targetPosition)
     {
@@ -293,12 +342,12 @@ public class TDS_Character : TDS_Damageable
         if (!hitBox)
         {
             hitBox = GetComponentInChildren<TDS_HitBox>();
-            if (!hitBox) Debug.LogWarning("The Character " + name + " HitBox is missing !");
+            if (!hitBox) Debug.LogWarning("The HitBox of \"" + name + "\" for script TDS_Character is missing !");
         }
         if (!rigidbody)
         {
             rigidbody = GetComponent<Rigidbody>();
-            if (!rigidbody) Debug.LogWarning("The Character " + name + " Rigidbody is missing !");
+            if (!rigidbody) Debug.LogWarning("The Rigidbody of \"" + name + "\" for script TDS_Character is missing !");
         }
     }
 

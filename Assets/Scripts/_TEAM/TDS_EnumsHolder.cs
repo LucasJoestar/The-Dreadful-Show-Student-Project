@@ -19,6 +19,24 @@
  *	    - Added the PlayerType enum.
  *
  *	-----------------------------------
+ *	
+ *	Date :			[22 / 01 / 2019]
+ *	Author :		[THIEBAUT Alexis]
+ *
+ *	Changes :
+ *
+ *  Adding more enums.
+ *  	- Added the EnemyState enum.
+ *  	
+ *  -----------------------------------
+ *	
+ *	Date :			[04 / 02 / 2019]
+ *	Author :		[THIEBAUT Alexis]
+ *
+ *	Changes :
+ *
+ *  Adding more enums.
+ *  	- Added the EnemyAnimationState enum.
 */
 
 public enum PlayerType
@@ -28,4 +46,30 @@ public enum PlayerType
     FireEater,
     Juggler,
     Unknown
+}
+
+public enum EnemyState
+{
+    Searching, 
+    MakingDecision, 
+    ComputingPath, 
+    GettingInRange, 
+    Attacking, 
+    PickingUpObject, 
+    ThrowingObject
+}
+
+public enum EnemyAnimationState
+{
+    Idle, 
+    Run, 
+    Hit, 
+    Grounded, 
+    GrabObject, 
+    ThrowObject,
+    AttackOne, 
+    AttackTwo, 
+    AttackThree, 
+    SpecialAttack,
+    Death
 }
