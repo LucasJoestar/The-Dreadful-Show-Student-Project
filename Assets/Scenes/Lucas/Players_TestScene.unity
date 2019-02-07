@@ -278,7 +278,7 @@ BoxCollider:
   m_GameObject: {fileID: 342853453}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -500,8 +500,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 559157257}
-  - component: {fileID: 559157253}
   - component: {fileID: 559157256}
+  - component: {fileID: 559157253}
+  - component: {fileID: 559157259}
   - component: {fileID: 559157252}
   - component: {fileID: 559157255}
   - component: {fileID: 559157254}
@@ -643,9 +644,10 @@ MonoBehaviour:
   isAiming: 0
   isGrounded: 1
   isJumping: 0
+  isMoving: 0
   comboCurrent: 
   comboResetTime: 1.84
-  JumpForce: 200
+  JumpForce: 300
   jumpMaximumTime: 1.5
   comboMax: 3
   throwPreviewPrecision: 10
@@ -756,6 +758,24 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 0
   m_Loop: 0
+--- !u!95 &559157259
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 559157251}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &599322017
 GameObject:
   m_ObjectHideFlags: 0
@@ -1183,8 +1203,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1627761209}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1, z: 1.7153}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalScale: {x: 1.5, y: 1, z: 1.25}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -1367,17 +1387,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46afb548b06cab54da7400c370b424f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  collider: {fileID: 0}
-  sprite: {fileID: 0}
+  animator: {fileID: 1883192562}
+  collider: {fileID: 1883192566}
+  sprite: {fileID: 419225706}
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
   healthCurrent: 0
   healthMax: 1
-  hitBox: {fileID: 0}
+  hitBox: {fileID: 342853456}
   healthBar: {fileID: 0}
-  rigidbody: {fileID: 0}
+  rigidbody: {fileID: 1883192564}
   Throwable: {fileID: 0}
   isFacingRight: 0
   IsPacific: 0
@@ -1385,21 +1405,21 @@ MonoBehaviour:
   speedAccelerationTime: 0.5
   speedCoef: 1
   speedCurrent: 0
-  speedInitial: 1
-  speedMax: 2
+  speedInitial: 2
+  speedMax: 5
   aimAngle: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
-  lineRenderer: {fileID: 0}
+  lineRenderer: {fileID: 1883192568}
   Summoner: {fileID: 0}
   interactionsDetector: {fileID: 0}
   groundDetectionBox:
     Color: {r: 0, g: 1, b: 0, a: 1}
     WhatDetect:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 48
     TriggerInteraction: 1
     LocalPosition: {x: 0, y: 0, z: 0}
-    Size: {x: 1, y: 1, z: 1}
+    Size: {x: 1, y: 0.5, z: 1}
   CatchButton: Catch
   CancelThrowButton: Cancel Throw
   DodgeButton: Dodge
@@ -1417,16 +1437,17 @@ MonoBehaviour:
   isAiming: 0
   isGrounded: 1
   isJumping: 0
+  isMoving: 0
   comboCurrent: 
   comboResetTime: 2
-  JumpForce: 1
+  JumpForce: 250
   jumpMaximumTime: 1.5
-  comboMax: 3
+  comboMax: 1
   throwPreviewPrecision: 10
   WhatIsObstacle:
     serializedVersion: 2
-    m_Bits: 0
-  playerType: 4
+    m_Bits: 32
+  playerType: 3
   Throwables: []
 --- !u!65 &1883192566
 BoxCollider:
@@ -1447,7 +1468,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1883192561}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.82, y: 0, z: -3}
+  m_LocalPosition: {x: -1.82, y: 0.458, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 342853454}
@@ -1678,10 +1699,10 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2014228503}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.06495623, y: -0, z: -0, w: 0.99788815}
   m_LocalPosition: {x: 0, y: 2.2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 7.4490004, y: 0, z: 0}
