@@ -122,10 +122,12 @@ public sealed class TDS_EditorUtility
         headerStyle.fontStyle = FontStyle.Bold;
         headerStyle.fontSize = 12;
         headerStyle.padding = new RectOffset(3, 3, 3, 3);
+        headerStyle.normal.textColor = EditorGUIUtility.isProSkin ? Color.white : Color.black;
 
         labelStyle = new GUIStyle();
         labelStyle.fontSize = 11;
         labelStyle.padding = new RectOffset(15, 15, 0, 0);
+        labelStyle.normal.textColor = EditorGUIUtility.isProSkin ? Color.white : Color.black;
 
         // Set the boolean indicating all styles have been loaded
         isLoaded = true;
