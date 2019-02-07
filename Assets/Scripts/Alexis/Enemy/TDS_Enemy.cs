@@ -447,7 +447,7 @@ public class TDS_Enemy : TDS_Character
     protected override void Update()
     {
         base.Update();
-	}
+    }
 	#endregion
 
 	#endregion
