@@ -175,6 +175,7 @@ public class TDS_Enemy : TDS_Character
                 */
                 if (attacks.Any(a => _distance < a.PredictedRange))
                 {
+                    yield return new WaitForSeconds(.2f); 
                     enemyState = EnemyState.Attacking;
                     goto case EnemyState.Attacking; 
                 }
