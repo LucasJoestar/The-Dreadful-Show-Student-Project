@@ -22,7 +22,14 @@ public class TDS_EnemyAttack : TDS_Attack
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	#####################
+     *	
+	 *	Date :			[06/02/2019]
+	 *	Author :		[THIEBAUT Alexis]
 	 *
+	 *	Changes : Adding a variable Attack Cooldown
+	 *
+	 *	-----------------------------------
+     *	
 	 *	Date :			[24/01/2019]
 	 *	Author :		[THIEBAUT Alexis]
 	 *
@@ -84,6 +91,16 @@ public class TDS_EnemyAttack : TDS_Attack
 
     #region float 
     /// <summary>
+    /// Backing field <see cref="Cooldown"/>
+    /// </summary>
+    [SerializeField] private float cooldown = 3; 
+    /// <summary>
+    /// Cooldown of the attack.
+    /// The enemy has to wait this time (in seconds) before attacking again
+    /// </summary>
+    public float Cooldown { get { return cooldown; } }
+
+    /// <summary>
     /// Backing field <see cref="PredictedRange"/>
     /// </summary>
     [SerializeField] private float predictedRange = 0;
@@ -103,6 +120,7 @@ public class TDS_EnemyAttack : TDS_Attack
             else predictedRange = value; 
         }
     }
+
     /// <summary>
     /// Probability to cast this attack over 100.
     /// </summary>
@@ -118,33 +136,5 @@ public class TDS_EnemyAttack : TDS_Attack
         }
     }
     #endregion
-    #endregion
-
-    #region Methods
-
-    #region Original Methods
-
-    #endregion
-
-    #region Unity Methods
-    // Awake is called when the script instance is being loaded
-    private void Awake()
-    {
-
-    }
-
-	// Use this for initialization
-    private void Start()
-    {
-		
-    }
-	
-	// Update is called once per frame
-	private void Update()
-    {
-        
-	}
-	#endregion
-
 	#endregion
 }
