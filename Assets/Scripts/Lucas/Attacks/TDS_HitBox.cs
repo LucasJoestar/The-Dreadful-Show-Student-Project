@@ -154,7 +154,7 @@ public class TDS_HitBox : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // If the collider object should be hit, hit it
-        
+
         // Check tag instead of layer
         if (WhatHit != (WhatHit | (1 << other.gameObject.layer))) return;
 
@@ -164,6 +164,7 @@ public class TDS_HitBox : MonoBehaviour
 
         // Deal damages and apply effect
         Debug.Log(owner.name + " attack " + other.name + " !");
+        _target.TakeDamage(CurrentAttack.GetDamages);
 
         TouchedObjects.Add(other, _target);
     }
@@ -174,7 +175,14 @@ public class TDS_HitBox : MonoBehaviour
         // Removes object from the list of touched objects if it was in
         if (TouchedObjects.ContainsKey(other)) TouchedObjects.Remove(other);
     }
-	#endregion
 
-	#endregion
+    // Use this for initialization
+    private void Start()
+    {
+        // Desactivate the hitbox at start time
+        Desactivate();
+    }
+    #endregion
+
+    #endregion
 }

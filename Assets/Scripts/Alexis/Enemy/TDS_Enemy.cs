@@ -220,7 +220,6 @@ public class TDS_Enemy : TDS_Character
                 _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
                 while(!attacks.Any(a => _distance < a.PredictedRange))
                 {
-                    Debug.Log(agent.Velocity.magnitude); 
                     _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
                     if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
                         Flip(); 
@@ -333,7 +332,7 @@ public class TDS_Enemy : TDS_Character
         TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(c => c.GetComponent<TDS_Player>() != null && c.gameObject != this.gameObject).Select(d => d.GetComponent<TDS_Player>()).ToArray();
         if (_targets.Length == 0) return null; 
         //Set constraints here (Distance, type, etc...)
-        return _targets.OrderBy(d => Vector3.Distance(transform.position, d.transform.position)).FirstOrDefault(); 
+        return _targets.Where(t => !t.IsDead).OrderBy(d => Vector3.Distance(transform.position, d.transform.position)).FirstOrDefault(); 
     }
     #endregion
 
@@ -433,7 +432,9 @@ public class TDS_Enemy : TDS_Character
     protected override void Awake()
     {
         base.Awake();
-        agent.OnDestinationReached += () => enemyState = EnemyState.MakingDecision; 
+        agent.OnDestinationReached += () => enemyState = EnemyState.MakingDecision;
+        OnDie += () => StopAllCoroutines();
+        OnDie += () => agent.StopAgent(); 
     }
 
     // Use this for initialization
