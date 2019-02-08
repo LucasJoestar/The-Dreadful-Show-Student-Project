@@ -857,14 +857,18 @@ public class TDS_Player : TDS_Character
         // If parrying, do not take damage
         if (isParrying) return false;
 
-        bool _isTakingDamage = base.TakeDamage(_damage);
-        if (!_isTakingDamage) return false;
+        // Executes base method
+        if (!base.TakeDamage(_damage)) return false;
 
         // Is aiming, cancel the preparing throw
         if (isAiming) StopAiming();
 
-        // Triggers associated animation
-        SetAnimHit();
+        // If not dead, be just hit
+        if (!isDead)
+        {
+            // Triggers associated animation
+            SetAnimHit();
+        }
 
         return true;
     }
@@ -1432,6 +1436,9 @@ public class TDS_Player : TDS_Character
     // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations
     protected virtual void FixedUpdate()
     {
+        // If dead, return
+        if (isDead) return;
+
         // Checks if the player is grounded or not, and all related elements
         CheckGrounded();
     }
@@ -1439,6 +1446,9 @@ public class TDS_Player : TDS_Character
     // LateUpdate is called every frame, if the Behaviour is enabled
     private void LateUpdate()
     {
+        // If dead, return
+        if (isDead) return;
+
         // At the end of the frame, set the previous position as this one
         previousPosition = transform.position;
         previousColliderPosition = collider.bounds.center;
@@ -1466,6 +1476,9 @@ public class TDS_Player : TDS_Character
 	// Update is called once per frame
 	protected override void Update ()
     {
+        // If dead, return
+        if (isDead) return;
+
         base.Update();
 
         // Adjust the position of the player for each axis of the rigidbody velocity where a force is exercised
