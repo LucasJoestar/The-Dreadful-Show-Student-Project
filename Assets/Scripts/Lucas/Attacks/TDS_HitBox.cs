@@ -175,18 +175,6 @@ public class TDS_HitBox : MonoBehaviour
         // Removes object from the list of touched objects if it was in
         if (TouchedObjects.ContainsKey(other)) TouchedObjects.Remove(other);
     }
-
-    // Use this for initialization
-    private void Start ()
-    {
-		
-    }
-	
-	// Update is called once per frame
-	private void Update ()
-    {
-        
-	}
 	#endregion
 
 	#endregion

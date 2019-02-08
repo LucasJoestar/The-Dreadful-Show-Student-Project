@@ -41,6 +41,16 @@ public class TDS_Attack
 	*/
 
     #region Fields / Properties
+    /// <summary>
+    /// Name of this attack, used to reference it.
+    /// </summary>
+    public string Name = string.Empty;
+
+    /// <summary>
+    /// ID of the animation used to play this attack.
+    /// </summary>
+    public int AnimationID = 0;
+
     /// <summary>Backing field for <see cref="DamagesMax"/></summary>
     [SerializeField] protected int damagesMax = 1;
 
@@ -65,7 +75,7 @@ public class TDS_Attack
 
     /// <summary>
     /// The minimum amount of damages this attack can inflict.
-    /// Always superior to zero, and never inferior to <see cref="DamagesMax"/>
+    /// Always superior to zero, and never superior to <see cref="DamagesMax"/>
     /// </summary>
     public int DamagesMin
     {
@@ -89,10 +99,5 @@ public class TDS_Attack
     /// Short (or long) description of this attack, and what it does.
     /// </summary>
     public string Description = string.Empty;
-
-    /// <summary>
-    /// Name of this attack, used to reference it.
-    /// </summary>
-    public string Name = string.Empty;
 	#endregion
 }
