@@ -65,7 +65,7 @@ public class TDS_Attack
 
     /// <summary>
     /// The minimum amount of damages this attack can inflict.
-    /// Always superior to zero, and never inferior to <see cref="DamagesMax"/>
+    /// Always superior to zero, and never superior to <see cref="DamagesMax"/>
     /// </summary>
     public int DamagesMin
     {

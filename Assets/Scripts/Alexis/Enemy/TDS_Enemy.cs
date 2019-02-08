@@ -220,9 +220,24 @@ public class TDS_Enemy : TDS_Character
                 _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
                 while(!attacks.Any(a => _distance < a.PredictedRange))
                 {
+                    Debug.Log(agent.Velocity.magnitude); 
                     _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
                     if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
                         Flip(); 
+                    if(Vector3.Distance(playerTarget.transform.position, agent.LastPosition) >  1)
+                    {
+                        if (agent.CheckDestination(playerTarget.transform.position))
+                        {
+                            yield return new WaitForSeconds(.1f);
+                            continue;
+                        }
+                        else
+                        {
+                            agent.StopAgent(); 
+                            enemyState = EnemyState.MakingDecision;
+                            goto case EnemyState.MakingDecision;
+                        }
+                    }
                     //yield return new WaitForEndOfFrame();
                     yield return new WaitForSeconds(.1f); 
                 }
@@ -249,7 +264,7 @@ public class TDS_Enemy : TDS_Character
                         goto case EnemyState.MakingDecision;
                     }
                     //Cast Attack
-                    Attack(_attack); 
+                    StartAttack(_attack); 
                     while (IsAttacking)
                     {
                         yield return new WaitForSeconds(.1f);
@@ -401,7 +416,7 @@ public class TDS_Enemy : TDS_Character
     /// Reset to 0 consecutive uses of the other attacks
     /// </summary>
     /// <param name="_attack">Attack to cast</param>
-    protected virtual void Attack(TDS_EnemyAttack _attack)
+    protected virtual void StartAttack(TDS_EnemyAttack _attack)
     {
         IsAttacking = true;
         _attack.ConsecutiveUses++;
@@ -432,7 +447,7 @@ public class TDS_Enemy : TDS_Character
     protected override void Update()
     {
         base.Update();
-	}
+    }
 	#endregion
 
 	#endregion
