@@ -116,7 +116,6 @@ public class TDS_HitBox : MonoBehaviour
 
         CurrentAttack = _attack;
         collider.enabled = true;
-
         OnStartAttack?.Invoke(_attack);
     }
 

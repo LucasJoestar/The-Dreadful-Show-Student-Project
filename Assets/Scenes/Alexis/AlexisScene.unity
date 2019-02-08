@@ -131,7 +131,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4175069985797766, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1.243
+      value: 1.33
       objectReference: {fileID: 0}
     - target: {fileID: 4175069985797766, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
       propertyPath: m_LocalPosition.z
@@ -187,9 +187,89 @@ Prefab:
       propertyPath: speed
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: healthMax
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: healthCurrent
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114476461593783234, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: steerForce
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: agent
+      value: 
+      objectReference: {fileID: 66589775}
+    - target: {fileID: 95117252439618552, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212749167570648662, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300008, guid: 8dfd914cb807d2e4589e16acccba25a7,
+        type: 3}
+    - target: {fileID: 212749167570648662, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212749167570648662, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: m_Size.x
+      value: 1.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 212749167570648662, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: m_Size.y
+      value: 3.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 4029629506503266, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 65303339487346324, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114476461593783234, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &66589774 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1341661741757368, guid: 1952cdc97814b8543ab7cc5e2027c418,
+    type: 2}
+  m_PrefabInternal: {fileID: 53979400}
+--- !u!114 &66589775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 66589774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53bdbd26138585f4aa59027c60557c6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionOffset: {x: 0, y: 0, z: 0}
+  height: 2.4
+  radius: 0.75
+  baseOffset: 0
+  speed: 2
+  detectionRange: 2
+  steerForce: 10
+  avoidanceForce: 2
 --- !u!1 &154249901
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,7 +624,7 @@ GameObject:
   - component: {fileID: 1121461184}
   - component: {fileID: 1121461183}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -583,6 +663,7 @@ MonoBehaviour:
   speedMax: 2
   aimAngle: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
+  lineRenderer: {fileID: 0}
   Summoner: {fileID: 0}
   interactionsDetector: {fileID: 0}
   groundDetectionBox:
@@ -601,6 +682,7 @@ MonoBehaviour:
   InteractButton: Interact
   JumpButton: Jump
   LightAttackButton: Light Attack
+  ParadeButton: Parade
   SuperAttackButton: Super Attack
   ThrowButton: Throw
   UseObjectButton: Use Object
@@ -694,7 +776,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1121461182}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.99, y: 0.56, z: -10.33}
+  m_LocalPosition: {x: 6.99, y: 0.56, z: -11.41}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -801,7 +883,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1295590790}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d83b82652c101d240b45f4822a828713, type: 3}
+  m_Script: {fileID: 11500000, guid: cb57aa5f978d98648b38aa26b2f1f864, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   triangles: []
@@ -1014,3 +1096,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.33333334
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 0}
