@@ -195,7 +195,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &231318947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,12 +233,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 231318946}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.09285039, y: 1.4527698, z: -2.2166042}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_Father: {fileID: 1075297194}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &342853453
 GameObject:
@@ -277,7 +277,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 342853453}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -418,7 +418,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &542588205
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -457,6 +457,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   rigidbody: {fileID: 0}
   Throwable: {fileID: 0}
+  isAttacking: 0
   isFacingRight: 1
   IsPacific: 1
   IsParalyzed: 0
@@ -485,12 +486,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 542588204}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.09285039, y: 1.4527698, z: -2.2166042}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_Father: {fileID: 1075297194}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &559157251
 GameObject:
@@ -606,6 +607,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   rigidbody: {fileID: 0}
   Throwable: {fileID: 0}
+  isAttacking: 0
   isFacingRight: 1
   IsPacific: 0
   IsParalyzed: 0
@@ -640,11 +642,18 @@ MonoBehaviour:
   ThrowButton: Throw
   UseObjectButton: Use Object
   VerticalAxis: Vertical
+  currentAttack:
+    damagesMax: 1
+    damagesMin: 1
+    Description: 
+    Name: 
   attacks: []
   isAiming: 0
+  isDodging: 0
   isGrounded: 1
   isJumping: 0
   isMoving: 0
+  isParrying: 0
   comboCurrent: 
   comboResetTime: 1.84
   JumpForce: 300
@@ -661,12 +670,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 559157251}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.47, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.09285039, y: 2.9227698, z: -2.2166042}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 1075297194}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &559157258
 LineRenderer:
@@ -793,7 +802,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &599322018
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -832,6 +841,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   rigidbody: {fileID: 0}
   Throwable: {fileID: 0}
+  isAttacking: 0
   isFacingRight: 1
   IsPacific: 0
   IsParalyzed: 0
@@ -860,12 +870,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 599322017}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.09285039, y: 1.4527698, z: -2.2166042}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_Father: {fileID: 1075297194}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &663968201
 GameObject:
@@ -951,6 +961,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1075297193
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1075297194}
+  m_Layer: 0
+  m_Name: TESTS
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1075297194
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1075297193}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.09285039, y: -1.4527698, z: 2.2166042}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 559157257}
+  - {fileID: 231318949}
+  - {fileID: 1983663572}
+  - {fileID: 542588208}
+  - {fileID: 599322021}
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1344919126
 GameObject:
@@ -1399,13 +1442,14 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   rigidbody: {fileID: 1883192564}
   Throwable: {fileID: 0}
+  isAttacking: 0
   isFacingRight: 0
   IsPacific: 0
   IsParalyzed: 0
   speedAccelerationTime: 0.5
   speedCoef: 1
   speedCurrent: 0
-  speedInitial: 2
+  speedInitial: 3
   speedMax: 5
   aimAngle: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
@@ -1413,7 +1457,7 @@ MonoBehaviour:
   Summoner: {fileID: 0}
   interactionsDetector: {fileID: 0}
   groundDetectionBox:
-    Color: {r: 0, g: 1, b: 0, a: 1}
+    Color: {r: 1, g: 0.5952403, b: 0, a: 1}
     WhatDetect:
       serializedVersion: 2
       m_Bits: 48
@@ -1433,11 +1477,26 @@ MonoBehaviour:
   ThrowButton: Throw
   UseObjectButton: Use Object
   VerticalAxis: Vertical
-  attacks: []
+  currentAttack:
+    damagesMax: 1
+    damagesMin: 1
+    Description: 
+    Name: 
+  attacks:
+  - damagesMax: 5
+    damagesMin: 3
+    Description: 
+    Name: 
+  - damagesMax: 7
+    damagesMin: 4
+    Description: 
+    Name: 
   isAiming: 0
+  isDodging: 0
   isGrounded: 1
   isJumping: 0
   isMoving: 0
+  isParrying: 0
   comboCurrent: 
   comboResetTime: 2
   JumpForce: 250
@@ -1468,13 +1527,13 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1883192561}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.82, y: 0.458, z: -3}
+  m_LocalPosition: {x: 0, y: 0, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 342853454}
   - {fileID: 1666069000}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &1883192568
 LineRenderer:
@@ -1584,7 +1643,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1983663570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1622,12 +1681,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1983663569}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.09285039, y: 1.4527698, z: -2.2166042}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_Father: {fileID: 1075297194}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2014228503
 GameObject:
