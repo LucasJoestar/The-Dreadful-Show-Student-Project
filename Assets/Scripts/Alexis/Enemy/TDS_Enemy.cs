@@ -432,7 +432,9 @@ public class TDS_Enemy : TDS_Character
     protected override void Awake()
     {
         base.Awake();
-        agent.OnDestinationReached += () => enemyState = EnemyState.MakingDecision; 
+        agent.OnDestinationReached += () => enemyState = EnemyState.MakingDecision;
+        OnDie += () => StopAllCoroutines();
+        OnDie += () => agent.StopAgent(); 
     }
 
     // Use this for initialization
