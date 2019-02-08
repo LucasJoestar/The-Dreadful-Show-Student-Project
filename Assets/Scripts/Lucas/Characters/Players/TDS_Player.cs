@@ -861,7 +861,9 @@ public class TDS_Player : TDS_Character
         if (!base.TakeDamage(_damage)) return false;
 
         // Is aiming, cancel the preparing throw
+        // And if attacking, cancel the attack
         if (isAiming) StopAiming();
+        if (isAttacking) StopAttack();
 
         // If not dead, be just hit
         if (!isDead)
