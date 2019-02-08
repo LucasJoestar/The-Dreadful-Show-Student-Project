@@ -21,7 +21,16 @@ public class TDS_Enemy : TDS_Character
 	 *	### MODIFICATIONS ###
 	 *	##################### 
      *	
-     *	 Date :          [06/02/2019]
+     *	
+     *	Date :          [06/02/2019]
+     *	Author:         [THIEBAUT Alexis]
+     *	
+     *	[Setting the ApplyRecoveryTime Method]
+     *	    - This Method is called after getting hit to wait a certain amount of time before calling again the Behaviour Method
+     *	
+     *	-----------------------------------
+     *	
+     *	Date :          [06/02/2019]
      *	Author:         [THIEBAUT Alexis]
      *	
      *	[Setting the attack method]
@@ -126,6 +135,19 @@ public class TDS_Enemy : TDS_Character
     #region Original Methods
     #region IEnumerator
     /// <summary>
+    /// Wait a certain amount of seconds before starting Behaviour Method 
+    /// Called after getting hit to apply a recovery time
+    /// </summary>
+    /// <param name="_recoveryTime">Seconds to wait</param>
+    /// <returns></returns>
+    IEnumerator ApplyRecoveryTime(float _recoveryTime)
+    {
+        yield return new WaitForSeconds(_recoveryTime);
+        StartCoroutine(Behaviour());
+        yield break; 
+    }
+
+    /// <summary>
     /// /!\ The behaviour includes only the Detection, Mouvement and Attacking Sequences
     ///  >>> Still has to implement Grab and throw objects + Interactions with other enemies
     /// </summary>
@@ -175,7 +197,6 @@ public class TDS_Enemy : TDS_Character
                 */
                 if (attacks.Any(a => _distance < a.PredictedRange))
                 {
-                    yield return new WaitForSeconds(.2f); 
                     enemyState = EnemyState.Attacking;
                     goto case EnemyState.Attacking; 
                 }
@@ -376,7 +397,7 @@ public class TDS_Enemy : TDS_Character
         if(_isTakingDamages)
         {
             agent.StopAgent();
-            StopCoroutine(Behaviour());
+            StopAllCoroutines();
             enemyState = EnemyState.MakingDecision;
             if (isDead)
                 SetAnimationState(EnemyAnimationState.Death);
