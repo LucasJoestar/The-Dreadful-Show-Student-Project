@@ -143,7 +143,6 @@ public class TDS_Damageable : PunBehaviour
             if (!UnityEditor.EditorApplication.isPlaying) return;
             #endif
 
-            if (animator) animator.SetBool("IsDead", value);
             if (value == true)
             {
                 OnDie?.Invoke();

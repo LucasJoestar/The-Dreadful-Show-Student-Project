@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 114936777912220844}
   - component: {fileID: 54315097348852968}
   - component: {fileID: 65317177169650050}
-  - component: {fileID: 114476461593783234}
   - component: {fileID: 95117252439618552}
+  - component: {fileID: 114125368745151192}
   m_Layer: 10
   m_Name: Punk
   m_TagString: Untagged
@@ -84,7 +84,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1341661741757368}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.676308, y: 0, z: -5.7089}
+  m_LocalPosition: {x: -5.945156, y: 0, z: -11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4851926840199904}
@@ -115,10 +115,10 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &65303339487346324
 BoxCollider:
@@ -127,10 +127,10 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1978238354924764}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
+  m_IsTrigger: 1
+  m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 2.4, z: 1}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 1.2, z: 0}
 --- !u!65 &65317177169650050
 BoxCollider:
@@ -156,12 +156,31 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 667ea011d9078c94aa47a303242c70bb, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114125368745151192
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1341661741757368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53bdbd26138585f4aa59027c60557c6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionOffset: {x: 0, y: 1.2, z: 0}
+  height: 2.4
+  radius: 0.75
+  baseOffset: 0
+  speed: 2
+  detectionRange: 2
+  steerForce: 10
+  avoidanceForce: 2
 --- !u!114 &114393252182730624
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -178,25 +197,6 @@ MonoBehaviour:
   WhatHit:
     serializedVersion: 2
     m_Bits: 512
---- !u!114 &114476461593783234
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1341661741757368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53bdbd26138585f4aa59027c60557c6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  positionOffset: {x: 0, y: 1.2, z: 0}
-  height: 2.4
-  radius: 1
-  baseOffset: 0
-  speed: 1
-  detectionRange: 2
-  steerForce: 7
-  avoidanceForce: 2
 --- !u!114 &114936777912220844
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -215,7 +215,7 @@ MonoBehaviour:
   isIndestructible: 0
   IsInvulnerable: 0
   healthCurrent: 0
-  healthMax: 1
+  healthMax: 15
   hitBox: {fileID: 114393252182730624}
   healthBar: {fileID: 0}
   rigidbody: {fileID: 54315097348852968}
@@ -234,18 +234,18 @@ MonoBehaviour:
   canBeDown: 1
   canThrow: 1
   enemyState: 0
-  detectionRange: 50
+  detectionRange: 10
   attacks:
-  - Name: headbutt
+  - Name: COUP DE BOULE!
     AnimationID: 6
     damagesMax: 5
     damagesMin: 3
-    Description: Oui oui
+    Description: BONK!
     isDistanceAttack: 0
-    cooldown: 2
+    cooldown: 1
     predictedRange: 1.5
     probability: 100
-  agent: {fileID: 114476461593783234}
+  agent: {fileID: 114125368745151192}
 --- !u!212 &212749167570648662
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -286,7 +286,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.54, y: 2.93}
+  m_Size: {x: 1.16, y: 3.05}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
