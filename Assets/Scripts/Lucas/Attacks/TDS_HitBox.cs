@@ -165,6 +165,7 @@ public class TDS_HitBox : MonoBehaviour
 
         // Deal damages and apply effect
         Debug.Log(owner.name + " attack " + other.name + " !");
+        _target.TakeDamage(CurrentAttack.GetDamages);
 
         TouchedObjects.Add(other, _target);
     }

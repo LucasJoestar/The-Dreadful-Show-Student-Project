@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [Serializable]
 public class TDS_Attack 
@@ -18,6 +19,15 @@ public class TDS_Attack
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[08 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Added the GetDamages property.
+	 *
+	 *	-----------------------------------
+     * 
 	 *	Date :			[24 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -65,6 +75,14 @@ public class TDS_Attack
             value = Mathf.Clamp(value, 0, damagesMax);
             damagesMin = value;
         }
+    }
+
+    /// <summary>
+    /// Get random damages from this attack.
+    /// </summary>
+    public int GetDamages
+    {
+        get { return Random.Range(damagesMin, damagesMax + 1); }
     }
 
     /// <summary>

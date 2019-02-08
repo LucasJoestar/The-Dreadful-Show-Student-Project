@@ -96,6 +96,8 @@ public class TDS_Juggler : TDS_Player
     /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
     public override void Attack(bool _isLight)
     {
+        base.Attack(_isLight);
+
         // Triggers the right actions
         switch (comboCurrent.Count)
         {
