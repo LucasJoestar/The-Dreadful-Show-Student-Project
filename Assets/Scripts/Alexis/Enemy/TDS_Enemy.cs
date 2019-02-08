@@ -220,7 +220,6 @@ public class TDS_Enemy : TDS_Character
                 _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
                 while(!attacks.Any(a => _distance < a.PredictedRange))
                 {
-                    Debug.Log(agent.Velocity.magnitude); 
                     _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
                     if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
                         Flip(); 
