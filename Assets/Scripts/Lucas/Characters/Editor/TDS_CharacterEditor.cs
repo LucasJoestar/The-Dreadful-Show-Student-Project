@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -22,6 +20,16 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[11 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Added the isAttacking field ; and the areCharaDebugsUnfolded field & property.
+     *	    - Added the DrawDebugs method.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[05 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -72,6 +80,9 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
     #endregion
 
     #region Variables
+    /// <summary>SerializedProperty for <see cref="TDS_Character.isAttacking"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isAttacking = null;
+
     /// <summary>SerializedProperty for <see cref="TDS_Character.isFacingRight"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isFacingRight = null;
 
@@ -121,6 +132,24 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 
             // Saves this value
             EditorPrefs.SetBool("areCharaComponentsUnfolded", value);
+        }
+    }
+
+    /// <summary>Backing field for <see cref="AreCharaDebugsUnfolded"/></summary>
+    private bool areCharaDebugsUnfolded = false;
+
+    /// <summary>
+    /// Are the debugs of the Character class unfolded for editor ?
+    /// </summary>
+    public bool AreCharaDebugsUnfolded
+    {
+        get { return areCharaDebugsUnfolded; }
+        set
+        {
+            areCharaDebugsUnfolded = value;
+
+            // Saves this value
+            EditorPrefs.SetBool("areCharaDebugsUnfolded", value);
         }
     }
 
@@ -179,7 +208,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 
     #region Original Methods
     /// <summary>
-    /// Draws the editor for the editing Character classes
+    /// Draws the editor for the editing Character classes.
     /// </summary>
     protected void DrawCharacterEditor()
     {
@@ -221,13 +250,31 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
             // Button to show or not the Character class settings
             if (TDS_EditorUtility.Button("Settings", "Wrap / unwrap settings", TDS_EditorUtility.HeaderStyle)) AreCharaSettingsUnfolded = !areCharaSettingsUnfolded;
 
-            // If unfolded, draws the custom editor for the sttings
+            // If unfolded, draws the custom editor for the settings
             if (areCharaSettingsUnfolded)
             {
                 DrawSettings();
             }
 
             EditorGUILayout.EndVertical();
+
+            // If on play mode, draws debugs of the class
+            if (EditorApplication.isPlaying)
+            {
+                GUILayout.Space(15);
+                EditorGUILayout.BeginVertical("Box");
+
+                // Button to show or not the Character class debugs
+                if (TDS_EditorUtility.Button("Debugs", "Wrap / unwrap debugs", TDS_EditorUtility.HeaderStyle)) AreCharaDebugsUnfolded = !areCharaDebugsUnfolded;
+
+                // If unfolded, draws the custom editor for the debugs
+                if (areCharaDebugsUnfolded)
+                {
+                    DrawDebugs();
+                }
+
+                EditorGUILayout.EndVertical();
+            }
 
             // Applies all modified properties on the SerializedObjects
             serializedObject.ApplyModifiedProperties();
@@ -238,7 +285,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
     }
 
     /// <summary>
-    /// Draws the editor for the Character class components & references
+    /// Draws the editor for the Character class components & references.
     /// </summary>
     private void DrawComponentsAndReferences()
     {
@@ -261,7 +308,17 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
     }
 
     /// <summary>
-    /// Draws the editor for the Character class settings
+    /// Draws the editor for the Character class debug elements.
+    /// </summary>
+    private void DrawDebugs()
+    {
+        GUILayout.Space(3);
+
+        TDS_EditorUtility.RadioToggle("Attacking", "Is this character currently attacking or not", isAttacking);
+    }
+
+    /// <summary>
+    /// Draws the editor for the Character class settings.
     /// </summary>
     private void DrawSettings()
     {
@@ -366,6 +423,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
         rigidbody = serializedObject.FindProperty("rigidbody");
         throwable = serializedObject.FindProperty("Throwable");
 
+        isAttacking = serializedObject.FindProperty("isAttacking");
         isFacingRight = serializedObject.FindProperty("isFacingRight");
         isPacific = serializedObject.FindProperty("IsPacific");
         isParalyzed = serializedObject.FindProperty("IsParalyzed");
@@ -380,6 +438,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
         // Loads the editor folded a unfolded values of this class
         isCharaUnfolded = EditorPrefs.GetBool("isCharaUnfolded", isCharaUnfolded);
         areCharaComponentsUnfolded = EditorPrefs.GetBool("areCharaComponentsUnfolded", areCharaComponentsUnfolded);
+        areCharaDebugsUnfolded = EditorPrefs.GetBool("areCharaDebugsUnfolded", areCharaDebugsUnfolded);
         areCharaSettingsUnfolded = EditorPrefs.GetBool("areCharaSettingsUnfolded", areCharaSettingsUnfolded);
     }
 

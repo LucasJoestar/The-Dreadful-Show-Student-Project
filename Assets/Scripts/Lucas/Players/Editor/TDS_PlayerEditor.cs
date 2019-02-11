@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(TDS_Player), false), CanEditMultipleObjects]
-public class TDS_PlayerEditor : TDS_CharacterEditor 
+public class TDS_PlayerEditor : TDS_CharacterEditor
 {
     /* TDS_PlayerEditor :
 	 *
@@ -20,6 +20,16 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[11 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Added the isDodging, isMoving & isParrying fields ; and the arePlayerDebugsUnfolded field & property.
+     *	    - Added the DrawDebugs method.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[05 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -77,11 +87,20 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     /// <summary>SerializedProperties for <see cref="TDS_Player.isAiming"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isAiming = null;
 
+    /// <summary>SerializedProperties for <see cref="TDS_Player.isDodging"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isDodging = null;
+
     /// <summary>SerializedProperties for <see cref="TDS_Player.isGrounded"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isGrounded = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.isJumping"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isJumping = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.isMoving"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isMoving = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.isParrying"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isParrying = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.comboCurrent"/> of type <see cref="List{bool}"/>.</summary>
     private SerializedProperty comboCurrent = null;
@@ -170,6 +189,24 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         }
     }
 
+    /// <summary>Backing fields for <see cref="ArePlayerDebugsUnfolded"/></summary>
+    private bool arePlayerDebugsUnfolded = false;
+
+    /// <summary>
+    /// Indicates if the debugs of the editing scripts are unfolded.
+    /// </summary>
+    public bool ArePlayerDebugsUnfolded
+    {
+        get { return arePlayerDebugsUnfolded; }
+        set
+        {
+            arePlayerDebugsUnfolded = value;
+
+            // Save this value
+            EditorPrefs.SetBool("arePlayerDebugsUnfolded", value);
+        }
+    }
+
     /// <summary>Backing field for <see cref="ArePlayerInputsUnfolded"/></summary>
     private bool arePlayerInputsUnfolded = false;
 
@@ -227,7 +264,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
     #region Target Scripts Infos
     /// <summary>
-    /// All editing TDS_Player class.
+    /// All editing TDS_Player classes.
     /// </summary>
     private List<TDS_Player> players = new List<TDS_Player>();
 
@@ -254,6 +291,19 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         TDS_EditorUtility.ObjectField("Interaction detection Trigger", "Trigger used to detect the available interactions of the player", interactionsDetector, typeof(TDS_Trigger));
         TDS_EditorUtility.ObjectField("Line Renderer", "Line Renderer used to draw the preparing throw preview", lineRenderer, typeof(LineRenderer));
         TDS_EditorUtility.ObjectField("Summoner object", "The Summoner the player is actually wearing", summoner, typeof(TDS_Summoner));
+    }
+
+    /// <summary>
+    /// Draws the debugs editor of the TDS_Player editing objects.
+    /// </summary>
+    private void DrawDebugs()
+    {
+        TDS_EditorUtility.RadioToggle("Grounded", "Is this player on ground or not", isGrounded);
+        TDS_EditorUtility.RadioToggle("Moving", "Is this player currently moving or not", isMoving);
+        TDS_EditorUtility.RadioToggle("Jumping", "Is this player currently jumping or not", isJumping);
+        TDS_EditorUtility.RadioToggle("Dodging", "Is this player currently dodging or not", isDodging);
+        TDS_EditorUtility.RadioToggle("Parrying", "Is this player currently parrying or not", isParrying);
+        TDS_EditorUtility.RadioToggle("Aiming", "Is this player currently aiming for a throw or not", isAiming);
     }
 
     /// <summary>
@@ -346,6 +396,24 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
             EditorGUILayout.EndVertical();
 
+            // If in play mode, draws the debugs of this class
+            if (EditorApplication.isPlaying)
+            {
+                GUILayout.Space(15);
+                EditorGUILayout.BeginVertical("Box");
+
+                // Button to show or not the Player class debugs
+                if (TDS_EditorUtility.Button("Debugs", "Wrap / unwrap debugs", TDS_EditorUtility.HeaderStyle)) ArePlayerDebugsUnfolded = !arePlayerDebugsUnfolded;
+
+                // If unfolded, draws the custom editor for the debugs
+                if (arePlayerDebugsUnfolded)
+                {
+                    DrawDebugs();
+                }
+
+                EditorGUILayout.EndVertical();
+            }
+
             // Applies all modified properties on the SerializedObjects
             serializedObject.ApplyModifiedProperties();
         }
@@ -429,19 +497,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
             players.ForEach(p => p.ThrowPreviewPrecision = throwPreviewPrecision.intValue);
             serializedObject.Update();
         }
-
-        // Draws debug informations if in play mode
-        if (EditorApplication.isPlaying)
-        {
-            // Draws a header for the debugs
-            EditorGUILayout.LabelField("Debug", TDS_EditorUtility.HeaderStyle);
-
-            GUILayout.Space(3);
-
-            TDS_EditorUtility.Toggle("Grounded", "Is this player on ground or not", isGrounded, false);
-            TDS_EditorUtility.Toggle("Jumping", "Is this player currently jumping or not", isJumping, false);
-            TDS_EditorUtility.Toggle("Aiming", "Is this player currently aiming for a throw or not", isAiming, false);
-        }
     }
     #endregion
 
@@ -464,8 +519,11 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
         attacks = serializedObject.FindProperty("attacks");
         isAiming = serializedObject.FindProperty("isAiming");
+        isDodging = serializedObject.FindProperty("isDodging");
         isGrounded = serializedObject.FindProperty("isGrounded");
         isJumping = serializedObject.FindProperty("isJumping");
+        isMoving = serializedObject.FindProperty("isMoving");
+        isParrying = serializedObject.FindProperty("isParrying");
         comboCurrent = serializedObject.FindProperty("comboCurrent");
         comboResetTime = serializedObject.FindProperty("comboResetTime");
         jumpForce = serializedObject.FindProperty("JumpForce");
@@ -492,6 +550,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         // Loads the editor folded & unfolded values of this script
         isPlayerUnfolded = EditorPrefs.GetBool("isPlayerUnfolded", isPlayerUnfolded);
         arePlayerComponentsUnfolded = EditorPrefs.GetBool("arePlayerComponentsUnfolded", arePlayerComponentsUnfolded);
+        arePlayerDebugsUnfolded = EditorPrefs.GetBool("arePlayerDebugsUnfolded", arePlayerDebugsUnfolded);
         arePlayerInputsUnfolded = EditorPrefs.GetBool("arePlayerInputsUnfolded", arePlayerInputsUnfolded);
         arePlayerVariablesUnfolded = EditorPrefs.GetBool("arePlayerVariablesUnfolded", arePlayerVariablesUnfolded);
     }
