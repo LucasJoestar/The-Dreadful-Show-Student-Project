@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using Photon;
 
-
+#pragma warning disable 0414
 [RequireComponent(typeof(PhotonView))]
 public class TDS_NetworkManager : PunBehaviour
 {
@@ -45,6 +45,8 @@ public class TDS_NetworkManager : PunBehaviour
     new PhotonView  photonView ;
     [SerializeField]
     string connectionVersion = "1.1";
+    [SerializeField]
+    string roomName = "TDS_EPIIC";
     bool canLeave = false;
     #endregion
     #region Player     
@@ -75,7 +77,8 @@ public class TDS_NetworkManager : PunBehaviour
             IsVisible = true,
             MaxPlayers = 4,
         };
-        PhotonNetwork.JoinOrCreateRoom("TDS_EPIIC",_options,null);
+        PhotonNetwork.JoinOrCreateRoom(roomName,_options,null);
+        Debug.Log(roomName);
     }
     #region PhotonMethods
     /// <summary>

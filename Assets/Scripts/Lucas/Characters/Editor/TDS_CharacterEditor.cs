@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -22,6 +20,25 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[12 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Added the handsTransform, throwBonusDamagesMax & throwBonusDamagesMin fields.
+	 *
+	 *	-----------------------------------
+     * 
+     *	Date :			[11 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Added the isAttacking field ; and the areCharaDebugsUnfolded field & property.
+     *	    - Added the DrawDebugs method.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[05 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -67,11 +84,17 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
     /// <summary>SerializedProperty for <see cref="TDS_Character.rigidbody"/> of type <see cref="Rigidbody"/>.</summary>
     private SerializedProperty rigidbody = null;
 
-    /// <summary>SerializedProperty for <see cref="TDS_Character.Throwable"/> of type <see cref="TDS_Throwable"/>.</summary>
+    /// <summary>SerializedProperty for <see cref="TDS_Character.throwable"/> of type <see cref="TDS_Throwable"/>.</summary>
     private SerializedProperty throwable = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Character.handsTransform"/> of type <see cref="Transform"/>.</summary>
+    private SerializedProperty handsTransform = null;
     #endregion
 
     #region Variables
+    /// <summary>SerializedProperty for <see cref="TDS_Character.isAttacking"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isAttacking = null;
+
     /// <summary>SerializedProperty for <see cref="TDS_Character.isFacingRight"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isFacingRight = null;
 
@@ -96,10 +119,16 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
     /// <summary>SerializedProperty for <see cref="TDS_Character.speedMax"/> of type <see cref="float"/>.</summary>
     private SerializedProperty speedMax = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Player.aimAngle"/> of type <see cref="int"/>.</summary>
+    /// <summary>SerializedProperties for <see cref="TDS_Character.aimAngle"/> of type <see cref="int"/>.</summary>
     protected SerializedProperty aimAngle = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Player.throwAimingPoint"/> of type <see cref="Vector3"/>.</summary>
+    /// <summary>SerializedProperties for <see cref="TDS_Character.throwBonusDamagesMax"/> of type <see cref="int"/>.</summary>
+    protected SerializedProperty throwBonusDamagesMax = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Character.throwBonusDamagesMin"/> of type <see cref="int"/>.</summary>
+    protected SerializedProperty throwBonusDamagesMin = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Character.throwAimingPoint"/> of type <see cref="Vector3"/>.</summary>
     protected SerializedProperty throwAimingPoint = null;
     #endregion
 
@@ -121,6 +150,24 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 
             // Saves this value
             EditorPrefs.SetBool("areCharaComponentsUnfolded", value);
+        }
+    }
+
+    /// <summary>Backing field for <see cref="AreCharaDebugsUnfolded"/></summary>
+    private bool areCharaDebugsUnfolded = false;
+
+    /// <summary>
+    /// Are the debugs of the Character class unfolded for editor ?
+    /// </summary>
+    public bool AreCharaDebugsUnfolded
+    {
+        get { return areCharaDebugsUnfolded; }
+        set
+        {
+            areCharaDebugsUnfolded = value;
+
+            // Saves this value
+            EditorPrefs.SetBool("areCharaDebugsUnfolded", value);
         }
     }
 
@@ -179,7 +226,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 
     #region Original Methods
     /// <summary>
-    /// Draws the editor for the editing Character classes
+    /// Draws the editor for the editing Character classes.
     /// </summary>
     protected void DrawCharacterEditor()
     {
@@ -221,13 +268,31 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
             // Button to show or not the Character class settings
             if (TDS_EditorUtility.Button("Settings", "Wrap / unwrap settings", TDS_EditorUtility.HeaderStyle)) AreCharaSettingsUnfolded = !areCharaSettingsUnfolded;
 
-            // If unfolded, draws the custom editor for the sttings
+            // If unfolded, draws the custom editor for the settings
             if (areCharaSettingsUnfolded)
             {
                 DrawSettings();
             }
 
             EditorGUILayout.EndVertical();
+
+            // If on play mode, draws debugs of the class
+            if (EditorApplication.isPlaying)
+            {
+                GUILayout.Space(15);
+                EditorGUILayout.BeginVertical("Box");
+
+                // Button to show or not the Character class debugs
+                if (TDS_EditorUtility.Button("Debugs", "Wrap / unwrap debugs", TDS_EditorUtility.HeaderStyle)) AreCharaDebugsUnfolded = !areCharaDebugsUnfolded;
+
+                // If unfolded, draws the custom editor for the debugs
+                if (areCharaDebugsUnfolded)
+                {
+                    DrawDebugs();
+                }
+
+                EditorGUILayout.EndVertical();
+            }
 
             // Applies all modified properties on the SerializedObjects
             serializedObject.ApplyModifiedProperties();
@@ -238,7 +303,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
     }
 
     /// <summary>
-    /// Draws the editor for the Character class components & references
+    /// Draws the editor for the Character class components & references.
     /// </summary>
     private void DrawComponentsAndReferences()
     {
@@ -249,19 +314,34 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 
             GUILayout.Space(3);
 
-            TDS_EditorUtility.ObjectField("Throwable", "Throwable this character is actually wearing", throwable, typeof(TDS_Throwable));
+            if (TDS_EditorUtility.ObjectField("Throwable", "Throwable this character is actually wearing", throwable, typeof(TDS_Throwable)))
+            {
+                characters.ForEach(c => c.GrabObject((TDS_Throwable)throwable.objectReferenceValue));
+                serializedObject.Update();
+            }
 
             GUILayout.Space(5);
         }
 
         TDS_EditorUtility.ObjectField("Hit Box", "HitBox of this character, used to detect what they touch when attacking", hitBox, typeof(TDS_HitBox));
         TDS_EditorUtility.ObjectField("Rigidbody", "Rigidbody of this character, used for physic simulation", rigidbody, typeof(Rigidbody));
+        TDS_EditorUtility.ObjectField("Hands Transform", "Transform at the position of the character hands ; mainly used as root for carrying throwable", handsTransform, typeof(Transform));
 
         GUILayout.Space(3);
     }
 
     /// <summary>
-    /// Draws the editor for the Character class settings
+    /// Draws the editor for the Character class debug elements.
+    /// </summary>
+    private void DrawDebugs()
+    {
+        GUILayout.Space(3);
+
+        TDS_EditorUtility.RadioToggle("Attacking", "Is this character currently attacking or not", isAttacking);
+    }
+
+    /// <summary>
+    /// Draws the editor for the Character class settings.
     /// </summary>
     private void DrawSettings()
     {
@@ -332,7 +412,20 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
         if (!EditorApplication.isPlaying)
         {
             // Draws a header for the player aim settings
-            EditorGUILayout.LabelField("Aim", TDS_EditorUtility.HeaderStyle);
+            EditorGUILayout.LabelField("Throwables & Aiming", TDS_EditorUtility.HeaderStyle);
+
+            GUILayout.Space(3);
+
+            if (TDS_EditorUtility.IntField("Throw max. Bonus Damages", "Maximum amount of bonus damages when throwing an object", throwBonusDamagesMax))
+            {
+                characters.ForEach(p => p.ThrowBonusDamagesMax = throwBonusDamagesMax.intValue);
+                serializedObject.Update();
+            }
+            if (TDS_EditorUtility.IntSlider("Throw min. Bonus Damages", "Minimum amount of bonus damages when throwing an object", throwBonusDamagesMin, 0, throwBonusDamagesMax.intValue))
+            {
+                characters.ForEach(p => p.ThrowBonusDamagesMin = throwBonusDamagesMin.intValue);
+                serializedObject.Update();
+            }
 
             GUILayout.Space(3);
 
@@ -364,8 +457,10 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
         hitBox = serializedObject.FindProperty("hitBox");
         healthBar = serializedObject.FindProperty("healthBar");
         rigidbody = serializedObject.FindProperty("rigidbody");
-        throwable = serializedObject.FindProperty("Throwable");
+        throwable = serializedObject.FindProperty("throwable");
+        handsTransform = serializedObject.FindProperty("handsTransform");
 
+        isAttacking = serializedObject.FindProperty("isAttacking");
         isFacingRight = serializedObject.FindProperty("isFacingRight");
         isPacific = serializedObject.FindProperty("IsPacific");
         isParalyzed = serializedObject.FindProperty("IsParalyzed");
@@ -375,11 +470,14 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
         speedInitial = serializedObject.FindProperty("speedInitial");
         speedMax = serializedObject.FindProperty("speedMax");
         aimAngle = serializedObject.FindProperty("aimAngle");
+        throwBonusDamagesMax = serializedObject.FindProperty("throwBonusDamagesMax");
+        throwBonusDamagesMin = serializedObject.FindProperty("throwBonusDamagesMin");
         throwAimingPoint = serializedObject.FindProperty("throwAimingPoint");
 
         // Loads the editor folded a unfolded values of this class
         isCharaUnfolded = EditorPrefs.GetBool("isCharaUnfolded", isCharaUnfolded);
         areCharaComponentsUnfolded = EditorPrefs.GetBool("areCharaComponentsUnfolded", areCharaComponentsUnfolded);
+        areCharaDebugsUnfolded = EditorPrefs.GetBool("areCharaDebugsUnfolded", areCharaDebugsUnfolded);
         areCharaSettingsUnfolded = EditorPrefs.GetBool("areCharaSettingsUnfolded", areCharaSettingsUnfolded);
     }
 
