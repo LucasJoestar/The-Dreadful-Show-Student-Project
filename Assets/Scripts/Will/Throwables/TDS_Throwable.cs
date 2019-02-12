@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 #pragma warning disable 0414
 [RequireComponent(typeof(Rigidbody))]
@@ -75,9 +72,10 @@ public class TDS_Throwable : MonoBehaviour
         if (!(objectDurability <= 0)) return;
         DestroyThrowableObject();
     }
-    public void PickUp(TDS_Character _carrier, Transform _rootCharacterObject)
-    {        
-        if (!canBeTakeByEnemies) return;
+    public bool PickUp(TDS_Character _carrier, Transform _rootCharacterObject)
+    {
+        if (isHeld) return false;
+
         gameObject.layer = LayerMask.NameToLayer("Player");
         rigidbody.isKinematic = true;
         transform.position = _rootCharacterObject.transform.position;
@@ -89,6 +87,7 @@ public class TDS_Throwable : MonoBehaviour
             isHoldByPlayer = true;
         }
         owner = _carrier;
+        return true;
     }
     public void Throw(Vector3 _finalPosition,float _angle, int _bonusDamage)
     {
