@@ -599,9 +599,9 @@ public class TDS_Player : TDS_Character
     /// <returns>Returns true if the throwable was successfully grabbed, false either.</returns>
     public override bool GrabObject(TDS_Throwable _throwable)
     {
-        bool _isGood = base.GrabObject(_throwable);
-        if (!_isGood) return false;
+        if (!base.GrabObject(_throwable)) return false;
 
+        // Updates animator informations
         SetAnimHasObject(true);
         return true;
     }
@@ -612,7 +612,7 @@ public class TDS_Player : TDS_Character
     /// <returns>Returns true if successfully prepared a throw ; false if one is already, or if cannot do this.</returns>
     public virtual bool PrepareThrow()
     {
-        //if (isAiming || !Throwable) return false;
+        if (isAiming || !throwable) return false;
     
         isAiming = true;
         aimCoroutine = StartCoroutine(Aim());
@@ -647,7 +647,7 @@ public class TDS_Player : TDS_Character
         // Triggers the throw animation ;
         // If not having throwable anymore (Always the case for players except for juggler), update the animator
         SetAnimThrow();
-        if (!Throwable) SetAnimHasObject(false);
+        if (!throwable) SetAnimHasObject(false);
     }
 
     /// <summary>
@@ -661,7 +661,7 @@ public class TDS_Player : TDS_Character
         // Triggers the throw animation ;
         // If not having throwable anymore (Always the case for players except for juggler), update the animator
         SetAnimThrow();
-        if (!Throwable) SetAnimHasObject(false);
+        if (!throwable) SetAnimHasObject(false);
     }
     #endregion
 
@@ -902,88 +902,6 @@ public class TDS_Player : TDS_Character
     }
     #endregion
 
-    #region Inputs
-    /// <summary>
-    /// Checks inputs for this player's all actions.
-    /// </summary>
-    public virtual void CheckActionsInputs()
-    {
-        // If not on ground, dodging, parrying or attacking, do not perform action
-        if (!isGrounded || isAttacking || isDodging || isParrying) return;
-
-        // Check non-agressive actions
-        if (Input.GetButtonDown(DodgeButton) && !isDodging) dodgeCoroutine = StartCoroutine(Dodge());
-
-        else if (Input.GetButtonDown(InteractButton)) Interact();
-
-        else if (Input.GetButtonDown(ParryButton)) StartCoroutine(Parry());
-
-        // If the character is pacific, forbid him to attack
-        if (IsPacific) return;
-
-        // Checks potentially agressives actions
-        if (Input.GetButtonDown(CatchButton)) Catch();
-
-        else if (Input.GetButtonDown(ThrowButton)) PrepareThrow();
-
-        else if (Input.GetButtonDown(CancelThrowButton)) StopAiming();
-
-        else if (Input.GetButtonDown(LightAttackButton)) Attack(true);
-
-        else if (Input.GetButtonDown(HeavyAttackButton)) Attack(false);
-
-        else if (Input.GetButtonDown(SuperAttackButton)) SuperAttack();
-
-        else if (Input.GetButtonDown(UseObjectButton)) UseObject();
-    }
-
-    /// <summary>
-    /// Checks inputs for this player's movements.
-    /// </summary>
-    public virtual void CheckMovementsInputs()
-    {
-        // If the character is paralyzed or attacking, do not move
-        if (IsParalyzed || isAttacking || isParrying) return;
-
-        // Moves the player on the X & Z axis regarding the the axis pressure.
-        float _horizontal = Input.GetAxis(HorizontalAxis);
-        float _vertical = Input.GetAxis(VerticalAxis) * .75f;
-
-        if (_horizontal != 0 || _vertical != 0)
-        {
-            // Flip the player on the X axis if needed
-            if ((_horizontal > 0 && !isFacingRight) || (_horizontal < 0 && isFacingRight)) Flip();
-
-            Move(new Vector3(_horizontal, 0, _vertical), true);
-
-            // If starting moving, update informations
-            if (!isMoving)
-            {
-                isMoving = true;
-
-                SetAnimIsMoving(true);
-            }
-        }
-        // If stoping moving, update informations
-        else if (isMoving)
-        {
-            isMoving = false;
-            SpeedCurrent = 0;
-
-            SetAnimIsMoving(false);
-        }
-
-        // When pressing the jump method, check if on ground ; If it's all good, then let's jump
-        if (Input.GetButtonDown(JumpButton) && IsGrounded)
-        {
-            // If there is already a jump coroutine running, stop it before starting the new one
-            if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
-
-            jumpCoroutine = StartCoroutine(Jump());
-        }
-    }
-    #endregion
-
     #region Interactions
     /// <summary>
     /// Interacts with the nearest available object in range.
@@ -991,7 +909,21 @@ public class TDS_Player : TDS_Character
     /// <returns>Returns true if interacted with something. False if nothing was found.</returns>
     public virtual bool Interact()
     {
-        // Interact
+        // Interact !
+        // Get the nearest object in range ; if null, cannot interact, so return false
+        GameObject _nearestObject = interactionsDetector.NearestObject;
+
+        if (!_nearestObject) return false;
+
+        TDS_Throwable _throwable = null;
+
+        // Interact now with the object depending on its type
+        if (_throwable = _nearestObject.GetComponent<TDS_Throwable>())
+        {
+            GrabObject(_throwable);
+
+            return true;
+        }
 
         return false;
     }
@@ -1437,13 +1369,85 @@ public class TDS_Player : TDS_Character
 
     #endregion
 
-    #region Others
+    #region Inputs
     /// <summary>
-    /// Draws the preview trajectory of the player throw, when aiming.
+    /// Checks inputs for this player's all actions.
     /// </summary>
-    private void DrawPreviewTrajectory()
+    public virtual void CheckActionsInputs()
     {
+        // If not on ground, dodging, parrying or attacking, do not perform action
+        if (!isGrounded || isAttacking || isDodging || isParrying) return;
 
+        // Check non-agressive actions
+        if (Input.GetButtonDown(DodgeButton) && !isDodging) dodgeCoroutine = StartCoroutine(Dodge());
+
+        else if (Input.GetButtonDown(InteractButton)) Interact();
+
+        else if (Input.GetButtonDown(ParryButton)) StartCoroutine(Parry());
+
+        // If the character is pacific, forbid him to attack
+        if (IsPacific) return;
+
+        // Checks potentially agressives actions
+        if (Input.GetButtonDown(CatchButton)) Catch();
+
+        else if (Input.GetButtonDown(ThrowButton)) PrepareThrow();
+
+        else if (Input.GetButtonDown(CancelThrowButton)) StopAiming();
+
+        else if (Input.GetButtonDown(LightAttackButton)) Attack(true);
+
+        else if (Input.GetButtonDown(HeavyAttackButton)) Attack(false);
+
+        else if (Input.GetButtonDown(SuperAttackButton)) SuperAttack();
+
+        else if (Input.GetButtonDown(UseObjectButton)) UseObject();
+    }
+
+    /// <summary>
+    /// Checks inputs for this player's movements.
+    /// </summary>
+    public virtual void CheckMovementsInputs()
+    {
+        // If the character is paralyzed or attacking, do not move
+        if (IsParalyzed || isAttacking || isParrying) return;
+
+        // Moves the player on the X & Z axis regarding the the axis pressure.
+        float _horizontal = Input.GetAxis(HorizontalAxis);
+        float _vertical = Input.GetAxis(VerticalAxis) * .75f;
+
+        if (_horizontal != 0 || _vertical != 0)
+        {
+            // Flip the player on the X axis if needed
+            if ((_horizontal > 0 && !isFacingRight) || (_horizontal < 0 && isFacingRight)) Flip();
+
+            Move(new Vector3(_horizontal, 0, _vertical), true);
+
+            // If starting moving, update informations
+            if (!isMoving)
+            {
+                isMoving = true;
+
+                SetAnimIsMoving(true);
+            }
+        }
+        // If stoping moving, update informations
+        else if (isMoving)
+        {
+            isMoving = false;
+            SpeedCurrent = 0;
+
+            SetAnimIsMoving(false);
+        }
+
+        // When pressing the jump method, check if on ground ; If it's all good, then let's jump
+        if (Input.GetButtonDown(JumpButton) && IsGrounded)
+        {
+            // If there is already a jump coroutine running, stop it before starting the new one
+            if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
+
+            jumpCoroutine = StartCoroutine(Jump());
+        }
     }
     #endregion
 

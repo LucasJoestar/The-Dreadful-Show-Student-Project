@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 #pragma warning disable 0414
-[RequireComponent(typeof(TDS_HitBox),typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody))]
 public class TDS_Throwable : MonoBehaviour 
 {
     /* TDS_Throwable :
