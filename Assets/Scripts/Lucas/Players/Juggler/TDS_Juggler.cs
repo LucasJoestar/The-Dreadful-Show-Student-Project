@@ -84,8 +84,25 @@ public class TDS_Juggler : TDS_Player
     /// <returns></returns>
     protected override IEnumerator Aim()
     {
-        base.Aim();
+        aimCoroutine = StartCoroutine(base.Aim());
+
         yield break;
+    }
+
+    /// <summary>
+    /// Prepare a throw, if not already preparing one.
+    /// </summary>
+    /// <returns>Returns true if successfully prepared a throw ; false if one is already, or if cannot do this.</returns>
+    public override bool PrepareThrow()
+    {
+        if (isAiming || !throwable) return false;
+
+        isAiming = true;
+        StartCoroutine(Aim());
+
+        ProjectilePreviewEndZone.SetActive(true);
+
+        return true;
     }
     #endregion
 
