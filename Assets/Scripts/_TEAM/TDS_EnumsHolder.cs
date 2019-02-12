@@ -10,6 +10,15 @@
  *	### MODIFICATIONS ###
  *	#####################
  *
+ *	Date :			[11 / 02 / 2019]
+ *	Author :		[Guibert Lucas]
+ *
+ *	Changes :
+ *
+ *      - Added the AxisState enum.
+ *
+ *	-----------------------------------
+ * 
  *	Date :			[21 / 01 / 2019]
  *	Author :		[Guibert Lucas]
  *
@@ -39,13 +48,15 @@
  *  	- Added the EnemyAnimationState enum.
 */
 
-public enum PlayerType
+/// <summary>
+/// All possible states of the axis once converted into an input.
+/// </summary>
+public enum AxisState
 {
-    BeardLady,
-    FatLady,
-    FireEater,
-    Juggler,
-    Unknown
+    Key,
+    KeyDown,
+    KeyUp,
+    None
 }
 
 public enum EnemyState
@@ -72,4 +83,16 @@ public enum EnemyAnimationState
     AttackThree, 
     SpecialAttack,
     Death
+}
+
+/// <summary>
+/// All types of player available in the game.
+/// </summary>
+public enum PlayerType
+{
+    BeardLady,
+    FatLady,
+    FireEater,
+    Juggler,
+    Unknown
 }

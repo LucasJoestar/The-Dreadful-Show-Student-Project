@@ -16,6 +16,15 @@ public sealed class TDS_EditorUtility
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[11 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Added the RadioToggle method.
+     * 
+     *  -----------------------------------
+     * 
      *  Date :			[04 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -371,6 +380,35 @@ public sealed class TDS_EditorUtility
     }
 
     /// <summary>
+    /// Draws a custom radio toggle that only shows a properties value.
+    /// </summary>
+    /// <param name="_label">Label to display.</param>
+    /// <param name="_tooltip">Tooltip displayed when mouse over.</param>
+    /// <param name="_serializedProperty">SerializedProperty to use.</param>
+    public static void RadioToggle(string _label, string _tooltip, SerializedProperty _serializedProperty)
+    {
+        // Get the original width of the labels for EditorGUI, and reduce it so that it will no longer take so much space
+        float _originalWidth = EditorGUIUtility.labelWidth;
+        EditorGUIUtility.labelWidth -= labelStyle.padding.left;
+
+        EditorGUILayout.BeginHorizontal();
+
+        // Draws a label, and the int slider next to it
+        EditorGUILayout.LabelField(new GUIContent(_label, _tooltip), labelStyle, GUILayout.MaxWidth(EditorGUIUtility.labelWidth));
+
+        EditorGUI.showMixedValue = _serializedProperty.hasMultipleDifferentValues;
+
+        EditorGUILayout.Toggle(_serializedProperty.boolValue, new GUIStyle("Radio"), GUILayout.MinWidth(EditorGUIUtility.fieldWidth));
+
+        EditorGUI.showMixedValue = false;
+
+        EditorGUILayout.EndHorizontal();
+
+        // Restore the original widths for EditorGUI labels
+        EditorGUIUtility.labelWidth = _originalWidth;
+    }
+
+    /// <summary>
     /// Draws a custom text field
     /// </summary>
     /// <param name="_label">Label to display.</param>
@@ -413,6 +451,7 @@ public sealed class TDS_EditorUtility
     /// Draws a custom toggle.
     /// </summary>
     /// <param name="_label">Label to display.</param>
+    /// <param name="_tooltip">Tooltip displayed when mouse over.</param>
     /// <param name="_serializedProperty">SerializedProperty to use.</param>
     /// <returns>Returns true if the value(s) has changed, false otherwise.</returns>
     public static bool Toggle(string _label, string _tooltip, SerializedProperty _serializedProperty)
@@ -451,8 +490,9 @@ public sealed class TDS_EditorUtility
     /// Draws a custom toggle.
     /// </summary>
     /// <param name="_label">Label to display.</param>
+    /// <param name="_tooltip">Tooltip displayed when mouse over.</param>
     /// <param name="_serializedProperty">SerializedProperty to use.</param>
-    /// <param name="_autoSetProperty">If true, the serializedProperty will automatically be set when toggle changed.</param>
+    /// <param name="_autoSetProperty">Should the property automatically be set when the user wants to change its value or not.</param>
     /// <returns>Returns true if the value(s) has changed, false otherwise.</returns>
     public static bool Toggle(string _label, string _tooltip, SerializedProperty _serializedProperty, bool _autoSetProperty)
     {
