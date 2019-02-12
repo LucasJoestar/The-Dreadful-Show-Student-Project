@@ -45,17 +45,27 @@ public class TDS_SpawnPoint
     /// <summary>
     /// Range where the enemy can be instanciated around the spawn Position
     /// </summary>
-    [SerializeField] private float spawnRange;
+    [SerializeField] private float spawnRange = 1;
+    /// <summary>
+    /// Property of the field spawnRange 
+    /// <see cref="SpawnRange"/>
+    /// </summary>
+    public float SpawnRange { get { return spawnRange; } }
 
     /// <summary>
     /// Position used when the enemy has to be instantiated
     /// </summary>
     [SerializeField] private Vector3 spawnPosition;
+    /// <summary>
+    /// Property of the field spawnPosition 
+    /// <see cref="spawnPosition"/>
+    /// </summary>
+    public Vector3 SpawnPosition { get { return spawnPosition; } set { spawnPosition = value; } }
 
     /// <summary>
     /// Wave Element of the SpawnPoint
     /// </summary>
-    [SerializeField] private TDS_WaveElement waveElement; 
+        [SerializeField] private TDS_WaveElement waveElement; 
 	#endregion
 
 	#region Methods
