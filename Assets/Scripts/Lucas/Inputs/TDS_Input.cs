@@ -69,12 +69,11 @@ public sealed class TDS_Input
     /// My custom awake method, that should be called on game load.
     /// </summary>
     [RuntimeInitializeOnLoadMethod]
-    private static void MyAwake()
+    private static void Initialize()
     {
         Debug.Log("Mhmm...");
 
         // Get all axis from the project
-        
         
 
         // Subscribe a custom method to the input update system
