@@ -42,6 +42,8 @@ public class TDS_Throwable : MonoBehaviour
     bool isHoldByPlayer = false;
     [SerializeField]
     float objectSpeed = 15f;
+    [SerializeField, Range(0, 20)]
+    int bonusDamage = 0;
     [SerializeField,Range(0,10)]
     int objectDurability = 10;
     [SerializeField]
@@ -49,55 +51,63 @@ public class TDS_Throwable : MonoBehaviour
     #endregion
     #region PlayerSettings
     [SerializeField, Header("Character settings")]       
-    TDS_Character owner;
-    [SerializeField]
-    Transform rootCharacterObject;
+    TDS_Character owner = null;
     #endregion
     #endregion
 
     #region Methods
     #region Original Methods
-    void Drop()
-    {
-        if (!isHeld) return;
-        rigidbody.isKinematic = false;
-        isHeld = false;
-    }
     void DestroyThrowableObject()
     {
         Destroy(gameObject);
     }
-    void PickUp(TDS_Character _carrier)
+    public void Drop()
     {
-        //check here who PickUp the object
-        //get the object root 
-        //if (!canBeTakeByEnemies) return;
-
+        if (!isHeld) return;
+        rigidbody.isKinematic = false;
+        transform.SetParent(null, true);
+        isHeld = false;
+    }
+    public void LoseDurability(int _valueToWithdraw)
+    {
+        objectDurability -= _valueToWithdraw;
+        if (!(objectDurability <= 0)) return;
+        DestroyThrowableObject();
+    }
+    public void PickUp(TDS_Character _carrier, Transform _rootCharacterObject)
+    {        
+        if (!canBeTakeByEnemies) return;
         gameObject.layer = LayerMask.NameToLayer("Player");
         rigidbody.isKinematic = true;
-        transform.position = rootCharacterObject.transform.position;
+        transform.position = _rootCharacterObject.transform.position;
+        transform.SetParent(_rootCharacterObject.transform, true);
         isHeld = true;
         
         if(_carrier is TDS_Player)
         {
             isHoldByPlayer = true;
         }
-
+        owner = _carrier;
     }
-    void Throw(/*positionFinal (where throw the object)*/)
+    public void Throw(Vector3 _finalPosition,float _angle, int _bonusDamage)
     {
-        rigidbody.velocity = transform.right * objectSpeed;
+        if (!isHeld) return;
+        gameObject.layer = LayerMask.NameToLayer("Object");
+        rigidbody.isKinematic = false;
+        transform.SetParent(null, true);
+        bonusDamage = _bonusDamage;
+        rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position,_finalPosition,_angle);        
+        owner = null;
+        isHeld = false;
     }    
 	#endregion
 
 	#region Unity Methods
-	// Use this for initialization
     void Start ()
     {
         if(!rigidbody) rigidbody = GetComponent<Rigidbody>();
     }
 	
-	// Update is called once per frame
 	void Update ()
     {
         
