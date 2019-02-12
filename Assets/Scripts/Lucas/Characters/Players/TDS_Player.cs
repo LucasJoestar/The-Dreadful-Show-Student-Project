@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -27,7 +28,9 @@ public class TDS_Player : TDS_Character
 	 *
 	 *	Changes :
      *	
-     *	    - 
+     *	    - Added the OnGetOnGround & OnGetOffGround events.
+     *	    - Added the previousColliderPosition field ; and the isDodging & isParrying fields & properties.
+     *	    - Added the StartAttack, SetAnimCatchSetAnimDie, SetAnimDodge, SetAnimHit, SetAnimThrow, SetAnimGroundState, SetAnimHasObject, SetAnimIsParrying, SetAnimIsMoving, SetCurrentAttack, ActiveAttack, EndAttack & CheckGrounded methods.
      * 
      *  -----------------------------------
      * 
@@ -37,7 +40,7 @@ public class TDS_Player : TDS_Character
 	 *	Changes :
      *	
      *	    - Moved the throwAimingPoint field ; and the aimAngle field & property to the TDS_Character class.
-     *	    - Added the lineRenderer, ParryButton fields, throwVelocity & throwTrajectoryMotionPoints fields ; the ThrowAimingPoint property ; and the throwPreviewPosition field & property.
+     *	    - Added the lineRenderer, ParryButton, throwVelocity & throwTrajectoryMotionPoints fields ; the ThrowAimingPoint property ; and the throwPreviewPosition field & property.
      *	    - Added the DrawPreviewTrajectory & Parry methods.
      * 
      *  -----------------------------------
@@ -119,7 +122,15 @@ public class TDS_Player : TDS_Character
 	*/
 
     #region Events
+    /// <summary>
+    /// Event called when the player gets back on the ground.
+    /// </summary>
+    public event Action OnGetOnGround = null;
 
+    /// <summary>
+    /// Event called when the player gets off the ground.
+    /// </summary>
+    public event Action OnGetOffGround = null;
     #endregion
 
     #region Fields / Properties
@@ -226,6 +237,11 @@ public class TDS_Player : TDS_Character
     #endregion
 
     #region Variables
+    /// <summary>
+    /// The actually performing attack.
+    /// </summary>
+    [SerializeField] protected TDS_Attack currentAttack = null;
+
     /// <summary>Backing field for <see cref="Attacks"/></summary>
     [SerializeField] protected List<TDS_Attack> attacks = new List<TDS_Attack>();
 
@@ -251,6 +267,21 @@ public class TDS_Player : TDS_Character
         protected set
         {
             isAiming = value;
+        }
+    }
+
+    /// <summary>Backing field for <see cref="IsDodging"/>.</summary>
+    [SerializeField] protected bool isDodging = false;
+
+    /// <summary>
+    /// Is the player currently dodging ?
+    /// </summary>
+    public bool IsDodging
+    {
+        get { return isDodging; }
+        protected set
+        {
+            isDodging = value;
         }
     }
 
@@ -297,6 +328,21 @@ public class TDS_Player : TDS_Character
         protected set
         {
             isMoving = value;
+        }
+    }
+
+    /// <summary>Backing field for <see cref="IsParrying"/>.</summary>
+    [SerializeField] protected bool isParrying = false;
+
+    /// <summary>
+    /// Is the player currently parrying ?
+    /// </summary>
+    public bool IsParrying
+    {
+        get { return isParrying; }
+        protected set
+        {
+            isParrying = value;
         }
     }
 
@@ -448,6 +494,11 @@ public class TDS_Player : TDS_Character
     /// The position of the player at the previous frame
     /// </summary>
     private Vector3 previousPosition = Vector3.zero;
+
+    /// <summary>
+    /// The position of the player collider at the previous frame
+    /// </summary>
+    private Vector3 previousColliderPosition = Vector3.zero;
 
     /// <summary>
     /// Velocity used to throw an object.
@@ -611,38 +662,47 @@ public class TDS_Player : TDS_Character
 
     #region Attacks
     /// <summary>
+    /// Makes the player active its planned attack.
+    /// </summary>
+    public virtual void ActiveAttack()
+    {
+        // If not currently having an attack to perform, return
+        if (currentAttack == null)
+        {
+            Debug.LogWarning($"The Player \"{name}\" has no selected attack to perform");
+            return;
+        }
+        hitBox.Activate(currentAttack);
+    }
+
+    /// <summary>
     /// Makes the player perform and light or heavy attack.
     /// </summary>
     /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
     public virtual void Attack(bool _isLight)
     {
-        // If already attacking, return
-        if (IsAttacking) return;
+        IsAttacking = true;
 
         CancelInvoke("ResetCombo");
 
-        // Attack !
-        IsAttacking = true;
-
-        switch (comboCurrent.Count)
-        {
-            default:
-                break;
-        }
+        // Adds the current combo to the list
         ComboCurrent.Add(_isLight);
 
+        // If haven't yet reached the end of the combo, plan to reset it in X seconds if  not attacking before
         if (comboCurrent.Count < comboMax)
         {
-            Invoke("StopAttack", .5f);
             Invoke("ResetCombo", comboResetTime);
         }
+    }
 
-        else
-        {
-            Invoke("ResetCombo", .5f);
-        }
-
-        Debug.Log("Attack " + (_isLight ? "Light" : "Heavy") + " | Combo => " + comboCurrent.Count + " / " + comboMax);
+    /// <summary>
+    /// Ends definitively the current attack and enables back the capacity to attack once more.
+    /// </summary>
+    protected virtual void EndAttack()
+    {
+        IsAttacking = false;
+        // Reset the combo when reaching its end
+        if (comboCurrent.Count == comboMax) ResetCombo();
     }
 
     /// <summary>
@@ -651,9 +711,24 @@ public class TDS_Player : TDS_Character
     public virtual void ResetCombo()
     {
         ComboCurrent = new List<bool>();
-        IsAttacking = false;
 
-        Debug.Log("Reset Combo");
+        if (IsAttacking) StopAttack();
+    }
+
+    /// <summary>
+    /// Set the current attack of the player.
+    /// </summary>
+    /// <param name="_index">Index from <see cref="Attacks"/> of the attack.</param>
+    public void SetCurrentAttack(int _index)
+    {
+        // If the index is not valid, return
+        if (_index < 0 || attacks.Count <= _index)
+        {
+            Debug.LogWarning($"The Player \"{name}\" could not find attack at index {_index}");
+            return;
+        }
+
+        currentAttack = attacks[_index];
     }
 
     /// <summary>
@@ -661,10 +736,12 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public override void StopAttack()
     {
-        if (!IsAttacking) return;
+        currentAttack = null;
 
         // Stop it, please
-        base.StopAttack();
+        hitBox.Desactivate();
+
+        Invoke("EndAttack", .1f);
     }
 
     /// <summary>
@@ -696,18 +773,35 @@ public class TDS_Player : TDS_Character
     {
         // Dodge !
         IsInvulnerable = true;
+        isDodging = true;
+
+        // Adds a little force to the player to move him along
+        rigidbody.AddForce(Vector3.right * isFacingRight.ToSign() * Mathf.Clamp(speedCurrent, speedMax * .85f, speedCurrent) * 50);
 
         // Triggers the associated animation
         SetAnimDodge();
     }
 
     /// <summary>
-    /// Set the player in a parade position.
-    /// While parrying, the player avoid to take damages in front of him.
+    /// Set the player in parry position.
+    /// While parrying, the player avoid to take damages.
     /// </summary>
-    public virtual void Parry()
+    /// <returns></returns>
+    public virtual IEnumerator Parry()
     {
         // Parry
+        isParrying = true;
+        SetAnimIsParrying(true);
+
+        // While holding the parry button, parry attacks
+        while (Input.GetButton(ParryButton))
+        {
+            yield return null;
+        }
+
+        // Stop parrying
+        SetAnimIsParrying(false);
+        isParrying = false;
     }
 
     /// <summary>
@@ -717,6 +811,7 @@ public class TDS_Player : TDS_Character
     {
         // Stop dodging
         IsInvulnerable = false;
+        isDodging = false;
     }
 
     /// <summary>
@@ -759,14 +854,23 @@ public class TDS_Player : TDS_Character
     /// <returns>Returns true if some damages were inflicted, false if none.</returns>
     public override bool TakeDamage(int _damage)
     {
-        bool _isTakingDamage = base.TakeDamage(_damage);
-        if (!_isTakingDamage) return false;
+        // If parrying, do not take damage
+        if (isParrying) return false;
+
+        // Executes base method
+        if (!base.TakeDamage(_damage)) return false;
 
         // Is aiming, cancel the preparing throw
+        // And if in combo, reset it
         if (isAiming) StopAiming();
+        if (comboCurrent.Count > 0) ResetCombo();
 
-        // Triggers associated animation
-        SetAnimHit();
+        // If not dead, be just hit
+        if (!isDead)
+        {
+            // Triggers associated animation
+            SetAnimHit();
+        }
 
         return true;
     }
@@ -778,10 +882,15 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void CheckActionsInputs()
     {
+        // If not on ground, dodging, parrying or attacking, do not perform action
+        if (!isGrounded || isAttacking || isDodging || isParrying) return;
+
         // Check non-agressive actions
         if (Input.GetButtonDown(DodgeButton)) Dodge();
 
         else if (Input.GetButtonDown(InteractButton)) Interact();
+
+        else if (Input.GetButtonDown(ParryButton)) StartCoroutine(Parry());
 
         // If the character is pacific, forbid him to attack
         if (IsPacific) return;
@@ -807,8 +916,8 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void CheckMovementsInputs()
     {
-        // If the character is paralyzed, do not move
-        if (IsParalyzed) return;
+        // If the character is paralyzed or attacking, do not move
+        if (IsParalyzed || isAttacking || isParrying) return;
 
         // Moves the player on the X & Z axis regarding the the axis pressure.
         float _horizontal = Input.GetAxis(HorizontalAxis);
@@ -893,19 +1002,19 @@ public class TDS_Player : TDS_Character
             // Get the extents & center position for the overlap
             _overlapExtents = new Vector3(Mathf.Abs(_movementVector.x) / 2, _colliderExtents.y, _colliderExtents.z);
 
-            _overlapCenter = new Vector3(previousPosition.x + ((_colliderExtents.x + _overlapExtents.x) * Mathf.Sign(rigidbody.velocity.x)), previousPosition.y, previousPosition.z);
+            _overlapCenter = new Vector3(previousColliderPosition.x + ((_colliderExtents.x + _overlapExtents.x) * Mathf.Sign(rigidbody.velocity.x)), previousColliderPosition.y, previousColliderPosition.z);
 
-            // Overlap in the zone where the player would be from the previous position after the movement on the Y axis.
+            // Overlap in the zone where the player would be from the previous position after the movement on the X axis.
             // If something is touched, then adjust the position of the player against it
             _touchedColliders = Physics.OverlapBox(_overlapCenter, _overlapExtents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore);
 
             if (_touchedColliders.Length > 0)
             {
-                Debug.Log("Get back in X");
+                //Debug.Log("Get back in X");
 
                 float _xLimit = 0;
 
-                // Get the Y position of the nearest collider limit, and set the position of the player against it
+                // Get the X position of the nearest collider limit, and set the position of the player against it
                 if (_movementVector.x > 0)
                 {
                     _xLimit = _touchedColliders.Select(c => c.bounds.center.x - c.bounds.extents.x).OrderBy(c => c).First();
@@ -921,7 +1030,7 @@ public class TDS_Player : TDS_Character
 
                 _movementVector.x = _newPosition.x - previousPosition.x;
 
-                // Reset the Y velocity
+                // Reset the X velocity
                 _newVelocity.x = 0;
             }
         }
@@ -932,7 +1041,7 @@ public class TDS_Player : TDS_Character
             // Get the extents & center position for the overlap
             _overlapExtents = new Vector3(_colliderExtents.x, Mathf.Abs(_movementVector.y) / 2, _colliderExtents.z);
 
-            _overlapCenter = new Vector3(previousPosition.x, previousPosition.y + ((_colliderExtents.y + _overlapExtents.y) * Mathf.Sign(rigidbody.velocity.y)), previousPosition.z);
+            _overlapCenter = new Vector3(previousColliderPosition.x, previousColliderPosition.y + ((_colliderExtents.y + _overlapExtents.y) * Mathf.Sign(rigidbody.velocity.y)), previousColliderPosition.z);
 
             // Overlap in the zone where the player would be from the previous position after the movement on the Y axis.
             // If something is touched, then adjust the position of the player against it
@@ -940,7 +1049,7 @@ public class TDS_Player : TDS_Character
 
             if (_touchedColliders.Length > 0)
             {
-                Debug.Log("Get back in Y");
+                //Debug.Log("Get back in Y");
 
                 float _yLimit = 0;
 
@@ -971,19 +1080,19 @@ public class TDS_Player : TDS_Character
             // Get the extents & center position for the overlap
             _overlapExtents = new Vector3(_colliderExtents.x, _colliderExtents.y, Mathf.Abs(_movementVector.z) / 2);
 
-            _overlapCenter = new Vector3(previousPosition.x, previousPosition.y, previousPosition.z + ((_colliderExtents.z + _overlapExtents.z) * Mathf.Sign(rigidbody.velocity.z)));
+            _overlapCenter = new Vector3(previousColliderPosition.x, previousColliderPosition.y, previousColliderPosition.z + ((_colliderExtents.z + _overlapExtents.z) * Mathf.Sign(rigidbody.velocity.z)));
 
-            // Overlap in the zone where the player would be from the previous position after the movement on the Y axis.
+            // Overlap in the zone where the player would be from the previous position after the movement on the Z axis.
             // If something is touched, then adjust the position of the player against it
             _touchedColliders = Physics.OverlapBox(_overlapCenter, _overlapExtents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore);
 
             if (_touchedColliders.Length > 0)
             {
-                Debug.Log("Get back in Z");
+                //Debug.Log("Get back in Z");
 
                 float _zLimit = 0;
 
-                // Get the Y position of the nearest collider limit, and set the position of the player against it
+                // Get the Z position of the nearest collider limit, and set the position of the player against it
                 if (_movementVector.z > 0)
                 {
                     _zLimit = _touchedColliders.Select(c => c.bounds.center.z - c.bounds.extents.z).OrderBy(c => c).First();
@@ -999,7 +1108,7 @@ public class TDS_Player : TDS_Character
 
                 _movementVector.z = _newPosition.z - previousPosition.z;
 
-                // Reset the Y velocity
+                // Reset the Z velocity
                 _newVelocity.z = 0;
             }
         }
@@ -1009,6 +1118,54 @@ public class TDS_Player : TDS_Character
         rigidbody.velocity = _newVelocity;
     }
 
+    /// <summary>
+    /// Checks if the player is grounded and updates related elements and parameters.
+    /// </summary>
+    private void CheckGrounded()
+    {
+        // Set the player as grounded if something is detected in the ground detection box
+        bool _isGrounded = groundDetectionBox.Overlap(transform.position).Length > 0;
+
+        // Animator grounded parameter
+        int _groundState = 0;
+
+        // If grounded value changed, updates all necessary things
+        if (_isGrounded != IsGrounded)
+        {
+            // Updates value
+            IsGrounded = _isGrounded;
+
+            // Updates the ground state information in the animator
+
+            if (!_isGrounded)
+            {
+                speedCoef = .7f;
+
+                // Activates event
+                OnGetOffGround?.Invoke();
+            }
+            else
+            {
+                speedCoef = 1;
+                _groundState = 0;
+
+                // Activates event
+                OnGetOnGround?.Invoke();
+            }
+        }
+
+        // Updates animator grounded informations
+        if (!_isGrounded && !isDodging)
+        {
+            _groundState = rigidbody.velocity.y < 0 ? -1 : 1;
+
+            // If were attacking, stop the attack
+            if (isAttacking) StopAttack();
+        }
+
+        SetAnimGroundState(_groundState);
+    }
+    
     /// <summary>
     /// Flips this character to have they looking at the opposite side.
     /// </summary>
@@ -1029,6 +1186,9 @@ public class TDS_Player : TDS_Character
     /// <returns>Returns the world.</returns>
     public IEnumerator Jump()
     {
+        // Gives a little force to the player's jump
+        rigidbody.AddForce(Vector3.right * isFacingRight.ToSign() * speedCurrent * 5);
+
         // Creates a float to use as timer
         float _timer = 0;
 
@@ -1229,21 +1389,21 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
-    /// Set this player animator information if parrying or not.
-    /// </summary>
-    /// <param name="_isParrying">Is this player parrying or not ?</param>
-    public void SetAnimIsParrying(bool _isParrying)
-    {
-        animator.SetBool("IsParrying", _isParrying);
-    }
-
-    /// <summary>
     /// Set this player animator information if moving or not.
     /// </summary>
     /// <param name="_isParrying">Is this player moving or not ?</param>
     public void SetAnimIsMoving(bool _isMoving)
     {
         animator.SetBool("IsMoving", _isMoving);
+    }
+
+    /// <summary>
+    /// Set this player animator information if parrying or not.
+    /// </summary>
+    /// <param name="_isParrying">Is this player parrying or not ?</param>
+    public void SetAnimIsParrying(bool _isParrying)
+    {
+        animator.SetBool("IsParrying", _isParrying);
     }
     #endregion
 
@@ -1278,28 +1438,26 @@ public class TDS_Player : TDS_Character
     // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations
     protected virtual void FixedUpdate()
     {
-        // Set the player as grounded if something is detected in the ground detection box
-        IsGrounded = groundDetectionBox.Overlap(transform.position).Length > 0;
+        // If dead, return
+        if (isDead) return;
 
-        // Updates the ground state information in the animator
-        int _groundState = 0;
-        if (!isGrounded)
-        {
-            _groundState = rigidbody.velocity.y < 0 ? -1 : 1;
-        }
-
-        SetAnimGroundState(_groundState);
+        // Checks if the player is grounded or not, and all related elements
+        CheckGrounded();
     }
 
     // LateUpdate is called every frame, if the Behaviour is enabled
     private void LateUpdate()
     {
+        // If dead, return
+        if (isDead) return;
+
         // At the end of the frame, set the previous position as this one
         previousPosition = transform.position;
+        previousColliderPosition = collider.bounds.center;
     }
 
     // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
-    private void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
         // Draws the ground detection box gizmos
         groundDetectionBox.DrawGizmos(transform.position);
@@ -1320,6 +1478,9 @@ public class TDS_Player : TDS_Character
 	// Update is called once per frame
 	protected override void Update ()
     {
+        // If dead, return
+        if (isDead) return;
+
         base.Update();
 
         // Adjust the position of the player for each axis of the rigidbody velocity where a force is exercised
