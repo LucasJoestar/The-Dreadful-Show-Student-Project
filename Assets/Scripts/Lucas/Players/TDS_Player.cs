@@ -231,6 +231,11 @@ public class TDS_Player : TDS_Character
     private Coroutine aimCoroutine = null;
 
     /// <summary>
+    /// Reference of the current coroutine of the dodge method.
+    /// </summary>
+    private Coroutine dodgeCoroutine = null;
+
+    /// <summary>
     /// References the current coroutine of the jump method. Null if none is actually running.
     /// </summary>
     protected Coroutine jumpCoroutine = null;
@@ -769,17 +774,25 @@ public class TDS_Player : TDS_Character
     /// Performs a dodge.
     /// While dodging, the player cannot take damage or attack.
     /// </summary>
-    public virtual void Dodge()
+    public virtual IEnumerator Dodge()
     {
         // Dodge !
         IsInvulnerable = true;
         isDodging = true;
 
-        // Adds a little force to the player to move him along
-        rigidbody.AddForce(Vector3.right * isFacingRight.ToSign() * Mathf.Clamp(speedCurrent, speedMax * .85f, speedCurrent) * 50);
+        // Adds an little force at the start of the dodge
+        rigidbody.AddForce(Vector3.right * Mathf.Clamp(speedCurrent, speedInitial, speedMax) * speedCoef * isFacingRight.ToSign() * speedMax * 10);
 
         // Triggers the associated animation
         SetAnimDodge();
+
+        // Adds a little force to the player to move him along while dodging
+        while (true)
+        {
+            if (!isMoving) rigidbody.AddForce(Vector3.right * isFacingRight.ToSign() * speedCoef * speedMax * 4);
+
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     /// <summary>
@@ -809,13 +822,26 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void StopDodge()
     {
+        if (!isDodging) return;
+
+        // If dodge coroutine still active, disable it
+        if (dodgeCoroutine != null) StopCoroutine(dodgeCoroutine);
+
         // Stop dodging
         IsInvulnerable = false;
         isDodging = false;
     }
 
     /// <summary>
-    /// 
+    /// Stops the automatic movement when dodging.
+    /// </summary>
+    public void StopDodgeMove()
+    {
+        if (dodgeCoroutine != null) StopCoroutine(dodgeCoroutine);
+    }
+
+    /// <summary>
+    /// Use the selected object in the inventory.
     /// </summary>
     public virtual void UseObject()
     {
@@ -886,7 +912,7 @@ public class TDS_Player : TDS_Character
         if (!isGrounded || isAttacking || isDodging || isParrying) return;
 
         // Check non-agressive actions
-        if (Input.GetButtonDown(DodgeButton)) Dodge();
+        if (Input.GetButtonDown(DodgeButton) && !isDodging) dodgeCoroutine = StartCoroutine(Dodge());
 
         else if (Input.GetButtonDown(InteractButton)) Interact();
 
@@ -921,7 +947,7 @@ public class TDS_Player : TDS_Character
 
         // Moves the player on the X & Z axis regarding the the axis pressure.
         float _horizontal = Input.GetAxis(HorizontalAxis);
-        float _vertical = Input.GetAxis(VerticalAxis);
+        float _vertical = Input.GetAxis(VerticalAxis) * .75f;
 
         if (_horizontal != 0 || _vertical != 0)
         {
@@ -991,6 +1017,7 @@ public class TDS_Player : TDS_Character
         Vector3 _newPosition = transform.position;
         Vector3 _newVelocity = rigidbody.velocity;
         Vector3 _movementVector = transform.position - previousPosition;
+        Vector3 _colliderCenter = Vector3.Scale(collider.center, collider.transform.lossyScale);
         Vector3 _colliderWorldPosition = collider.bounds.center;
         Vector3 _colliderExtents = collider.bounds.extents - (Vector3.one * .0001f);
         Vector3 _overlapCenter = Vector3.zero;
@@ -1010,7 +1037,7 @@ public class TDS_Player : TDS_Character
 
             if (_touchedColliders.Length > 0)
             {
-                //Debug.Log("Get back in X");
+                Debug.Log("Get back in X");
 
                 float _xLimit = 0;
 
@@ -1019,13 +1046,13 @@ public class TDS_Player : TDS_Character
                 {
                     _xLimit = _touchedColliders.Select(c => c.bounds.center.x - c.bounds.extents.x).OrderBy(c => c).First();
 
-                    _newPosition.x = _xLimit - _colliderExtents.x - collider.center.x - .0001f;
+                    _newPosition.x = _xLimit - (_colliderExtents.x - _colliderCenter.x) - .001f;
                 }
                 else
                 {
                     _xLimit = _touchedColliders.Select(c => c.bounds.center.x + c.bounds.extents.x).OrderBy(c => c).Last();
 
-                    _newPosition.x = _xLimit + (_colliderExtents.x - collider.center.x) + .0001f;
+                    _newPosition.x = _xLimit + (_colliderExtents.x - _colliderCenter.x) + .001f;
                 }
 
                 _movementVector.x = _newPosition.x - previousPosition.x;
@@ -1049,7 +1076,7 @@ public class TDS_Player : TDS_Character
 
             if (_touchedColliders.Length > 0)
             {
-                //Debug.Log("Get back in Y");
+                Debug.Log("Get back in Y");
 
                 float _yLimit = 0;
 
@@ -1058,13 +1085,13 @@ public class TDS_Player : TDS_Character
                 {
                     _yLimit = _touchedColliders.Select(c => c.bounds.center.y - c.bounds.extents.y).OrderBy(c => c).First();
 
-                    _newPosition.y = _yLimit - _colliderExtents.y - collider.center.y - .0001f;
+                    _newPosition.y = _yLimit - (_colliderExtents.y - _colliderCenter.y) - .001f;
                 }
                 else
                 {
                     _yLimit = _touchedColliders.Select(c => c.bounds.center.y + c.bounds.extents.y).OrderBy(c => c).Last();
 
-                    _newPosition.y = _yLimit + (_colliderExtents.y - collider.center.y) + .0001f;
+                    _newPosition.y = _yLimit + (_colliderExtents.y - _colliderCenter.y) + .001f;
                 }
 
                 _movementVector.y = _newPosition.y - previousPosition.y;
@@ -1088,7 +1115,7 @@ public class TDS_Player : TDS_Character
 
             if (_touchedColliders.Length > 0)
             {
-                //Debug.Log("Get back in Z");
+                Debug.Log("Get back in Z");
 
                 float _zLimit = 0;
 
@@ -1097,13 +1124,13 @@ public class TDS_Player : TDS_Character
                 {
                     _zLimit = _touchedColliders.Select(c => c.bounds.center.z - c.bounds.extents.z).OrderBy(c => c).First();
 
-                    _newPosition.z = _zLimit - _colliderExtents.z - collider.center.z - .0001f;
+                    _newPosition.z = _zLimit - (_colliderExtents.z - _colliderCenter.z) - .001f;
                 }
                 else
                 {
                     _zLimit = _touchedColliders.Select(c => c.bounds.center.z + c.bounds.extents.z).OrderBy(c => c).Last();
 
-                    _newPosition.z = _zLimit + (_colliderExtents.z - collider.center.z) + .0001f;
+                    _newPosition.z = _zLimit + (_colliderExtents.z - _colliderCenter.z) + .001f;
                 }
 
                 _movementVector.z = _newPosition.z - previousPosition.z;
@@ -1229,6 +1256,7 @@ public class TDS_Player : TDS_Character
         // If something is touched, use the bounds of the collider to set the position of the player against the obstacle.
 
         Vector3 _movementVector = _newPosition - transform.position;
+        Vector3 _colliderCenter = Vector3.Scale(collider.center, collider.transform.lossyScale);
         Vector3 _colliderWorldPosition = collider.bounds.center;
         Vector3 _colliderExtents = collider.bounds.extents - (Vector3.one * .0001f);
         Vector3 _overlapCenter = Vector3.zero;
@@ -1260,13 +1288,13 @@ public class TDS_Player : TDS_Character
                 {
                     _xLimit = _touchedColliders.Select(c => c.bounds.center.x - c.bounds.extents.x).OrderBy(c => c).First();
 
-                    _newPosition.x = _xLimit - _colliderExtents.x - collider.center.x - .001f;
+                    _newPosition.x = _xLimit - (_colliderExtents.x - _colliderCenter.x) - .001f;
                 }
                 else
                 {
                     _xLimit = _touchedColliders.Select(c => c.bounds.center.x + c.bounds.extents.x).OrderBy(c => c).Last();
 
-                    _newPosition.x = _xLimit + _colliderExtents.x + collider.center.x + .001f;
+                    _newPosition.x = _xLimit + (_colliderExtents.x - _colliderCenter.x) + .001f;
                 }
 
                 _movementVector.x = _newPosition.x - transform.position.x;
@@ -1296,13 +1324,13 @@ public class TDS_Player : TDS_Character
                 {
                     _zLimit = _touchedColliders.Select(c => c.bounds.center.z - c.bounds.extents.z).OrderBy(c => c).First();
 
-                    _newPosition.z = _zLimit - _colliderExtents.z - collider.center.z - .001f;
+                    _newPosition.z = _zLimit - (_colliderExtents.z - _colliderCenter.z) - .001f;
                 }
                 else
                 {
                     _zLimit = _touchedColliders.Select(c => c.bounds.center.z + c.bounds.extents.z).OrderBy(c => c).Last();
 
-                    _newPosition.z = _zLimit + _colliderExtents.z + collider.center.z + .001f;
+                    _newPosition.z = _zLimit + (_colliderExtents.z - _colliderCenter.z) + .001f;
                 }
             }
         }
