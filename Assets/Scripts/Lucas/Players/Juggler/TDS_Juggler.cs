@@ -82,6 +82,10 @@ public class TDS_Juggler : TDS_Player
     /// </summary>
     protected override void AimMethod()
     {
+        // Let the player aim the point he wants, 'cause the juggler can do that. Yep
+
+        // Aim with IJKL or the right joystick axis
+
         base.AimMethod();
     }
 
