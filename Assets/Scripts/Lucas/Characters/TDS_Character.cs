@@ -365,7 +365,7 @@ public class TDS_Character : TDS_Damageable
     /// <summary>
     /// Automatically increases the speed of the character, according to all speed settings.
     /// </summary>
-    protected void IncreaseSpeed()
+    protected virtual void IncreaseSpeed()
     {
         if (speedCurrent == 0) SpeedCurrent = speedInitial;
         else
@@ -415,7 +415,11 @@ public class TDS_Character : TDS_Damageable
         if (!Throwable) return;
 
         // Alright, then throw it !
-        throwable.Throw(throwAimingPoint, aimAngle, RandomThrowBonusDamages);
+        // Get the destination point in world space
+        Vector3 _destinationPosition = new Vector3(transform.position.x + (throwAimingPoint.x * -isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
+
+        // Now, throw that object
+        throwable.Throw(_destinationPosition, aimAngle, RandomThrowBonusDamages);
         Throwable = null;
     }
 
