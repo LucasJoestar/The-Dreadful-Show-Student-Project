@@ -13,7 +13,7 @@ public static class TDS_Input
 	 *	###### PURPOSE ######
 	 *	#####################
 	 *
-	 *	References all custom inputs of the project into a scriptable object, that subscribes itself to the MonoBehaviour Awake & Update.
+	 *	References all custom inputs of the project into a static class, that subscribes itself to the Input Update.
 	 *
 	 *	#####################
 	 *	### MODIFICATIONS ###
@@ -24,7 +24,8 @@ public static class TDS_Input
 	 *
 	 *	Changes :
 	 *
-	 *	
+	 *	    - Added the buttons, axisNames & buttonNames fields ; and the AxisNames & ButtonNames properties.
+     *	    - Added the GetAxis, GetAxisDown, GetAxisUp, GetButton, GetButtonDown, GetButtonUp & ResetInputs methods.
 	 *
 	 *	-----------------------------------
      * 
@@ -34,6 +35,9 @@ public static class TDS_Input
 	 *	Changes :
 	 *
 	 *	Creation of the TDS_Input class.
+     *	
+     *	    - Added the axis fields.
+     *	    - Added the Initialize & MyUpdate methods.
 	 *
 	 *	-----------------------------------
 	*/

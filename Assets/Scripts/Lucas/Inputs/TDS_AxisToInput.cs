@@ -33,7 +33,7 @@ public class TDS_AxisToInput
 	 *
 	 *	Creation of the TDS_AxisToInput class.
      *	
-     *	    - Added the AxisName fields ; and the lastState field & property.
+     *	    - Added the AxisName field ; and the lastState field & property.
      *	    - Added the UpdateState method.
 	 *
 	 *	-----------------------------------
