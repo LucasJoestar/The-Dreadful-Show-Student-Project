@@ -245,6 +245,10 @@ public class TDS_Enemy : TDS_Character
                     _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
                     if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
                         Flip(); 
+                    if(speedCurrent < speedMax)
+                    {
+                        IncreaseSpeed(); 
+                    }
                     if(Vector3.Distance(playerTarget.transform.position, agent.LastPosition) >  1)
                     {
                         if (agent.CheckDestination(playerTarget.transform.position))
@@ -445,6 +449,17 @@ public class TDS_Enemy : TDS_Character
         SetAnimationState((EnemyAnimationState)_attack.AnimationID);
         hitBox.Activate(_attack); 
     }
+
+    /*
+    /// <summary>
+    /// Increase the speed and set the agent speed to the currentSpeed; 
+    /// </summary>
+    override void IncreaseSpeed()
+    {
+        base.IncreaseSpeed();
+        agent.Speed = speedCurrent;
+    }
+    */
     #endregion
 
     #endregion
@@ -454,9 +469,11 @@ public class TDS_Enemy : TDS_Character
     protected override void Awake()
     {
         base.Awake();
+        if (!agent) agent = GetComponent<CustomNavMeshAgent>(); 
         agent.OnDestinationReached += () => enemyState = EnemyState.MakingDecision;
         OnDie += () => StopAllCoroutines();
-        OnDie += () => agent.StopAgent(); 
+        OnDie += () => agent.StopAgent();
+        agent.OnAgentStopped += () => speedCurrent = 0; 
     }
 
     // Use this for initialization
