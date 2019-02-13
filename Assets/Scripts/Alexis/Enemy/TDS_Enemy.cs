@@ -21,6 +21,13 @@ public class TDS_Enemy : TDS_Character
 	 *	### MODIFICATIONS ###
 	 *	##################### 
      *	
+	 *	Date :          [13/02/2019]
+     *	Author:         [THIEBAUT Alexis]
+     *	
+     *	[Implement the Method Increase Speed with the customNavMeshAgent]
+     *	    - This Method increase the speed of the agent until it reachs its maximum speed. The it set the agent speed to the current speed
+     *	
+     *	-----------------------------------
      *	
      *	Date :          [06/02/2019]
      *	Author:         [THIEBAUT Alexis]
@@ -450,16 +457,16 @@ public class TDS_Enemy : TDS_Character
         hitBox.Activate(_attack); 
     }
 
-    /*
+    
     /// <summary>
     /// Increase the speed and set the agent speed to the currentSpeed; 
     /// </summary>
-    override void IncreaseSpeed()
+    protected override void IncreaseSpeed()
     {
         base.IncreaseSpeed();
         agent.Speed = speedCurrent;
     }
-    */
+    
     #endregion
 
     #endregion

@@ -636,6 +636,21 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: isAttacking
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: isFacingRight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114936777912220844, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: enemyState
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
   m_IsPrefabAsset: 0
@@ -743,7 +758,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb57aa5f978d98648b38aa26b2f1f864, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triangles: []
 --- !u!4 &1295590792
 Transform:
   m_ObjectHideFlags: 0
