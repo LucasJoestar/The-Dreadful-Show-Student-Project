@@ -78,15 +78,11 @@ public class TDS_Juggler : TDS_Player
 
     #region Aim & Throwables
     /// <summary>
-    /// Make the juggler aim for a throw. When releasing the throw button, throw the selected object.
-    /// If the cancel throw button is pressed, cancel the throw, as it name indicate it.
+    /// Method called in the Aim coroutine.
     /// </summary>
-    /// <returns></returns>
-    protected override IEnumerator Aim()
+    protected override void AimMethod()
     {
-        aimCoroutine = StartCoroutine(base.Aim());
-
-        yield break;
+        base.AimMethod();
     }
 
     /// <summary>

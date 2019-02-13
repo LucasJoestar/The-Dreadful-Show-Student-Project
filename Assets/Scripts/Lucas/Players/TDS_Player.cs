@@ -553,40 +553,10 @@ public class TDS_Player : TDS_Character
         // While holding the throw button, aim a position
         while (Input.GetButton(ThrowButton))
         {
-            // Raycast along the trajectory preview and stop the trail when hit something
-            RaycastHit _hit = new RaycastHit();
-            Vector3[] _raycastedMotionPoints = throwTrajectoryMotionPoints;
+            // Draws the preview of the projectile trajectory while holding the throw button
+            AimMethod();
 
-            for (int _i = 0; _i < _raycastedMotionPoints.Length - 1; _i++)
-            {
-                // Get the points to raycast from & to in world space
-                Vector3 _from = transform.position + new Vector3(throwTrajectoryMotionPoints[_i].x  * -isFacingRight.ToSign(), throwTrajectoryMotionPoints[_i].y, throwTrajectoryMotionPoints[_i].z);
-                Vector3 _to = transform.position + new Vector3(throwTrajectoryMotionPoints[_i + 1].x * -isFacingRight.ToSign(), throwTrajectoryMotionPoints[_i + 1].y, throwTrajectoryMotionPoints[_i + 1].z);
-
-                // If hit something, set the hit point as end of the preview trajectory
-                if (Physics.Linecast(_from, _to, out _hit))
-                {
-                    _raycastedMotionPoints = new Vector3[_i + 2];
-                    for (int _j = 0; _j <= _i; _j++)
-                    {
-                        _raycastedMotionPoints[_j] = throwTrajectoryMotionPoints[_j];
-                    }
-                    // Get the hit point as absolute value in local space ; so as distance
-                    _raycastedMotionPoints[_i + 1] = new Vector3(Mathf.Abs(_hit.point.x - transform.position.x) * Mathf.Sign(throwAimingPoint.x), _hit.point.y - transform.position.y, Mathf.Abs(_hit.point.z - transform.position.z));
-
-                    // Updates the position of the end preview zone & its rotation according to the hit point
-                    ProjectilePreviewEndZone.transform.position = _hit.point;
-
-                    ProjectilePreviewEndZone.transform.rotation = new Quaternion(Quaternion.Lerp(ProjectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, _hit.normal), Time.deltaTime * 75).x, ProjectilePreviewEndZone.transform.rotation.y, ProjectilePreviewEndZone.transform.rotation.z, ProjectilePreviewEndZone.transform.rotation.w);
-
-                    break;
-                }
-            }
-
-            // Draws the trajectory preview
-            lineRenderer.DrawTrajectory(_raycastedMotionPoints);
-
-            yield return new WaitForSeconds(.05f);
+            yield return null;
         }
 
         // Throws the object to the aiming position
@@ -595,6 +565,53 @@ public class TDS_Player : TDS_Character
         StopAiming();
 
         yield break;
+    }
+
+    /// <summary>
+    /// Method called in the Aim coroutine.
+    /// </summary>
+    protected virtual void AimMethod()
+    {
+        // Raycast along the trajectory preview and stop the trail when hit something
+        RaycastHit _hit = new RaycastHit();
+        Vector3[] _raycastedMotionPoints = throwTrajectoryMotionPoints;
+
+        for (int _i = 0; _i < _raycastedMotionPoints.Length - 1; _i++)
+        {
+            // Get the points to raycast from & to in world space
+            Vector3 _from = transform.position + new Vector3(throwTrajectoryMotionPoints[_i].x * -isFacingRight.ToSign(), throwTrajectoryMotionPoints[_i].y, throwTrajectoryMotionPoints[_i].z);
+            Vector3 _to = transform.position + new Vector3(throwTrajectoryMotionPoints[_i + 1].x * -isFacingRight.ToSign(), throwTrajectoryMotionPoints[_i + 1].y, throwTrajectoryMotionPoints[_i + 1].z);
+
+            // If hit something, set the hit point as end of the preview trajectory
+            if (Physics.Linecast(_from, _to, out _hit))
+            {
+                _raycastedMotionPoints = new Vector3[_i + 2];
+                for (int _j = 0; _j <= _i; _j++)
+                {
+                    _raycastedMotionPoints[_j] = throwTrajectoryMotionPoints[_j];
+                }
+                // Get the hit point as absolute value in local space ; so as distance
+                _raycastedMotionPoints[_i + 1] = new Vector3(Mathf.Abs(_hit.point.x - transform.position.x) * Mathf.Sign(throwAimingPoint.x), _hit.point.y - transform.position.y, Mathf.Abs(_hit.point.z - transform.position.z));
+
+                // Updates the position of the end preview zone & its rotation according to the hit point
+                ProjectilePreviewEndZone.transform.position = _hit.point;
+
+                Quaternion _rotation = Quaternion.Lerp(ProjectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, _hit.normal), Time.deltaTime * 200);
+                //_rotation.x = ProjectilePreviewEndZone.transform.rotation.x;
+                _rotation.y = ProjectilePreviewEndZone.transform.rotation.y;
+                //_rotation.z = ProjectilePreviewEndZone.transform.rotation.z;
+                //_rotation.w = ProjectilePreviewEndZone.transform.rotation.w;
+
+                ProjectilePreviewEndZone.transform.rotation = _rotation;
+                
+                ProjectilePreviewArrow.rotation = Quaternion.AngleAxis(Vector3.Angle(_raycastedMotionPoints[_i + 1], _raycastedMotionPoints[_i]), Vector3.forward);
+
+                break;
+            }
+        }
+
+        // Draws the trajectory preview
+        lineRenderer.DrawTrajectory(_raycastedMotionPoints);
     }
 
     /// <summary>
