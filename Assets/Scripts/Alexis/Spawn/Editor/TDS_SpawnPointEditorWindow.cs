@@ -35,6 +35,7 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
      *	-----------------------------------
     */
 
+    #region Fields and Properties
     /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.spawnPoints[i]"/> of type <see cref="TDS_SpawnPoint"/>.</summary>
     private SerializedProperty property;
 
@@ -43,7 +44,11 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
 
     /// <summary>Scroll view position of the window.</summary>
     private Vector2 scrollView = Vector2.zero;
+    #endregion
 
+    #region Methods
+
+    #region OriginalMethod
     /// <summary>
     /// Init the window settings
     /// set the property and the point of the window
@@ -55,7 +60,9 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
         property = _property;
         point = _point; 
     }
-    
+    #endregion
+
+    #region UnityMethods
     /// <summary>
     /// Called to display settings
     /// </summary>
@@ -97,4 +104,7 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
     {
         Close(); 
     }
+    #endregion 
+
+    #endregion
 }

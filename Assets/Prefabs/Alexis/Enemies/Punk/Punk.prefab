@@ -178,9 +178,10 @@ MonoBehaviour:
   radius: 0.75
   baseOffset: 0
   speed: 2
-  detectionRange: 2
+  detectionRange: 1.25
   steerForce: 10
-  avoidanceForce: 2
+  avoidanceForce: 5
+  agentPriority: 1
 --- !u!114 &114393252182730624
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -189,7 +190,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1978238354924764}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ce2f74c12c896848b28f055a039f660, type: 3}
+  m_Script: {fileID: 11500000, guid: 18dda57ee8a7f354ba608a59dfff9996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 65303339487346324}
@@ -214,12 +215,13 @@ MonoBehaviour:
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 0
-  healthMax: 15
+  healthCurrent: 50
+  healthMax: 50
   hitBox: {fileID: 114393252182730624}
   healthBar: {fileID: 0}
   rigidbody: {fileID: 54315097348852968}
-  Throwable: {fileID: 0}
+  throwable: {fileID: 0}
+  handsTransform: {fileID: 0}
   isAttacking: 0
   isFacingRight: 1
   IsPacific: 0
@@ -230,6 +232,8 @@ MonoBehaviour:
   speedInitial: 1
   speedMax: 2
   aimAngle: 45
+  throwBonusDamagesMax: 45
+  throwBonusDamagesMin: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
   canBeDown: 1
   canThrow: 1
