@@ -40,16 +40,12 @@ public class TDS_EnemyAttack : TDS_Attack
 	 *	-----------------------------------
 	*/
 
-    #region Events
-
-    #endregion
-
     #region Fields / Properties
     #region bool
     /// <summary>
     /// Backing field of <see cref="IsDistanceAttack"/> 
     /// </summary>
-    [SerializeField]private bool isDistanceAttack = false;
+    [SerializeField]protected bool isDistanceAttack = false;
     /// <summary>
     /// Is the attack distance or not 
     /// </summary>
@@ -65,11 +61,12 @@ public class TDS_EnemyAttack : TDS_Attack
         }
     }
     #endregion
+
     #region int
     /// <summary>
     /// Backing field of <see cref="ConsecutiveUses"/>
     /// </summary>
-    private int consecutiveUses = 0;
+    protected int consecutiveUses = 0;
     /// <summary>
     /// Number of consecutives uses of this attack
     /// Reset to zero when the enemy use another attack
@@ -93,7 +90,7 @@ public class TDS_EnemyAttack : TDS_Attack
     /// <summary>
     /// Backing field <see cref="Cooldown"/>
     /// </summary>
-    [SerializeField] private float cooldown = 3; 
+    [SerializeField] protected float cooldown = 3;
     /// <summary>
     /// Cooldown of the attack.
     /// The enemy has to wait this time (in seconds) before attacking again
@@ -103,7 +100,7 @@ public class TDS_EnemyAttack : TDS_Attack
     /// <summary>
     /// Backing field <see cref="PredictedRange"/>
     /// </summary>
-    [SerializeField] private float predictedRange = 0;
+    [SerializeField] protected float predictedRange = 0;
     /// <summary>
     /// Predicted Range of the attack. 
     /// Used in debug and to check if the enemy is in range to cast this attack
@@ -124,7 +121,7 @@ public class TDS_EnemyAttack : TDS_Attack
     /// <summary>
     /// Probability to cast this attack over 100.
     /// </summary>
-    [SerializeField] private float probability = 100;
+    [SerializeField] protected float probability = 100;
     /// <summary>
     /// Probability to cast this attack divided by the number of consecutive uses +1.
     /// </summary>

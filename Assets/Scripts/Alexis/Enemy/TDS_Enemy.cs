@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(CustomNavMeshAgent))]
-public class TDS_Enemy : TDS_Character 
+public abstract class TDS_Enemy : TDS_Character 
 {
     /* TDS_Enemy :
 	 *
@@ -121,10 +121,6 @@ public class TDS_Enemy : TDS_Character
     /// </summary>
     protected TDS_Player playerTarget = null;
 
-    /// <summary>
-    /// Array of attacks that can be called
-    /// </summary>
-    [SerializeField] protected TDS_EnemyAttack[] attacks; 
     #endregion
 
     #region Components and References
@@ -140,6 +136,7 @@ public class TDS_Enemy : TDS_Character
     #region Methods
 
     #region Original Methods
+
     #region IEnumerator
     /// <summary>
     /// Wait a certain amount of seconds before starting Behaviour Method 
@@ -147,7 +144,7 @@ public class TDS_Enemy : TDS_Character
     /// </summary>
     /// <param name="_recoveryTime">Seconds to wait</param>
     /// <returns></returns>
-    IEnumerator ApplyRecoveryTime(float _recoveryTime)
+    protected IEnumerator ApplyRecoveryTime(float _recoveryTime)
     {
         yield return new WaitForSeconds(_recoveryTime);
         StartCoroutine(Behaviour());
@@ -155,204 +152,11 @@ public class TDS_Enemy : TDS_Character
     }
 
     /// <summary>
-    /// /!\ The behaviour includes only the Detection, Mouvement and Attacking Sequences
-    ///  >>> Still has to implement Grab and throw objects + Interactions with other enemies
+    /// /!\ THE BEHAVIOUR METHOD IS NOW ABSTRACT /!\
+    /// <see cref="TDS_Minion.Behaviour"/> or <see cref="TDS_Boss.Behaviour"/>
     /// </summary>
     /// <returns></returns>
-    IEnumerator Behaviour()
-    {
-        // If the enemy is dead or paralyzed, they can't behave
-        if (isDead || IsParalyzed) yield break;
-        // If there is no target, the agent has to get one
-        if (!playerTarget || playerTarget.IsDead)
-            enemyState = EnemyState.Searching; 
-        float _distance = 0;
-        switch (enemyState)
-        {
-            #region Searching
-            case EnemyState.Searching:
-                // If there is no target, search a new target
-                playerTarget = SearchTarget();
-                //If a target is found -> Set the state to TakingDecision
-                if (playerTarget)
-                {
-                    enemyState = EnemyState.MakingDecision;
-                    goto case EnemyState.MakingDecision; 
-                }
-                //ELSE BREAK -> Set the state to Search
-                else
-                {
-                    enemyState = EnemyState.Searching;
-                    yield return new WaitForSeconds(1); 
-                    break;
-                }
-            #endregion
-            #region Making Decision
-            case EnemyState.MakingDecision:
-                //Take decisions
-                // If the target can't be targeted, search for another target
-                if (!playerTarget || playerTarget.IsDead)
-                {
-                    enemyState = EnemyState.Searching;
-                    goto case EnemyState.Searching; 
-                }
-                _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                /* If there is an attack that can be cast, go to attack case
-                 * Check if the agent can grab an object, 
-                 * if so goto case GrabObject if it can be grab 
-                 * if it can't be grabbed directly, getting in range
-                */
-                if (attacks.Any(a => _distance < a.PredictedRange))
-                {
-                    enemyState = EnemyState.Attacking;
-                    goto case EnemyState.Attacking; 
-                }
-                else if(Throwable /*and target can be touched by thrown object*/)
-                {
-                    enemyState = EnemyState.ThrowingObject;
-                    goto case EnemyState.ThrowingObject; 
-                }
-                //else try to reach the target
-                else
-                {
-                    enemyState = EnemyState.ComputingPath;
-                    goto case EnemyState.ComputingPath; 
-                }
-            #endregion
-            #region Computing Path
-            case EnemyState.ComputingPath:
-                //Compute the path
-                // If there is something to throw, Move until reaching a position from where the player can be touched
-                // Be careful, the agent don't have to recalculate path when they have a Throwable
-
-                /*
-                if(Throwable && Check if the position can be reached )
-                {
-                    // enemyState = EnemyState.GettingInRange;
-                    // goto case EnemyState.GettingInRange;
-                }
-                */
-
-                if (agent.CheckDestination(playerTarget.transform.position))
-                {
-                    enemyState = EnemyState.GettingInRange;
-                    goto case EnemyState.GettingInRange; 
-                }
-                yield return new WaitForSeconds(1); 
-                break;
-            #endregion
-            #region Getting In Range
-            case EnemyState.GettingInRange:
-                SetAnimationState(EnemyAnimationState.Run);
-                // Wait some time before calling again Behaviour(); 
-                // Still has to increase speed of the agent
-                _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                while(!attacks.Any(a => _distance < a.PredictedRange))
-                {
-                    _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                    if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
-                        Flip(); 
-                    if(speedCurrent < speedMax)
-                    {
-                        IncreaseSpeed(); 
-                    }
-                    if(Vector3.Distance(playerTarget.transform.position, agent.LastPosition) >  1)
-                    {
-                        if (agent.CheckDestination(playerTarget.transform.position))
-                        {
-                            yield return new WaitForSeconds(.1f);
-                            continue;
-                        }
-                        else
-                        {
-                            agent.StopAgent(); 
-                            enemyState = EnemyState.MakingDecision;
-                            goto case EnemyState.MakingDecision;
-                        }
-                    }
-                    //yield return new WaitForEndOfFrame();
-                    yield return new WaitForSeconds(.1f); 
-                }
-                agent.StopAgent();
-                SetAnimationState(EnemyAnimationState.Idle); 
-                break; 
-            #endregion
-            #region Attacking
-            case EnemyState.Attacking:
-                //Throw attack
-                //Select the best attack to cast
-                if (Throwable)
-                {
-                    enemyState = EnemyState.ThrowingObject;
-                    goto case EnemyState.ThrowingObject;
-                }
-                else
-                {
-                    _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                    TDS_EnemyAttack _attack =  GetAttack(_distance);
-                    if(_attack == null)
-                    {
-                        enemyState = EnemyState.MakingDecision;
-                        goto case EnemyState.MakingDecision;
-                    }
-                    //Cast Attack
-                    StartAttack(_attack); 
-                    while (IsAttacking)
-                    {
-                        yield return new WaitForSeconds(.1f);
-                    }
-                    yield return new WaitForSeconds(_attack.Cooldown); 
-                }
-                enemyState = EnemyState.MakingDecision;
-                goto case EnemyState.MakingDecision;
-            #endregion
-            #region Grabbing Object
-            case EnemyState.PickingUpObject:
-                //Pick up an object
-                enemyState = EnemyState.MakingDecision;
-                goto case EnemyState.MakingDecision;
-            #endregion
-            #region Throwing Object
-            case EnemyState.ThrowingObject:
-                //Throw the held object
-                enemyState = EnemyState.MakingDecision;
-                goto case EnemyState.MakingDecision;
-            #endregion
-            default:
-                break;
-        }
-        yield return new WaitForSeconds(.1f);
-        StartCoroutine(Behaviour());
-        yield break; 
-    }
-    #endregion
-
-    #region TDS_EnemyAttack
-    /// <summary>
-    /// Select the attack to cast
-    /// If there is no attack return null
-    /// Selection is based on the Range and on the Probability of an attack
-    /// </summary>
-    /// <param name="_distance">Distance between the agent and its target</param>
-    /// <returns>Attack to cast</returns>
-    protected TDS_EnemyAttack GetAttack(float _distance)
-    {
-        //If the enemy has no attack, return null
-        if (attacks == null || attacks.Length == 0) return null;
-        // Get all attacks that can hit the target
-        TDS_EnemyAttack[] _availableAttacks = attacks.Where(a => a.IsDistanceAttack || a.PredictedRange > _distance).ToArray();
-        // If there is no attack in Range, return null
-        if (_availableAttacks.Length == 0) return null;
-        // Set a random to compare with the probabilities of the attackes
-        float _random = UnityEngine.Random.Range(0, _availableAttacks.Max(a => a.Probability));
-        // If a probability is less than the random, this attack can be selected
-        _availableAttacks = _availableAttacks.Where(a => a.Probability >= _random).ToArray();
-        // If there is no attack, return null
-        if (_availableAttacks.Length == 0) return null;
-        // Get a random Index to cast a random attack
-        int _randomIndex = UnityEngine.Random.Range(0, _availableAttacks.Length);   
-        return _availableAttacks[_randomIndex]; 
-    }
+    protected abstract IEnumerator Behaviour();
     #endregion
 
     #region TDS_Player
@@ -360,7 +164,7 @@ public class TDS_Enemy : TDS_Character
     /// Search the best player to target
     /// </summary>
     /// <returns>Best player to target</returns>
-    TDS_Player SearchTarget()
+    protected TDS_Player SearchTarget()
     {
         TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(c => c.GetComponent<TDS_Player>() != null && c.gameObject != this.gameObject).Select(d => d.GetComponent<TDS_Player>()).ToArray();
         if (_targets.Length == 0) return null; 
@@ -441,23 +245,7 @@ public class TDS_Enemy : TDS_Character
         if (!animator) return;
         animator.SetInteger("animationState", (int)_animationID); 
     }
-
-    /// <summary>
-    /// Cast an attack: Add a use to the attack and activate the enemy hitbox with this attack
-    /// Set the animation to the animation state linked to the AnimationID of the attack 
-    /// Reset to 0 consecutive uses of the other attacks
-    /// </summary>
-    /// <param name="_attack">Attack to cast</param>
-    protected virtual void StartAttack(TDS_EnemyAttack _attack)
-    {
-        IsAttacking = true;
-        _attack.ConsecutiveUses++;
-        attacks.ToList().Where(a => a != _attack).ToList().ForEach(a => a.ConsecutiveUses = 0);
-        SetAnimationState((EnemyAnimationState)_attack.AnimationID);
-        hitBox.Activate(_attack); 
-    }
-
-    
+ 
     /// <summary>
     /// Increase the speed and set the agent speed to the currentSpeed; 
     /// </summary>
@@ -466,7 +254,15 @@ public class TDS_Enemy : TDS_Character
         base.IncreaseSpeed();
         agent.Speed = speedCurrent;
     }
-    
+    #endregion
+
+    #region float 
+    /// <summary>
+    /// Method Abstract
+    /// <see cref="TDS_Minion.StartAttack(float)"/>
+    /// </summary>
+    /// <param name="_distance"></param>
+    protected abstract float StartAttack(float _distance);
     #endregion
 
     #endregion
