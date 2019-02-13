@@ -20,6 +20,15 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[12 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Added the projectilePreviewArrow & ProjectilePreviewEndZone fields.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[11 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -67,11 +76,17 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     #region SerializedProperties
 
     #region Components & References
+    /// <summary>SerializedProperties for <see cref="TDS_Player.ProjectilePreviewEndZone"/> of type <see cref="GameObject"/>.</summary>
+    private SerializedProperty projectilePreviewEndZone = null;
+
     /// <summary>SerializedProperties for <see cref="TDS_Player.lineRenderer"/> of type <see cref="LineRenderer"/>.</summary>
     private SerializedProperty lineRenderer = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.Summoner"/> of type <see cref="TDS_Summoner"/>.</summary>
     private SerializedProperty summoner = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.ProjectilePreviewArrow"/> of type <see cref="Transform"/>.</summary>
+    private SerializedProperty projectilePreviewArrow = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.interactionsDetector"/> of type <see cref="TDS_Trigger"/>.</summary>
     private SerializedProperty interactionsDetector = null;
@@ -285,6 +300,11 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     private void DrawComponentsAndReferences()
     {
         TDS_EditorUtility.PropertyField("Ground detection Box", "Virtual box used to detect if the player is on ground or not", groundDetectionBox);
+
+        GUILayout.Space(5);
+
+        TDS_EditorUtility.ObjectField("Projectile Preview End Zone", "Zone at the end of the projectile preview used for feedback value", projectilePreviewEndZone, typeof(GameObject));
+        TDS_EditorUtility.ObjectField("Projectile Preview Arrow", "Arrow at the end of the projectile preview pointing at the aiming point", projectilePreviewArrow, typeof(Transform));
 
         GUILayout.Space(5);
 
@@ -514,6 +534,8 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         // Get the serializedProperties from the serializedObject
         lineRenderer = serializedObject.FindProperty("lineRenderer");
         summoner = serializedObject.FindProperty("Summoner");
+        projectilePreviewArrow = serializedObject.FindProperty("ProjectilePreviewArrow");
+        projectilePreviewEndZone = serializedObject.FindProperty("ProjectilePreviewEndZone");
         interactionsDetector = serializedObject.FindProperty("interactionsDetector");
         groundDetectionBox = serializedObject.FindProperty("groundDetectionBox");
 
