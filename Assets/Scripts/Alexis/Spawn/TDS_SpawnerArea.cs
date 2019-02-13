@@ -118,7 +118,18 @@ public class TDS_SpawnerArea : PunBehaviour
     {
         
 	}
-	#endregion
 
-	#endregion
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position, .2f); 
+        for (int i = 0; i < spawnPoints.Count; i++)
+        {
+            Gizmos.DrawLine(transform.position, spawnPoints[i].SpawnPosition);
+            Gizmos.DrawSphere(spawnPoints[i].SpawnPosition, .1f); 
+        }
+    }
+    #endregion
+
+    #endregion
 }

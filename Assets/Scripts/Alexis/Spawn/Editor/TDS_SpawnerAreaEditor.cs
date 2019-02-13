@@ -203,6 +203,19 @@ public class TDS_SpawnerAreaEditor : Editor
     {
         DrawSpawnerAreaEditor(); 
     }
+
+    private void OnSceneGUI()
+    {
+        if (!p_target) return;
+        Handles.color = Color.red;
+        for (int i = 0; i < p_target.SpawnPoints.Count; i++)
+        {
+            TDS_SpawnPoint _p = p_target.SpawnPoints[i]; 
+            Handles.Label(_p.SpawnPosition + Vector3.up, $"Spawn Point n°{i}");
+            Handles.DrawWireDisc(_p.SpawnPosition, Vector3.up, _p.SpawnRange);
+            _p.SpawnPosition = Handles.PositionHandle(_p.SpawnPosition, Quaternion.identity); 
+        }
+    }
     #endregion
 
     #endregion
