@@ -16,8 +16,8 @@ public class TDS_Throwable : MonoBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
-	 *	Date :			[DATE]
-	 *	Author :		[NAME]
+	 *	Date :	12/02/2019
+	 *	Author :William COMMINGES
 	 *
 	 *	Changes :
 	 *
@@ -55,10 +55,16 @@ public class TDS_Throwable : MonoBehaviour
 
     #region Methods
     #region Original Methods
+    /// <summary>
+    /// Destroy the gameObject Throwable if the durability is less or equal to zero 
+    /// </summary>
     void DestroyThrowableObject()
     {
         Destroy(gameObject);
     }
+    /// <summary>
+    /// 
+    /// </summary>
     public void Drop()
     {
         if (!isHeld) return;
