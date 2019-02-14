@@ -10,6 +10,16 @@
  *	### MODIFICATIONS ###
  *	#####################
  *
+ *  Date :			[13 / 02 / 2019]
+ *	Author :		[THIEBAUT Alexis]
+ *
+ *	Changes :
+ *
+ *  Adding more enums.
+ *  	- Added the MinionAttackType enum.
+ *  	
+ *  -----------------------------------
+ *  
  *	Date :			[11 / 02 / 2019]
  *	Author :		[Guibert Lucas]
  *
@@ -59,6 +69,27 @@ public enum AxisState
     None
 }
 
+/// <summary>
+/// Animation States of the enemies
+/// </summary>
+public enum EnemyAnimationState
+{
+    Idle,
+    Run,
+    Hit,
+    Grounded,
+    GrabObject,
+    ThrowObject,
+    AttackOne,
+    AttackTwo,
+    AttackThree,
+    SpecialAttack,
+    Death
+}
+
+/// <summary>
+/// States of the enemies 
+/// </summary>
 public enum EnemyState
 {
     Searching, 
@@ -70,19 +101,16 @@ public enum EnemyState
     ThrowingObject
 }
 
-public enum EnemyAnimationState
+/// <summary>
+/// Type of the Minion attack 
+/// used when the attack is called to know which effects and actions apply
+/// </summary>
+public enum MinionAttackType
 {
-    Idle, 
-    Run, 
-    Hit, 
-    Grounded, 
-    GrabObject, 
-    ThrowObject,
-    AttackOne, 
-    AttackTwo, 
-    AttackThree, 
-    SpecialAttack,
-    Death
+    TypeOne,
+    TypeTwo,
+    TypeThree,
+    TypeSpecial
 }
 
 /// <summary>

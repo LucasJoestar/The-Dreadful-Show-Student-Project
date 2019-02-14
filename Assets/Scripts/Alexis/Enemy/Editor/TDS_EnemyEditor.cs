@@ -106,8 +106,6 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     private SerializedProperty canThrow = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.detectionRange"/> of type <see cref="float"/>.</summary>
     private SerializedProperty detectionRange = null;
-    /// <summary>SerializedProperty for <see cref="TDS_Enemy.attacks"/> of type <see cref="TDS_EnemyAttack[]"/>.</summary>
-    private SerializedProperty attacks = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.enemyState"/> of type <see cref="EnemyState"/>.</summary>
     private SerializedProperty enemyState = null;
     #endregion
@@ -208,7 +206,7 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
 
         // Draw a header for the enemy detection settings 
         EditorGUILayout.LabelField("Detection", TDS_EditorUtility.HeaderStyle);
-        TDS_EditorUtility.FloatSlider("Detection range", "The maximum distance of the field of view of the enemy", detectionRange, 1,25);
+        TDS_EditorUtility.FloatSlider("Detection range", "The maximum distance of the field of view of the enemy", detectionRange, 1, 25);
         GUILayout.Space(3);
 
         //Draw a header for the enemy down settings
@@ -217,9 +215,6 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         GUILayout.Space(3);
 
         // Draws a header for the enemy attacks settings
-        EditorGUILayout.LabelField("Attacks", TDS_EditorUtility.HeaderStyle);
-        TDS_EditorUtility.PropertyField("Attacks", "All Attacks this enemy can cast", attacks);
-        GUILayout.Space(2);
         TDS_EditorUtility.Toggle("Can Throw", "Is the enemy can throw objects", canThrow); 
 
         GUILayout.Space(3);
@@ -243,7 +238,6 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         canBeDown = serializedObject.FindProperty("canBeDown");
         canThrow = serializedObject.FindProperty("canThrow");
         detectionRange = serializedObject.FindProperty("detectionRange");
-        attacks = serializedObject.FindProperty("attacks");
         enemyState = serializedObject.FindProperty("enemyState"); 
 
         //Load the editor folded and unfolded values of this class
