@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
 
-public class TDS_Minion : TDS_Enemy
+public abstract class TDS_Minion : TDS_Enemy
 {
     /* TDS_Minion :
 	 *
@@ -270,8 +270,17 @@ public class TDS_Minion : TDS_Enemy
         attacks.ToList().Where(a => a != _attack).ToList().ForEach(a => a.ConsecutiveUses = 0);
         SetAnimationState((EnemyAnimationState)_attack.AnimationID);
         hitBox.Activate(_attack);
+        ApplyAttackEffect(_attack.AttackType); 
         return _attack.Cooldown;
     }
+
+    /// <summary>
+    /// Called to apply the effect of an attack 
+    /// This effect can be a movement, an instanciation of an object
+    /// Write effects in each specific minion
+    /// </summary>
+    /// <param name="_type">Type of the attack</param>
+    protected abstract void ApplyAttackEffect(MinionAttackType _type); 
     #endregion 
 
     #region Unity Methods
