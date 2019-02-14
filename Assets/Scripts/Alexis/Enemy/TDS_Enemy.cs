@@ -137,6 +137,15 @@ public abstract class TDS_Enemy : TDS_Character
 
     #region Original Methods
 
+    #region float 
+    /// <summary>
+    /// Method Abstract
+    /// <see cref="TDS_Minion.StartAttack(float)"/>
+    /// </summary>
+    /// <param name="_distance"></param>
+    protected abstract float StartAttack(float _distance);
+    #endregion
+
     #region IEnumerator
     /// <summary>
     /// Wait a certain amount of seconds before starting Behaviour Method 
@@ -153,7 +162,7 @@ public abstract class TDS_Enemy : TDS_Character
 
     /// <summary>
     /// /!\ THE BEHAVIOUR METHOD IS NOW ABSTRACT /!\
-    /// <see cref="TDS_Minion.Behaviour"/> or <see cref="TDS_Boss.Behaviour"/>
+    /// <see cref="TDS_Minion.Behaviour"/> or <see cref="TDS_Punk.Behaviour"/>
     /// </summary>
     /// <returns></returns>
     protected abstract IEnumerator Behaviour();
@@ -255,16 +264,6 @@ public abstract class TDS_Enemy : TDS_Character
         agent.Speed = speedCurrent;
     }
     #endregion
-
-    #region float 
-    /// <summary>
-    /// Method Abstract
-    /// <see cref="TDS_Minion.StartAttack(float)"/>
-    /// </summary>
-    /// <param name="_distance"></param>
-    protected abstract float StartAttack(float _distance);
-    #endregion
-
     #endregion
 
     #region Unity Methods

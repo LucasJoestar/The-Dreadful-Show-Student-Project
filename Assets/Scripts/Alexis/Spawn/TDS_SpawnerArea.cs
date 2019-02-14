@@ -89,6 +89,7 @@ public class TDS_SpawnerArea : PunBehaviour
     #region Original Methods
 
     #endregion
+
     #region Unity Methods
     // Awake is called when the script instance is being loaded
     private void Awake()
@@ -110,6 +111,7 @@ public class TDS_SpawnerArea : PunBehaviour
 
     private void OnTriggerEnter(Collider _coll)
     {
+        
     }
 
     private void OnDrawGizmos()
