@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody))]
 public class TDS_Character : TDS_Damageable
@@ -18,6 +18,17 @@ public class TDS_Character : TDS_Damageable
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	#####################
+     * 
+     *  Date :			[12 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Added the handsTransform field ; the RandomThrowBonusDamages & Throwable properties ; and the throwBonusDamagesMax & throwBonusDamagesMin fields & properties.
+     *	    
+     *	    Fulfilled all throwables related methods so that characters can now pick-up objects and throw them.
+	 *
+	 *	-----------------------------------
      * 
      *  Date :			[06 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
@@ -118,10 +129,22 @@ public class TDS_Character : TDS_Damageable
     /// </summary>
     [SerializeField] protected new Rigidbody rigidbody = null;
 
+    /// <summary>Backing field for <see cref="Throwable"/>.</summary>
+    [SerializeField] protected TDS_Throwable throwable = null;
+
     /// <summary>
     /// The throwable this character is currently wearing.
     /// </summary>
-    public TDS_Throwable Throwable = null;
+    public TDS_Throwable Throwable
+    {
+        get { return throwable; }
+        protected set { throwable = value; }
+    }
+
+    /// <summary>
+    /// Transform set at the hands position of the character.
+    /// </summary>
+    [SerializeField] protected Transform handsTransform = null;
     #endregion
 
     #region Variables
@@ -266,6 +289,49 @@ public class TDS_Character : TDS_Damageable
     }
 
     /// <summary>
+    /// Get a random throw bonus damages value between <see cref="throwBonusDamagesMin"/> & <see cref="throwBonusDamagesMax"/>.
+    /// </summary>
+    public int RandomThrowBonusDamages
+    {
+        get
+        {
+            return Random.Range(throwBonusDamagesMin, throwBonusDamagesMax);
+        }
+    }
+
+    /// <summary>Backing field for <see cref="ThrowBonusDamagesMax"/>.</summary>
+    [SerializeField] protected int throwBonusDamagesMax = 45;
+
+    /// <summary>
+    /// Maximum amount of damages to add to a throw.
+    /// </summary>
+    public int ThrowBonusDamagesMax
+    {
+        get { return throwBonusDamagesMax; }
+        set
+        {
+            if (value < 0) value = 0;
+            throwBonusDamagesMax = value;
+        }
+    }
+
+    /// <summary>Backing field for <see cref="ThrowBonusDamagesMin"/>.</summary>
+    [SerializeField] protected int throwBonusDamagesMin = 45;
+
+    /// <summary>
+    /// Minimum amount of damages to add to a throw.
+    /// </summary>
+    public int ThrowBonusDamagesMin
+    {
+        get { return throwBonusDamagesMin; }
+        set
+        {
+            value = Mathf.Clamp(value, 0, throwBonusDamagesMax);
+            throwBonusDamagesMin = value;
+        }
+    }
+
+    /// <summary>
     /// Point where the character is aiming to throw (Local space).
     /// </summary>
     [SerializeField] protected Vector3 throwAimingPoint = Vector3.zero;
@@ -299,7 +365,7 @@ public class TDS_Character : TDS_Damageable
     /// <summary>
     /// Automatically increases the speed of the character, according to all speed settings.
     /// </summary>
-    protected void IncreaseSpeed()
+    protected virtual void IncreaseSpeed()
     {
         if (speedCurrent == 0) SpeedCurrent = speedInitial;
         else
@@ -314,7 +380,12 @@ public class TDS_Character : TDS_Damageable
     /// </summary>
     public virtual void DropObject()
     {
-        // Drop it
+        // If no throwable, return
+        if (!throwable) return;
+
+        // Drooop
+        throwable.Drop();
+        Throwable = null;
     }
 
     /// <summary>
@@ -325,6 +396,13 @@ public class TDS_Character : TDS_Damageable
     /// <returns>Returns true if the throwable was successfully grabbed, false either.</returns>
     public virtual bool GrabObject(TDS_Throwable _throwable)
     {
+        // If already having a throwable, return false
+        if (throwable) return false;
+
+        // Take the object
+        _throwable.PickUp(this, handsTransform);
+        Throwable = _throwable;
+
         return true;
     }
 
@@ -333,7 +411,16 @@ public class TDS_Character : TDS_Damageable
     /// </summary>
     public virtual void ThrowObject()
     {
-        // Throw it
+        // If no throwable, return
+        if (!Throwable) return;
+
+        // Alright, then throw it !
+        // Get the destination point in world space
+        Vector3 _destinationPosition = new Vector3(transform.position.x + (throwAimingPoint.x * -isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
+
+        // Now, throw that object
+        throwable.Throw(_destinationPosition, aimAngle, RandomThrowBonusDamages);
+        Throwable = null;
     }
 
     /// <summary>
@@ -342,7 +429,12 @@ public class TDS_Character : TDS_Damageable
     /// <param name="_targetPosition">Position where the object should land</param>
     public virtual void ThrowObject(Vector3 _targetPosition)
     {
-        // Throw it
+        // If no throwable, return
+        if (!throwable) return;
+
+        // Alright, then throw it !
+        throwable.Throw(_targetPosition, aimAngle, RandomThrowBonusDamages);
+        Throwable = null;
     }
     #endregion
 

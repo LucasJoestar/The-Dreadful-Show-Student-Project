@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public class TDS_Trigger : MonoBehaviour 
 {
     /* TDS_Trigger :
@@ -20,6 +22,17 @@ public class TDS_Trigger : MonoBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[12 / 01 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	Creation of the TDS_Trigger class.
+     *	
+     *	    - Added the detectedColliders field ; and the NearestObject property.
+	 *
+	 *	-----------------------------------
+     * 
 	 *	Date :			[17 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -63,10 +76,38 @@ public class TDS_Trigger : MonoBehaviour
     /// </summary>
     private bool doSortByTag = false;
 
+    /// <summary>Backing field for <see cref="DetectedColliders"/>.</summary>
+    [SerializeField] private List<Collider> detectedColliders = new List<Collider>();
+
     /// <summary>
     /// List of a colliders actually in this game object trigger.
     /// </summary>
-    public List<Collider> DetectedColliders { get; private set; } = new List<Collider>();
+    public List<Collider> DetectedColliders
+    {
+        get { return detectedColliders; }
+        private set { detectedColliders = value; }
+    }
+
+    /// <summary>
+    /// Returns the nearest detected collider in zone (null if none).
+    /// </summary>
+    public GameObject NearestObject
+    {
+        get
+        {
+            switch (detectedColliders.Count)
+            {
+                case 0:
+                    return null;
+
+                case 1:
+                    return detectedColliders[0].gameObject;
+
+                default:
+                    return detectedColliders.OrderBy(c => Vector3.Distance(transform.position, c.transform.position)).First().gameObject;
+            }
+        }
+    }
 
     /// <summary>Backing field for </summary>
     [SerializeField] private List<string> detectedTags = new List<string>();
@@ -96,19 +137,19 @@ public class TDS_Trigger : MonoBehaviour
         DetectedColliders.Add(other);
         OnColliderEnter?.Invoke(other);
 
-        if (DetectedColliders.Count == 1) OnSomethingDetected?.Invoke();
+        if (detectedColliders.Count == 1) OnSomethingDetected?.Invoke();
     }
 
     // OnTriggerExit is called when the Collider other has stopped touching the trigger
     private void OnTriggerExit(Collider other)
     {
         // If the collider is not in the list of the detected ones, ignores it
-        if (!DetectedColliders.Contains(other)) return;
+        if (!detectedColliders.Contains(other)) return;
 
         DetectedColliders.Remove(other);
         OnColliderExit?.Invoke(other);
 
-        if (DetectedColliders.Count == 0) OnNothingDetected?.Invoke();
+        if (detectedColliders.Count == 0) OnNothingDetected?.Invoke();
     }
     #endregion
 }

@@ -19,11 +19,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4175069985797766}
-  - component: {fileID: 114936777912220844}
   - component: {fileID: 54315097348852968}
   - component: {fileID: 65317177169650050}
   - component: {fileID: 95117252439618552}
   - component: {fileID: 114125368745151192}
+  - component: {fileID: 114513829787566364}
   m_Layer: 10
   m_Name: Punk
   m_TagString: Untagged
@@ -178,9 +178,10 @@ MonoBehaviour:
   radius: 0.75
   baseOffset: 0
   speed: 2
-  detectionRange: 2
+  detectionRange: 1.25
   steerForce: 10
-  avoidanceForce: 2
+  avoidanceForce: 5
+  agentPriority: 1
 --- !u!114 &114393252182730624
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -189,15 +190,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1978238354924764}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ce2f74c12c896848b28f055a039f660, type: 3}
+  m_Script: {fileID: 11500000, guid: 18dda57ee8a7f354ba608a59dfff9996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 65303339487346324}
-  owner: {fileID: 114936777912220844}
+  owner: {fileID: 114513829787566364}
   WhatHit:
     serializedVersion: 2
     m_Bits: 512
---- !u!114 &114936777912220844
+--- !u!114 &114513829787566364
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -205,7 +206,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1341661741757368}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdd01019a789be048b61bcae41c03548, type: 3}
+  m_Script: {fileID: 11500000, guid: 67bfa55da9dd26649b9ddf234e621c2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 95117252439618552}
@@ -214,12 +215,13 @@ MonoBehaviour:
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 0
-  healthMax: 15
+  healthCurrent: 50
+  healthMax: 50
   hitBox: {fileID: 114393252182730624}
   healthBar: {fileID: 0}
   rigidbody: {fileID: 54315097348852968}
-  Throwable: {fileID: 0}
+  throwable: {fileID: 0}
+  handsTransform: {fileID: 0}
   isAttacking: 0
   isFacingRight: 1
   IsPacific: 0
@@ -230,22 +232,24 @@ MonoBehaviour:
   speedInitial: 1
   speedMax: 2
   aimAngle: 45
+  throwBonusDamagesMax: 45
+  throwBonusDamagesMin: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
   canBeDown: 1
   canThrow: 1
   enemyState: 0
-  detectionRange: 10
+  detectionRange: 11.7
+  agent: {fileID: 114125368745151192}
   attacks:
-  - Name: COUP DE BOULE!
+  - Name: HeadButt
     AnimationID: 6
-    damagesMax: 5
-    damagesMin: 3
-    Description: BONK!
+    damagesMax: 10
+    damagesMin: 15
+    Description: BOUM
     isDistanceAttack: 0
-    cooldown: 1
+    cooldown: 1.5
     predictedRange: 1.5
     probability: 100
-  agent: {fileID: 114125368745151192}
 --- !u!212 &212749167570648662
 SpriteRenderer:
   m_ObjectHideFlags: 1
