@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon;
 
+[RequireComponent(typeof(BoxCollider))]
 public class TDS_SpawnerArea : PunBehaviour
 {
     /* TDS_SpawnerArea :
@@ -19,6 +20,15 @@ public class TDS_SpawnerArea : PunBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     * 	Date :			[14/02/2019]
+	 *	Author :		[Thiebaut Alexiss]
+	 *
+	 *	Changes :
+	 *
+	 *	Remplacement de la list de spawn points par une liste de vagues qui sera parcourrue pour avancer dans les vagues
+	 *
+	 *	-----------------------------------
+     *	
 	 *	Date :			[11/02/2019]
 	 *	Author :		[Thiebaut Alexiss]
 	 *
@@ -60,11 +70,6 @@ public class TDS_SpawnerArea : PunBehaviour
     private int waveIndex = 0;
 
     /// <summary>
-    /// Number of waves called by this area
-    /// </summary>
-    [SerializeField] protected int wavesLength = 1;
-
-    /// <summary>
     /// List of dead enemies enemies belonging to this area
     /// </summary>
     private List<TDS_Enemy> deadEnemies = new List<TDS_Enemy>();
@@ -74,11 +79,7 @@ public class TDS_SpawnerArea : PunBehaviour
     /// </summary>
     private List<TDS_Enemy> spawnedEnemies = new List<TDS_Enemy>();
 
-    /// <summary>
-    /// List of all spawn points called by this area
-    /// </summary>
-    [SerializeField] protected List<TDS_SpawnPoint> spawnPoints = new List<TDS_SpawnPoint>();
-    public List<TDS_SpawnPoint> SpawnPoints { get { return spawnPoints; } }
+    [SerializeField] List<TDS_Wave> waves = new List<TDS_Wave>();
     #endregion
 
     #endregion
@@ -86,20 +87,8 @@ public class TDS_SpawnerArea : PunBehaviour
     #region Methods
 
     #region Original Methods
-    #endregion
 
-    #region EditorMethod
-    /// <summary>
-    /// Add a point to the list of spawnPoints
-    /// </summary>
-    public void AddSpawnPoint() => spawnPoints.Add(new TDS_SpawnPoint()); 
-    /// <summary>
-    /// Remove a point from the list of spawnPoints at the index
-    /// </summary>
-    /// <param name="_index">ndex</param>
-    public void RemovePoint(int _index) => spawnPoints.RemoveAt(_index); 
     #endregion
-
     #region Unity Methods
     // Awake is called when the script instance is being loaded
     private void Awake()
@@ -119,14 +108,23 @@ public class TDS_SpawnerArea : PunBehaviour
         
 	}
 
+    private void OnTriggerEnter(Collider _coll)
+    {
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position, .2f); 
-        for (int i = 0; i < spawnPoints.Count; i++)
+        for (int i = 0; i < waves.Count; i++)
         {
-            Gizmos.DrawLine(transform.position, spawnPoints[i].SpawnPosition);
-            Gizmos.DrawSphere(spawnPoints[i].SpawnPosition, .1f); 
+            Gizmos.color = waves[i].DebugColor;
+            for (int j = 0; j < waves[i].SpawnPoints.Count; j++)
+            {
+                Gizmos.DrawLine(transform.position, waves[i].SpawnPoints[j].SpawnPosition);
+                Gizmos.DrawSphere(waves[i].SpawnPoints[j].SpawnPosition, .1f);
+            }
+
         }
     }
     #endregion

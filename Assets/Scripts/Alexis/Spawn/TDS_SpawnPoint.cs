@@ -65,7 +65,7 @@ public class TDS_SpawnPoint
     /// <summary>
     /// Wave Element of the SpawnPoint
     /// </summary>
-        [SerializeField] private TDS_WaveElement waveElement; 
+    [SerializeField] private TDS_WaveElement waveElement; 
 	#endregion
 
 	#region Methods
