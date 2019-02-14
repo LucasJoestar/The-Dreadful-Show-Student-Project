@@ -596,15 +596,18 @@ public class TDS_Player : TDS_Character
                 // Updates the position of the end preview zone & its rotation according to the hit point
                 ProjectilePreviewEndZone.transform.position = _hit.point;
 
-                Quaternion _rotation = Quaternion.Lerp(ProjectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, _hit.normal), Time.deltaTime * 200);
-                //_rotation.x = ProjectilePreviewEndZone.transform.rotation.x;
-                _rotation.y = ProjectilePreviewEndZone.transform.rotation.y;
-                //_rotation.z = ProjectilePreviewEndZone.transform.rotation.z;
-                //_rotation.w = ProjectilePreviewEndZone.transform.rotation.w;
+                Quaternion _rotation = Quaternion.Lerp(ProjectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, _hit.normal), Time.deltaTime * 15);
+                _rotation.x *= -isFacingRight.ToSign();
 
                 ProjectilePreviewEndZone.transform.rotation = _rotation;
-                
-                ProjectilePreviewArrow.rotation = Quaternion.AngleAxis(Vector3.Angle(_raycastedMotionPoints[_i + 1], _raycastedMotionPoints[_i]), Vector3.forward);
+
+                // Set the arrow rotation so it is now pointing at the aiming point
+                Vector3 _direction = _raycastedMotionPoints[_i + 1] - _raycastedMotionPoints[_i];
+                _direction.x *= -isFacingRight.ToSign();
+
+                Quaternion _arrowRotation = Quaternion.FromToRotation(Vector3.up, _direction);
+
+                ProjectilePreviewArrow.rotation = Quaternion.Lerp(ProjectilePreviewArrow.rotation, _arrowRotation, Time.deltaTime * 15);
 
                 break;
             }
