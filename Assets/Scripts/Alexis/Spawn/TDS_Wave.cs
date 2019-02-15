@@ -35,17 +35,25 @@ public class TDS_Wave
     #endregion
 
     #region Fields / Properties
+
+    #region Editor 
+    /// <summary>
+    /// Is the wave foldout in the Editor
+    /// </summary>
+    [SerializeField] private bool isWaveFoldOut = false;
+
+    /// <summary>
+    /// The color of the wave in the editor
+    /// </summary>
+    [SerializeField] protected Color debugColor = Color.red;
+    public Color DebugColor { get { return debugColor; } }
+    #endregion 
+
     /// <summary>
     /// List of all spawn points called by this area
     /// </summary>
     [SerializeField] protected List<TDS_SpawnPoint> spawnPoints = new List<TDS_SpawnPoint>();
     public List<TDS_SpawnPoint> SpawnPoints { get { return spawnPoints; } }
-
-    [SerializeField] protected Color debugColor = Color.red;
-    public Color DebugColor { get { return debugColor; } }
-
-
-    [SerializeField] private bool isWaveFoldOut = false;
 
     #endregion
 

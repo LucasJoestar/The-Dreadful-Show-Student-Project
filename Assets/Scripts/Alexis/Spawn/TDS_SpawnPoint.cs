@@ -37,10 +37,6 @@ public class TDS_SpawnPoint
     #endregion
 
     #region Fields / Properties
-    /// <summary>
-    /// Index of the wave, the wave will be called using this index
-    /// </summary>
-    [SerializeField] private int waveIndex = 0;
 
     /// <summary>
     /// Range where the enemy can be instanciated around the spawn Position

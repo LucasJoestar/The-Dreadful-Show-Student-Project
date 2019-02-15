@@ -889,29 +889,37 @@ MonoBehaviour:
   photonView: {fileID: 0}
   isLooping: 0
   waves:
-  - spawnPoints:
-    - waveIndex: 0
-      spawnRange: 2
+  - isWaveFoldOut: 1
+    debugColor: {r: 0, g: 0.22478104, b: 1, a: 1}
+    spawnPoints:
+    - spawnRange: 5
+      spawnPosition: {x: -4.541326, y: 0, z: -1.4631968}
+      waveElement:
+        minRandomSpawn: 0
+        maxRandomSpawn: 0
+        spawningInformations: []
+        randomSpawningInformations: []
+  - isWaveFoldOut: 1
+    debugColor: {r: 0.7137255, g: 0, b: 0, a: 1}
+    spawnPoints:
+    - spawnRange: 2
       spawnPosition: {x: -7.793214, y: 0, z: 1.4097309}
       waveElement:
         minRandomSpawn: 0
         maxRandomSpawn: 0
         spawningInformations:
-        - spawningEnemyName: Punk
+        - enemyResourceName: 
           numberOfEnemies: 2
         randomSpawningInformations: []
-    - waveIndex: 0
-      spawnRange: 3
+    - spawnRange: 3
       spawnPosition: {x: 6.2521944, y: 0, z: 10.15455}
       waveElement:
         minRandomSpawn: 0
         maxRandomSpawn: 0
         spawningInformations:
-        - spawningEnemyName: Punk
+        - enemyResourceName: 
           numberOfEnemies: 5
         randomSpawningInformations: []
-    debugColor: {r: 0.7137255, g: 0, b: 0, a: 1}
-    isWaveFoldOut: 1
 --- !u!4 &2145091658
 Transform:
   m_ObjectHideFlags: 0
