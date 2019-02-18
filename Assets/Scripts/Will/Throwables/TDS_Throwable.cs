@@ -64,7 +64,7 @@ public class TDS_Throwable : PunBehaviour
         Destroy(gameObject);
     }
     /// <summary>
-    /// Un parent the object from the character who was carring it.
+    /// Unparent the object from the character who was carring it.
     /// </summary>
     public void Drop()
     {
