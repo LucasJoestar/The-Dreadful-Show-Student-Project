@@ -232,7 +232,10 @@ public abstract class TDS_Enemy : TDS_Character
             StopAllCoroutines();
             enemyState = EnemyState.MakingDecision;
             if (isDead)
+            {
                 SetAnimationState(EnemyAnimationState.Death);
+                Area.RemoveEnemy(this); 
+            }
             else
                 SetAnimationState(EnemyAnimationState.Hit);
         }
