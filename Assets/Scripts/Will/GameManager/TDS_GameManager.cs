@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TDS_GameManager : MonoBehaviour 
 {
-    /* TDS_GameManager :
+	/* TDS_GameManager :
 	 *
 	 *	#####################
 	 *	###### PURPOSE ######
@@ -27,50 +27,27 @@ public class TDS_GameManager : MonoBehaviour
 	 *	-----------------------------------
 	*/
 
-    #region Events
+	#region Events
 
-    #endregion
+	#endregion
 
-    #region Fields / Properties
-    bool isPaused = false;
-    bool isReadyToQuit = true;
-    public static TDS_GameManager Instance;
-    #endregion
+	#region Fields / Properties
 
-    #region Methods
-    #region Original Methods
-    IEnumerator Quit()
-    {
-        yield return new WaitForEndOfFrame();
-        isReadyToQuit = true;
-        Application.Quit();
-    }
-    #endregion
+	#endregion
 
-    #region Unity Methods
-    void Awake()
-    {
-        if (!Instance)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Debug.Log("Already a GameManager in the Scene !");
-            Destroy(this);
-        }
-    }
+	#region Methods
+	#region Original Methods
 
-    private void OnDestroy()
-    {
-        Instance = null;
-    }
+	#endregion
 
+	#region Unity Methods
+	// Use this for initialization
     void Start ()
     {
 		
     }
 	
+	// Update is called once per frame
 	void Update ()
     {
         

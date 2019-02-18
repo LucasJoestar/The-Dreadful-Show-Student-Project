@@ -24,7 +24,7 @@ public static class TDS_Input
 	 *
 	 *	Changes :
 	 *
-	 *	    - Added the buttons field ; and the AxisNames & ButtonNames properties.
+	 *	    - Added the buttons, axisNames & buttonNames fields ; and the AxisNames & ButtonNames properties.
      *	    - Added the GetAxis, GetAxisDown, GetAxisUp, GetButton, GetButtonDown, GetButtonUp & ResetInputs methods.
 	 *
 	 *	-----------------------------------
@@ -57,15 +57,29 @@ public static class TDS_Input
     /// </summary>
     private static TDS_Button[] buttons = new TDS_Button[] { };
 
+    /// <summary>Backing field for <see cref="AxisNames"/>.</summary>
+    [SerializeField] private static string[] axisNames = new string[] { };
+
     /// <summary>
     /// Name of all axis from this project.
     /// </summary>
-    public static string[] AxisNames { get; private set; } = new string[] { };
+    public static string[] AxisNames
+    {
+        get { return axisNames; }
+        private set { axisNames = value; }
+    }
+
+    /// <summary>Backing field for <see cref="ButtonNames"/>.</summary>
+    [SerializeField] private static string[] buttonNames = new string[] { };
 
     /// <summary>
     /// Name of all custom buttons from this project.
     /// </summary>
-    public static string[] ButtonNames { get; private set; } = new string[] { };
+    public static string[] ButtonNames
+    {
+        get { return buttonNames; }
+        private set { buttonNames = value; }
+    }
     #endregion
 
     #region Methods
@@ -173,10 +187,10 @@ public static class TDS_Input
         #if UNITY_EDITOR
         Debug.Log("Mhmm...");
         // Get axis & buttons informations from a scriptable object
-#else
+        #else
         // Get axis & buttons informations from a PlayerPref, or from a scriptable object if null
-#endif
-        //Debug.Log("Start => " + Resources.Load<TDS_InputSettings>(TDS_InputSettings.INPUT_SO_DEFAULT_PATH).AxisNames.Length);
+        #endif
+        
         // Subscribe a custom method to the input update system
         NativeInputSystem.onUpdate -= MyUpdate;
         NativeInputSystem.onUpdate += MyUpdate;

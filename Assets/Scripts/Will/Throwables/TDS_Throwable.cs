@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using Photon;
 
 #pragma warning disable 0414
 [RequireComponent(typeof(Rigidbody))]
-public class TDS_Throwable : PunBehaviour
+public class TDS_Throwable : MonoBehaviour 
 {
     /* TDS_Throwable :
 	 *
@@ -11,18 +10,18 @@ public class TDS_Throwable : PunBehaviour
 	 *	###### PURPOSE ######
 	 *	#####################
 	 *
-	 *	Throwable objects behavior
+	 *	[PURPOSE]
 	 *
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
-	 *	Date :  [12/02/2019]
-	 *	Author :    [William COMMINGES]
+	 *	Date :	12/02/2019
+	 *	Author :William COMMINGES
 	 *
 	 *	Changes :
 	 *
-	 *	[##########]
+	 *	[CHANGES]
 	 *
 	 *	-----------------------------------
 	*/
@@ -57,14 +56,14 @@ public class TDS_Throwable : PunBehaviour
     #region Methods
     #region Original Methods
     /// <summary>
-    /// Destroy the gameObject Throwable if the durability is less or equal to zero.
+    /// Destroy the gameObject Throwable if the durability is less or equal to zero 
     /// </summary>
-    protected virtual void DestroyThrowableObject()
+    void DestroyThrowableObject()
     {
         Destroy(gameObject);
     }
     /// <summary>
-    /// Unparent the object from the character who was carring it.
+    /// 
     /// </summary>
     public void Drop()
     {
@@ -73,23 +72,13 @@ public class TDS_Throwable : PunBehaviour
         transform.SetParent(null, true);
         isHeld = false;
     }
-    /// <summary>
-    /// Reduces the durability of the object and if the durability is lower or equal to zero called the method that destroys the object.
-    /// </summary>
-    /// <param name="_valueToWithdraw"></param>
     public void LoseDurability(int _valueToWithdraw)
     {
         objectDurability -= _valueToWithdraw;
         if (!(objectDurability <= 0)) return;
         DestroyThrowableObject();
     }
-    /// <summary>
-    /// Picks up the object and parent it at the corresponding root
-    /// </summary>
-    /// <param name="_carrier"></param>
-    /// <param name="_rootCharacterObject"></param>
-    /// <returns></returns>
-    public virtual bool PickUp(TDS_Character _carrier, Transform _rootCharacterObject)
+    public bool PickUp(TDS_Character _carrier, Transform _rootCharacterObject)
     {
         if (isHeld) return false;
 
@@ -106,13 +95,7 @@ public class TDS_Throwable : PunBehaviour
         owner = _carrier;
         return true;
     }
-    /// <summary>
-    /// Throws the object to a given position by converting the final position to velocity
-    /// </summary>
-    /// <param name="_finalPosition"></param>
-    /// <param name="_angle"></param>
-    /// <param name="_bonusDamage"></param>
-    public virtual void Throw(Vector3 _finalPosition,float _angle, int _bonusDamage)
+    public void Throw(Vector3 _finalPosition,float _angle, int _bonusDamage)
     {
         if (!isHeld) return;
         gameObject.layer = LayerMask.NameToLayer("Object");
@@ -137,4 +120,4 @@ public class TDS_Throwable : PunBehaviour
 	}
 	#endregion
 	#endregion
-} 
+}
