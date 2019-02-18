@@ -36,8 +36,6 @@ public class TDS_SpawnPointEditor : PropertyDrawer
     {
         // Label to title the part
         GUILayout.Label("SPAWN POINT SETTINGS", TDS_EditorUtility.HeaderStyle); 
-        // Int slider to modify the waveIndex property
-        TDS_EditorUtility.IntSlider("Wave Index", "", property.FindPropertyRelative("waveIndex"), 0, property.serializedObject.FindProperty("wavesLength").intValue);
         // Float slider to modify the spawnRange property
         TDS_EditorUtility.FloatSlider("Spawn Range", "", property.FindPropertyRelative("spawnRange"), 0, 15);
         // Vector Field to modify the centerPosition property

@@ -33,17 +33,28 @@ public class TDS_SpawningInformations
     /// <summary>
     /// Kind of enemies to spawn
     /// </summary>
-    [SerializeField] protected string spawningEnemyName;
-    public string SpawningEnemyName { get { return spawningEnemyName; } }
+    [SerializeField] protected string enemyResourceName;
+    public string EnemyResourceName { get { return enemyResourceName; } }
 
     /// <summary>
     /// Number of enemies to spawn 
     /// </summary>
-    [SerializeField] protected int numberOfEnemies = 1;
+    [SerializeField] protected int enemyCount = 1;
+    public int EnemyCount
+    {
+        get
+        {
+            return enemyCount;
+        }
+        set
+        {
+            if (value >= 0) enemyCount = value; 
+        }
+    }
 
     public TDS_SpawningInformations(TDS_Enemy _e)
     {
-        spawningEnemyName = _e.EnemyName;
+        enemyResourceName = _e.EnemyName;
     }
 }
 
@@ -78,10 +89,11 @@ public class TDS_RandomSpawningInformations : TDS_SpawningInformations
     /// <summary>
     /// Chance of spawning for the random enemy
     /// </summary>
-    [SerializeField] private float spawnChance = 100;
+    [SerializeField] private int spawnChance = 100;
+    public int SpawnChance { get { return spawnChance; } }
 
     public TDS_RandomSpawningInformations(TDS_Enemy _e) : base(_e)
     {
-        spawningEnemyName = _e.EnemyName;
+        enemyResourceName = _e.EnemyName;
     }
 }
