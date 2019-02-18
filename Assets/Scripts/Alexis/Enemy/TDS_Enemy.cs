@@ -21,6 +21,14 @@ public abstract class TDS_Enemy : TDS_Character
 	 *	### MODIFICATIONS ###
 	 *	##################### 
      *	
+     *	Date :          [13/02/2019]
+     *	Author:         [THIEBAUT Alexis]
+     *	
+     *	[Adding the property Area]
+     *	    - Area is the TDS_SpawnerArea from which the enemy comes
+     *	    
+     *	-----------------------------------
+     *	
 	 *	Date :          [13/02/2019]
      *	Author:         [THIEBAUT Alexis]
      *	
@@ -84,10 +92,6 @@ public abstract class TDS_Enemy : TDS_Character
 
     #region Fields / Properties
 
-    /* THINGS TO ADD IN THE FUTURE
-     * --> Add a spawner Owner 
-     */
-
     #region Variables
     /// <summary>
     /// Bool that allows the enemy to be take down  
@@ -121,6 +125,10 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     protected TDS_Player playerTarget = null;
 
+    /// <summary>
+    /// Spawner Area from which the enemy comes
+    /// </summary>
+    public TDS_SpawnerArea Area { get; set; }
     #endregion
 
     #region Components and References

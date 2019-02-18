@@ -66,8 +66,8 @@ public class TDS_WaveEditor : PropertyDrawer
         property.FindPropertyRelative("debugColor").colorValue = EditorGUI.ColorField(_rect, property.FindPropertyRelative("debugColor").colorValue);
 
         // Get a rect for the fold out
-        _rect = new Rect(position.position.x, _rect.position.y + 25, position.width, 20);
-        property.FindPropertyRelative("isWaveFoldOut").boolValue = EditorGUI.Foldout(_rect, property.FindPropertyRelative("isWaveFoldOut").boolValue, new GUIContent("Spawn Points"), true, TDS_EditorUtility.LabelStyle); 
+        _rect = new Rect(position.position.x + 10, _rect.position.y + 25, position.width - 10, 20);
+        property.FindPropertyRelative("isWaveFoldOut").boolValue = EditorGUI.Foldout(_rect, property.FindPropertyRelative("isWaveFoldOut").boolValue, new GUIContent("Spawn Points"), true); 
 
         // Display them if the fold out is true
         if(property.FindPropertyRelative("isWaveFoldOut").boolValue)

@@ -88,12 +88,12 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
             SerializedProperty _ref = property.FindPropertyRelative("waveElement").FindPropertyRelative("spawningInformations");
             for (int i = 0; i < _ref.arraySize; i++)
             {
-                if (_ref.GetArrayElementAtIndex(i).FindPropertyRelative("spawningEnemyName").stringValue == _e.EnemyName)
+                if (_ref.GetArrayElementAtIndex(i).FindPropertyRelative("enemyResourceName").stringValue == _e.EnemyName)
                     return ;
 
             }
             _ref.InsertArrayElementAtIndex(_ref.arraySize);
-            _ref.GetArrayElementAtIndex(_ref.arraySize-1).FindPropertyRelative("spawningEnemyName").stringValue = _e.EnemyName;
+            _ref.GetArrayElementAtIndex(_ref.arraySize-1).FindPropertyRelative("enemyResourceName").stringValue = _e.EnemyName;
         }
         _e = null;
         _e = EditorGUILayout.ObjectField("Add Random Enemy", _e, typeof(TDS_Enemy), false) as TDS_Enemy;
@@ -104,12 +104,12 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
             SerializedProperty _ref = property.FindPropertyRelative("waveElement").FindPropertyRelative("randomSpawningInformations");
             for (int i = 0; i < _ref.arraySize; i++)
             {
-                if (_ref.GetArrayElementAtIndex(i).FindPropertyRelative("spawningEnemyName").stringValue == _e.EnemyName)
+                if (_ref.GetArrayElementAtIndex(i).FindPropertyRelative("enemyResourceName").stringValue == _e.EnemyName)
                     return;
 
             }
             _ref.InsertArrayElementAtIndex(_ref.arraySize);
-            _ref.GetArrayElementAtIndex(_ref.arraySize-1).FindPropertyRelative("spawningEnemyName").stringValue = _e.EnemyName; 
+            _ref.GetArrayElementAtIndex(_ref.arraySize-1).FindPropertyRelative("enemyResourceName").stringValue = _e.EnemyName; 
         }
         EditorGUILayout.EndScrollView();
     }

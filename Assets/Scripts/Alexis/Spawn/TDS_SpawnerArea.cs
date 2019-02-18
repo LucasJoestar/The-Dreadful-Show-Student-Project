@@ -19,13 +19,23 @@ public class TDS_SpawnerArea : PunBehaviour
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	#####################
+     *	
+	 *  Date :			[18/02/2019]
+	 *	Author :		[Thiebaut Alexiss]
 	 *
+	 *	Changes :
+	 *
+	 *	    [Implement ActivateSpawn Method]
+     *	        - Called when a wave has to be activated
+     *	        - Instanciate all enemies and store them into the spawnedEnemies list
+	 *
+	 *	-----------------------------------
      * 	Date :			[14/02/2019]
 	 *	Author :		[Thiebaut Alexiss]
 	 *
 	 *	Changes :
 	 *
-	 *	Remplacement de la list de spawn points par une liste de vagues qui sera parcourrue pour avancer dans les vagues
+	 *	    Remplacement de la list de spawn points par une liste de vagues qui sera parcourrue pour avancer dans les vagues
 	 *
 	 *	-----------------------------------
      *	
@@ -87,20 +97,29 @@ public class TDS_SpawnerArea : PunBehaviour
     #region Methods
 
     #region Original Methods
-
+    /// <summary>
+    /// Make spawn all enemies at every point of the wave index
+    /// Increase Wave Index
+    /// </summary>
+    private void ActivateSpawn()
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+        spawnedEnemies.AddRange(waves[waveIndex].GetWaveEnemies(this));
+        waveIndex++;
+        if (spawnedEnemies.Count == 0) OnNextWave?.Invoke(); 
+    }
     #endregion
 
     #region Unity Methods
     // Awake is called when the script instance is being loaded
     private void Awake()
     {
-
+        OnNextWave += ActivateSpawn; 
     }
 
 	// Use this for initialization
     private void Start()
     {
-		
     }
 	
 	// Update is called once per frame
@@ -111,7 +130,13 @@ public class TDS_SpawnerArea : PunBehaviour
 
     private void OnTriggerEnter(Collider _coll)
     {
-        
+        // If a player enter in the collider
+        // Start the waves and disable the collider
+        if(_coll.GetComponent<TDS_Player>())
+        {
+            GetComponent<BoxCollider>().enabled = false;
+            OnNextWave?.Invoke(); 
+        }
     }
 
     private void OnDrawGizmos()

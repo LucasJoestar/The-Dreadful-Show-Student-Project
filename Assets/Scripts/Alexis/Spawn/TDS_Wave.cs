@@ -19,6 +19,16 @@ public class TDS_Wave
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     * 	Date :			[18/02/2019]
+	 *	Author :		[THIEBAUT Alexis]
+	 *
+	 *	Changes :
+	 *
+	 *	[Initialisation of the GetWavesEnemies method]
+	 *      - Get all enemies that spawn in this wave
+     *  
+	 *	-----------------------------------
+     *	
 	 *	Date :			[14/02/2019]
 	 *	Author :		[THIEBAUT Alexis]
 	 *
@@ -60,7 +70,19 @@ public class TDS_Wave
     #region Methods
 
     #region Original Methods
-
+    /// <summary>
+    /// For each point, spawn enemies and return the list of all spawned enemies
+    /// </summary>
+    /// <returns>List of all spawned enemies</returns>
+    public List<TDS_Enemy> GetWaveEnemies(TDS_SpawnerArea _owner)
+    {
+        List<TDS_Enemy> _enemies = new List<TDS_Enemy>();
+        foreach (TDS_SpawnPoint _point in spawnPoints)
+        {
+            _enemies.AddRange(_point.GetSpawningEnemies(_owner)); 
+        }
+        return _enemies; 
+    }
     #endregion
 
 	#endregion

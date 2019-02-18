@@ -35,8 +35,8 @@ public class TDS_WaveElementEditor : PropertyDrawer
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         //Int sliders to display and modify the min and max random Spawn
-        TDS_EditorUtility.IntSlider("Minimum Random Spawn", "", property.FindPropertyRelative("minRandomSpawn"), 0, 10);
-        TDS_EditorUtility.IntSlider("Maximum Random Spawn", "", property.FindPropertyRelative("maxRandomSpawn"), 0, 10);
+        TDS_EditorUtility.IntSlider("Minimum Random Spawn", "", property.FindPropertyRelative("minRandomSpawn"), 0, property.FindPropertyRelative("maxRandomSpawn").intValue);
+        TDS_EditorUtility.IntSlider("Maximum Random Spawn", "", property.FindPropertyRelative("maxRandomSpawn"), property.FindPropertyRelative("minRandomSpawn").intValue, 10);
         GUILayout.Space(10); 
         // Display the settings of the normal spawning Informations
         GUILayout.Box("NORMAL SPAWNING"); 

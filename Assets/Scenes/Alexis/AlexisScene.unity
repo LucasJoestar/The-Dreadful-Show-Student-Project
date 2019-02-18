@@ -150,7 +150,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4778253460430762, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114667631924762298, guid: 131b9c2e9ac901841aa00daa77a82570,
         type: 2}
@@ -592,48 +592,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1363935798
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4175069985797766, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 3.9893322
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175069985797766, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175069985797766, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: -11.29
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175069985797766, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175069985797766, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175069985797766, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175069985797766, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175069985797766, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
-  m_IsPrefabAsset: 0
 --- !u!114 &1401507954 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114087050870997288, guid: 131b9c2e9ac901841aa00daa77a82570,
@@ -789,7 +747,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &1541602083
 GameObject:
@@ -823,7 +781,7 @@ Transform:
   - {fileID: 460903694}
   - {fileID: 1410134307}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1541602085
 MonoBehaviour:
@@ -889,17 +847,55 @@ MonoBehaviour:
   photonView: {fileID: 0}
   isLooping: 0
   waves:
-  - isWaveFoldOut: 1
+  - isWaveFoldOut: 0
+    debugColor: {r: 1, g: 0, b: 0.7531514, a: 1}
+    spawnPoints:
+    - spawnRange: 3.42
+      spawnPosition: {x: 2.668612, y: 0, z: 11.245511}
+      waveElement:
+        minRandomSpawn: 2
+        maxRandomSpawn: 5
+        spawningInformations:
+        - enemyResourceName: Punk
+          enemyCount: 4
+        randomSpawningInformations:
+        - enemyResourceName: Punk
+          enemyCount: 2
+          spawnChance: 93
+  - isWaveFoldOut: 0
     debugColor: {r: 0, g: 0.22478104, b: 1, a: 1}
     spawnPoints:
-    - spawnRange: 5
-      spawnPosition: {x: -4.541326, y: 0, z: -1.4631968}
+    - spawnRange: 3.42
+      spawnPosition: {x: 6.4689274, y: 0, z: -9.402595}
       waveElement:
         minRandomSpawn: 0
         maxRandomSpawn: 0
-        spawningInformations: []
+        spawningInformations:
+        - enemyResourceName: Punk
+          enemyCount: 4
         randomSpawningInformations: []
-  - isWaveFoldOut: 1
+    - spawnRange: 3.42
+      spawnPosition: {x: 6.058805, y: 0, z: 10.112276}
+      waveElement:
+        minRandomSpawn: 0
+        maxRandomSpawn: 0
+        spawningInformations:
+        - enemyResourceName: Punk
+          enemyCount: 4
+        randomSpawningInformations: []
+  - isWaveFoldOut: 0
+    debugColor: {r: 0.0076868534, g: 1, b: 0, a: 1}
+    spawnPoints:
+    - spawnRange: 3.42
+      spawnPosition: {x: 6.421834, y: 0, z: 10.122111}
+      waveElement:
+        minRandomSpawn: 0
+        maxRandomSpawn: 0
+        spawningInformations:
+        - enemyResourceName: Punk
+          enemyCount: 4
+        randomSpawningInformations: []
+  - isWaveFoldOut: 0
     debugColor: {r: 0.7137255, g: 0, b: 0, a: 1}
     spawnPoints:
     - spawnRange: 2
@@ -908,17 +904,17 @@ MonoBehaviour:
         minRandomSpawn: 0
         maxRandomSpawn: 0
         spawningInformations:
-        - enemyResourceName: 
-          numberOfEnemies: 2
+        - enemyResourceName: Punk
+          enemyCount: 2
         randomSpawningInformations: []
     - spawnRange: 3
-      spawnPosition: {x: 6.2521944, y: 0, z: 10.15455}
+      spawnPosition: {x: -1.7022548, y: 0, z: 10.281235}
       waveElement:
         minRandomSpawn: 0
         maxRandomSpawn: 0
         spawningInformations:
-        - enemyResourceName: 
-          numberOfEnemies: 5
+        - enemyResourceName: Punk
+          enemyCount: 1
         randomSpawningInformations: []
 --- !u!4 &2145091658
 Transform:
@@ -927,11 +923,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2145091656}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.17, y: 0.5, z: -5.23}
+  m_LocalPosition: {x: -2.97, y: 0.5, z: -5.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2145091659
 BoxCollider:

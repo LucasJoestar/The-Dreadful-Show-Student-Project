@@ -146,11 +146,10 @@ public class TDS_SpawnerAreaEditor : Editor
         EditorGUILayout.LabelField("Global settings", TDS_EditorUtility.HeaderStyle);
         TDS_EditorUtility.Toggle("is Looping", "Is the area start again when all the waves are cleared.", isLooping);
         GUILayout.Space(10);
-        GUITools.ActionButton("Add Wave", waves.InsertArrayElementAtIndex, 0, Color.white, Color.white);
-        // SerializedProperty _prop;
-        // Rect _r;
-        // Rect _lastRect;
-        // GUIContent _content; 
+        EditorGUILayout.BeginHorizontal(); 
+        EditorGUILayout.LabelField("WAVES", TDS_EditorUtility.HeaderStyle);
+        GUITools.ActionButton("Add Wave", waves.InsertArrayElementAtIndex, waves.arraySize, Color.white, Color.white);
+        EditorGUILayout.EndHorizontal();  
         for (int i = 0; i < waves.arraySize; i++)
         {
             GUILayout.Space(10);
@@ -177,9 +176,19 @@ public class TDS_SpawnerAreaEditor : Editor
         Rect _r = new Rect(_lastRect.position.x, _lastRect.position.y + 4, _lastRect.width, _size);
         // Reserve the rect
         _r = GUILayoutUtility.GetRect(_r.width, _r.height, GUIStyle.none);
-        GUIContent _content = new GUIContent($"Waves n°{_index}");
+        GUIContent _content = new GUIContent($"Wave n°{_index}");
         // Draw the Wave Editor
         EditorGUI.PropertyField(_r, _prop, _content);
+        EditorGUILayout.BeginHorizontal();
+        if(GUILayout.Button("▲") && _index > 0)
+        {
+            waves.MoveArrayElement(_index, _index - 1); 
+        }
+        if (GUILayout.Button("▼") && _index < serializedObject.FindProperty($"{waves.name}").arraySize - 1 )
+        {
+            waves.MoveArrayElement(_index, _index + 1);
+        }
+        EditorGUILayout.EndHorizontal(); 
         // Draw a button to destroy the wave
         GUITools.ActionButton("Delete Wave", waves.DeleteArrayElementAtIndex, _index, Color.white, Color.white);
     }
