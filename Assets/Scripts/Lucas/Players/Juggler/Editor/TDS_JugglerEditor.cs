@@ -18,6 +18,17 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[19 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	Creation of the TDS_JugglerEditor class.
+     *	
+     *	    - Added the throwables, throwableDistanceFromCenter, maxThrowableAmount & selectedThrowableIndex fields.
+	 *
+	 *	-----------------------------------
+     * 
 	 *	Date :			[11 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -34,6 +45,22 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
     #region Fields / Properties
 
     #region SerializedProperties
+
+    #region Components & References
+    /// <summary>SerializedProperty for <see cref="TDS_Juggler.Throwables"/> of type <see cref="List{T}"/><see cref="TDS_Throwable"/>.</summary>
+    private SerializedProperty throwables = null;
+    #endregion
+
+    #region Variables
+    /// <summary>SerializedProperty for <see cref="TDS_Juggler.ThrowableDistanceFromCenter"/> of type <see cref="float"/>.</summary>
+    private SerializedProperty throwableDistanceFromCenter = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Juggler.MaxThrowableAmount"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty maxThrowableAmount = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Juggler.SelectedThrowableIndex"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty selectedThrowableIndex = null;
+    #endregion
 
     #endregion
 
@@ -115,7 +142,18 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
     /// </summary>
     private void DrawComponentsAndReferences()
     {
+        if (EditorApplication.isPlaying)
+        {
+            TDS_EditorUtility.PropertyField("Throwables in Hands", "All throwables currently juggling with", throwables);
 
+            GUILayout.Space(5);
+
+            if (TDS_EditorUtility.ObjectField("Selected Throwable", "Currently selected throwable to use", throwable, typeof(TDS_Throwable)))
+            {
+                jugglers.ForEach(j => j.Throwable = (TDS_Throwable)throwable.objectReferenceValue);
+                serializedObject.Update();
+            }
+        }
     }
 
     /// <summary>
@@ -182,7 +220,26 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
     /// </summary>
     private void DrawSettings()
     {
+        if (EditorApplication.isPlaying)
+        {
+            if (TDS_EditorUtility.IntSlider("Selected Throwable Index", "Index of the current selected throwables from all the ones juggling with", selectedThrowableIndex, 0, throwables.arraySize - 1))
+            {
+                jugglers.ForEach(j => j.SelectedThrowableIndex = selectedThrowableIndex.intValue);
+                serializedObject.Update();
+            }
+        }
 
+        if (TDS_EditorUtility.IntField("Maximum Throwable(s)", "Maximum amount of throwables hte Juggler can juggle with", maxThrowableAmount))
+        {
+            jugglers.ForEach(j => j.MaxThrowableAmount = maxThrowableAmount.intValue);
+            serializedObject.Update();
+        }
+
+        if (TDS_EditorUtility.FloatField("Throw. Dist. from Center", "Distance of each throwables from the hands transform of the character", throwableDistanceFromCenter))
+        {
+            jugglers.ForEach(j => j.ThrowableDistanceFromCenter = throwableDistanceFromCenter.floatValue);
+            serializedObject.Update();
+        }
     }
     #endregion
 
@@ -198,7 +255,10 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
         else isJugglerMultiEditing = true;
 
         // Get the serializedProperties from the serializedObject
-
+        throwables = serializedObject.FindProperty("Throwables");
+        throwableDistanceFromCenter = serializedObject.FindProperty("throwableDistanceFromCenter");
+        maxThrowableAmount = serializedObject.FindProperty("maxThrowableAmount");
+        selectedThrowableIndex = serializedObject.FindProperty("selectedThrowableIndex");
 
         // Loads the editor folded & unfolded values of this script
         isJugglerUnfolded = EditorPrefs.GetBool("isJugglerUnfolded", isJugglerUnfolded);

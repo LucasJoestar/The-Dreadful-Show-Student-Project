@@ -56,8 +56,8 @@ public class TDS_ThrowUtility
         // Create and set variables
         if (_pointsAmount < 3) _pointsAmount = 3;
 
-        Vector3[] _motionPoints = new Vector3[_pointsAmount + 1];
-        _motionPoints[0] = _from; _motionPoints[_pointsAmount] = _to;
+        Vector3[] _motionPoints = new Vector3[_pointsAmount];
+        _motionPoints[0] = _from;
 
         // Get distance between in each point in x, z & on both
         float _xPointsDistance = (_to.x - _from.x) / _pointsAmount;
