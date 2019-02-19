@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TDS_RPCManager : MonoBehaviour 
+public class TDS_RPCManager : MonoBehaviour
 {
     /* TDS_RPCManager :
 	 *
