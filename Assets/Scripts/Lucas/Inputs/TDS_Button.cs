@@ -17,15 +17,6 @@ public class TDS_Button
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
-     *	Date :			[14 / 02 / 2019]
-	 *	Author :		[Guibert Lucas]
-	 *
-	 *	Changes :
-	 *
-	 *	    - Added the Name property.
-	 *
-	 *	-----------------------------------
-     * 
 	 *	Date :			[13 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -40,17 +31,10 @@ public class TDS_Button
 	*/
 
     #region Fields / Properties
-    /// <summary>Backing field for <see cref="Name"/>.</summary>
-    [SerializeField] private string name = "New Button";
-
     /// <summary>
     /// Name of the button, used to reference it.
     /// </summary>
-    public string Name
-    {
-        get { return name; }
-        private set { name = value; }
-    }
+    public string Name = "New Button";
 
     /// <summary>
     /// All keys used to detect that button.
