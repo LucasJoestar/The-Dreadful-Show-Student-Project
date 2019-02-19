@@ -34,9 +34,9 @@ public class TDS_SpawningInformationsEditor : PropertyDrawer
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         //Display the name of the enemy 
-        GUILayout.Label(property.FindPropertyRelative("spawningEnemyName").stringValue, TDS_EditorUtility.HeaderStyle); 
+        GUILayout.Label(property.FindPropertyRelative("enemyResourceName").stringValue, TDS_EditorUtility.HeaderStyle); 
         // Display the number of enemy to spawn
-        TDS_EditorUtility.IntSlider("Number of enemies", "", property.FindPropertyRelative("numberOfEnemies"), 1, 10);
+        TDS_EditorUtility.IntSlider("Number of enemies", "", property.FindPropertyRelative("enemyCount"), 1, 10);
     }
     #endregion
 }
@@ -71,7 +71,7 @@ public class TDS_RandomSpawningInformationsEditor : TDS_SpawningInformationsEdit
     {
         base.OnGUI(position, property, label);
         // Display the chance of spawn for the random enemies
-        TDS_EditorUtility.FloatSlider("Spawn Chance", "", property.FindPropertyRelative("spawnChance"), 1, 100);
+        TDS_EditorUtility.IntSlider("Spawn Chance", "", property.FindPropertyRelative("spawnChance"), 1, 100);
 
     }
     #endregion

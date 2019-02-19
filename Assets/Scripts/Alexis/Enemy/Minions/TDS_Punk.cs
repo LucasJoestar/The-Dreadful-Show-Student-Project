@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class TDS_Punk : TDS_Enemy 
 {
@@ -78,7 +79,6 @@ public class TDS_Punk : TDS_Enemy
         int _randomIndex = UnityEngine.Random.Range(0, _availableAttacks.Length);
         return _availableAttacks[_randomIndex];
     }
-
     #endregion
 
     #region Overriden Methods
@@ -125,7 +125,7 @@ public class TDS_Punk : TDS_Enemy
                  * if so goto case GrabObject if it can be grab 
                  * if it can't be grabbed directly, getting in range
                 */
-                if (attacks.Any(a => _distance < a.PredictedRange))
+                if (attacks.Any(a => _distance <= a.PredictedRange))
                 {
                     enemyState = EnemyState.Attacking;
                     goto case EnemyState.Attacking;
@@ -148,14 +148,6 @@ public class TDS_Punk : TDS_Enemy
                 // If there is something to throw, Move until reaching a position from where the player can be touched
                 // Be careful, the agent don't have to recalculate path when they have a Throwable
 
-                /*
-                if(Throwable && Check if the position can be reached )
-                {
-                    // enemyState = EnemyState.GettingInRange;
-                    // goto case EnemyState.GettingInRange;
-                }
-                */
-
                 if (agent.CheckDestination(playerTarget.transform.position))
                 {
                     enemyState = EnemyState.GettingInRange;
@@ -168,11 +160,10 @@ public class TDS_Punk : TDS_Enemy
             case EnemyState.GettingInRange:
                 SetAnimationState(EnemyAnimationState.Run);
                 // Wait some time before calling again Behaviour(); 
-                // Still has to increase speed of the agent
-                _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                while (!attacks.Any(a => _distance < a.PredictedRange))
+                _distance = Vector3.Distance(transform.position, agent.LastPosition);
+                while (!attacks.Any(a => _distance < a.PredictedRange) /*|| check if the throw distance*/)
                 {
-                    _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+                    _distance = Vector3.Distance(transform.position, agent.LastPosition);
                     if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
                         Flip();
                     if (speedCurrent < speedMax)
@@ -251,7 +242,6 @@ public class TDS_Punk : TDS_Enemy
     /// </summary>
     /// <param name="_attack">Attack to cast</param>
     /// <returns>cooldown of the attack</returns>
-
     protected override float StartAttack(float _distance)
     {
         TDS_EnemyAttack _attack = GetAttack(_distance);

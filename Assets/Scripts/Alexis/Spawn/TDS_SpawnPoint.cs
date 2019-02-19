@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
+using Photon;
+using Random = UnityEngine.Random; 
 
 [Serializable]
 public class TDS_SpawnPoint 
@@ -21,6 +23,18 @@ public class TDS_SpawnPoint
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[18/02/2019]
+	 *	Author :		[Thiebaut Alexis]
+	 *
+	 *	Changes :
+	 *
+	 *	[Initialisation of the GetSpawningEnemies]
+     *	    - This method get all enemies to spawn from waveElement informations
+     *	    - Make them spawn at random position around the range of the spawn point
+     *	    - return spawned enemies
+	 *
+	 *	-----------------------------------
+     *	
 	 *	Date :			[11/02/2019]
 	 *	Author :		[Thiebaut Alexis]
 	 *
@@ -37,10 +51,6 @@ public class TDS_SpawnPoint
     #endregion
 
     #region Fields / Properties
-    /// <summary>
-    /// Index of the wave, the wave will be called using this index
-    /// </summary>
-    [SerializeField] private int waveIndex = 0;
 
     /// <summary>
     /// Range where the enemy can be instanciated around the spawn Position
@@ -65,45 +75,44 @@ public class TDS_SpawnPoint
     /// <summary>
     /// Wave Element of the SpawnPoint
     /// </summary>
-        [SerializeField] private TDS_WaveElement waveElement; 
-	#endregion
+    [SerializeField] private TDS_WaveElement waveElement; 
 
-	#region Methods
-
-	#region Original Methods
     /// <summary>
-    /// Add a spawning information into the wave element of this point
-    /// If this info is random, add it to the randomSpawningInformations
-    /// else add this info to the spawningInformations
+    /// Return a random position around the spawnpoint within the spawnRange
     /// </summary>
-    /// <param name="_enemy">enemy to spawn</param>
-    /// <param name="_isRandom">is this info is random?</param>
-    public void AddSpawningInformations(TDS_Enemy _enemy, bool _isRandom)
+    public Vector3 GetRandomSpawnPosition
     {
-        if (_isRandom)
+        get { return spawnPosition + new Vector3(Random.Range(-spawnRange, spawnRange), 0, Random.Range(-spawnRange, spawnRange)); }
+    }
+    #endregion
+
+    #region Methods
+
+    #region Original Methods
+
+    /// <summary>
+    /// Get all enemies resources Names
+    /// Instantiate them and set their owner as the spawner area that owns this SpawnPoint
+    /// return the list of all spawned enemies 
+    /// </summary>
+    /// <param name="_owner">TDS_SpawnerArea that owns the spawn point</param>
+    /// <returns>List of spawned enemies</returns>
+    public List<TDS_Enemy> GetSpawningEnemies(TDS_SpawnerArea _owner)
+    {
+        // Get enemies from the wave Element
+        List<string> _enemiesNames = waveElement.GetInformations();
+        //Create the list of spawned Enemies for this spawn point
+        List<TDS_Enemy> _spawnedEnemies = new List<TDS_Enemy>(); 
+        // Spawn every enemies from thoses informations 
+        TDS_Enemy _e; 
+        for (int i = 0; i < _enemiesNames.Count; i++)
         {
-            waveElement.RandomSpawningInformations.Add(new TDS_RandomSpawningInformations(_enemy));
-            return; 
+            _e = PunBehaviour.Instantiate(Resources.Load($"Enemies/{_enemiesNames[i]}", typeof(TDS_Enemy)) as TDS_Enemy, GetRandomSpawnPosition, Quaternion.identity);
+            _e.Area = _owner;
+            //INIT UI
+            _spawnedEnemies.Add(_e); 
         }
-        waveElement.SpawningInformations.Add(new TDS_SpawningInformations(_enemy));
-    }
-    /// <summary>
-    /// Check if the enemy is already in the spawning informations list 
-    /// </summary>
-    /// <param name="_enemy">enemy to check</param>
-    /// <returns>is the enemy is already in the list spawning Enemy</returns>
-    public bool ExistsEnemy(TDS_Enemy _enemy)
-    {
-        return waveElement.SpawningInformations.Any(i => i.SpawningEnemyName == _enemy.EnemyName); 
-    }
-    /// <summary>
-    /// Check if the enemy is already in the random spawning informations list 
-    /// </summary>
-    /// <param name="_enemy">enemy to check</param>
-    /// <returns>is the enemy is already in the list random spawning Enemy</returns>
-    public bool ExistsRandomEnemy(TDS_Enemy _enemy)
-    {
-        return waveElement.RandomSpawningInformations.Any(i => i.SpawningEnemyName == _enemy.EnemyName);
+        return _spawnedEnemies; 
     }
     #endregion
 
