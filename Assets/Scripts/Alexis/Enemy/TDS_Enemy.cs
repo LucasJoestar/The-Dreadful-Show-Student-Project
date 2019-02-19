@@ -263,7 +263,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected void SetAnimationState(EnemyAnimationState _animationID)
     {
         if (!animator) return;
-        animator.SetInteger("animationState", (int)_animationID); 
+        animator.SetInteger("animationState", (int)_animationID);
     }
  
     /// <summary>
@@ -293,7 +293,8 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Start()
     {
         base.Start();
-        StartCoroutine(Behaviour());
+        //StartCoroutine(Behaviour());
+        TDS_RPCManager.Instance.CallMethodOnline(TDS_RPCManager.GetInfo(photonView, this.GetType(), "null"));
     }
 
     // Update is called once per frame
@@ -301,7 +302,7 @@ public abstract class TDS_Enemy : TDS_Character
     {
         base.Update();
     }
-	#endregion
+    #endregion
 
-	#endregion
+    #endregion
 }
