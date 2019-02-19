@@ -586,7 +586,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1203676654}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 1.59, z: -15.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -759,7 +759,7 @@ GameObject:
   - component: {fileID: 1541602084}
   - component: {fileID: 1541602085}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: NavObs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -847,11 +847,11 @@ MonoBehaviour:
   photonView: {fileID: 0}
   isLooping: 0
   waves:
-  - isWaveFoldOut: 1
+  - isWaveFoldOut: 0
     debugColor: {r: 1, g: 0, b: 0.7531514, a: 1}
     spawnPoints:
     - spawnRange: 3.42
-      spawnPosition: {x: 2.668612, y: 0, z: 11.245511}
+      spawnPosition: {x: 2.668612, y: 0, z: 10.026858}
       waveElement:
         minRandomSpawn: 2
         maxRandomSpawn: 5

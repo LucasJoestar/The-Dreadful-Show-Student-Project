@@ -84,7 +84,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1341661741757368}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.9893322, y: 0, z: -11.29}
+  m_LocalPosition: {x: -5.8857336, y: 0.05, z: -11.570139}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4851926840199904}
@@ -175,10 +175,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   positionOffset: {x: 0, y: 0.9, z: 0}
   height: 1.8
-  radius: 0.65
+  radius: 0.5
   baseOffset: 0
   speed: 2
-  detectionRange: 1
+  detectionRange: 0.6
   steerForce: 10
   avoidanceForce: 5
   agentPriority: 1
