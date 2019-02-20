@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Linq; 
 using UnityEngine;
 
-public class TDS_RPCManager : MonoBehaviour 
+public class TDS_RPCManager : MonoBehaviour
 {
     /* TDS_RPCManager :
 	 *
