@@ -25,6 +25,10 @@ public class TDS_RPCManager : MonoBehaviour
 	 *	Changes :
 	 *
 	 *	[Initialisation de la classe TDS_RPCManager]
+     *	    - Création d'une methode GetInfo qui retourne le string formé de l'ID du photon view qui appelle la methode, le type du script dans lequel la methode se trouve et le nom de la méthode
+     *	    utilisé par la Method CallMethodOnline
+     *	    - Création d'une methode CallMethodOnline qui va chercher une methode dans un script pour l'appeler avec ses arguments
+     *	    - Création d'une methode GetComponentWithID qui retourne un component de type T sur l'objet possédant le photon view avec un ID particulier
 	 *
 	 *	-----------------------------------
 	*/
@@ -46,7 +50,7 @@ public class TDS_RPCManager : MonoBehaviour
     /// <typeparam name="T">Desired Component</typeparam>
     /// <param name="_photonViewID">Photon view ID</param>
     /// <returns></returns>
-    public static T GetTypeWithID<T>(int _photonViewID)
+    public static T GetComponentWithID<T>(int _photonViewID)
     {
         PhotonView _photonView = PhotonView.Find(_photonViewID);
         if (!_photonView) return default(T);

@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 95117252439618552}
   - component: {fileID: 114125368745151192}
   - component: {fileID: 114513829787566364}
+  - component: {fileID: 114745190491073254}
   m_Layer: 10
   m_Name: Punk
   m_TagString: Untagged
@@ -84,7 +85,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1341661741757368}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.8857336, y: 0.05, z: -11.570139}
+  m_LocalPosition: {x: -8.86, y: 0.05, z: -0.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4851926840199904}
@@ -238,7 +239,7 @@ MonoBehaviour:
   canBeDown: 1
   canThrow: 1
   enemyState: 0
-  detectionRange: 11.7
+  detectionRange: 5
   agent: {fileID: 114125368745151192}
   attacks:
   - Name: HeadButt
@@ -250,6 +251,32 @@ MonoBehaviour:
     cooldown: 1.5
     predictedRange: 1.2
     probability: 100
+--- !u!114 &114745190491073254
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1341661741757368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!212 &212749167570648662
 SpriteRenderer:
   m_ObjectHideFlags: 1
