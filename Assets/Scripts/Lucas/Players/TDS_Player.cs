@@ -318,7 +318,7 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>Backing field for <see cref="IsGrounded"/></summary>
-    [SerializeField] private bool isGrounded = true;
+    [SerializeField] protected bool isGrounded = true;
 
     /// <summary>
     /// Is the player touching the ground ?
@@ -334,7 +334,7 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>Backing field for <see cref="IsJumping"/>.</summary>
-    [SerializeField] private bool isJumping = false;
+    [SerializeField] protected bool isJumping = false;
 
     /// <summary>
     /// Is the player actually performing a jump ?
@@ -422,7 +422,7 @@ public class TDS_Player : TDS_Character
     public float JumpForce = 1;
 
     /// <summary>Backing field for <see cref="JumpMaximumTime"/></summary>
-    [SerializeField] private float jumpMaximumTime = 1.5f;
+    [SerializeField] protected float jumpMaximumTime = 1.5f;
 
     /// <summary>
     /// Maximum time length of a jump.
@@ -603,7 +603,7 @@ public class TDS_Player : TDS_Character
                 Vector3 _hitPoint = new Vector3(Mathf.Abs(_hit.point.x - transform.position.x) * Mathf.Sign(throwAimingPoint.x), _hit.point.y - transform.position.y, Mathf.Abs(_hit.point.z - transform.position.z));
 
                 // Get the throw preview motion points with the the new hit point
-                _raycastedMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition + throwable.transform.localPosition, _hitPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
+                _raycastedMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, _hitPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
 
                 // Updates the position of the end preview zone & its rotation according to the hit point
                 ProjectilePreviewEndZone.transform.position = _hit.point;
@@ -700,7 +700,7 @@ public class TDS_Player : TDS_Character
 
         // Triggers the throw animation ;
         // Update the animator
-        SetAnimThrow();
+        if (isGrounded) SetAnimThrow();
         SetAnimHasObject(false);
     }
 
@@ -714,7 +714,7 @@ public class TDS_Player : TDS_Character
 
         // Triggers the throw animation ;
         // Update the animator
-        SetAnimThrow();
+        if (isGrounded) SetAnimThrow();
         SetAnimHasObject(false);
     }
     #endregion
