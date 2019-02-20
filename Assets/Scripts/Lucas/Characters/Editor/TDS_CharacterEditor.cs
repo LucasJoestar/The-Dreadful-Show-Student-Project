@@ -85,7 +85,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
     private SerializedProperty rigidbody = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_Character.throwable"/> of type <see cref="TDS_Throwable"/>.</summary>
-    private SerializedProperty throwable = null;
+    protected SerializedProperty throwable = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_Character.handsTransform"/> of type <see cref="Transform"/>.</summary>
     private SerializedProperty handsTransform = null;
@@ -314,10 +314,12 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 
             GUILayout.Space(3);
 
-            if (TDS_EditorUtility.ObjectField("Throwable", "Throwable this character is actually wearing", throwable, typeof(TDS_Throwable)))
+            if (!targets.Any(t => t is TDS_Juggler) && TDS_EditorUtility.ObjectField("Throwable", "Throwable this character is actually wearing", throwable, typeof(TDS_Throwable)))
             {
-                characters.ForEach(c => c.GrabObject((TDS_Throwable)throwable.objectReferenceValue));
-                serializedObject.Update();
+                {
+                    characters.ForEach(c => c.GrabObject((TDS_Throwable)throwable.objectReferenceValue));
+                    serializedObject.Update();
+                }
             }
 
             GUILayout.Space(5);

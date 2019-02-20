@@ -21,6 +21,17 @@ public class TDS_Juggler : TDS_Player
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[19 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Added the CurrentThrowableAmount & SelectedThrowableIndex properties ; and the ThrowableDistanceFromCenter & MaxThrowableAmount fields & properties.
+     *	    - Replaced the SelectedThrowable property by an override of the Throwable property.
+     *	    - Added the Juggle method.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[07 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -48,24 +59,102 @@ public class TDS_Juggler : TDS_Player
 
     #region Fields / Properties
 
-    #region Throwables
-    /// <summary>
-    /// Index of the current selected throwable from <see cref="Throwables"/>.
-    /// </summary>
-    private int selectedThrowableIndex = 0;
-
+    #region Components & References
     /// <summary>
     /// The actual selected throwable. It is the object to throw, when throwing... Yep.
     /// </summary>
-    public TDS_Throwable SelectedThrowable
+    public new TDS_Throwable Throwable
     {
-        get { return Throwables[selectedThrowableIndex]; }
+        get { return throwable; }
+        set
+        {
+            // Try first to grab the object if not having it in hands
+            if (!Throwables.Contains(value))
+            {
+                GrabObject(throwable);
+                return;
+            }
+
+            throwable = value;
+            selectedThrowableIndex = Throwables.IndexOf(value);
+        }
     }
 
     /// <summary>
     /// All throwables the juggler has in hands.
     /// </summary>
     public List<TDS_Throwable> Throwables = new List<TDS_Throwable>();
+    #endregion
+
+    #region Variables
+    /// <summary>Backing field for <see cref="ThrowableDistanceFromCenter"/>.</summary>
+    [SerializeField] private float throwableDistanceFromCenter = 1;
+
+    /// <summary>
+    /// Distance of all throwables juggling with from the <see cref="TDS_Character.handsTransform"/> point following a circle around it.
+    /// </summary>
+    public float ThrowableDistanceFromCenter
+    {
+        get { return throwableDistanceFromCenter; }
+        set
+        {
+            if (value < 0) value = 0;
+            throwableDistanceFromCenter = value;
+        }
+    }
+
+    /// <summary>
+    /// Current amount of throwable the Juggler has in hands.
+    /// </summary>
+    public int CurrentThrowableAmount
+    {
+        get { return Throwables.Count; }
+    }
+
+    /// <summary>Backing field for <see cref="MaxThrowableAmount"/>.</summary>
+    [SerializeField] private int maxThrowableAmount = 5;
+
+    /// <summary>
+    /// Maximum amount of throwable this Juggler can carry on.
+    /// </summary>
+    public int MaxThrowableAmount
+    {
+        get { return maxThrowableAmount; }
+        set
+        {
+            if (value < 1) value = 1;
+            maxThrowableAmount = value;
+        }
+    }
+
+    /// <summary>Backing field for <see cref="SelectedThrowableIndex"/>.</summary>
+    [SerializeField] private int selectedThrowableIndex = 0;
+
+    /// <summary>
+    /// Index of the current selected throwable from <see cref="Throwables"/>.
+    /// </summary>
+    public int SelectedThrowableIndex
+    {
+        get { return selectedThrowableIndex; }
+        set
+        {
+            if (Throwables.Count == 0)
+            {
+                value = 0;
+                throwable = null;
+            }
+            else
+            {
+                // Clamps the index on the list range
+                value = Mathf.Clamp(value, 0, Throwables.Count - 1);
+
+                // Set the actual throwable
+                throwable = Throwables[value];
+            }
+
+            selectedThrowableIndex = value;
+        }
+    }
     #endregion
 
     #endregion
@@ -86,23 +175,125 @@ public class TDS_Juggler : TDS_Player
 
         // Aim with IJKL or the right joystick axis
 
+        // Raycast along the trajectory preview and stop the trail when hit something
+        Vector3 _fromPos = handsTransform.localPosition + (throwable.transform.rotation * throwable.transform.localPosition);
+
+        throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(_fromPos, throwAimingPoint, aimAngle);
+
+        throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(_fromPos, throwAimingPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
+
         base.AimMethod();
     }
 
     /// <summary>
-    /// Prepare a throw, if not already preparing one.
+    /// Drop the weared throwable.
     /// </summary>
-    /// <returns>Returns true if successfully prepared a throw ; false if one is already, or if cannot do this.</returns>
-    public override bool PrepareThrow()
+    public override void DropObject()
     {
-        if (isAiming || !throwable) return false;
+        // If no throwable, return
+        if (!throwable) return;
 
-        isAiming = true;
-        StartCoroutine(Aim());
+        // Drooop
+        throwable.Drop();
+        Throwables.Remove(throwable);
+        SelectedThrowableIndex = selectedThrowableIndex;
 
-        ProjectilePreviewEndZone.SetActive(true);
+        // Updates the animator informations
+        if (!throwable) SetAnimHasObject(false);
+    }
+
+    /// <summary>
+    /// Try to grab a throwable.
+    /// When grabbed, the object follows the character and can be thrown by this one.
+    /// </summary>
+    /// <param name="_throwable">Throwable to try to grab.</param>
+    /// <returns>Returns true if the throwable was successfully grabbed, false either.</returns>
+    public override bool GrabObject(TDS_Throwable _throwable)
+    {
+        // If currently wearing the maximum amount of throwables he can, return
+        if (CurrentThrowableAmount == maxThrowableAmount) return false;
+
+        // Take the object
+        _throwable.PickUp(this, handsTransform);
+        Throwables.Add(_throwable);
+        Throwable = _throwable;
+
+        // Updates animator informations
+        SetAnimHasObject(true);
 
         return true;
+    }
+
+    /// <summary>
+    /// Throws the weared throwable.
+    /// </summary>
+    public override void ThrowObject()
+    {
+        // If no throwable, return
+        if (!throwable) return;
+
+        // Alright, then throw it !
+        // Get the destination point in world space
+        Vector3 _destinationPosition = new Vector3(transform.position.x + (throwAimingPoint.x * -isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + (throwAimingPoint.z * -isFacingRight.ToSign()));
+
+        // Now, throw that object
+        throwable.Throw(_destinationPosition, aimAngle, RandomThrowBonusDamages);
+        Throwables.Remove(throwable);
+        SelectedThrowableIndex = selectedThrowableIndex;
+
+        // Triggers the throw animation ;
+        // If not having throwable anymore, update the animator
+        SetAnimThrow();
+        if (!throwable) SetAnimHasObject(false);
+    }
+
+    /// <summary>
+    /// Throws the weared throwable.
+    /// </summary>
+    /// <param name="_targetPosition">Position where the object should land.</param>
+    public override void ThrowObject(Vector3 _targetPosition)
+    {
+        // If no throwable, return
+        if (!throwable) return;
+
+        // Now, throw that object
+        throwable.Throw(_targetPosition, aimAngle, RandomThrowBonusDamages);
+        Throwables.Remove(throwable);
+        SelectedThrowableIndex = selectedThrowableIndex;
+
+        // Triggers the throw animation ;
+        // If not having throwable anymore, update the animator
+        SetAnimThrow();
+        if (!throwable) SetAnimHasObject(false);
+    }
+
+    /// <summary>
+    /// Make the Juggler juggle ! Yeeeaah !
+    /// </summary>
+    private void Juggle()
+    {
+        // If not having any throwable, return
+        if (CurrentThrowableAmount == 0) return;
+
+        float _baseTheta = 2 * Mathf.PI / CurrentThrowableAmount;
+
+        for (int _i = 0; _i < CurrentThrowableAmount; _i++)
+        {
+            // Create variables
+            TDS_Throwable _throwable = Throwables[_i];
+
+            float _theta = _baseTheta * _i;
+            Vector3 _newPosition = new Vector3(Mathf.Sin(_theta), Mathf.Cos(_theta), 0f) * 1;
+
+            // Position update
+            _throwable.transform.localPosition = Vector3.Lerp(_throwable.transform.localPosition, _newPosition, Time.deltaTime * 10);
+
+            // Rotates the object
+            _throwable.transform.rotation = Quaternion.Lerp(_throwable.transform.rotation, Quaternion.Euler(_throwable.transform.rotation.eulerAngles + Vector3.forward), Time.deltaTime * 100);
+        }
+
+        // Rotates the hands transform to make all objects rotate
+        handsTransform.Rotate(Vector3.forward, Time.deltaTime * 100);
     }
     #endregion
 
@@ -173,6 +364,9 @@ public class TDS_Juggler : TDS_Player
         if (isDead) return;
 
         base.FixedUpdate();
+
+        // 3, 2, 1... Let's Jam !
+        Juggle();
     }
 
     // Use this for initialization

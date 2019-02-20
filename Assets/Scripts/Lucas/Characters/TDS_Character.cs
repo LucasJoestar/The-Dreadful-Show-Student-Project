@@ -412,7 +412,7 @@ public class TDS_Character : TDS_Damageable
     public virtual void ThrowObject()
     {
         // If no throwable, return
-        if (!Throwable) return;
+        if (!throwable) return;
 
         // Alright, then throw it !
         // Get the destination point in world space
