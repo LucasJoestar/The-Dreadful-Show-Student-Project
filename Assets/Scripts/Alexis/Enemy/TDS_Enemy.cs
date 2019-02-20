@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(CustomNavMeshAgent))]
-public abstract class TDS_Enemy : TDS_Character 
+public abstract class TDS_Enemy : TDS_Character
 {
     /* TDS_Enemy :
 	 *
@@ -165,7 +165,7 @@ public abstract class TDS_Enemy : TDS_Character
     {
         yield return new WaitForSeconds(_recoveryTime);
         StartCoroutine(Behaviour());
-        yield break; 
+        yield break;
     }
 
     /// <summary>
@@ -184,9 +184,9 @@ public abstract class TDS_Enemy : TDS_Character
     protected TDS_Player SearchTarget()
     {
         TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(c => c.GetComponent<TDS_Player>() != null && c.gameObject != this.gameObject).Select(d => d.GetComponent<TDS_Player>()).ToArray();
-        if (_targets.Length == 0) return null; 
+        if (_targets.Length == 0) return null;
         //Set constraints here (Distance, type, etc...)
-        return _targets.Where(t => !t.IsDead).OrderBy(d => Vector3.Distance(transform.position, d.transform.position)).FirstOrDefault(); 
+        return _targets.Where(t => !t.IsDead).OrderBy(d => Vector3.Distance(transform.position, d.transform.position)).FirstOrDefault();
     }
     #endregion
 
@@ -226,7 +226,7 @@ public abstract class TDS_Enemy : TDS_Character
     public override bool TakeDamage(int _damage)
     {
         bool _isTakingDamages = base.TakeDamage(_damage);
-        if(_isTakingDamages)
+        if (_isTakingDamages)
         {
             agent.StopAgent();
             StopAllCoroutines();
@@ -234,12 +234,12 @@ public abstract class TDS_Enemy : TDS_Character
             if (isDead)
             {
                 SetAnimationState(EnemyAnimationState.Death);
-                Area.RemoveEnemy(this); 
+                Area.RemoveEnemy(this);
             }
             else
                 SetAnimationState(EnemyAnimationState.Hit);
         }
-        return _isTakingDamages; 
+        return _isTakingDamages;
     }
 
     /// <summary>
@@ -250,7 +250,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public override void StopAttack()
     {
-        SetAnimationState(EnemyAnimationState.Idle); 
+        SetAnimationState(EnemyAnimationState.Idle);
         base.StopAttack();
     }
     #endregion
@@ -264,8 +264,19 @@ public abstract class TDS_Enemy : TDS_Character
     {
         if (!animator) return;
         animator.SetInteger("animationState", (int)_animationID);
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID }); 
     }
- 
+
+    /// <summary>
+    /// Set the animation of the enemy to the animationID
+    /// </summary>
+    /// <param name="_animationID"></param>
+    protected void SetAnimationState(int _animationID)
+    {
+        if (!animator) return;
+        animator.SetInteger("animationState", _animationID);
+    }
+
     /// <summary>
     /// Increase the speed and set the agent speed to the currentSpeed; 
     /// </summary>
@@ -282,25 +293,29 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Awake()
     {
         base.Awake();
-        if (!agent) agent = GetComponent<CustomNavMeshAgent>(); 
+        if (!agent) agent = GetComponent<CustomNavMeshAgent>();
         agent.OnDestinationReached += () => enemyState = EnemyState.MakingDecision;
         OnDie += () => StopAllCoroutines();
         OnDie += () => agent.StopAgent();
-        agent.OnAgentStopped += () => speedCurrent = 0; 
+        agent.OnAgentStopped += () => speedCurrent = 0;
     }
 
     // Use this for initialization
     protected override void Start()
     {
         base.Start();
-        //StartCoroutine(Behaviour());
-        TDS_RPCManager.Instance.CallMethodOnline(TDS_RPCManager.GetInfo(photonView, this.GetType(), "null"));
     }
+
 
     // Update is called once per frame
     protected override void Update()
     {
         base.Update();
+    }
+
+    public override void OnJoinedRoom()
+    {
+        if (PhotonNetwork.isMasterClient) StartCoroutine(Behaviour()); 
     }
     #endregion
 

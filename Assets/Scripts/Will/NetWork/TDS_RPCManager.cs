@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection; 
+using System.Reflection;
+using System.Linq; 
 using UnityEngine;
 
 public class TDS_RPCManager : MonoBehaviour 
@@ -47,7 +48,6 @@ public class TDS_RPCManager : MonoBehaviour
     /// <returns></returns>
     public static T GetTypeWithID<T>(int _photonViewID)
     {
-        Debug.Log(typeof(T)); 
         PhotonView _photonView = PhotonView.Find(_photonViewID);
         if (!_photonView) return default(T);
         T _component = _photonView.GetComponent<T>();
@@ -56,32 +56,60 @@ public class TDS_RPCManager : MonoBehaviour
 
 
     /// <summary>
-    /// Call a method on a targeted Script 
-    ///
-    /// </summary>
+    /// Call a method with a selected Name on a targeted Script 
+    /// /// </summary>
     /// <param name="_info"> Info: PhtonViewID#Type#MethodName#arguments</param>
     [PunRPC]
-    public void CallMethodOnline(string _info)
+    public void CallMethodOnline(string _info, params object[] args)
     {
+        
+        //Split the information
         string[] _infoArray = _info.Split('#');
+        // Get the id, if it can't be gotten return
         int _id;
-        if (!int.TryParse(_infoArray[0], out _id)) return;
+        if (!int.TryParse(_infoArray[0], out _id))
+        {
+            return;
+        }
+        //Get the type, if it can't be gotten return
         Type _t = Type.GetType(_infoArray[1]);
+        if (_t == null)
+        {
+            return;
+        }
+        //Get the method GetTypeWithId with reflection to call it with the gotten type
         MethodInfo _methodInfo = typeof(TDS_RPCManager).GetMethod("GetTypeWithID");
         MethodInfo _methodConstructed = _methodInfo.MakeGenericMethod(_t);
-        object[] _args = { _id }; 
-        var _target = _methodConstructed.Invoke(null, _args);
-        // Complete with arguments of the method
-        // Type.InvokeMember(_infoArray[2], BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public, _target, ); 
+        object[] _arg = { _id }; 
+        // Get the object calling the method
+        var _target = _methodConstructed.Invoke(null, _arg);
+        // Get the arguments if they exist
+        //Try to call the method with the name selected on the object target with the arguments
+        try
+        {
+            _t.InvokeMember(_infoArray[2].ToString(), BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy , null, _target, args);
+        }
+        catch (MissingMethodException _e)
+        {
+            // If the method can't be found, catch the exception
+            Debug.LogError($"Couldn't find the {_infoArray[2]} Method in the selected script.\n{_e.Message}"); 
+            return;
+        }
     }
 
-    public static string GetInfo(PhotonView _photonView, Type _type, string _methodName, params object[] args)
+    /// <summary>
+    /// Get informations used by the called method Online
+    /// Concat in a string the informations
+    /// Info: ID#typeName#MethodName#Arguments
+    /// </summary>
+    /// <param name="_photonView">PhotonView of the caller</param>
+    /// <param name="_type">Type of the caller</param>
+    /// <param name="_methodName">Name of the called method</param>
+    /// <param name="args">arguments used in the method</param>
+    /// <returns></returns>
+    public static string GetInfo(PhotonView _photonView, Type _type, string _methodName)
     {
         string _info = $"{_photonView.viewID}#{_type.ToString()}#{_methodName}";
-        for (int i = 0; i < args.Length; i++)
-        {
-            _info += $"#{args[i]}"; 
-        }
         return _info; 
     }
     #endregion

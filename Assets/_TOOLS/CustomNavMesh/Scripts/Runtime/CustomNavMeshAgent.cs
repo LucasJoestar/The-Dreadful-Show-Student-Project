@@ -355,6 +355,7 @@ public class CustomNavMeshAgent : MonoBehaviour
             Gizmos.DrawLine(currentPath.PathPoints[i], currentPath.PathPoints[i + 1]);
         }
     }
+
     #endregion
 }
 public enum CalculatingState
