@@ -70,6 +70,9 @@ public class TDS_NetworkManager : PunBehaviour
     {
         PhotonNetwork.ConnectUsingSettings(connectionVersion);
     }
+    /// <summary> 
+    /// Join the room if this room already exist else create it with somme parameters 
+    /// </summary> 
     void JoinRoom()
     {
         RoomOptions _options = new RoomOptions()
