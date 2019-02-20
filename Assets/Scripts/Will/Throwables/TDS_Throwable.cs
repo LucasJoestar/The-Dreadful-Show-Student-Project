@@ -10,7 +10,7 @@ public class TDS_Throwable : MonoBehaviour
 	 *	###### PURPOSE ######
 	 *	#####################
 	 *
-	 *	[PURPOSE]
+	 *	[Throwable object behavior]
 	 *
 	 *	#####################
 	 *	### MODIFICATIONS ###
@@ -66,7 +66,7 @@ public class TDS_Throwable : MonoBehaviour
         Destroy(gameObject);
     }
     /// <summary>
-    /// 
+    /// Unparent the object from the character who was carring it. 
     /// </summary>
     public void Drop()
     {
@@ -75,12 +75,22 @@ public class TDS_Throwable : MonoBehaviour
         transform.SetParent(null, true);
         isHeld = false;
     }
+    /// <summary> 
+    /// Reduces the durability of the object and if the durability is lower or equal to zero called the method that destroys the object. 
+    /// </summary> 
+    /// <param name="_valueToWithdraw"></param> 
     public void LoseDurability(int _valueToWithdraw)
     {
         objectDurability -= _valueToWithdraw;
         if (!(objectDurability <= 0)) return;
         DestroyThrowableObject();
     }
+    /// <summary> 
+    /// Picks up the object and parent it at the corresponding root 
+    /// </summary> 
+    /// <param name="_carrier"></param> 
+    /// <param name="_rootCharacterObject"></param> 
+    /// <returns></returns> 
     public bool PickUp(TDS_Character _carrier, Transform _rootCharacterObject)
     {
         if (isHeld) return false;
@@ -98,6 +108,12 @@ public class TDS_Throwable : MonoBehaviour
         owner = _carrier;
         return true;
     }
+    /// <summary> 
+    /// Throws the object to a given position by converting the final position to velocity 
+    /// </summary> 
+    /// <param name="_finalPosition"></param> 
+    /// <param name="_angle"></param> 
+    /// <param name="_bonusDamage"></param> 
     public void Throw(Vector3 _finalPosition,float _angle, int _bonusDamage)
     {
         if (!isHeld) return;

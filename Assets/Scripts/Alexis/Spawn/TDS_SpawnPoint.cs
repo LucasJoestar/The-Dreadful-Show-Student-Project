@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq; 
 using UnityEngine;
 using Photon;
 using Random = UnityEngine.Random; 
@@ -45,10 +44,6 @@ public class TDS_SpawnPoint
 	 *
 	 *	-----------------------------------
 	*/
-
-    #region Events
-
-    #endregion
 
     #region Fields / Properties
 
@@ -107,7 +102,7 @@ public class TDS_SpawnPoint
         TDS_Enemy _e; 
         for (int i = 0; i < _enemiesNames.Count; i++)
         {
-            _e = PunBehaviour.Instantiate(Resources.Load($"Enemies/{_enemiesNames[i]}", typeof(TDS_Enemy)) as TDS_Enemy, GetRandomSpawnPosition, Quaternion.identity);
+            _e = PhotonNetwork.Instantiate(_enemiesNames[i], GetRandomSpawnPosition, Quaternion.identity, 0).GetComponent<TDS_Enemy>();
             _e.Area = _owner;
             //INIT UI
             _spawnedEnemies.Add(_e); 
