@@ -109,11 +109,7 @@ public class TDS_NetworkManager : PunBehaviour
 
         if (!PhotonNetwork.isMasterClient)
         {
-<<<<<<< HEAD
            // TDS_RPCManager.Instance.RPCPhotonView.RPC("SendInGamePlayers", PhotonTargets.MasterClient);
-=======
-            //TDS_RPCManager.Instance.RPCPhotonView.RPC("SendInGamePlayers", PhotonTargets.MasterClient);
->>>>>>> Alexis'Branch
         }
     }
     #endregion
