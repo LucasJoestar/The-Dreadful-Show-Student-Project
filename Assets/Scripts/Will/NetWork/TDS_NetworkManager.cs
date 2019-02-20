@@ -106,7 +106,7 @@ public class TDS_NetworkManager : PunBehaviour
 
         if (!PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("SendInGamePlayers", PhotonTargets.MasterClient);
+           // TDS_RPCManager.Instance.RPCPhotonView.RPC("SendInGamePlayers", PhotonTargets.MasterClient);
         }
     }
     #endregion

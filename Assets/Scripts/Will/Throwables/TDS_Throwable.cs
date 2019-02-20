@@ -45,6 +45,9 @@ public class TDS_Throwable : MonoBehaviour
     [SerializeField,Range(0,10)]
     int objectDurability = 10;
     [SerializeField]
+    int weight = 2;
+    public int Weight { get { return weight; } }
+    [SerializeField]
     new Rigidbody rigidbody = null;    
     #endregion
     #region PlayerSettings
