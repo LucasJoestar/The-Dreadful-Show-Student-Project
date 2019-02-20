@@ -55,13 +55,11 @@ public class TDS_WaveElement
     /// List of enemies and number of enemies linked to this SpawnPoint
     /// </summary>
     [SerializeField] private List<TDS_SpawningInformations> spawningInformations = new List<TDS_SpawningInformations>();
-    public List<TDS_SpawningInformations> SpawningInformations { get { return spawningInformations; } }
 
     /// <summary>
     /// List of enemies and number of enemies linked to this SpawnPoint
     /// </summary>
     [SerializeField] private List<TDS_RandomSpawningInformations> randomSpawningInformations = new List<TDS_RandomSpawningInformations>();
-    public List<TDS_RandomSpawningInformations> RandomSpawningInformations { get { return randomSpawningInformations; } }
     #endregion
 
     #region Methods
@@ -97,7 +95,7 @@ public class TDS_WaveElement
         for (int i = 0; i < _randomCount; i++)
         {
             //Get the total of all spawn chances 
-            _max = RandomSpawningInformations.Where(a => a.EnemyCount > 0).Sum(a => a.SpawnChance);
+            _max = randomSpawningInformations.Where(a => a.EnemyCount > 0).Sum(a => a.SpawnChance);
             if (_max == 0) break;
             //Get a random value
             _value = Random.Range(0, _max);

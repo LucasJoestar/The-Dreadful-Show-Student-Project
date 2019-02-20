@@ -56,6 +56,9 @@ public class TDS_Wave
     /// The color of the wave in the editor
     /// </summary>
     [SerializeField] protected Color debugColor = Color.red;
+    /// <summary>
+    /// Property of the field debugColor
+    /// </summary>
     public Color DebugColor { get { return debugColor; } }
     #endregion 
 
@@ -63,6 +66,9 @@ public class TDS_Wave
     /// List of all spawn points called by this area
     /// </summary>
     [SerializeField] protected List<TDS_SpawnPoint> spawnPoints = new List<TDS_SpawnPoint>();
+    /// <summary>
+    /// Property of the field spawnPoints
+    /// </summary>
     public List<TDS_SpawnPoint> SpawnPoints { get { return spawnPoints; } }
 
     #endregion

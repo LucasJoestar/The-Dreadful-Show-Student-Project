@@ -34,12 +34,18 @@ public class TDS_SpawningInformations
     /// Kind of enemies to spawn
     /// </summary>
     [SerializeField] protected string enemyResourceName;
+    /// <summary>
+    /// Property of the enemyResourceName field
+    /// </summary>
     public string EnemyResourceName { get { return enemyResourceName; } }
 
     /// <summary>
     /// Number of enemies to spawn 
     /// </summary>
     [SerializeField] protected int enemyCount = 1;
+    /// <summary>
+    /// Property of the enemyCount Field
+    /// </summary>
     public int EnemyCount
     {
         get
@@ -52,6 +58,11 @@ public class TDS_SpawningInformations
         }
     }
 
+    /// <summary>
+    /// Constructor of the TDS_SpawningInformation  class
+    /// Set the enemy resources name as the name of the enemy in argument
+    /// </summary>
+    /// <param name="_e">enemy</param>
     public TDS_SpawningInformations(TDS_Enemy _e)
     {
         enemyResourceName = _e.EnemyName;
@@ -90,8 +101,15 @@ public class TDS_RandomSpawningInformations : TDS_SpawningInformations
     /// Chance of spawning for the random enemy
     /// </summary>
     [SerializeField] private int spawnChance = 100;
+    /// <summary>
+    /// Property of the spawnChance field
+    /// </summary>
     public int SpawnChance { get { return spawnChance; } }
 
+    /// <summary>
+    /// Constructor of TDS_RandomSpawningInformations based on the construcor of TDS_SpawningInformations
+    /// </summary>
+    /// <param name="_e">selected enemy</param>
     public TDS_RandomSpawningInformations(TDS_Enemy _e) : base(_e)
     {
         enemyResourceName = _e.EnemyName;
