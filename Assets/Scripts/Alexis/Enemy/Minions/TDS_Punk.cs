@@ -82,156 +82,26 @@ public class TDS_Punk : TDS_Enemy
     #endregion
 
     #region Overriden Methods
-    protected override IEnumerator Behaviour()
+    /// <summary>
+    /// Activate the hitbox with the settings of the currently casted attack
+    /// Get the attack with its AnimationID
+    /// </summary>
+    /// <param name="_animationID">Animation ID entered in the animation window</param>
+    protected override void ActivateAttack(int _animationID)
     {
-        // If the enemy is dead or paralyzed, they can't behave
-        if (isDead || IsParalyzed) yield break;
-        // If there is no target, the agent has to get one
-        if (!playerTarget || playerTarget.IsDead)
-            enemyState = EnemyState.Searching;
-        float _distance = 0;
-        switch (enemyState)
-        {
-            #region Searching
-            case EnemyState.Searching:
-                // If there is no target, search a new target
-                playerTarget = SearchTarget();
-                //If a target is found -> Set the state to TakingDecision
-                if (playerTarget)
-                {
-                    enemyState = EnemyState.MakingDecision;
-                    goto case EnemyState.MakingDecision;
-                }
-                //ELSE BREAK -> Set the state to Search
-                else
-                {
-                    enemyState = EnemyState.Searching;
-                    yield return new WaitForSeconds(1);
-                    break;
-                }
-            #endregion
-            #region Making Decision
-            case EnemyState.MakingDecision:
-                //Take decisions
-                // If the target can't be targeted, search for another target
-                if (!playerTarget || playerTarget.IsDead)
-                {
-                    enemyState = EnemyState.Searching;
-                    goto case EnemyState.Searching;
-                }
-                _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                /* If there is an attack that can be cast, go to attack case
-                 * Check if the agent can grab an object, 
-                 * if so goto case GrabObject if it can be grab 
-                 * if it can't be grabbed directly, getting in range
-                */
-                if (attacks.Any(a => _distance <= a.PredictedRange))
-                {
-                    enemyState = EnemyState.Attacking;
-                    goto case EnemyState.Attacking;
-                }
-                else if (Throwable /*and target can be touched by thrown object*/)
-                {
-                    enemyState = EnemyState.ThrowingObject;
-                    goto case EnemyState.ThrowingObject;
-                }
-                //else try to reach the target
-                else
-                {
-                    enemyState = EnemyState.ComputingPath;
-                    goto case EnemyState.ComputingPath;
-                }
-            #endregion
-            #region Computing Path
-            case EnemyState.ComputingPath:
-                //Compute the path
-                // If there is something to throw, Move until reaching a position from where the player can be touched
-                // Be careful, the agent don't have to recalculate path when they have a Throwable
+        TDS_EnemyAttack _attack = attacks.Where(a => a.AnimationID == _animationID).FirstOrDefault();
+        if (_attack == null) return;
+        hitBox.Activate(_attack);
+    }
 
-                if (agent.CheckDestination(playerTarget.transform.position))
-                {
-                    enemyState = EnemyState.GettingInRange;
-                    goto case EnemyState.GettingInRange;
-                }
-                yield return new WaitForSeconds(1);
-                break;
-            #endregion
-            #region Getting In Range
-            case EnemyState.GettingInRange:
-                SetAnimationState(EnemyAnimationState.Run);
-                // Wait some time before calling again Behaviour(); 
-                _distance = Vector3.Distance(transform.position, agent.LastPosition);
-                while (!attacks.Any(a => _distance < a.PredictedRange) /*|| check if the throw distance*/)
-                {
-                    _distance = Vector3.Distance(transform.position, agent.LastPosition);
-                    if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
-                        Flip();
-                    if (speedCurrent < speedMax)
-                    {
-                        IncreaseSpeed();
-                    }
-                    if (Vector3.Distance(playerTarget.transform.position, agent.LastPosition) > 1)
-                    {
-                        if (agent.CheckDestination(playerTarget.transform.position))
-                        {
-                            yield return new WaitForSeconds(.1f);
-                            continue;
-                        }
-                        else
-                        {
-                            agent.StopAgent();
-                            enemyState = EnemyState.MakingDecision;
-                            goto case EnemyState.MakingDecision;
-                        }
-                    }
-                    //yield return new WaitForEndOfFrame();
-                    yield return new WaitForSeconds(.1f);
-                }
-                agent.StopAgent();
-                SetAnimationState(EnemyAnimationState.Idle);
-                break;
-            #endregion
-            #region Attacking
-            case EnemyState.Attacking:
-                //Throw attack
-                //Select the best attack to cast
-                if (Throwable)
-                {
-                    enemyState = EnemyState.ThrowingObject;
-                    goto case EnemyState.ThrowingObject;
-                }
-                else
-                {
-                    _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                    //Cast Attack
-                    float _cooldown = StartAttack(_distance);
-                    while (IsAttacking)
-                    {
-                        yield return new WaitForSeconds(.1f);
-                    }
-                    yield return new WaitForSeconds(_cooldown);
-                }
-                enemyState = EnemyState.MakingDecision;
-                goto case EnemyState.MakingDecision;
-            #endregion
-            #region Grabbing Object
-            case EnemyState.PickingUpObject:
-                //Pick up an object
-                enemyState = EnemyState.MakingDecision;
-                goto case EnemyState.MakingDecision;
-            #endregion
-            #region Throwing Object
-            case EnemyState.ThrowingObject:
-                //Throw the held object
-                enemyState = EnemyState.MakingDecision;
-                goto case EnemyState.MakingDecision;
-            #endregion
-            default:
-                break;
-        }
-        yield return new WaitForSeconds(.1f);
-        StartCoroutine(Behaviour());
-        yield break;
+    /// <summary>
+    /// Return true if the distance is less than the minimum predicted range of the Punk attack
+    /// </summary>
+    /// <param name="_distance">distance between player and target</param>
+    /// <returns>does the attack can be cast</returns>
+    protected override bool AttackCanBeCasted(float _distance)
+    {
+        return _distance <= attacks.Min(a => a.PredictedRange);
     }
 
     /// <summary>
@@ -253,9 +123,10 @@ public class TDS_Punk : TDS_Enemy
         _attack.ConsecutiveUses++;
         attacks.ToList().Where(a => a != _attack).ToList().ForEach(a => a.ConsecutiveUses = 0);
         SetAnimationState((EnemyAnimationState)_attack.AnimationID);
-        hitBox.Activate(_attack);
+        //hitBox.Activate(_attack); THE HIT BOX IS NOW ACTIVATED INTO THE ANIMATION BY CALLING THE METHOD "ActivateAttack" with the AnimationID of the attack
         return _attack.Cooldown;
     }
+
     #endregion
 
     #region Unity Methods
