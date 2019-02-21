@@ -27,7 +27,8 @@ public class TDS_Player : TDS_Character
 	 *
 	 *	Changes :
      *	
-     *	    - Added the DPadXAxis, DPadYAxis, RightStickXAxis, RightStickYAxis & handsTransformLocalPosition fields.
+     *	    - Added the DPadXAxis, DPadYAxis, RightStickXAxis, RightStickYAxis & handsTransformMemoryLocalPosition fields ; and the HandTransformLocalPosition property.
+     *	    - Added the AimFlip method.
      * 
      *  -----------------------------------
      * 
