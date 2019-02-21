@@ -18,13 +18,20 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[20 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Added the juggleSpeed field.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[19 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
 	 *	Changes :
 	 *
-	 *	Creation of the TDS_JugglerEditor class.
-     *	
      *	    - Added the throwables, throwableDistanceFromCenter, maxThrowableAmount & selectedThrowableIndex fields.
 	 *
 	 *	-----------------------------------
@@ -52,6 +59,9 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
     #endregion
 
     #region Variables
+    /// <summary>SerializedProperty for <see cref="TDS_Juggler.JuggleSpeed"/> of type <see cref="float"/>.</summary>
+    private SerializedProperty juggleSpeed = null;
+
     /// <summary>SerializedProperty for <see cref="TDS_Juggler.ThrowableDistanceFromCenter"/> of type <see cref="float"/>.</summary>
     private SerializedProperty throwableDistanceFromCenter = null;
 
@@ -235,6 +245,12 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
             serializedObject.Update();
         }
 
+        if (TDS_EditorUtility.FloatField("Juggle Speed", "Speed at which the Juggler juggle with his objects", juggleSpeed))
+        {
+            jugglers.ForEach(j => j.JuggleSpeed = juggleSpeed.floatValue);
+            serializedObject.Update();
+        }
+
         if (TDS_EditorUtility.FloatField("Throw. Dist. from Center", "Distance of each throwables from the hands transform of the character", throwableDistanceFromCenter))
         {
             jugglers.ForEach(j => j.ThrowableDistanceFromCenter = throwableDistanceFromCenter.floatValue);
@@ -256,6 +272,7 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
 
         // Get the serializedProperties from the serializedObject
         throwables = serializedObject.FindProperty("Throwables");
+        juggleSpeed = serializedObject.FindProperty("juggleSpeed");
         throwableDistanceFromCenter = serializedObject.FindProperty("throwableDistanceFromCenter");
         maxThrowableAmount = serializedObject.FindProperty("maxThrowableAmount");
         selectedThrowableIndex = serializedObject.FindProperty("selectedThrowableIndex");
