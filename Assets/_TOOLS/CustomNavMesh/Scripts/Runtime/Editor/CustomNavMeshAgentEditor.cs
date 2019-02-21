@@ -160,7 +160,7 @@ public class CustomNavMeshAgentEditor : Editor
     {
         DrawWireCylinder((serializedObject.targetObject as CustomNavMeshAgent).CenterPosition, radius.floatValue/2, height.floatValue/2, Color.green);
         Handles.color = Color.red; 
-        Handles.DrawWireDisc((serializedObject.targetObject as CustomNavMeshAgent).CenterPosition, Vector3.up, detectionRange.floatValue); 
+        Handles.DrawWireDisc((serializedObject.targetObject as CustomNavMeshAgent).CenterPosition, Vector3.up, detectionRange.floatValue);
     }
     #endregion
 

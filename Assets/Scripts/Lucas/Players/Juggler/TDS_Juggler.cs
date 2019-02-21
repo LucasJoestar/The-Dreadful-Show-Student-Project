@@ -22,6 +22,15 @@ public class TDS_Juggler : TDS_Player
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[21 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+     *	    - Added the UpdateJuggleParameters method.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[20 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -201,6 +210,16 @@ public class TDS_Juggler : TDS_Player
 
     #region Aim & Throwables
     /// <summary>
+    /// Update aim point on flip.
+    /// </summary>
+    protected override void AimFlip()
+    {
+        // Reset x & z position, we don't want to move them when juggling
+        throwAimingPoint.z *= -1;
+        ThrowAimingPoint = throwAimingPoint;
+    }
+
+    /// <summary>
     /// Method called in the Aim coroutine.
     /// </summary>
     protected override void AimMethod()
@@ -208,6 +227,16 @@ public class TDS_Juggler : TDS_Player
         // Let the player aim the point he wants, 'cause the juggler can do that. Yep
 
         // Aim with IJKL or the right joystick axis
+        float _xMovement = Input.GetAxis(RightStickXAxis);
+        float _zMovement = Input.GetAxis(RightStickYAxis);
+
+        if (_xMovement != 0 || _zMovement != 0)
+        {
+            _xMovement *= -isFacingRight.ToSign();
+            _zMovement *= -isFacingRight.ToSign();
+
+            ThrowAimingPoint = Vector3.Lerp(throwAimingPoint, new Vector3(throwAimingPoint.x + _xMovement, throwAimingPoint.y, throwAimingPoint.z + _zMovement), Time.deltaTime * 15);
+        }
 
         // Raycast along the trajectory preview and stop the trail when hit something
         base.AimMethod();
@@ -225,6 +254,9 @@ public class TDS_Juggler : TDS_Player
         throwable.Drop();
         Throwables.Remove(throwable);
         SelectedThrowableIndex = selectedThrowableIndex;
+
+        // Updates juggling informations
+        UpdateJuggleParameters(false);
 
         // Updates the animator informations
         if (!throwable) SetAnimHasObject(false);
@@ -246,6 +278,9 @@ public class TDS_Juggler : TDS_Player
         Throwables.Add(_throwable);
         Throwable = _throwable;
 
+        // Updates juggling informations
+        UpdateJuggleParameters(true);
+
         // Updates animator informations
         SetAnimHasObject(true);
 
@@ -253,55 +288,26 @@ public class TDS_Juggler : TDS_Player
     }
 
     /// <summary>
-    /// Throws the weared throwable.
-    /// </summary>
-    public override void ThrowObject()
-    {
-        // If no throwable, return
-        if (!throwable) return;
-
-        // Alright, then throw it !
-        // Get the destination point in world space
-        Vector3 _destinationPosition = new Vector3(transform.position.x + (throwAimingPoint.x * -isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + (throwAimingPoint.z * -isFacingRight.ToSign()));
-
-        // Now, throw that object
-        throwable.transform.localPosition = Vector3.zero;
-        throwable.Throw(_destinationPosition, aimAngle, RandomThrowBonusDamages);
-        Throwables.Remove(throwable);
-        SelectedThrowableIndex = selectedThrowableIndex;
-
-        // Triggers the throw animation ;
-        // If not having throwable anymore, update the animator
-        if (isGrounded) SetAnimThrow();
-        if (!throwable) SetAnimHasObject(false);
-    }
-
-    /// <summary>
-    /// Throws the weared throwable.
-    /// </summary>
-    /// <param name="_targetPosition">Position where the object should land.</param>
-    public override void ThrowObject(Vector3 _targetPosition)
-    {
-        // If no throwable, return
-        if (!throwable) return;
-
-        // Now, throw that object
-        throwable.transform.localPosition = Vector3.zero;
-        throwable.Throw(_targetPosition, aimAngle, RandomThrowBonusDamages);
-        Throwables.Remove(throwable);
-        SelectedThrowableIndex = selectedThrowableIndex;
-
-        // Triggers the throw animation ;
-        // If not having throwable anymore, update the animator
-        if (isGrounded) SetAnimThrow();
-        if (!throwable) SetAnimHasObject(false);
-    }
-
-    /// <summary>
     /// Make the Juggler juggle ! Yeeeaah !
     /// </summary>
     private void Juggle()
     {
+        // Updates hands transform position by lerp
+        Vector3 _newPos = handsTransformMemoryLocalPosition;
+        _newPos.x *= -isFacingRight.ToSign();
+        _newPos += transform.position;
+
+        // If not at point, lerp position and update trajectory preview if aiming
+        if (handsTransform.position != _newPos)
+        {
+            handsTransform.position = Vector3.Lerp(handsTransform.position, _newPos, Time.deltaTime * 10);
+
+            if (isAiming)
+            {
+                ThrowAimingPoint = throwAimingPoint;
+            }
+        }
+
         // If not having any throwable, return
         if (CurrentThrowableAmount == 0) return;
 
@@ -330,6 +336,110 @@ public class TDS_Juggler : TDS_Player
         // Increase counter
         jugglerCounter += Time.deltaTime * juggleSpeed;
         if (jugglerCounter > CurrentThrowableAmount) jugglerCounter = 0;
+    }
+
+    /// <summary>
+    /// Throws the weared throwable.
+    /// </summary>
+    public override void ThrowObject()
+    {
+        // If no throwable, return
+        if (!throwable) return;
+
+        // Alright, then throw it !
+        // Get the destination point in world space
+        Vector3 _destinationPosition = new Vector3(transform.position.x + (throwAimingPoint.x * -isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + (throwAimingPoint.z * -isFacingRight.ToSign()));
+
+        // Now, throw that object
+        throwable.transform.localPosition = Vector3.zero;
+        throwable.Throw(_destinationPosition, aimAngle, RandomThrowBonusDamages);
+        Throwables.Remove(throwable);
+        SelectedThrowableIndex = selectedThrowableIndex;
+
+        // Updates juggling informations
+        UpdateJuggleParameters(false);
+
+        // Triggers the throw animation ;
+        // If not having throwable anymore, update the animator
+        if (isGrounded) SetAnimThrow();
+        if (!throwable) SetAnimHasObject(false);
+    }
+
+    /// <summary>
+    /// Throws the weared throwable.
+    /// </summary>
+    /// <param name="_targetPosition">Position where the object should land.</param>
+    public override void ThrowObject(Vector3 _targetPosition)
+    {
+        // If no throwable, return
+        if (!throwable) return;
+
+        // Now, throw that object
+        throwable.transform.localPosition = Vector3.zero;
+        throwable.Throw(_targetPosition, aimAngle, RandomThrowBonusDamages);
+        Throwables.Remove(throwable);
+        SelectedThrowableIndex = selectedThrowableIndex;
+
+        // Updates juggling informations
+        UpdateJuggleParameters(false);
+
+        // Triggers the throw animation ;
+        // If not having throwable anymore, update the animator
+        if (isGrounded) SetAnimThrow();
+        if (!throwable) SetAnimHasObject(false);
+    }
+
+    /// <summary>
+    /// Updates juggle parameters depending on juggling objects amount.
+    /// </summary>
+    /// <param name="_doIncrease">Has the amount of objects increased or decreased ?</param>
+    private void UpdateJuggleParameters(bool _doIncrease)
+    {
+        switch (CurrentThrowableAmount)
+        {
+            case 0:
+                // Alright, do nothing
+                break;
+
+            case 1:
+                juggleSpeed = 2;
+                throwableDistanceFromCenter = .25f;
+                break;
+
+            case 2:
+                juggleSpeed = 2.5f;
+                throwableDistanceFromCenter = .5f;
+                break;
+
+            case 3:
+                juggleSpeed = 2.8f;
+                throwableDistanceFromCenter = .8f;
+                break;
+
+            case 4:
+                juggleSpeed = 3.15f;
+                throwableDistanceFromCenter = 1f;
+                break;
+
+            case 5:
+                juggleSpeed = 3.5f;
+                throwableDistanceFromCenter = 1.25f;
+                break;
+
+            // If amount is superior to 5
+            default:
+                if (_doIncrease)
+                {
+                    juggleSpeed += .15f;
+                    throwableDistanceFromCenter += .1f;
+                }
+                else
+                {
+                    juggleSpeed -= .15f;
+                    throwableDistanceFromCenter -= .1f;
+                }
+                break;
+        }
     }
     #endregion
 
@@ -379,6 +489,46 @@ public class TDS_Juggler : TDS_Player
     public void SetAnimLightAttack()
     {
         animator.SetTrigger("Light Attack");
+    }
+    #endregion
+
+    #region Inputs
+    /// <summary>
+    /// Checks inputs for this player's all actions.
+    /// </summary>
+    public override void CheckActionsInputs()
+    {
+        base.CheckActionsInputs();
+
+        // Check aiming point / angle changes
+        if (TDS_Input.GetAxisDown(DPadXAxis))
+        {
+            int _index = selectedThrowableIndex + (int)Input.GetAxis(DPadXAxis);
+            if (_index < 0) _index = CurrentThrowableAmount - 1;
+            else if (_index == CurrentThrowableAmount) _index = 0;
+
+            SelectedThrowableIndex = _index;
+        }
+
+        if (TDS_Input.GetAxis(DPadYAxis))
+        {
+            AimAngle += Input.GetAxis(DPadYAxis);
+            ThrowAimingPoint = throwAimingPoint;
+        }
+    }
+    #endregion
+
+    #region Movements
+    /// <summary>
+    /// Flips this character to have they looking at the opposite side.
+    /// </summary>
+    public override void Flip()
+    {
+        base.Flip();
+
+        // Reverse X position
+        throwAimingPoint.x *= -1;
+        ThrowAimingPoint = throwAimingPoint;
     }
     #endregion
 

@@ -186,6 +186,22 @@ public class TDS_Character : TDS_Damageable
     /// </summary>
     public bool IsParalyzed = false;
 
+    /// <summary>Backing field for <see cref="AimAngle"/>.</summary>
+    [SerializeField] protected float aimAngle = 45;
+
+    /// <summary>
+    /// Angle used to aim and throw objects.
+    /// </summary>
+    public float AimAngle
+    {
+        get { return aimAngle; }
+        set
+        {
+            value = Mathf.Clamp(value, 0, 80);
+            aimAngle = value;
+        }
+    }
+
     /// <summary>Backing field for <see cref="SpeedAccelerationTime"/></summary>
     [SerializeField] protected float speedAccelerationTime = .5f;
 
@@ -269,22 +285,6 @@ public class TDS_Character : TDS_Damageable
             speedMax = value;
 
             if (speedCurrent > value) SpeedCurrent = value;
-        }
-    }
-
-    /// <summary>Backing field for <see cref="AimAngle"/>.</summary>
-    [SerializeField] protected int aimAngle = 45;
-
-    /// <summary>
-    /// Angle used to aim and throw objects.
-    /// </summary>
-    public int AimAngle
-    {
-        get { return aimAngle; }
-        set
-        {
-            value = Mathf.Clamp(value, 0, 90);
-            aimAngle = value;
         }
     }
 
