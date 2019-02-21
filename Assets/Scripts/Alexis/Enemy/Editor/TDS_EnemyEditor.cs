@@ -254,6 +254,11 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
 
         base.OnInspectorGUI();
     }
+
+    private void OnSceneGUI()
+    {
+        Handles.DrawWireDisc((serializedObject.targetObject as GameObject).transform.position, Vector3.up, detectionRange.floatValue);
+    }
     #endregion
 
     #endregion

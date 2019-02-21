@@ -1099,20 +1099,20 @@ MonoBehaviour:
   photonView: {fileID: 0}
   isLooping: 0
   waves:
-  - isWaveFoldOut: 0
+  - isWaveFoldOut: 1
     debugColor: {r: 1, g: 0, b: 0.7531514, a: 1}
     spawnPoints:
-    - spawnRange: 3.42
-      spawnPosition: {x: 2.668612, y: 0, z: 10.026858}
+    - spawnRange: 2
+      spawnPosition: {x: -7.690332, y: 0, z: -4.1397715}
       waveElement:
-        minRandomSpawn: 2
-        maxRandomSpawn: 5
+        minRandomSpawn: 0
+        maxRandomSpawn: 0
         spawningInformations:
         - enemyResourceName: Punk
-          enemyCount: 4
+          enemyCount: 1
         randomSpawningInformations:
         - enemyResourceName: Punk
-          enemyCount: 2
+          enemyCount: 1
           spawnChance: 93
   - isWaveFoldOut: 0
     debugColor: {r: 0, g: 0.22478104, b: 1, a: 1}
@@ -1175,7 +1175,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2145091656}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.97, y: 0.5, z: -5.23}
+  m_LocalPosition: {x: 2.92, y: 0.5, z: -10.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
