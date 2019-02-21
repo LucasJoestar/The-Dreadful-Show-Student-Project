@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
+using Photon;
 
 [RequireComponent(typeof(CustomNavMeshAgent))]
 public abstract class TDS_Enemy : TDS_Character
@@ -231,13 +232,7 @@ public abstract class TDS_Enemy : TDS_Character
             agent.StopAgent();
             StopAllCoroutines();
             enemyState = EnemyState.MakingDecision;
-            if (isDead)
-            {
-                SetAnimationState(EnemyAnimationState.Death);
-                Area.RemoveEnemy(this);
-            }
-            else
-                SetAnimationState(EnemyAnimationState.Hit);
+            if(!isDead) SetAnimationState(EnemyAnimationState.Hit);
         }
         return _isTakingDamages;
     }
@@ -253,6 +248,16 @@ public abstract class TDS_Enemy : TDS_Character
         SetAnimationState(EnemyAnimationState.Idle);
         base.StopAttack();
     }
+
+    /// <summary>
+    /// When the enemy dies, set its animation state to Death and remove it from the Area
+    /// </summary>
+    protected override void Die()
+    {
+        base.Die();
+        SetAnimationState(EnemyAnimationState.Death);
+        if (Area) Area.RemoveEnemy(this);
+    }
     #endregion
 
     #region Void
@@ -264,7 +269,7 @@ public abstract class TDS_Enemy : TDS_Character
     {
         if (!animator) return;
         animator.SetInteger("animationState", (int)_animationID);
-        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID }); 
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID }); 
     }
 
     /// <summary>
@@ -304,8 +309,8 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Start()
     {
         base.Start();
+        if (PhotonNetwork.isMasterClient) StartCoroutine(Behaviour());
     }
-
 
     // Update is called once per frame
     protected override void Update()
@@ -313,10 +318,8 @@ public abstract class TDS_Enemy : TDS_Character
         base.Update();
     }
 
-    public override void OnJoinedRoom()
-    {
-        if (PhotonNetwork.isMasterClient) StartCoroutine(Behaviour()); 
-    }
+
+
     #endregion
 
     #endregion

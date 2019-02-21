@@ -353,11 +353,14 @@ public class TDS_Character : TDS_Damageable
 
     /// <summary>
     /// Flips this character to have they looking at the opposite side.
+    /// Call this method online
     /// </summary>
     public virtual void Flip()
     {
         isFacingRight = !isFacingRight;
         transform.Rotate(Vector3.up, 180);
+
+        if(photonView.isMine) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });  
 
         OnFlip?.Invoke();
     }
