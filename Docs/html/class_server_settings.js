@@ -1,0 +1,35 @@
+var class_server_settings =
+[
+    [ "HostingOption", "class_server_settings.html#ac70398ae8a3414ab1429069965cfcd32", [
+      [ "NotSet", "class_server_settings.html#ac70398ae8a3414ab1429069965cfcd32afaf396cbd83927b72a84d2616fac76ff", null ],
+      [ "PhotonCloud", "class_server_settings.html#ac70398ae8a3414ab1429069965cfcd32a90530e0e762e9297f4d32ed392eabe8e", null ],
+      [ "SelfHosted", "class_server_settings.html#ac70398ae8a3414ab1429069965cfcd32a30679503fd5d3a59a6c5c5228d0077de", null ],
+      [ "OfflineMode", "class_server_settings.html#ac70398ae8a3414ab1429069965cfcd32a08d79b550be04c0b3b76fc64a58efde0", null ],
+      [ "BestRegion", "class_server_settings.html#ac70398ae8a3414ab1429069965cfcd32a57561f889c64fb3f0a85f31a7fb1d941", null ]
+    ] ],
+    [ "IsAppId", "class_server_settings.html#a5512de202f9fc04eaa51c9a82a7abb87", null ],
+    [ "ResetBestRegionCodeInPreferences", "class_server_settings.html#a659ffac7841ea8293727c41080cc26ec", null ],
+    [ "ToString", "class_server_settings.html#a8a1c45242135b589ecc819e132c59655", null ],
+    [ "UseCloud", "class_server_settings.html#a3fd2ceafc9192779c59a646884ba9810", null ],
+    [ "UseCloud", "class_server_settings.html#ae9dc8779d32a07848cb6e9063ae215d6", null ],
+    [ "UseCloudBestRegion", "class_server_settings.html#aeb0c2bda5dd14905c6d82c5166971117", null ],
+    [ "UseMyServer", "class_server_settings.html#ae0eef79dfdcf1d7d7577094dadc4ca4b", null ],
+    [ "AppID", "class_server_settings.html#a683ee8add05e046c395ecbcd2c077052", null ],
+    [ "ChatAppID", "class_server_settings.html#a3e7eed57634b89eabedaf6c852b7dc4b", null ],
+    [ "DisableAutoOpenWizard", "class_server_settings.html#a0bc41aab7289ce45195f260077b91e48", null ],
+    [ "EnabledRegions", "class_server_settings.html#a16c0927185e85b1c45492481b49e1721", null ],
+    [ "EnableLobbyStatistics", "class_server_settings.html#a604fa40c04419dd5972f6d6c0710ac44", null ],
+    [ "HostType", "class_server_settings.html#ae09a675e680b68d1ed6117ae990e0140", null ],
+    [ "JoinLobby", "class_server_settings.html#ab20cfb9bd2fd6526bb96d76c5ef5fcdc", null ],
+    [ "NetworkLogging", "class_server_settings.html#a98c6a355e14f4a2b76a1255162401aea", null ],
+    [ "PreferredRegion", "class_server_settings.html#a3b8285422f8ec14b98457c0935304b6d", null ],
+    [ "Protocol", "class_server_settings.html#a2fafc5c45a737f8090fef92f080bfd50", null ],
+    [ "PunLogging", "class_server_settings.html#a5caaad8da076804ce522b9b5da31d846", null ],
+    [ "RpcList", "class_server_settings.html#abe34064564018fc67afae2142c244cba", null ],
+    [ "RunInBackground", "class_server_settings.html#abfb17f6528c617b0b7dff59f739de7ec", null ],
+    [ "ServerAddress", "class_server_settings.html#ac93d5ddacf54f0efb974bb3c57537275", null ],
+    [ "ServerPort", "class_server_settings.html#a61d571180623076b8a12b9d2ca550411", null ],
+    [ "VoiceAppID", "class_server_settings.html#aadefac90411116a558839e318ca90de0", null ],
+    [ "VoiceServerPort", "class_server_settings.html#ab1470a61ee090390923d757d036b7c2d", null ],
+    [ "BestRegionCodeInPreferences", "class_server_settings.html#a7f72524c0d04bb8dee7d6eea35465a0b", null ]
+];

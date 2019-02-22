@@ -907,7 +907,8 @@ public class TDS_Player : TDS_Character
     /// <summary>
     /// Performs the catch attack of this player.
     /// </summary>
-    public virtual void Catch()
+    /// <param name="_minion">Minion to try to catch</param>
+    public virtual void Catch(/*TDS_Minion _minion*/)
     {
         // Catch
 
