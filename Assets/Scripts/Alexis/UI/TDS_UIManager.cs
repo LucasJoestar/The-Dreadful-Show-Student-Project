@@ -61,6 +61,12 @@ public class TDS_UIManager : MonoBehaviour
     [SerializeField] private GameObject pauseMenuParent;
     #endregion
 
+    #region Coroutines
+    /// <summary>
+    /// Dictionary to stock every filling coroutine started
+    /// </summary>
+    private Dictionary<Image, Coroutine> filledImages = new Dictionary<Image, Coroutine>(); 
+    #endregion 
     #endregion
 
     #region Methods
@@ -97,28 +103,36 @@ public class TDS_UIManager : MonoBehaviour
 
     /// <summary>
     /// Fill the image until its fillAmount until it reaches the fillingValue
-    /// ATTENTION: IL FAUT REGARDER SI L'IMAGE N'EST PAS DEJA EN TRAIN DE SE REMPLIR A UNE AUTRE VALEUR
+    /// At the end of the filling, remove the entry of the dictionary at the key _filledImage
     /// </summary>
     /// <param name="_filledImage">Image to fill</param>
     /// <param name="_fillingValue">Fill amount to reach</param>
     /// <returns></returns>
-    public static IEnumerator FillImage(Image _filledImage, float _fillingValue)
+    private IEnumerator UpdateFilledImage(Image _filledImage, float _fillingValue)
     {
-        float _value = _filledImage.fillAmount;
-        yield return new WaitForEndOfFrame();
-        float _nextValue = _filledImage.fillAmount;
-        while (_value != _nextValue)
-        {
-            yield return new WaitForEndOfFrame();
-            _value = _filledImage.fillAmount;
-            yield return new WaitForEndOfFrame();
-            _nextValue = _filledImage.fillAmount; 
-        }
         while(_filledImage.fillAmount != _fillingValue)
         {
             _filledImage.fillAmount = Mathf.Lerp(_filledImage.fillAmount, _fillingValue, Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
+        filledImages.Remove(_filledImage);
+    }
+
+    /// <summary>
+    /// Check if the image is already being filled
+    /// If so, stop the coroutine and remove it from the dictionary 
+    /// Then start the coroutine and stock it with the filledImage as a key in the dictionary
+    /// </summary>
+    /// <param name="_filledImage">Image to fill</param>
+    /// <param name="_fillingValue">Filling value to reach</param>
+    public void FillImage(Image _filledImage, float _fillingValue)
+    {
+        if(filledImages.ContainsKey(_filledImage))
+        {
+            StopCoroutine(filledImages[_filledImage]);
+            filledImages.Remove(_filledImage); 
+        }
+        filledImages.Add(_filledImage, StartCoroutine(UpdateFilledImage(_filledImage, _fillingValue))); 
     }
     #endregion
 
