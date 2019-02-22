@@ -58,7 +58,6 @@ public class TDS_RPCManager : MonoBehaviour
         return _component;
     }
 
-
     /// <summary>
     /// Call a method with a selected Name on a targeted Script 
     /// /// </summary>
@@ -66,7 +65,6 @@ public class TDS_RPCManager : MonoBehaviour
     [PunRPC]
     public void CallMethodOnline(string _info, params object[] args)
     {
-        
         //Split the information
         string[] _infoArray = _info.Split('#');
         // Get the id, if it can't be gotten return
