@@ -21,7 +21,26 @@ public class TDS_Player : TDS_Character
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	#####################
+     *	
+     *  Date :			[21 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
 	 *
+	 *	Changes :
+     *	
+     *	    - Added the DPadXAxis, DPadYAxis, RightStickXAxis, RightStickYAxis & handsTransformMemoryLocalPosition fields ; and the HandTransformLocalPosition property.
+     *	    - Added the AimFlip method.
+     * 
+     *  -----------------------------------
+     * 
+     *  Date :			[19 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Added the whatIsAllButThis field.
+     * 
+     *  -----------------------------------
+     * 
      *  Date :			[12 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -192,6 +211,16 @@ public class TDS_Player : TDS_Character
     public string DodgeButton = "Dodge";
 
     /// <summary>
+    /// Name of the joystick D-Pad X axis.
+    /// </summary>
+    public string DPadXAxis = "D-Pad X";
+
+    /// <summary>
+    /// Name of the joystick D-Pad Y axis.
+    /// </summary>
+    public string DPadYAxis = "D-Pad Y";
+
+    /// <summary>
     /// Name of the button used to perform a heavy attack.
     /// </summary>
     public string HeavyAttackButton = "Heavy Attack";
@@ -220,6 +249,16 @@ public class TDS_Player : TDS_Character
     /// Name of the button used to parry.
     /// </summary>
     public string ParryButton = "Parry";
+
+    /// <summary>
+    /// Name of the joystick right stick X axis.
+    /// </summary>
+    public string RightStickXAxis = "Right Stick X";
+
+    /// <summary>
+    /// Name of the joystick right stick Y axis.
+    /// </summary>
+    public string RightStickYAxis = "Right Stick Y";
 
     /// <summary>
     ///Name of the button used to perform the super attack.
@@ -309,7 +348,7 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>Backing field for <see cref="IsGrounded"/></summary>
-    [SerializeField] private bool isGrounded = true;
+    [SerializeField] protected bool isGrounded = true;
 
     /// <summary>
     /// Is the player touching the ground ?
@@ -325,7 +364,7 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>Backing field for <see cref="IsJumping"/>.</summary>
-    [SerializeField] private bool isJumping = false;
+    [SerializeField] protected bool isJumping = false;
 
     /// <summary>
     /// Is the player actually performing a jump ?
@@ -413,7 +452,7 @@ public class TDS_Player : TDS_Character
     public float JumpForce = 1;
 
     /// <summary>Backing field for <see cref="JumpMaximumTime"/></summary>
-    [SerializeField] private float jumpMaximumTime = 1.5f;
+    [SerializeField] protected float jumpMaximumTime = 1.5f;
 
     /// <summary>
     /// Maximum time length of a jump.
@@ -463,11 +502,16 @@ public class TDS_Player : TDS_Character
             // Updates the trajectory preview
             if (UnityEditor.EditorApplication.isPlaying)
             {
-                throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, throwAimingPoint, throwVelocity.magnitude, aimAngle, value);
+                throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(HandsTransformLocalPosition, throwAimingPoint, throwVelocity.magnitude, aimAngle, value);
             }
             #endif
         }
     }
+
+    /// <summary>
+    /// Layer mask referencing everything except this player layer.
+    /// </summary>
+    [SerializeField] protected LayerMask whatIsAllButThis = new LayerMask();
 
     /// <summary>
     /// LayerMask used to detect what is an obstacle for the player movements.
@@ -490,7 +534,26 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
-    /// Property for <see cref="ThrowAimingPoint"/> to update <see cref="throwVelocity"/> && <see cref="throwTrajectoryMotionPoints"/> on changes.
+    /// The ideal position of the hands transform in local space ;
+    /// Used to lerp the transform to a new position when moving.
+    /// </summary>
+    [SerializeField] protected Vector3 handsTransformIdealLocalPosition = Vector3.zero;
+
+    /// <summary>
+    /// The position of the hands transform in local space.
+    /// </summary>
+    public Vector3 HandsTransformLocalPosition
+    {
+        get
+        {
+            Vector3 _return = handsTransform.position - transform.position;
+            _return.x *= isFacingRight.ToSign();
+            return _return;
+        }
+    }
+
+    /// <summary>
+    /// Property for <see cref="throwAimingPoint"/> to update <see cref="throwVelocity"/> && <see cref="throwTrajectoryMotionPoints"/> on changes.
     /// </summary>
     public Vector3 ThrowAimingPoint
     {
@@ -503,9 +566,9 @@ public class TDS_Player : TDS_Character
             // Updates the velocity & trajectory preview
             if (UnityEditor.EditorApplication.isPlaying)
             {
-                throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(handsTransform.localPosition, value, aimAngle);
+                throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(HandsTransformLocalPosition, value, aimAngle);
 
-                throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, value, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
+                throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(HandsTransformLocalPosition, value, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
             }
             #endif
         }
@@ -551,7 +614,7 @@ public class TDS_Player : TDS_Character
     protected virtual IEnumerator Aim()
     {
         // While holding the throw button, aim a position
-        while (Input.GetButton(ThrowButton))
+        while (Input.GetButton(ThrowButton) || TDS_Input.GetAxis(ThrowButton))
         {
             // Draws the preview of the projectile trajectory while holding the throw button
             AimMethod();
@@ -568,52 +631,87 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
+    /// Update aim point on flip.
+    /// </summary>
+    protected virtual void AimFlip()
+    {
+        throwVelocity.x *= -1;
+    }
+
+    /// <summary>
     /// Method called in the Aim coroutine.
     /// </summary>
     protected virtual void AimMethod()
     {
         // Raycast along the trajectory preview and stop the trail when hit something
         RaycastHit _hit = new RaycastHit();
-        Vector3[] _raycastedMotionPoints = throwTrajectoryMotionPoints;
+        Vector3[] _raycastedMotionPoints = (Vector3[])throwTrajectoryMotionPoints.Clone();
+        bool _hasHit = false;
 
         for (int _i = 0; _i < _raycastedMotionPoints.Length - 1; _i++)
         {
             // Get the points to raycast from & to in world space
-            Vector3 _from = transform.position + new Vector3(throwTrajectoryMotionPoints[_i].x * -isFacingRight.ToSign(), throwTrajectoryMotionPoints[_i].y, throwTrajectoryMotionPoints[_i].z);
-            Vector3 _to = transform.position + new Vector3(throwTrajectoryMotionPoints[_i + 1].x * -isFacingRight.ToSign(), throwTrajectoryMotionPoints[_i + 1].y, throwTrajectoryMotionPoints[_i + 1].z);
+            Vector3 _from = transform.position + new Vector3(_raycastedMotionPoints[_i].x * isFacingRight.ToSign(), _raycastedMotionPoints[_i].y, _raycastedMotionPoints[_i].z);
+
+            Vector3 _to = transform.position + new Vector3(_raycastedMotionPoints[_i + 1].x * isFacingRight.ToSign(), _raycastedMotionPoints[_i + 1].y, _raycastedMotionPoints[_i + 1].z);
 
             // If hit something, set the hit point as end of the preview trajectory
-            if (Physics.Linecast(_from, _to, out _hit))
+            if (Physics.Linecast(_from, _to, out _hit, whatIsAllButThis, QueryTriggerInteraction.Ignore))
             {
-                _raycastedMotionPoints = new Vector3[_i + 2];
-                for (int _j = 0; _j <= _i; _j++)
-                {
-                    _raycastedMotionPoints[_j] = throwTrajectoryMotionPoints[_j];
-                }
-                // Get the hit point as absolute value in local space ; so as distance
-                _raycastedMotionPoints[_i + 1] = new Vector3(Mathf.Abs(_hit.point.x - transform.position.x) * Mathf.Sign(throwAimingPoint.x), _hit.point.y - transform.position.y, Mathf.Abs(_hit.point.z - transform.position.z));
+                // Get the hit point in local space
+                Vector3 _hitPoint = new Vector3(Mathf.Abs(_hit.point.x - transform.position.x) * Mathf.Sign(throwAimingPoint.x), _hit.point.y - transform.position.y, Mathf.Abs(_hit.point.z - transform.position.z) * Mathf.Sign(throwAimingPoint.z));
+
+                // Get the throw preview motion points with the new hit point
+                _raycastedMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(HandsTransformLocalPosition, _hitPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
 
                 // Updates the position of the end preview zone & its rotation according to the hit point
                 ProjectilePreviewEndZone.transform.position = _hit.point;
 
                 Quaternion _rotation = Quaternion.Lerp(ProjectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, _hit.normal), Time.deltaTime * 15);
-                _rotation.x *= -isFacingRight.ToSign();
 
                 ProjectilePreviewEndZone.transform.rotation = _rotation;
 
                 // Set the arrow rotation so it is now pointing at the aiming point
-                Vector3 _direction = _raycastedMotionPoints[_i + 1] - _raycastedMotionPoints[_i];
-                _direction.x *= -isFacingRight.ToSign();
+                Vector3 _direction = _hitPoint - _raycastedMotionPoints[throwPreviewPrecision - 2];
+                _direction.x *= isFacingRight.ToSign();
 
                 Quaternion _arrowRotation = Quaternion.FromToRotation(Vector3.up, _direction);
 
                 ProjectilePreviewArrow.rotation = Quaternion.Lerp(ProjectilePreviewArrow.rotation, _arrowRotation, Time.deltaTime * 15);
 
+                // Set indicative boolean
+                _hasHit = true;
+
                 break;
             }
         }
+        
+        // If no touch, update end zone position & rotation
+        if (!_hasHit)
+        {
+            // Updates the position of the end preview zone & its rotation according to the hit point
+            ProjectilePreviewEndZone.transform.position = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
+
+            Quaternion _rotation = Quaternion.Lerp(ProjectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, Vector3.up), Time.deltaTime * 15);
+            _rotation.x *= isFacingRight.ToSign();
+
+            ProjectilePreviewEndZone.transform.rotation = _rotation;
+
+            // Set the arrow rotation so it is now pointing at the aiming point
+            Vector3 _direction = throwAimingPoint - _raycastedMotionPoints[throwPreviewPrecision - 2];
+            _direction.x *= isFacingRight.ToSign();
+
+            Quaternion _arrowRotation = Quaternion.FromToRotation(Vector3.up, _direction);
+
+            ProjectilePreviewArrow.rotation = Quaternion.Lerp(ProjectilePreviewArrow.rotation, _arrowRotation, Time.deltaTime * 15);
+        }
 
         // Draws the trajectory preview
+        for (int _i = 0; _i < _raycastedMotionPoints.Length; _i++)
+        {
+            _raycastedMotionPoints[_i].z *= isFacingRight.ToSign();
+        }
+
         lineRenderer.DrawTrajectory(_raycastedMotionPoints);
     }
 
@@ -625,7 +723,7 @@ public class TDS_Player : TDS_Character
         base.DropObject();
 
         // Updates the animator informations
-        SetAnimHasObject(true);
+        SetAnimHasObject(false);
     }
 
     /// <summary>
@@ -687,23 +785,23 @@ public class TDS_Player : TDS_Character
         base.ThrowObject();
 
         // Triggers the throw animation ;
-        // If not having throwable anymore (Always the case for players except for juggler), update the animator
-        SetAnimThrow();
-        if (!throwable) SetAnimHasObject(false);
+        // Update the animator
+        if (isGrounded) SetAnimThrow();
+        SetAnimHasObject(false);
     }
 
     /// <summary>
     /// Throws the weared throwable.
     /// </summary>
-    /// <param name="_targetPosition">Position where the object should land</param>
+    /// <param name="_targetPosition">Position where the object should land.</param>
     public override void ThrowObject(Vector3 _targetPosition)
     {
         base.ThrowObject(_targetPosition);
 
         // Triggers the throw animation ;
-        // If not having throwable anymore (Always the case for players except for juggler), update the animator
-        SetAnimThrow();
-        if (!throwable) SetAnimHasObject(false);
+        // Update the animator
+        if (isGrounded) SetAnimThrow();
+        SetAnimHasObject(false);
     }
     #endregion
 
@@ -804,7 +902,8 @@ public class TDS_Player : TDS_Character
     /// <summary>
     /// Performs the catch attack of this player.
     /// </summary>
-    public virtual void Catch()
+    /// <param name="_minion">Minion to try to catch</param>
+    public virtual void Catch(/*TDS_Minion _minion*/)
     {
         // Catch
 
@@ -849,7 +948,7 @@ public class TDS_Player : TDS_Character
         SetAnimIsParrying(true);
 
         // While holding the parry button, parry attacks
-        while (Input.GetButton(ParryButton))
+        while (Input.GetButton(ParryButton) || TDS_Input.GetAxis(ParryButton))
         {
             yield return null;
         }
@@ -1174,8 +1273,8 @@ public class TDS_Player : TDS_Character
     {
         base.Flip();
 
-        // Also flip the velocity used to throw objects
-        throwVelocity.x *= -1;
+        // Executes method for aim update
+        AimFlip();
     }
 
     /// <summary>
@@ -1417,23 +1516,26 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void CheckActionsInputs()
     {
-        // If not on ground, dodging, parrying or attacking, do not perform action
-        if (!isGrounded || isAttacking || isDodging || isParrying) return;
+        // If dodging, parrying or attacking, do not perform action
+        if (isAttacking || isDodging || isParrying) return;
 
         // Check non-agressive actions
-        if (Input.GetButtonDown(DodgeButton) && !isDodging) dodgeCoroutine = StartCoroutine(Dodge());
+        if (Input.GetButtonDown(InteractButton)) Interact();
 
-        else if (Input.GetButtonDown(InteractButton)) Interact();
+        else if (Input.GetButtonDown(DodgeButton)) dodgeCoroutine = StartCoroutine(Dodge());
 
-        else if (Input.GetButtonDown(ParryButton)) StartCoroutine(Parry());
+        else if ((Input.GetButtonDown(ParryButton) || TDS_Input.GetAxisDown(ParryButton)) && isGrounded) StartCoroutine(Parry());
 
         // If the character is pacific, forbid him to attack
         if (IsPacific) return;
 
         // Checks potentially agressives actions
-        if (Input.GetButtonDown(CatchButton)) Catch();
+        if (Input.GetButtonDown(ThrowButton) || TDS_Input.GetAxisDown(ThrowButton)) PrepareThrow();
 
-        else if (Input.GetButtonDown(ThrowButton)) PrepareThrow();
+        // If not on ground, return
+        if (!isGrounded) return;
+
+        if (Input.GetButtonDown(CatchButton)) Catch();
 
         else if (Input.GetButtonDown(CancelThrowButton) && isAiming) StopAiming();
 
@@ -1441,7 +1543,7 @@ public class TDS_Player : TDS_Character
 
         else if (Input.GetButtonDown(HeavyAttackButton)) Attack(false);
 
-        else if (Input.GetButtonDown(SuperAttackButton)) SuperAttack();
+        else if (Input.GetButtonDown(SuperAttackButton) || TDS_Input.GetAxisDown(SuperAttackButton)) SuperAttack();
 
         else if (Input.GetButtonDown(UseObjectButton)) UseObject();
     }
@@ -1535,6 +1637,21 @@ public class TDS_Player : TDS_Character
     {
         // Draws the ground detection box gizmos
         groundDetectionBox.DrawGizmos(transform.position);
+
+        // Draws a gizmos at the aiming point in editor
+        Vector3 _gizmosPos = throwAimingPoint;
+        _gizmosPos.x *= isFacingRight.ToSign();
+        _gizmosPos += transform.position;
+
+        Gizmos.DrawIcon(_gizmosPos, "AimIcon", true);
+
+        // Draws a gizmos at the hands transform ideal position
+        Vector3 _handsPos = handsTransformIdealLocalPosition;
+        _handsPos.x *= isFacingRight.ToSign();
+        _handsPos += transform.position;
+
+        Gizmos.DrawSphere(_handsPos, .07f);
+        Gizmos.DrawIcon(_handsPos, "HandIcon", true);
     }
 
     // Use this for initialization
@@ -1544,9 +1661,13 @@ public class TDS_Player : TDS_Character
 
         // Since all players except the Juggler cannot change their throw angle & the point they are aiming,
         // get the throw velocity & projectile motion in local space at start time
-        throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(handsTransform.localPosition, throwAimingPoint, aimAngle);
+        throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(handsTransformIdealLocalPosition, throwAimingPoint, aimAngle);
 
-        throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, throwAimingPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
+        throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransformIdealLocalPosition, throwAimingPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
+
+        // Get layer for everything except this player one
+        whatIsAllButThis = -1;
+        whatIsAllButThis = ~(1 << gameObject.layer);
     }
 	
 	// Update is called once per frame

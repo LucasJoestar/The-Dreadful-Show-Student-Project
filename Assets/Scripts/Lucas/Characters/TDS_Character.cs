@@ -186,6 +186,22 @@ public class TDS_Character : TDS_Damageable
     /// </summary>
     public bool IsParalyzed = false;
 
+    /// <summary>Backing field for <see cref="AimAngle"/>.</summary>
+    [SerializeField] protected float aimAngle = 45;
+
+    /// <summary>
+    /// Angle used to aim and throw objects.
+    /// </summary>
+    public float AimAngle
+    {
+        get { return aimAngle; }
+        set
+        {
+            value = Mathf.Clamp(value, 15, 60);
+            aimAngle = value;
+        }
+    }
+
     /// <summary>Backing field for <see cref="SpeedAccelerationTime"/></summary>
     [SerializeField] protected float speedAccelerationTime = .5f;
 
@@ -269,22 +285,6 @@ public class TDS_Character : TDS_Damageable
             speedMax = value;
 
             if (speedCurrent > value) SpeedCurrent = value;
-        }
-    }
-
-    /// <summary>Backing field for <see cref="AimAngle"/>.</summary>
-    [SerializeField] protected int aimAngle = 45;
-
-    /// <summary>
-    /// Angle used to aim and throw objects.
-    /// </summary>
-    public int AimAngle
-    {
-        get { return aimAngle; }
-        set
-        {
-            value = Mathf.Clamp(value, 0, 90);
-            aimAngle = value;
         }
     }
 
@@ -400,7 +400,7 @@ public class TDS_Character : TDS_Damageable
         if (throwable) return false;
 
         // Take the object
-        _throwable.PickUp(this, handsTransform);
+        if (!_throwable.PickUp(this, handsTransform)) return false;
         Throwable = _throwable;
 
         return true;
@@ -412,11 +412,11 @@ public class TDS_Character : TDS_Damageable
     public virtual void ThrowObject()
     {
         // If no throwable, return
-        if (!Throwable) return;
+        if (!throwable) return;
 
         // Alright, then throw it !
         // Get the destination point in world space
-        Vector3 _destinationPosition = new Vector3(transform.position.x + (throwAimingPoint.x * -isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
+        Vector3 _destinationPosition = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
 
         // Now, throw that object
         throwable.Throw(_destinationPosition, aimAngle, RandomThrowBonusDamages);

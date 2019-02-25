@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(CustomNavMeshAgent))]
-public abstract class TDS_Enemy : TDS_Character 
+public abstract class TDS_Enemy : TDS_Character
 {
     /* TDS_Enemy :
 	 *
@@ -20,6 +20,14 @@ public abstract class TDS_Enemy : TDS_Character
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	##################### 
+     *	
+     *	Date :          [13/02/2019]
+     *	Author:         [THIEBAUT Alexis]
+     *	
+     *	[Adding the property Area]
+     *	    - Area is the TDS_SpawnerArea from which the enemy comes
+     *	    
+     *	-----------------------------------
      *	
 	 *	Date :          [13/02/2019]
      *	Author:         [THIEBAUT Alexis]
@@ -84,10 +92,6 @@ public abstract class TDS_Enemy : TDS_Character
 
     #region Fields / Properties
 
-    /* THINGS TO ADD IN THE FUTURE
-     * --> Add a spawner Owner 
-     */
-
     #region Variables
     /// <summary>
     /// Bool that allows the enemy to be take down  
@@ -121,6 +125,10 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     protected TDS_Player playerTarget = null;
 
+    /// <summary>
+    /// Spawner Area from which the enemy comes
+    /// </summary>
+    public TDS_SpawnerArea Area { get; set; }
     #endregion
 
     #region Components and References
@@ -137,6 +145,15 @@ public abstract class TDS_Enemy : TDS_Character
 
     #region Original Methods
 
+    #region float 
+    /// <summary>
+    /// Method Abstract
+    /// <see cref="TDS_Minion.StartAttack(float)"/>
+    /// </summary>
+    /// <param name="_distance"></param>
+    protected abstract float StartAttack(float _distance);
+    #endregion
+
     #region IEnumerator
     /// <summary>
     /// Wait a certain amount of seconds before starting Behaviour Method 
@@ -148,12 +165,12 @@ public abstract class TDS_Enemy : TDS_Character
     {
         yield return new WaitForSeconds(_recoveryTime);
         StartCoroutine(Behaviour());
-        yield break; 
+        yield break;
     }
 
     /// <summary>
     /// /!\ THE BEHAVIOUR METHOD IS NOW ABSTRACT /!\
-    /// <see cref="TDS_Minion.Behaviour"/> or <see cref="TDS_Boss.Behaviour"/>
+    /// <see cref="TDS_Minion.Behaviour"/> or <see cref="TDS_Punk.Behaviour"/>
     /// </summary>
     /// <returns></returns>
     protected abstract IEnumerator Behaviour();
@@ -167,9 +184,9 @@ public abstract class TDS_Enemy : TDS_Character
     protected TDS_Player SearchTarget()
     {
         TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(c => c.GetComponent<TDS_Player>() != null && c.gameObject != this.gameObject).Select(d => d.GetComponent<TDS_Player>()).ToArray();
-        if (_targets.Length == 0) return null; 
+        if (_targets.Length == 0) return null;
         //Set constraints here (Distance, type, etc...)
-        return _targets.Where(t => !t.IsDead).OrderBy(d => Vector3.Distance(transform.position, d.transform.position)).FirstOrDefault(); 
+        return _targets.Where(t => !t.IsDead).OrderBy(d => Vector3.Distance(transform.position, d.transform.position)).FirstOrDefault();
     }
     #endregion
 
@@ -209,17 +226,20 @@ public abstract class TDS_Enemy : TDS_Character
     public override bool TakeDamage(int _damage)
     {
         bool _isTakingDamages = base.TakeDamage(_damage);
-        if(_isTakingDamages)
+        if (_isTakingDamages)
         {
             agent.StopAgent();
             StopAllCoroutines();
             enemyState = EnemyState.MakingDecision;
             if (isDead)
+            {
                 SetAnimationState(EnemyAnimationState.Death);
+                Area.RemoveEnemy(this);
+            }
             else
                 SetAnimationState(EnemyAnimationState.Hit);
         }
-        return _isTakingDamages; 
+        return _isTakingDamages;
     }
 
     /// <summary>
@@ -230,7 +250,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public override void StopAttack()
     {
-        SetAnimationState(EnemyAnimationState.Idle); 
+        SetAnimationState(EnemyAnimationState.Idle);
         base.StopAttack();
     }
     #endregion
@@ -243,9 +263,20 @@ public abstract class TDS_Enemy : TDS_Character
     protected void SetAnimationState(EnemyAnimationState _animationID)
     {
         if (!animator) return;
-        animator.SetInteger("animationState", (int)_animationID); 
+        animator.SetInteger("animationState", (int)_animationID);
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID }); 
     }
- 
+
+    /// <summary>
+    /// Set the animation of the enemy to the animationID
+    /// </summary>
+    /// <param name="_animationID"></param>
+    protected void SetAnimationState(int _animationID)
+    {
+        if (!animator) return;
+        animator.SetInteger("animationState", _animationID);
+    }
+
     /// <summary>
     /// Increase the speed and set the agent speed to the currentSpeed; 
     /// </summary>
@@ -255,16 +286,6 @@ public abstract class TDS_Enemy : TDS_Character
         agent.Speed = speedCurrent;
     }
     #endregion
-
-    #region float 
-    /// <summary>
-    /// Method Abstract
-    /// <see cref="TDS_Minion.StartAttack(float)"/>
-    /// </summary>
-    /// <param name="_distance"></param>
-    protected abstract float StartAttack(float _distance);
-    #endregion
-
     #endregion
 
     #region Unity Methods
@@ -272,26 +293,31 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Awake()
     {
         base.Awake();
-        if (!agent) agent = GetComponent<CustomNavMeshAgent>(); 
+        if (!agent) agent = GetComponent<CustomNavMeshAgent>();
         agent.OnDestinationReached += () => enemyState = EnemyState.MakingDecision;
         OnDie += () => StopAllCoroutines();
         OnDie += () => agent.StopAgent();
-        agent.OnAgentStopped += () => speedCurrent = 0; 
+        agent.OnAgentStopped += () => speedCurrent = 0;
     }
 
     // Use this for initialization
     protected override void Start()
     {
         base.Start();
-        StartCoroutine(Behaviour());
     }
+
 
     // Update is called once per frame
     protected override void Update()
     {
         base.Update();
     }
-	#endregion
 
-	#endregion
+    public override void OnJoinedRoom()
+    {
+        if (PhotonNetwork.isMasterClient) StartCoroutine(Behaviour()); 
+    }
+    #endregion
+
+    #endregion
 }

@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['instance',['Instance',['../class_t_d_s___network_manager.html#a963026d1ce50c05cf0982710d9168801',1,'TDS_NetworkManager.Instance()'],['../class_t_d_s___r_p_c_manager.html#a717d8491fd327ad379c8c8b5067658e8',1,'TDS_RPCManager.Instance()']]],
+  ['interactbutton',['InteractButton',['../class_t_d_s___player.html#a159b8c39b08be313ef1c5ad2dd828497',1,'TDS_Player']]],
+  ['interactionsdetector',['interactionsDetector',['../class_t_d_s___player.html#a7703d1062c5902f4b46525ca59845bdf',1,'TDS_Player']]],
+  ['isaiming',['isAiming',['../class_t_d_s___player.html#a0d30b3571cb33492e642d5b55e3dd50e',1,'TDS_Player']]],
+  ['isattacking',['isAttacking',['../class_t_d_s___character.html#a02c64be0d79b18b16415e67463e4758b',1,'TDS_Character']]],
+  ['isdead',['isDead',['../class_t_d_s___damageable.html#a42dbb195cb8d7884bae5922a5987017a',1,'TDS_Damageable']]],
+  ['isdistanceattack',['isDistanceAttack',['../class_t_d_s___enemy_attack.html#ada509ea844c67e1de722c85dce76f896',1,'TDS_EnemyAttack']]],
+  ['isdodging',['isDodging',['../class_t_d_s___player.html#a094d2aaa4cbc8d70f4a3d9923e3ae8e5',1,'TDS_Player']]],
+  ['isfacingright',['isFacingRight',['../class_t_d_s___character.html#afe195a59bfc43ad10a8db4e311e6626d',1,'TDS_Character']]],
+  ['isgrounded',['isGrounded',['../class_t_d_s___player.html#acb2a2ca76c88681d58635b3b80be4941',1,'TDS_Player']]],
+  ['isindestructible',['isIndestructible',['../class_t_d_s___damageable.html#a6bc3e2e8b83704ddebc6ea6d2cfe0581',1,'TDS_Damageable']]],
+  ['isinvulnerable',['IsInvulnerable',['../class_t_d_s___damageable.html#a5c6b5bbe43ad7f2669ad1b92f239271d',1,'TDS_Damageable']]],
+  ['isjumping',['isJumping',['../class_t_d_s___player.html#a9dd9f3a1bf578fc77a910d3b207adebc',1,'TDS_Player']]],
+  ['islooping',['isLooping',['../class_t_d_s___spawner_area.html#a9c77d64115abbef6576673ab559bc26a',1,'TDS_SpawnerArea']]],
+  ['ismoving',['isMoving',['../class_t_d_s___player.html#a91c597bc7eb1815a6cb44e5f94957e19',1,'TDS_Player']]],
+  ['ispacific',['IsPacific',['../class_t_d_s___character.html#ad84c236af0b9279b20b310fb05658ab2',1,'TDS_Character']]],
+  ['isparalyzed',['IsParalyzed',['../class_t_d_s___character.html#ad44decb740f141a2fa1dc7664a8b4d65',1,'TDS_Character']]],
+  ['isparrying',['isParrying',['../class_t_d_s___player.html#a29b9bad8cdabdf52801bca304caddc6c',1,'TDS_Player']]]
+];

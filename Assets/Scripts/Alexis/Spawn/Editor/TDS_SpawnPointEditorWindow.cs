@@ -39,9 +39,6 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
     /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.spawnPoints[i]"/> of type <see cref="TDS_SpawnPoint"/>.</summary>
     private SerializedProperty property;
 
-    /// <summary>Edited Spawn Point.</summary>
-    private TDS_SpawnPoint point;
-
     /// <summary>Scroll view position of the window.</summary>
     private Vector2 scrollView = Vector2.zero;
     #endregion
@@ -55,10 +52,9 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
     /// </summary>
     /// <param name="_property">property</param>
     /// <param name="_point">spawn point</param>
-    public void Init(SerializedProperty _property, TDS_SpawnPoint _point)
+    public void Init(SerializedProperty _property)
     {
         property = _property;
-        point = _point; 
     }
     #endregion
 
@@ -81,18 +77,39 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
         // Aplly changes on the SerializedObject
         property.serializedObject.ApplyModifiedProperties(); 
         GUILayout.Space(5);
+        
         // Create two ObjectFields to add normal and random spawning informations
         TDS_Enemy _e = null;
         _e = EditorGUILayout.ObjectField("Add Enemy", _e, typeof(TDS_Enemy), false) as TDS_Enemy;
-        if (_e != null && !point.ExistsEnemy(_e))
+        if (_e != null)
         {
-            point.AddSpawningInformations(_e, false);
+            // Check if the enemy is alread in the wave Element
+            // If it's not add it to the list
+            SerializedProperty _ref = property.FindPropertyRelative("waveElement").FindPropertyRelative("spawningInformations");
+            for (int i = 0; i < _ref.arraySize; i++)
+            {
+                if (_ref.GetArrayElementAtIndex(i).FindPropertyRelative("enemyResourceName").stringValue == _e.EnemyName)
+                    return ;
+
+            }
+            _ref.InsertArrayElementAtIndex(_ref.arraySize);
+            _ref.GetArrayElementAtIndex(_ref.arraySize-1).FindPropertyRelative("enemyResourceName").stringValue = _e.EnemyName;
         }
         _e = null;
         _e = EditorGUILayout.ObjectField("Add Random Enemy", _e, typeof(TDS_Enemy), false) as TDS_Enemy;
-        if (_e != null && !point.ExistsRandomEnemy(_e))
+        if (_e != null)
         {
-            point.AddSpawningInformations(_e, true);
+            // Check if the enemy is alread in the wave Element
+            // If it's not add it to the list
+            SerializedProperty _ref = property.FindPropertyRelative("waveElement").FindPropertyRelative("randomSpawningInformations");
+            for (int i = 0; i < _ref.arraySize; i++)
+            {
+                if (_ref.GetArrayElementAtIndex(i).FindPropertyRelative("enemyResourceName").stringValue == _e.EnemyName)
+                    return;
+
+            }
+            _ref.InsertArrayElementAtIndex(_ref.arraySize);
+            _ref.GetArrayElementAtIndex(_ref.arraySize-1).FindPropertyRelative("enemyResourceName").stringValue = _e.EnemyName; 
         }
         EditorGUILayout.EndScrollView();
     }

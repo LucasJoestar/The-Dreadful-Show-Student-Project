@@ -29,24 +29,46 @@ public class CustomNavMeshAgentEditor : Editor
 	 *	###### PURPOSE ######
 	 *	#####################
 	 *
-	 *	[PURPOSE]
+	 *	Editor class of the CustomNavMeshAgent class
+     *	    - Display settings of the agent and allow the user to edit them
 	 *
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
-	 *	Date :			[DATE]
-	 *	Author :		[NAME]
+	 *	Date :			[14/02/2019]
+	 *	Author :		[Thiebaut Alexis]
 	 *
 	 *	Changes :
 	 *
-	 *	[CHANGES]
-	 *
+	 *	[Initialisation of the CustomNavMeshAgentEditor class]
+	 *      - Initialize the agent settings: positionOffset, height, radius, baseOffset, speed, detectionRange, steerForce, avoidanceForce, agentPriority
+     *      - Implement the OnEnable, OnInspectorGUI and OnSceneGUI Methods to display all settings
 	 *	-----------------------------------
 	*/
 
     #region Fields / Properties
-    private CustomNavMeshAgent p_target;
+    #region SerializedProperties
+    /// <summary>Serialized Property for <see cref="CustomNavMeshAgent.positionOffset"/></summary> of type <see cref="Vector3"/>
+    SerializedProperty positionOffset = null;
+    /// <summary>Serialized Property for <see cref="CustomNavMeshAgent.height"/></summary> of type <see cref="float"/>
+    SerializedProperty height = null;
+    /// <summary>Serialized Property for <see cref="CustomNavMeshAgent.radius"/></summary> of type <see cref="float"/>
+    SerializedProperty radius = null;
+    /// <summary>Serialized Property for <see cref="CustomNavMeshAgent.baseO"/></summary> of type <see cref="float"/>
+    SerializedProperty baseOffset = null;
+    /// <summary>Serialized Property for <see cref="CustomNavMeshAgent.height"/></summary> of type <see cref="float"/>
+    SerializedProperty speed = null;
+    /// <summary>Serialized Property for <see cref="CustomNavMeshAgent.height"/></summary> of type <see cref="float"/>
+    SerializedProperty detectionRange = null;
+    /// <summary>Serialized Property for <see cref="CustomNavMeshAgent.height"/></summary> of type <see cref="float"/>
+    SerializedProperty steerForce = null;
+    /// <summary>Serialized Property for <see cref="CustomNavMeshAgent.height"/></summary> of type <see cref="float"/>
+    SerializedProperty avoidanceForce = null;
+    /// <summary>Serialized Property for <see cref="CustomNavMeshAgent.height"/></summary> of type <see cref="float"/>
+    SerializedProperty agentPriority = null;
+    #endregion
+
     #endregion
 
     #region Methods
@@ -78,18 +100,67 @@ public class CustomNavMeshAgentEditor : Editor
     #endregion
 
     #region Unity Methods
+    public override void OnInspectorGUI()
+    {
+        GUIStyle _headerStyle = new GUIStyle();
+        _headerStyle.fontStyle = FontStyle.BoldAndItalic;
+        _headerStyle.fontSize = 20;
+
+        GUILayout.Space(10);
+        EditorGUILayout.BeginVertical("HelpBox");
+
+        EditorGUILayout.LabelField(serializedObject.targetObject.name, _headerStyle);
+        GUILayout.Space(10);
+        _headerStyle.fontSize = 12;
+
+        EditorGUILayout.LabelField("DETECTION SETTINGS", _headerStyle);
+        EditorGUILayout.PropertyField(positionOffset); 
+        EditorGUILayout.PropertyField(height);
+        EditorGUILayout.PropertyField(radius);
+        EditorGUILayout.PropertyField(baseOffset);
+
+        EditorGUILayout.Separator();
+
+        EditorGUILayout.LabelField("DETECTION SETTINGS", _headerStyle);
+        EditorGUILayout.PropertyField(detectionRange);
+
+        EditorGUILayout.Separator();
+
+        EditorGUILayout.LabelField("MOVEMENTS SETTINGS", _headerStyle);
+        EditorGUILayout.PropertyField(speed);
+        EditorGUILayout.PropertyField(steerForce);
+        EditorGUILayout.PropertyField(avoidanceForce);
+        EditorGUILayout.PropertyField(agentPriority);
+
+
+
+        serializedObject.ApplyModifiedProperties(); 
+        EditorGUILayout.EndVertical();
+    }
+
     /// <summary>
     /// Called when Object is selected
     /// Set the target as the CustomNavMeshAgent selected
     /// </summary>
     private void OnEnable()
     {
-        p_target = (CustomNavMeshAgent)target; 
+        //Get serialized Properties
+        positionOffset = serializedObject.FindProperty("positionOffset"); 
+        height = serializedObject.FindProperty("height");
+        radius = serializedObject.FindProperty("radius");
+        baseOffset = serializedObject.FindProperty("baseOffset");
+        speed = serializedObject.FindProperty("speed");
+        detectionRange = serializedObject.FindProperty("detectionRange");
+        steerForce = serializedObject.FindProperty("steerForce");
+        avoidanceForce = serializedObject.FindProperty("avoidanceForce");
+        agentPriority = serializedObject.FindProperty("agentPriority");
     }
 
     private void OnSceneGUI()
     {
-        DrawWireCylinder(p_target.CenterPosition, p_target.Radius, p_target.Height, Color.green);
+        DrawWireCylinder((serializedObject.targetObject as CustomNavMeshAgent).CenterPosition, radius.floatValue/2, height.floatValue/2, Color.green);
+        Handles.color = Color.red; 
+        Handles.DrawWireDisc((serializedObject.targetObject as CustomNavMeshAgent).CenterPosition, Vector3.up, detectionRange.floatValue);
     }
     #endregion
 

@@ -70,6 +70,9 @@ public class TDS_NetworkManager : PunBehaviour
     {
         PhotonNetwork.ConnectUsingSettings(connectionVersion);
     }
+    /// <summary> 
+    /// Join the room if this room already exist else create it with somme parameters 
+    /// </summary> 
     void JoinRoom()
     {
         RoomOptions _options = new RoomOptions()
@@ -106,7 +109,7 @@ public class TDS_NetworkManager : PunBehaviour
 
         if (!PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("SendInGamePlayers", PhotonTargets.MasterClient);
+           // TDS_RPCManager.Instance.RPCPhotonView.RPC("SendInGamePlayers", PhotonTargets.MasterClient);
         }
     }
     #endregion
