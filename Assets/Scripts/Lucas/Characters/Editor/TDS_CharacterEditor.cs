@@ -431,7 +431,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 
             GUILayout.Space(3);
 
-            if (TDS_EditorUtility.FloatSlider("Aiming Angle", "Angle used by this player to aim for a throw", aimAngle, 0f, 80f))
+            if (TDS_EditorUtility.FloatSlider("Aiming Angle", "Angle used by this player to aim for a throw", aimAngle, 15f, 60f))
             {
                 characters.ForEach(p => p.AimAngle = aimAngle.floatValue);
                 serializedObject.Update();

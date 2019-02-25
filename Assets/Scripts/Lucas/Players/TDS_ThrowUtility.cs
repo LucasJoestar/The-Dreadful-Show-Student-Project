@@ -58,6 +58,7 @@ public class TDS_ThrowUtility
 
         Vector3[] _motionPoints = new Vector3[_pointsAmount];
         _motionPoints[0] = _from;
+        _motionPoints[_pointsAmount - 1] = _to;
 
         // Get distance between in each point in x, z & on both
         float _xPointsDistance = (_to.x - _from.x) / _pointsAmount;
@@ -65,7 +66,7 @@ public class TDS_ThrowUtility
         float _xzPointsDistance = Mathf.Sqrt(Mathf.Pow(_xPointsDistance, 2) + Mathf.Pow(_zPointsDistance, 2));
 
         // Get each position
-        for (int _i = 1; _i < _pointsAmount; _i++)
+        for (int _i = 1; _i < _pointsAmount - 1; _i++)
         {
             float _t = (_xzPointsDistance * _i) / (_velocity * Mathf.Cos(_angle));
             float _x = _xPointsDistance * _i;

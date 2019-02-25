@@ -209,30 +209,18 @@ public class TDS_Juggler : TDS_Player
 
     #region Aim & Throwables
     /// <summary>
-    /// Update aim point on flip.
-    /// </summary>
-    protected override void AimFlip()
-    {
-        // Reset x & z position, we don't want to move them when juggling
-        throwAimingPoint.z *= -1;
-        ThrowAimingPoint = throwAimingPoint;
-    }
-
-    /// <summary>
     /// Method called in the Aim coroutine.
     /// </summary>
     protected override void AimMethod()
     {
         // Let the player aim the point he wants, 'cause the juggler can do that. Yep
-
         // Aim with IJKL or the right joystick axis
         float _xMovement = Input.GetAxis(RightStickXAxis);
         float _zMovement = Input.GetAxis(RightStickYAxis);
 
         if (_xMovement != 0 || _zMovement != 0)
         {
-            _xMovement *= -isFacingRight.ToSign();
-            _zMovement *= -isFacingRight.ToSign();
+            _xMovement *= isFacingRight.ToSign();
 
             ThrowAimingPoint = Vector3.Lerp(throwAimingPoint, new Vector3(throwAimingPoint.x + _xMovement, throwAimingPoint.y, throwAimingPoint.z + _zMovement), Time.deltaTime * 15);
         }
@@ -292,8 +280,8 @@ public class TDS_Juggler : TDS_Player
     private void Juggle()
     {
         // Updates hands transform position by lerp
-        Vector3 _newPos = handsTransformMemoryLocalPosition;
-        _newPos.x *= -isFacingRight.ToSign();
+        Vector3 _newPos = handsTransformIdealLocalPosition;
+        _newPos.x *= isFacingRight.ToSign();
         _newPos += transform.position;
 
         // If not at point, lerp position and update trajectory preview if aiming
@@ -347,7 +335,7 @@ public class TDS_Juggler : TDS_Player
 
         // Alright, then throw it !
         // Get the destination point in world space
-        Vector3 _destinationPosition = new Vector3(transform.position.x + (throwAimingPoint.x * -isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + (throwAimingPoint.z * -isFacingRight.ToSign()));
+        Vector3 _destinationPosition = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
 
         // Now, throw that object
         throwable.transform.localPosition = Vector3.zero;

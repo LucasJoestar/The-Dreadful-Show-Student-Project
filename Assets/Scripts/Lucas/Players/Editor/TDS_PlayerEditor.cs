@@ -149,6 +149,9 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.playerType"/> of type <see cref="PlayerType"/>.</summary>
     private SerializedProperty playerType = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.handsTransformIdealLocalPosition"/> of type <see cref="Vector3"/>.</summary>
+    private SerializedProperty handsTransformIdealLocalPosition = null;
     #endregion
 
     #region Inputs
@@ -524,14 +527,14 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
         if (EditorApplication.isPlaying)
         {
-            if (TDS_EditorUtility.FloatSlider("Aiming Angle", "Angle used by this player to aim for a throw", aimAngle, 0f, 80f))
+            if (TDS_EditorUtility.FloatSlider("Aiming Angle", "Angle used by this player to aim for a throw", aimAngle, 15f, 60f))
             {
                 players.ForEach(p => p.AimAngle = aimAngle.floatValue);
                 players.ForEach(p => p.ThrowAimingPoint = p.ThrowAimingPoint);
                 serializedObject.Update();
             }
 
-            if (TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (Local space)", throwAimingPoint))
+            if (TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (in local space)", throwAimingPoint))
             {
                 players.ForEach(p => p.ThrowAimingPoint = throwAimingPoint.vector3Value);
             }
@@ -542,6 +545,10 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
             players.ForEach(p => p.ThrowPreviewPrecision = throwPreviewPrecision.intValue);
             serializedObject.Update();
         }
+
+        GUILayout.Space(5);
+
+        TDS_EditorUtility.Vector3Field("Hands Transf. Ideal Pos.", "Position the hands transform is always looking to have (in local space)", handsTransformIdealLocalPosition);
     }
     #endregion
 
@@ -579,6 +586,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         throwPreviewPrecision = serializedObject.FindProperty("throwPreviewPrecision");
         whatIsObstacle = serializedObject.FindProperty("WhatIsObstacle");
         playerType = serializedObject.FindProperty("playerType");
+        handsTransformIdealLocalPosition = serializedObject.FindProperty("handsTransformIdealLocalPosition");
 
         catchButton = serializedObject.FindProperty("CatchButton");
         cancelThrowButton = serializedObject.FindProperty("CancelThrowButton");
@@ -591,8 +599,8 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         jumpButton = serializedObject.FindProperty("JumpButton");
         lightAttackButton = serializedObject.FindProperty("LightAttackButton");
         parryButton = serializedObject.FindProperty("ParryButton");
-        rightStickXAxis = serializedObject.FindProperty("rightStickXAxis");
-        rightStickYAxis = serializedObject.FindProperty("rightStickYAxis");
+        rightStickXAxis = serializedObject.FindProperty("RightStickXAxis");
+        rightStickYAxis = serializedObject.FindProperty("RightStickYAxis");
         superAttackButton = serializedObject.FindProperty("SuperAttackButton");
         throwButton = serializedObject.FindProperty("ThrowButton");
         useObjectButton = serializedObject.FindProperty("UseObjectButton");
