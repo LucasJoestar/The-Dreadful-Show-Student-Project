@@ -54,6 +54,10 @@ public class TDS_Throwable : MonoBehaviour
     [SerializeField, Header("Character settings")]       
     TDS_Character owner = null;
     #endregion
+    #region Hitbox
+    TDS_HitBox hitBox;
+    TDS_Attack attack;
+    #endregion
     #endregion
 
     #region Methods
@@ -121,7 +125,8 @@ public class TDS_Throwable : MonoBehaviour
         rigidbody.isKinematic = false;
         transform.SetParent(null, true);
         bonusDamage = _bonusDamage;
-        rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position,_finalPosition,_angle);        
+        rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position,_finalPosition,_angle);
+        hitBox.Activate(attack);
         owner = null;
         isHeld = false;
     }    
