@@ -55,7 +55,9 @@ public class TDS_Throwable : MonoBehaviour
     TDS_Character owner = null;
     #endregion
     #region Hitbox
+    [SerializeField]
     TDS_HitBox hitBox;
+    [SerializeField]
     TDS_Attack attack = new TDS_Attack();
     #endregion
     #endregion
@@ -133,10 +135,17 @@ public class TDS_Throwable : MonoBehaviour
         hitBox.Activate(attack);
         owner = null;
         isHeld = false;
-    }    
-	#endregion
+    }
+    #endregion
 
-	#region Unity Methods
+    #region Unity Methods
+    void Awake()
+    {
+        if(!hitBox)
+        {
+            hitBox = GetComponentInChildren<TDS_HitBox>();
+        }
+    }
     void Start ()
     {
         if(!rigidbody) rigidbody = GetComponent<Rigidbody>();
