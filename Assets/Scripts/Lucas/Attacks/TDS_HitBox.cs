@@ -59,6 +59,12 @@ public class TDS_HitBox : MonoBehaviour
     /// Called when the hit box is being desactivated at the end of an attack.
     /// </summary>
     public event Action OnStopAttack = null;
+
+    /// <summary>
+    /// Touched something event.
+    /// Called when touched something with an attack.
+    /// </summary>
+    public event Action OnTouch = null;
     #endregion
 
     #region Fields / Properties
@@ -76,6 +82,11 @@ public class TDS_HitBox : MonoBehaviour
     #endregion
 
     #region Variables
+    /// <summary>
+    /// Indicates if the hit box is currently active.
+    /// </summary>
+    public bool IsActive { get; private set; }
+
     /// <summary>
     /// The current attack performed by this hit box.
     /// </summary>
@@ -116,6 +127,8 @@ public class TDS_HitBox : MonoBehaviour
 
         CurrentAttack = _attack;
         collider.enabled = true;
+        IsActive = true;
+
         OnStartAttack?.Invoke(_attack);
     }
 
@@ -128,6 +141,7 @@ public class TDS_HitBox : MonoBehaviour
         CurrentAttack = null;
         collider.enabled = false;
         TouchedObjects.Clear();
+        IsActive = false;
 
         OnStopAttack?.Invoke();
     }
@@ -167,6 +181,9 @@ public class TDS_HitBox : MonoBehaviour
         _target.TakeDamage(CurrentAttack.GetDamages);
 
         TouchedObjects.Add(other, _target);
+
+        // Triggers event
+        OnTouch?.Invoke();
     }
 
     // OnTriggerExit is called when the Collider other has stopped touching the trigger

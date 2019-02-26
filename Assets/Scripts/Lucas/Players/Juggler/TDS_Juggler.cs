@@ -87,15 +87,29 @@ public class TDS_Juggler : TDS_Player
         get { return throwable; }
         set
         {
-            // Try first to grab the object if not having it in hands
-            if (!Throwables.Contains(value))
+            // Set the old selected one position
+            if (throwable)
             {
-                GrabObject(throwable);
-                return;
+                throwable.transform.position = juggleTransform.position;
+                throwable.transform.SetParent(juggleTransform);
+                Throwables.Add(throwable);
+
+                // Stop coroutine if needed
+                if (throwableLerpCoroutine != null) StopCoroutine(throwableLerpCoroutine);
+            }
+
+            // Set the new one
+            if (value != null)
+            {
+                if (Throwables.Contains(value)) Throwables.Remove(value);
+                value.transform.rotation = Quaternion.identity;
+                value.transform.SetParent(handsTransform);
+
+                // Starts position lerp coroutine
+                throwableLerpCoroutine = StartCoroutine(LerpThrowableToHand());
             }
 
             throwable = value;
-            selectedThrowableIndex = Throwables.IndexOf(value);
         }
     }
 
@@ -103,6 +117,12 @@ public class TDS_Juggler : TDS_Player
     /// All throwables the juggler has in hands.
     /// </summary>
     public List<TDS_Throwable> Throwables = new List<TDS_Throwable>();
+
+    /// <summary>
+    /// Transform at the juggler's third hand position.
+    /// Used to set the selected throwable as child.
+    /// </summary>
+    [SerializeField] private Transform thirdHandTransform = null;
     #endregion
 
     #region Variables
@@ -162,34 +182,41 @@ public class TDS_Juggler : TDS_Player
         }
     }
 
-    /// <summary>Backing field for <see cref="SelectedThrowableIndex"/>.</summary>
-    [SerializeField] private int selectedThrowableIndex = 0;
+    /// <summary>
+    /// Index used for throwable selection.
+    /// </summary>
+    public int ThrowableSelectionIndex { get; private set; } = 0;
 
     /// <summary>
-    /// Index of the current selected throwable from <see cref="Throwables"/>.
+    /// Transform used to set as children objects juggling with.
     /// </summary>
-    public int SelectedThrowableIndex
+    [SerializeField] protected Transform juggleTransform = null;
+
+    /// <summary>
+    /// The ideal position of the juggle transform in local space ;
+    /// Used to lerp the transform to a new position when moving.
+    /// </summary>
+    [SerializeField] protected Vector3 juggleTransformIdealLocalPosition = Vector3.zero;
+
+    /// <summary>
+    /// The position of the juggle transform in local space.
+    /// </summary>
+    public Vector3 JuggleTransformLocalPosition
     {
-        get { return selectedThrowableIndex; }
-        set
+        get
         {
-            if (Throwables.Count == 0)
-            {
-                value = 0;
-                throwable = null;
-            }
-            else
-            {
-                // Clamps the index on the list range
-                value = Mathf.Clamp(value, 0, Throwables.Count - 1);
-
-                // Set the actual throwable
-                throwable = Throwables[value];
-            }
-
-            selectedThrowableIndex = value;
+            Vector3 _return = juggleTransform.position - transform.position;
+            _return.x *= isFacingRight.ToSign();
+            return _return;
         }
     }
+    #endregion
+
+    #region Coroutines
+    /// <summary>
+    /// Coroutine lerping throwable position to hands transform position.
+    /// </summary>
+    private Coroutine throwableLerpCoroutine = null;
     #endregion
 
     #region Debugs & Memory variables
@@ -197,6 +224,11 @@ public class TDS_Juggler : TDS_Player
     /// Counter helping to position the objects juggling with.
     /// </summary>
     private float jugglerCounter = 0;
+
+    /// <summary>
+    /// Default aiming point, when starting aiming.
+    /// </summary>
+    private Vector3 defaultAimingPoint = Vector3.zero;
     #endregion
 
     #endregion
@@ -239,14 +271,22 @@ public class TDS_Juggler : TDS_Player
 
         // Drooop
         throwable.Drop();
-        Throwables.Remove(throwable);
-        SelectedThrowableIndex = selectedThrowableIndex;
 
-        // Updates juggling informations
-        UpdateJuggleParameters(false);
+        // Set new throwable
+        throwable = null;
+        if (CurrentThrowableAmount > 0)
+        {
+            Throwable = Throwables[ThrowableSelectionIndex];
+            if (ThrowableSelectionIndex > CurrentThrowableAmount  - 1) ThrowableSelectionIndex--;
+        }
 
         // Updates the animator informations
-        if (!throwable) SetAnimHasObject(false);
+        if (CurrentThrowableAmount == 0) SetAnimHasObject(false);
+        else
+        {
+            // Updates juggling informations
+            UpdateJuggleParameters(false);
+        }
     }
 
     /// <summary>
@@ -262,14 +302,14 @@ public class TDS_Juggler : TDS_Player
 
         // Take the object
         if (!_throwable.PickUp(this, handsTransform)) return false;
-        Throwables.Add(_throwable);
+
         Throwable = _throwable;
 
         // Updates juggling informations
         UpdateJuggleParameters(true);
 
         // Updates animator informations
-        SetAnimHasObject(true);
+        if (CurrentThrowableAmount > 0) SetAnimHasObject(true);
 
         return true;
     }
@@ -280,14 +320,17 @@ public class TDS_Juggler : TDS_Player
     private void Juggle()
     {
         // Updates hands transform position by lerp
-        Vector3 _newPos = handsTransformIdealLocalPosition;
+        Vector3 _newPos = juggleTransformIdealLocalPosition;
         _newPos.x *= isFacingRight.ToSign();
         _newPos += transform.position;
 
+        if (isAttacking || isDodging || !isGrounded) _newPos.y += 1.75f;
+        else if (isParrying) _newPos.y += 5;
+
         // If not at point, lerp position and update trajectory preview if aiming
-        if (handsTransform.position != _newPos)
+        if (juggleTransform.position != _newPos)
         {
-            handsTransform.position = Vector3.Lerp(handsTransform.position, _newPos, Time.deltaTime * 10);
+            juggleTransform.position = Vector3.Lerp(juggleTransform.position, _newPos, Time.deltaTime * 7);
 
             if (isAiming)
             {
@@ -326,6 +369,79 @@ public class TDS_Juggler : TDS_Player
     }
 
     /// <summary>
+    /// Lerps the selected throwable position to the hand transform position.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator LerpThrowableToHand()
+    {
+        yield return null;
+
+        while (throwable)
+        {
+            throwable.transform.position = Vector3.Lerp(throwable.transform.position, handsTransform.position, Time.deltaTime * 7);
+
+            if (throwable.transform.position == handsTransform.position)
+            {
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        yield break;
+    }
+
+    /// <summary>
+    /// Stops the preparing throw, if preparing one.
+    /// </summary>
+    /// <returns>Returns true if canceled the throw, false if there was nothing to cancel.</returns>
+    public override bool StopAiming()
+    {
+        if (!base.StopAiming()) return false;
+
+        // Reset throw aiming point
+        ThrowAimingPoint = new Vector3(defaultAimingPoint.x, defaultAimingPoint.y, defaultAimingPoint.z);
+
+        return true;
+    }
+
+    /// <summary>
+    /// Switch the selected throwable with one among throwables juggling with.
+    /// </summary>
+    /// <param name="_index">Index of the new selected throwable among <see cref="Throwables"/>.</param>
+    public void SwitchThrowable(int _index)
+    {
+        // Get throwable index
+        if (_index < 0) _index = CurrentThrowableAmount - 1;
+        else if (_index == CurrentThrowableAmount) _index = 0;
+
+        // Set the new one
+        TDS_Throwable _selected = Throwables[_index];
+        _selected.transform.rotation = Quaternion.identity;
+        _selected.transform.SetParent(handsTransform);
+
+        Throwables.RemoveAt(_index);
+
+        // Set the old selected one position
+        if (throwable)
+        {
+            throwable.transform.SetParent(juggleTransform);
+            Throwables.Insert(ThrowableSelectionIndex, throwable);
+
+            // Stop coroutine if needed
+            if (throwableLerpCoroutine != null) StopCoroutine(throwableLerpCoroutine);
+        }
+
+        throwable = _selected;
+
+        // Starts position lerp coroutine
+        throwableLerpCoroutine = StartCoroutine(LerpThrowableToHand());
+
+        // Update index value
+        ThrowableSelectionIndex = _index;
+    }
+
+    /// <summary>
     /// Throws the weared throwable.
     /// </summary>
     public override void ThrowObject()
@@ -340,16 +456,24 @@ public class TDS_Juggler : TDS_Player
         // Now, throw that object
         throwable.transform.localPosition = Vector3.zero;
         throwable.Throw(_destinationPosition, aimAngle, RandomThrowBonusDamages);
-        Throwables.Remove(throwable);
-        SelectedThrowableIndex = selectedThrowableIndex;
 
-        // Updates juggling informations
-        UpdateJuggleParameters(false);
+        // Set new throwable
+        throwable = null;
+        if (CurrentThrowableAmount > 0)
+        {
+            Throwable = Throwables[ThrowableSelectionIndex];
+            if ((CurrentThrowableAmount > 0) && (ThrowableSelectionIndex > CurrentThrowableAmount - 1)) ThrowableSelectionIndex--;
+        }
 
         // Triggers the throw animation ;
         // If not having throwable anymore, update the animator
         if (isGrounded) SetAnimThrow();
-        if (!throwable) SetAnimHasObject(false);
+        if (CurrentThrowableAmount == 0) SetAnimHasObject(false);
+        else
+        {
+            // Updates juggling informations
+            UpdateJuggleParameters(false);
+        }
     }
 
     /// <summary>
@@ -364,16 +488,24 @@ public class TDS_Juggler : TDS_Player
         // Now, throw that object
         throwable.transform.localPosition = Vector3.zero;
         throwable.Throw(_targetPosition, aimAngle, RandomThrowBonusDamages);
-        Throwables.Remove(throwable);
-        SelectedThrowableIndex = selectedThrowableIndex;
 
-        // Updates juggling informations
-        UpdateJuggleParameters(false);
+        // Set new throwable
+        throwable = null;
+        if (CurrentThrowableAmount > 0)
+        {
+            Throwable = Throwables[ThrowableSelectionIndex];
+            if (ThrowableSelectionIndex > CurrentThrowableAmount - 1) ThrowableSelectionIndex--;
+        }
 
         // Triggers the throw animation ;
         // If not having throwable anymore, update the animator
         if (isGrounded) SetAnimThrow();
-        if (!throwable) SetAnimHasObject(false);
+        if (CurrentThrowableAmount == 0) SetAnimHasObject(false);
+        else
+        {
+            // Updates juggling informations
+            UpdateJuggleParameters(false);
+        }
     }
 
     /// <summary>
@@ -488,13 +620,9 @@ public class TDS_Juggler : TDS_Player
         base.CheckActionsInputs();
 
         // Check aiming point / angle changes
-        if (TDS_Input.GetAxisDown(DPadXAxis))
+        if (TDS_Input.GetAxisDown(DPadXAxis) && (Throwables.Count > 1))
         {
-            int _index = selectedThrowableIndex + (int)Input.GetAxis(DPadXAxis);
-            if (_index < 0) _index = CurrentThrowableAmount - 1;
-            else if (_index == CurrentThrowableAmount) _index = 0;
-
-            SelectedThrowableIndex = _index;
+            SwitchThrowable(ThrowableSelectionIndex + (int)Input.GetAxis(DPadXAxis));
         }
 
         if (TDS_Input.GetAxis(DPadYAxis))
@@ -514,8 +642,11 @@ public class TDS_Juggler : TDS_Player
         base.Flip();
 
         // Reverse X position
-        throwAimingPoint.x *= -1;
-        ThrowAimingPoint = throwAimingPoint;
+        if (isAiming)
+        {
+            throwAimingPoint.x *= -1;
+            ThrowAimingPoint = throwAimingPoint;
+        }
     }
     #endregion
 
@@ -528,6 +659,12 @@ public class TDS_Juggler : TDS_Player
     protected override void Awake()
     {
         base.Awake();
+
+        // Try to get components references if they are missing
+        if (!juggleTransform)
+        {
+            Debug.LogWarning("The Juggle Transform of \"" + name + "\" for script TDS_Juggler is missing !");
+        }
     }
 
     // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations
@@ -542,10 +679,25 @@ public class TDS_Juggler : TDS_Player
         Juggle();
     }
 
+    // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
+    protected override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos();
+
+        // Draws a gizmos at the juggle transform ideal position
+        Gizmos.DrawSphere(transform.position + (juggleTransformIdealLocalPosition * isFacingRight.ToSign()), .1f);
+    }
+
     // Use this for initialization
     protected override void Start()
     {
+        // Set the juggle transform ideal position
+        juggleTransformIdealLocalPosition = new Vector3(.3f, .85f, 0);
+
         base.Start();
+
+        // Get default aiming point
+        defaultAimingPoint = throwAimingPoint;
     }
 
     // Update is called once per frame

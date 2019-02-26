@@ -502,7 +502,7 @@ public class TDS_Player : TDS_Character
             // Updates the trajectory preview
             if (UnityEditor.EditorApplication.isPlaying)
             {
-                throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(HandsTransformLocalPosition, throwAimingPoint, throwVelocity.magnitude, aimAngle, value);
+                throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, throwAimingPoint, throwVelocity.magnitude, aimAngle, value);
             }
             #endif
         }
@@ -534,25 +534,6 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
-    /// The ideal position of the hands transform in local space ;
-    /// Used to lerp the transform to a new position when moving.
-    /// </summary>
-    [SerializeField] protected Vector3 handsTransformIdealLocalPosition = Vector3.zero;
-
-    /// <summary>
-    /// The position of the hands transform in local space.
-    /// </summary>
-    public Vector3 HandsTransformLocalPosition
-    {
-        get
-        {
-            Vector3 _return = handsTransform.position - transform.position;
-            _return.x *= isFacingRight.ToSign();
-            return _return;
-        }
-    }
-
-    /// <summary>
     /// Property for <see cref="throwAimingPoint"/> to update <see cref="throwVelocity"/> && <see cref="throwTrajectoryMotionPoints"/> on changes.
     /// </summary>
     public Vector3 ThrowAimingPoint
@@ -566,9 +547,9 @@ public class TDS_Player : TDS_Character
             // Updates the velocity & trajectory preview
             if (UnityEditor.EditorApplication.isPlaying)
             {
-                throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(HandsTransformLocalPosition, value, aimAngle);
+                throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(handsTransform.localPosition, value, aimAngle);
 
-                throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(HandsTransformLocalPosition, value, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
+                throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, value, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
             }
             #endif
         }
@@ -662,7 +643,7 @@ public class TDS_Player : TDS_Character
                 Vector3 _hitPoint = new Vector3(Mathf.Abs(_hit.point.x - transform.position.x) * Mathf.Sign(throwAimingPoint.x), _hit.point.y - transform.position.y, Mathf.Abs(_hit.point.z - transform.position.z) * Mathf.Sign(throwAimingPoint.z));
 
                 // Get the throw preview motion points with the new hit point
-                _raycastedMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(HandsTransformLocalPosition, _hitPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
+                _raycastedMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, _hitPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
 
                 // Updates the position of the end preview zone & its rotation according to the hit point
                 ProjectilePreviewEndZone.transform.position = _hit.point;
@@ -817,6 +798,11 @@ public class TDS_Player : TDS_Character
             Debug.LogWarning($"The Player \"{name}\" has no selected attack to perform");
             return;
         }
+
+        // If aiming, stop
+        if (isAiming) StopAiming();
+
+        // Activate the hit box
         hitBox.Activate(currentAttack);
     }
 
@@ -894,7 +880,11 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void SuperAttack()
     {
+        // If aiming, stop
+        if (isAiming) StopAiming();
+
         // SUPER attack
+        Debug.Log("Super Attack !!");
     }
     #endregion
 
@@ -905,6 +895,9 @@ public class TDS_Player : TDS_Character
     /// <param name="_minion">Minion to try to catch</param>
     public virtual void Catch(/*TDS_Minion _minion*/)
     {
+        // If aiming, stop
+        if (isAiming) StopAiming();
+
         // Catch
 
         // Triggers the associated animation
@@ -917,6 +910,9 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual IEnumerator Dodge()
     {
+        // If aiming, stop
+        if (isAiming) StopAiming();
+
         // Dodge !
         IsInvulnerable = true;
         isDodging = true;
@@ -943,6 +939,9 @@ public class TDS_Player : TDS_Character
     /// <returns></returns>
     public virtual IEnumerator Parry()
     {
+        // If aiming, stop
+        if (isAiming) StopAiming();
+
         // Parry
         isParrying = true;
         SetAnimIsParrying(true);
@@ -986,6 +985,9 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void UseObject()
     {
+        // If aiming, stop
+        if (isAiming) StopAiming();
+
         // Use
     }
     #endregion
@@ -1335,7 +1337,6 @@ public class TDS_Player : TDS_Character
         Vector3 _overlapCenter = Vector3.zero;
         Vector3 _overlapExtents = Vector3.one;
         Collider[] _touchedColliders = new Collider[] { };
-        bool _canMoveInX = false;
 
         // X axis movement test
         if (_movementVector.x != 0)
@@ -1349,11 +1350,11 @@ public class TDS_Player : TDS_Character
             // If nothing is touched, then the player can move in X
             _touchedColliders = Physics.OverlapBox(_overlapCenter, _overlapExtents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore);
 
-            _canMoveInX = _touchedColliders.Length == 0;
-
             // If the player cannot move in X, set its position against the nearest collider
-            if (!_canMoveInX)
+            if (_touchedColliders.Length > 0)
             {
+                //Debug.Log("Back in X !");
+
                 float _xLimit = 0;
 
                 // Get the X position of the nearest collider limit, and set the position of the player against it
@@ -1361,13 +1362,13 @@ public class TDS_Player : TDS_Character
                 {
                     _xLimit = _touchedColliders.Select(c => c.bounds.center.x - c.bounds.extents.x).OrderBy(c => c).First();
 
-                    _newPosition.x = _xLimit - (_colliderExtents.x - _colliderCenter.x) - .001f;
+                    _newPosition.x = _xLimit - (_colliderExtents.x + _colliderCenter.x) - .001f;
                 }
                 else
                 {
                     _xLimit = _touchedColliders.Select(c => c.bounds.center.x + c.bounds.extents.x).OrderBy(c => c).Last();
 
-                    _newPosition.x = _xLimit + (_colliderExtents.x - _colliderCenter.x) + .001f;
+                    _newPosition.x = _xLimit + (_colliderExtents.x + _colliderCenter.x) + .001f;
                 }
 
                 _movementVector.x = _newPosition.x - transform.position.x;
@@ -1390,6 +1391,8 @@ public class TDS_Player : TDS_Character
             // If the player cannot move in Z, set its position against the nearest collider
             if (_touchedColliders.Length > 0)
             {
+                //Debug.Log("Back in Z !");
+
                 float _zLimit = 0;
 
                 // Get the Z position of the nearest collider limit, and set the position of the player against it
@@ -1397,19 +1400,34 @@ public class TDS_Player : TDS_Character
                 {
                     _zLimit = _touchedColliders.Select(c => c.bounds.center.z - c.bounds.extents.z).OrderBy(c => c).First();
 
-                    _newPosition.z = _zLimit - (_colliderExtents.z - _colliderCenter.z) - .001f;
+                    _newPosition.z = _zLimit - (_colliderExtents.z + _colliderCenter.z) - .001f;
                 }
                 else
                 {
                     _zLimit = _touchedColliders.Select(c => c.bounds.center.z + c.bounds.extents.z).OrderBy(c => c).Last();
 
-                    _newPosition.z = _zLimit + (_colliderExtents.z - _colliderCenter.z) + .001f;
+                    _newPosition.z = _zLimit + (_colliderExtents.z + _colliderCenter.z) + .001f;
                 }
             }
         }
 
         // Move the player
-        transform.position = _newPosition;
+        if (transform.position != _newPosition)
+        {
+            transform.position = _newPosition;
+
+            // If starting moving, update informations
+            if (!isMoving)
+            {
+                isMoving = true;
+                SetAnimIsMoving(true);
+            }
+        }
+        else if (isMoving)
+        {
+            isMoving = false;
+            SetAnimIsMoving(false);
+        }
     }
 
     /// <summary>
@@ -1543,7 +1561,7 @@ public class TDS_Player : TDS_Character
 
         else if (Input.GetButtonDown(HeavyAttackButton)) Attack(false);
 
-        else if (Input.GetButtonDown(SuperAttackButton) || TDS_Input.GetAxisDown(SuperAttackButton)) SuperAttack();
+        else if (Input.GetButtonDown(SuperAttackButton) || (TDS_Input.GetAxisDown(SuperAttackButton) && (Input.GetAxis(SuperAttackButton) == 0))) SuperAttack();
 
         else if (Input.GetButtonDown(UseObjectButton)) UseObject();
     }
@@ -1566,14 +1584,6 @@ public class TDS_Player : TDS_Character
             if ((_horizontal > 0 && !isFacingRight) || (_horizontal < 0 && isFacingRight)) Flip();
 
             Move(new Vector3(_horizontal, 0, _vertical), true);
-
-            // If starting moving, update informations
-            if (!isMoving)
-            {
-                isMoving = true;
-
-                SetAnimIsMoving(true);
-            }
         }
         // If stoping moving, update informations
         else if (isMoving)
@@ -1646,12 +1656,8 @@ public class TDS_Player : TDS_Character
         Gizmos.DrawIcon(_gizmosPos, "AimIcon", true);
 
         // Draws a gizmos at the hands transform ideal position
-        Vector3 _handsPos = handsTransformIdealLocalPosition;
-        _handsPos.x *= isFacingRight.ToSign();
-        _handsPos += transform.position;
-
-        Gizmos.DrawSphere(_handsPos, .07f);
-        Gizmos.DrawIcon(_handsPos, "HandIcon", true);
+        Gizmos.DrawSphere(handsTransform.position, .07f);
+        Gizmos.DrawIcon(handsTransform.position, "HandIcon", true);
     }
 
     // Use this for initialization
@@ -1661,13 +1667,17 @@ public class TDS_Player : TDS_Character
 
         // Since all players except the Juggler cannot change their throw angle & the point they are aiming,
         // get the throw velocity & projectile motion in local space at start time
-        throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(handsTransformIdealLocalPosition, throwAimingPoint, aimAngle);
+        throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(handsTransform.localPosition, throwAimingPoint, aimAngle);
 
-        throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransformIdealLocalPosition, throwAimingPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
+        throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, throwAimingPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
 
         // Get layer for everything except this player one
         whatIsAllButThis = -1;
         whatIsAllButThis = ~(1 << gameObject.layer);
+
+        // Initializes ground detection box X & Z size based on collider size
+        groundDetectionBox.Size.x = collider.size.x;
+        groundDetectionBox.Size.z = collider.size.z;
     }
 	
 	// Update is called once per frame

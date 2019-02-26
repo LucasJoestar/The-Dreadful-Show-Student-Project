@@ -68,8 +68,11 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
     /// <summary>SerializedProperty for <see cref="TDS_Juggler.MaxThrowableAmount"/> of type <see cref="int"/>.</summary>
     private SerializedProperty maxThrowableAmount = null;
 
-    /// <summary>SerializedProperty for <see cref="TDS_Juggler.SelectedThrowableIndex"/> of type <see cref="int"/>.</summary>
-    private SerializedProperty selectedThrowableIndex = null;
+    /// <summary>SerializedProperties for <see cref="TDS_Juggler.juggleTransform"/> of type <see cref="Transform"/>.</summary>
+    private SerializedProperty juggleTransform = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Juggler.juggleTransformIdealLocalPosition"/> of type <see cref="Vector3"/>.</summary>
+    private SerializedProperty juggleTransformIdealLocalPosition = null;
     #endregion
 
     #endregion
@@ -163,7 +166,11 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
                 jugglers.ForEach(j => j.Throwable = (TDS_Throwable)throwable.objectReferenceValue);
                 serializedObject.Update();
             }
+
+            GUILayout.Space(5);
         }
+
+        TDS_EditorUtility.PropertyField("Juggle Transform", "Juggle transform, where to set as children objects juggling with", juggleTransform);
     }
 
     /// <summary>
@@ -230,15 +237,6 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
     /// </summary>
     private void DrawSettings()
     {
-        if (EditorApplication.isPlaying)
-        {
-            if (TDS_EditorUtility.IntSlider("Selected Throwable Index", "Index of the current selected throwables from all the ones juggling with", selectedThrowableIndex, 0, throwables.arraySize - 1))
-            {
-                jugglers.ForEach(j => j.SelectedThrowableIndex = selectedThrowableIndex.intValue);
-                serializedObject.Update();
-            }
-        }
-
         if (TDS_EditorUtility.IntField("Maximum Throwable(s)", "Maximum amount of throwables hte Juggler can juggle with", maxThrowableAmount))
         {
             jugglers.ForEach(j => j.MaxThrowableAmount = maxThrowableAmount.intValue);
@@ -256,6 +254,10 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
             jugglers.ForEach(j => j.ThrowableDistanceFromCenter = throwableDistanceFromCenter.floatValue);
             serializedObject.Update();
         }
+
+        GUILayout.Space(5);
+
+        TDS_EditorUtility.Vector3Field("Juggle Transf. Ideal Pos.", "Position the juggle transform is always looking to have (in local space)", juggleTransformIdealLocalPosition);
     }
     #endregion
 
@@ -275,7 +277,8 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
         juggleSpeed = serializedObject.FindProperty("juggleSpeed");
         throwableDistanceFromCenter = serializedObject.FindProperty("throwableDistanceFromCenter");
         maxThrowableAmount = serializedObject.FindProperty("maxThrowableAmount");
-        selectedThrowableIndex = serializedObject.FindProperty("selectedThrowableIndex");
+        juggleTransform = serializedObject.FindProperty("juggleTransform");
+        juggleTransformIdealLocalPosition = serializedObject.FindProperty("juggleTransformIdealLocalPosition");
 
         // Loads the editor folded & unfolded values of this script
         isJugglerUnfolded = EditorPrefs.GetBool("isJugglerUnfolded", isJugglerUnfolded);
