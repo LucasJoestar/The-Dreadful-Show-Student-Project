@@ -39,10 +39,14 @@ public class TDS_Throwable : MonoBehaviour
     [SerializeField]
     bool isHoldByPlayer = false;
     [SerializeField]
+    float bouncePower = .5f;
+    [SerializeField]
     float objectSpeed = 15f;
     [SerializeField, Range(0, 20)]
     int bonusDamage = 0;
     [SerializeField,Range(0,10)]
+    int durabilityToWithdraw = 2;
+    [SerializeField, Range(0, 10)]
     int objectDurability = 10;
     [SerializeField]
     int weight = 2;
@@ -65,6 +69,13 @@ public class TDS_Throwable : MonoBehaviour
     #region Methods
     #region Original Methods
     /// <summary>
+    /// bounce object when it touches a collider
+    /// </summary>
+    void BounceObject()
+    {
+        rigidbody.velocity *= bouncePower*-1;
+    }
+    /// <summary>
     /// Destroy the gameObject Throwable if the durability is less or equal to zero 
     /// </summary>
     void DestroyThrowableObject()
@@ -85,9 +96,9 @@ public class TDS_Throwable : MonoBehaviour
     /// Reduces the durability of the object and if the durability is lower or equal to zero called the method that destroys the object. 
     /// </summary> 
     /// <param name="_valueToWithdraw"></param> 
-    public void LoseDurability(int _valueToWithdraw)
+    void LoseDurability()
     {
-        objectDurability -= _valueToWithdraw;
+        objectDurability -= durabilityToWithdraw;
         if (!(objectDurability <= 0)) return;
         DestroyThrowableObject();
     }
@@ -133,7 +144,10 @@ public class TDS_Throwable : MonoBehaviour
         bonusDamage = _bonusDamage;
         rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position,_finalPosition,_angle);
         hitBox.Activate(attack);
-        owner = null;
+        hitBox.OnTouch += hitBox.Desactivate;
+        hitBox.OnTouch += BounceObject;
+        hitBox.OnTouch += LoseDurability;
+       owner = null;
         isHeld = false;
     }
     #endregion
@@ -149,8 +163,7 @@ public class TDS_Throwable : MonoBehaviour
     void Start ()
     {
         if(!rigidbody) rigidbody = GetComponent<Rigidbody>();
-    }
-	
+    }	
 	void Update ()
     {
         
