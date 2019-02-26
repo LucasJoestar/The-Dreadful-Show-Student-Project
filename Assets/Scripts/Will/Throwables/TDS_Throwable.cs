@@ -56,7 +56,7 @@ public class TDS_Throwable : MonoBehaviour
     #endregion
     #region Hitbox
     TDS_HitBox hitBox;
-    TDS_Attack attack;
+    TDS_Attack attack = new TDS_Attack();
     #endregion
     #endregion
 
@@ -121,6 +121,10 @@ public class TDS_Throwable : MonoBehaviour
     public void Throw(Vector3 _finalPosition,float _angle, int _bonusDamage)
     {
         if (!isHeld) return;
+        if(hitBox.IsActive)
+        {
+            hitBox.Desactivate();
+        }
         gameObject.layer = LayerMask.NameToLayer("Object");
         rigidbody.isKinematic = false;
         transform.SetParent(null, true);
