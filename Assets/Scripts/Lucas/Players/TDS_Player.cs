@@ -18,9 +18,24 @@ public class TDS_Player : TDS_Character
      *	    
      *	    The TDS_BeardLady, TDS_FatLady, TDS_FireEater & TDS_Juggler classes inherit from this.
 	 *
+     *	#####################
+	 *	####### TO DO #######
+	 *	#####################
+     *	
+     *	- Throw with right trigger instead of releasing left one.
+     * 
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	#####################
+     *	
+     *  Date :			[27 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Made the player constantly move the same way when dodging.
+     * 
+     *  -----------------------------------
      *	
      *  Date :			[21 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
@@ -158,6 +173,36 @@ public class TDS_Player : TDS_Character
     /// Event called when the player gets off the ground.
     /// </summary>
     public event Action OnGetOffGround = null;
+
+    /// <summary>
+    /// Event called when starting an attack.
+    /// </summary>
+    public event Action OnStartAttack = null;
+
+    /// <summary>
+    /// Event called when starting a dodge.
+    /// </summary>
+    public event Action OnStartDodging = null;
+
+    /// <summary>
+    /// Event called when starting parrying.
+    /// </summary>
+    public event Action OnStartParry = null;
+
+    /// <summary>
+    /// Event called when stopping an attack.
+    /// </summary>
+    public event Action OnStopAttack = null;
+
+    /// <summary>
+    /// Event called when stopping a dodge.
+    /// </summary>
+    public event Action OnStopDodge = null;
+
+    /// <summary>
+    /// Event called when stopping parrying.
+    /// </summary>
+    public event Action OnStopParry = null;
     #endregion
 
     #region Fields / Properties
@@ -627,6 +672,7 @@ public class TDS_Player : TDS_Character
         // Raycast along the trajectory preview and stop the trail when hit something
         RaycastHit _hit = new RaycastHit();
         Vector3[] _raycastedMotionPoints = (Vector3[])throwTrajectoryMotionPoints.Clone();
+        Vector3 _endPoint = new Vector3();
         bool _hasHit = false;
 
         for (int _i = 0; _i < _raycastedMotionPoints.Length - 1; _i++)
@@ -640,10 +686,10 @@ public class TDS_Player : TDS_Character
             if (Physics.Linecast(_from, _to, out _hit, whatIsAllButThis, QueryTriggerInteraction.Ignore))
             {
                 // Get the hit point in local space
-                Vector3 _hitPoint = new Vector3(Mathf.Abs(_hit.point.x - transform.position.x) * Mathf.Sign(throwAimingPoint.x), _hit.point.y - transform.position.y, Mathf.Abs(_hit.point.z - transform.position.z) * Mathf.Sign(throwAimingPoint.z));
+                _endPoint = new Vector3(Mathf.Abs(_hit.point.x - transform.position.x) * Mathf.Sign(throwAimingPoint.x), _hit.point.y - transform.position.y, Mathf.Abs(_hit.point.z - transform.position.z) * Mathf.Sign(throwAimingPoint.z));
 
                 // Get the throw preview motion points with the new hit point
-                _raycastedMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, _hitPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
+                _raycastedMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, _endPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
 
                 // Updates the position of the end preview zone & its rotation according to the hit point
                 ProjectilePreviewEndZone.transform.position = _hit.point;
@@ -651,14 +697,6 @@ public class TDS_Player : TDS_Character
                 Quaternion _rotation = Quaternion.Lerp(ProjectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, _hit.normal), Time.deltaTime * 15);
 
                 ProjectilePreviewEndZone.transform.rotation = _rotation;
-
-                // Set the arrow rotation so it is now pointing at the aiming point
-                Vector3 _direction = _hitPoint - _raycastedMotionPoints[throwPreviewPrecision - 2];
-                _direction.x *= isFacingRight.ToSign();
-
-                Quaternion _arrowRotation = Quaternion.FromToRotation(Vector3.up, _direction);
-
-                ProjectilePreviewArrow.rotation = Quaternion.Lerp(ProjectilePreviewArrow.rotation, _arrowRotation, Time.deltaTime * 15);
 
                 // Set indicative boolean
                 _hasHit = true;
@@ -678,14 +716,17 @@ public class TDS_Player : TDS_Character
 
             ProjectilePreviewEndZone.transform.rotation = _rotation;
 
-            // Set the arrow rotation so it is now pointing at the aiming point
-            Vector3 _direction = throwAimingPoint - _raycastedMotionPoints[throwPreviewPrecision - 2];
-            _direction.x *= isFacingRight.ToSign();
-
-            Quaternion _arrowRotation = Quaternion.FromToRotation(Vector3.up, _direction);
-
-            ProjectilePreviewArrow.rotation = Quaternion.Lerp(ProjectilePreviewArrow.rotation, _arrowRotation, Time.deltaTime * 15);
+            // Set end point
+            _endPoint = throwAimingPoint;
         }
+
+        // Set the arrow rotation so it is now pointing at the aiming point
+        Vector3 _direction = _endPoint - _raycastedMotionPoints[throwPreviewPrecision - 2];
+        _direction.x *= isFacingRight.ToSign();
+
+        Quaternion _arrowRotation = Quaternion.FromToRotation(Vector3.up, _direction);
+
+        ProjectilePreviewArrow.rotation = Quaternion.Lerp(ProjectilePreviewArrow.rotation, _arrowRotation, Time.deltaTime * 15);
 
         // Draws the trajectory preview
         for (int _i = 0; _i < _raycastedMotionPoints.Length; _i++)
@@ -813,6 +854,7 @@ public class TDS_Player : TDS_Character
     public virtual void Attack(bool _isLight)
     {
         IsAttacking = true;
+        OnStartAttack?.Invoke();
 
         CancelInvoke("ResetCombo");
 
@@ -832,6 +874,8 @@ public class TDS_Player : TDS_Character
     protected virtual void EndAttack()
     {
         IsAttacking = false;
+        OnStopAttack?.Invoke();
+
         // Reset the combo when reaching its end
         if (comboCurrent.Count == comboMax) ResetCombo();
     }
@@ -917,6 +961,8 @@ public class TDS_Player : TDS_Character
         IsInvulnerable = true;
         isDodging = true;
 
+        OnStartDodging?.Invoke();
+
         // Adds an little force at the start of the dodge
         rigidbody.AddForce(Vector3.right * Mathf.Clamp(speedCurrent, speedInitial, speedMax) * speedCoef * isFacingRight.ToSign() * speedMax * 10);
 
@@ -926,7 +972,8 @@ public class TDS_Player : TDS_Character
         // Adds a little force to the player to move him along while dodging
         while (true)
         {
-            if (!isMoving) rigidbody.AddForce(Vector3.right * isFacingRight.ToSign() * speedCoef * speedMax * 4);
+            rigidbody.AddForce(Vector3.right * isFacingRight.ToSign() * speedCoef * speedMax * 4);
+            Move(transform.position + (isFacingRight ? Vector3.right : Vector3.left));
 
             yield return new WaitForEndOfFrame();
         }
@@ -946,6 +993,8 @@ public class TDS_Player : TDS_Character
         isParrying = true;
         SetAnimIsParrying(true);
 
+        OnStartParry?.Invoke();
+
         // While holding the parry button, parry attacks
         while (Input.GetButton(ParryButton) || TDS_Input.GetAxis(ParryButton))
         {
@@ -955,6 +1004,8 @@ public class TDS_Player : TDS_Character
         // Stop parrying
         SetAnimIsParrying(false);
         isParrying = false;
+
+        OnStopParry?.Invoke();
     }
 
     /// <summary>
@@ -970,6 +1021,8 @@ public class TDS_Player : TDS_Character
         // Stop dodging
         IsInvulnerable = false;
         isDodging = false;
+
+        OnStopDodge?.Invoke();
     }
 
     /// <summary>
@@ -1572,7 +1625,7 @@ public class TDS_Player : TDS_Character
     public virtual void CheckMovementsInputs()
     {
         // If the character is paralyzed or attacking, do not move
-        if (IsParalyzed || isAttacking || isParrying) return;
+        if (IsParalyzed || isAttacking || isParrying || isDodging) return;
 
         // Moves the player on the X & Z axis regarding the the axis pressure.
         float _horizontal = Input.GetAxis(HorizontalAxis);

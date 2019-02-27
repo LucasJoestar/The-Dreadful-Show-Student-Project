@@ -257,6 +257,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &172419854 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114788318768900898, guid: 387c52e8e45772340b1fc14082a35560,
+    type: 2}
+  m_PrefabInternal: {fileID: 931894330}
+  m_Script: {fileID: 11500000, guid: be188c0a9f7e8bd4da47cefd51a3eea1, type: 3}
 --- !u!1 &231318946
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,6 +331,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: Throwables.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4250667114176770, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -357,9 +368,99 @@ Prefab:
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: isFacingRight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: throwAimingPoint.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: throwAimingPoint.y
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: throwAimingPoint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: groundDetectionBox.Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: aimAngle
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: throwable
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: Throwables.Array.data[0]
+      value: 
+      objectReference: {fileID: 446850629}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: juggleTransformIdealLocalPosition.x
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: juggleTransformIdealLocalPosition.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: Throwables.Array.data[1]
+      value: 
+      objectReference: {fileID: 446850629}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: Throwables.Array.data[2]
+      value: 
+      objectReference: {fileID: 172419854}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: Throwables.Array.data[3]
+      value: 
+      objectReference: {fileID: 1216298328}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: Throwables.Array.data[4]
+      value: 
+      objectReference: {fileID: 2128976227}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: juggleSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: throwableDistanceFromCenter
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1858403930329514, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
   m_IsPrefabAsset: 0
+--- !u!114 &446850629 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114400749320642064, guid: a783edf44b17ca944adba5fcc1832253,
+    type: 2}
+  m_PrefabInternal: {fileID: 928455999}
+  m_Script: {fileID: 11500000, guid: be188c0a9f7e8bd4da47cefd51a3eea1, type: 3}
 --- !u!1 &490974656
 GameObject:
   m_ObjectHideFlags: 0
@@ -1256,6 +1357,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1216298328 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114017391699219818, guid: 510990dd056dca146967b30a479aeb91,
+    type: 2}
+  m_PrefabInternal: {fileID: 545653068}
+  m_Script: {fileID: 11500000, guid: be188c0a9f7e8bd4da47cefd51a3eea1, type: 3}
 --- !u!1 &1284438722
 GameObject:
   m_ObjectHideFlags: 0
@@ -1746,8 +1853,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!64 &1627761210
-MeshCollider:
+--- !u!65 &1627761210
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -1755,11 +1862,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  serializedVersion: 2
+  m_Size: {x: 10, y: 0.5, z: 10}
+  m_Center: {x: 0, y: -0.25, z: 0}
 --- !u!23 &1627761211
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2386,3 +2491,9 @@ MonoBehaviour:
   speedMax: 5
   target: {fileID: 903613627}
   Offset: {x: 0, y: 3.5, z: -5}
+--- !u!114 &2128976227 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114661427807982862, guid: d37bb0fa4e807cf4ba466ecc8eaa7539,
+    type: 2}
+  m_PrefabInternal: {fileID: 134924735}
+  m_Script: {fileID: 11500000, guid: be188c0a9f7e8bd4da47cefd51a3eea1, type: 3}
