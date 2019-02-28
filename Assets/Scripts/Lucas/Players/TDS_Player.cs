@@ -22,11 +22,20 @@ public class TDS_Player : TDS_Character
 	 *	####### TO DO #######
 	 *	#####################
      *	
-     *	- Throw with right trigger instead of releasing left one.
      * 
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	#####################
+     *	
+     *  Date :			[28 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+     *	
+     *	    - Players now hold the throw button to aim, and throw with another button.
+     *	That's better, for sure.
+     * 
+     *  -----------------------------------
      *	
      *  Date :			[27 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
@@ -244,11 +253,6 @@ public class TDS_Player : TDS_Character
     /// Name of the button used to perform a catch.
     /// </summary>
     public string CatchButton = "Catch";
-
-    /// <summary>
-    /// Name of the button used to cancel a throw.
-    /// </summary>
-    public string CancelThrowButton = "Cancel Throw";
 
     /// <summary>
     /// Name of the button used to dodge.
@@ -646,10 +650,15 @@ public class TDS_Player : TDS_Character
             AimMethod();
 
             yield return null;
-        }
 
-        // Throws the object to the aiming position
-        ThrowObject();
+            if (Input.GetButtonDown(ParryButton) || TDS_Input.GetAxisDown(ParryButton))
+            {
+                // Throws the object to the aiming position
+                ThrowObject();
+
+                if (!throwable) break;
+            }
+        }
 
         StopAiming();
 
@@ -686,7 +695,8 @@ public class TDS_Player : TDS_Character
             if (Physics.Linecast(_from, _to, out _hit, whatIsAllButThis, QueryTriggerInteraction.Ignore))
             {
                 // Get the hit point in local space
-                _endPoint = new Vector3(Mathf.Abs(_hit.point.x - transform.position.x) * Mathf.Sign(throwAimingPoint.x), _hit.point.y - transform.position.y, Mathf.Abs(_hit.point.z - transform.position.z) * Mathf.Sign(throwAimingPoint.z));
+                _endPoint = transform.InverseTransformPoint(_hit.point);
+                _endPoint.z *= isFacingRight.ToSign();
 
                 // Get the throw preview motion points with the new hit point
                 _raycastedMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, _endPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
@@ -986,9 +996,6 @@ public class TDS_Player : TDS_Character
     /// <returns></returns>
     public virtual IEnumerator Parry()
     {
-        // If aiming, stop
-        if (isAiming) StopAiming();
-
         // Parry
         isParrying = true;
         SetAnimIsParrying(true);
@@ -1595,7 +1602,7 @@ public class TDS_Player : TDS_Character
 
         else if (Input.GetButtonDown(DodgeButton)) dodgeCoroutine = StartCoroutine(Dodge());
 
-        else if ((Input.GetButtonDown(ParryButton) || TDS_Input.GetAxisDown(ParryButton)) && isGrounded) StartCoroutine(Parry());
+        else if ((Input.GetButtonDown(ParryButton) || TDS_Input.GetAxisDown(ParryButton)) && isGrounded && !isAiming) StartCoroutine(Parry());
 
         // If the character is pacific, forbid him to attack
         if (IsPacific) return;
@@ -1607,8 +1614,6 @@ public class TDS_Player : TDS_Character
         if (!isGrounded) return;
 
         if (Input.GetButtonDown(CatchButton)) Catch();
-
-        else if (Input.GetButtonDown(CancelThrowButton) && isAiming) StopAiming();
 
         else if (Input.GetButtonDown(LightAttackButton)) Attack(true);
 

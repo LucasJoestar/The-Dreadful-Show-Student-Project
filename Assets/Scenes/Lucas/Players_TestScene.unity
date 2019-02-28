@@ -376,7 +376,7 @@ Prefab:
     - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
         type: 2}
       propertyPath: throwAimingPoint.x
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
         type: 2}
@@ -451,6 +451,78 @@ Prefab:
     - target: {fileID: 1858403930329514, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: healthCurrent
+      value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 4226996891926728, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4226996891926728, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4226996891926728, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 212732562287044008, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041944261760166, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041944261760166, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041944261760166, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041944261760166, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041944261760166, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460451521323524, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4226996891926728, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.275
+      objectReference: {fileID: 0}
+    - target: {fileID: 65428636927362380, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 65139292672648374, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4195684342130554, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.573
+      objectReference: {fileID: 0}
+    - target: {fileID: 1942066217794072, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+      propertyPath: m_Name
+      value: Juggler
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237004398133840, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+      propertyPath: m_Name
+      value: Player - Juggler
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
@@ -840,7 +912,6 @@ MonoBehaviour:
     LocalPosition: {x: 0, y: -0.53, z: 0}
     Size: {x: 1, y: 0.33, z: 1}
   CatchButton: Catch
-  CancelThrowButton: Cancel Throw
   DodgeButton: Dodge
   DPadXAxis: D-Pad X
   DPadYAxis: D-Pad Y
@@ -1831,6 +1902,21 @@ Prefab:
         type: 2}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114513829787566364, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: isDead
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114513829787566364, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: healthCurrent
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 114513829787566364, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: enemyState
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}

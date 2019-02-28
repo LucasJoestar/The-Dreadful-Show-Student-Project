@@ -155,9 +155,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     /// <summary>SerializedProperties for <see cref="TDS_Player.CatchButton"/> of type <see cref="string"/>.</summary>
     private SerializedProperty catchButton = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Player.CancelThrowButton"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty cancelThrowButton = null;
-
     /// <summary>SerializedProperties for <see cref="TDS_Player.DodgeButton"/> of type <see cref="string"/>.</summary>
     private SerializedProperty dodgeButton = null;
 
@@ -365,7 +362,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         TDS_EditorUtility.TextField("Interact", "Name of the button input used to interact with the environment", interactButton);
         TDS_EditorUtility.TextField("Use Object", "Name of the button input used to use an object", useObjectButton);
         TDS_EditorUtility.TextField("Throw", "Name of the button input used to throw an object", throwButton);
-        TDS_EditorUtility.TextField("Cancel Throw", "Name of the button input used to cancel a throw", cancelThrowButton);
 
         GUILayout.Space(10);
 
@@ -581,7 +577,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         playerType = serializedObject.FindProperty("playerType");
 
         catchButton = serializedObject.FindProperty("CatchButton");
-        cancelThrowButton = serializedObject.FindProperty("CancelThrowButton");
         dodgeButton = serializedObject.FindProperty("DodgeButton");
         dPadXAxis = serializedObject.FindProperty("DPadXAxis");
         dPadYAxis = serializedObject.FindProperty("DPadYAxis");
