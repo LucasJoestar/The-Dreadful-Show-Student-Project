@@ -20,12 +20,20 @@ public class TDS_Juggler : TDS_Player
 	 *	#####################
      * 
      *  - Auto-aim system.
-     *  - Fix issue where the aiming point goes below earth, when aiming juggler feets.
      * 
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[28 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+     *	    - Fixed the aim problem where preview was upside down.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[27 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -284,12 +292,6 @@ public class TDS_Juggler : TDS_Player
         {
             _xMovement *= isFacingRight.ToSign();
 
-            /*if (_xMovement < 0 && (throwAimingPoint.x < 2f && throwAimingPoint.x > -1f)) throwAimingPoint.x = -1f;
-            else if (_xMovement > 0 && (throwAimingPoint.x < 2f && throwAimingPoint.x > -1f)) throwAimingPoint.x = 2f;
-
-            if (_zMovement < 0 && (throwAimingPoint.z < 2f && throwAimingPoint.z > -1f)) throwAimingPoint.z = -1f;
-            else if (_zMovement > 0 && (throwAimingPoint.z < 1.5f && throwAimingPoint.z > -1f)) throwAimingPoint.z = 2f;*/
-
             // Clamp aiming point
             Vector3 _newAimingPoint = Vector3.ClampMagnitude(new Vector3(throwAimingPoint.x + _xMovement, throwAimingPoint.y, throwAimingPoint.z + _zMovement), 15);
             _newAimingPoint.y = -10;
@@ -455,7 +457,7 @@ public class TDS_Juggler : TDS_Player
         if (!base.StopAiming()) return false;
 
         // Reset throw aiming point
-        ThrowAimingPoint = new Vector3(defaultAimingPoint.x, defaultAimingPoint.y, defaultAimingPoint.z);
+        ThrowAimingPoint = defaultAimingPoint;
 
         return true;
     }
@@ -674,7 +676,7 @@ public class TDS_Juggler : TDS_Player
         base.CheckActionsInputs();
 
         // Check aiming point / angle changes
-        if (TDS_Input.GetAxisDown(DPadXAxis) && (Throwables.Count > 1))
+        if (TDS_Input.GetAxisDown(DPadXAxis) && (Throwables.Count > 0))
         {
             SwitchThrowable((int)Input.GetAxis(DPadXAxis));
         }
