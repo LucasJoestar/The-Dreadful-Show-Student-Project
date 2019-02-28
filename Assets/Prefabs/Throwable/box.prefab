@@ -95,7 +95,7 @@ BoxCollider:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1716402599277626}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 25e28582bde93294aa5459c91a1f624c, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -127,8 +127,10 @@ MonoBehaviour:
   canBeTakeByEnemies: 0
   isHeld: 0
   isHoldByPlayer: 0
+  bouncePower: 0.5
   objectSpeed: 15
   bonusDamage: 0
+  durabilityToWithdraw: 2
   objectDurability: 10
   weight: 2
   rigidbody: {fileID: 0}
@@ -155,7 +157,7 @@ MonoBehaviour:
   owner: {fileID: 0}
   WhatHit:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
 --- !u!212 &212662306785967136
 SpriteRenderer:
   m_ObjectHideFlags: 1
