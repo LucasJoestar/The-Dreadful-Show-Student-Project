@@ -116,7 +116,7 @@ MonoBehaviour:
   owner: {fileID: 0}
   WhatHit:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
 --- !u!114 &114788318768900898
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -131,8 +131,10 @@ MonoBehaviour:
   canBeTakeByEnemies: 0
   isHeld: 0
   isHoldByPlayer: 0
+  bouncePower: 0.5
   objectSpeed: 15
   bonusDamage: 0
+  durabilityToWithdraw: 2
   objectDurability: 10
   weight: 2
   rigidbody: {fileID: 0}
