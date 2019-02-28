@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
 public class TDS_Camera : MonoBehaviour 
@@ -17,6 +14,12 @@ public class TDS_Camera : MonoBehaviour
      *	    It can follow a transform target, with a certain speed,
      *	and be clamped by boundaries.
 	 *
+     *	#####################
+	 *	####### TO DO #######
+	 *	#####################
+     * 
+     *  - Add the option to change target when dead.
+     * 
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	#####################
