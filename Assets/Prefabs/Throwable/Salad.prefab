@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4902869933749152}
   - component: {fileID: 65963255635705434}
   - component: {fileID: 114053863625267166}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: HitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,6 +146,9 @@ MonoBehaviour:
     damagesMax: 1
     damagesMin: 1
     Description: 
+  whatDesactivate:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!135 &135688591825476572
 SphereCollider:
   m_ObjectHideFlags: 1
