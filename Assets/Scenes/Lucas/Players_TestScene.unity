@@ -311,6 +311,36 @@ Prefab:
       propertyPath: m_Name
       value: Player - Juggler
       objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: healthCurrent
+      value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: speedCoef
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: groundDetectionBox.Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: isGrounded
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: isFacingRight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: aimAngle
+      value: 60
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
   m_IsPrefabAsset: 0
@@ -1099,6 +1129,14 @@ Prefab:
     - target: {fileID: 4527078702874400, guid: d37bb0fa4e807cf4ba466ecc8eaa7539, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4527078702874400, guid: d37bb0fa4e807cf4ba466ecc8eaa7539, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4527078702874400, guid: d37bb0fa4e807cf4ba466ecc8eaa7539, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d37bb0fa4e807cf4ba466ecc8eaa7539, type: 2}
