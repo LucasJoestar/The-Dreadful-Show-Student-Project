@@ -177,7 +177,7 @@ public class TDS_HitBox : MonoBehaviour
         if (!_target || TouchedObjects.ContainsValue(_target)) return;
 
         // Deal damages and apply effect
-        Debug.Log(owner.name + " attack " + other.name + " !");
+        Debug.Log((owner ? owner.name : transform.parent.name) + " attack " + other.name + " !");
         _target.TakeDamage(CurrentAttack.GetDamages);
 
         TouchedObjects.Add(other, _target);

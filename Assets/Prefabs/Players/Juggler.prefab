@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 65139292672648374}
   - component: {fileID: 54280045138941680}
   m_Layer: 9
-  m_Name: Juggler Object
+  m_Name: Juggler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -237,7 +237,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1942066217794072}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.03, y: 0, z: -0.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -255,7 +255,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1137560072386930}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.409, y: 0.765, z: 0}
+  m_LocalPosition: {x: -0.573, y: 0.765, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4041944261760166}
@@ -280,13 +280,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1858403930329514}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.275, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4023611725215564}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4250667114176770
 Transform:
   m_ObjectHideFlags: 1
@@ -503,7 +503,7 @@ MonoBehaviour:
   speedMax: 4
   throwBonusDamagesMax: 15
   throwBonusDamagesMin: 9
-  throwAimingPoint: {x: 5, y: -10, z: 0}
+  throwAimingPoint: {x: 7, y: -10, z: 0}
   ProjectilePreviewEndZone: {fileID: 1177539199625568}
   lineRenderer: {fileID: 120440439968656490}
   Summoner: {fileID: 0}
@@ -518,7 +518,6 @@ MonoBehaviour:
     LocalPosition: {x: 0, y: 0, z: 0}
     Size: {x: 1, y: 0.5, z: 1}
   CatchButton: Catch
-  CancelThrowButton: Cancel Throw
   DodgeButton: Dodge
   DPadXAxis: D-Pad X
   DPadYAxis: D-Pad Y
@@ -789,7 +788,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300016, guid: e39d472bc7fb82a489b01ee7d1e894cf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1.62, y: 2.7}
