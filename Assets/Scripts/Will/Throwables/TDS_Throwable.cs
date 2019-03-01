@@ -63,6 +63,8 @@ public class TDS_Throwable : MonoBehaviour
     TDS_HitBox hitBox;
     [SerializeField]
     TDS_Attack attack = new TDS_Attack();
+    [SerializeField]
+    LayerMask whatDesactivate = new LayerMask();
     #endregion
     #endregion
 
@@ -159,6 +161,11 @@ public class TDS_Throwable : MonoBehaviour
         {
             hitBox = GetComponentInChildren<TDS_HitBox>();
         }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(whatDesactivate != (whatDesactivate | (1 << other.gameObject.layer))) return;
+        hitBox.Desactivate();
     }
     void Start ()
     {
