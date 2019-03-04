@@ -49,6 +49,13 @@ public class TDS_Player : TDS_Character
      *  Date :			[21 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
+	 *	Changes :
+     *	
+     *	    - Added the DPadXAxis, DPadYAxis, RightStickXAxis, RightStickYAxis & handsTransformMemoryLocalPosition fields ; and the HandTransformLocalPosition property.
+     *	    - Added the AimFlip method.
+     * 
+     *  -----------------------------------
+     * 
      *  Date :			[19 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -253,6 +260,16 @@ public class TDS_Player : TDS_Character
     public string DodgeButton = "Dodge";
 
     /// <summary>
+    /// Name of the joystick D-Pad X axis.
+    /// </summary>
+    public string DPadXAxis = "D-Pad X";
+
+    /// <summary>
+    /// Name of the joystick D-Pad Y axis.
+    /// </summary>
+    public string DPadYAxis = "D-Pad Y";
+
+    /// <summary>
     /// Name of the button used to perform a heavy attack.
     /// </summary>
     public string HeavyAttackButton = "Heavy Attack";
@@ -281,6 +298,16 @@ public class TDS_Player : TDS_Character
     /// Name of the button used to parry.
     /// </summary>
     public string ParryButton = "Parry";
+
+    /// <summary>
+    /// Name of the joystick right stick X axis.
+    /// </summary>
+    public string RightStickXAxis = "Right Stick X";
+
+    /// <summary>
+    /// Name of the joystick right stick Y axis.
+    /// </summary>
+    public string RightStickYAxis = "Right Stick Y";
 
     /// <summary>
     ///Name of the button used to perform the super attack.
@@ -617,7 +644,7 @@ public class TDS_Player : TDS_Character
     protected virtual IEnumerator Aim()
     {
         // While holding the throw button, aim a position
-        while (Input.GetButton(ThrowButton))
+        while (Input.GetButton(ThrowButton) || TDS_Input.GetAxis(ThrowButton))
         {
             // Draws the preview of the projectile trajectory while holding the throw button
             AimMethod();
@@ -665,7 +692,7 @@ public class TDS_Player : TDS_Character
             Vector3 _to = transform.position + new Vector3(_raycastedMotionPoints[_i + 1].x * isFacingRight.ToSign(), _raycastedMotionPoints[_i + 1].y, _raycastedMotionPoints[_i + 1].z);
 
             // If hit something, set the hit point as end of the preview trajectory
-            if (Physics.Linecast(_from, _to, out _hit, whatIsAllButThis))
+            if (Physics.Linecast(_from, _to, out _hit, whatIsAllButThis, QueryTriggerInteraction.Ignore))
             {
                 // Get the hit point in local space
                 _endPoint = transform.InverseTransformPoint(_hit.point);
@@ -919,7 +946,8 @@ public class TDS_Player : TDS_Character
     /// <summary>
     /// Performs the catch attack of this player.
     /// </summary>
-    public virtual void Catch()
+    /// <param name="_minion">Minion to try to catch</param>
+    public virtual void Catch(/*TDS_Minion _minion*/)
     {
         // If aiming, stop
         if (isAiming) StopAiming();
@@ -975,7 +1003,7 @@ public class TDS_Player : TDS_Character
         OnStartParry?.Invoke();
 
         // While holding the parry button, parry attacks
-        while (Input.GetButton(ParryButton))
+        while (Input.GetButton(ParryButton) || TDS_Input.GetAxis(ParryButton))
         {
             yield return null;
         }
@@ -1307,8 +1335,8 @@ public class TDS_Player : TDS_Character
     {
         base.Flip();
 
-        // Also flip the velocity used to throw objects
-        throwVelocity.x *= -1;
+        // Executes method for aim update
+        AimFlip();
     }
 
     /// <summary>
@@ -1580,7 +1608,7 @@ public class TDS_Player : TDS_Character
         if (IsPacific) return;
 
         // Checks potentially agressives actions
-        if (Input.GetButtonDown(ThrowButton)) PrepareThrow();
+        if (Input.GetButtonDown(ThrowButton) || TDS_Input.GetAxisDown(ThrowButton)) PrepareThrow();
 
         // If not on ground, return
         if (!isGrounded) return;

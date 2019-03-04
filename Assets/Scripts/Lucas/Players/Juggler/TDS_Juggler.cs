@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class TDS_Juggler : TDS_Player
 {
@@ -286,6 +285,8 @@ public class TDS_Juggler : TDS_Player
     {
         // Let the player aim the point he wants, 'cause the juggler can do that. Yep
         // Aim with IJKL or the right joystick axis
+        float _xMovement = Input.GetAxis(RightStickXAxis);
+        float _zMovement = Input.GetAxis(RightStickYAxis);
 
         if (_xMovement != 0 || _zMovement != 0)
         {
@@ -345,6 +346,9 @@ public class TDS_Juggler : TDS_Player
         if (!_throwable.PickUp(this, handsTransform)) return false;
 
         Throwable = _throwable;
+
+        // Updates juggling informations
+        UpdateJuggleParameters(true);
 
         // Updates animator informations
         if (CurrentThrowableAmount > 0) SetAnimHasObject(true);
@@ -561,38 +565,56 @@ public class TDS_Juggler : TDS_Player
     }
 
     /// <summary>
-    /// Make the Juggler juggle ! Yeeeaah !
+    /// Updates juggle parameters depending on juggling objects amount.
     /// </summary>
-    private void Juggle()
+    /// <param name="_doIncrease">Has the amount of objects increased or decreased ?</param>
+    private void UpdateJuggleParameters(bool _doIncrease)
     {
-        // If not having any throwable, return
-        if (CurrentThrowableAmount == 0) return;
-
-        float _baseTheta = 2 * Mathf.PI / CurrentThrowableAmount;
-
-        for (int _i = 0; _i < CurrentThrowableAmount; _i++)
+        switch (CurrentThrowableAmount)
         {
-            // Create variables
-            TDS_Throwable _throwable = Throwables[_i];
+            case 0:
+                // Alright, do nothing
+                break;
 
-            // Get theta value to position the object
-            float _theta = _i + jugglerCounter;
-            if (_theta > CurrentThrowableAmount) _theta -= CurrentThrowableAmount;
-            _theta *= _baseTheta;
+            case 1:
+                juggleSpeed = 2;
+                throwableDistanceFromCenter = .25f;
+                break;
 
-            Vector3 _newPosition = new Vector3(Mathf.Sin(_theta), Mathf.Cos(_theta), 0f) * throwableDistanceFromCenter;
-            _newPosition.y += throwableDistanceFromCenter;
+            case 2:
+                juggleSpeed = 2.5f;
+                throwableDistanceFromCenter = .5f;
+                break;
 
-            // Position update
-            _throwable.transform.localPosition = Vector3.Lerp(_throwable.transform.localPosition, _newPosition, Time.deltaTime * juggleSpeed * 2.5f);
+            case 3:
+                juggleSpeed = 2.8f;
+                throwableDistanceFromCenter = .8f;
+                break;
 
-            // Rotates the object
-            _throwable.transform.Rotate(Vector3.forward, Time.deltaTime * (1000f / _throwable.Weight));
+            case 4:
+                juggleSpeed = 3.15f;
+                throwableDistanceFromCenter = 1f;
+                break;
+
+            case 5:
+                juggleSpeed = 3.5f;
+                throwableDistanceFromCenter = 1.25f;
+                break;
+
+            // If amount is superior to 5
+            default:
+                if (_doIncrease)
+                {
+                    juggleSpeed += .15f;
+                    throwableDistanceFromCenter += .1f;
+                }
+                else
+                {
+                    juggleSpeed -= .15f;
+                    throwableDistanceFromCenter -= .1f;
+                }
+                break;
         }
-
-        // Increase counter
-        jugglerCounter += Time.deltaTime * juggleSpeed;
-        if (jugglerCounter > CurrentThrowableAmount) jugglerCounter = 0;
     }
     #endregion
 

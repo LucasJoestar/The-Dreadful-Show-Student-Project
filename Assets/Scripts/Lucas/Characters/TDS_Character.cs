@@ -288,22 +288,6 @@ public class TDS_Character : TDS_Damageable
         }
     }
 
-    /// <summary>Backing field for <see cref="AimAngle"/>.</summary>
-    [SerializeField] protected int aimAngle = 45;
-
-    /// <summary>
-    /// Angle used to aim and throw objects.
-    /// </summary>
-    public int AimAngle
-    {
-        get { return aimAngle; }
-        set
-        {
-            value = Mathf.Clamp(value, 0, 90);
-            aimAngle = value;
-        }
-    }
-
     /// <summary>
     /// Get a random throw bonus damages value between <see cref="throwBonusDamagesMin"/> & <see cref="throwBonusDamagesMax"/>.
     /// </summary>
@@ -369,14 +353,11 @@ public class TDS_Character : TDS_Damageable
 
     /// <summary>
     /// Flips this character to have they looking at the opposite side.
-    /// Call this method online
     /// </summary>
     public virtual void Flip()
     {
         isFacingRight = !isFacingRight;
         transform.Rotate(Vector3.up, 180);
-
-        if(photonView.isMine) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });  
 
         OnFlip?.Invoke();
     }

@@ -20,6 +20,15 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[21 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Added the dPadXAxis, dPadYAxis, rightStickXAxis & rightStickYAxis fields.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[12 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -149,6 +158,12 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     /// <summary>SerializedProperties for <see cref="TDS_Player.DodgeButton"/> of type <see cref="string"/>.</summary>
     private SerializedProperty dodgeButton = null;
 
+    /// <summary>SerializedProperties for <see cref="TDS_Player.DPadX"/> of type <see cref="string"/>.</summary>
+    private SerializedProperty dPadXAxis = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.DPadY"/> of type <see cref="string"/>.</summary>
+    private SerializedProperty dPadYAxis = null;
+
     /// <summary>SerializedProperties for <see cref="TDS_Player.HeavyAttackButton"/> of type <see cref="string"/>.</summary>
     private SerializedProperty heavyAttackButton = null;
 
@@ -166,6 +181,12 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.Parry"/> of type <see cref="string"/>.</summary>
     private SerializedProperty parryButton = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.RightStickX"/> of type <see cref="string"/>.</summary>
+    private SerializedProperty rightStickXAxis = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.RightStickY"/> of type <see cref="string"/>.</summary>
+    private SerializedProperty rightStickYAxis = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.SuperAttackButton"/> of type <see cref="string"/>.</summary>
     private SerializedProperty superAttackButton = null;
@@ -330,6 +351,10 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     {
         TDS_EditorUtility.TextField("Horizontal Axis", "Name of the axis input used to move in horizontal", horizontalAxis);
         TDS_EditorUtility.TextField("Vertical Axis", "Name of the axis input used to move in vertical", verticalAxis);
+        TDS_EditorUtility.TextField("Right Stick X Axis", "Name of the joystick right stick X axis", rightStickXAxis);
+        TDS_EditorUtility.TextField("Right Stick Y Axis", "Name of the joystick right stick Y axis", rightStickYAxis);
+        TDS_EditorUtility.TextField("D-Pad X Axis", "Name of the joystick D-Pad X axis", dPadXAxis);
+        TDS_EditorUtility.TextField("D-Pad Y Axis", "Name of the joystick D-Pad Y axis", dPadYAxis);
 
         GUILayout.Space(10);
 
@@ -497,7 +522,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         {
             if (TDS_EditorUtility.FloatSlider("Aiming Angle", "Angle used by this player to aim for a throw", aimAngle, 15f, 60f))
             {
-                players.ForEach(p => p.AimAngle = aimAngle.intValue);
+                players.ForEach(p => p.AimAngle = aimAngle.floatValue);
                 players.ForEach(p => p.ThrowAimingPoint = p.ThrowAimingPoint);
                 serializedObject.Update();
             }
@@ -553,6 +578,8 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
         catchButton = serializedObject.FindProperty("CatchButton");
         dodgeButton = serializedObject.FindProperty("DodgeButton");
+        dPadXAxis = serializedObject.FindProperty("DPadXAxis");
+        dPadYAxis = serializedObject.FindProperty("DPadYAxis");
         heavyAttackButton = serializedObject.FindProperty("HeavyAttackButton");
         horizontalAxis = serializedObject.FindProperty("HorizontalAxis");
         interactButton = serializedObject.FindProperty("InteractButton");

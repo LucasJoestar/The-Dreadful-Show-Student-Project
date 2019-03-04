@@ -119,7 +119,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
     /// <summary>SerializedProperty for <see cref="TDS_Character.speedMax"/> of type <see cref="float"/>.</summary>
     private SerializedProperty speedMax = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Character.aimAngle"/> of type <see cref="int"/>.</summary>
+    /// <summary>SerializedProperties for <see cref="TDS_Character.aimAngle"/> of type <see cref="float"/>.</summary>
     protected SerializedProperty aimAngle = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Character.throwBonusDamagesMax"/> of type <see cref="int"/>.</summary>
@@ -433,7 +433,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 
             if (TDS_EditorUtility.FloatSlider("Aiming Angle", "Angle used by this player to aim for a throw", aimAngle, 15f, 60f))
             {
-                characters.ForEach(p => p.AimAngle = aimAngle.intValue);
+                characters.ForEach(p => p.AimAngle = aimAngle.floatValue);
                 serializedObject.Update();
             }
 
