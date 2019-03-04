@@ -22,6 +22,16 @@ public class TDS_Trigger : MonoBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[27 / 02 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Added a method called at a constant interval that clear disable colliders
+     *	from the list of the detected ones.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[12 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -127,12 +137,36 @@ public class TDS_Trigger : MonoBehaviour
     }
     #endregion
 
+    #region Methods
+
+    #region Original Methods
+    /// <summary>
+    /// Clears colliders from the detected colliders list that are disables.
+    /// </summary>
+    private void ClearData()
+    {
+        // Get element(s) to remove
+        Collider[] _toRemove = new List<Collider>(detectedColliders).Where(d => d.enabled == false).ToArray();
+
+        if (_toRemove.Length == 0) return;
+
+        // Remove all disable colliders
+        foreach (Collider _collider in _toRemove)
+        {
+            DetectedColliders.Remove(_collider);
+            OnColliderExit?.Invoke(_collider);
+        }
+
+        if (detectedColliders.Count == 0) OnNothingDetected?.Invoke();
+    }
+    #endregion
+
     #region Unity Methods
     // OnTriggerEnter is called when the GameObject collides with another GameObject
     private void OnTriggerEnter(Collider other)
     {
         // If sorting by tag and this object one does not match, ignores it
-        if (doSortByTag && !detectedTags.Contains(other.tag)) return;
+        if ((doSortByTag && !detectedTags.Contains(other.tag)) || detectedColliders.Contains(other)) return;
 
         DetectedColliders.Add(other);
         OnColliderEnter?.Invoke(other);
@@ -151,5 +185,13 @@ public class TDS_Trigger : MonoBehaviour
 
         if (detectedColliders.Count == 0) OnNothingDetected?.Invoke();
     }
+
+    // Use this for initialization
+    private void Start()
+    {
+        InvokeRepeating("ClearData", .1f, .05f);
+    }
+    #endregion
+
     #endregion
 }
