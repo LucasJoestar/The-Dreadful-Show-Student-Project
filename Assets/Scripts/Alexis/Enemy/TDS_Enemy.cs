@@ -153,6 +153,18 @@ public abstract class TDS_Enemy : TDS_Character
     /// <param name="_distance"></param>
     /// <returns></returns>
     protected abstract bool AttackCanBeCasted(float _distance); 
+
+    /// <summary>
+    /// Check if the enemy is in the right orientation to face the target
+    /// </summary>
+    /// <returns>true if the enemy has to flip to face the target</returns>
+    protected bool CheckOrientation()
+    {
+        if (!playerTarget) return false;
+        Vector3 _dir = playerTarget.transform.position - transform.position;
+        float _angle = Vector3.Angle(_dir, transform.right);
+        return (_angle < 90); 
+    }
     #endregion 
 
     #region float 
@@ -203,7 +215,7 @@ public abstract class TDS_Enemy : TDS_Character
                     enemyState = EnemyState.MakingDecision;
                     goto case EnemyState.MakingDecision;
                 }
-                //ELSE BREAK -> Set the state to Search
+                //ELSE -> Set the state to Search
                 else
                 {
                     enemyState = EnemyState.Searching;
@@ -310,6 +322,7 @@ public abstract class TDS_Enemy : TDS_Character
                     SetAnimationState(EnemyAnimationState.Idle);
                     yield return new WaitForEndOfFrame();
                 }
+                if (CheckOrientation()) Flip(); 
                 if (Throwable)
                 {
                     enemyState = EnemyState.ThrowingObject;
@@ -347,6 +360,21 @@ public abstract class TDS_Enemy : TDS_Character
         yield return new WaitForSeconds(.1f);
         StartCoroutine(Behaviour());
         yield break;
+    }
+
+    /// <summary>
+    /// Apply the recoil force on the enemy
+    /// </summary>
+    /// <param name="_recoilDistance">Distance of the recoil</param>
+    /// <returns></returns>
+    protected IEnumerator ApplyRecoil(float _recoilDistance)
+    {
+        Vector3 _pos = IsFacingRight ? transform.position + new Vector3(_recoilDistance, 0, 0) : transform.position - new Vector3(_recoilDistance, 0, 0); 
+        while(Vector3.Distance(transform.position, _pos) > .1f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * 10); 
+            yield return new WaitForEndOfFrame(); 
+        }
     }
     #endregion
 
@@ -441,7 +469,15 @@ public abstract class TDS_Enemy : TDS_Character
         base.StopAttack();
     }
 
-
+    /// <summary>
+    /// Call the base of the method flip
+    /// if this client is the master, call the method online to flip the enemy in the other clients
+    /// </summary>
+    public override void Flip()
+    {
+        base.Flip();
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] {});
+    }
     #endregion
 
     #region Void
@@ -468,7 +504,11 @@ public abstract class TDS_Enemy : TDS_Character
         animator.SetInteger("animationState", _animationID);
     }
 
-
+    protected void CallRecoil(float _recoilDistance)
+    {
+        if (_recoilDistance <= 0) return; 
+        StartCoroutine(ApplyRecoil(_recoilDistance)); 
+    }
     #endregion
 
     #endregion
