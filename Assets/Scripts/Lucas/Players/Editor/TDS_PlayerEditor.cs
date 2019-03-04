@@ -146,9 +146,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     /// <summary>SerializedProperties for <see cref="TDS_Player.CatchButton"/> of type <see cref="string"/>.</summary>
     private SerializedProperty catchButton = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Player.CancelThrowButton"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty cancelThrowButton = null;
-
     /// <summary>SerializedProperties for <see cref="TDS_Player.DodgeButton"/> of type <see cref="string"/>.</summary>
     private SerializedProperty dodgeButton = null;
 
@@ -340,7 +337,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         TDS_EditorUtility.TextField("Interact", "Name of the button input used to interact with the environment", interactButton);
         TDS_EditorUtility.TextField("Use Object", "Name of the button input used to use an object", useObjectButton);
         TDS_EditorUtility.TextField("Throw", "Name of the button input used to throw an object", throwButton);
-        TDS_EditorUtility.TextField("Cancel Throw", "Name of the button input used to cancel a throw", cancelThrowButton);
 
         GUILayout.Space(10);
 
@@ -499,14 +495,14 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
         if (EditorApplication.isPlaying)
         {
-            if (TDS_EditorUtility.IntSlider("Aiming Angle", "Angle used by this player to aim for a throw", aimAngle, 0, 90))
+            if (TDS_EditorUtility.FloatSlider("Aiming Angle", "Angle used by this player to aim for a throw", aimAngle, 15f, 60f))
             {
                 players.ForEach(p => p.AimAngle = aimAngle.intValue);
                 players.ForEach(p => p.ThrowAimingPoint = p.ThrowAimingPoint);
                 serializedObject.Update();
             }
 
-            if (TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (Local space)", throwAimingPoint))
+            if (TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (in local space)", throwAimingPoint))
             {
                 players.ForEach(p => p.ThrowAimingPoint = throwAimingPoint.vector3Value);
             }
@@ -556,7 +552,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         playerType = serializedObject.FindProperty("playerType");
 
         catchButton = serializedObject.FindProperty("CatchButton");
-        cancelThrowButton = serializedObject.FindProperty("CancelThrowButton");
         dodgeButton = serializedObject.FindProperty("DodgeButton");
         heavyAttackButton = serializedObject.FindProperty("HeavyAttackButton");
         horizontalAxis = serializedObject.FindProperty("HorizontalAxis");
@@ -564,6 +559,8 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         jumpButton = serializedObject.FindProperty("JumpButton");
         lightAttackButton = serializedObject.FindProperty("LightAttackButton");
         parryButton = serializedObject.FindProperty("ParryButton");
+        rightStickXAxis = serializedObject.FindProperty("RightStickXAxis");
+        rightStickYAxis = serializedObject.FindProperty("RightStickYAxis");
         superAttackButton = serializedObject.FindProperty("SuperAttackButton");
         throwButton = serializedObject.FindProperty("ThrowButton");
         useObjectButton = serializedObject.FindProperty("UseObjectButton");

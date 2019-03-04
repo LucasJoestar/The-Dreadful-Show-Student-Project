@@ -39,10 +39,14 @@ public class TDS_Throwable : MonoBehaviour
     [SerializeField]
     bool isHoldByPlayer = false;
     [SerializeField]
+    float bouncePower = .5f;
+    [SerializeField]
     float objectSpeed = 15f;
     [SerializeField, Range(0, 20)]
     int bonusDamage = 0;
     [SerializeField,Range(0,10)]
+    int durabilityToWithdraw = 2;
+    [SerializeField, Range(0, 10)]
     int objectDurability = 10;
     [SerializeField]
     int weight = 2;
@@ -54,10 +58,25 @@ public class TDS_Throwable : MonoBehaviour
     [SerializeField, Header("Character settings")]       
     TDS_Character owner = null;
     #endregion
+    #region Hitbox
+    [SerializeField]
+    TDS_HitBox hitBox;
+    [SerializeField]
+    TDS_Attack attack = new TDS_Attack();
+    [SerializeField]
+    LayerMask whatDesactivate = new LayerMask();
+    #endregion
     #endregion
 
     #region Methods
     #region Original Methods
+    /// <summary>
+    /// bounce object when it touches a collider
+    /// </summary>
+    void BounceObject()
+    {
+        rigidbody.velocity *= bouncePower*-1;
+    }
     /// <summary>
     /// Destroy the gameObject Throwable if the durability is less or equal to zero 
     /// </summary>
@@ -79,9 +98,9 @@ public class TDS_Throwable : MonoBehaviour
     /// Reduces the durability of the object and if the durability is lower or equal to zero called the method that destroys the object. 
     /// </summary> 
     /// <param name="_valueToWithdraw"></param> 
-    public void LoseDurability(int _valueToWithdraw)
+    void LoseDurability()
     {
-        objectDurability -= _valueToWithdraw;
+        objectDurability -= durabilityToWithdraw;
         if (!(objectDurability <= 0)) return;
         DestroyThrowableObject();
     }
@@ -117,22 +136,41 @@ public class TDS_Throwable : MonoBehaviour
     public void Throw(Vector3 _finalPosition,float _angle, int _bonusDamage)
     {
         if (!isHeld) return;
+        if(hitBox.IsActive)
+        {
+            hitBox.Desactivate();
+        }
         gameObject.layer = LayerMask.NameToLayer("Object");
         rigidbody.isKinematic = false;
         transform.SetParent(null, true);
         bonusDamage = _bonusDamage;
-        rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position,_finalPosition,_angle);        
-        owner = null;
+        rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position,_finalPosition,_angle);
+        hitBox.Activate(attack);
+        hitBox.OnTouch += hitBox.Desactivate;
+        hitBox.OnTouch += BounceObject;
+        hitBox.OnTouch += LoseDurability;
+       owner = null;
         isHeld = false;
-    }    
-	#endregion
+    }
+    #endregion
 
-	#region Unity Methods
+    #region Unity Methods
+    void Awake()
+    {
+        if(!hitBox)
+        {
+            hitBox = GetComponentInChildren<TDS_HitBox>();
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(whatDesactivate != (whatDesactivate | (1 << other.gameObject.layer))) return;
+        hitBox.Desactivate();
+    }
     void Start ()
     {
         if(!rigidbody) rigidbody = GetComponent<Rigidbody>();
-    }
-	
+    }	
 	void Update ()
     {
         

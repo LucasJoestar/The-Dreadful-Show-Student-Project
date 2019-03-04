@@ -30,6 +30,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1753295232409022
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4073442654097756}
+  - component: {fileID: 65584987294190616}
+  - component: {fileID: 114752111166037534}
+  m_Layer: 0
+  m_Name: HitBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4073442654097756
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1753295232409022}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4399881742859096}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4399881742859096
 Transform:
   m_ObjectHideFlags: 1
@@ -39,7 +69,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.8000906, y: 0.03263983, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4073442654097756}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -58,6 +89,34 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 48
   m_CollisionDetection: 0
+--- !u!65 &65584987294190616
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1753295232409022}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5787275, y: 0.6587157, z: 1}
+  m_Center: {x: 0.0026661158, y: 0.0053327084, z: 0}
+--- !u!114 &114752111166037534
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1753295232409022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18dda57ee8a7f354ba608a59dfff9996, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collider: {fileID: 0}
+  owner: {fileID: 0}
+  WhatHit:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!114 &114788318768900898
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -72,12 +131,24 @@ MonoBehaviour:
   canBeTakeByEnemies: 0
   isHeld: 0
   isHoldByPlayer: 0
+  bouncePower: 0.5
   objectSpeed: 15
   bonusDamage: 0
+  durabilityToWithdraw: 2
   objectDurability: 10
   weight: 2
   rigidbody: {fileID: 0}
   owner: {fileID: 0}
+  hitBox: {fileID: 0}
+  attack:
+    Name: 
+    AnimationID: 0
+    damagesMax: 1
+    damagesMin: 1
+    Description: 
+  whatDesactivate:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!135 &135741277423686958
 SphereCollider:
   m_ObjectHideFlags: 1
