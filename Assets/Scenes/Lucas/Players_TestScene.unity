@@ -498,12 +498,12 @@ MonoBehaviour:
   isFacingRight: 1
   IsPacific: 1
   IsParalyzed: 0
-  aimAngle: 45
   speedAccelerationTime: 0.5
   speedCoef: 1
   speedCurrent: 0
   speedInitial: 1.1
   speedMax: 5
+  aimAngle: 45
   throwBonusDamagesMax: 45
   throwBonusDamagesMin: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
@@ -860,12 +860,12 @@ MonoBehaviour:
   isFacingRight: 1
   IsPacific: 0
   IsParalyzed: 0
-  aimAngle: 45
   speedAccelerationTime: 0.5
   speedCoef: 1
   speedCurrent: 0
   speedInitial: 1.1
   speedMax: 5
+  aimAngle: 45
   throwBonusDamagesMax: 45
   throwBonusDamagesMin: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
@@ -1029,6 +1029,12 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14851c56279089c4aa45c8d655412164, type: 2}
   m_IsPrefabAsset: 0
+--- !u!114 &715371118 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114812030439245126, guid: 4e6ea6f044b8f8c4e9dd2cde25b5fbe3,
+    type: 2}
+  m_PrefabInternal: {fileID: 1553364395}
+  m_Script: {fileID: 11500000, guid: be188c0a9f7e8bd4da47cefd51a3eea1, type: 3}
 --- !u!1 &772001610
 GameObject:
   m_ObjectHideFlags: 0
@@ -1072,7 +1078,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.25
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 1715469122}
+  m_NavMeshData: {fileID: 230654330}
 --- !u!4 &772001612
 Transform:
   m_ObjectHideFlags: 0
@@ -1684,7 +1690,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4175069985797766, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -5.87
+      value: -3.676308
       objectReference: {fileID: 0}
     - target: {fileID: 4175069985797766, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
       propertyPath: m_LocalPosition.y
@@ -1692,7 +1698,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4175069985797766, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 5.97
+      value: -5.7089
       objectReference: {fileID: 0}
     - target: {fileID: 4175069985797766, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1736,7 +1742,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1341661741757368, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114745190491073254, guid: 1952cdc97814b8543ab7cc5e2027c418,
         type: 2}
@@ -2342,29 +2348,29 @@ GameObject:
   - component: {fileID: 2109987112}
   - component: {fileID: 2109987115}
   m_Layer: 0
-  m_Name: CustomMainCamera
+  m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &2109987112
+--- !u!81 &2014228504
 AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2109987111}
+  m_GameObject: {fileID: 2014228503}
   m_Enabled: 1
---- !u!20 &2109987113
+--- !u!20 &2014228505
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2109987111}
+  m_GameObject: {fileID: 2014228503}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.21568628, g: 0.21568628, b: 0.21568628, a: 0}
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -2395,7 +2401,7 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!4 &2109987114
+--- !u!4 &2014228506
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

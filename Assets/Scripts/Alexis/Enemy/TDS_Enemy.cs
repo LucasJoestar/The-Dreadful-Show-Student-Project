@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
+using Photon;
 
 [RequireComponent(typeof(CustomNavMeshAgent))]
 public abstract class TDS_Enemy : TDS_Character
@@ -145,6 +146,27 @@ public abstract class TDS_Enemy : TDS_Character
 
     #region Original Methods
 
+    #region bool 
+    /// <summary>
+    /// Return if any attack of the enemy can be casted 
+    /// </summary>
+    /// <param name="_distance"></param>
+    /// <returns></returns>
+    protected abstract bool AttackCanBeCasted(float _distance); 
+
+    /// <summary>
+    /// Check if the enemy is in the right orientation to face the target
+    /// </summary>
+    /// <returns>true if the enemy has to flip to face the target</returns>
+    protected bool CheckOrientation()
+    {
+        if (!playerTarget) return false;
+        Vector3 _dir = playerTarget.transform.position - transform.position;
+        float _angle = Vector3.Angle(_dir, transform.right);
+        return (_angle < 90); 
+    }
+    #endregion 
+
     #region float 
     /// <summary>
     /// Method Abstract
@@ -173,7 +195,187 @@ public abstract class TDS_Enemy : TDS_Character
     /// <see cref="TDS_Minion.Behaviour"/> or <see cref="TDS_Punk.Behaviour"/>
     /// </summary>
     /// <returns></returns>
-    protected abstract IEnumerator Behaviour();
+    protected IEnumerator Behaviour()
+    {
+        // If the enemy is dead or paralyzed, they can't behave
+        if (isDead || IsParalyzed) yield break;
+        // If there is no target, the agent has to get one
+        if (!playerTarget || playerTarget.IsDead)
+            enemyState = EnemyState.Searching;
+        float _distance = 0;
+        switch (enemyState)
+        {
+            #region Searching
+            case EnemyState.Searching:
+                // If there is no target, search a new target
+                playerTarget = SearchTarget();
+                //If a target is found -> Set the state to TakingDecision
+                if (playerTarget)
+                {
+                    enemyState = EnemyState.MakingDecision;
+                    goto case EnemyState.MakingDecision;
+                }
+                //ELSE -> Set the state to Search
+                else
+                {
+                    enemyState = EnemyState.Searching;
+                    yield return new WaitForSeconds(1);
+                    break;
+                }
+            #endregion
+            #region Making Decision
+            case EnemyState.MakingDecision:
+                if (agent.IsMoving)
+                {
+                    agent.StopAgent();
+                    speedCurrent = 0; 
+                    SetAnimationState(EnemyAnimationState.Idle);
+                }
+                //Take decisions
+                // If the target can't be targeted, search for another target
+                if (!playerTarget || playerTarget.IsDead)
+                {
+                    enemyState = EnemyState.Searching;
+                    goto case EnemyState.Searching;
+                }
+                _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+                /* If there is an attack that can be cast, go to attack case
+                 * Check if the agent can grab an object, 
+                 * if so goto case GrabObject if it can be grab 
+                 * if it can't be grabbed directly, getting in range
+                */
+                if (AttackCanBeCasted(_distance))
+                {
+                    enemyState = EnemyState.Attacking;
+                    goto case EnemyState.Attacking;
+                }
+                else if (Throwable /*and target can be touched by thrown object*/)
+                {
+                    enemyState = EnemyState.ThrowingObject;
+                    goto case EnemyState.ThrowingObject;
+                }
+                //else try to reach the target
+                else
+                {
+                    enemyState = EnemyState.ComputingPath;
+                    goto case EnemyState.ComputingPath;
+                }
+            #endregion
+            #region Computing Path
+            case EnemyState.ComputingPath:
+                //Compute the path
+                // If there is something to throw, Move until reaching a position from where the player can be touched
+                // Be careful, the agent don't have to recalculate path when they have a Throwable
+                if (agent.CheckDestination(playerTarget.transform.position))
+                {
+                    enemyState = EnemyState.GettingInRange;
+                    goto case EnemyState.GettingInRange;
+                }
+                yield return new WaitForSeconds(1);
+                break;
+            #endregion
+            #region Getting In Range
+            case EnemyState.GettingInRange:
+                SetAnimationState(EnemyAnimationState.Run);
+                // Wait some time before calling again Behaviour(); 
+                while (agent.IsMoving)
+                {
+                    if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
+                        Flip();
+                    _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+                    if (AttackCanBeCasted(_distance))
+                    {
+                        enemyState = EnemyState.Attacking;
+                        goto case EnemyState.Attacking;
+                    }
+                    if (Vector3.Distance(playerTarget.transform.position, agent.LastPosition) > detectionRange)
+                    {
+                        if (agent.CheckDestination(playerTarget.transform.position))
+                        {
+                            yield return new WaitForSeconds(.1f);
+                            continue;
+                        }
+                        else
+                        {
+                            enemyState = EnemyState.MakingDecision;
+                            goto case EnemyState.MakingDecision;
+                        }
+                    }
+                    if (speedCurrent < speedMax)
+                    {
+                        IncreaseSpeed();
+                        yield return new WaitForEndOfFrame();
+                    }
+                    else yield return new WaitForSeconds(.1f);
+                }
+                enemyState = EnemyState.MakingDecision;
+                goto case EnemyState.MakingDecision;
+            #endregion
+            #region Attacking
+            case EnemyState.Attacking:
+                //Throw attack
+                // If the agent is still moving, stop him
+                if (agent.IsMoving)
+                {
+                    agent.StopAgent();
+                    speedCurrent = 0;
+                    SetAnimationState(EnemyAnimationState.Idle);
+                    yield return new WaitForEndOfFrame();
+                }
+                if (CheckOrientation()) Flip(); 
+                if (Throwable)
+                {
+                    enemyState = EnemyState.ThrowingObject;
+                    goto case EnemyState.ThrowingObject;
+                }
+                else
+                {
+                    _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+                    //Cast Attack
+                    float _cooldown = StartAttack(_distance);
+                    while (IsAttacking)
+                    {
+                        yield return new WaitForSeconds(.1f);
+                    }
+                    yield return new WaitForSeconds(_cooldown);
+                }
+                enemyState = EnemyState.MakingDecision;
+                goto case EnemyState.MakingDecision;
+            #endregion
+            #region Grabbing Object
+            case EnemyState.PickingUpObject:
+                //Pick up an object
+                enemyState = EnemyState.MakingDecision;
+                goto case EnemyState.MakingDecision;
+            #endregion
+            #region Throwing Object
+            case EnemyState.ThrowingObject:
+                //Throw the held object
+                enemyState = EnemyState.MakingDecision;
+                goto case EnemyState.MakingDecision;
+            #endregion
+            default:
+                break;
+        }
+        yield return new WaitForSeconds(.1f);
+        StartCoroutine(Behaviour());
+        yield break;
+    }
+
+    /// <summary>
+    /// Apply the recoil force on the enemy
+    /// </summary>
+    /// <param name="_recoilDistance">Distance of the recoil</param>
+    /// <returns></returns>
+    protected IEnumerator ApplyRecoil(float _recoilDistance)
+    {
+        Vector3 _pos = IsFacingRight ? transform.position + new Vector3(_recoilDistance, 0, 0) : transform.position - new Vector3(_recoilDistance, 0, 0); 
+        while(Vector3.Distance(transform.position, _pos) > .1f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * 10); 
+            yield return new WaitForEndOfFrame(); 
+        }
+    }
     #endregion
 
     #region TDS_Player
@@ -192,6 +394,16 @@ public abstract class TDS_Enemy : TDS_Character
 
     #region Overridden Methods
     /// <summary>
+    /// When the enemy dies, set its animation state to Death and remove it from the Area
+    /// </summary>
+    protected override void Die()
+    {
+        base.Die();
+        SetAnimationState(EnemyAnimationState.Death);
+        if (Area) Area.RemoveEnemy(this);
+    }
+
+    /// <summary>
     /// Overridden Grab Object Method
     /// </summary>
     /// <param name="_throwable"></param>
@@ -200,6 +412,15 @@ public abstract class TDS_Enemy : TDS_Character
     {
         return base.GrabObject(_throwable);
         // Does the agent has a different behaviour from the players? 
+    }
+
+    /// <summary>
+    /// Increase the speed and set the agent speed to the currentSpeed; 
+    /// </summary>
+    protected override void IncreaseSpeed()
+    {
+        base.IncreaseSpeed();
+        agent.Speed = speedCurrent;
     }
 
     /// <summary>
@@ -231,13 +452,7 @@ public abstract class TDS_Enemy : TDS_Character
             agent.StopAgent();
             StopAllCoroutines();
             enemyState = EnemyState.MakingDecision;
-            if (isDead)
-            {
-                SetAnimationState(EnemyAnimationState.Death);
-                Area.RemoveEnemy(this);
-            }
-            else
-                SetAnimationState(EnemyAnimationState.Hit);
+            if(!isDead) SetAnimationState(EnemyAnimationState.Hit);
         }
         return _isTakingDamages;
     }
@@ -253,9 +468,21 @@ public abstract class TDS_Enemy : TDS_Character
         SetAnimationState(EnemyAnimationState.Idle);
         base.StopAttack();
     }
+
+    /// <summary>
+    /// Call the base of the method flip
+    /// if this client is the master, call the method online to flip the enemy in the other clients
+    /// </summary>
+    public override void Flip()
+    {
+        base.Flip();
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] {});
+    }
     #endregion
 
     #region Void
+    protected abstract void ActivateAttack(int _animationID); 
+
     /// <summary>
     /// Set the animation of the enemy to the animationID
     /// </summary>
@@ -264,7 +491,7 @@ public abstract class TDS_Enemy : TDS_Character
     {
         if (!animator) return;
         animator.SetInteger("animationState", (int)_animationID);
-        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID }); 
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID }); 
     }
 
     /// <summary>
@@ -277,15 +504,13 @@ public abstract class TDS_Enemy : TDS_Character
         animator.SetInteger("animationState", _animationID);
     }
 
-    /// <summary>
-    /// Increase the speed and set the agent speed to the currentSpeed; 
-    /// </summary>
-    protected override void IncreaseSpeed()
+    protected void CallRecoil(float _recoilDistance)
     {
-        base.IncreaseSpeed();
-        agent.Speed = speedCurrent;
+        if (_recoilDistance <= 0) return; 
+        StartCoroutine(ApplyRecoil(_recoilDistance)); 
     }
     #endregion
+
     #endregion
 
     #region Unity Methods
@@ -297,25 +522,20 @@ public abstract class TDS_Enemy : TDS_Character
         agent.OnDestinationReached += () => enemyState = EnemyState.MakingDecision;
         OnDie += () => StopAllCoroutines();
         OnDie += () => agent.StopAgent();
-        agent.OnAgentStopped += () => speedCurrent = 0;
+        //agent.OnAgentStopped += () => speedCurrent = 0;
     }
 
     // Use this for initialization
     protected override void Start()
     {
         base.Start();
+        if (PhotonNetwork.isMasterClient) StartCoroutine(Behaviour());
     }
-
 
     // Update is called once per frame
     protected override void Update()
     {
         base.Update();
-    }
-
-    public override void OnJoinedRoom()
-    {
-        if (PhotonNetwork.isMasterClient) StartCoroutine(Behaviour()); 
     }
     #endregion
 

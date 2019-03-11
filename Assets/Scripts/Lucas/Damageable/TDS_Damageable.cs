@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider), typeof(Animator))]
+[RequireComponent(typeof(BoxCollider), typeof(Animator), typeof(PhotonView)), RequireComponent(typeof(PhotonTransformView))]
 public class TDS_Damageable : PunBehaviour
 {
     /* TDS_Damageable :
@@ -19,7 +19,15 @@ public class TDS_Damageable : PunBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
-     * 
+     *  Date :			[21 / 02 / 2019]
+	 *	Author :		[THIEBAUT Alexis]
+	 *
+	 *	Changes :
+	 *
+     *      - Adding the RequireComponent PhotonView
+     *      - Adding the RequireComponent PhotonTransformView
+     *      
+	 *	-----------------------------------
      *	Date :			[24 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -225,6 +233,8 @@ public class TDS_Damageable : PunBehaviour
     {
         get { return photonView.viewID; }
     }
+
+    protected PhotonView photonView; 
     #endregion
 
     #endregion
@@ -284,6 +294,11 @@ public class TDS_Damageable : PunBehaviour
             sprite = GetComponent<SpriteRenderer>();
             if (!sprite) Debug.LogWarning("The SpriteRenderer of \"" + name + "\" for script TDS_Damageable is missing !");
         }
+        if(!photonView)
+        {
+            photonView = GetComponent<PhotonView>();
+            if (!photonView) Debug.LogWarning("The PhotonView of \"" + name + "\" for script TDS_Damageable is missing !");
+        }
     }
 
     // Use this for initialization
@@ -296,9 +311,10 @@ public class TDS_Damageable : PunBehaviour
 	// Update is called once per frame
 	protected virtual void Update ()
     {
-        
-	}
-	#endregion
 
-	#endregion
+    }
+
+    #endregion
+
+    #endregion
 }
