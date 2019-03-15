@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider), typeof(Animator))]
+[RequireComponent(typeof(BoxCollider), typeof(Animator), typeof(PhotonView)), RequireComponent(typeof(PhotonTransformView))]
 public class TDS_Damageable : PunBehaviour
 {
     /* TDS_Damageable :
@@ -19,7 +19,15 @@ public class TDS_Damageable : PunBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
-     * 
+     *  Date :			[21 / 02 / 2019]
+	 *	Author :		[THIEBAUT Alexis]
+	 *
+	 *	Changes :
+	 *
+     *      - Adding the RequireComponent PhotonView
+     *      - Adding the RequireComponent PhotonTransformView
+     *      
+	 *	-----------------------------------
      *	Date :			[24 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -225,6 +233,8 @@ public class TDS_Damageable : PunBehaviour
     {
         get { return photonView.viewID; }
     }
+
+    protected PhotonView photonView; 
     #endregion
 
     #endregion
@@ -262,6 +272,22 @@ public class TDS_Damageable : PunBehaviour
 
         return true;
     }
+
+    /// <summary>
+    /// Makes this object take damage and decrease its health if it is not invulnerable.
+    /// </summary>
+    /// <param name="_damage">Amount of damage this inflect to this object.</param>
+    /// <param name="_position">Position in world space from where the hit come from.</param>
+    /// <returns>Returns true if some damages were inflicted, false if none.</returns>
+    public virtual bool TakeDamage(int _damage, Vector3 _position)
+    {
+        if (IsInvulnerable) return false;
+
+        HealthCurrent -= _damage;
+        OnTakeDamage?.Invoke(_damage);
+
+        return true;
+    }
     #endregion
 
     #region Unity Methods
@@ -284,6 +310,11 @@ public class TDS_Damageable : PunBehaviour
             sprite = GetComponent<SpriteRenderer>();
             if (!sprite) Debug.LogWarning("The SpriteRenderer of \"" + name + "\" for script TDS_Damageable is missing !");
         }
+        if(!photonView)
+        {
+            photonView = GetComponent<PhotonView>();
+            if (!photonView) Debug.LogWarning("The PhotonView of \"" + name + "\" for script TDS_Damageable is missing !");
+        }
     }
 
     // Use this for initialization
@@ -296,9 +327,10 @@ public class TDS_Damageable : PunBehaviour
 	// Update is called once per frame
 	protected virtual void Update ()
     {
-        
-	}
-	#endregion
 
-	#endregion
+    }
+
+    #endregion
+
+    #endregion
 }

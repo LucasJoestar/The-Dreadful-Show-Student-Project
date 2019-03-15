@@ -103,7 +103,7 @@ public class TDS_SpawnerArea : PunBehaviour
     /// </summary>
     private void ActivateSpawn()
     {
-        //if (!PhotonNetwork.isMasterClient) return;
+        if (!PhotonNetwork.isMasterClient || waveIndex == waves.Count) return;
         spawnedEnemies.AddRange(waves[waveIndex].GetWaveEnemies(this));
         waveIndex++;
         if (spawnedEnemies.Count == 0) OnNextWave?.Invoke(); 

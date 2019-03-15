@@ -9,7 +9,16 @@
  *	#####################
  *	### MODIFICATIONS ###
  *	#####################
+ *	
+ *  Date :			[21 / 02 / 2019]
+ *	Author :		[THIEBAUT Alexis]
  *
+ *	Changes :
+ *
+ *  Adding more enums.
+ *  	- Added the UIState enum.
+ *  	
+ *  -----------------------------------
  *  Date :			[13 / 02 / 2019]
  *	Author :		[THIEBAUT Alexis]
  *
@@ -123,4 +132,14 @@ public enum PlayerType
     FireEater,
     Juggler,
     Unknown
+}
+
+/// <summary>
+/// All states of the UI during the game
+/// </summary>
+public enum UIState
+{
+    InMenu, 
+    InGame, 
+    InPause
 }

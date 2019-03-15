@@ -1103,6 +1103,35 @@ public class TDS_Player : TDS_Character
 
         return true;
     }
+
+    /// <summary>
+    /// Makes this object take damage and decrease its health if it is not invulnerable.
+    /// </summary>
+    /// <param name="_damage">Amount of damage this inflect to this object.</param>
+    /// <param name="_position">Position in world space from where the hit come from.</param>
+    /// <returns>Returns true if some damages were inflicted, false if none.</returns>
+    public override bool TakeDamage(int _damage, Vector3 _position)
+    {
+        // If parrying, do not take damage
+        if (isParrying) return false;
+
+        // Executes base method
+        if (!base.TakeDamage(_damage, _position)) return false;
+
+        // Is aiming, cancel the preparing throw
+        // And if in combo, reset it
+        if (isAiming) StopAiming();
+        if (comboCurrent.Count > 0) ResetCombo();
+
+        // If not dead, be just hit
+        if (!isDead)
+        {
+            // Triggers associated animation
+            SetAnimHit();
+        }
+
+        return true;
+    }
     #endregion
 
     #region Interactions

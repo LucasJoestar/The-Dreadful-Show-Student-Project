@@ -294,7 +294,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1237004398133840}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.08, y: 0, z: -2.43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4041944261760166}
@@ -513,7 +513,7 @@ MonoBehaviour:
     Color: {r: 1, g: 0.5952403, b: 0, a: 1}
     WhatDetect:
       serializedVersion: 2
-      m_Bits: 48
+      m_Bits: 12288
     TriggerInteraction: 1
     LocalPosition: {x: 0, y: 0, z: 0}
     Size: {x: 1, y: 0.5, z: 1}
@@ -567,7 +567,7 @@ MonoBehaviour:
     m_Bits: 4294966783
   WhatIsObstacle:
     serializedVersion: 2
-    m_Bits: 32
+    m_Bits: 8192
   playerType: 3
   Throwables: []
   thirdHandTransform: {fileID: 0}

@@ -178,7 +178,7 @@ public class TDS_HitBox : MonoBehaviour
 
         // Deal damages and apply effect
         Debug.Log((owner ? owner.name : transform.parent.name) + " attack " + other.name + " !");
-        _target.TakeDamage(CurrentAttack.GetDamages);
+        _target.TakeDamage(CurrentAttack.GetDamages, collider.bounds.center);
 
         TouchedObjects.Add(other, _target);
 
