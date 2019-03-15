@@ -272,6 +272,22 @@ public class TDS_Damageable : PunBehaviour
 
         return true;
     }
+
+    /// <summary>
+    /// Makes this object take damage and decrease its health if it is not invulnerable.
+    /// </summary>
+    /// <param name="_damage">Amount of damage this inflect to this object.</param>
+    /// <param name="_position">Position in world space from where the hit come from.</param>
+    /// <returns>Returns true if some damages were inflicted, false if none.</returns>
+    public virtual bool TakeDamage(int _damage, Vector3 _position)
+    {
+        if (IsInvulnerable) return false;
+
+        HealthCurrent -= _damage;
+        OnTakeDamage?.Invoke(_damage);
+
+        return true;
+    }
     #endregion
 
     #region Unity Methods
