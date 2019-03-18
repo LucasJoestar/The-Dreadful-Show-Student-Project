@@ -3,7 +3,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody))]
-public class TDS_Character : TDS_Damageable
+public abstract class TDS_Character : TDS_Damageable
 {
     /* TDS_Character :
 	 *
@@ -460,6 +460,16 @@ public class TDS_Character : TDS_Damageable
         {
             rigidbody = GetComponent<Rigidbody>();
             if (!rigidbody) Debug.LogWarning("The Rigidbody of \"" + name + "\" for script TDS_Character is missing !");
+        }
+    }
+
+    // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
+    protected virtual void OnDrawGizmos()
+    {
+        if (collider)
+        {
+            Gizmos.color = IsInvulnerable ? new Color(0, 0, 1, .5f) : new Color(0, 1, 0, .5f);
+            Gizmos.DrawCube(collider.bounds.center, collider.bounds.size);
         }
     }
 
