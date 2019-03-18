@@ -126,6 +126,31 @@ public class TDS_PunkEditor : TDS_EnemyEditor
         //Load the editor folded and unfolded values of this class
         isPunkUnfolded = EditorPrefs.GetBool("isPunkUnfolded", isPunkUnfolded);
     }
+
+    protected void OnSceneGUI()
+    {
+        Vector3 _pos = Selection.gameObjects.First().transform.position; 
+        for (int i = 0; i < attacks.arraySize; i++)
+        {
+            SerializedProperty _attack = attacks.GetArrayElementAtIndex(i);
+            switch (_attack.FindPropertyRelative("AnimationID").intValue)
+            {
+                case 6:
+                    Handles.color = Color.red; 
+                    break;
+                case 7:
+                    Handles.color = Color.green;
+                    break;
+                case 8:
+                    Handles.color = Color.blue;
+                    break;
+                default:
+                    Handles.color = Color.white; 
+                    break;
+            }
+            Handles.DrawWireDisc(_pos, Vector3.up, _attack.FindPropertyRelative("predictedRange").floatValue); 
+        }
+    }
     #endregion
 
     #endregion

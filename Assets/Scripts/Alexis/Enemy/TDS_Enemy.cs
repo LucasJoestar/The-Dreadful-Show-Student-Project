@@ -374,7 +374,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected IEnumerator ApplyRecoil(Vector3 _position)
     {
-        Vector3 _direction = new Vector3(_position.x - transform.position.x, 0, 0).normalized; 
+        Vector3 _direction = new Vector3(transform.position.x - _position.x , 0, 0).normalized; 
         Vector3 _pos = transform.position + (_direction * recoilDistance); 
         while(Vector3.Distance(transform.position, _pos) > .1f)
         {
