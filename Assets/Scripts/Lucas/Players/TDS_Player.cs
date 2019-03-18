@@ -755,7 +755,7 @@ public class TDS_Player : TDS_Character
         base.DropObject();
 
         // Updates the animator informations
-        SetAnimHasObject(false);
+        SetAnim(PlayerAnimState.LostObject);
     }
 
     /// <summary>
@@ -769,7 +769,7 @@ public class TDS_Player : TDS_Character
         if (!base.GrabObject(_throwable)) return false;
 
         // Updates animator informations
-        SetAnimHasObject(true);
+        SetAnim(PlayerAnimState.HasObject);
         return true;
     }
 
@@ -818,8 +818,8 @@ public class TDS_Player : TDS_Character
 
         // Triggers the throw animation ;
         // Update the animator
-        if (isGrounded) SetAnimThrow();
-        SetAnimHasObject(false);
+        if (isGrounded) SetAnim(PlayerAnimState.Throw);
+        SetAnim(PlayerAnimState.LostObject);
     }
 
     /// <summary>
@@ -832,8 +832,8 @@ public class TDS_Player : TDS_Character
 
         // Triggers the throw animation ;
         // Update the animator
-        if (isGrounded) SetAnimThrow();
-        SetAnimHasObject(false);
+        if (isGrounded) SetAnim(PlayerAnimState.Throw);
+        SetAnim(PlayerAnimState.LostObject);
     }
     #endregion
 
@@ -955,7 +955,7 @@ public class TDS_Player : TDS_Character
         // Catch
 
         // Triggers the associated animation
-        SetAnimCatch();
+        SetAnim(PlayerAnimState.Catch);
     }
 
     /// <summary>
@@ -977,7 +977,7 @@ public class TDS_Player : TDS_Character
         rigidbody.AddForce(Vector3.right * Mathf.Clamp(speedCurrent, speedInitial, speedMax) * speedCoef * isFacingRight.ToSign() * speedMax * 10);
 
         // Triggers the associated animation
-        SetAnimDodge();
+        SetAnim(PlayerAnimState.Dodge);
 
         // Adds a little force to the player to move him along while dodging
         while (true)
@@ -998,7 +998,7 @@ public class TDS_Player : TDS_Character
     {
         // Parry
         isParrying = true;
-        SetAnimIsParrying(true);
+        SetAnim(PlayerAnimState.Parrying);
 
         OnStartParry?.Invoke();
 
@@ -1009,7 +1009,7 @@ public class TDS_Player : TDS_Character
         }
 
         // Stop parrying
-        SetAnimIsParrying(false);
+        SetAnim(PlayerAnimState.NotParrying);
         isParrying = false;
 
         OnStopParry?.Invoke();
@@ -1064,7 +1064,7 @@ public class TDS_Player : TDS_Character
         base.Die();
 
         // Triggers associated animation
-        SetAnimDie();
+        SetAnim(PlayerAnimState.Die);
     }
 
     /// <summary>
@@ -1098,7 +1098,7 @@ public class TDS_Player : TDS_Character
         if (!isDead)
         {
             // Triggers associated animation
-            SetAnimHit();
+            SetAnim(PlayerAnimState.Hit);
         }
 
         return true;
@@ -1127,7 +1127,7 @@ public class TDS_Player : TDS_Character
         if (!isDead)
         {
             // Triggers associated animation
-            SetAnimHit();
+            SetAnim(PlayerAnimState.Hit);
         }
 
         return true;
@@ -1201,7 +1201,7 @@ public class TDS_Player : TDS_Character
 
             if (_touchedColliders.Length > 0)
             {
-                Debug.Log("Get back in X");
+                //Debug.Log("Get back in X");
 
                 float _xLimit = 0;
 
@@ -1240,7 +1240,7 @@ public class TDS_Player : TDS_Character
 
             if (_touchedColliders.Length > 0)
             {
-                Debug.Log("Get back in Y");
+                //Debug.Log("Get back in Y");
 
                 float _yLimit = 0;
 
@@ -1279,7 +1279,7 @@ public class TDS_Player : TDS_Character
 
             if (_touchedColliders.Length > 0)
             {
-                Debug.Log("Get back in Z");
+                //Debug.Log("Get back in Z");
 
                 float _zLimit = 0;
 
@@ -1317,9 +1317,6 @@ public class TDS_Player : TDS_Character
         // Set the player as grounded if something is detected in the ground detection box
         bool _isGrounded = groundDetectionBox.Overlap(transform.position).Length > 0;
 
-        // Animator grounded parameter
-        int _groundState = 0;
-
         // If grounded value changed, updates all necessary things
         if (_isGrounded != IsGrounded)
         {
@@ -1338,7 +1335,8 @@ public class TDS_Player : TDS_Character
             else
             {
                 speedCoef = 1;
-                _groundState = 0;
+
+                SetAnim(PlayerAnimState.Grounded);
 
                 // Activates event
                 OnGetOnGround?.Invoke();
@@ -1348,13 +1346,12 @@ public class TDS_Player : TDS_Character
         // Updates animator grounded informations
         if (!_isGrounded && !isDodging)
         {
-            _groundState = rigidbody.velocity.y < 0 ? -1 : 1;
+            if (rigidbody.velocity.y < 0) SetAnim(PlayerAnimState.Falling);
+            else SetAnim(PlayerAnimState.Jumping);
 
             // If were attacking, stop the attack
             if (isAttacking) StopAttack();
         }
-
-        SetAnimGroundState(_groundState);
     }
     
     /// <summary>
@@ -1509,13 +1506,13 @@ public class TDS_Player : TDS_Character
             if (!isMoving)
             {
                 isMoving = true;
-                SetAnimIsMoving(true);
+                SetAnim(PlayerAnimState.Run);
             }
         }
         else if (isMoving)
         {
             isMoving = false;
-            SetAnimIsMoving(false);
+            SetAnim(PlayerAnimState.Idle);
         }
     }
 
@@ -1534,87 +1531,78 @@ public class TDS_Player : TDS_Character
     #endregion
 
     #region Animator
-
-    #region Triggers
     /// <summary>
-    /// Set this player catch animation.
+    /// Set this player animator informations.
     /// </summary>
-    public void SetAnimCatch()
+    /// <param name="_state">State of the player animator to set.</param>
+    public void SetAnim(PlayerAnimState _state)
     {
-        animator.SetTrigger("Catch");
-    }
+        switch (_state)
+        {
+            case PlayerAnimState.Idle:
+                animator.SetBool("IsMoving", false);
+                break;
 
-    /// <summary>
-    /// Set this player dying animation.
-    /// </summary>
-    public void SetAnimDie()
-    {
-        animator.SetTrigger("Die");
-    }
+            case PlayerAnimState.Run:
+                animator.SetBool("IsMoving", true);
+                break;
 
-    /// <summary>
-    /// Set this player dodge animation.
-    /// </summary>
-    public void SetAnimDodge()
-    {
-        animator.SetTrigger("Dodge");
-    }
+            case PlayerAnimState.Hit:
+                animator.SetTrigger("Hit");
+                break;
 
-    /// <summary>
-    /// Set this player hit animation.
-    /// </summary>
-    public void SetAnimHit()
-    {
-        animator.SetTrigger("Hit");
-    }
+            case PlayerAnimState.Die:
+                animator.SetTrigger("Die");
+                break;
 
-    /// <summary>
-    /// Set this player throw animation.
-    /// </summary>
-    public void SetAnimThrow()
-    {
-        animator.SetTrigger("Throw");
-    }
-    #endregion
+            case PlayerAnimState.Dodge:
+                animator.SetTrigger("Dodge");
+                break;
 
-    #region Others
-    /// <summary>
-    /// Set this player animator ground state.
-    /// </summary>
-    /// <param name="_state">Negative value when falling, null if on ground & positive if propelled in the air.</param>
-    public void SetAnimGroundState(int _state)
-    {
-        animator.SetInteger("GroundState", _state);
-    }
+            case PlayerAnimState.Throw:
+                animator.SetTrigger("Throw");
+                break;
 
-    /// <summary>
-    /// Set this player animator information if has an object in hand or not.
-    /// </summary>
-    /// <param name="_hasObject">Does this player has an object in hands ?</param>
-    public void SetAnimHasObject(bool _hasObject)
-    {
-        animator.SetBool("HasObject", _hasObject);
-    }
+            case PlayerAnimState.Catch:
+                // Nothing for now
+                break;
 
-    /// <summary>
-    /// Set this player animator information if moving or not.
-    /// </summary>
-    /// <param name="_isParrying">Is this player moving or not ?</param>
-    public void SetAnimIsMoving(bool _isMoving)
-    {
-        animator.SetBool("IsMoving", _isMoving);
-    }
+            case PlayerAnimState.Super:
+                // Nothing for now
+                break;
 
-    /// <summary>
-    /// Set this player animator information if parrying or not.
-    /// </summary>
-    /// <param name="_isParrying">Is this player parrying or not ?</param>
-    public void SetAnimIsParrying(bool _isParrying)
-    {
-        animator.SetBool("IsParrying", _isParrying);
-    }
-    #endregion
+            case PlayerAnimState.Grounded:
+                animator.SetInteger("GroundState", 0);
+                break;
 
+            case PlayerAnimState.Jumping:
+                animator.SetInteger("GroundState", 1);
+                break;
+
+            case PlayerAnimState.Falling:
+                animator.SetInteger("GroundState", -1);
+                break;
+
+            case PlayerAnimState.HasObject:
+                animator.SetBool("HasObject", true);
+                break;
+
+            case PlayerAnimState.LostObject:
+                animator.SetBool("HasObject", false);
+                break;
+
+            case PlayerAnimState.Parrying:
+                animator.SetBool("IsParrying", true);
+                break;
+
+            case PlayerAnimState.NotParrying:
+                animator.SetBool("IsParrying", false);
+                break;
+
+            default:
+                break;
+        }
+    }
     #endregion
 
     #region Inputs
@@ -1678,7 +1666,7 @@ public class TDS_Player : TDS_Character
             isMoving = false;
             SpeedCurrent = 0;
 
-            SetAnimIsMoving(false);
+            SetAnim(PlayerAnimState.Idle);
         }
 
         // When pressing the jump method, check if on ground ; If it's all good, then let's jump
@@ -1730,8 +1718,10 @@ public class TDS_Player : TDS_Character
     }
 
     // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
-    protected virtual void OnDrawGizmos()
+    protected override void OnDrawGizmos()
     {
+        base.OnDrawGizmos();
+
         // Draws the ground detection box gizmos
         groundDetectionBox.DrawGizmos(transform.position);
 
@@ -1785,4 +1775,26 @@ public class TDS_Player : TDS_Character
 	#endregion
 
 	#endregion
+}
+
+/// <summary>
+/// All animation states shared by all players.
+/// </summary>
+public enum PlayerAnimState
+{
+    Idle,
+    Run,
+    Hit,
+    Die,
+    Dodge,
+    Throw,
+    Catch,
+    Super,
+    Grounded,
+    Jumping,
+    Falling,
+    HasObject,
+    LostObject,
+    Parrying,
+    NotParrying
 }

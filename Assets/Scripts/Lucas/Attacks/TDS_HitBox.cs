@@ -164,6 +164,16 @@ public class TDS_HitBox : MonoBehaviour
         }
     }
 
+    // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
+    private void OnDrawGizmos()
+    {
+        if (collider && collider.enabled)
+        {
+            Gizmos.color = new Color(1, 0, 0, .5f);
+            Gizmos.DrawCube(collider.bounds.center, collider.bounds.size);
+        }
+    }
+
     // OnTriggerEnter is called when the GameObject collides with another GameObject
     private void OnTriggerEnter(Collider other)
     {
@@ -178,7 +188,7 @@ public class TDS_HitBox : MonoBehaviour
 
         // Deal damages and apply effect
         Debug.Log((owner ? owner.name : transform.parent.name) + " attack " + other.name + " !");
-        _target.TakeDamage(CurrentAttack.GetDamages, collider.bounds.center);
+        _target.TakeDamage(CurrentAttack.GetDamages, collider.transform.position);
 
         TouchedObjects.Add(other, _target);
 

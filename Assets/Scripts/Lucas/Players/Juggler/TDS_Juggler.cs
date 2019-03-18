@@ -323,7 +323,7 @@ public class TDS_Juggler : TDS_Player
         }
 
         // Updates the animator informations
-        if (CurrentThrowableAmount == 0) SetAnimHasObject(false);
+        if (CurrentThrowableAmount == 0) SetAnim(PlayerAnimState.LostObject);
         else
         {
             // Updates juggling informations
@@ -351,7 +351,7 @@ public class TDS_Juggler : TDS_Player
         UpdateJuggleParameters(true);
 
         // Updates animator informations
-        if (CurrentThrowableAmount > 0) SetAnimHasObject(true);
+        if (CurrentThrowableAmount > 0) SetAnim(PlayerAnimState.HasObject);
 
         return true;
     }
@@ -524,8 +524,8 @@ public class TDS_Juggler : TDS_Player
 
         // Triggers the throw animation ;
         // If not having throwable anymore, update the animator
-        if (isGrounded) SetAnimThrow();
-        if (CurrentThrowableAmount == 0) SetAnimHasObject(false);
+        if (isGrounded) SetAnim(PlayerAnimState.Throw);
+        if (CurrentThrowableAmount == 0) SetAnim(PlayerAnimState.LostObject);
         else
         {
             // Updates juggling informations
@@ -555,8 +555,8 @@ public class TDS_Juggler : TDS_Player
 
         // Triggers the throw animation ;
         // If not having throwable anymore, update the animator
-        if (isGrounded) SetAnimThrow();
-        if (CurrentThrowableAmount == 0) SetAnimHasObject(false);
+        if (isGrounded) SetAnim(PlayerAnimState.Throw);
+        if (CurrentThrowableAmount == 0) SetAnim(PlayerAnimState.LostObject);
         else
         {
             // Updates juggling informations
