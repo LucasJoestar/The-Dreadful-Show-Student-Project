@@ -117,6 +117,11 @@ public abstract class TDS_Enemy : TDS_Character
     [SerializeField] protected float detectionRange = 5;
 
     /// <summary>
+    /// Recoil Distance: When the enemy is hit, he is pushed in a direction with a distance equal of the recoilDistance
+    /// </summary>
+    [SerializeField] protected float recoilDistance = 1;
+
+    /// <summary>
     /// Return the name of the enemy
     /// </summary>
     public string EnemyName { get { return gameObject.name; } }
@@ -367,9 +372,10 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     /// <param name="_recoilDistance">Distance of the recoil</param>
     /// <returns></returns>
-    protected IEnumerator ApplyRecoil(float _recoilDistance)
+    protected IEnumerator ApplyRecoil(Vector3 _position)
     {
-        Vector3 _pos = IsFacingRight ? transform.position + new Vector3(_recoilDistance, 0, 0) : transform.position - new Vector3(_recoilDistance, 0, 0); 
+        Vector3 _direction = new Vector3(_position.x - transform.position.x, 0, 0).normalized; 
+        Vector3 _pos = transform.position + (_direction * recoilDistance); 
         while(Vector3.Distance(transform.position, _pos) > .1f)
         {
             transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * 10); 
@@ -458,6 +464,33 @@ public abstract class TDS_Enemy : TDS_Character
     }
 
     /// <summary>
+    /// Overriden method to take damages
+    /// If the agent take damages
+    /// Stop the movments of the agent
+    /// Stop the Behaviour Method
+    /// Set the state to making decision 
+    /// Change the animation state of the agent
+    /// </summary>
+    /// <param name="_damage">amount of damages</param>
+    /// <returns>if the agent take damages</returns>
+    public override bool TakeDamage(int _damage, Vector3 _position)
+    {
+        bool _isTakingDamages = base.TakeDamage(_damage);
+        if (_isTakingDamages)
+        {
+            agent.StopAgent();
+            StopAllCoroutines();
+            enemyState = EnemyState.MakingDecision;
+            if (!isDead)
+            {
+                StartCoroutine(ApplyRecoil(_position)); 
+                SetAnimationState(EnemyAnimationState.Hit);
+            }
+        }
+        return _isTakingDamages;
+    }
+
+    /// <summary>
     /// Stop the current attack of the agent
     /// Desactivate the hitbox
     /// Set the bool IsAttacking to false
@@ -502,12 +535,6 @@ public abstract class TDS_Enemy : TDS_Character
     {
         if (!animator) return;
         animator.SetInteger("animationState", _animationID);
-    }
-
-    protected void CallRecoil(float _recoilDistance)
-    {
-        if (_recoilDistance <= 0) return; 
-        StartCoroutine(ApplyRecoil(_recoilDistance)); 
     }
     #endregion
 
