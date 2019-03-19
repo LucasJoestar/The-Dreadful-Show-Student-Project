@@ -79,6 +79,14 @@ public enum AxisState
 }
 
 /// <summary>
+/// All animation states exclusively used by the Beard Lady.
+/// </summary>
+public enum BeardLadyAnimState
+{
+
+}
+
+/// <summary>
 /// Animation States of the enemies
 /// </summary>
 public enum EnemyAnimationState
@@ -111,6 +119,37 @@ public enum EnemyState
 }
 
 /// <summary>
+/// All animation states exclusively used by the Fat Lady.
+/// </summary>
+public enum FatLadyAnimState
+{
+    ShortBeard,
+    NormalBeard,
+    LongBeard,
+    VeryVeryLongBeardDude,
+    ArcCirle,
+    HeavyLeap,
+    Turnstile,
+    LinkDude
+}
+
+/// <summary>
+/// All animation states exclusively used by the Fire Eater.
+/// </summary>
+public enum FireEaterAnimState
+{
+
+}
+
+/// <summary>
+/// All animation states exclusively used by the Juggler.
+/// </summary>
+public enum JuggleAnimState
+{
+
+}
+
+/// <summary>
 /// Type of the Minion attack 
 /// used when the attack is called to know which effects and actions apply
 /// </summary>
@@ -120,6 +159,31 @@ public enum MinionAttackType
     TypeTwo,
     TypeThree,
     TypeSpecial
+}
+
+/// <summary>
+/// All animation states shared by all players.
+/// </summary>
+public enum PlayerAnimState
+{
+    Idle,
+    Run,
+    Hit,
+    Die,
+    Dodge,
+    Throw,
+    Catch,
+    LightAttack,
+    HeavyAttack,
+    ComboBreaker,
+    Super,
+    Grounded,
+    Jumping,
+    Falling,
+    HasObject,
+    LostObject,
+    Parrying,
+    NotParrying
 }
 
 /// <summary>

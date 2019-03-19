@@ -149,6 +149,7 @@ public class TDS_Damageable : PunBehaviour
 
             #if UNITY_EDITOR
             if (!UnityEditor.EditorApplication.isPlaying) return;
+            else if (value == false) animator.SetTrigger("REVIVE");
             #endif
 
             if (value == true)

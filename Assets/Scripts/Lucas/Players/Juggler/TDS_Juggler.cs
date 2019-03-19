@@ -109,10 +109,6 @@ public class TDS_Juggler : TDS_Player
 	 *	-----------------------------------
 	*/
 
-    #region Events
-
-    #endregion
-
     #region Fields / Properties
 
     #region Components & References
@@ -274,8 +270,6 @@ public class TDS_Juggler : TDS_Player
     #region Methods
 
     #region Original Methods
-
-    #region Attacks & Actions
 
     #region Aim & Throwables
     /// <summary>
@@ -634,36 +628,18 @@ public class TDS_Juggler : TDS_Player
                 if (_isLight)
                 {
                     currentAttack = attacks[0];
-                    SetAnimLightAttack();
+                    SetAnim(PlayerAnimState.LightAttack);
                 }
                 else
                 {
                     currentAttack = attacks[1];
-                    SetAnimHeavyAttack();
+                    SetAnim(PlayerAnimState.HeavyAttack);
                 }
                 break;
             default:
                 Debug.Log($"The Juggler was not intended to have more than one attack per combo, so... What's going on here ?");
                 break;
         }
-    }
-    #endregion
-
-    #region Animations
-    /// <summary>
-    /// Set this player heavy attack animation.
-    /// </summary>
-    public void SetAnimHeavyAttack()
-    {
-        animator.SetTrigger("Heavy Attack");
-    }
-
-    /// <summary>
-    /// Set this player light attack animation.
-    /// </summary>
-    public void SetAnimLightAttack()
-    {
-        animator.SetTrigger("Light Attack");
     }
     #endregion
 
@@ -723,8 +699,6 @@ public class TDS_Juggler : TDS_Player
         OnGetOnGround += GetBackJuggle;
         OnStopParry += GetBackJuggle;
     }
-    #endregion
-
     #endregion
 
     #endregion

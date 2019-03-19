@@ -719,6 +719,31 @@ Prefab:
       propertyPath: m_Name
       value: Player - Juggler
       objectReference: {fileID: 0}
+    - target: {fileID: 95354370117711050, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 0ab34f80bdd0263428f6160ac594db9f, type: 2}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: isFacingRight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: groundDetectionBox.Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: throwable
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: interactionDetector
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
   m_IsPrefabAsset: 0
@@ -1404,8 +1429,7 @@ MonoBehaviour:
   ProjectilePreviewEndZone: {fileID: 513309969}
   lineRenderer: {fileID: 1955876303}
   Summoner: {fileID: 0}
-  ProjectilePreviewArrow: {fileID: 1320010869}
-  interactionsDetector: {fileID: 1677473895}
+  interactionDetector: {fileID: 0}
   groundDetectionBox:
     Color: {r: 0, g: 1, b: 0, a: 1}
     WhatDetect:
