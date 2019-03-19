@@ -109,10 +109,6 @@ public class TDS_Juggler : TDS_Player
 	 *	-----------------------------------
 	*/
 
-    #region Events
-
-    #endregion
-
     #region Fields / Properties
 
     #region Components & References
@@ -274,8 +270,6 @@ public class TDS_Juggler : TDS_Player
     #region Methods
 
     #region Original Methods
-
-    #region Attacks & Actions
 
     #region Aim & Throwables
     /// <summary>
@@ -618,55 +612,6 @@ public class TDS_Juggler : TDS_Player
     }
     #endregion
 
-    #region Attacks
-    /// <summary>
-    /// Makes the player perform and light or heavy attack.
-    /// </summary>
-    /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
-    public override void Attack(bool _isLight)
-    {
-        base.Attack(_isLight);
-
-        // Triggers the right actions
-        switch (comboCurrent.Count)
-        {
-            case 1:
-                if (_isLight)
-                {
-                    currentAttack = attacks[0];
-                    SetAnimLightAttack();
-                }
-                else
-                {
-                    currentAttack = attacks[1];
-                    SetAnimHeavyAttack();
-                }
-                break;
-            default:
-                Debug.Log($"The Juggler was not intended to have more than one attack per combo, so... What's going on here ?");
-                break;
-        }
-    }
-    #endregion
-
-    #region Animations
-    /// <summary>
-    /// Set this player heavy attack animation.
-    /// </summary>
-    public void SetAnimHeavyAttack()
-    {
-        animator.SetTrigger("Heavy Attack");
-    }
-
-    /// <summary>
-    /// Set this player light attack animation.
-    /// </summary>
-    public void SetAnimLightAttack()
-    {
-        animator.SetTrigger("Light Attack");
-    }
-    #endregion
-
     #region Inputs
     /// <summary>
     /// Checks inputs for this player's all actions.
@@ -723,8 +668,6 @@ public class TDS_Juggler : TDS_Player
         OnGetOnGround += GetBackJuggle;
         OnStopParry += GetBackJuggle;
     }
-    #endregion
-
     #endregion
 
     #endregion

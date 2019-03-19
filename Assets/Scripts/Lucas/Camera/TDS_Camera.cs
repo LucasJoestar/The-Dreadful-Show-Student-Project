@@ -37,10 +37,6 @@ public class TDS_Camera : MonoBehaviour
 	 *	-----------------------------------
 	*/
 
-    #region Events
-
-    #endregion
-
     #region Fields / Properties
     /// <summary>Backing field for <see cref="IsMoving"/></summary>
     [SerializeField] private bool isMoving = false;

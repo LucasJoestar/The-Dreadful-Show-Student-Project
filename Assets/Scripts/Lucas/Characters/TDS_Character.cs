@@ -342,15 +342,8 @@ public abstract class TDS_Character : TDS_Damageable
     #region Methods
 
     #region Original Methods
-    /// <summary>
-    /// Stop or ends the current attack of the character.
-    /// </summary>
-    public virtual void StopAttack()
-    {
-        IsAttacking = false;
-        hitBox.Desactivate();
-    }
 
+    #region Character
     /// <summary>
     /// Flips this character to have they looking at the opposite side.
     /// </summary>
@@ -373,6 +366,16 @@ public abstract class TDS_Character : TDS_Damageable
             SpeedCurrent += Time.deltaTime * ((speedMax - speedInitial) / speedAccelerationTime);
         }
     }
+
+    /// <summary>
+    /// Stop or ends the current attack of the character.
+    /// </summary>
+    public virtual void StopAttack()
+    {
+        IsAttacking = false;
+        hitBox.Desactivate();
+    }
+    #endregion
 
     #region Throwable Object
     /// <summary>
