@@ -86,7 +86,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1341661741757368}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.4985814, y: 0.05, z: -12.306733}
+  m_LocalPosition: {x: 7.98, y: -6, z: -5.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4851926840199904}
@@ -305,12 +305,12 @@ MonoBehaviour:
   isFacingRight: 1
   IsPacific: 0
   IsParalyzed: 0
+  aimAngle: 45
   speedAccelerationTime: 0.5
   speedCoef: 1
   speedCurrent: 0
   speedInitial: 1
   speedMax: 2
-  aimAngle: 45
   throwBonusDamagesMax: 45
   throwBonusDamagesMin: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
@@ -318,6 +318,7 @@ MonoBehaviour:
   canThrow: 1
   enemyState: 0
   detectionRange: 5
+  recoilDistance: 0.65
   agent: {fileID: 114125368745151192}
   attacks:
   - Name: HeadButt
@@ -327,8 +328,26 @@ MonoBehaviour:
     Description: BOUM
     isDistanceAttack: 0
     cooldown: 1.5
-    predictedRange: 1.2
+    predictedRange: 1.1
     probability: 100
+  - Name: Bar Hit
+    AnimationID: 7
+    damagesMax: 20
+    damagesMin: 15
+    Description: PAF!
+    isDistanceAttack: 0
+    cooldown: 1.5
+    predictedRange: 1.94
+    probability: 0
+  - Name: Kick
+    AnimationID: 8
+    damagesMax: 8
+    damagesMin: 5
+    Description: KAPOW!
+    isDistanceAttack: 0
+    cooldown: 1
+    predictedRange: 1.48
+    probability: 0
 --- !u!114 &114745190491073254
 MonoBehaviour:
   m_ObjectHideFlags: 1

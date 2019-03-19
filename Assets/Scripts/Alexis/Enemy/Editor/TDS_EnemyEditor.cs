@@ -105,7 +105,9 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.canThrow"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty canThrow = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.detectionRange"/> of type <see cref="float"/>.</summary>
-    private SerializedProperty detectionRange = null;
+    protected SerializedProperty detectionRange = null;
+    /// <summary>SerializedProperty for <see cref="TDS_Enemy.recoilDistance"/> of type <see cref="float"/>.</summary>
+    private SerializedProperty recoilDistance = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.enemyState"/> of type <see cref="EnemyState"/>.</summary>
     private SerializedProperty enemyState = null;
     #endregion
@@ -205,6 +207,11 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         }
 
         // Draw a header for the enemy detection settings 
+        EditorGUILayout.LabelField("Recoil", TDS_EditorUtility.HeaderStyle);
+        TDS_EditorUtility.FloatSlider("Recoil Distance", "The distance the enemy has to be pushed when they're hit", recoilDistance, .5f, 5);
+        GUILayout.Space(3);
+
+        // Draw a header for the enemy detection settings 
         EditorGUILayout.LabelField("Detection", TDS_EditorUtility.HeaderStyle);
         TDS_EditorUtility.FloatSlider("Detection range", "The maximum distance of the field of view of the enemy", detectionRange, 1, 25);
         GUILayout.Space(3);
@@ -238,6 +245,7 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         canBeDown = serializedObject.FindProperty("canBeDown");
         canThrow = serializedObject.FindProperty("canThrow");
         detectionRange = serializedObject.FindProperty("detectionRange");
+        recoilDistance = serializedObject.FindProperty("recoilDistance"); 
         enemyState = serializedObject.FindProperty("enemyState"); 
 
         //Load the editor folded and unfolded values of this class
@@ -253,11 +261,6 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         DrawEnemyEditor(); 
 
         base.OnInspectorGUI();
-    }
-
-    private void OnSceneGUI()
-    {
-        Handles.DrawWireDisc((serializedObject.targetObject as GameObject).transform.position, Vector3.up, detectionRange.floatValue);
     }
     #endregion
 
