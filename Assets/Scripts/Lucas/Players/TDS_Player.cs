@@ -343,11 +343,6 @@ public class TDS_Player : TDS_Character
     #endregion
 
     #region Variables
-    /// <summary>
-    /// The actually performing attack.
-    /// </summary>
-    [SerializeField] protected TDS_Attack currentAttack = null;
-
     /// <summary>Backing field for <see cref="Attacks"/></summary>
     [SerializeField] protected TDS_Attack[] attacks = new TDS_Attack[] { };
 
@@ -820,20 +815,23 @@ public class TDS_Player : TDS_Character
     /// <summary>
     /// Makes the player active its planned attack.
     /// </summary>
-    public virtual void ActiveAttack()
+    /// <param name="_attackIndex">Index of the attack to activate from <see cref="attacks"/>.</param>
+    public virtual void ActiveAttack(int _attackIndex)
     {
-        // If not currently having an attack to perform, return
-        if (currentAttack == null)
+        #if UNITY_EDITOR
+        // If index is out of range, debug it
+        if ((_attackIndex < 0) || (_attackIndex >= attacks.Length))
         {
             Debug.LogWarning($"The Player \"{name}\" has no selected attack to perform");
             return;
         }
+        #endif
 
         // If aiming, stop
         if (isAiming) StopAiming();
 
         // Activate the hit box
-        hitBox.Activate(currentAttack);
+        hitBox.Activate(attacks[_attackIndex]);
     }
 
     /// <summary>
@@ -855,6 +853,14 @@ public class TDS_Player : TDS_Character
         {
             Invoke("ResetCombo", comboResetTime);
         }
+
+        // Set animator
+        if (_isLight) SetAnim(PlayerAnimState.LightAttack);
+        else SetAnim(PlayerAnimState.HeavyAttack);
+
+        #if UNITY_EDITOR
+        if (comboCurrent.Count > comboMax) Debug.LogError($"Player \"{name}\" should not have a combo of {comboCurrent.Count} !");
+        #endif
     }
 
     /// <summary>
@@ -886,8 +892,6 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public override void StopAttack()
     {
-        currentAttack = null;
-
         // Stop it, please
         hitBox.Desactivate();
 
@@ -1292,8 +1296,6 @@ public class TDS_Player : TDS_Character
             {
                 speedCoef = 1;
 
-                SetAnim(PlayerAnimState.Grounded);
-
                 // Activates event
                 OnGetOnGround?.Invoke();
             }
@@ -1307,6 +1309,10 @@ public class TDS_Player : TDS_Character
 
             // If were attacking, stop the attack
             if (isAttacking) StopAttack();
+        }
+        else
+        {
+            SetAnim(PlayerAnimState.Grounded);
         }
     }
     
@@ -1606,7 +1612,7 @@ public class TDS_Player : TDS_Character
 
         // Moves the player on the X & Z axis regarding the the axis pressure.
         float _horizontal = Input.GetAxis(HorizontalAxis);
-        float _vertical = Input.GetAxis(VerticalAxis) * .75f;
+        float _vertical = Input.GetAxis(VerticalAxis) * 2f;
 
         if (_horizontal != 0 || _vertical != 0)
         {

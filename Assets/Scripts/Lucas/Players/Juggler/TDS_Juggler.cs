@@ -612,37 +612,6 @@ public class TDS_Juggler : TDS_Player
     }
     #endregion
 
-    #region Attacks
-    /// <summary>
-    /// Makes the player perform and light or heavy attack.
-    /// </summary>
-    /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
-    public override void Attack(bool _isLight)
-    {
-        base.Attack(_isLight);
-
-        // Triggers the right actions
-        switch (comboCurrent.Count)
-        {
-            case 1:
-                if (_isLight)
-                {
-                    currentAttack = attacks[0];
-                    SetAnim(PlayerAnimState.LightAttack);
-                }
-                else
-                {
-                    currentAttack = attacks[1];
-                    SetAnim(PlayerAnimState.HeavyAttack);
-                }
-                break;
-            default:
-                Debug.Log($"The Juggler was not intended to have more than one attack per combo, so... What's going on here ?");
-                break;
-        }
-    }
-    #endregion
-
     #region Inputs
     /// <summary>
     /// Checks inputs for this player's all actions.

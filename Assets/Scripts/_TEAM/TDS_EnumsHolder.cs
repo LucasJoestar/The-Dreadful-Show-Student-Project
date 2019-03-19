@@ -79,11 +79,14 @@ public enum AxisState
 }
 
 /// <summary>
-/// All animation states exclusively used by the Beard Lady.
+/// All different states of the Beard Lady's beard.
 /// </summary>
-public enum BeardLadyAnimState
+public enum BeardState
 {
-
+    Short,
+    Normal,
+    Long,
+    VeryVeryLongDude
 }
 
 /// <summary>
@@ -116,37 +119,6 @@ public enum EnemyState
     Attacking, 
     PickingUpObject, 
     ThrowingObject
-}
-
-/// <summary>
-/// All animation states exclusively used by the Fat Lady.
-/// </summary>
-public enum FatLadyAnimState
-{
-    ShortBeard,
-    NormalBeard,
-    LongBeard,
-    VeryVeryLongBeardDude,
-    ArcCirle,
-    HeavyLeap,
-    Turnstile,
-    LinkDude
-}
-
-/// <summary>
-/// All animation states exclusively used by the Fire Eater.
-/// </summary>
-public enum FireEaterAnimState
-{
-
-}
-
-/// <summary>
-/// All animation states exclusively used by the Juggler.
-/// </summary>
-public enum JuggleAnimState
-{
-
 }
 
 /// <summary>
