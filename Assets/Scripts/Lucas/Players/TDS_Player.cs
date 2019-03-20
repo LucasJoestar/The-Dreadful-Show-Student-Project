@@ -880,11 +880,11 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void ResetCombo()
     {
+        if (ComboCurrent.Count < comboMax) SetAnim(PlayerAnimState.ComboBreaker);
+
         ComboCurrent = new List<bool>();
 
         if (IsAttacking) StopAttack();
-
-        SetAnim(PlayerAnimState.ComboBreaker);
     }
 
     /// <summary>
@@ -951,7 +951,7 @@ public class TDS_Player : TDS_Character
         // Adds a little force to the player to move him along while dodging
         while (true)
         {
-            rigidbody.AddForce(Vector3.right * isFacingRight.ToSign() * speedCoef * speedMax * 4);
+            rigidbody.AddForce(Vector3.right * isFacingRight.ToSign() * speedCoef * speedMax * (isGrounded ? 6 : 4));
             Move(transform.position + (isFacingRight ? Vector3.right : Vector3.left));
 
             yield return new WaitForEndOfFrame();
@@ -966,7 +966,11 @@ public class TDS_Player : TDS_Character
     public virtual IEnumerator Parry()
     {
         // Parry
+        bool _wasInvulnerable = IsInvulnerable;
+
+        IsInvulnerable = true;
         isParrying = true;
+        
         SetAnim(PlayerAnimState.Parrying);
 
         OnStartParry?.Invoke();
@@ -980,6 +984,7 @@ public class TDS_Player : TDS_Character
         // Stop parrying
         SetAnim(PlayerAnimState.NotParrying);
         isParrying = false;
+        IsInvulnerable = _wasInvulnerable;
 
         OnStopParry?.Invoke();
     }
@@ -1043,9 +1048,6 @@ public class TDS_Player : TDS_Character
     /// <returns>Returns true if some damages were inflicted, false if none.</returns>
     public override bool TakeDamage(int _damage)
     {
-        // If parrying, do not take damage
-        if (isParrying) return false;
-
         // Executes base method
         if (!base.TakeDamage(_damage)) return false;
 
@@ -1072,9 +1074,6 @@ public class TDS_Player : TDS_Character
     /// <returns>Returns true if some damages were inflicted, false if none.</returns>
     public override bool TakeDamage(int _damage, Vector3 _position)
     {
-        // If parrying, do not take damage
-        if (isParrying) return false;
-
         // Executes base method
         if (!base.TakeDamage(_damage, _position)) return false;
 
@@ -1575,6 +1574,16 @@ public class TDS_Player : TDS_Character
         // If dodging, parrying or attacking, do not perform action
         if (isAttacking || isDodging || isParrying) return;
 
+        // Check throw
+        if (Input.GetButtonDown(ThrowButton) || TDS_Input.GetAxisDown(ThrowButton)) PrepareThrow();
+
+        // If having a throwable and it's not a player, throw it on interact button pressed
+        if (throwable && playerType != PlayerType.Juggler)
+        {
+            if (Input.GetButtonDown(InteractButton)) ThrowObject();
+            return;
+        }
+
         // Check non-agressive actions
         if (Input.GetButtonDown(InteractButton)) Interact();
 
@@ -1585,12 +1594,10 @@ public class TDS_Player : TDS_Character
         // If the character is pacific, forbid him to attack
         if (IsPacific) return;
 
-        // Checks potentially agressives actions
-        if (Input.GetButtonDown(ThrowButton) || TDS_Input.GetAxisDown(ThrowButton)) PrepareThrow();
-
         // If not on ground, return
         if (!isGrounded) return;
 
+        // Checks potentially agressives actions
         if (Input.GetButtonDown(CatchButton)) Catch();
 
         else if (Input.GetButtonDown(LightAttackButton)) Attack(true);
@@ -1698,9 +1705,12 @@ public class TDS_Player : TDS_Character
 
         Gizmos.DrawIcon(_gizmosPos, "AimIcon", true);
 
-        // Draws a gizmos at the hands transform ideal position
-        Gizmos.DrawSphere(handsTransform.position, .07f);
-        Gizmos.DrawIcon(handsTransform.position, "HandIcon", true);
+        if (handsTransform)
+        {
+            // Draws a gizmos at the hands transform ideal position
+            Gizmos.DrawSphere(handsTransform.position, .07f);
+            Gizmos.DrawIcon(handsTransform.position, "HandIcon", true);
+        }
     }
 
     // Use this for initialization

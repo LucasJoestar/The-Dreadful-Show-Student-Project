@@ -479,7 +479,13 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         // Draws informations about the current combo if in play mode
         if (EditorApplication.isPlaying && !isPlayerMultiEditing)
         {
-            TDS_EditorUtility.ProgressBar(25, (float)comboCurrent.arraySize / comboMax.intValue, "Combo : " + comboCurrent.arraySize);
+            string _combo = string.Empty;
+            for (int _i = 0; _i < comboCurrent.arraySize; _i++)
+            {
+                _combo += comboCurrent.GetArrayElementAtIndex(_i).boolValue ? "L" : "H";
+            } 
+
+            TDS_EditorUtility.ProgressBar(25, (float)comboCurrent.arraySize / comboMax.intValue, $"Combo : {comboCurrent.arraySize} | {_combo}");
 
             GUILayout.Space(5);
         }
