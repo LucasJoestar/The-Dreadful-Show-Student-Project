@@ -183,6 +183,38 @@ public abstract class TDS_Enemy : TDS_Character
 
     #region IEnumerator
     /// <summary>
+    /// Apply the recoil force on the enemy
+    /// </summary>
+    /// <param name="_recoilDistance">Distance of the recoil</param>
+    /// <returns></returns>
+    protected IEnumerator ApplyRecoil(Vector3 _position)
+    {
+        Vector3 _direction = new Vector3(transform.position.x - _position.x, 0, 0).normalized;
+        Vector3 _pos = transform.position + (_direction * recoilDistance);
+        while (Vector3.Distance(transform.position, _pos) > .1f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * 10);
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    /// <summary>
+    /// Apply a recoil of a certain distance in a certain time
+    /// </summary>
+    /// <param name="_distance">recoil distance</param>
+    /// <param name="_time">Time where to apply the recoil</param>
+    /// <returns></returns>
+    protected IEnumerator ApplyRecoilDeath(float _distance, float _time)
+    {
+        Vector3 _pos = transform.position + (transform.right * _distance);
+        while (Vector3.Distance(transform.position, _pos) > .1f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, _pos, _distance/_time * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    /// <summary>
     /// Wait a certain amount of seconds before starting Behaviour Method 
     /// Called after getting hit to apply a recovery time
     /// </summary>
@@ -367,21 +399,6 @@ public abstract class TDS_Enemy : TDS_Character
         yield break;
     }
 
-    /// <summary>
-    /// Apply the recoil force on the enemy
-    /// </summary>
-    /// <param name="_recoilDistance">Distance of the recoil</param>
-    /// <returns></returns>
-    protected IEnumerator ApplyRecoil(Vector3 _position)
-    {
-        Vector3 _direction = new Vector3(transform.position.x - _position.x , 0, 0).normalized; 
-        Vector3 _pos = transform.position + (_direction * recoilDistance); 
-        while(Vector3.Distance(transform.position, _pos) > .1f)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * 10); 
-            yield return new WaitForEndOfFrame(); 
-        }
-    }
     #endregion
 
     #region TDS_Player
@@ -405,7 +422,6 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Die()
     {
         base.Die();
-        animator.applyRootMotion = true;
         SetAnimationState((int)EnemyAnimationState.Death);
         if (Area) Area.RemoveEnemy(this);
     }
@@ -484,9 +500,11 @@ public abstract class TDS_Enemy : TDS_Character
             enemyState = EnemyState.MakingDecision;
             if (!isDead)
             {
-                StartCoroutine(ApplyRecoil(_position)); 
+                StartCoroutine(ApplyRecoil(_position));
                 SetAnimationState((int)EnemyAnimationState.Hit);
             }
+            else StartCoroutine(ApplyRecoilDeath(2.2f, .35f));
+
         }
         return _isTakingDamages;
     }
