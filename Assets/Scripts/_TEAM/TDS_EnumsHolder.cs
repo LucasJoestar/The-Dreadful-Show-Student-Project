@@ -79,6 +79,17 @@ public enum AxisState
 }
 
 /// <summary>
+/// All different states of the Beard Lady's beard.
+/// </summary>
+public enum BeardState
+{
+    Short,
+    Normal,
+    Long,
+    VeryVeryLongDude
+}
+
+/// <summary>
 /// Animation States of the enemies
 /// </summary>
 public enum EnemyAnimationState
@@ -120,6 +131,31 @@ public enum MinionAttackType
     TypeTwo,
     TypeThree,
     TypeSpecial
+}
+
+/// <summary>
+/// All animation states shared by all players.
+/// </summary>
+public enum PlayerAnimState
+{
+    Idle,
+    Run,
+    Hit,
+    Die,
+    Dodge,
+    Throw,
+    Catch,
+    LightAttack,
+    HeavyAttack,
+    ComboBreaker,
+    Super,
+    Grounded,
+    Jumping,
+    Falling,
+    HasObject,
+    LostObject,
+    Parrying,
+    NotParrying
 }
 
 /// <summary>

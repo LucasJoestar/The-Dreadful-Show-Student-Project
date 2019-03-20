@@ -17,90 +17,166 @@ public class TDS_BeardLady : TDS_Player
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
-	 *	Date :			[18 / 03 / 2019]
+	 *	Date :			[19 / 03 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
 	 *	Changes :
 	 *
 	 *	Creation of the TDS_BeardLady class.
      *	
-     *	    
+     *	    Implemented methods to regulate the state of the beard.
 	 *
 	 *	-----------------------------------
 	*/
 
-    #region Events
-
-    #endregion
-
     #region Fields / Properties
+    /// <summary>Backing field for <see cref="CurrentBeardState"/>.</summary>
+    [SerializeField] private BeardState currentBeardState = BeardState.Normal;
 
+    /// <summary>
+    /// Current state of the Beard Lady's beard.
+    /// The more long it is, the more long the character range is.
+    /// </summary>
+    public BeardState CurrentBeardState
+    {
+        get { return currentBeardState; }
+        private set
+        {
+            currentBeardState = value;
+
+            SetAnimBeard(value);
+        }
+    }
+
+    /// <summary>Backing field for <see cref=""/>.</summary>
+    [SerializeField] private float beardGrowInterval = 5;
+
+    /// <summary>
+    /// Interval at which the Beard Lady's beard grow if everything is okay.
+    /// </summary>
+    public float BeardGrowInterval
+    {
+        get { return beardGrowInterval; }
+        set
+        {
+            if (value < 0) value = 0;
+            beardGrowInterval = value;
+
+            ResetBeardGrow();
+        }
+    }
     #endregion
 
     #region Methods
 
     #region Original Methods
 
-    #region Attacks
+    #region Beard
     /// <summary>
-    /// Makes the player perform and light or heavy attack.
+    /// Let's degrade that kind woman's beard !
     /// </summary>
-    /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
-    public override void Attack(bool _isLight)
+    private void DegradeBeard()
     {
-        base.Attack(_isLight);
-
-        // Triggers the right actions
-        switch (comboCurrent.Count)
+        if (currentBeardState > 0)
         {
-            case 1:
-                if (_isLight)
-                {
-                    currentAttack = attacks[0];
-                    //SetAnimLightAttack();
-                }
-                else
-                {
-                    currentAttack = attacks[1];
-                    //SetAnimHeavyAttack();
-                }
-                break;
+            if (currentBeardState == BeardState.VeryVeryLongDude)
+            {
+                InvokeBeard();
+            }
 
-            case 2:
-                if (_isLight)
-                {
-                    currentAttack = attacks[0];
-                    //SetAnimLightAttack();
-                }
-                else
-                {
-                    currentAttack = attacks[1];
-                    //SetAnimHeavyAttack();
-                }
-                break;
-
-            case 3:
-                if (_isLight)
-                {
-                    currentAttack = attacks[0];
-                    //SetAnimLightAttack();
-                }
-                else
-                {
-                    currentAttack = attacks[1];
-                    //SetAnimHeavyAttack();
-                }
-                break;
-
-            default:
-                Debug.Log($"There should not be more than 3 attacks for the Beard Lady, so here's a problem.");
-                break;
+            CurrentBeardState--;
         }
+    }
+
+    /// <summary>
+    /// Let's grow the beard of this sweet lady !
+    /// </summary>
+    private void GrowBeard()
+    {
+        CurrentBeardState++;
+
+        if (currentBeardState == BeardState.VeryVeryLongDude)
+        {
+            CancelInvokeBeard();
+        }
+    }
+
+    /// <summary>
+    /// Reset variables used to grow the beard.
+    /// </summary>
+    private void ResetBeardGrow()
+    {
+        CancelInvokeBeard();
+        InvokeBeard();
+    }
+
+    /// <summary>
+    /// Invoke repeatedly the method to grow the beard.
+    /// </summary>
+    private void InvokeBeard() => InvokeRepeating("GrowBeard", beardGrowInterval, beardGrowInterval);
+
+    /// <summary>
+    /// Cancel invoke of the method to grow the beard.
+    /// </summary>
+    private void CancelInvokeBeard() => CancelInvoke("GrowBeard");
+    #endregion
+
+    #region Health
+    /// <summary>
+    /// Method called when the object dies.
+    /// Override this to implement code for a specific object.
+    /// </summary>
+    protected override void Die()
+    {
+        base.Die();
+
+        // Stop beard from growing
+        CancelInvoke("GrowBeard");
+    }
+
+    /// <summary>
+    /// Makes this object take damage and decrease its health if it is not invulnerable.
+    /// </summary>
+    /// <param name="_damage">Amount of damage this inflect to this object.</param>
+    /// <returns>Returns true if some damages were inflicted, false if none.</returns>
+    public override bool TakeDamage(int _damage)
+    {
+        // Executes base method
+        if (!base.TakeDamage(_damage)) return false;
+
+        // Reset beard grow on hit
+        ResetBeardGrow();
+
+        return true;
+    }
+
+    /// <summary>
+    /// Makes this object take damage and decrease its health if it is not invulnerable.
+    /// </summary>
+    /// <param name="_damage">Amount of damage this inflect to this object.</param>
+    /// <param name="_position">Position in world space from where the hit come from.</param>
+    /// <returns>Returns true if some damages were inflicted, false if none.</returns>
+    public override bool TakeDamage(int _damage, Vector3 _position)
+    {
+        // Executes base method
+        if (!base.TakeDamage(_damage, _position)) return false;
+
+        // Reset beard grow on hit
+        ResetBeardGrow();
+
+        return true;
     }
     #endregion
 
     #region Animations
-
+    /// <summary>
+    /// Set the Beard Lady's beard animator state.
+    /// </summary>
+    /// <param name="_state">State of the beard.</param>
+    public void SetAnimBeard(BeardState _state)
+    {
+        animator.SetInteger("Beard", (int)_state);
+    }
     #endregion
 
     #endregion
@@ -116,6 +192,10 @@ public class TDS_BeardLady : TDS_Player
     protected override void Start()
     {
         base.Start();
+
+        // Let's make this beard grow repeatedly until it reach its maximum value
+        if (currentBeardState != BeardState.VeryVeryLongDude) InvokeBeard();
+        SetAnimBeard(currentBeardState);
     }
 	
 	// Update is called once per frame

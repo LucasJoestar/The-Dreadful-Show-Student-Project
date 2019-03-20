@@ -233,14 +233,9 @@ public class TDS_Player : TDS_Character
     public TDS_Summoner Summoner = null;
 
     /// <summary>
-    /// Arrow to set at the end of the projectile preview when aiming.
-    /// </summary>
-    public Transform ProjectilePreviewArrow = null;
-
-    /// <summary>
     /// <see cref="TDS_Trigger"/> used to detect when possible interactions with the environment are availables.
     /// </summary>
-    [SerializeField] protected TDS_Trigger interactionsDetector = null;
+    [SerializeField] protected TDS_Trigger interactionDetector = null;
 
     /// <summary>
     /// Virtual box used to detect if the player is grounded or not.
@@ -348,19 +343,14 @@ public class TDS_Player : TDS_Character
     #endregion
 
     #region Variables
-    /// <summary>
-    /// The actually performing attack.
-    /// </summary>
-    [SerializeField] protected TDS_Attack currentAttack = null;
-
     /// <summary>Backing field for <see cref="Attacks"/></summary>
-    [SerializeField] protected List<TDS_Attack> attacks = new List<TDS_Attack>();
+    [SerializeField] protected TDS_Attack[] attacks = new TDS_Attack[] { };
 
     /// <summary>
     /// All attacks this player can perform.
     /// Contains informations about their animation, damages, effect and others.
     /// </summary>
-    public List<TDS_Attack> Attacks
+    public TDS_Attack[] Attacks
     {
         get { return attacks; }
         protected set { attacks = value; }
@@ -607,14 +597,14 @@ public class TDS_Player : TDS_Character
 
     #region Debug & Script memory Variables
     /// <summary>
-    /// The position of the player at the previous frame
-    /// </summary>
-    private Vector3 previousPosition = Vector3.zero;
-
-    /// <summary>
     /// The position of the player collider at the previous frame
     /// </summary>
     private Vector3 previousColliderPosition = Vector3.zero;
+
+    /// <summary>
+    /// The position of the player at the previous frame
+    /// </summary>
+    private Vector3 previousPosition = Vector3.zero;
 
     /// <summary>
     /// Velocity used to throw an object.
@@ -663,14 +653,6 @@ public class TDS_Player : TDS_Character
         StopAiming();
 
         yield break;
-    }
-
-    /// <summary>
-    /// Update aim point on flip.
-    /// </summary>
-    protected virtual void AimFlip()
-    {
-        throwVelocity.x *= -1;
     }
 
     /// <summary>
@@ -729,14 +711,6 @@ public class TDS_Player : TDS_Character
             // Set end point
             _endPoint = throwAimingPoint;
         }
-
-        // Set the arrow rotation so it is now pointing at the aiming point
-        Vector3 _direction = _endPoint - _raycastedMotionPoints[throwPreviewPrecision - 2];
-        _direction.x *= isFacingRight.ToSign();
-
-        Quaternion _arrowRotation = Quaternion.FromToRotation(Vector3.up, _direction);
-
-        ProjectilePreviewArrow.rotation = Quaternion.Lerp(ProjectilePreviewArrow.rotation, _arrowRotation, Time.deltaTime * 15);
 
         // Draws the trajectory preview
         for (int _i = 0; _i < _raycastedMotionPoints.Length; _i++)
@@ -841,20 +815,23 @@ public class TDS_Player : TDS_Character
     /// <summary>
     /// Makes the player active its planned attack.
     /// </summary>
-    public virtual void ActiveAttack()
+    /// <param name="_attackIndex">Index of the attack to activate from <see cref="attacks"/>.</param>
+    public virtual void ActiveAttack(int _attackIndex)
     {
-        // If not currently having an attack to perform, return
-        if (currentAttack == null)
+        #if UNITY_EDITOR
+        // If index is out of range, debug it
+        if ((_attackIndex < 0) || (_attackIndex >= attacks.Length))
         {
             Debug.LogWarning($"The Player \"{name}\" has no selected attack to perform");
             return;
         }
+        #endif
 
         // If aiming, stop
         if (isAiming) StopAiming();
 
         // Activate the hit box
-        hitBox.Activate(currentAttack);
+        hitBox.Activate(attacks[_attackIndex]);
     }
 
     /// <summary>
@@ -876,6 +853,14 @@ public class TDS_Player : TDS_Character
         {
             Invoke("ResetCombo", comboResetTime);
         }
+
+        // Set animator
+        if (_isLight) SetAnim(PlayerAnimState.LightAttack);
+        else SetAnim(PlayerAnimState.HeavyAttack);
+
+        #if UNITY_EDITOR
+        if (comboCurrent.Count > comboMax) Debug.LogError($"Player \"{name}\" should not have a combo of {comboCurrent.Count} !");
+        #endif
     }
 
     /// <summary>
@@ -898,22 +883,8 @@ public class TDS_Player : TDS_Character
         ComboCurrent = new List<bool>();
 
         if (IsAttacking) StopAttack();
-    }
 
-    /// <summary>
-    /// Set the current attack of the player.
-    /// </summary>
-    /// <param name="_index">Index from <see cref="Attacks"/> of the attack.</param>
-    public void SetCurrentAttack(int _index)
-    {
-        // If the index is not valid, return
-        if (_index < 0 || attacks.Count <= _index)
-        {
-            Debug.LogWarning($"The Player \"{name}\" could not find attack at index {_index}");
-            return;
-        }
-
-        currentAttack = attacks[_index];
+        SetAnim(PlayerAnimState.ComboBreaker);
     }
 
     /// <summary>
@@ -921,8 +892,6 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public override void StopAttack()
     {
-        currentAttack = null;
-
         // Stop it, please
         hitBox.Desactivate();
 
@@ -1068,15 +1037,6 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
-    /// Makes this object be healed and restore its health.
-    /// </summary>
-    /// <param name="_heal">Amount of health point to restore.</param>
-    public override void Heal(int _heal)
-    {
-        base.Heal(_heal);
-    }
-
-    /// <summary>
     /// Makes this object take damage and decrease its health if it is not invulnerable.
     /// </summary>
     /// <param name="_damage">Amount of damage this inflect to this object.</param>
@@ -1143,7 +1103,7 @@ public class TDS_Player : TDS_Character
     {
         // Interact !
         // Get the nearest object in range ; if null, cannot interact, so return false
-        GameObject _nearestObject = interactionsDetector.NearestObject;
+        GameObject _nearestObject = interactionDetector.NearestObject;
 
         if (!_nearestObject) return false;
 
@@ -1336,8 +1296,6 @@ public class TDS_Player : TDS_Character
             {
                 speedCoef = 1;
 
-                SetAnim(PlayerAnimState.Grounded);
-
                 // Activates event
                 OnGetOnGround?.Invoke();
             }
@@ -1352,6 +1310,10 @@ public class TDS_Player : TDS_Character
             // If were attacking, stop the attack
             if (isAttacking) StopAttack();
         }
+        else
+        {
+            SetAnim(PlayerAnimState.Grounded);
+        }
     }
     
     /// <summary>
@@ -1361,8 +1323,8 @@ public class TDS_Player : TDS_Character
     {
         base.Flip();
 
-        // Executes method for aim update
-        AimFlip();
+        // Flip X throw velocity
+        throwVelocity.x *= -1;
     }
 
     /// <summary>
@@ -1399,7 +1361,7 @@ public class TDS_Player : TDS_Character
     /// <summary>
     /// Moves the player in a direction according to a position.
     /// </summary>
-    /// <param name="_newPosition">Position where to move the player.</param>
+    /// <param name="_newPosition">Position where to move the player. (World space)</param>
     public void Move(Vector3 _newPosition)
     {
         // Increases speed if needed
@@ -1515,19 +1477,6 @@ public class TDS_Player : TDS_Character
             SetAnim(PlayerAnimState.Idle);
         }
     }
-
-    /// <summary>
-    /// Moves the player in a direction according to a position.
-    /// </summary>
-    /// <param name="_newPosition">Position where to move the player.</param>
-    /// <param name="_isDirection">Is the given position a direction regarding to this player position ? False mean it's a position in world space. Defaults to false.</param>
-    public void Move(Vector3 _newPosition, bool _isDirection)
-    {
-        // Transforms the given vector in a world position if it's a direction
-        if (_isDirection) _newPosition += transform.position;
-
-        Move(_newPosition);
-    }
     #endregion
 
     #region Animator
@@ -1565,6 +1514,18 @@ public class TDS_Player : TDS_Character
 
             case PlayerAnimState.Catch:
                 // Nothing for now
+                break;
+
+            case PlayerAnimState.LightAttack:
+                animator.SetTrigger("LightAttack");
+                break;
+
+            case PlayerAnimState.HeavyAttack:
+                animator.SetTrigger("HeavyAttack");
+                break;
+
+            case PlayerAnimState.ComboBreaker:
+                animator.SetTrigger("ComboBreaker");
                 break;
 
             case PlayerAnimState.Super:
@@ -1651,14 +1612,14 @@ public class TDS_Player : TDS_Character
 
         // Moves the player on the X & Z axis regarding the the axis pressure.
         float _horizontal = Input.GetAxis(HorizontalAxis);
-        float _vertical = Input.GetAxis(VerticalAxis) * .75f;
+        float _vertical = Input.GetAxis(VerticalAxis) * 2f;
 
         if (_horizontal != 0 || _vertical != 0)
         {
             // Flip the player on the X axis if needed
             if ((_horizontal > 0 && !isFacingRight) || (_horizontal < 0 && isFacingRight)) Flip();
 
-            Move(new Vector3(_horizontal, 0, _vertical), true);
+            Move(transform.position + new Vector3(_horizontal, 0, _vertical));
         }
         // If stoping moving, update informations
         else if (isMoving)
@@ -1693,6 +1654,11 @@ public class TDS_Player : TDS_Character
         {
             lineRenderer = GetComponentInChildren<LineRenderer>();
             if (!lineRenderer) Debug.LogWarning("The LineRenderer of \"" + name + "\" for script TDS_Player is missing !");
+        }
+        if (!interactionDetector)
+        {
+            interactionDetector = GetComponentInChildren<TDS_Trigger>();
+            if (!interactionDetector) Debug.LogWarning("The Interaction Detector of \"" + name + "\" for script TDS_Player is missing !");
         }
     }
 
@@ -1775,26 +1741,4 @@ public class TDS_Player : TDS_Character
 	#endregion
 
 	#endregion
-}
-
-/// <summary>
-/// All animation states shared by all players.
-/// </summary>
-public enum PlayerAnimState
-{
-    Idle,
-    Run,
-    Hit,
-    Die,
-    Dodge,
-    Throw,
-    Catch,
-    Super,
-    Grounded,
-    Jumping,
-    Falling,
-    HasObject,
-    LostObject,
-    Parrying,
-    NotParrying
 }

@@ -94,10 +94,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     /// <summary>SerializedProperties for <see cref="TDS_Player.Summoner"/> of type <see cref="TDS_Summoner"/>.</summary>
     private SerializedProperty summoner = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Player.ProjectilePreviewArrow"/> of type <see cref="Transform"/>.</summary>
-    private SerializedProperty projectilePreviewArrow = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.interactionsDetector"/> of type <see cref="TDS_Trigger"/>.</summary>
+    /// <summary>SerializedProperties for <see cref="TDS_Player.interactionDetector"/> of type <see cref="TDS_Trigger"/>.</summary>
     private SerializedProperty interactionsDetector = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.groundDetectionBox"/> of type <see cref="TDS_VirtualBox"/>.</summary>
@@ -322,7 +319,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         GUILayout.Space(5);
 
         TDS_EditorUtility.ObjectField("Projectile Preview End Zone", "Zone at the end of the projectile preview used for feedback value", projectilePreviewEndZone, typeof(GameObject));
-        TDS_EditorUtility.ObjectField("Projectile Preview Arrow", "Arrow at the end of the projectile preview pointing at the aiming point", projectilePreviewArrow, typeof(Transform));
 
         GUILayout.Space(5);
 
@@ -555,9 +551,8 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         // Get the serializedProperties from the serializedObject
         lineRenderer = serializedObject.FindProperty("lineRenderer");
         summoner = serializedObject.FindProperty("Summoner");
-        projectilePreviewArrow = serializedObject.FindProperty("ProjectilePreviewArrow");
         projectilePreviewEndZone = serializedObject.FindProperty("ProjectilePreviewEndZone");
-        interactionsDetector = serializedObject.FindProperty("interactionsDetector");
+        interactionsDetector = serializedObject.FindProperty("interactionDetector");
         groundDetectionBox = serializedObject.FindProperty("groundDetectionBox");
 
         attacks = serializedObject.FindProperty("attacks");

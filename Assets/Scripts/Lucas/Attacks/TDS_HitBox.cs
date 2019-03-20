@@ -83,14 +83,14 @@ public class TDS_HitBox : MonoBehaviour
 
     #region Variables
     /// <summary>
-    /// Indicates if the hit box is currently active.
-    /// </summary>
-    public bool IsActive { get; private set; }
-
-    /// <summary>
     /// The current attack performed by this hit box.
     /// </summary>
     public TDS_Attack CurrentAttack { get; private set; } = null;
+
+    /// <summary>
+    /// Indicates if the hit box is currently active.
+    /// </summary>
+    public bool IsActive { get; private set; }
 
     /// <summary>
     /// All touched objects during the current attack.
