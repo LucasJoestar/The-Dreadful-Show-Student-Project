@@ -208,7 +208,7 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
 
         // Draw a header for the enemy detection settings 
         EditorGUILayout.LabelField("Recoil", TDS_EditorUtility.HeaderStyle);
-        TDS_EditorUtility.FloatSlider("Recoil Distance", "The distance the enemy has to be pushed when they're hit", recoilDistance, .5f, 5);
+        TDS_EditorUtility.FloatSlider("Recoil Distance", "The distance the enemy has to be pushed when they're hit", recoilDistance, .1f, 1);
         GUILayout.Space(3);
 
         // Draw a header for the enemy detection settings 
