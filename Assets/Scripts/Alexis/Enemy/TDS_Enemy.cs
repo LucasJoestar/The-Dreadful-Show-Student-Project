@@ -555,8 +555,6 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Update()
     {
         base.Update();
-        if (Input.GetKeyDown(KeyCode.A))
-            SetAnimationState((int)EnemyAnimationState.Grounded); 
     }
     #endregion
 
