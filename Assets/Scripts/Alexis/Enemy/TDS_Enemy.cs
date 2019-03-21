@@ -119,7 +119,17 @@ public abstract class TDS_Enemy : TDS_Character
     /// <summary>
     /// Recoil Distance: When the enemy is hit, he is pushed in a direction with a distance equal of the recoilDistance
     /// </summary>
-    [SerializeField] protected float recoilDistance = 1;
+    [SerializeField] protected float recoilDistance = .1f;
+
+    /// <summary>
+    /// Recoil Distance: When the enemy is hit, he is pushed in a direction with a distance equal of the recoilDistance
+    /// </summary>
+    [SerializeField] protected float recoilDistanceDeath = .1f;
+
+    /// <summary>
+    /// Recoil Distance: When the enemy is hit, he is pushed in a direction with a distance equal of the recoilDistance
+    /// </summary>
+    [SerializeField] protected float recoilTimeDeath = .1f;
 
     /// <summary>
     /// Return the name of the enemy
@@ -183,6 +193,34 @@ public abstract class TDS_Enemy : TDS_Character
 
     #region IEnumerator
     /// <summary>
+    /// Apply the recoil force on the enemy
+    /// </summary>
+    /// <param name="_recoilDistance">Distance of the recoil</param>
+    /// <returns></returns>
+    protected IEnumerator ApplyRecoil(Vector3 _position)
+    {
+        Vector3 _direction = new Vector3(transform.position.x - _position.x, 0, 0).normalized;
+        Vector3 _pos = Vector3.zero; 
+        if (isDead)
+        {
+            _pos = transform.position + (_direction * recoilDistanceDeath);
+            while (Vector3.Distance(transform.position, _pos) > .1f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, _pos, recoilDistanceDeath / recoilTimeDeath * Time.deltaTime);
+                yield return new WaitForEndOfFrame();
+            }
+            yield break;
+        }
+        
+        while (Vector3.Distance(transform.position, _pos) > .1f)
+        {
+            _pos = transform.position + (_direction * recoilDistance);
+            transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * 10);
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    /// <summary>
     /// Wait a certain amount of seconds before starting Behaviour Method 
     /// Called after getting hit to apply a recovery time
     /// </summary>
@@ -234,7 +272,7 @@ public abstract class TDS_Enemy : TDS_Character
                 {
                     agent.StopAgent();
                     speedCurrent = 0; 
-                    SetAnimationState(EnemyAnimationState.Idle);
+                    SetAnimationState((int)EnemyAnimationState.Idle);
                 }
                 //Take decisions
                 // If the target can't be targeted, search for another target
@@ -281,7 +319,7 @@ public abstract class TDS_Enemy : TDS_Character
             #endregion
             #region Getting In Range
             case EnemyState.GettingInRange:
-                SetAnimationState(EnemyAnimationState.Run);
+                SetAnimationState((int)EnemyAnimationState.Run);
                 // Wait some time before calling again Behaviour(); 
                 while (agent.IsMoving)
                 {
@@ -324,7 +362,7 @@ public abstract class TDS_Enemy : TDS_Character
                 {
                     agent.StopAgent();
                     speedCurrent = 0;
-                    SetAnimationState(EnemyAnimationState.Idle);
+                    SetAnimationState((int)EnemyAnimationState.Idle);
                     yield return new WaitForEndOfFrame();
                 }
                 if (CheckOrientation()) Flip(); 
@@ -367,21 +405,6 @@ public abstract class TDS_Enemy : TDS_Character
         yield break;
     }
 
-    /// <summary>
-    /// Apply the recoil force on the enemy
-    /// </summary>
-    /// <param name="_recoilDistance">Distance of the recoil</param>
-    /// <returns></returns>
-    protected IEnumerator ApplyRecoil(Vector3 _position)
-    {
-        Vector3 _direction = new Vector3(transform.position.x - _position.x , 0, 0).normalized; 
-        Vector3 _pos = transform.position + (_direction * recoilDistance); 
-        while(Vector3.Distance(transform.position, _pos) > .1f)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * 10); 
-            yield return new WaitForEndOfFrame(); 
-        }
-    }
     #endregion
 
     #region TDS_Player
@@ -405,7 +428,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Die()
     {
         base.Die();
-        SetAnimationState(EnemyAnimationState.Death);
+        SetAnimationState((int)EnemyAnimationState.Death);
         if (Area) Area.RemoveEnemy(this);
     }
 
@@ -458,7 +481,7 @@ public abstract class TDS_Enemy : TDS_Character
             agent.StopAgent();
             StopAllCoroutines();
             enemyState = EnemyState.MakingDecision;
-            if(!isDead) SetAnimationState(EnemyAnimationState.Hit);
+            if(!isDead) SetAnimationState((int)EnemyAnimationState.Hit);
         }
         return _isTakingDamages;
     }
@@ -483,9 +506,9 @@ public abstract class TDS_Enemy : TDS_Character
             enemyState = EnemyState.MakingDecision;
             if (!isDead)
             {
-                StartCoroutine(ApplyRecoil(_position)); 
-                SetAnimationState(EnemyAnimationState.Hit);
+                SetAnimationState((int)EnemyAnimationState.Hit);
             }
+            StartCoroutine(ApplyRecoil(_position)); 
         }
         return _isTakingDamages;
     }
@@ -498,7 +521,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public override void StopAttack()
     {
-        SetAnimationState(EnemyAnimationState.Idle);
+        SetAnimationState((int)EnemyAnimationState.Idle);
         base.StopAttack();
     }
 
@@ -514,18 +537,7 @@ public abstract class TDS_Enemy : TDS_Character
     #endregion
 
     #region Void
-    protected abstract void ActivateAttack(int _animationID); 
-
-    /// <summary>
-    /// Set the animation of the enemy to the animationID
-    /// </summary>
-    /// <param name="_animationID"></param>
-    protected void SetAnimationState(EnemyAnimationState _animationID)
-    {
-        if (!animator) return;
-        animator.SetInteger("animationState", (int)_animationID);
-        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID }); 
-    }
+    protected abstract void ActivateAttack(int _animationID);
 
     /// <summary>
     /// Set the animation of the enemy to the animationID
@@ -535,7 +547,9 @@ public abstract class TDS_Enemy : TDS_Character
     {
         if (!animator) return;
         animator.SetInteger("animationState", _animationID);
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID });
     }
+
     #endregion
 
     #endregion

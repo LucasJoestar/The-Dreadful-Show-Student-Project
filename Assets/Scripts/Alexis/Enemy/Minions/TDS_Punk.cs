@@ -122,7 +122,7 @@ public class TDS_Punk : TDS_Enemy
         IsAttacking = true;
         _attack.ConsecutiveUses++;
         attacks.ToList().Where(a => a != _attack).ToList().ForEach(a => a.ConsecutiveUses = 0);
-        SetAnimationState((EnemyAnimationState)_attack.AnimationID);
+        SetAnimationState(_attack.AnimationID);
         //hitBox.Activate(_attack); THE HIT BOX IS NOW ACTIVATED INTO THE ANIMATION BY CALLING THE METHOD "ActivateAttack" with the AnimationID of the attack
         return _attack.Cooldown;
     }
