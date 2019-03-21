@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TDS_FatLady : MonoBehaviour 
+public class TDS_FatLady : TDS_Player 
 {
 	/* TDS_FatLady :
 	 *

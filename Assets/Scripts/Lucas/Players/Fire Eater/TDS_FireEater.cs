@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TDS_FireEater : MonoBehaviour 
+public class TDS_FireEater : TDS_Player 
 {
 	/* TDS_FireEater :
 	 *

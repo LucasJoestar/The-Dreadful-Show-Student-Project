@@ -145,8 +145,10 @@ public class TDS_Trigger : MonoBehaviour
     /// </summary>
     private void ClearData()
     {
+        if (detectedColliders.Count == 0) return;
+
         // Get element(s) to remove
-        Collider[] _toRemove = new List<Collider>(detectedColliders).Where(d => d.enabled == false).ToArray();
+        Collider[] _toRemove = new List<Collider>(detectedColliders).Where(d => (d == null) || (d.enabled == false)).ToArray();
 
         if (_toRemove.Length == 0) return;
 
