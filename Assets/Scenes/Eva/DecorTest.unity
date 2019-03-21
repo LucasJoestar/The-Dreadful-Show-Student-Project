@@ -3830,19 +3830,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66eec74ed7450e846b3105df60a75cdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMoving: 1
+  isMoving: 0
   Bounds:
-    XBounds: {x: -9.09, y: 17.99}
-    ZBounds: {x: -12, y: -50}
+    XBounds: {x: -10, y: 18}
+    ZBounds: {x: -23, y: 0}
   camera: {fileID: 814321690}
   rotation: 15
   speedAccelerationTime: 1.25
   speedCoef: 1
-  speedCurrent: 5
+  speedCurrent: 0
   speedInitial: 1
   speedMax: 5
   target: {fileID: 16994411}
-  Offset: {x: 0, y: 4, z: -8}
+  Offset: {x: 0, y: 5, z: -8}
 --- !u!81 &814321689
 AudioListener:
   m_ObjectHideFlags: 0
@@ -6996,6 +6996,16 @@ Prefab:
         type: 2}
       propertyPath: healthMax
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114513829787566364, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: recoilDistanceDeath
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114513829787566364, guid: 1952cdc97814b8543ab7cc5e2027c418,
+        type: 2}
+      propertyPath: recoilTimeDeath
+      value: 0.35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1952cdc97814b8543ab7cc5e2027c418, type: 2}
