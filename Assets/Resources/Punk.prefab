@@ -86,7 +86,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1341661741757368}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.98, y: -6, z: -5.77}
+  m_LocalPosition: {x: 4.3, y: -6, z: -6.11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4851926840199904}
@@ -175,15 +175,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53bdbd26138585f4aa59027c60557c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 0
   positionOffset: {x: 0, y: 0.9, z: 0}
+  avoidanceForce: 5
+  baseOffset: 0
+  detectionRange: 2
   height: 1.8
   radius: 0.5
-  baseOffset: 0
-  speed: 2
-  avoidanceRange: 0.75
+  speed: 4
   steerForce: 10
-  avoidanceForce: 5
   agentPriority: 1
+  detectionAccuracy: 3
+  detectionFieldOfView: 90
+  avoidanceLayer:
+    serializedVersion: 2
+    m_Bits: 11265
 --- !u!114 &114185048153188244
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -306,11 +312,11 @@ MonoBehaviour:
   IsPacific: 0
   IsParalyzed: 0
   aimAngle: 45
-  speedAccelerationTime: 0.5
+  speedAccelerationTime: 1
   speedCoef: 1
   speedCurrent: 0
-  speedInitial: 1
-  speedMax: 2
+  speedInitial: 1.5
+  speedMax: 3
   throwBonusDamagesMax: 45
   throwBonusDamagesMin: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
@@ -318,7 +324,7 @@ MonoBehaviour:
   canThrow: 1
   enemyState: 0
   detectionRange: 5
-  recoilDistance: 0.65
+  recoilDistance: 0.2
   agent: {fileID: 114125368745151192}
   attacks:
   - Name: HeadButt
