@@ -129,7 +129,8 @@ public class TDS_PunkEditor : TDS_EnemyEditor
 
     protected void OnSceneGUI()
     {
-        Vector3 _pos = Selection.gameObjects.First().transform.position; 
+        if (Selection.activeGameObject == null) return;  
+        Vector3 _pos = Selection.activeGameObject.transform.position; 
         for (int i = 0; i < attacks.arraySize; i++)
         {
             SerializedProperty _attack = attacks.GetArrayElementAtIndex(i);
