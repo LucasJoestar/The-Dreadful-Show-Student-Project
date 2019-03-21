@@ -85,12 +85,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     #region SerializedProperties
 
     #region Components & References
-    /// <summary>SerializedProperties for <see cref="TDS_Player.ProjectilePreviewEndZone"/> of type <see cref="GameObject"/>.</summary>
-    private SerializedProperty projectilePreviewEndZone = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.lineRenderer"/> of type <see cref="LineRenderer"/>.</summary>
-    private SerializedProperty lineRenderer = null;
-
     /// <summary>SerializedProperties for <see cref="TDS_Player.Summoner"/> of type <see cref="TDS_Summoner"/>.</summary>
     private SerializedProperty summoner = null;
 
@@ -104,9 +98,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     #region Variables
     /// <summary>SerializedProperties for <see cref="TDS_Player.attacks"/> of type <see cref="List{TDS_Attack}"/>.</summary>
     private SerializedProperty attacks = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.isAiming"/> of type <see cref="bool"/>.</summary>
-    private SerializedProperty isAiming = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.isDodging"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isDodging = null;
@@ -137,9 +128,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.comboMax"/> of type <see cref="int"/>.</summary>
     private SerializedProperty comboMax = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.throwPreviewPrecision"/> of type <see cref="int"/>.</summary>
-    private SerializedProperty throwPreviewPrecision = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.WhatIsObstacle"/> of type <see cref="LayerMask"/>.</summary>
     private SerializedProperty whatIsObstacle = null;
@@ -318,12 +306,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
         GUILayout.Space(5);
 
-        TDS_EditorUtility.ObjectField("Projectile Preview End Zone", "Zone at the end of the projectile preview used for feedback value", projectilePreviewEndZone, typeof(GameObject));
-
-        GUILayout.Space(5);
-
         TDS_EditorUtility.ObjectField("Interaction detection Trigger", "Trigger used to detect the available interactions of the player", interactionsDetector, typeof(TDS_Trigger));
-        TDS_EditorUtility.ObjectField("Line Renderer", "Line Renderer used to draw the preparing throw preview", lineRenderer, typeof(LineRenderer));
         TDS_EditorUtility.ObjectField("Summoner object", "The Summoner the player is actually wearing", summoner, typeof(TDS_Summoner));
     }
 
@@ -337,7 +320,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         TDS_EditorUtility.RadioToggle("Jumping", "Is this player currently jumping or not", isJumping);
         TDS_EditorUtility.RadioToggle("Dodging", "Is this player currently dodging or not", isDodging);
         TDS_EditorUtility.RadioToggle("Parrying", "Is this player currently parrying or not", isParrying);
-        TDS_EditorUtility.RadioToggle("Aiming", "Is this player currently aiming for a throw or not", isAiming);
     }
 
     /// <summary>
@@ -515,30 +497,19 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
             serializedObject.Update();
          }
 
-        // Draws a header for the player jump settings
-        EditorGUILayout.LabelField("Aim", TDS_EditorUtility.HeaderStyle);
-
-        GUILayout.Space(3);
-
-        if (EditorApplication.isPlaying)
+        if (EditorApplication.isPlaying && (playerType.intValue != (int)PlayerType.Juggler))
         {
+            // Draws a header for the player aim settings
+            EditorGUILayout.LabelField("Aim", TDS_EditorUtility.HeaderStyle);
+
+            GUILayout.Space(3);
+
             if (TDS_EditorUtility.FloatSlider("Aiming Angle", "Angle used by this player to aim for a throw", aimAngle, 15f, 60f))
             {
                 players.ForEach(p => p.AimAngle = aimAngle.floatValue);
-                players.ForEach(p => p.ThrowAimingPoint = p.ThrowAimingPoint);
                 serializedObject.Update();
             }
 
-            if (TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (in local space)", throwAimingPoint))
-            {
-                players.ForEach(p => p.ThrowAimingPoint = throwAimingPoint.vector3Value);
-            }
-        }
-
-        if (TDS_EditorUtility.IntField("Projectile Preview Precision", "Amount of points used to draw previews of the projectile trajectory", throwPreviewPrecision))
-        {
-            players.ForEach(p => p.ThrowPreviewPrecision = throwPreviewPrecision.intValue);
-            serializedObject.Update();
         }
     }
     #endregion
@@ -555,14 +526,11 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         else isPlayerMultiEditing = true;
 
         // Get the serializedProperties from the serializedObject
-        lineRenderer = serializedObject.FindProperty("lineRenderer");
         summoner = serializedObject.FindProperty("Summoner");
-        projectilePreviewEndZone = serializedObject.FindProperty("ProjectilePreviewEndZone");
         interactionsDetector = serializedObject.FindProperty("interactionDetector");
         groundDetectionBox = serializedObject.FindProperty("groundDetectionBox");
 
         attacks = serializedObject.FindProperty("attacks");
-        isAiming = serializedObject.FindProperty("isAiming");
         isDodging = serializedObject.FindProperty("isDodging");
         isGrounded = serializedObject.FindProperty("isGrounded");
         isJumping = serializedObject.FindProperty("isJumping");
@@ -573,7 +541,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         jumpForce = serializedObject.FindProperty("JumpForce");
         jumpMaximumTime = serializedObject.FindProperty("jumpMaximumTime");
         comboMax = serializedObject.FindProperty("comboMax");
-        throwPreviewPrecision = serializedObject.FindProperty("throwPreviewPrecision");
         whatIsObstacle = serializedObject.FindProperty("WhatIsObstacle");
         playerType = serializedObject.FindProperty("playerType");
 
