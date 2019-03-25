@@ -127,8 +127,10 @@ public class TDS_PunkEditor : TDS_EnemyEditor
         isPunkUnfolded = EditorPrefs.GetBool("isPunkUnfolded", isPunkUnfolded);
     }
 
-    protected void OnSceneGUI()
+    protected override void OnSceneGUI()
     {
+        base.OnSceneGUI(); 
+
         if (Selection.activeGameObject == null) return;  
         Vector3 _pos = Selection.activeGameObject.transform.position; 
         for (int i = 0; i < attacks.arraySize; i++)
