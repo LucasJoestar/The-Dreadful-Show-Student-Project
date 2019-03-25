@@ -433,17 +433,14 @@ public abstract class TDS_Enemy : TDS_Character
                     yield return new WaitForEndOfFrame();
                 }
                 if (CheckOrientation()) Flip(); 
-                else
+                _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+                //Cast Attack
+                float _cooldown = StartAttack(_distance);
+                while (IsAttacking)
                 {
-                    _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                    //Cast Attack
-                    float _cooldown = StartAttack(_distance);
-                    while (IsAttacking)
-                    {
-                        yield return new WaitForSeconds(.1f);
-                    }
-                    yield return new WaitForSeconds(_cooldown);
+                    yield return new WaitForSeconds(.1f);
                 }
+                yield return new WaitForSeconds(_cooldown);
                 enemyState = EnemyState.MakingDecision;
                 goto case EnemyState.MakingDecision;
             #endregion
