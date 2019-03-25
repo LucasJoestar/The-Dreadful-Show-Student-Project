@@ -551,8 +551,6 @@ MonoBehaviour:
   throwBonusDamagesMax: 15
   throwBonusDamagesMin: 45
   throwAimingPoint: {x: 7, y: -10, z: 0}
-  ProjectilePreviewEndZone: {fileID: 1490430479526462}
-  lineRenderer: {fileID: 120508298493784694}
   Summoner: {fileID: 0}
   interactionDetector: {fileID: 114387275702348720}
   groundDetectionBox:
@@ -580,7 +578,6 @@ MonoBehaviour:
   UseObjectButton: Use Object
   VerticalAxis: Vertical
   attacks: []
-  isAiming: 0
   isDodging: 0
   isGrounded: 1
   isJumping: 0
@@ -591,10 +588,6 @@ MonoBehaviour:
   JumpForce: 400
   jumpMaximumTime: 1.5
   comboMax: 3
-  throwPreviewPrecision: 10
-  whatIsAllButThis:
-    serializedVersion: 2
-    m_Bits: 0
   WhatIsObstacle:
     serializedVersion: 2
     m_Bits: 8192
@@ -738,7 +731,7 @@ SpriteRenderer:
   m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.62, y: 2.7}
+  m_Size: {x: 1.0923077, y: 1.3692307}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

@@ -25,6 +25,15 @@ public class TDS_Juggler : TDS_Player
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[21 / 03 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+     *	    - Removed aim system from Player class, and set it only in the Juggler one.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[28 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -113,6 +122,16 @@ public class TDS_Juggler : TDS_Player
 
     #region Components & References
     /// <summary>
+    /// Zone at the end of the projectile preview, for feedback value.
+    /// </summary>
+    [SerializeField] private GameObject projectilePreviewEndZone = null;
+
+    /// <summary>
+    /// Line renderer used to draw a preview for the preparing throw trajectory.
+    /// </summary>
+    [SerializeField] protected LineRenderer lineRenderer = null;
+
+    /// <summary>
     /// The actual selected throwable. It is the object to throw, when throwing... Yep.
     /// </summary>
     public new TDS_Throwable Throwable
@@ -159,6 +178,21 @@ public class TDS_Juggler : TDS_Player
     #endregion
 
     #region Variables
+    /// <summary>Backing field for <see cref="IsAiming"/>.</summary>
+    [SerializeField] private bool isAiming = false;
+
+    /// <summary>
+    /// Indicates if the player is currently aiming or not.
+    /// </summary>
+    public bool IsAiming
+    {
+        get { return isAiming; }
+        protected set
+        {
+            isAiming = value;
+        }
+    }
+
     /// <summary>
     /// Value to increase <see cref="juggleTransformIdealLocalPosition"/>.y by.
     /// Used to kick-out juggling throwables in the air.
@@ -221,16 +255,45 @@ public class TDS_Juggler : TDS_Player
         }
     }
 
+    /// <summary>Backing field for <see cref="ThrowPreviewPrecision"/>.</summary>
+    [SerializeField] private int throwPreviewPrecision = 10;
+
+    /// <summary>
+    /// Amount of point used to draw the throw preview trajectory.
+    /// </summary>
+    public int ThrowPreviewPrecision
+    {
+        get { return throwPreviewPrecision; }
+        set
+        {
+            if (value < 1) value = 1;
+            throwPreviewPrecision = value;
+
+            #if UNITY_EDITOR
+            // Updates the trajectory preview
+            if (UnityEditor.EditorApplication.isPlaying)
+            {
+                throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, throwAimingPoint, throwVelocity.magnitude, aimAngle, value);
+            }
+            #endif
+        }
+    }
+
+    /// <summary>
+    /// Layer mask referencing everything except this player layer.
+    /// </summary>
+    [SerializeField] private LayerMask whatIsAllButThis = new LayerMask();
+
     /// <summary>
     /// Transform used to set as children objects juggling with.
     /// </summary>
-    [SerializeField] protected Transform juggleTransform = null;
+    [SerializeField] private Transform juggleTransform = null;
 
     /// <summary>
     /// The ideal position of the juggle transform in local space ;
     /// Used to lerp the transform to a new position when moving.
     /// </summary>
-    [SerializeField] protected Vector3 juggleTransformIdealLocalPosition = Vector3.zero;
+    [SerializeField] private Vector3 juggleTransformIdealLocalPosition = Vector3.zero;
 
     /// <summary>
     /// The position of the juggle transform in local space.
@@ -244,9 +307,36 @@ public class TDS_Juggler : TDS_Player
             return _return;
         }
     }
+
+    /// <summary>
+    /// Property for <see cref="throwAimingPoint"/> to update <see cref="throwVelocity"/> && <see cref="throwTrajectoryMotionPoints"/> on changes.
+    /// </summary>
+    public Vector3 ThrowAimingPoint
+    {
+        get { return throwAimingPoint; }
+        set
+        {
+            throwAimingPoint = value;
+
+            #if UNITY_EDITOR
+            // Updates the velocity & trajectory preview
+            if (UnityEditor.EditorApplication.isPlaying)
+            {
+                throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(handsTransform.localPosition, value, aimAngle);
+
+                throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, value, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
+            }
+            #endif
+        }
+    }
     #endregion
 
     #region Coroutines
+    /// <summary>
+    /// Reference of the current coroutine of the aim method.
+    /// </summary>
+    private Coroutine aimCoroutine = null;
+
     /// <summary>
     /// Coroutine lerping throwable position to hands transform position.
     /// </summary>
@@ -263,6 +353,11 @@ public class TDS_Juggler : TDS_Player
     /// Default aiming point, when starting aiming.
     /// </summary>
     private Vector3 defaultAimingPoint = Vector3.zero;
+
+    /// <summary>
+    /// Points used to draw a preview of the projectile trajectory when preparing a throw (Local space).
+    /// </summary>
+    private Vector3[] throwTrajectoryMotionPoints = new Vector3[] { };
     #endregion
 
     #endregion
@@ -271,11 +366,82 @@ public class TDS_Juggler : TDS_Player
 
     #region Original Methods
 
+    #region Attacks & Actions
+
+    #region Attacks
+    /// <summary>
+    /// Makes the player active its planned attack.
+    /// </summary>
+    /// <param name="_attackIndex">Index of the attack to activate from <see cref="attacks"/>.</param>
+    public override void ActiveAttack(int _attackIndex)
+    {
+        // If aiming, stop
+        if (isAiming) StopAiming();
+
+        // Attack
+        base.ActiveAttack(_attackIndex);
+    }
+
+    /// <summary>
+    /// Performs the catch attack of this player.
+    /// </summary>
+    /// <param name="_minion">Minion to try to catch</param>
+    public override void Catch(/*TDS_Minion _minion*/)
+    {
+        // If aiming, stop
+        if (isAiming) StopAiming();
+
+        // Catch
+        base.Catch();
+    }
+
+    /// <summary>
+    /// Performs the Super attack if the gauge is filled enough.
+    /// </summary>
+    public override void SuperAttack()
+    {
+        // If aiming, stop
+        if (isAiming) StopAiming();
+
+        // SUPER attack
+        base.SuperAttack();
+    }
+    #endregion
+
     #region Aim & Throwables
+    /// <summary>
+    /// Makes the character aim for a throw. When releasing the throw button, throw the selected object.
+    /// If the cancel throw button is pressed, cancel the throw, as it name indicate it.
+    /// </summary>
+    /// <returns></returns>
+    protected virtual IEnumerator Aim()
+    {
+        // While holding the throw button, aim a position
+        while (Input.GetButton(ThrowButton) || TDS_Input.GetAxis(ThrowButton))
+        {
+            // Draws the preview of the projectile trajectory while holding the throw button
+            AimMethod();
+
+            yield return null;
+
+            if (Input.GetButtonDown(ParryButton) || TDS_Input.GetAxisDown(ParryButton))
+            {
+                // Throws the object to the aiming position
+                ThrowObject();
+
+                if (!throwable) break;
+            }
+        }
+
+        StopAiming();
+
+        yield break;
+    }
+
     /// <summary>
     /// Method called in the Aim coroutine.
     /// </summary>
-    protected override void AimMethod()
+    protected void AimMethod()
     {
         // Let the player aim the point he wants, 'cause the juggler can do that. Yep
         // Aim with IJKL or the right joystick axis
@@ -295,7 +461,64 @@ public class TDS_Juggler : TDS_Player
         }
 
         // Raycast along the trajectory preview and stop the trail when hit something
-        base.AimMethod();
+        RaycastHit _hit = new RaycastHit();
+        Vector3[] _raycastedMotionPoints = (Vector3[])throwTrajectoryMotionPoints.Clone();
+        Vector3 _endPoint = new Vector3();
+        bool _hasHit = false;
+
+        for (int _i = 0; _i < _raycastedMotionPoints.Length - 1; _i++)
+        {
+            // Get the points to raycast from & to in world space
+            Vector3 _from = transform.position + new Vector3(_raycastedMotionPoints[_i].x * isFacingRight.ToSign(), _raycastedMotionPoints[_i].y, _raycastedMotionPoints[_i].z);
+
+            Vector3 _to = transform.position + new Vector3(_raycastedMotionPoints[_i + 1].x * isFacingRight.ToSign(), _raycastedMotionPoints[_i + 1].y, _raycastedMotionPoints[_i + 1].z);
+
+            // If hit something, set the hit point as end of the preview trajectory
+            if (Physics.Linecast(_from, _to, out _hit, whatIsAllButThis, QueryTriggerInteraction.Ignore))
+            {
+                // Get the hit point in local space
+                _endPoint = transform.InverseTransformPoint(_hit.point);
+                _endPoint.z *= isFacingRight.ToSign();
+
+                // Get the throw preview motion points with the new hit point
+                _raycastedMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, _endPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
+
+                // Updates the position of the end preview zone & its rotation according to the hit point
+                projectilePreviewEndZone.transform.position = _hit.point;
+
+                Quaternion _rotation = Quaternion.Lerp(projectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, _hit.normal), Time.deltaTime * 15);
+
+                projectilePreviewEndZone.transform.rotation = _rotation;
+
+                // Set indicative boolean
+                _hasHit = true;
+
+                break;
+            }
+        }
+
+        // If no touch, update end zone position & rotation
+        if (!_hasHit)
+        {
+            // Updates the position of the end preview zone & its rotation according to the hit point
+            projectilePreviewEndZone.transform.position = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
+
+            Quaternion _rotation = Quaternion.Lerp(projectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, Vector3.up), Time.deltaTime * 15);
+            _rotation.x *= isFacingRight.ToSign();
+
+            projectilePreviewEndZone.transform.rotation = _rotation;
+
+            // Set end point
+            _endPoint = throwAimingPoint;
+        }
+
+        // Draws the trajectory preview
+        for (int _i = 0; _i < _raycastedMotionPoints.Length; _i++)
+        {
+            _raycastedMotionPoints[_i].z *= isFacingRight.ToSign();
+        }
+
+        lineRenderer.DrawTrajectory(_raycastedMotionPoints);
     }
 
     /// <summary>
@@ -443,12 +666,37 @@ public class TDS_Juggler : TDS_Player
     private void GetBackJuggle() => juggleKickOutHeight = 0;
 
     /// <summary>
+    /// Prepare a throw, if not already preparing one.
+    /// </summary>
+    /// <returns>Returns true if successfully prepared a throw ; false if one is already, or if cannot do this.</returns>
+    public virtual bool PrepareThrow()
+    {
+        if (isAiming || !throwable) return false;
+
+        isAiming = true;
+        aimCoroutine = StartCoroutine(Aim());
+
+        projectilePreviewEndZone.SetActive(true);
+
+        return true;
+    }
+
+    /// <summary>
     /// Stops the preparing throw, if preparing one.
     /// </summary>
     /// <returns>Returns true if canceled the throw, false if there was nothing to cancel.</returns>
-    public override bool StopAiming()
+    public bool StopAiming()
     {
-        if (!base.StopAiming()) return false;
+        if (!isAiming && aimCoroutine == null) return false;
+
+        if (isAiming) isAiming = false;
+        if (aimCoroutine != null)
+        {
+            StopCoroutine(aimCoroutine);
+        }
+
+        lineRenderer.DrawTrajectory(new Vector3[0]);
+        projectilePreviewEndZone.SetActive(false);
 
         // Reset throw aiming point
         ThrowAimingPoint = defaultAimingPoint;
@@ -612,6 +860,84 @@ public class TDS_Juggler : TDS_Player
     }
     #endregion
 
+    #region Actions
+    /// <summary>
+    /// Performs a dodge.
+    /// While dodging, the player cannot take damage or attack.
+    /// </summary>
+    public override IEnumerator Dodge()
+    {
+        // If aiming, stop
+        if (isAiming) StopAiming();
+
+        dodgeCoroutine = StartCoroutine(base.Dodge());
+
+        yield break;
+    }
+
+    /// <summary>
+    /// Set the player in parry position.
+    /// While parrying, the player avoid to take damages.
+    /// </summary>
+    /// <returns></returns>
+    public override IEnumerator Parry()
+    {
+        // If aiming, cannot parry
+        if (isAiming) yield break;
+
+        StartCoroutine(base.Parry());
+    }
+
+    /// <summary>
+    /// Use the selected object in the inventory.
+    /// </summary>
+    public override void UseObject()
+    {
+        // If aiming, stop
+        if (isAiming) StopAiming();
+
+        // Use
+        base.UseObject();
+    }
+    #endregion
+
+    #endregion
+
+    #region Health
+    /// <summary>
+    /// Makes this object take damage and decrease its health if it is not invulnerable.
+    /// </summary>
+    /// <param name="_damage">Amount of damage this inflect to this object.</param>
+    /// <returns>Returns true if some damages were inflicted, false if none.</returns>
+    public override bool TakeDamage(int _damage)
+    {
+        // Executes base method
+        if (!base.TakeDamage(_damage)) return false;
+
+        // Is aiming, cancel the preparing throw
+        if (isAiming) StopAiming();
+
+        return true;
+    }
+
+    /// <summary>
+    /// Makes this object take damage and decrease its health if it is not invulnerable.
+    /// </summary>
+    /// <param name="_damage">Amount of damage this inflect to this object.</param>
+    /// <param name="_position">Position in world space from where the hit come from.</param>
+    /// <returns>Returns true if some damages were inflicted, false if none.</returns>
+    public override bool TakeDamage(int _damage, Vector3 _position)
+    {
+        // Executes base method
+        if (!base.TakeDamage(_damage)) return false;
+
+        // Is aiming, cancel the preparing throw
+        if (isAiming) StopAiming();
+
+        return true;
+    }
+    #endregion
+
     #region Inputs
     /// <summary>
     /// Checks inputs for this player's all actions.
@@ -619,6 +945,9 @@ public class TDS_Juggler : TDS_Player
     public override void CheckActionsInputs()
     {
         base.CheckActionsInputs();
+
+        // Check throw
+        if (Input.GetButtonDown(ThrowButton) || TDS_Input.GetAxisDown(ThrowButton)) PrepareThrow();
 
         // Check aiming point / angle changes
         if (TDS_Input.GetAxisDown(DPadXAxis) && (Throwables.Count > 0))
@@ -679,9 +1008,18 @@ public class TDS_Juggler : TDS_Player
         base.Awake();
 
         // Try to get components references if they are missing
+        if (!lineRenderer)
+        {
+            lineRenderer = GetComponentInChildren<LineRenderer>();
+            if (!lineRenderer) Debug.LogWarning("The LineRenderer of \"" + name + "\" for script TDS_Player is missing !");
+        }
         if (!juggleTransform)
         {
             Debug.LogWarning("The Juggle Transform of \"" + name + "\" for script TDS_Juggler is missing !");
+        }
+        if (!projectilePreviewEndZone)
+        {
+            Debug.LogWarning("The Projectile Preview End Zone of \"" + name + "\" for script TDS_Juggler is missing !");
         }
     }
 
@@ -713,6 +1051,13 @@ public class TDS_Juggler : TDS_Player
         juggleTransformIdealLocalPosition = new Vector3(.3f, .85f, 0);
 
         base.Start();
+
+        // Get trajectory motion points
+        throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, throwAimingPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
+
+        // Get layer for everything except this player one
+        whatIsAllButThis = -1;
+        whatIsAllButThis = ~(1 << gameObject.layer);
 
         // Get default aiming point
         defaultAimingPoint = throwAimingPoint;

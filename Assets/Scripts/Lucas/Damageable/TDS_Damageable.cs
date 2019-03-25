@@ -19,15 +19,25 @@ public class TDS_Damageable : PunBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :			[21 / 03 / 2019]
+	 *	Author :		[THIEBAUT Alexis]
+	 *
+	 *	Changes :
+	 *
+     *      Disable collider when died & enable it again when get resurrected.
+     *      
+	 *	-----------------------------------
+     * 
      *  Date :			[21 / 02 / 2019]
 	 *	Author :		[THIEBAUT Alexis]
 	 *
 	 *	Changes :
 	 *
-     *      - Adding the RequireComponent PhotonView
-     *      - Adding the RequireComponent PhotonTransformView
+     *      - Adding the RequireComponent PhotonView.
+     *      - Adding the RequireComponent PhotonTransformView.
      *      
 	 *	-----------------------------------
+     *	
      *	Date :			[24 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -37,6 +47,7 @@ public class TDS_Damageable : PunBehaviour
      *      - Modified the debugs for component missing in Awake.
      *      
 	 *	-----------------------------------
+     *	
      *	Date :			[23 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -47,6 +58,7 @@ public class TDS_Damageable : PunBehaviour
      *      - Removed the Sprite property.
      *      
 	 *	-----------------------------------
+     *	
      *	Date :			[16 / 01 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -149,7 +161,15 @@ public class TDS_Damageable : PunBehaviour
 
             #if UNITY_EDITOR
             if (!UnityEditor.EditorApplication.isPlaying) return;
-            else if (value == false) animator.SetTrigger("REVIVE");
+            else if (value == false)
+            {
+                animator.SetTrigger("REVIVE");
+                collider.enabled = true;
+            }
+            else
+            {
+                collider.enabled = false;
+            }
             #endif
 
             if (value == true)
