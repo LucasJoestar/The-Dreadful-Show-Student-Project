@@ -104,6 +104,8 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     private SerializedProperty canBeDown = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.canThrow"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty canThrow = null;
+    /// <summary>SerializedProperty for <see cref="TDS_Enemy.throwRange"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty throwRange = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.detectionRange"/> of type <see cref="float"/>.</summary>
     protected SerializedProperty detectionRange = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.recoilDistance"/> of type <see cref="float"/>.</summary>
@@ -230,6 +232,10 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
 
         // Draws a header for the enemy attacks settings
         TDS_EditorUtility.Toggle("Can Throw", "Is the enemy can throw objects", canThrow); 
+        if(canThrow.boolValue)
+        {
+            TDS_EditorUtility.FloatSlider("Throw Range", "Distance reached by the throwed object", throwRange, .5f, 20f); 
+        }
 
         GUILayout.Space(3);
     }
@@ -251,6 +257,7 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
 
         canBeDown = serializedObject.FindProperty("canBeDown");
         canThrow = serializedObject.FindProperty("canThrow");
+        throwRange = serializedObject.FindProperty("throwRange"); 
         detectionRange = serializedObject.FindProperty("detectionRange");
         recoilDistance = serializedObject.FindProperty("recoilDistance");
         recoilDistanceDeath = serializedObject.FindProperty("recoilDistanceDeath");
@@ -272,6 +279,18 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
 
         base.OnInspectorGUI();
     }
+
+    // Implement this method to draw Handles 
+    protected virtual void OnSceneGUI()
+    {
+        Handles.color = Color.cyan; 
+        if(canThrow.boolValue)
+        {
+            Handles.DrawWireDisc((serializedObject.targetObject as TDS_Enemy).transform.position, Vector3.up, throwRange.floatValue);
+        }
+    }
+
+
     #endregion
 
     #endregion

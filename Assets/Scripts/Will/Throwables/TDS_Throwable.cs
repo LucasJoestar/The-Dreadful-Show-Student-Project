@@ -113,16 +113,15 @@ public class TDS_Throwable : MonoBehaviour
     public bool PickUp(TDS_Character _carrier, Transform _rootCharacterObject)
     {
         if (isHeld) return false;
-
-        gameObject.layer = LayerMask.NameToLayer("Player");
+        //gameObject.layer = LayerMask.NameToLayer("Player");
         rigidbody.isKinematic = true;
         transform.position = _rootCharacterObject.transform.position;
         transform.SetParent(_rootCharacterObject.transform, true);
         isHeld = true;
-        
         if(_carrier is TDS_Player)
         {
             isHoldByPlayer = true;
+            gameObject.layer = _carrier.gameObject.layer;
         }
         owner = _carrier;
         return true;
@@ -140,7 +139,7 @@ public class TDS_Throwable : MonoBehaviour
         {
             hitBox.Desactivate();
         }
-        gameObject.layer = LayerMask.NameToLayer("Object");
+        hitBox.gameObject.layer = owner.gameObject.layer; 
         rigidbody.isKinematic = false;
         transform.SetParent(null, true);
         bonusDamage = _bonusDamage;
@@ -149,7 +148,7 @@ public class TDS_Throwable : MonoBehaviour
         hitBox.OnTouch += hitBox.Desactivate;
         hitBox.OnTouch += BounceObject;
         hitBox.OnTouch += LoseDurability;
-       owner = null;
+        owner = null;
         isHeld = false;
     }
     #endregion

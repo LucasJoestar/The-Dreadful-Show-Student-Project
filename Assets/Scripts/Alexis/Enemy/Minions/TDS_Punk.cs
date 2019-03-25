@@ -105,6 +105,24 @@ public class TDS_Punk : TDS_Enemy
     }
 
     /// <summary>
+    /// Return the minimum attack range 
+    /// </summary>
+    /// <returns></returns>
+    protected override float GetMaxRange()
+    {
+        return attacks.Select(a => a.PredictedRange).Max();
+    }
+
+    /// <summary>
+    /// Return the maximal attack range 
+    /// </summary>
+    /// <returns></returns>   
+    protected override float GetMinRange()
+    {
+        return attacks.Select(a => a.PredictedRange).Min();
+    }
+
+    /// <summary>
     /// Cast an attack: Add a use to the attack and activate the enemy hitbox with this attack
     /// Set the animation to the animation state linked to the AnimationID of the attack 
     /// Reset to 0 consecutive uses of the other attacks
@@ -147,7 +165,7 @@ public class TDS_Punk : TDS_Enemy
     {
         base.Update(); 
 	}
-	#endregion
-    
-	#endregion
+    #endregion
+
+    #endregion
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
+using Random  = UnityEngine.Random;
 using Photon;
 
 [RequireComponent(typeof(CustomNavMeshAgent))]
@@ -122,14 +123,19 @@ public abstract class TDS_Enemy : TDS_Character
     [SerializeField] protected float recoilDistance = .1f;
 
     /// <summary>
-    /// Recoil Distance: When the enemy is hit, he is pushed in a direction with a distance equal of the recoilDistance
+    /// Recoil Distance: When the enemy is hit and dies, he is pushed in a direction with a distance equal of the recoilDistance 
     /// </summary>
     [SerializeField] protected float recoilDistanceDeath = .1f;
 
     /// <summary>
-    /// Recoil Distance: When the enemy is hit, he is pushed in a direction with a distance equal of the recoilDistance
+    /// Recoil Time: When the enemy is hit, he is pushed in a direction during this time (in seconds)
     /// </summary>
     [SerializeField] protected float recoilTimeDeath = .1f;
+
+    /// <summary>
+    /// The max distance an enemy can throw an object
+    /// </summary>
+    [SerializeField] protected float throwRange = 1;
 
     /// <summary>
     /// Return the name of the enemy
@@ -189,6 +195,10 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     /// <param name="_distance"></param>
     protected abstract float StartAttack(float _distance);
+
+    protected abstract float GetMaxRange();
+
+    protected abstract float GetMinRange();
     #endregion
 
     #region IEnumerator
@@ -234,7 +244,6 @@ public abstract class TDS_Enemy : TDS_Character
     }
 
     /// <summary>
-    /// /!\ THE BEHAVIOUR METHOD IS NOW ABSTRACT /!\
     /// <see cref="TDS_Minion.Behaviour"/> or <see cref="TDS_Punk.Behaviour"/>
     /// </summary>
     /// <returns></returns>
@@ -246,6 +255,7 @@ public abstract class TDS_Enemy : TDS_Character
         if (!playerTarget || playerTarget.IsDead)
             enemyState = EnemyState.Searching;
         float _distance = 0;
+        TDS_Throwable _targetedThrowable = null ; 
         switch (enemyState)
         {
             #region Searching
@@ -268,12 +278,6 @@ public abstract class TDS_Enemy : TDS_Character
             #endregion
             #region Making Decision
             case EnemyState.MakingDecision:
-                if (agent.IsMoving)
-                {
-                    agent.StopAgent();
-                    speedCurrent = 0; 
-                    SetAnimationState((int)EnemyAnimationState.Idle);
-                }
                 //Take decisions
                 // If the target can't be targeted, search for another target
                 if (!playerTarget || playerTarget.IsDead)
@@ -282,22 +286,13 @@ public abstract class TDS_Enemy : TDS_Character
                     goto case EnemyState.Searching;
                 }
                 _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                /* If there is an attack that can be cast, go to attack case
-                 * Check if the agent can grab an object, 
-                 * if so goto case GrabObject if it can be grab 
-                 * if it can't be grabbed directly, getting in range
-                */
+                // Check if the agent can attack
                 if (AttackCanBeCasted(_distance))
                 {
                     enemyState = EnemyState.Attacking;
                     goto case EnemyState.Attacking;
                 }
-                else if (Throwable /*and target can be touched by thrown object*/)
-                {
-                    enemyState = EnemyState.ThrowingObject;
-                    goto case EnemyState.ThrowingObject;
-                }
-                //else try to reach the target
+                // Else getting in range
                 else
                 {
                     enemyState = EnemyState.ComputingPath;
@@ -309,47 +304,94 @@ public abstract class TDS_Enemy : TDS_Character
                 //Compute the path
                 // If there is something to throw, Move until reaching a position from where the player can be touched
                 // Be careful, the agent don't have to recalculate path when they have a Throwable
-                if (agent.CheckDestination(playerTarget.transform.position))
+                bool _pathComputed = false;
+                Vector3 _position; 
+                if(_targetedThrowable)
+                {
+                   _position = _targetedThrowable.transform.position;
+
+                }
+                else
+                {
+                    _position = GetAttackingPosition();
+                    
+                }
+                _pathComputed = agent.CheckDestination(_position);
+                yield return new WaitForEndOfFrame();
+                if(_pathComputed)
                 {
                     enemyState = EnemyState.GettingInRange;
                     goto case EnemyState.GettingInRange;
                 }
-                yield return new WaitForSeconds(1);
-                break;
+                else break;
             #endregion
             #region Getting In Range
             case EnemyState.GettingInRange:
                 SetAnimationState((int)EnemyAnimationState.Run);
                 // Wait some time before calling again Behaviour(); 
+                Collider[] _colliders; 
                 while (agent.IsMoving)
                 {
                     if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
                         Flip();
-                    _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                    if (AttackCanBeCasted(_distance))
-                    {
-                        enemyState = EnemyState.Attacking;
-                        goto case EnemyState.Attacking;
-                    }
-                    if (Vector3.Distance(playerTarget.transform.position, agent.LastPosition) > detectionRange)
-                    {
-                        if (agent.CheckDestination(playerTarget.transform.position))
-                        {
-                            yield return new WaitForSeconds(.1f);
-                            continue;
-                        }
-                        else
-                        {
-                            enemyState = EnemyState.MakingDecision;
-                            goto case EnemyState.MakingDecision;
-                        }
-                    }
+
                     if (speedCurrent < speedMax)
                     {
                         IncreaseSpeed();
                         yield return new WaitForEndOfFrame();
                     }
                     else yield return new WaitForSeconds(.1f);
+
+                    //Check if the area allow to grab object
+                    // If the enemy hasn't a throwable, check if he can grab one
+                    if (throwable == null && canThrow)
+                    {
+                        if (_targetedThrowable)
+                        {
+                            _distance = collider.size.x + _targetedThrowable.transform.localScale.x + .5f; 
+                            // For the moment using 1 as a grabbing range
+                            if(Vector3.Distance(transform.position, _targetedThrowable.transform.position) <= _distance)
+                            {
+                                enemyState = EnemyState.PickingUpObject;
+                                goto case EnemyState.PickingUpObject;
+                            }
+                        }
+                        else
+                        {
+                            //Check if there is object around the enemy
+                            _colliders = Physics.OverlapSphere(transform.position, detectionRange /*, LayerMask.NameToLayer("Object")*/);
+                            if (_colliders.Length > 0)
+                            {
+                                _colliders = _colliders.Where(c => c.GetComponent<TDS_Throwable>()).OrderBy(c => Vector3.Distance(transform.position, c.transform.position)).ToArray();
+                                if (_colliders.Length > 0)
+                                {
+                                    //Get the closest throwable
+                                    _targetedThrowable = _colliders.Select(c => c.GetComponent<TDS_Throwable>()).First();
+                                    //Set a new path to the throwable 
+                                    enemyState = EnemyState.ComputingPath;
+                                    goto case EnemyState.ComputingPath;
+                                }
+                            }
+                        }
+                    }
+                    // if any attack can be casted 
+                    _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+                    if (AttackCanBeCasted(_distance))
+                    {
+                        enemyState = EnemyState.Attacking;
+                        goto case EnemyState.Attacking;
+                    }
+                    // if the target is too far from the destination, recalculate the path
+                    if (Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > GetMaxRange())
+                    {
+                        enemyState = EnemyState.ComputingPath;
+                        goto case EnemyState.ComputingPath;
+                    }
+                }
+                if(throwable)
+                {
+                    enemyState = EnemyState.ThrowingObject;
+                    goto case EnemyState.ThrowingObject; 
                 }
                 enemyState = EnemyState.MakingDecision;
                 goto case EnemyState.MakingDecision;
@@ -362,38 +404,58 @@ public abstract class TDS_Enemy : TDS_Character
                 {
                     agent.StopAgent();
                     speedCurrent = 0;
-                    SetAnimationState((int)EnemyAnimationState.Idle);
-                    yield return new WaitForEndOfFrame();
                 }
+                SetAnimationState((int)EnemyAnimationState.Idle);
+                yield return new WaitForEndOfFrame();
                 if (CheckOrientation()) Flip(); 
-                if (Throwable)
+                _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+                //Cast Attack
+                float _cooldown = StartAttack(_distance);
+                while (IsAttacking)
                 {
-                    enemyState = EnemyState.ThrowingObject;
-                    goto case EnemyState.ThrowingObject;
+                    yield return new WaitForSeconds(.1f);
                 }
-                else
-                {
-                    _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                    //Cast Attack
-                    float _cooldown = StartAttack(_distance);
-                    while (IsAttacking)
-                    {
-                        yield return new WaitForSeconds(.1f);
-                    }
-                    yield return new WaitForSeconds(_cooldown);
-                }
+                yield return new WaitForSeconds(_cooldown);
                 enemyState = EnemyState.MakingDecision;
                 goto case EnemyState.MakingDecision;
             #endregion
             #region Grabbing Object
             case EnemyState.PickingUpObject:
                 //Pick up an object
+                if(agent.IsMoving)
+                {
+                    agent.StopAgent();
+                    speedCurrent = 0;
+                }
+                SetAnimationState((int)EnemyAnimationState.Idle);
+                yield return new WaitForEndOfFrame();
+                if (canThrow)
+                {
+                    if (GrabObject(_targetedThrowable))
+                    {
+                        SetAnimationState((int)EnemyAnimationState.GrabObject);
+                    }
+                    SetAnimationState((int)EnemyAnimationState.Idle);
+                    yield return new WaitForEndOfFrame();
+                    _targetedThrowable = null;
+                }
                 enemyState = EnemyState.MakingDecision;
                 goto case EnemyState.MakingDecision;
             #endregion
             #region Throwing Object
             case EnemyState.ThrowingObject:
+                //Go to a throwing position
                 //Throw the held object
+                speedCurrent = 0;
+                SetAnimationState((int)EnemyAnimationState.Idle);
+                if(canThrow)
+                {
+                    if (CheckOrientation()) Flip();
+                    Vector3 _pos = transform.position - transform.right * throwRange;
+                    ThrowObject(_pos);
+                    canThrow = false;
+                    yield return new WaitForSeconds(1.5f);
+                }
                 enemyState = EnemyState.MakingDecision;
                 goto case EnemyState.MakingDecision;
             #endregion
@@ -428,6 +490,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Die()
     {
         base.Die();
+        StopAllCoroutines(); 
         SetAnimationState((int)EnemyAnimationState.Death);
         if (Area) Area.RemoveEnemy(this);
     }
@@ -439,7 +502,8 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     public override bool GrabObject(TDS_Throwable _throwable)
     {
-        return base.GrabObject(_throwable);
+        bool _grabobject = base.GrabObject(_throwable);
+        return _grabobject;
         // Does the agent has a different behaviour from the players? 
     }
 
@@ -536,6 +600,28 @@ public abstract class TDS_Enemy : TDS_Character
     }
     #endregion
 
+    #region Vector3
+    /// <summary>
+    /// Get an attacking position within a certain range to cast attacks
+    /// </summary>
+    /// <returns></returns>
+    protected Vector3 GetAttackingPosition()
+    {
+        Vector3 _offset = Vector3.zero;
+        int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;  
+        _offset.z = Random.Range(-.5f, .5f); 
+        if (throwable)
+        {
+            _offset.x = Random.Range(throwRange /2, throwRange) * _coeff; 
+        }
+        else
+        {
+            _offset.x = (Random.Range(GetMinRange(), GetMaxRange()) -.2f) * _coeff; 
+        }
+        return playerTarget.transform.position + _offset; 
+    }
+    #endregion
+
     #region Void
     protected abstract void ActivateAttack(int _animationID);
 
@@ -549,7 +635,6 @@ public abstract class TDS_Enemy : TDS_Character
         animator.SetInteger("animationState", _animationID);
         if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID });
     }
-
     #endregion
 
     #endregion
