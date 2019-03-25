@@ -433,12 +433,12 @@ public abstract class TDS_Enemy : TDS_Character
                 {
                     if (GrabObject(_targetedThrowable))
                     {
-                        SetAnimationState((int)EnemyAnimationState.GrabObject);
+                        //canThrow = false; 
+                        yield return new WaitForEndOfFrame(); 
                     }
-                    SetAnimationState((int)EnemyAnimationState.Idle);
-                    yield return new WaitForEndOfFrame();
                     _targetedThrowable = null;
                 }
+                yield return new WaitForEndOfFrame();
                 enemyState = EnemyState.MakingDecision;
                 goto case EnemyState.MakingDecision;
             #endregion
@@ -448,13 +448,16 @@ public abstract class TDS_Enemy : TDS_Character
                 //Throw the held object
                 speedCurrent = 0;
                 SetAnimationState((int)EnemyAnimationState.Idle);
+                yield return new WaitForEndOfFrame(); 
                 if(canThrow)
                 {
                     if (CheckOrientation()) Flip();
                     Vector3 _pos = transform.position - transform.right * throwRange;
+                    SetAnimationState((int)EnemyAnimationState.ThrowObject);
+                    yield return new WaitForEndOfFrame(); 
                     ThrowObject(_pos);
                     canThrow = false;
-                    yield return new WaitForSeconds(1.5f);
+                    yield return new WaitForSeconds(1f);
                 }
                 enemyState = EnemyState.MakingDecision;
                 goto case EnemyState.MakingDecision;
@@ -503,6 +506,7 @@ public abstract class TDS_Enemy : TDS_Character
     public override bool GrabObject(TDS_Throwable _throwable)
     {
         bool _grabobject = base.GrabObject(_throwable);
+        if(_grabobject) SetAnimationState((int)EnemyAnimationState.GrabObject);
         return _grabobject;
         // Does the agent has a different behaviour from the players? 
     }
@@ -596,7 +600,7 @@ public abstract class TDS_Enemy : TDS_Character
     public override void Flip()
     {
         base.Flip();
-        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] {});
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] {});
     }
     #endregion
 
@@ -612,12 +616,15 @@ public abstract class TDS_Enemy : TDS_Character
         _offset.z = Random.Range(-.5f, .5f); 
         if (throwable)
         {
-            _offset.x = Random.Range(throwRange /2, throwRange) * _coeff; 
+            //Check if the agent is near enough to throw immediatly, or if he is to far away to throw
+            float _distance = Mathf.Abs(playerTarget.transform.position.x - transform.position.x); 
+            _offset.x = _distance < throwRange / 2 ? _distance : _distance < throwRange ? Random.Range(throwRange /2, _distance) : Random.Range(throwRange / 2, throwRange);
         }
         else
         {
-            _offset.x = (Random.Range(GetMinRange(), GetMaxRange()) -.2f) * _coeff; 
+            _offset.x = (Random.Range(GetMinRange(), GetMaxRange()) -.2f); 
         }
+        _offset.x *= _coeff; 
         return playerTarget.transform.position + _offset; 
     }
     #endregion
