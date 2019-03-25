@@ -280,13 +280,13 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         base.OnInspectorGUI();
     }
 
+    // Implement this method to draw Handles 
     protected virtual void OnSceneGUI()
     {
         Handles.color = Color.cyan; 
         if(canThrow.boolValue)
         {
-            Debug.Log("Test"/*(serializedObject.targetObject as GameObject).transform.position*/); 
-            //Handles.DrawWireDisc((serializedObject.targetObject as GameObject).transform.position, Vector3.up, throwRange.floatValue);
+            Handles.DrawWireDisc((serializedObject.targetObject as TDS_Enemy).transform.position, Vector3.up, throwRange.floatValue);
         }
     }
 
