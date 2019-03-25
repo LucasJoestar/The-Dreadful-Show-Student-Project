@@ -164,11 +164,11 @@ public class TDS_Damageable : PunBehaviour
             else if (value == false)
             {
                 animator.SetTrigger("REVIVE");
-                collider.enabled = true;
+                IsInvulnerable = false;
             }
             else
             {
-                collider.enabled = false;
+                IsInvulnerable = true;
             }
             #endif
 

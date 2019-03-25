@@ -870,9 +870,9 @@ public class TDS_Juggler : TDS_Player
         // If aiming, stop
         if (isAiming) StopAiming();
 
-        dodgeCoroutine = StartCoroutine(base.Dodge());
+        yield return null;
 
-        yield break;
+        dodgeCoroutine = StartCoroutine(base.Dodge());
     }
 
     /// <summary>

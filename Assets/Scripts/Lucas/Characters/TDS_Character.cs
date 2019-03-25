@@ -403,7 +403,8 @@ public abstract class TDS_Character : TDS_Damageable
         if (throwable) return false;
 
         // Take the object
-        if (!_throwable.PickUp(this, handsTransform)) return false;
+        bool _canPickUp = _throwable.PickUp(this, handsTransform); 
+        if (!_canPickUp) return false;
         Throwable = _throwable;
 
         return true;

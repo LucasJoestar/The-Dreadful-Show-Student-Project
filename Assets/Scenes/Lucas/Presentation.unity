@@ -666,6 +666,10 @@ Prefab:
       propertyPath: instantiationId
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1051239147570118, guid: 8a2b4122ab6238f42850cdc08b06423e, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a2b4122ab6238f42850cdc08b06423e, type: 2}
   m_IsPrefabAsset: 0
@@ -1145,11 +1149,6 @@ Transform:
   m_Father: {fileID: 1994357694}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &520931400 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4081389524529366, guid: 5af0047c1585fba4fb86513ccda065f4,
-    type: 2}
-  m_PrefabInternal: {fileID: 1376221526}
 --- !u!1 &528957276
 GameObject:
   m_ObjectHideFlags: 0
@@ -2492,7 +2491,7 @@ Prefab:
         type: 2}
       propertyPath: target
       value: 
-      objectReference: {fileID: 520931400}
+      objectReference: {fileID: 1292975763}
     - target: {fileID: 114850222845009992, guid: f779e414787ad55469d20eb6e2786070,
         type: 2}
       propertyPath: isMoving
@@ -2502,6 +2501,16 @@ Prefab:
         type: 2}
       propertyPath: speedCurrent
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114850222845009992, guid: f779e414787ad55469d20eb6e2786070,
+        type: 2}
+      propertyPath: Bounds.XBounds.x
+      value: -16.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114850222845009992, guid: f779e414787ad55469d20eb6e2786070,
+        type: 2}
+      propertyPath: Bounds.XBounds.y
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f779e414787ad55469d20eb6e2786070, type: 2}
@@ -3018,6 +3027,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RPCPhotonView: {fileID: 1284438724}
+--- !u!4 &1292975763 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4041944261760166, guid: 131b9c2e9ac901841aa00daa77a82570,
+    type: 2}
+  m_PrefabInternal: {fileID: 1973814464}
 --- !u!1001 &1315962564
 Prefab:
   m_ObjectHideFlags: 0
@@ -3247,6 +3261,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4081389524529366, guid: 5af0047c1585fba4fb86513ccda065f4, type: 2}
       propertyPath: m_LocalPosition.x
       value: 5.67
@@ -3287,6 +3306,175 @@ Prefab:
     - target: {fileID: 114551279409207084, guid: 5af0047c1585fba4fb86513ccda065f4,
         type: 2}
       propertyPath: instantiationId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1086096263968204, guid: 5af0047c1585fba4fb86513ccda065f4, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[0].Name
+      value: Light Attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[1].Name
+      value: Heavy Attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[0].Description
+      value: 'Attack used for both #1 & #2 light attacks.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[1].Description
+      value: 'Attack used for both #1 & #2 heavy attacks.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[0].damagesMax
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[0].damagesMin
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[1].damagesMin
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[1].damagesMax
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[2].Name
+      value: Arc Circle
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[2].damagesMax
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[2].damagesMin
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[2].Description
+      value: Final combo light attack.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[3].Name
+      value: Turnstile
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[3].damagesMax
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[3].damagesMin
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[3].Description
+      value: Final combo heavy attack.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[4].Name
+      value: Link Dude
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[4].Description
+      value: Move an opponent in the player direction.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[4].damagesMax
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: attacks.Array.data[4].damagesMin
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 65406370197283816, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65406370197283816, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 65406370197283816, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65406370197283816, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65406370197283816, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: m_Center.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: isDead
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: healthCurrent
+      value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: speedCurrent
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: groundDetectionBox.Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: isMoving
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: currentBeardState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: IsInvulnerable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357532842723154, guid: 5af0047c1585fba4fb86513ccda065f4,
+        type: 2}
+      propertyPath: isFacingRight
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3969,6 +4157,10 @@ Prefab:
       propertyPath: instantiationId
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1366139620063678, guid: a4be1b30ac08e40418b1669e855ccf5e, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4be1b30ac08e40418b1669e855ccf5e, type: 2}
   m_IsPrefabAsset: 0
@@ -4353,6 +4545,10 @@ Prefab:
     - target: {fileID: 1237004398133840, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
       propertyPath: m_Name
       value: Player - Juggler
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237004398133840, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
