@@ -24,6 +24,15 @@ public class TDS_Camera : MonoBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[25 / 03 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    Created a singleton instance of the class.
+	 *
+	 *	-----------------------------------
+     * 
 	 *	Date :			[25 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -202,6 +211,13 @@ public class TDS_Camera : MonoBehaviour
     public Vector3 Offset = Vector3.zero;
     #endregion
 
+    #region Singleton
+    /// <summary>
+    /// Singleton instance of this class.
+    /// </summary>
+    public static TDS_Camera Instance = null;
+    #endregion
+
     #region Methods
 
     #region Original Methods
@@ -250,7 +266,15 @@ public class TDS_Camera : MonoBehaviour
     // Awake is called when the script instance is being loaded
     private void Awake()
     {
+        // Set the singleton instance if null
+        if (!Instance) Instance = this;
+    }
 
+    // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
+    private void OnDestroy()
+    {
+        // Nullify the singleton instance if needed
+        if (Instance == this) Instance = null;
     }
 
     // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
