@@ -474,8 +474,6 @@ MonoBehaviour:
   throwBonusDamagesMax: 15
   throwBonusDamagesMin: 9
   throwAimingPoint: {x: 7, y: -10, z: 0}
-  ProjectilePreviewEndZone: {fileID: 1177539199625568}
-  lineRenderer: {fileID: 120440439968656490}
   Summoner: {fileID: 0}
   interactionDetector: {fileID: 114470064309655796}
   groundDetectionBox:
@@ -513,7 +511,6 @@ MonoBehaviour:
     damagesMax: 7
     damagesMin: 4
     Description: 
-  isAiming: 0
   isDodging: 0
   isGrounded: 1
   isJumping: 0
@@ -524,19 +521,22 @@ MonoBehaviour:
   JumpForce: 400
   jumpMaximumTime: 1.5
   comboMax: 1
-  throwPreviewPrecision: 10
-  whatIsAllButThis:
-    serializedVersion: 2
-    m_Bits: 4294966783
   WhatIsObstacle:
     serializedVersion: 2
     m_Bits: 8192
   playerType: 3
+  projectilePreviewEndZone: {fileID: 1177539199625568}
+  lineRenderer: {fileID: 120440439968656490}
   Throwables: []
   thirdHandTransform: {fileID: 0}
+  isAiming: 0
   juggleSpeed: 2
   throwableDistanceFromCenter: 0.25
   maxThrowableAmount: 5
+  throwPreviewPrecision: 10
+  whatIsAllButThis:
+    serializedVersion: 2
+    m_Bits: 4294966783
   juggleTransform: {fileID: 4676012792620220}
   juggleTransformIdealLocalPosition: {x: 0.6, y: 0.7, z: 0}
 --- !u!114 &114470064309655796

@@ -1412,8 +1412,6 @@ MonoBehaviour:
   throwBonusDamagesMax: 45
   throwBonusDamagesMin: 45
   throwAimingPoint: {x: 5, y: 0, z: 0}
-  ProjectilePreviewEndZone: {fileID: 513309969}
-  lineRenderer: {fileID: 1955876303}
   Summoner: {fileID: 0}
   interactionDetector: {fileID: 0}
   groundDetectionBox:
@@ -1441,7 +1439,6 @@ MonoBehaviour:
   UseObjectButton: Use Object
   VerticalAxis: Vertical
   attacks: []
-  isAiming: 0
   isDodging: 0
   isGrounded: 1
   isJumping: 0
@@ -1452,10 +1449,6 @@ MonoBehaviour:
   JumpForce: 1
   jumpMaximumTime: 1.5
   comboMax: 3
-  throwPreviewPrecision: 10
-  whatIsAllButThis:
-    serializedVersion: 2
-    m_Bits: 4294966783
   WhatIsObstacle:
     serializedVersion: 2
     m_Bits: 32
@@ -1840,7 +1833,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.25
+  m_VoxelSize: 0.16666667
   m_BuildHeightMesh: 0
   m_NavMeshData: {fileID: 23800000, guid: 107ba458f7851a3459b0d27bc6037184, type: 2}
 --- !u!4 &772001612
@@ -4360,10 +4353,6 @@ Prefab:
     - target: {fileID: 1237004398133840, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
       propertyPath: m_Name
       value: Player - Juggler
-      objectReference: {fileID: 0}
-    - target: {fileID: 1237004398133840, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}

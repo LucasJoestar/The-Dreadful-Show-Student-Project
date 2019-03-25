@@ -54,11 +54,20 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
     #region SerializedProperties
 
     #region Components & References
+    /// <summary>SerializedProperties for <see cref="TDS_Player.projectilePreviewEndZone"/> of type <see cref="GameObject"/>.</summary>
+    private SerializedProperty projectilePreviewEndZone = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.lineRenderer"/> of type <see cref="LineRenderer"/>.</summary>
+    private SerializedProperty lineRenderer = null;
+
     /// <summary>SerializedProperty for <see cref="TDS_Juggler.Throwables"/> of type <see cref="List{T}"/><see cref="TDS_Throwable"/>.</summary>
     private SerializedProperty throwables = null;
     #endregion
 
     #region Variables
+    /// <summary>SerializedProperties for <see cref="TDS_Player.isAiming"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isAiming = null;
+
     /// <summary>SerializedProperty for <see cref="TDS_Juggler.JuggleSpeed"/> of type <see cref="float"/>.</summary>
     private SerializedProperty juggleSpeed = null;
 
@@ -67,6 +76,9 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
 
     /// <summary>SerializedProperty for <see cref="TDS_Juggler.MaxThrowableAmount"/> of type <see cref="int"/>.</summary>
     private SerializedProperty maxThrowableAmount = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.throwPreviewPrecision"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty throwPreviewPrecision = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Juggler.juggleTransform"/> of type <see cref="Transform"/>.</summary>
     private SerializedProperty juggleTransform = null;
@@ -93,6 +105,24 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
 
             // Save this value
             EditorPrefs.SetBool("areJugglerComponentsUnfolded", value);
+        }
+    }
+
+    /// <summary>Backing field for <see cref="AreJugglerDebugsUnfolded"/>.</summary>
+    private bool areJugglerDebugsUnfolded = false;
+
+    /// <summary>
+    /// Indicates if the debugs editor of this class is unfolded.
+    /// </summary>
+    public bool AreJugglerDebugsUnfolded
+    {
+        get { return areJugglerDebugsUnfolded; }
+        set
+        {
+            areJugglerDebugsUnfolded = value;
+
+            // Save this value
+            EditorPrefs.SetBool("areJugglerDebugsUnfolded", value);
         }
     }
 
@@ -170,7 +200,20 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
             GUILayout.Space(5);
         }
 
-        TDS_EditorUtility.PropertyField("Juggle Transform", "Juggle transform, where to set as children objects juggling with", juggleTransform);
+        TDS_EditorUtility.ObjectField("Line Renderer", "Line Renderer used to draw the preparing throw preview", lineRenderer, typeof(LineRenderer));
+
+        GUILayout.Space(5);
+
+        TDS_EditorUtility.ObjectField("Juggle Transform", "Juggle transform, where to set as children objects juggling with", juggleTransform, typeof(Transform));
+        TDS_EditorUtility.ObjectField("Projectile Preview End Zone", "Zone at the end of the projectile preview used for feedback value", projectilePreviewEndZone, typeof(GameObject));
+    }
+
+    /// <summary>
+    /// Draws the debugs editor of the TDS_Juggler editing objects.
+    /// </summary>
+    private void DrawDebugs()
+    {
+        TDS_EditorUtility.RadioToggle("Aiming", "Is the Juggler currently aiming for a throw or not", isAiming);
     }
 
     /// <summary>
@@ -223,6 +266,19 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
             }
 
             EditorGUILayout.EndVertical();
+            GUILayout.Space(15);
+            EditorGUILayout.BeginVertical("Box");
+
+            // Button to show or not the Juggler class debugs
+            if (TDS_EditorUtility.Button("Debugs", "Wrap / unwrap debugs", TDS_EditorUtility.HeaderStyle)) AreJugglerDebugsUnfolded = !areJugglerDebugsUnfolded;
+
+            // If unfolded, draws the custom editor for the debugs
+            if (areJugglerDebugsUnfolded)
+            {
+                DrawDebugs();
+            }
+
+            EditorGUILayout.EndVertical();
 
             // Applies all modified properties on the SerializedObjects
             serializedObject.ApplyModifiedProperties();
@@ -258,6 +314,32 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
         GUILayout.Space(5);
 
         TDS_EditorUtility.Vector3Field("Juggle Transf. Ideal Pos.", "Position the juggle transform is always looking to have (in local space)", juggleTransformIdealLocalPosition);
+
+        // Draws a header for the juggler aim settings
+        EditorGUILayout.LabelField("Aim", TDS_EditorUtility.HeaderStyle);
+
+        GUILayout.Space(3);
+
+        if (EditorApplication.isPlaying)
+        {
+            if (TDS_EditorUtility.FloatSlider("Aiming Angle", "Angle used by the Juggler to aim for a throw", aimAngle, 15f, 60f))
+            {
+                jugglers.ForEach(j => j.AimAngle = aimAngle.floatValue);
+                jugglers.ForEach(j => j.ThrowAimingPoint = j.ThrowAimingPoint);
+                serializedObject.Update();
+            }
+
+            if (TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (in local space)", throwAimingPoint))
+            {
+                jugglers.ForEach(j => j.ThrowAimingPoint = throwAimingPoint.vector3Value);
+            }
+        }
+
+        if (TDS_EditorUtility.IntField("Projectile Preview Precision", "Amount of points used to draw previews of the projectile trajectory", throwPreviewPrecision))
+        {
+            jugglers.ForEach(j => j.ThrowPreviewPrecision = throwPreviewPrecision.intValue);
+            serializedObject.Update();
+        }
     }
     #endregion
 
@@ -273,15 +355,21 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
         else isJugglerMultiEditing = true;
 
         // Get the serializedProperties from the serializedObject
+        lineRenderer = serializedObject.FindProperty("lineRenderer");
+        projectilePreviewEndZone = serializedObject.FindProperty("projectilePreviewEndZone");
+
+        isAiming = serializedObject.FindProperty("isAiming");
         throwables = serializedObject.FindProperty("Throwables");
         juggleSpeed = serializedObject.FindProperty("juggleSpeed");
         throwableDistanceFromCenter = serializedObject.FindProperty("throwableDistanceFromCenter");
         maxThrowableAmount = serializedObject.FindProperty("maxThrowableAmount");
+        throwPreviewPrecision = serializedObject.FindProperty("throwPreviewPrecision");
         juggleTransform = serializedObject.FindProperty("juggleTransform");
         juggleTransformIdealLocalPosition = serializedObject.FindProperty("juggleTransformIdealLocalPosition");
 
         // Loads the editor folded & unfolded values of this script
         isJugglerUnfolded = EditorPrefs.GetBool("isJugglerUnfolded", isJugglerUnfolded);
+        areJugglerDebugsUnfolded = EditorPrefs.GetBool("areJugglerDebugsUnfolded", areJugglerDebugsUnfolded);
         areJugglerComponentsUnfolded = EditorPrefs.GetBool("areJugglerComponentsUnfolded", areJugglerComponentsUnfolded);
         areJugglerSettingsUnfolded = EditorPrefs.GetBool("areJugglerSettingsUnfolded", areJugglerSettingsUnfolded);
     }

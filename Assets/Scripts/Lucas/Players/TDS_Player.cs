@@ -27,6 +27,15 @@ public class TDS_Player : TDS_Character
 	 *	### MODIFICATIONS ###
 	 *	#####################
      *	
+     *	Date :			[21 / 03 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+     *	    - Removed aim system from Player class, and set it only in the Juggler one.
+	 *
+	 *	-----------------------------------
+     *	
      *  Date :			[28 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -218,16 +227,6 @@ public class TDS_Player : TDS_Character
 
     #region Components & References
     /// <summary>
-    /// Zone at the end of the projectile preview, for feedback value.
-    /// </summary>
-    public GameObject ProjectilePreviewEndZone = null;
-
-    /// <summary>
-    /// Line renderer used to draw a preview for the preparing throw trajectory.
-    /// </summary>
-    [SerializeField] protected LineRenderer lineRenderer = null;
-
-    /// <summary>
     /// The summoner this player is currently carrying.
     /// </summary>
     public TDS_Summoner Summoner = null;
@@ -327,11 +326,6 @@ public class TDS_Player : TDS_Character
 
     #region Coroutines
     /// <summary>
-    /// Reference of the current coroutine of the aim method.
-    /// </summary>
-    protected Coroutine aimCoroutine = null;
-
-    /// <summary>
     /// Reference of the current coroutine of the dodge method.
     /// </summary>
     protected Coroutine dodgeCoroutine = null;
@@ -354,21 +348,6 @@ public class TDS_Player : TDS_Character
     {
         get { return attacks; }
         protected set { attacks = value; }
-    }
-
-    /// <summary>Backing field for <see cref="IsAiming"/>.</summary>
-    [SerializeField] protected bool isAiming = false;
-
-    /// <summary>
-    /// Indicates if the player is currently aiming or not.
-    /// </summary>
-    public bool IsAiming
-    {
-        get { return isAiming; }
-        protected set
-        {
-            isAiming = value;
-        }
     }
 
     /// <summary>Backing field for <see cref="IsDodging"/>.</summary>
@@ -523,35 +502,6 @@ public class TDS_Player : TDS_Character
         }
     }
 
-    /// <summary>Backing field for <see cref="ThrowPreviewPrecision"/>.</summary>
-    [SerializeField] protected int throwPreviewPrecision = 10;
-
-    /// <summary>
-    /// Amount of point used to draw the throw preview trajectory.
-    /// </summary>
-    public int ThrowPreviewPrecision
-    {
-        get { return throwPreviewPrecision; }
-        set
-        {
-            if (value < 1) value = 1;
-            throwPreviewPrecision = value;
-
-            #if UNITY_EDITOR
-            // Updates the trajectory preview
-            if (UnityEditor.EditorApplication.isPlaying)
-            {
-                throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, throwAimingPoint, throwVelocity.magnitude, aimAngle, value);
-            }
-            #endif
-        }
-    }
-
-    /// <summary>
-    /// Layer mask referencing everything except this player layer.
-    /// </summary>
-    [SerializeField] protected LayerMask whatIsAllButThis = new LayerMask();
-
     /// <summary>
     /// LayerMask used to detect what is an obstacle for the player movements.
     /// </summary>
@@ -571,28 +521,6 @@ public class TDS_Player : TDS_Character
             playerType = value;
         }
     }
-
-    /// <summary>
-    /// Property for <see cref="throwAimingPoint"/> to update <see cref="throwVelocity"/> && <see cref="throwTrajectoryMotionPoints"/> on changes.
-    /// </summary>
-    public Vector3 ThrowAimingPoint
-    {
-        get { return throwAimingPoint; }
-        set
-        {
-            throwAimingPoint = value;
-
-            #if UNITY_EDITOR
-            // Updates the velocity & trajectory preview
-            if (UnityEditor.EditorApplication.isPlaying)
-            {
-                throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(handsTransform.localPosition, value, aimAngle);
-
-                throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, value, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
-            }
-            #endif
-        }
-    }
     #endregion
 
     #region Debug & Script memory Variables
@@ -610,11 +538,6 @@ public class TDS_Player : TDS_Character
     /// Velocity used to throw an object.
     /// </summary>
     protected Vector3 throwVelocity = Vector3.zero;
-
-    /// <summary>
-    /// Points used to draw a preview of the projectile trajectory when preparing a throw (Local space).
-    /// </summary>
-    protected Vector3[] throwTrajectoryMotionPoints = new Vector3[] { };
     #endregion
 
     #endregion
@@ -626,101 +549,6 @@ public class TDS_Player : TDS_Character
     #region Attacks & Actions
 
     #region Aim & Throwables
-    /// <summary>
-    /// Makes the character aim for a throw. When releasing the throw button, throw the selected object.
-    /// If the cancel throw button is pressed, cancel the throw, as it name indicate it.
-    /// </summary>
-    /// <returns></returns>
-    protected virtual IEnumerator Aim()
-    {
-        // While holding the throw button, aim a position
-        while (Input.GetButton(ThrowButton) || TDS_Input.GetAxis(ThrowButton))
-        {
-            // Draws the preview of the projectile trajectory while holding the throw button
-            AimMethod();
-
-            yield return null;
-
-            if (Input.GetButtonDown(ParryButton) || TDS_Input.GetAxisDown(ParryButton))
-            {
-                // Throws the object to the aiming position
-                ThrowObject();
-
-                if (!throwable) break;
-            }
-        }
-
-        StopAiming();
-
-        yield break;
-    }
-
-    /// <summary>
-    /// Method called in the Aim coroutine.
-    /// </summary>
-    protected virtual void AimMethod()
-    {
-        // Raycast along the trajectory preview and stop the trail when hit something
-        RaycastHit _hit = new RaycastHit();
-        Vector3[] _raycastedMotionPoints = (Vector3[])throwTrajectoryMotionPoints.Clone();
-        Vector3 _endPoint = new Vector3();
-        bool _hasHit = false;
-
-        for (int _i = 0; _i < _raycastedMotionPoints.Length - 1; _i++)
-        {
-            // Get the points to raycast from & to in world space
-            Vector3 _from = transform.position + new Vector3(_raycastedMotionPoints[_i].x * isFacingRight.ToSign(), _raycastedMotionPoints[_i].y, _raycastedMotionPoints[_i].z);
-
-            Vector3 _to = transform.position + new Vector3(_raycastedMotionPoints[_i + 1].x * isFacingRight.ToSign(), _raycastedMotionPoints[_i + 1].y, _raycastedMotionPoints[_i + 1].z);
-
-            // If hit something, set the hit point as end of the preview trajectory
-            if (Physics.Linecast(_from, _to, out _hit, whatIsAllButThis, QueryTriggerInteraction.Ignore))
-            {
-                // Get the hit point in local space
-                _endPoint = transform.InverseTransformPoint(_hit.point);
-                _endPoint.z *= isFacingRight.ToSign();
-
-                // Get the throw preview motion points with the new hit point
-                _raycastedMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, _endPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
-
-                // Updates the position of the end preview zone & its rotation according to the hit point
-                ProjectilePreviewEndZone.transform.position = _hit.point;
-
-                Quaternion _rotation = Quaternion.Lerp(ProjectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, _hit.normal), Time.deltaTime * 15);
-
-                ProjectilePreviewEndZone.transform.rotation = _rotation;
-
-                // Set indicative boolean
-                _hasHit = true;
-
-                break;
-            }
-        }
-        
-        // If no touch, update end zone position & rotation
-        if (!_hasHit)
-        {
-            // Updates the position of the end preview zone & its rotation according to the hit point
-            ProjectilePreviewEndZone.transform.position = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
-
-            Quaternion _rotation = Quaternion.Lerp(ProjectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, Vector3.up), Time.deltaTime * 15);
-            _rotation.x *= isFacingRight.ToSign();
-
-            ProjectilePreviewEndZone.transform.rotation = _rotation;
-
-            // Set end point
-            _endPoint = throwAimingPoint;
-        }
-
-        // Draws the trajectory preview
-        for (int _i = 0; _i < _raycastedMotionPoints.Length; _i++)
-        {
-            _raycastedMotionPoints[_i].z *= isFacingRight.ToSign();
-        }
-
-        lineRenderer.DrawTrajectory(_raycastedMotionPoints);
-    }
-
     /// <summary>
     /// Drop the weared throwable.
     /// </summary>
@@ -744,42 +572,6 @@ public class TDS_Player : TDS_Character
 
         // Updates animator informations
         SetAnim(PlayerAnimState.HasObject);
-        return true;
-    }
-
-    /// <summary>
-    /// Prepare a throw, if not already preparing one.
-    /// </summary>
-    /// <returns>Returns true if successfully prepared a throw ; false if one is already, or if cannot do this.</returns>
-    public virtual bool PrepareThrow()
-    {
-        if (isAiming || !throwable) return false;
-
-        isAiming = true;
-        aimCoroutine = StartCoroutine(Aim());
-
-        ProjectilePreviewEndZone.SetActive(true);
-
-        return true;
-    }
-
-    /// <summary>
-    /// Stops the preparing throw, if preparing one.
-    /// </summary>
-    /// <returns>Returns true if canceled the throw, false if there was nothing to cancel.</returns>
-    public virtual bool StopAiming()
-    {
-        if (!isAiming && aimCoroutine == null) return false;
-
-        if (isAiming) isAiming = false;
-        if (aimCoroutine != null)
-        {
-            StopCoroutine(aimCoroutine);
-        }
-
-        lineRenderer.DrawTrajectory(new Vector3[0]);
-        ProjectilePreviewEndZone.SetActive(false);
-
         return true;
     }
 
@@ -826,9 +618,6 @@ public class TDS_Player : TDS_Character
             return;
         }
         #endif
-
-        // If aiming, stop
-        if (isAiming) StopAiming();
 
         // Activate the hit box
         hitBox.Activate(attacks[_attackIndex]);
@@ -903,9 +692,6 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void SuperAttack()
     {
-        // If aiming, stop
-        if (isAiming) StopAiming();
-
         // SUPER attack
         Debug.Log("Super Attack !!");
     }
@@ -918,9 +704,6 @@ public class TDS_Player : TDS_Character
     /// <param name="_minion">Minion to try to catch</param>
     public virtual void Catch(/*TDS_Minion _minion*/)
     {
-        // If aiming, stop
-        if (isAiming) StopAiming();
-
         // Catch
 
         // Triggers the associated animation
@@ -933,9 +716,6 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual IEnumerator Dodge()
     {
-        // If aiming, stop
-        if (isAiming) StopAiming();
-
         // Dodge !
         IsInvulnerable = true;
         isDodging = true;
@@ -1019,9 +799,6 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void UseObject()
     {
-        // If aiming, stop
-        if (isAiming) StopAiming();
-
         // Use
     }
     #endregion
@@ -1051,9 +828,7 @@ public class TDS_Player : TDS_Character
         // Executes base method
         if (!base.TakeDamage(_damage)) return false;
 
-        // Is aiming, cancel the preparing throw
         // And if in combo, reset it
-        if (isAiming) StopAiming();
         if (comboCurrent.Count > 0) ResetCombo();
 
         // If not dead, be just hit
@@ -1077,9 +852,7 @@ public class TDS_Player : TDS_Character
         // Executes base method
         if (!base.TakeDamage(_damage, _position)) return false;
 
-        // Is aiming, cancel the preparing throw
         // And if in combo, reset it
-        if (isAiming) StopAiming();
         if (comboCurrent.Count > 0) ResetCombo();
 
         // If not dead, be just hit
@@ -1574,9 +1347,6 @@ public class TDS_Player : TDS_Character
         // If dodging, parrying or attacking, do not perform action
         if (isAttacking || isDodging || isParrying) return;
 
-        // Check throw
-        if (Input.GetButtonDown(ThrowButton) || TDS_Input.GetAxisDown(ThrowButton)) PrepareThrow();
-
         // If having a throwable and it's not a player, throw it on interact button pressed
         if (throwable && playerType != PlayerType.Juggler)
         {
@@ -1589,7 +1359,7 @@ public class TDS_Player : TDS_Character
 
         else if (Input.GetButtonDown(DodgeButton)) dodgeCoroutine = StartCoroutine(Dodge());
 
-        else if ((Input.GetButtonDown(ParryButton) || TDS_Input.GetAxisDown(ParryButton)) && isGrounded && !isAiming) StartCoroutine(Parry());
+        else if ((Input.GetButtonDown(ParryButton) || TDS_Input.GetAxisDown(ParryButton)) && isGrounded) StartCoroutine(Parry());
 
         // If the character is pacific, forbid him to attack
         if (IsPacific) return;
@@ -1657,11 +1427,6 @@ public class TDS_Player : TDS_Character
         base.Awake();
 
         // Try to get components references if they are missing
-        if (!lineRenderer)
-        {
-            lineRenderer = GetComponentInChildren<LineRenderer>();
-            if (!lineRenderer) Debug.LogWarning("The LineRenderer of \"" + name + "\" for script TDS_Player is missing !");
-        }
         if (!interactionDetector)
         {
             interactionDetector = GetComponentInChildren<TDS_Trigger>();
@@ -1721,12 +1486,6 @@ public class TDS_Player : TDS_Character
         // Since all players except the Juggler cannot change their throw angle & the point they are aiming,
         // get the throw velocity & projectile motion in local space at start time
         throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(handsTransform.localPosition, throwAimingPoint, aimAngle);
-
-        throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, throwAimingPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
-
-        // Get layer for everything except this player one
-        whatIsAllButThis = -1;
-        whatIsAllButThis = ~(1 << gameObject.layer);
 
         // Initializes ground detection box X & Z size based on collider size
         groundDetectionBox.Size.x = collider.size.x;
