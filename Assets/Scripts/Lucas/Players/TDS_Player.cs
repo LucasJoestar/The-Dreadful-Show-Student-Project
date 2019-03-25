@@ -653,6 +653,11 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
+    /// Desactivate the hit box of the character.
+    /// </summary>
+    public virtual void DesactiveHitBox() => hitBox.Desactivate();
+
+    /// <summary>
     /// Ends definitively the current attack and enables back the capacity to attack once more.
     /// </summary>
     protected virtual void EndAttack()
@@ -731,7 +736,7 @@ public class TDS_Player : TDS_Character
         // Adds a little force to the player to move him along while dodging
         while (true)
         {
-            rigidbody.AddForce(Vector3.right * isFacingRight.ToSign() * speedCoef * speedMax * (isGrounded ? 6 : 4));
+            rigidbody.AddForce(Vector3.right * isFacingRight.ToSign() * speedCoef * speedMax * (isGrounded ? 5 : 3));
             Move(transform.position + (isFacingRight ? Vector3.right : Vector3.left));
 
             yield return new WaitForEndOfFrame();
@@ -777,7 +782,12 @@ public class TDS_Player : TDS_Character
         if (!isDodging) return;
 
         // If dodge coroutine still active, disable it
-        if (dodgeCoroutine != null) StopCoroutine(dodgeCoroutine);
+        if (dodgeCoroutine != null)
+        {
+            StopCoroutine(dodgeCoroutine);
+
+            rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, rigidbody.velocity.z);
+        }
 
         // Stop dodging
         IsInvulnerable = false;
@@ -791,7 +801,12 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public void StopDodgeMove()
     {
-        if (dodgeCoroutine != null) StopCoroutine(dodgeCoroutine);
+        if (dodgeCoroutine != null)
+        {
+            StopCoroutine(dodgeCoroutine);
+
+            rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, rigidbody.velocity.z);
+        }
     }
 
     /// <summary>
