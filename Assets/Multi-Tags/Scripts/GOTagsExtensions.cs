@@ -66,6 +66,17 @@ public static class GOTagsExtensions
     }
 
     /// <summary>
+    /// Does this game object has at least one of the specified tags ?
+    /// </summary>
+    /// <param name="_go">Game object to compare tags.</param>
+    /// <param name="_tags">Tags to compare.</param>
+    /// <returns>Returns true if the game object has at least one of the specified tags, false otherwise.</returns>
+    public static bool HasTag(this GameObject _go, string[] _tags)
+    {
+        return _go.GetTags().Intersect(_tags).Any();
+    }
+
+    /// <summary>
     /// Does this game object has all the specified tags ?
     /// </summary>
     /// <param name="_go">Game object to compare tags.</param>
@@ -73,8 +84,7 @@ public static class GOTagsExtensions
     /// <returns>Returns true if the game object has all the specified tags, false if it lacks event one.</returns>
     public static bool HasTags(this GameObject _go, string[] _tags)
     {
-        string[] _goTags = _go.GetTags();
-        return _tags.All(t => _goTags.Contains(t));
+        return !_go.GetTags().Except(_tags).Any();
     }
     #endregion
 }

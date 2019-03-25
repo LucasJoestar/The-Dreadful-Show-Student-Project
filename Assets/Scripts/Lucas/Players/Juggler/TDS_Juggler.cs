@@ -905,6 +905,21 @@ public class TDS_Juggler : TDS_Player
 
     #region Health
     /// <summary>
+    /// Method called when the object dies.
+    /// Override this to implement code for a specific object.
+    /// </summary>
+    protected override void Die()
+    {
+        base.Die();
+
+        // Drop all objects juggling with
+        while (throwable)
+        {
+            DropObject();
+        }
+    }
+
+    /// <summary>
     /// Makes this object take damage and decrease its health if it is not invulnerable.
     /// </summary>
     /// <param name="_damage">Amount of damage this inflect to this object.</param>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
@@ -100,9 +101,9 @@ public class TDS_HitBox : MonoBehaviour
     public Dictionary<Collider, TDS_Damageable> TouchedObjects { get; private set; } = new Dictionary<Collider, TDS_Damageable>();
 
     /// <summary>
-    /// What layers this hit box can touch, and therefore hit.
+    /// All tags to hit.
     /// </summary>
-    public LayerMask WhatHit = new LayerMask();
+    public List<string> HittableTags = new List<string>();
     #endregion
 
     #endregion
@@ -179,8 +180,8 @@ public class TDS_HitBox : MonoBehaviour
     {
         // If the collider object should be hit, hit it
 
-        // Check tag instead of layer
-        if (WhatHit != (WhatHit | (1 << other.gameObject.layer))) return;
+        // Check if object has 
+        if ((other.gameObject == owner.gameObject) || !other.gameObject.HasTag(HittableTags.ToArray())) return;
 
         TDS_Damageable _target = other.GetComponent<TDS_Damageable>();
 

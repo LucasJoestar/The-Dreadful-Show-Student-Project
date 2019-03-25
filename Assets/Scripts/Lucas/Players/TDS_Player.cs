@@ -829,7 +829,11 @@ public class TDS_Player : TDS_Character
     {
         base.Die();
 
-        // Triggers associated animation
+        // Drop obejct if needed
+        if (throwable) DropObject();
+
+        // Triggers associated animations
+        SetAnim(PlayerAnimState.Grounded);
         SetAnim(PlayerAnimState.Die);
     }
 

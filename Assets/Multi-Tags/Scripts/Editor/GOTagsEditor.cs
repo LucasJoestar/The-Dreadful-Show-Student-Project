@@ -291,7 +291,7 @@ public class GOTagsEditor : Editor
     {
         // Get editing objects as game objects
         targetGO = new GameObject[targets.Length];
-
+        
         for (int _i = 0; _i < targets.Length; _i++)
         {
             targetGO[_i] = (GameObject)targets[_i];
