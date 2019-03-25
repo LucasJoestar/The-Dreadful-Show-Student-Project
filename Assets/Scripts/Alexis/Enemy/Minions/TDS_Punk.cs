@@ -110,7 +110,7 @@ public class TDS_Punk : TDS_Enemy
     /// <returns></returns>
     protected override float GetMaxRange()
     {
-        return attacks.Select(a => a.PredictedRange).Min();
+        return attacks.Select(a => a.PredictedRange).Max();
     }
 
     /// <summary>
@@ -119,7 +119,7 @@ public class TDS_Punk : TDS_Enemy
     /// <returns></returns>   
     protected override float GetMinRange()
     {
-        return attacks.Select(a => a.PredictedRange).Max();
+        return attacks.Select(a => a.PredictedRange).Min();
     }
 
     /// <summary>

@@ -139,7 +139,7 @@ public class TDS_Throwable : MonoBehaviour
         {
             hitBox.Desactivate();
         }
-        gameObject.layer = LayerMask.NameToLayer("Object");
+        hitBox.gameObject.layer = owner.gameObject.layer; 
         rigidbody.isKinematic = false;
         transform.SetParent(null, true);
         bonusDamage = _bonusDamage;
