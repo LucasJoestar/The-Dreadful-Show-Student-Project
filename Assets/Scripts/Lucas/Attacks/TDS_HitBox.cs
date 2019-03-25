@@ -103,7 +103,7 @@ public class TDS_HitBox : MonoBehaviour
     /// <summary>
     /// All tags to hit.
     /// </summary>
-    public List<string> HittableTags = new List<string>();
+    [HideInInspector] public List<string> HittableTags = new List<string>();
     #endregion
 
     #endregion
