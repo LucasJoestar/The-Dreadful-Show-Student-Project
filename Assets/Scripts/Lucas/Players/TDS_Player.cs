@@ -791,9 +791,7 @@ public class TDS_Player : TDS_Character
         // If dodge coroutine still active, disable it
         if (dodgeCoroutine != null)
         {
-            StopCoroutine(dodgeCoroutine);
-
-            rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, rigidbody.velocity.z);
+            StopDodgeMove();
         }
 
         // Stop dodging
@@ -812,7 +810,10 @@ public class TDS_Player : TDS_Character
         {
             StopCoroutine(dodgeCoroutine);
 
-            rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, rigidbody.velocity.z);
+            if (isGrounded)
+            {
+                rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, rigidbody.velocity.z);
+            }
         }
     }
 
@@ -1544,8 +1545,11 @@ public class TDS_Player : TDS_Character
         CheckMovementsInputs();
         CheckActionsInputs();
 
-        // Set shadow position if not grounded
-        if (!isGrounded) SetShadowPosition();
+        // Set shadow position if needed
+        if (shadow.transform.position.y != .01f)
+        {
+            shadow.transform.position = new Vector3(shadow.transform.position.x, .01f, shadow.transform.position.z);
+        }
 	}
 	#endregion
 
