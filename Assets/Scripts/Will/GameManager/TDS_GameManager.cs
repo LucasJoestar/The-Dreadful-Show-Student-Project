@@ -17,6 +17,15 @@ public class TDS_GameManager : MonoBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[26 / 03 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    Added the spawn system.
+	 *
+	 *	-----------------------------------
+     * 
 	 *	Date :			[25 / 03 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -52,6 +61,9 @@ public class TDS_GameManager : MonoBehaviour
     /// </summary>
     [SerializeField] private TDS_Checkpoint checkpoint = null;
 
+    /// <summary>Public accessor for <see cref="checkpoint"/>.</summary>
+    public TDS_Checkpoint Checkpoint { get { return checkpoint; } }
+
     /// <summary>
     /// Local player, the one who play on this machine.
     /// </summary>
@@ -69,6 +81,15 @@ public class TDS_GameManager : MonoBehaviour
     {
         get { return onlinePlayers.Append(localPlayer).ToArray(); }
     }
+
+    /// <summary>
+    /// Points where to spawn at game start.
+    /// </summary>
+    public Vector3[] StartSpawnPoints = new Vector3[] { };
+    #endregion
+
+    #region Proto
+    [SerializeField] private GameObject player = null;
     #endregion
 
     #region Singleton
@@ -94,7 +115,10 @@ public class TDS_GameManager : MonoBehaviour
     /// </summary>
     public void Spawn()
     {
+        localPlayer = Instantiate(player, StartSpawnPoints[0], Quaternion.identity).GetComponentInChildren<TDS_Player>();
+        TDS_Camera.Instance.Target = localPlayer.transform;
 
+        localPlayer.OnDie += Respawn;
     }
 
     /// <summary>
@@ -102,8 +126,7 @@ public class TDS_GameManager : MonoBehaviour
     /// </summary>
     private void Respawn()
     {
-        // Get dead players
-        TDS_Player[] _deadPlayers = AllPlayers.Where(p => p.IsDead).ToArray();
+        if (checkpoint) checkpoint.Respawn();
     }
 
     /// <summary>
