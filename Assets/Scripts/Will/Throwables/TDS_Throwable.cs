@@ -139,16 +139,11 @@ public class TDS_Throwable : MonoBehaviour
         {
             hitBox.Desactivate();
         }
-        hitBox.gameObject.layer = owner.gameObject.layer; 
         rigidbody.isKinematic = false;
         transform.SetParent(null, true);
         bonusDamage = _bonusDamage;
         rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position,_finalPosition,_angle);
         hitBox.Activate(attack);
-        hitBox.OnTouch += hitBox.Desactivate;
-        hitBox.OnTouch += BounceObject;
-        hitBox.OnTouch += LoseDurability;
-        owner = null;
         isHeld = false;
     }
     #endregion
@@ -160,6 +155,10 @@ public class TDS_Throwable : MonoBehaviour
         {
             hitBox = GetComponentInChildren<TDS_HitBox>();
         }
+        hitBox.OnTouch += hitBox.Desactivate;
+        hitBox.OnTouch += BounceObject;
+        hitBox.OnTouch += LoseDurability;
+        hitBox.OnTouch += () => owner = null;
     }
     private void OnTriggerEnter(Collider other)
     {
