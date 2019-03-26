@@ -104,10 +104,15 @@ public class TDS_HitBoxEditor : Editor
         // Draws the custom editor of the editing scripts
         base.OnInspectorGUI();
 
-        GUILayout.Space(10);
+        GUILayout.Space(5);
+        EditorGUILayout.BeginHorizontal();
 
         // Draw a tag field for hittable tags
+        EditorGUILayout.LabelField(new GUIContent("Hittable Tags", "Tags defining which object to hit"), GUILayout.MaxWidth(EditorGUIUtility.labelWidth - 5));
+
         selectedTagIndex = MultiTagsUtility.TagField(selectedTagIndex, targetTags.ToArray(), AddTag);
+
+        EditorGUILayout.EndHorizontal();
 
         // Draw all tags in hittable tags
         if (targetTags.Count == 0)
@@ -116,7 +121,7 @@ public class TDS_HitBoxEditor : Editor
             return;
         }
 
-        GUILayout.Space(10);
+        GUILayout.Space(5);
 
         MultiTagsUtility.DrawTags(targetTags.ToArray(), RemoveTag);
     }

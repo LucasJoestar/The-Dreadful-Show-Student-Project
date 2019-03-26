@@ -1,0 +1,107 @@
+﻿using System;
+using UnityEngine;
+
+[RequireComponent(typeof(BoxCollider))]
+public class TDS_Checkpoint : MonoBehaviour 
+{
+    /* TDS_Checkpoint :
+	 *
+	 *	#####################
+	 *	###### PURPOSE ######
+	 *	#####################
+	 *
+	 *	Checkpoint used to heal players when get activated, and serve as respawn point
+     *	for dead players.
+	 *
+	 *	#####################
+	 *	####### TO DO #######
+	 *	#####################
+	 *
+	 *	• Heal players.
+     *	
+     *	• Serve as respawn point
+	 *
+	 *	#####################
+	 *	### MODIFICATIONS ###
+	 *	#####################
+	 *
+	 *	Date :			[25 / 03 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	Creation of the Checkpoint class.
+	 *
+	 *	-----------------------------------
+	*/
+
+    #region Events
+    
+    #endregion
+
+    #region Fields / Properties
+    /// <summary>
+    /// Animator of the Checkpoint object.
+    /// </summary>
+    [SerializeField] private Animator animator = null;
+
+    /// <summary>Backing field for <see cref="IsActivated"/>.</summary>
+    [SerializeField] private bool isActivated = false;
+
+    /// <summary>
+    /// Indicates if the checkpoint has already been activated or not.
+    /// </summary>
+    public bool IsActivated
+    {
+        get { return isActivated; }
+        private set
+        {
+            isActivated = value;
+        }
+    }
+
+    /// <summary>
+    /// All positions where to spawn around this checkpoint.
+    /// </summary>
+    [SerializeField] private Vector3[] spawnPositions = new Vector3[] { };
+	#endregion
+
+	#region Methods
+
+	#region Original Methods
+    /// <summary>
+    /// Activate this checkpoint.
+    /// </summary>
+    private void Activate()
+    {
+        isActivated = true;
+        TDS_GameManager.Instance.SetCheckpoint(this);
+    }
+	#endregion
+
+	#region Unity Methods
+	// Awake is called when the script instance is being loaded
+    private void Awake()
+    {
+        // Try to get missing components
+        if (!animator)
+        {
+            animator = GetComponent<Animator>();
+            if (!animator) Debug.LogWarning("The Animator of \"" + name + "\" for script TDS_Checkpoint is missing !");
+        }
+    }
+
+    // OnTriggerEnter is called when the GameObject collides with another GameObject
+    private void OnTriggerEnter(Collider other)
+    {
+        // On trigger enter, heal the player and activate the checkpoint
+        if (other.gameObject.HasTag("Player"))
+        {
+            other.GetComponent<TDS_Player>().Heal(999);
+            Activate();
+        }
+    }
+    #endregion
+
+    #endregion
+}

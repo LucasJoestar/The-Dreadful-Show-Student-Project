@@ -1121,7 +1121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider: {fileID: 0}
   owner: {fileID: 0}
-  hittableTags: []
+  HittableTags: []
 --- !u!1 &513309969
 GameObject:
   m_ObjectHideFlags: 0
@@ -4552,6 +4552,11 @@ Prefab:
       propertyPath: Throwables.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114637021920016826, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: HittableTags.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4250667114176770, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
       propertyPath: m_LocalPosition.x
       value: -1.08
@@ -4646,6 +4651,80 @@ Prefab:
         type: 2}
       propertyPath: throwableDistanceFromCenter
       value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637021920016826, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: HittableTags.Array.data[0]
+      value: Object
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637021920016826, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: HittableTags.Array.data[1]
+      value: Object
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637021920016826, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: HittableTags.Array.data[2]
+      value: Object
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637021920016826, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: HittableTags.Array.data[3]
+      value: Object
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637021920016826, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: HittableTags.Array.data[4]
+      value: Object
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637021920016826, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: HittableTags.Array.data[5]
+      value: Object
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637021920016826, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: HittableTags.Array.data[6]
+      value: Object
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637021920016826, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: HittableTags.Array.data[7]
+      value: EditorOnly
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637021920016826, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: HittableTags.Array.data[8]
+      value: EditorOnly
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637021920016826, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: HittableTags.Array.data[9]
+      value: EditorOnly
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637021920016826, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: HittableTags.Array.data[10]
+      value: EditorOnly
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637021920016826, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: HittableTags.Array.data[11]
+      value: EditorOnly
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637021920016826, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: HittableTags.Array.data[12]
+      value: EditorOnly
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637021920016826, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: HittableTags.Array.data[13]
+      value: EditorOnly
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460451521323524, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}

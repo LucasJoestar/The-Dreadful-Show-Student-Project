@@ -176,7 +176,7 @@ public static class TDS_Input
     private static void Initialize()
     {
         #if UNITY_EDITOR
-        Debug.Log("Mhmm...");
+       // Debug.Log("Mhmm...");
         // Get axis & buttons informations from a scriptable object
 #else
         // Get axis & buttons informations from a PlayerPref, or from a scriptable object if null
