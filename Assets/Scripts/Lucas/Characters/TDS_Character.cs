@@ -118,6 +118,8 @@ public abstract class TDS_Character : TDS_Damageable
     /// </summary>
     [SerializeField] protected TDS_HitBox hitBox = null;
 
+    public TDS_HitBox HitBox { get { return hitBox; } }
+
     /// <summary>
     /// Image used to display this character current health status.
     /// </summary>
