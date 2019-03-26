@@ -385,9 +385,6 @@ public class TDS_Player : TDS_Character
         protected set
         {
             isGrounded = value;
-
-            // Set shadow under foot when get on ground
-            if (value) shadow.localPosition = new Vector3(shadow.localPosition.x, .01f, shadow.localPosition.z);
         }
     }
 
@@ -1277,18 +1274,6 @@ public class TDS_Player : TDS_Character
             isMoving = false;
             SetAnim(PlayerAnimState.Idle);
         }
-    }
-
-    /// <summary>
-    /// Set shadow position.
-    /// </summary>
-    private void SetShadowPosition()
-    {
-        // Set shadow position
-        RaycastHit _hit = new RaycastHit();
-        Physics.Raycast(transform.position, Vector3.down, out _hit, 100, groundDetectionBox.WhatDetect);
-
-        shadow.transform.position = new Vector3(shadow.transform.position.x, _hit.point.y + .01f, shadow.transform.position.z);
     }
     #endregion
 
