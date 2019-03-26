@@ -79,7 +79,7 @@ public class TDS_HitBox : MonoBehaviour
     /// <summary>
     /// Character owner of this hit box.
     /// </summary>
-    [SerializeField] private TDS_Character owner = null;
+    public TDS_Character Owner = null;
     #endregion
 
     #region Variables
@@ -122,7 +122,7 @@ public class TDS_HitBox : MonoBehaviour
         // and return before activating the hit box.
         if (_attack == null)
         {
-            Debug.LogWarning("The given attack to activate " + owner.name + "'s hit box is null ! Activation is canceled.");
+            Debug.LogWarning("The given attack to activate " + Owner.name + "'s hit box is null ! Activation is canceled.");
             return;
         }
 
@@ -131,6 +131,21 @@ public class TDS_HitBox : MonoBehaviour
         IsActive = true;
 
         OnStartAttack?.Invoke(_attack);
+    }
+
+    /// <summary>
+    /// Activates the hit box.
+    /// When activated, produces the effect of the given attack to any <see cref="TDS_Damageable"/> in <see cref="collider"/> zone whose layer is in <see cref="WhatHit"/>.
+    /// </summary>
+    /// <param name="_attack">Attack used to hit what is in the hit box.</param>
+    /// <param name="_owner">The person who attack.</param>
+    /// <param name="_attack">Tags to hit.</param>
+    public void Activate(TDS_Attack _attack, TDS_Character _owner, List<string> _hittableTags)
+    {
+        Owner = _owner;
+        HittableTags = _hittableTags;
+
+        Activate(_attack);
     }
 
     /// <summary>
@@ -158,10 +173,10 @@ public class TDS_HitBox : MonoBehaviour
             collider = GetComponent<BoxCollider>();
             if (!collider) Debug.LogWarning("The HitBox " + name + " Collider is missing !");
         }
-        if (!owner)
+        if (!Owner)
         {
-            owner = GetComponentInParent<TDS_Character>();
-            if (!owner) Debug.LogWarning("The HitBox " + name + " Character reference is missing !");
+            Owner = GetComponentInParent<TDS_Character>();
+            if (!Owner) Debug.LogWarning("The HitBox " + name + " Character reference is missing !");
         }
     }
 
@@ -181,14 +196,14 @@ public class TDS_HitBox : MonoBehaviour
         // If the collider object should be hit, hit it
 
         // Check if object has 
-        if ((other.gameObject == owner.gameObject) || !other.gameObject.HasTag(HittableTags.ToArray())) return;
+        if ((Owner && (other.gameObject == Owner.gameObject)) || !other.gameObject.HasTag(HittableTags.ToArray())) return;
 
         TDS_Damageable _target = other.GetComponent<TDS_Damageable>();
 
         if (!_target || TouchedObjects.ContainsValue(_target)) return;
 
         // Deal damages and apply effect
-        Debug.Log((owner ? owner.name : transform.parent.name) + " attack " + other.name + " !");
+        Debug.Log((Owner ? Owner.name : transform.parent.name) + " attack " + other.name + " !");
         _target.TakeDamage(CurrentAttack.GetDamages, collider.transform.position);
 
         TouchedObjects.Add(other, _target);

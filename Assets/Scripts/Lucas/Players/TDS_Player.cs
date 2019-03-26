@@ -385,9 +385,6 @@ public class TDS_Player : TDS_Character
         protected set
         {
             isGrounded = value;
-
-            // Set shadow under foot when get on ground
-            if (value) shadow.localPosition = new Vector3(shadow.localPosition.x, .01f, shadow.localPosition.z);
         }
     }
 
@@ -794,9 +791,7 @@ public class TDS_Player : TDS_Character
         // If dodge coroutine still active, disable it
         if (dodgeCoroutine != null)
         {
-            StopCoroutine(dodgeCoroutine);
-
-            rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, rigidbody.velocity.z);
+            StopDodgeMove();
         }
 
         // Stop dodging
@@ -815,7 +810,10 @@ public class TDS_Player : TDS_Character
         {
             StopCoroutine(dodgeCoroutine);
 
-            rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, rigidbody.velocity.z);
+            if (isGrounded)
+            {
+                rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, rigidbody.velocity.z);
+            }
         }
     }
 
@@ -1278,18 +1276,6 @@ public class TDS_Player : TDS_Character
             SetAnim(PlayerAnimState.Idle);
         }
     }
-
-    /// <summary>
-    /// Set shadow position.
-    /// </summary>
-    private void SetShadowPosition()
-    {
-        // Set shadow position
-        RaycastHit _hit = new RaycastHit();
-        Physics.Raycast(transform.position, Vector3.down, out _hit, 100, groundDetectionBox.WhatDetect);
-
-        shadow.transform.position = new Vector3(shadow.transform.position.x, _hit.point.y + .01f, shadow.transform.position.z);
-    }
     #endregion
 
     #region Animator
@@ -1540,8 +1526,8 @@ public class TDS_Player : TDS_Character
         throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(handsTransform.localPosition, throwAimingPoint, aimAngle);
 
         // Initializes ground detection box X & Z size based on collider size
-        groundDetectionBox.Size.x = collider.size.x;
-        groundDetectionBox.Size.z = collider.size.z;
+        groundDetectionBox.Size.x = collider.size.x - .001f;
+        groundDetectionBox.Size.z = collider.size.z - .001f;
     }
 	
 	// Update is called once per frame
@@ -1558,9 +1544,6 @@ public class TDS_Player : TDS_Character
         // Check the player inputs
         CheckMovementsInputs();
         CheckActionsInputs();
-
-        // Set shadow position if not grounded
-        if (!isGrounded) SetShadowPosition();
 	}
 	#endregion
 
