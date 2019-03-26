@@ -145,6 +145,10 @@ public class TagsSO : ScriptableObject
             Initialize();
             UnityEditor.EditorApplication.update += EditorUpdate;
         }
+
+        // Initialize on editor quit
+        UnityEditor.EditorApplication.quitting -= Initialize;
+        UnityEditor.EditorApplication.quitting += Initialize;
         #endif
     }
     #endregion

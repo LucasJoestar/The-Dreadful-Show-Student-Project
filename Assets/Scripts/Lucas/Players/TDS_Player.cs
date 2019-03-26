@@ -22,6 +22,8 @@ public class TDS_Player : TDS_Character
 	 *	####### TO DO #######
 	 *	#####################
      *	
+     *      • Onlien Animations
+     *          => 1283
      * 
 	 *	#####################
 	 *	### MODIFICATIONS ###
@@ -687,7 +689,7 @@ public class TDS_Player : TDS_Character
     public override void StopAttack()
     {
         // Stop it, please
-        hitBox.Desactivate();
+        DesactiveHitBox();
 
         Invoke("EndAttack", .1f);
     }
@@ -829,7 +831,11 @@ public class TDS_Player : TDS_Character
     {
         base.Die();
 
-        // Triggers associated animation
+        // Drop obejct if needed
+        if (throwable) DropObject();
+
+        // Triggers associated animations
+        SetAnim(PlayerAnimState.Grounded);
         SetAnim(PlayerAnimState.Die);
     }
 
@@ -1273,6 +1279,13 @@ public class TDS_Player : TDS_Character
     /// <param name="_state">State of the player animator to set.</param>
     public void SetAnim(PlayerAnimState _state)
     {
+        // Online
+        if (photonView.isMine)
+        {
+            // RPC
+        }
+
+        // Local
         switch (_state)
         {
             case PlayerAnimState.Idle:
