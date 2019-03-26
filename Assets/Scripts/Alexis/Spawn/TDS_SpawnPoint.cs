@@ -104,7 +104,11 @@ public class TDS_SpawnPoint
         {
             _e = PhotonNetwork.Instantiate(_enemiesNames[i], GetRandomSpawnPosition, Quaternion.identity, 0).GetComponent<TDS_Enemy>();
             _e.Area = _owner;
-            //INIT UI
+            //INIT LIFEBAR
+            if(TDS_UIManager.Instance.CanvasWorld)
+            {
+                
+            }
             _spawnedEnemies.Add(_e); 
         }
         return _spawnedEnemies; 

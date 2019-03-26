@@ -34,7 +34,7 @@ public class TDS_UIManager : MonoBehaviour
 
     #region Fields / Properties
     /// <summary> Singleton of the class TDS_UIManager </summary>
-    TDS_UIManager Instance;
+    public static TDS_UIManager Instance;
 
     #region Canvas 
     // Canvas based on the screen
