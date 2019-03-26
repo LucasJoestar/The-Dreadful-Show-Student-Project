@@ -213,6 +213,16 @@ Prefab:
       propertyPath: m_LocalPosition.x
       value: -1.005
       objectReference: {fileID: 0}
+    - target: {fileID: 114956625424719710, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: viewIdField
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114956625424719710, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: instantiationId
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
   m_IsPrefabAsset: 0
@@ -1217,6 +1227,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!65 &191176540 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 65015381553083236, guid: 1104c1e601c572a48a2e0090aefcc8c6,
+    type: 2}
+  m_PrefabInternal: {fileID: 1247676536}
 --- !u!1 &195238802
 GameObject:
   m_ObjectHideFlags: 0
@@ -5148,6 +5163,11 @@ Prefab:
       propertyPath: WhatHit.m_Bits
       value: 512
       objectReference: {fileID: 0}
+    - target: {fileID: 114022143468912796, guid: 1104c1e601c572a48a2e0090aefcc8c6,
+        type: 2}
+      propertyPath: collider
+      value: 
+      objectReference: {fileID: 191176540}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1104c1e601c572a48a2e0090aefcc8c6, type: 2}
   m_IsPrefabAsset: 0
