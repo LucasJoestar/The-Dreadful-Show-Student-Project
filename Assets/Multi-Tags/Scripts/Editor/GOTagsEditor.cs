@@ -95,7 +95,7 @@ public class GOTagsEditor : Editor
     /// <summary>
     /// Unity GameObject class built-in editor.
     /// </summary>
-    private Editor defaultEditor;
+    [SerializeField] private Editor defaultEditor;
 
     /// <summary>
     /// All editing game objects.
@@ -286,6 +286,11 @@ public class GOTagsEditor : Editor
     #endregion
 
     #region Unity Methods
+    private void OnDisable()
+    {
+        if (defaultEditor) DestroyImmediate(defaultEditor);
+    }
+
     // This function is called when the object is loaded
     void OnEnable()
     {
