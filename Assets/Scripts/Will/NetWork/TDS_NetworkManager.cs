@@ -145,7 +145,7 @@ public class TDS_NetworkManager : PunBehaviour
     }
     void Start ()
     {
-        //InitConnection(); Deplacé dans le GameManager
+        //InitConnection(); //Deplacé dans le GameManager
         if(!photonView)
         photonView = GetComponent<PhotonView>();
     }	
