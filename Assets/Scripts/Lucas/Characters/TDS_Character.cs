@@ -123,7 +123,7 @@ public abstract class TDS_Character : TDS_Damageable
     /// <summary>
     /// Image used to display this character current health status.
     /// </summary>
-    [SerializeField] protected UnityEngine.UI.Image healthBar = null;
+    public UnityEngine.UI.Image HealthBar { get; set; }
 
     /// <summary>
     /// Rigidbody of this character.
@@ -443,6 +443,19 @@ public abstract class TDS_Character : TDS_Damageable
         Throwable = null;
     }
     #endregion
+
+    #region void 
+    /// <summary>
+    /// Fill the life bar
+    /// </summary>
+    /// <param name="_health"></param>
+    public void UpdateLifeBar(int _health)
+    {
+        if (!HealthBar || !TDS_UIManager.Instance) return;
+        float _fillingValue = Mathf.Clamp((float)healthCurrent / (float)healthMax, 0, 1);
+        TDS_UIManager.Instance.FillImage(HealthBar, _fillingValue); 
+    }
+    #endregion 
 
     #endregion
 

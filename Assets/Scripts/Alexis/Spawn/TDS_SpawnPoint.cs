@@ -33,6 +33,15 @@ public class TDS_SpawnPoint
      *	    - return spawned enemies
 	 *
 	 *	-----------------------------------
+     *	Date :			[11/02/2019]
+	 *	Author :		[Thiebaut Alexis]
+	 *
+	 *	Changes :
+	 *
+	 *	[Implementation of UI]
+     *	    - Implement method to instantiate a life bar for the character
+	 *
+	 *	-----------------------------------
      *	
 	 *	Date :			[11/02/2019]
 	 *	Author :		[Thiebaut Alexis]
@@ -105,9 +114,10 @@ public class TDS_SpawnPoint
             _e = PhotonNetwork.Instantiate(_enemiesNames[i], GetRandomSpawnPosition, Quaternion.identity, 0).GetComponent<TDS_Enemy>();
             _e.Area = _owner;
             //INIT LIFEBAR
-            if(TDS_UIManager.Instance.CanvasWorld)
+            if(TDS_UIManager.Instance?.CanvasWorld)
             {
-                
+                TDS_UIManager.Instance.SetEnemyLifebar(_e);
+                _e.OnTakeDamage += _e.UpdateLifeBar; 
             }
             _spawnedEnemies.Add(_e); 
         }
