@@ -78,7 +78,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
     /// <summary>SerializedProperty for <see cref="TDS_Character.hitBox"/> of type <see cref="TDS_HitBox"/>.</summary>
     private SerializedProperty hitBox = null;
 
-    /// <summary>SerializedProperty for <see cref="TDS_Character.healthBar"/> of type <see cref="UnityEngine.UI.Image"/>.</summary>
+    /// <summary>SerializedProperty for <see cref="TDS_Character.HealthBar"/> of type <see cref="UnityEngine.UI.Image"/>.</summary>
     private SerializedProperty healthBar = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_Character.rigidbody"/> of type <see cref="Rigidbody"/>.</summary>

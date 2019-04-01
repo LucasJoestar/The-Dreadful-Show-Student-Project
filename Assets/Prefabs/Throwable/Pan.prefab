@@ -53,8 +53,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1963884616452486}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.1616592, y: 2.3248787, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4.96, y: -5.19, z: -8.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4989222636376914}
@@ -124,11 +124,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18dda57ee8a7f354ba608a59dfff9996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collider: {fileID: 0}
-  owner: {fileID: 0}
-  WhatHit:
-    serializedVersion: 2
-    m_Bits: 1024
+  collider: {fileID: 65015381553083236}
+  Owner: {fileID: 0}
+  HittableTags: []
 --- !u!114 &114339275710440242
 MonoBehaviour:
   m_ObjectHideFlags: 1
