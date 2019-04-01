@@ -70,8 +70,15 @@ public class TDS_NetworkManager : PunBehaviour
     {
         PhotonNetwork.ConnectUsingSettings(connectionVersion);
     }
+    /// <summary>
+    /// Spawn player based on the Enum PlayerType
+    /// </summary>
+    /// <param name="_playerType"></param>
+    /// <returns></returns>
     public TDS_Player InstantiatePlayer (PlayerType _playerType)
     {
+        PhotonView _playerId = PhotonNetwork.Instantiate(_playerType.ToString(), Vector3.zero + Vector3.up, Quaternion.identity, 0).GetComponent<PhotonView>();
+        localPlayer = _playerType;
 
         return null;
     }
