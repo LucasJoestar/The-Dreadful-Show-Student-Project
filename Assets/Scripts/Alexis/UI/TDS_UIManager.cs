@@ -155,10 +155,22 @@ public class TDS_UIManager : PunBehaviour
     public void SetEnemyLifebar(TDS_Enemy _enemy)
     {
         Vector3 _offset = Vector3.up * 2; 
-        TDS_LifeBar _healthBar = PhotonNetwork.Instantiate("enemyLifeBar", _enemy.transform.position + _offset, Quaternion.identity, 0).GetComponent<TDS_LifeBar>();
+        TDS_LifeBar _healthBar = PhotonNetwork.Instantiate("LifeBar", _enemy.transform.position + _offset, Quaternion.identity, 0).GetComponent<TDS_LifeBar>();
         _healthBar.SetOwner(_enemy, _offset, true);
         _enemy.HealthBar = _healthBar.FilledImage; 
         _healthBar.transform.SetParent(canvasWorld.transform);
+    }
+
+    public void SetPlayerLifeBar(TDS_Player _player)
+    {
+        TDS_LifeBar _healthBar = PhotonNetwork.Instantiate("LifeBar", Vector3.zero , Quaternion.identity, 0).GetComponent<TDS_LifeBar>();
+        _healthBar.SetOwner(_player);
+        _player.HealthBar = _healthBar.FilledImage;
+        _healthBar.transform.SetParent(_player.transform);
+        Transform _imageTransform = _healthBar.transform.GetChild(0);
+        _imageTransform.SetParent(canvasScreen.transform);
+        _imageTransform.localPosition = new Vector2(1700, -70);
+        _imageTransform.localScale = new Vector2(300, 50); 
     }
 
     /// <summary>
