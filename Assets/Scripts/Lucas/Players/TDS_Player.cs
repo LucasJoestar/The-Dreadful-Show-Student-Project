@@ -1526,8 +1526,8 @@ public class TDS_Player : TDS_Character
         throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(handsTransform.localPosition, throwAimingPoint, aimAngle);
 
         // Initializes ground detection box X & Z size based on collider size
-        groundDetectionBox.Size.x = collider.size.x;
-        groundDetectionBox.Size.z = collider.size.z;
+        groundDetectionBox.Size.x = collider.size.x - .001f;
+        groundDetectionBox.Size.z = collider.size.z - .001f;
     }
 	
 	// Update is called once per frame
@@ -1544,12 +1544,6 @@ public class TDS_Player : TDS_Character
         // Check the player inputs
         CheckMovementsInputs();
         CheckActionsInputs();
-
-        // Set shadow position if needed
-        if (shadow.transform.position.y != .01f)
-        {
-            shadow.transform.position = new Vector3(shadow.transform.position.x, .01f, shadow.transform.position.z);
-        }
 	}
 	#endregion
 
