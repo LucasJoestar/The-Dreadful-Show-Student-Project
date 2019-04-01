@@ -370,11 +370,14 @@ public abstract class TDS_Enemy : TDS_Character
                                 _colliders = _colliders.Where(c => c.GetComponent<TDS_Throwable>()).OrderBy(c => Vector3.Distance(transform.position, c.transform.position)).ToArray();
                                 if (_colliders.Length > 0)
                                 {
-                                    //Get the closest throwable
-                                    _targetedThrowable = _colliders.Select(c => c.GetComponent<TDS_Throwable>()).First();
-                                    //Set a new path to the throwable 
-                                    enemyState = EnemyState.ComputingPath;
-                                    goto case EnemyState.ComputingPath;
+                                    if(Vector3.Distance(transform.position, _colliders.First().transform.position) < Vector3.Distance(transform.position, playerTarget.transform.position))
+                                    {
+                                        //Get the closest throwable
+                                        _targetedThrowable = _colliders.Select(c => c.GetComponent<TDS_Throwable>()).First();
+                                        //Set a new path to the throwable 
+                                        enemyState = EnemyState.ComputingPath;
+                                        goto case EnemyState.ComputingPath;
+                                    }
                                 }
                             }
                         }
@@ -501,7 +504,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns>Best player to target</returns>
     protected TDS_Player SearchTarget()
     {
-        TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(c => c.GetComponent<TDS_Player>() != null && c.gameObject != this.gameObject).Select(d => d.GetComponent<TDS_Player>()).ToArray();
+        TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
         if (_targets.Length == 0) return null;
         //Set constraints here (Distance, type, etc...)
         return _targets.Where(t => !t.IsDead).OrderBy(d => Vector3.Distance(transform.position, d.transform.position)).FirstOrDefault();
