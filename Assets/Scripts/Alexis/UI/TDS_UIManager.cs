@@ -73,12 +73,28 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private GameObject pauseMenuParent;
     #endregion
 
+    #region Buttons
+
+    #region Character Selection
+    [SerializeField] private Button ButtonSelectionBeardLady;
+    [SerializeField] private Button ButtonSelectionJuggler;
+    [SerializeField] private Button ButtonSelectionFatLady;
+    [SerializeField] private Button ButtonSelectionFireEater;
+    #endregion
+
+    #region PauseButton
+    [SerializeField] private Button ButtonQuitPause; 
+    #endregion
+
+    #endregion
+
     #region Coroutines
     /// <summary>
     /// Dictionary to stock every filling coroutine started
     /// </summary>
     private Dictionary<Image, Coroutine> filledImages = new Dictionary<Image, Coroutine>();
     #endregion
+
     #endregion
 
     #region Methods
@@ -148,6 +164,26 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Set the events linked to the various Buttons of the UI
+    /// Character Selection Button -> Spawn a character and hide the menu
+    /// Button Quit Pause -> Hide the pause menu
+    /// </summary>
+    private void SetButtons()
+    {
+        ButtonSelectionBeardLady.onClick.AddListener(() => TDS_GameManager.Instance?.Spawn());
+        ButtonSelectionJuggler.onClick.AddListener(() => TDS_GameManager.Instance?.Spawn());
+        ButtonSelectionFatLady.onClick.AddListener(() => TDS_GameManager.Instance?.Spawn());
+        ButtonSelectionFireEater.onClick.AddListener(() => TDS_GameManager.Instance?.Spawn());
+
+        ButtonSelectionBeardLady.onClick.AddListener(() => ActivateMenu(UIState.InGame));
+        ButtonSelectionJuggler.onClick.AddListener(() => ActivateMenu(UIState.InGame));
+        ButtonSelectionFatLady.onClick.AddListener(() => ActivateMenu(UIState.InGame));
+        ButtonSelectionFireEater.onClick.AddListener(() => ActivateMenu(UIState.InGame));
+
+        ButtonQuitPause.onClick.AddListener(() => ActivateMenu(UIState.InGame));
+    }
+
+    /// <summary>
     /// Instantiate enemy Life bar
     /// Link it to the enemy
     /// </summary>
@@ -161,16 +197,25 @@ public class TDS_UIManager : PunBehaviour
         _healthBar.transform.SetParent(canvasWorld.transform);
     }
 
+    /// <summary>
+    /// Instantiate player LifeBar and set its owner as the local player
+    /// if local 
+    /// </summary>
+    /// <param name="_player"></param>
     public void SetPlayerLifeBar(TDS_Player _player)
     {
-        TDS_LifeBar _healthBar = PhotonNetwork.Instantiate("LifeBar", Vector3.zero , Quaternion.identity, 0).GetComponent<TDS_LifeBar>();
-        _healthBar.SetOwner(_player);
-        _player.HealthBar = _healthBar.FilledImage;
-        _healthBar.transform.SetParent(_player.transform);
-        Transform _imageTransform = _healthBar.transform.GetChild(0);
-        _imageTransform.SetParent(canvasScreen.transform);
-        _imageTransform.localPosition = new Vector2(1700, -70);
-        _imageTransform.localScale = new Vector2(300, 50); 
+        if(photonView.isMine)
+        {
+            TDS_LifeBar _healthBar = PhotonNetwork.Instantiate("LifeBar", Vector3.zero, Quaternion.identity, 0).GetComponent<TDS_LifeBar>();
+            _healthBar.SetOwner(_player);
+            _player.HealthBar = _healthBar.FilledImage;
+            _healthBar.transform.SetParent(_player.transform);
+            Transform _imageTransform = _healthBar.transform.GetChild(0);
+            _imageTransform.SetParent(canvasScreen.transform);
+            _imageTransform.localPosition = new Vector2(1700, -70);
+            _imageTransform.localScale = new Vector2(300, 50);
+        }
+
     }
 
     /// <summary>
@@ -207,7 +252,7 @@ public class TDS_UIManager : PunBehaviour
 	// Use this for initialization
     private void Start()
     {
-		
+        SetButtons();
     }
 	
 	// Update is called once per frame
