@@ -88,9 +88,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     /// <summary>SerializedProperties for <see cref="TDS_Player.Summoner"/> of type <see cref="TDS_Summoner"/>.</summary>
     private SerializedProperty summoner = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Player.shadow"/> of type <see cref="Transform"/>.</summary>
-    private SerializedProperty shadow = null;
-
     /// <summary>SerializedProperties for <see cref="TDS_Player.interactionDetector"/> of type <see cref="TDS_Trigger"/>.</summary>
     private SerializedProperty interactionsDetector = null;
 
@@ -306,7 +303,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     private void DrawComponentsAndReferences()
     {
         TDS_EditorUtility.PropertyField("Ground detection Box", "Virtual box used to detect if the player is on ground or not", groundDetectionBox);
-        TDS_EditorUtility.ObjectField("Shadow", "Shadow of the player", shadow, typeof(Transform));
 
         GUILayout.Space(5);
 
@@ -531,7 +527,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
         // Get the serializedProperties from the serializedObject
         summoner = serializedObject.FindProperty("Summoner");
-        shadow = serializedObject.FindProperty("shadow");
         interactionsDetector = serializedObject.FindProperty("interactionDetector");
         groundDetectionBox = serializedObject.FindProperty("groundDetectionBox");
 

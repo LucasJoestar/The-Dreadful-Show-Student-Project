@@ -96,7 +96,6 @@ GameObject:
   - component: {fileID: 4311397187767890}
   - component: {fileID: 114637021920016826}
   - component: {fileID: 65428636927362380}
-  - component: {fileID: 7973541675526511950}
   m_Layer: 0
   m_Name: Hit Box
   m_TagString: Untagged
@@ -551,7 +550,6 @@ MonoBehaviour:
   throwBonusDamagesMin: 9
   throwAimingPoint: {x: 7, y: -10, z: 0}
   Summoner: {fileID: 0}
-  shadow: {fileID: 0}
   interactionDetector: {fileID: 114470064309655796}
   groundDetectionBox:
     Color: {r: 1, g: 0.5952403, b: 0, a: 1}
@@ -643,7 +641,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider: {fileID: 65428636927362380}
   Owner: {fileID: 0}
-  HittableTags: []
+  HittableTags:
+  - Enemy
 --- !u!114 &114805191651210132
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -892,28 +891,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!1773428102 &7973541675526511950
-ParentConstraint:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1460451521323524}
-  m_Enabled: 1
-  m_Weight: 1
-  m_TranslationAtRest: {x: 0, y: 0, z: 0}
-  m_RotationAtRest: {x: 0, y: 0, z: 0}
-  m_TranslationOffsets:
-  - {x: 0, y: 0, z: 0}
-  m_RotationOffsets:
-  - {x: 0, y: 0, z: 0}
-  m_AffectTranslationX: 1
-  m_AffectTranslationY: 1
-  m_AffectTranslationZ: 1
-  m_AffectRotationX: 1
-  m_AffectRotationY: 1
-  m_AffectRotationZ: 1
-  m_IsContraintActive: 0
-  m_IsLocked: 0
-  m_Sources:
-  - sourceTransform: {fileID: 4023611725215564}
-    weight: 1

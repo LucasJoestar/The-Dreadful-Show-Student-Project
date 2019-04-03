@@ -865,7 +865,7 @@ public class TDS_Juggler : TDS_Player
     /// Performs a dodge.
     /// While dodging, the player cannot take damage or attack.
     /// </summary>
-    public override IEnumerator Dodge()
+    protected override IEnumerator Dodge()
     {
         // If aiming, stop
         if (isAiming) StopAiming();
