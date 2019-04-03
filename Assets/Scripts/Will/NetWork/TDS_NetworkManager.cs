@@ -75,7 +75,7 @@ public class TDS_NetworkManager : PunBehaviour
     /// </summary>
     /// <param name="_playerType"></param>
     /// <returns></returns>
-    public TDS_Player InstantiatePlayer (PlayerType _playerType)
+    public PhotonView InstantiatePlayer (PlayerType _playerType, Vector3 _spawnPosition)
     {
         PhotonView _playerId = PhotonNetwork.Instantiate(_playerType.ToString(), _spawnPosition, Quaternion.identity, 0).GetComponent<PhotonView>();
         localPlayer = _playerType;
