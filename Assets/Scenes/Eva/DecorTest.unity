@@ -699,6 +699,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5545a03bfb3b7244a674b0b46b1f2ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnAreaActivated:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnAreaDesactivated:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnNextWave:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   photonView: {fileID: 0}
   isLooping: 1
   waves:
@@ -1729,7 +1744,7 @@ MonoBehaviour:
   currentBounds:
     XBounds: {x: 0, y: 0}
     ZBounds: {x: 0, y: 0}
-  LevelBounds:
+  levelBounds:
     XBounds: {x: -10, y: 10}
     ZBounds: {x: -10, y: 10}
   camera: {fileID: 814321690}

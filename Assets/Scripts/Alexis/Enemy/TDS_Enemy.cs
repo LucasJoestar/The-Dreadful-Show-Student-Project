@@ -504,7 +504,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns>Best player to target</returns>
     protected TDS_Player SearchTarget()
     {
-        TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
+        TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
         if (_targets.Length == 0) return null;
         //Set constraints here (Distance, type, etc...)
         return _targets.Where(t => !t.IsDead).OrderBy(d => Vector3.Distance(transform.position, d.transform.position)).FirstOrDefault();

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events; 
 using UnityEditor;
 using UtilsLibrary.GUILibrary; 
 
@@ -19,7 +20,16 @@ public class TDS_SpawnerAreaEditor : Editor
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	#####################
+	 *	 
+	 *	Date :			[03/04/2019]
+	 *	Author :		[THIEBAUT Alexis]
 	 *
+	 *	Changes :
+	 *
+	 *	[Adding Editor for the Unity Events]
+	 *
+	 *	-----------------------------------
+     *	
 	 *	Date :			[11/02/2019]
 	 *	Author :		[THIEBAUT Alexis]
 	 *
@@ -65,6 +75,23 @@ public class TDS_SpawnerAreaEditor : Editor
             EditorPrefs.SetBool("areSpawnerAreaSettingsUnfolded", value);
         }
     }
+
+    /// <summary>Backing field for <see cref="AreSpawerAreaEventsUnfolded"/></summary>
+    private bool areSpawerAreaEventsUnfolded = false;
+    /// <summary>
+    /// Are the components of the Character class unfolded for editor ?
+    /// </summary>
+    public bool AreSpawerAreaEventsUnfolded
+    {
+        get { return areSpawerAreaEventsUnfolded; }
+        set
+        {
+            areSpawerAreaEventsUnfolded = value;
+
+            // Saves this value
+            EditorPrefs.SetBool("areSpawerAreaEventsUnfolded", value);
+        }
+    }
     #endregion
 
     #region Components and references
@@ -78,6 +105,13 @@ public class TDS_SpawnerAreaEditor : Editor
 
     /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.waves"/> of type <see cref="List{TDS_Wave}"/>.</summary>
     private SerializedProperty waves = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.OnAreaActivated"/> of type <see cref="UnityEvent"/>.</summary>
+    private SerializedProperty eventOnAreaActivated = null;
+    /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.OnAreaDesactivated"/> of type <see cref="UnityEvent"/>.</summary>
+    private SerializedProperty eventOnAreaDesactivated = null;
+    /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.OnNextWave"/> of type <see cref="UnityEvent"/>.</summary>
+    private SerializedProperty eventOnNextWave = null;
     #endregion
 
     #endregion
@@ -92,6 +126,13 @@ public class TDS_SpawnerAreaEditor : Editor
     {
         TDS_EditorUtility.ObjectField("Photon View", "Photon view of this area.", photonView, typeof(CustomNavMeshAgent));
         GUILayout.Space(3);
+    }
+
+    private void DrawEvents()
+    {
+        TDS_EditorUtility.PropertyField("On Spawn Area Activated", "Called when a player activate the trigger", eventOnAreaActivated);
+        TDS_EditorUtility.PropertyField("On Spawn Area Desactivated", "Called when all waves are completed", eventOnAreaDesactivated);
+        TDS_EditorUtility.PropertyField("On Next Wave", "Called when a wave is completed", eventOnNextWave);
     }
 
     /// <summary>
@@ -130,6 +171,23 @@ public class TDS_SpawnerAreaEditor : Editor
         }
 
         EditorGUILayout.EndVertical();
+        GUILayout.Space(15);
+
+
+        GUI.backgroundColor = TDS_EditorUtility.BoxDarkColor;
+        EditorGUILayout.BeginVertical("HelpBox");
+
+        // Button to show or not the Character class components
+        if (TDS_EditorUtility.Button("Events", "Wrap / Unwrap Events settings", TDS_EditorUtility.HeaderStyle)) AreSpawerAreaEventsUnfolded = !areSpawerAreaEventsUnfolded;
+
+        // If unfolded, draws the custom editor for the Components & References
+        if (areSpawerAreaEventsUnfolded)
+        {
+            DrawEvents();
+        }
+
+        EditorGUILayout.EndVertical();
+        GUILayout.Space(15);
 
         // Applies all modified properties on the SerializedObjects
         serializedObject.ApplyModifiedProperties();
@@ -202,6 +260,10 @@ public class TDS_SpawnerAreaEditor : Editor
 
         isLooping = serializedObject.FindProperty("isLooping");
         waves = serializedObject.FindProperty("waves");
+        eventOnAreaActivated = serializedObject.FindProperty("OnAreaActivated");
+        eventOnAreaDesactivated = serializedObject.FindProperty("OnAreaDesactivated");
+        eventOnNextWave = serializedObject.FindProperty("OnNextWave");
+
 
         //Load the editor folded and unfolded values of this class
         areSpawnerAreaComponentsUnfolded = EditorPrefs.GetBool("areSpawnerAreaComponentsUnfolded", areSpawnerAreaComponentsUnfolded);
