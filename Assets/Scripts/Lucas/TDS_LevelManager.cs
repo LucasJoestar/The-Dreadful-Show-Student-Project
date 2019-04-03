@@ -110,9 +110,9 @@ public class TDS_LevelManager : MonoBehaviour
     /// <param name="_playerType"></param>
     public void Spawn(PlayerType _playerType)
     {
-        Debug.Log("in");
-        TDS_NetworkManager.Instance.InstantiatePlayer(_playerType, StartSpawnPoints[0]);
-        // TDS_Camera.Instance.Target = _playerTransform; 
+        localPlayer = TDS_NetworkManager.Instance.InstantiatePlayer(_playerType, StartSpawnPoints[0]).GetComponent<TDS_Player>();
+        TDS_Camera.Instance.Target = localPlayer.transform;
+        TDS_UIManager.Instance?.SetPlayerLifeBar(localPlayer);
     }
 
     /// <summary>
