@@ -105,7 +105,7 @@ public class TDS_SpawnerArea : PunBehaviour
     {
         if (!PhotonNetwork.isMasterClient) return;
         if (waveIndex == waves.Count && !isLooping) return;
-        else waveIndex = 0; 
+        else waveIndex = 0;
         spawnedEnemies.AddRange(waves[waveIndex].GetWaveEnemies(this));
         waveIndex++;
         if (spawnedEnemies.Count == 0) OnNextWave?.Invoke(); 
@@ -117,7 +117,7 @@ public class TDS_SpawnerArea : PunBehaviour
     /// <param name="_removedEnemy">Enemy to remove from the spawnedEnemies list</param>
     public void RemoveEnemy(TDS_Enemy _removedEnemy)
     {
-        //if (!PhotonNetwork.isMasterClient) return;
+        if (!PhotonNetwork.isMasterClient) return;
         spawnedEnemies.Remove(_removedEnemy);
         deadEnemies.Add(_removedEnemy); 
         if(spawnedEnemies.Count == 0)

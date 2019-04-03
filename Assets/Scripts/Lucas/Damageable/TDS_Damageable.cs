@@ -177,6 +177,7 @@ public class TDS_Damageable : PunBehaviour
                 OnDie?.Invoke();
                 Die();
             }
+            enabled = !value;
         }
     }
 

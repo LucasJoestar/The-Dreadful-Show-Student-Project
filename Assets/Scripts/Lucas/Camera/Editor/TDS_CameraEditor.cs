@@ -37,7 +37,7 @@ public class TDS_CameraEditor : Editor
     /// <summary>SerializedProperties for <see cref="TDS_Camera.IsMoving"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isMoving = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Camera.Bounds"/> of type <see cref="TDS_Bounds"/>.</summary>
+    /// <summary>SerializedProperties for <see cref="TDS_Camera.LevelBounds"/> of type <see cref="TDS_Bounds"/>.</summary>
     private SerializedProperty bounds = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Camera.Camera"/> of type <see cref="Camera"/>.</summary>

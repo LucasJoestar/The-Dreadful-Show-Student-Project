@@ -220,6 +220,11 @@ public class TDS_Player : TDS_Character
     public event Action OnStopDodge = null;
 
     /// <summary>
+    /// Event called when stopping a dodge. It is cleaned once called.
+    /// </summary>
+    public event Action OnStopDodgeOneShot = null;
+
+    /// <summary>
     /// Event called when stopping parrying.
     /// </summary>
     public event Action OnStopParry = null;
@@ -232,11 +237,6 @@ public class TDS_Player : TDS_Character
     /// The summoner this player is currently carrying.
     /// </summary>
     public TDS_Summoner Summoner = null;
-
-    /// <summary>
-    /// Shadow transform of the player.
-    /// </summary>
-    [SerializeField] protected Transform shadow = null;
 
     /// <summary>
     /// <see cref="TDS_Trigger"/> used to detect when possible interactions with the environment are availables.
@@ -726,7 +726,7 @@ public class TDS_Player : TDS_Character
     /// Performs a dodge.
     /// While dodging, the player cannot take damage or attack.
     /// </summary>
-    public virtual IEnumerator Dodge()
+    protected virtual IEnumerator Dodge()
     {
         // Dodge !
         IsInvulnerable = true;
@@ -735,7 +735,7 @@ public class TDS_Player : TDS_Character
         OnStartDodging?.Invoke();
 
         // Adds an little force at the start of the dodge
-        rigidbody.AddForce(Vector3.right * Mathf.Clamp(speedCurrent, speedInitial, speedMax) * speedCoef * isFacingRight.ToSign() * speedMax * 10);
+        rigidbody.AddForce(Vector3.right * Mathf.Clamp(speedCurrent, speedInitial, speedMax) * speedCoef * isFacingRight.ToSign() * speedMax * (isGrounded ? 10 : 2));
 
         // Triggers the associated animation
         SetAnim(PlayerAnimState.Dodge);
@@ -743,7 +743,8 @@ public class TDS_Player : TDS_Character
         // Adds a little force to the player to move him along while dodging
         while (true)
         {
-            rigidbody.AddForce(Vector3.right * isFacingRight.ToSign() * speedCoef * speedMax * (isGrounded ? 5 : 3));
+            float _xForce = isFacingRight.ToSign() * speedCoef * speedMax * (isGrounded ? 5 : 2.5f);
+            rigidbody.AddForce(new Vector3(_xForce, isGrounded ? 0 : -.35f, 0));
             Move(transform.position + (isFacingRight ? Vector3.right : Vector3.left));
 
             yield return new WaitForEndOfFrame();
@@ -782,6 +783,11 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
+    /// Make the player dodge.
+    /// </summary>
+    public void StartDodge() => dodgeCoroutine = StartCoroutine(Dodge());
+
+    /// <summary>
     /// Stops the current dodge if dodging.
     /// </summary>
     public virtual void StopDodge()
@@ -798,7 +804,11 @@ public class TDS_Player : TDS_Character
         IsInvulnerable = false;
         isDodging = false;
 
+        // Call events
         OnStopDodge?.Invoke();
+
+        OnStopDodgeOneShot?.Invoke();
+        OnStopDodgeOneShot = null;
     }
 
     /// <summary>
@@ -810,10 +820,12 @@ public class TDS_Player : TDS_Character
         {
             StopCoroutine(dodgeCoroutine);
 
-            if (isGrounded)
-            {
-                rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, rigidbody.velocity.z);
-            }
+            float _xVelocity = 0;
+
+            if (isGrounded) _xVelocity = 0;
+            else _xVelocity = rigidbody.velocity.x * .8f;
+
+            rigidbody.velocity = new Vector3(_xVelocity, rigidbody.velocity.y, rigidbody.velocity.z);
         }
     }
 
@@ -1135,9 +1147,6 @@ public class TDS_Player : TDS_Character
     /// <returns>Returns the world.</returns>
     public IEnumerator Jump()
     {
-        // Gives a little force to the player's jump
-        rigidbody.AddForce(Vector3.right * isFacingRight.ToSign() * speedCurrent * 5);
-
         // Creates a float to use as timer
         float _timer = 0;
 
@@ -1391,7 +1400,7 @@ public class TDS_Player : TDS_Character
         // Check non-agressive actions
         if (Input.GetButtonDown(InteractButton)) Interact();
 
-        else if (Input.GetButtonDown(DodgeButton)) dodgeCoroutine = StartCoroutine(Dodge());
+        else if (Input.GetButtonDown(DodgeButton)) StartDodge();
 
         else if ((Input.GetButtonDown(ParryButton) || TDS_Input.GetAxisDown(ParryButton)) && isGrounded) StartCoroutine(Parry());
 
@@ -1452,6 +1461,21 @@ public class TDS_Player : TDS_Character
     }
     #endregion
 
+    #region Others
+    /// <summary>
+    /// Activate or desactivate the player.
+    /// </summary>
+    /// <param name="_doActive">Should it be activated or desactivated ?</param>
+    public void ActivePlayer(bool _doActive)
+    {
+        rigidbody.isKinematic = !_doActive;
+        collider.enabled = _doActive;
+        enabled = _doActive;
+
+        Debug.Log("Activate => " + _doActive);
+    }
+    #endregion
+
     #endregion
 
     #region Unity Methods
@@ -1461,10 +1485,6 @@ public class TDS_Player : TDS_Character
         base.Awake();
 
         // Try to get components references if they are missing
-        if (!shadow)
-        {
-            Debug.LogWarning("The Shadow of \"" + name + "\" for script TDS_Player is missing !");
-        }
         if (!interactionDetector)
         {
             interactionDetector = GetComponentInChildren<TDS_Trigger>();

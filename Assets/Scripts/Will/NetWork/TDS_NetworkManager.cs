@@ -75,9 +75,9 @@ public class TDS_NetworkManager : PunBehaviour
     /// </summary>
     /// <param name="_playerType"></param>
     /// <returns></returns>
-    public PhotonView InstantiatePlayer (PlayerType _playerType)
+    public TDS_Player InstantiatePlayer (PlayerType _playerType)
     {
-        PhotonView _playerId = PhotonNetwork.Instantiate(_playerType.ToString(), Vector3.zero + Vector3.up, Quaternion.identity, 0).GetComponent<PhotonView>();
+        PhotonView _playerId = PhotonNetwork.Instantiate(_playerType.ToString(), _spawnPosition, Quaternion.identity, 0).GetComponent<PhotonView>();
         localPlayer = _playerType;
 
         return _playerId;
@@ -145,7 +145,7 @@ public class TDS_NetworkManager : PunBehaviour
     }
     void Start ()
     {
-        //InitConnection(); Deplacé dans le GameManager
+        //InitConnection(); //Deplacé dans le GameManager
         if(!photonView)
         photonView = GetComponent<PhotonView>();
     }	

@@ -19,13 +19,20 @@ public class TDS_Checkpoint : MonoBehaviour
 	 *	#####################
 	 *
      *	• Set animations.
-     *	
-     *	• 
 	 *
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[01 / 04 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    Players now dodge when resurrected to get out of the Checkpoint box.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[26 / 03 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -88,7 +95,7 @@ public class TDS_Checkpoint : MonoBehaviour
     private void Activate()
     {
         isActivated = true;
-        TDS_GameManager.Instance.SetCheckpoint(this);
+        TDS_LevelManager.Instance.SetCheckpoint(this);
 
         trigger.enabled = false;
 
@@ -107,7 +114,7 @@ public class TDS_Checkpoint : MonoBehaviour
     /// <returns></returns>
     private IEnumerator RespawnCoroutine()
     {
-        TDS_Player[] _deadPlayers = TDS_GameManager.Instance.AllPlayers.Where(p => p.IsDead).ToArray();
+        TDS_Player[] _deadPlayers = TDS_LevelManager.Instance.AllPlayers.Where(p => p.IsDead).ToArray();
 
         if (_deadPlayers.Length == 0) yield break;
 
@@ -124,12 +131,17 @@ public class TDS_Checkpoint : MonoBehaviour
             // Make player disappear in smoke
 
             _player.gameObject.SetActive(false);
+            _player.ActivePlayer(false);
             _player.HealthCurrent = _player.HealthMax;
 
             yield return new WaitForSeconds(1);
 
+            if (!_player.IsFacingRight) _player.Flip();
             _player.transform.position = transform.position + spawnPosition;
             _player.gameObject.SetActive(true);
+            _player.StartDodge();
+
+            _player.OnStopDodgeOneShot += () => _player.ActivePlayer(true);
 
             yield return new WaitForSeconds(.5f);
         }
@@ -159,7 +171,7 @@ public class TDS_Checkpoint : MonoBehaviour
     private void OnDrawGizmos()
     {
         // Draw gizmos indicating if the point is activated or not
-        Gizmos.color = isActivated ? (TDS_GameManager.Instance.Checkpoint == this ? Color.green : Color.blue) : Color.red;
+        Gizmos.color = isActivated ? (TDS_LevelManager.Instance.Checkpoint == this ? Color.green : Color.blue) : Color.red;
         Gizmos.DrawCube(transform.position + (Vector3.up * 1.5f), Vector3.one * .25f);
 
         // Draw spawn point gizmo
