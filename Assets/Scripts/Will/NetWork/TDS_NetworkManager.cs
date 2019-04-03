@@ -75,12 +75,12 @@ public class TDS_NetworkManager : PunBehaviour
     /// </summary>
     /// <param name="_playerType"></param>
     /// <returns></returns>
-    public TDS_Player InstantiatePlayer (PlayerType _playerType, Vector3 _spawnPosition)
+    public PhotonView InstantiatePlayer (PlayerType _playerType, Vector3 _spawnPosition)
     {
         PhotonView _playerId = PhotonNetwork.Instantiate(_playerType.ToString(), _spawnPosition, Quaternion.identity, 0).GetComponent<PhotonView>();
         localPlayer = _playerType;
 
-        return null;
+        return _playerId;
     }
     /// <summary> 
     /// Join the room if this room already exist else create it with somme parameters 
@@ -113,7 +113,7 @@ public class TDS_NetworkManager : PunBehaviour
         isHost = true;
     }
 
-    public void OnleaveRoom()
+    public void OnleftRoom()
     {
 
     }
