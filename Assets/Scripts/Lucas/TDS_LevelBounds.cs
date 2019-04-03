@@ -34,25 +34,37 @@ public class TDS_LevelBounds : MonoBehaviour
 
     #region Fields / Properties
     /// <summary>
-    /// Bounds of the camera to set as new when get activated.
-    /// </summary>
-    [SerializeField] private TDS_Bounds cameraBounds = null;
-
-    /// <summary>Public accessor of <see cref="cameraBounds"/>.</summary>
-    public TDS_Bounds CameraBounds { get { return cameraBounds; } }
-
-    /// <summary>
     /// Collider trigger to enable these bounds.
     /// </summary>
     [SerializeField] private new BoxCollider collider = null;
 
     /// <summary>
-    /// Child parent of all colliders to activate with the bounds.
+    /// Parent of all bounds to activate with the bounds.
     /// </summary>
-    [SerializeField] private GameObject colliderChild = null;
+    [SerializeField] private GameObject boundsParent = null;
 
-    /// <summary>Public accessor of <see cref="colliderChild"/>.</summary>
-    public GameObject ColliderChild { get { return colliderChild; } }
+    /// <summary>Public accessor of <see cref="boundsParent"/>.</summary>
+    public GameObject BoundsParent { get { return boundsParent; } }
+
+    /// <summary>
+    /// Left bound, so X minimum bounds value.
+    /// </summary>
+    [SerializeField] private Transform leftBound = null;
+
+    /// <summary>
+    /// Right bound, so X maximum bounds value.
+    /// </summary>
+    [SerializeField] private Transform rightBound = null;
+
+    /// <summary>
+    /// Bottom bound, so Z minimum bounds value.
+    /// </summary>
+    [SerializeField] private Transform bottomBound = null;
+
+    /// <summary>
+    /// Top bound, so Z maximum bounds value.
+    /// </summary>
+    [SerializeField] private Transform topBound = null;
     #endregion
 
     #region Methods
@@ -63,9 +75,8 @@ public class TDS_LevelBounds : MonoBehaviour
     /// </summary>
     public void Activate()
     {
-        TDS_Camera.Instance.SetBounds(cameraBounds);
-        colliderChild.SetActive(true);
-        collider.enabled = false;
+        TDS_Camera.Instance.SetBounds(leftBound.position.x, rightBound.position.x, bottomBound.position.z, topBound.position.z);
+        boundsParent.SetActive(true);
     }
 
     /// <summary>
@@ -95,10 +106,14 @@ public class TDS_LevelBounds : MonoBehaviour
     private void Start()
     {
         // Try to get missing references
-		if (!colliderChild)
+		if (!leftBound || !rightBound || !bottomBound || !topBound)
         {
-            colliderChild = transform.GetChild(0).gameObject;
-            if (!colliderChild) Debug.LogWarning($"The Bounds \"{name}\" doesn't have any child colliders attached !");
+            Debug.LogWarning($"Some Bounds of \"{name}\" are missing !");
+        }
+        if (!boundsParent)
+        {
+            boundsParent = transform.GetChild(0).gameObject;
+            if (!boundsParent) Debug.LogWarning($"The Bounds \"{name}\" doesn't have any child colliders attached !");
         }
         if (!collider)
         {

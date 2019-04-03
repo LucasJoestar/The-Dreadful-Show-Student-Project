@@ -16,6 +16,15 @@ public class TDS_Bounds
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[03 / 04 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    Set new Bounds system with 4 float instead of 2 vector2.
+	 *
+	 *	-----------------------------------
+     * 
 	 *	Date :			[25 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -31,28 +40,75 @@ public class TDS_Bounds
 
     #region Fields / Properties
     /// <summary>
-    /// X min. & max. values used for these bounds.
-    /// (X value for min., Y value for max.)
+    /// X minimum value of the bounds.
     /// </summary>
-    public Vector2 XBounds = Vector2.one;
+    public float XMin { get{ return XMinVector.x; } }
 
     /// <summary>
-    /// Z min. & max. values used for these bounds.
-    /// (X value for min., Y value for max.)
+    /// Vector for X minimum value of the bounds.
     /// </summary>
-    public Vector2 ZBounds = Vector2.one;
+    public Vector3 XMinVector = Vector3.zero;
+
+    /// <summary>
+    /// X maximum value of the bounds.
+    /// </summary>
+    public float XMax { get { return XMaxVector.x; } }
+
+    /// <summary>
+    /// Vector for X maximum value of the bounds.
+    /// </summary>
+    public Vector3 XMaxVector = Vector3.zero;
+
+    /// <summary>
+    /// Z maximum value of the bounds.
+    /// </summary>
+    public float ZMax { get { return ZMinVector.z; } }
+
+    /// <summary>
+    /// Vector for Z minimum value of the bounds.
+    /// </summary>
+    public Vector3 ZMinVector = Vector3.zero;
+
+    /// <summary>
+    /// Z minimum value of the bounds.
+    /// </summary>
+    public float ZMin { get { return ZMaxVector.z; } }
+
+    /// <summary>
+    /// Vector for Z maximum value of the bounds.
+    /// </summary>
+    public Vector3 ZMaxVector = Vector3.zero;
     #endregion
 
     #region Constructor
     /// <summary>
-    /// Creates a new Bounds object with specified X & Z limits.
+    /// Creates a new Bounds object.
     /// </summary>
-    /// <param name="_xBounds">Bounds on X axis.</param>
-    /// <param name="_zBounds">Bounds on Z axis.</param>
-    public TDS_Bounds(Vector2 _xBounds, Vector2 _zBounds)
+    /// <param name="_xMin">X minimum value of the bounds.</param>
+    /// <param name="_xMax">X maximum value of the bounds.</param>
+    /// <param name="_zMin">Z minimum value of the bounds.</param>
+    /// <param name="_zMax">Z maximum value of the bounds.</param>
+    public TDS_Bounds(float _xMin, float _xMax, float _zMin, float _zMax)
     {
-        XBounds = _xBounds;
-        ZBounds = _zBounds;
+        XMinVector = new Vector3(_xMin, 0, 0);
+        XMaxVector = new Vector3(_xMax, 0, 0);
+        ZMinVector = new Vector3(0, 0, _zMin);
+        ZMaxVector = new Vector3(0, 0, _zMax);
+    }
+
+    /// <summary>
+    /// Creates a new Bounds object.
+    /// </summary>
+    /// <param name="_xMin">X minimum value of the bounds.</param>
+    /// <param name="_xMax">X maximum value of the bounds.</param>
+    /// <param name="_zMin">Z minimum value of the bounds.</param>
+    /// <param name="_zMax">Z maximum value of the bounds.</param>
+    public TDS_Bounds(Vector3 _xMin, Vector3 _xMax, Vector3 _zMin, Vector3 _zMax)
+    {
+        XMinVector = _xMin;
+        XMaxVector = _xMax;
+        ZMinVector = _zMin;
+        ZMaxVector = _zMax;
     }
     #endregion
 }
