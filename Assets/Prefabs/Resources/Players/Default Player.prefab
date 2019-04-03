@@ -404,10 +404,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 65952162372938654}
-  owner: {fileID: 0}
-  WhatHit:
-    serializedVersion: 2
-    m_Bits: 1024
+  Owner: {fileID: 0}
+  HittableTags: []
 --- !u!120 &120275075222756004
 LineRenderer:
   m_ObjectHideFlags: 1
