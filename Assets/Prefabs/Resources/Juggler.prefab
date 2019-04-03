@@ -64,13 +64,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4250667114176770}
+  - component: {fileID: 114115008108888442}
   m_Layer: 0
   m_Name: Juggler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1416217056116752
 GameObject:
   m_ObjectHideFlags: 0
@@ -296,8 +297,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1237004398133840}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.08, y: 0, z: -2.43}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4041944261760166}
@@ -532,7 +533,6 @@ MonoBehaviour:
   healthCurrent: 99
   healthMax: 99
   hitBox: {fileID: 114637021920016826}
-  healthBar: {fileID: 0}
   rigidbody: {fileID: 54280045138941680}
   throwable: {fileID: 0}
   handsTransform: {fileID: 4195684342130554}
@@ -540,19 +540,19 @@ MonoBehaviour:
   isFacingRight: 1
   IsPacific: 0
   IsParalyzed: 0
-  aimAngle: 60
+  aimAngle: 45
   speedAccelerationTime: 0.5
   speedCoef: 1
   speedCurrent: 0
-  speedInitial: 2.5
+  speedInitial: 2
   speedMax: 4
-  throwBonusDamagesMax: 15
-  throwBonusDamagesMin: 9
+  throwBonusDamagesMax: 22
+  throwBonusDamagesMin: 7
   throwAimingPoint: {x: 7, y: -10, z: 0}
   Summoner: {fileID: 0}
   interactionDetector: {fileID: 114470064309655796}
   groundDetectionBox:
-    Color: {r: 1, g: 0.5952403, b: 0, a: 1}
+    Color: {r: 1, g: 0.59607846, b: 0, a: 1}
     WhatDetect:
       serializedVersion: 2
       m_Bits: 12288
@@ -576,15 +576,15 @@ MonoBehaviour:
   UseObjectButton: Use Object
   VerticalAxis: Vertical
   attacks:
-  - Name: 
+  - Name: Light Attack
     AnimationID: 0
     damagesMax: 5
     damagesMin: 3
     Description: 
-  - Name: 
+  - Name: Heavy Attack
     AnimationID: 0
     damagesMax: 7
-    damagesMin: 4
+    damagesMin: 3
     Description: 
   isDodging: 0
   isGrounded: 1
@@ -605,15 +605,41 @@ MonoBehaviour:
   Throwables: []
   thirdHandTransform: {fileID: 0}
   isAiming: 0
-  juggleSpeed: 2
-  throwableDistanceFromCenter: 0.25
+  juggleSpeed: 1
+  throwableDistanceFromCenter: 1
   maxThrowableAmount: 5
   throwPreviewPrecision: 10
   whatIsAllButThis:
     serializedVersion: 2
-    m_Bits: 4294966783
+    m_Bits: 0
   juggleTransform: {fileID: 4676012792620220}
-  juggleTransformIdealLocalPosition: {x: 0.6, y: 0.7, z: 0}
+  juggleTransformIdealLocalPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &114115008108888442
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1237004398133840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!114 &114470064309655796
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -626,8 +652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectedColliders: []
-  detectedTags:
-  - Object
+  detectedTags: []
 --- !u!114 &114637021920016826
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -639,10 +664,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18dda57ee8a7f354ba608a59dfff9996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collider: {fileID: 65428636927362380}
+  collider: {fileID: 0}
   Owner: {fileID: 0}
-  HittableTags:
-  - Enemy
+  HittableTags: []
 --- !u!114 &114805191651210132
 MonoBehaviour:
   m_ObjectHideFlags: 1
