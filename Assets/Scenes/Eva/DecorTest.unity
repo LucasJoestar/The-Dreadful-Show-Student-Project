@@ -1049,17 +1049,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 379901364}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07d09537efafc284a9539828d6506522, type: 3}
+  m_Script: {fileID: 11500000, guid: d94894d5cd00d2740b95a0fc8b0f680d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPaused: 0
-  isInGame: 1
   checkpoint: {fileID: 0}
   localPlayer: {fileID: 0}
   onlinePlayers: []
   StartSpawnPoints:
-  - {x: 0, y: -6, z: 5}
-  player: {fileID: 1237004398133840, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
+  - {x: 0, y: -6, z: -8}
+  - {x: 1, y: -6, z: -8}
+  - {x: 2, y: -6, z: -8}
+  - {x: 3, y: -6, z: -8}
+  player: {fileID: 0}
 --- !u!1 &415076017
 GameObject:
   m_ObjectHideFlags: 0
@@ -1725,9 +1726,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMoving: 0
-  Bounds:
-    XBounds: {x: -10, y: 18}
-    ZBounds: {x: -23, y: 0}
+  currentBounds:
+    XBounds: {x: 0, y: 0}
+    ZBounds: {x: 0, y: 0}
+  LevelBounds:
+    XBounds: {x: -10, y: 10}
+    ZBounds: {x: -10, y: 10}
   camera: {fileID: 814321690}
   rotation: 15
   speedAccelerationTime: 1.25
@@ -2849,7 +2853,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1367703003
 RectTransform:
   m_ObjectHideFlags: 0

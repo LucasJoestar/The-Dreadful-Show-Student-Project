@@ -170,10 +170,11 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     private void SetButtons()
     {
-        ButtonSelectionBeardLady.onClick.AddListener(() => TDS_GameManager.Instance?.Spawn());
-        ButtonSelectionJuggler.onClick.AddListener(() => TDS_GameManager.Instance?.Spawn());
-        ButtonSelectionFatLady.onClick.AddListener(() => TDS_GameManager.Instance?.Spawn());
-        ButtonSelectionFireEater.onClick.AddListener(() => TDS_GameManager.Instance?.Spawn());
+        //if (!photonView.isMine) return; 
+        ButtonSelectionBeardLady.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.BeardLady));
+        ButtonSelectionJuggler.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.Juggler));
+        ButtonSelectionFatLady.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.FatLady));
+        ButtonSelectionFireEater.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.FireEater));
 
         ButtonSelectionBeardLady.onClick.AddListener(() => ActivateMenu(UIState.InGame));
         ButtonSelectionJuggler.onClick.AddListener(() => ActivateMenu(UIState.InGame));
