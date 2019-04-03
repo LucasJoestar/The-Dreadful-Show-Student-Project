@@ -443,7 +443,7 @@ public class CustomNavMeshAgent : MonoBehaviour
         }
 
     }
-    private void Start()
+    private void Awake()
     {
         GenerateFieldOfView(); 
     }   
