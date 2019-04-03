@@ -101,6 +101,18 @@ public class TDS_LevelManager : MonoBehaviour
         // Instantiate the player
         PlayerType _type = player.GetComponentInChildren<TDS_Player>().PlayerType;
         //TDS_NetworkManager.Instance.InstantiatePlayer(_type);
+
+    }
+
+    /// <summary>
+    /// Make Player which a particulary type spawn and set it as the camera target
+    /// </summary>
+    /// <param name="_playerType"></param>
+    public void Spawn(PlayerType _playerType)
+    {
+        Debug.Log("in");
+        TDS_NetworkManager.Instance.InstantiatePlayer(_playerType, StartSpawnPoints[0]);
+        // TDS_Camera.Instance.Target = _playerTransform; 
     }
 
     /// <summary>
