@@ -2487,6 +2487,11 @@ MonoBehaviour:
   mainMenuParent: {fileID: 0}
   inGameMenuParent: {fileID: 0}
   pauseMenuParent: {fileID: 0}
+  ButtonSelectionBeardLady: {fileID: 0}
+  ButtonSelectionJuggler: {fileID: 0}
+  ButtonSelectionFatLady: {fileID: 0}
+  ButtonSelectionFireEater: {fileID: 0}
+  ButtonQuitPause: {fileID: 0}
 --- !u!114 &1393358468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3372,25 +3377,25 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114956625424719710, guid: 131b9c2e9ac901841aa00daa77a82570,
+    - target: {fileID: 114115008108888442, guid: 131b9c2e9ac901841aa00daa77a82570,
         type: 2}
       propertyPath: viewIdField
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114956625424719710, guid: 131b9c2e9ac901841aa00daa77a82570,
+    - target: {fileID: 114115008108888442, guid: 131b9c2e9ac901841aa00daa77a82570,
         type: 2}
       propertyPath: instantiationId
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+    - target: {fileID: 114956625424719710, guid: 131b9c2e9ac901841aa00daa77a82570,
         type: 2}
-      propertyPath: groundDetectionBox.Size.x
-      value: 1
+      propertyPath: viewIdField
+      value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+    - target: {fileID: 114956625424719710, guid: 131b9c2e9ac901841aa00daa77a82570,
         type: 2}
-      propertyPath: groundDetectionBox.Size.z
-      value: 1
+      propertyPath: instantiationId
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
