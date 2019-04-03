@@ -37,8 +37,11 @@ public class TDS_CameraEditor : Editor
     /// <summary>SerializedProperties for <see cref="TDS_Camera.IsMoving"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isMoving = null;
 
+    /// <summary>SerializedProperties for <see cref="TDS_Camera.currentBounds"/> of type <see cref="TDS_Bounds"/>.</summary>
+    private SerializedProperty currentBounds = null;
+
     /// <summary>SerializedProperties for <see cref="TDS_Camera.LevelBounds"/> of type <see cref="TDS_Bounds"/>.</summary>
-    private SerializedProperty bounds = null;
+    private SerializedProperty levelBounds = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Camera.Camera"/> of type <see cref="Camera"/>.</summary>
     private SerializedProperty camera = null;
@@ -102,7 +105,11 @@ public class TDS_CameraEditor : Editor
 
         GUILayout.Space(3);
 
-        TDS_EditorUtility.PropertyField("Bounds", "Bounds of the camera", bounds);
+        TDS_EditorUtility.PropertyField("Current Bounds", "Current bounds of the camera", currentBounds);
+
+        GUILayout.Space(3);
+
+        TDS_EditorUtility.PropertyField("Level Bounds", "Global bounds of the camera in the Level", levelBounds);
 
         TDS_EditorUtility.Vector3Field("Offset", "Offset of the camera from its target", offset);
 
@@ -155,7 +162,8 @@ public class TDS_CameraEditor : Editor
 
         // Find serialized properties
         isMoving = serializedObject.FindProperty("isMoving");
-        bounds = serializedObject.FindProperty("Bounds");
+        currentBounds = serializedObject.FindProperty("currentBounds");
+        levelBounds = serializedObject.FindProperty("levelBounds");
         camera = serializedObject.FindProperty("camera");
         rotation = serializedObject.FindProperty("rotation");
         speedAccelerationTime = serializedObject.FindProperty("speedAccelerationTime");

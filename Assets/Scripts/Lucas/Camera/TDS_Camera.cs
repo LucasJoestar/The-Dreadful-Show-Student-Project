@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
 public class TDS_Camera : MonoBehaviour 
@@ -65,12 +66,12 @@ public class TDS_Camera : MonoBehaviour
     /// <summary>
     /// Current bounds to clamp the camera position.
     /// </summary>
-    [SerializeField] public TDS_Bounds currentBounds = null;
+    [SerializeField] private TDS_Bounds currentBounds = null;
 
     /// <summary>
     /// Base bounds for entire level ; when CurrentBounds are set to null, set the this instead.
     /// </summary>
-    public TDS_Bounds LevelBounds = new TDS_Bounds(new Vector2(-10, 10), new Vector2(-10, 10));
+    [SerializeField] private TDS_Bounds levelBounds = new TDS_Bounds(new Vector2(-10, 10), new Vector2(-10, 10));
 
     /// <summary>Backing field for <see cref="Camera"/>.</summary>
     [SerializeField] private new Camera camera = null;
@@ -259,8 +260,8 @@ public class TDS_Camera : MonoBehaviour
 
             // Moves the camera
             Vector3 _destination = target.transform.position + Offset;
-            _destination.x = Mathf.Clamp(_destination.x, LevelBounds.XBounds.x, LevelBounds.XBounds.y);
-            _destination.z = Mathf.Clamp(_destination.z, LevelBounds.ZBounds.x, LevelBounds.ZBounds.y);
+            _destination.x = Mathf.Clamp(_destination.x, levelBounds.XBounds.x, levelBounds.XBounds.y);
+            _destination.z = Mathf.Clamp(_destination.z, levelBounds.ZBounds.x, levelBounds.ZBounds.y);
 
             transform.position = Vector3.Lerp(transform.position, _destination, Time.deltaTime * speedCurrent * speedCoef);
         }
@@ -273,7 +274,7 @@ public class TDS_Camera : MonoBehaviour
     public void SetBounds(TDS_Bounds _bounds)
     {
         if (_bounds != null) currentBounds = _bounds;
-        else currentBounds = LevelBounds;
+        else currentBounds = levelBounds;
     }
     #endregion
 
@@ -298,20 +299,20 @@ public class TDS_Camera : MonoBehaviour
         // Draws the camera bounds with lines
         Gizmos.color = Color.yellow;
 
-        Gizmos.DrawCube(new Vector3(LevelBounds.XBounds.x, transform.position.y, LevelBounds.ZBounds.x), Vector3.one * .25f);
-        Gizmos.DrawLine(new Vector3(LevelBounds.XBounds.x, transform.position.y, LevelBounds.ZBounds.x), new Vector3(LevelBounds.XBounds.y, transform.position.y, LevelBounds.ZBounds.x));
-        Gizmos.DrawCube(new Vector3(LevelBounds.XBounds.x, transform.position.y, LevelBounds.ZBounds.y), Vector3.one * .25f);
-        Gizmos.DrawLine(new Vector3(LevelBounds.XBounds.x, transform.position.y, LevelBounds.ZBounds.x), new Vector3(LevelBounds.XBounds.x, transform.position.y, LevelBounds.ZBounds.y));
-        Gizmos.DrawCube(new Vector3(LevelBounds.XBounds.y, transform.position.y, LevelBounds.ZBounds.x), Vector3.one * .25f);
-        Gizmos.DrawLine(new Vector3(LevelBounds.XBounds.x, transform.position.y, LevelBounds.ZBounds.y), new Vector3(LevelBounds.XBounds.y, transform.position.y, LevelBounds.ZBounds.y));
-        Gizmos.DrawCube(new Vector3(LevelBounds.XBounds.y, transform.position.y, LevelBounds.ZBounds.y), Vector3.one * .25f);
-        Gizmos.DrawLine(new Vector3(LevelBounds.XBounds.y, transform.position.y, LevelBounds.ZBounds.y), new Vector3(LevelBounds.XBounds.y, transform.position.y, LevelBounds.ZBounds.x));
+        Gizmos.DrawCube(new Vector3(levelBounds.XBounds.x, transform.position.y, levelBounds.ZBounds.x), Vector3.one * .25f);
+        Gizmos.DrawLine(new Vector3(levelBounds.XBounds.x, transform.position.y, levelBounds.ZBounds.x), new Vector3(levelBounds.XBounds.y, transform.position.y, levelBounds.ZBounds.x));
+        Gizmos.DrawCube(new Vector3(levelBounds.XBounds.x, transform.position.y, levelBounds.ZBounds.y), Vector3.one * .25f);
+        Gizmos.DrawLine(new Vector3(levelBounds.XBounds.x, transform.position.y, levelBounds.ZBounds.x), new Vector3(levelBounds.XBounds.x, transform.position.y, levelBounds.ZBounds.y));
+        Gizmos.DrawCube(new Vector3(levelBounds.XBounds.y, transform.position.y, levelBounds.ZBounds.x), Vector3.one * .25f);
+        Gizmos.DrawLine(new Vector3(levelBounds.XBounds.x, transform.position.y, levelBounds.ZBounds.y), new Vector3(levelBounds.XBounds.y, transform.position.y, levelBounds.ZBounds.y));
+        Gizmos.DrawCube(new Vector3(levelBounds.XBounds.y, transform.position.y, levelBounds.ZBounds.y), Vector3.one * .25f);
+        Gizmos.DrawLine(new Vector3(levelBounds.XBounds.y, transform.position.y, levelBounds.ZBounds.y), new Vector3(levelBounds.XBounds.y, transform.position.y, levelBounds.ZBounds.x));
     }
 
     // Use this for initialization
     private void Start ()
     {
-        if (currentBounds == null) currentBounds = LevelBounds;
+        if (currentBounds == null) currentBounds = levelBounds;
     }
 	
 	// Update is called once per frame
