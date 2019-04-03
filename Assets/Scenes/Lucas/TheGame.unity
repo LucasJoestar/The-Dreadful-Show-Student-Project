@@ -2188,7 +2188,7 @@ MonoBehaviour:
     debugColor: {r: 0.972549, g: 0, b: 0, a: 1}
     spawnPoints:
     - spawnRange: 2
-      spawnPosition: {x: 16.20879, y: 0, z: 2.2713113}
+      spawnPosition: {x: 12.232364, y: 0, z: 3.3978467}
       waveElement:
         minRandomSpawn: 0
         maxRandomSpawn: 0
@@ -2197,7 +2197,7 @@ MonoBehaviour:
           enemyCount: 2
         randomSpawningInformations: []
     - spawnRange: 2.37
-      spawnPosition: {x: 18.808, y: 0, z: -2.1}
+      spawnPosition: {x: 12.593307, y: 0, z: -2.3471446}
       waveElement:
         minRandomSpawn: 0
         maxRandomSpawn: 1
@@ -2353,7 +2353,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4305772617021256, guid: 28c251abaa92602489f934a07cfc3321, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -10.15
+      value: -9.45
       objectReference: {fileID: 0}
     - target: {fileID: 4305772617021256, guid: 28c251abaa92602489f934a07cfc3321, type: 2}
       propertyPath: m_LocalPosition.y
@@ -3393,6 +3393,7 @@ MonoBehaviour:
   ButtonSelectionFatLady: {fileID: 0}
   ButtonSelectionFireEater: {fileID: 0}
   ButtonQuitPause: {fileID: 0}
+  playerHealthBar: {fileID: 0}
 --- !u!114 &1393358468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4675,6 +4676,56 @@ Prefab:
       propertyPath: Owner
       value: 
       objectReference: {fileID: 933835090}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: isDead
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: IsInvulnerable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: healthCurrent
+      value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: isFacingRight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: speedCurrent
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: groundDetectionBox.Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: groundDetectionBox.Size.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: isMoving
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114059215239211722, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: whatIsAllButThis.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}
   m_IsPrefabAsset: 0

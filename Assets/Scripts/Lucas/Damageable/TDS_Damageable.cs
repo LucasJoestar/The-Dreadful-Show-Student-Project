@@ -268,7 +268,7 @@ public class TDS_Damageable : PunBehaviour
     /// Method called when the object dies.
     /// Override this to implement code for a specific object.
     /// </summary>
-    protected virtual void Die() { }
+    protected virtual void Die() { Debug.Log(name + " " + GetInstanceID()  + " die !!") ; }
 
     /// <summary>
     /// Makes this object be healed and restore its health.

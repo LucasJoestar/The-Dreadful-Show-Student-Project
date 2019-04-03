@@ -305,9 +305,6 @@ public class TDS_Camera : MonoBehaviour
                 _destination.y = transform.position.y;
             }
 
-            //_destination.x = Mathf.Clamp(_destination.x, levelBounds.XBounds.x, levelBounds.XBounds.y);
-            //_destination.z = Mathf.Clamp(_destination.z, levelBounds.ZBounds.x, levelBounds.ZBounds.y);
-
             // Moves the camera
             transform.position = _destination;
         }
@@ -324,6 +321,44 @@ public class TDS_Camera : MonoBehaviour
     }
 
     /// <summary>
+    /// Lerp the camera position to be between bounds.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator LerpToBounds()
+    {
+        while (true)
+        {
+            yield return new WaitForEndOfFrame();
+
+            // Get movement
+            Vector3 _destination = transform.position;
+
+            // Clamp position
+            if (camera.WorldToViewportPoint(currentBounds.XMaxVector).x < 1.01f)
+            {
+                _destination.x = transform.position.x;
+            }
+            else if (camera.WorldToViewportPoint(currentBounds.XMinVector).x > -.01f)
+            {
+                _destination.x = transform.position.x;
+            }
+
+            if (camera.WorldToViewportPoint(currentBounds.ZMaxVector).y < .3f)
+            {
+                _destination.z = transform.position.z;
+            }
+            else if (camera.WorldToViewportPoint(currentBounds.ZMinVector).y > -.01f)
+            {
+                _destination.z = transform.position.z;
+                _destination.y = transform.position.y;
+            }
+
+            // Moves the camera
+            transform.position = Vector3.Lerp(transform.position, _destination, Time.deltaTime * speedMax * 2);
+        }
+    }
+
+    /// <summary>
     /// Set new bounds for the camera.
     /// </summary>
     /// <param name="_bounds">New bounds of the camera.</param>
@@ -335,7 +370,7 @@ public class TDS_Camera : MonoBehaviour
             else
             {
                 if (setBoundsCoroutine != null) StopCoroutine(setBoundsCoroutine);
-                setBoundsCoroutine = StartCoroutine(TryToSetBounds(_bounds));
+                setBoundsCoroutine = StartCoroutine(WaitToSetBounds(_bounds));
             }
         }
         else currentBounds = levelBounds;
@@ -370,7 +405,7 @@ public class TDS_Camera : MonoBehaviour
     /// </summary>
     /// <param name="_bounds">Bounds to set as new ones.</param>
     /// <returns></returns>
-    private IEnumerator TryToSetBounds(TDS_Bounds _bounds)
+    private IEnumerator WaitToSetBounds(TDS_Bounds _bounds)
     {
         while (!IsPlayerInBounds(_bounds))
         {
