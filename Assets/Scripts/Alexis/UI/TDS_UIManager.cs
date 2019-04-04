@@ -82,8 +82,14 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private Button ButtonSelectionFireEater;
     #endregion
 
+
+
     #region PauseButton
-    [SerializeField] private Button ButtonQuitPause; 
+    [SerializeField] private Button ButtonQuitPause;
+    #endregion
+
+    #region LifeBar
+    [SerializeField] private TDS_LifeBar playerHealthBar; 
     #endregion
 
     #endregion
@@ -207,14 +213,9 @@ public class TDS_UIManager : PunBehaviour
     {
         if(photonView.isMine)
         {
-            TDS_LifeBar _healthBar = PhotonNetwork.Instantiate("LifeBar", Vector3.zero, Quaternion.identity, 0).GetComponent<TDS_LifeBar>();
-            _healthBar.SetOwner(_player);
-            _player.HealthBar = _healthBar.FilledImage;
-            _healthBar.transform.SetParent(_player.transform);
-            Transform _imageTransform = _healthBar.transform.GetChild(0);
-            _imageTransform.SetParent(canvasScreen.transform);
-            _imageTransform.localPosition = new Vector2(1700, -70);
-            _imageTransform.localScale = new Vector2(300, 50);
+            playerHealthBar.SetOwner(_player);
+            _player.HealthBar = playerHealthBar.FilledImage;
+            _player.OnTakeDamage += _player.UpdateLifeBar; 
         }
 
     }

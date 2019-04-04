@@ -79,7 +79,10 @@ public class TDS_LifeBar : PunBehaviour
     public void SetOwner(TDS_Character _owner)
     {
         owner = _owner;
-        owner.OnDie += DestroyLifeBar;
+        if(_owner.gameObject.HasTag("Enemy"))
+        {
+            owner.OnDie += DestroyLifeBar;
+        }
     }
 
     /// <summary>

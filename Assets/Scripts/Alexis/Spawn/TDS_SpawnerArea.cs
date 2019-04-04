@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events; 
 using Photon;
 
 [RequireComponent(typeof(BoxCollider))]
@@ -19,6 +20,18 @@ public class TDS_SpawnerArea : PunBehaviour
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	#####################
+     *	
+	 *  Date :			[03/04/2019]
+	 *	Author :		[Thiebaut Alexiss]
+	 *
+	 *	Changes :
+	 *
+	 *	    [Implement UnityEvents]
+     *	        - OnNextWave: called when a wave is completed
+     *	        - OnAreaActivated: called when a player activate the trigger 
+     *	        - OnAreaDesactivated: called when all waves are completed
+	 *
+	 *	-----------------------------------
      *	
 	 *  Date :			[18/02/2019]
 	 *	Author :		[Thiebaut Alexiss]
@@ -53,9 +66,17 @@ public class TDS_SpawnerArea : PunBehaviour
 
     #region Events
     /// <summary>
-    /// This action is called when a wave has to be started
+    /// This UnityEvent is called when the area is activated
     /// </summary>
-    public Action OnNextWave;
+    [SerializeField] private UnityEvent OnAreaActivated;
+    /// <summary>
+    /// This UnityEvent is called when the area is desactivated
+    /// </summary>
+    [SerializeField] private UnityEvent OnAreaDesactivated;
+    /// <summary>
+    /// This UnityEvent is called when a wave has to be started
+    /// </summary>
+    [SerializeField] private UnityEvent OnNextWave;
     #endregion
 
     #region Fields / Properties
@@ -104,15 +125,27 @@ public class TDS_SpawnerArea : PunBehaviour
     private void ActivateSpawn()
     {
         if (!PhotonNetwork.isMasterClient) return;
-        if (waveIndex == waves.Count && !isLooping) return;
-        else waveIndex = 0;
+        if (waveIndex == waves.Count && !isLooping)
+        {
+            OnAreaDesactivated?.Invoke(); 
+            return;
+        }
+        else
+        {
+            waveIndex = 0;
+        }
         spawnedEnemies.AddRange(waves[waveIndex].GetWaveEnemies(this));
         waveIndex++;
-        if (spawnedEnemies.Count == 0) OnNextWave?.Invoke(); 
+        //If the wave is empty, start the next wave
+        if (spawnedEnemies.Count == 0)
+        {
+            OnNextWave?.Invoke();
+        }
     }
 
     /// <summary>
-    /// TEMPORARY: Check the conditions to proceed to the next wave
+    /// Remove the enemy from the spawnedEnemies list and add it to the dead enemies list
+    /// If there is no more enemies, call the event OnNextWave
     /// </summary>
     /// <param name="_removedEnemy">Enemy to remove from the spawnedEnemies list</param>
     public void RemoveEnemy(TDS_Enemy _removedEnemy)
@@ -131,19 +164,9 @@ public class TDS_SpawnerArea : PunBehaviour
     // Awake is called when the script instance is being loaded
     private void Awake()
     {
-        OnNextWave += ActivateSpawn; 
+        OnNextWave.AddListener(ActivateSpawn);
+        OnAreaActivated.AddListener(ActivateSpawn);
     }
-
-	// Use this for initialization
-    private void Start()
-    {
-    }
-	
-	// Update is called once per frame
-	private void Update()
-    {
-        
-	}
 
     private void OnTriggerEnter(Collider _coll)
     {
@@ -152,7 +175,7 @@ public class TDS_SpawnerArea : PunBehaviour
         if(_coll.GetComponent<TDS_Player>())
         {
             GetComponent<BoxCollider>().enabled = false;
-            OnNextWave?.Invoke(); 
+            OnAreaActivated?.Invoke(); 
         }
     }
 
