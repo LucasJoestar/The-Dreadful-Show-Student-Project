@@ -25,6 +25,15 @@ public class TDS_Camera : MonoBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[04 / 04 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    Updated new bounds system.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[03 / 04 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -77,7 +86,16 @@ public class TDS_Camera : MonoBehaviour
     /// </summary>
     [SerializeField] private TDS_Bounds currentBounds = null;
 
-    public TDS_Bounds CurrentBounds { get { return currentBounds; } }
+    public TDS_Bounds CurrentBounds
+    {
+        get { return currentBounds; }
+        set
+        {
+            if (value == null) value = levelBounds;
+
+            currentBounds = value;
+        }
+    }
 
     /// <summary>
     /// Base bounds for entire level ; when CurrentBounds are set to null, set the this instead.
@@ -98,6 +116,11 @@ public class TDS_Camera : MonoBehaviour
             camera = value;
         }
     }
+
+    /// <summary>
+    /// Coroutine used to lerp to bounds.
+    /// </summary>
+    private Coroutine lerpToBoundsCoroutine = null;
 
     /// <summary>
     /// Coroutine used to set bounds.
@@ -250,7 +273,7 @@ public class TDS_Camera : MonoBehaviour
     private void FollowTarget()
     {
         // If no target, return
-        if (!Target) return;
+        if (!Target || (lerpToBoundsCoroutine != null)) return;
 
         // If reaching destination, stop moving
         if (transform.position == target.position + Offset)
@@ -280,29 +303,32 @@ public class TDS_Camera : MonoBehaviour
             Vector3 _movement = _destination - transform.position;
 
             // Clamp position
-            if (_movement.x > 0)
+
+            // X movement
+            if (_movement.x != 0)
             {
-                if (camera.WorldToViewportPoint(currentBounds.XMaxVector).x < 1.01f)
+                if (_movement.x > 0)
+                {
+                    if (camera.WorldToViewportPoint(currentBounds.XMaxVector).x < 1.01f)
+                    {
+                        _destination.x = transform.position.x;
+                    }
+                }
+                else if (camera.WorldToViewportPoint(currentBounds.XMinVector).x > -.01f)
                 {
                     _destination.x = transform.position.x;
                 }
             }
-            else if (camera.WorldToViewportPoint(currentBounds.XMinVector).x > -.01f)
-            {
-                _destination.x = transform.position.x;
-            }
 
-            if ((_movement.z > 0))
+            // Y & Z movement
+            if (camera.WorldToViewportPoint(currentBounds.ZMaxVector).y < .3f)
             {
-                if (camera.WorldToViewportPoint(currentBounds.ZMaxVector).y < .3f)
-                {
-                    _destination.z = transform.position.z;
-                }
+                if (_movement.z > 0) _destination.z = transform.position.z;
             }
-            else if (camera.WorldToViewportPoint(currentBounds.ZMinVector).y > -.01f)
+            if (camera.WorldToViewportPoint(currentBounds.ZMinVector).y > -.01f)
             {
-                _destination.z = transform.position.z;
-                _destination.y = transform.position.y;
+                if (_movement.y < 0) _destination.y = transform.position.y;
+                if (_movement.z < 0) _destination.z = transform.position.z;
             }
 
             // Moves the camera
@@ -326,6 +352,10 @@ public class TDS_Camera : MonoBehaviour
     /// <returns></returns>
     private IEnumerator LerpToBounds()
     {
+        bool _isGoodInX = false;
+
+        yield return null;
+
         while (true)
         {
             yield return new WaitForEndOfFrame();
@@ -334,28 +364,27 @@ public class TDS_Camera : MonoBehaviour
             Vector3 _destination = transform.position;
 
             // Clamp position
-            if (camera.WorldToViewportPoint(currentBounds.XMaxVector).x < 1.01f)
+            if (camera.WorldToViewportPoint(currentBounds.XMaxVector).x < 1.02f)
             {
-                _destination.x = transform.position.x;
+                _destination.x -= 1;
             }
-            else if (camera.WorldToViewportPoint(currentBounds.XMinVector).x > -.01f)
+            else if (camera.WorldToViewportPoint(currentBounds.XMinVector).x > -.02f)
             {
-                _destination.x = transform.position.x;
+                _destination.x += 1;
             }
+            else _isGoodInX = true;
 
-            if (camera.WorldToViewportPoint(currentBounds.ZMaxVector).y < .3f)
+            if (camera.WorldToViewportPoint(currentBounds.ZMinVector).y > -.02f)
             {
-                _destination.z = transform.position.z;
+                _destination.z += 1;
             }
-            else if (camera.WorldToViewportPoint(currentBounds.ZMinVector).y > -.01f)
-            {
-                _destination.z = transform.position.z;
-                _destination.y = transform.position.y;
-            }
+            else if (_isGoodInX) break;
 
             // Moves the camera
             transform.position = Vector3.Lerp(transform.position, _destination, Time.deltaTime * speedMax * 2);
         }
+
+        lerpToBoundsCoroutine = null;
     }
 
     /// <summary>
@@ -364,16 +393,17 @@ public class TDS_Camera : MonoBehaviour
     /// <param name="_bounds">New bounds of the camera.</param>
     public void SetBounds(TDS_Bounds _bounds)
     {
-        if (_bounds != null)
+        if (_bounds == null)
         {
-            if (IsPlayerInBounds(_bounds)) currentBounds = _bounds;
-            else
-            {
-                if (setBoundsCoroutine != null) StopCoroutine(setBoundsCoroutine);
-                setBoundsCoroutine = StartCoroutine(WaitToSetBounds(_bounds));
-            }
+            SetBounds(levelBounds);
+            return;
         }
-        else currentBounds = levelBounds;
+        if (IsPlayerInBounds(_bounds)) CurrentBounds = _bounds;
+        else
+        {
+            if (setBoundsCoroutine != null) StopCoroutine(setBoundsCoroutine);
+            setBoundsCoroutine = StartCoroutine(WaitToSetBounds(_bounds));
+        }
     }
 
     /// <summary>
@@ -395,9 +425,13 @@ public class TDS_Camera : MonoBehaviour
     /// <param name="_xMax">Maximum X value of the bounds.</param>
     /// <param name="_zMin">Minimum Z value of the bounds.</param>
     /// <param name="_zMax">Maximum Z value of the bounds.</param>
-    public void SetBounds(Vector3 _xMin, Vector3 _xMax, Vector3 _zMin, Vector3 _zMax)
+    public void SetLevelBounds(float _xMin, float _xMax, float _zMin, float _zMax)
     {
-        SetBounds(new TDS_Bounds(_xMin, _xMax, _zMin, _zMax));
+        levelBounds = new TDS_Bounds(_xMin, _xMax, _zMin, _zMax);
+        SetBounds(levelBounds);
+
+        if (lerpToBoundsCoroutine != null) StopCoroutine(lerpToBoundsCoroutine);
+        lerpToBoundsCoroutine = StartCoroutine("LerpToBounds");
     }
 
     /// <summary>
@@ -412,7 +446,7 @@ public class TDS_Camera : MonoBehaviour
             yield return new WaitForSeconds(.2f);
         }
 
-        currentBounds = _bounds;
+        CurrentBounds = _bounds;
     }
     #endregion
 
@@ -450,7 +484,6 @@ public class TDS_Camera : MonoBehaviour
     // Use this for initialization
     private void Start ()
     {
-        if (currentBounds == null) currentBounds = levelBounds;
     }
 	
 	// Update is called once per frame

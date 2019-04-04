@@ -88,7 +88,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1784521387282082}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.595, y: -6, z: -9.484}
+  m_LocalPosition: {x: 7.24, y: 0, z: -1.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4332666222786238}
@@ -328,8 +328,8 @@ MonoBehaviour:
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 50
-  healthMax: 50
+  healthCurrent: 17
+  healthMax: 17
   hitBox: {fileID: 114523981913157094}
   rigidbody: {fileID: 54781698200110558}
   throwable: {fileID: 0}
@@ -350,7 +350,7 @@ MonoBehaviour:
   canBeDown: 1
   canThrow: 1
   enemyState: 0
-  detectionRange: 5
+  detectionRange: 25
   recoilDistance: 0.2
   recoilDistanceDeath: 2.2
   recoilTimeDeath: 0.35
