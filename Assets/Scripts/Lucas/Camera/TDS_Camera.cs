@@ -435,6 +435,16 @@ public class TDS_Camera : MonoBehaviour
     }
 
     /// <summary>
+    /// Make a screen shake of a specified force.
+    /// </summary>
+    /// <param name="_force">Screen shake force.</param>
+    public void ScreenShake(float _force)
+    {
+        Vector3 _force3 = ((Vector3)Random.insideUnitCircle.normalized) * _force;
+        transform.position += _force3;
+    }
+
+    /// <summary>
     /// Set bounds as current bounds if target is between, or wait.
     /// </summary>
     /// <param name="_bounds">Bounds to set as new ones.</param>

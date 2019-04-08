@@ -379,6 +379,19 @@ public abstract class TDS_Character : TDS_Damageable
     }
     #endregion
 
+    #region Health
+    /// <summary>
+    /// Method called when the object dies.
+    /// Override this to implement code for a specific object.
+    /// </summary>
+    protected override void Die()
+    {
+        base.Die();
+
+        Debug.Log(name + " " + GetInstanceID() + " die !!");
+    }
+    #endregion
+
     #region Throwable Object
     /// <summary>
     /// Drop the weared throwable.

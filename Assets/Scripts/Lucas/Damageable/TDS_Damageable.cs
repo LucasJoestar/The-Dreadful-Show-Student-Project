@@ -256,7 +256,7 @@ public class TDS_Damageable : PunBehaviour
         get { return photonView.viewID; }
     }
 
-    protected PhotonView photonView; 
+    protected PhotonView photonView;
     #endregion
 
     #endregion
@@ -268,7 +268,10 @@ public class TDS_Damageable : PunBehaviour
     /// Method called when the object dies.
     /// Override this to implement code for a specific object.
     /// </summary>
-    protected virtual void Die() { Debug.Log(name + " " + GetInstanceID()  + " die !!") ; }
+    protected virtual void Die()
+    {
+
+    }
 
     /// <summary>
     /// Makes this object be healed and restore its health.
@@ -303,12 +306,7 @@ public class TDS_Damageable : PunBehaviour
     /// <returns>Returns true if some damages were inflicted, false if none.</returns>
     public virtual bool TakeDamage(int _damage, Vector3 _position)
     {
-        if (IsInvulnerable) return false;
-
-        HealthCurrent -= _damage;
-        OnTakeDamage?.Invoke(_damage);
-
-        return true;
+        return TakeDamage(_damage);
     }
     #endregion
 
