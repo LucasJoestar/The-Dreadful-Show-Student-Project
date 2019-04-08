@@ -1297,7 +1297,8 @@ public class TDS_Player : TDS_Character
         // Online
         if (photonView.isMine)
         {
-            // RPC
+            if (!animator) return;
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"),new object[] {(PlayerAnimState)_state});
         }
 
         // Local

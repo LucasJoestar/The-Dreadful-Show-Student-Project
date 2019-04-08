@@ -212,7 +212,7 @@ public class TDS_Damageable : PunBehaviour
     /// Its value cannot be less than zero or exceed <see cref="HealthMax"/>.
     /// </summary>
     public int HealthCurrent
-    {
+    {      
         get { return healthCurrent; }
         set
         {
@@ -287,6 +287,15 @@ public class TDS_Damageable : PunBehaviour
     /// <returns>Returns true if some damages were inflicted, false if none.</returns>
     public virtual bool TakeDamage(int _damage)
     {
+        // Online
+      if (photonView.isMine)
+      {
+          //if (!animator) return;
+          TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "TakeDamage"),new object[] {(int)_damage });
+      }
+
+      // Local
+      
         if (IsInvulnerable) return false;
 
         HealthCurrent -= _damage;
