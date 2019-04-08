@@ -34,6 +34,11 @@ public class TDS_LevelBounds : MonoBehaviour
 
     #region Fields / Properties
     /// <summary>
+    /// Are these bounds the level bounds ?
+    /// </summary>
+    [SerializeField] private bool isLevelBounds = false;
+
+    /// <summary>
     /// Collider trigger to enable these bounds.
     /// </summary>
     [SerializeField] private new BoxCollider collider = null;
@@ -105,6 +110,13 @@ public class TDS_LevelBounds : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
+        // If level bounds, set as level bounds
+        if (isLevelBounds)
+        {
+            TDS_Camera.Instance.SetLevelBounds(leftBound.position.x, rightBound.position.x, bottomBound.position.z, topBound.position.z);
+            return;
+        }
+
         // Try to get missing references
 		if (!leftBound || !rightBound || !bottomBound || !topBound)
         {
