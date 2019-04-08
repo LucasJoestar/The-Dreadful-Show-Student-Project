@@ -94,10 +94,12 @@ public class TDS_Checkpoint : MonoBehaviour
     /// </summary>
     private void Activate()
     {
-        isActivated = true;
+        IsActivated = true;
         TDS_LevelManager.Instance.SetCheckpoint(this);
 
         trigger.enabled = false;
+
+        SetAnimState(CheckpointAnimState.Activated);
 
         // Resurrect dead players
         Respawn();
@@ -120,8 +122,6 @@ public class TDS_Checkpoint : MonoBehaviour
 
         yield return new WaitForSeconds(3);
 
-        // Trigger curtain animation
-
         TDS_Player _player = null;
 
         for (int _i = 0; _i < _deadPlayers.Length; _i++)
@@ -136,8 +136,11 @@ public class TDS_Checkpoint : MonoBehaviour
 
             yield return new WaitForSeconds(1);
 
+            // Trigger curtain animation
+            SetAnimState(CheckpointAnimState.Resurrect);
+
             if (!_player.IsFacingRight) _player.Flip();
-            _player.transform.position = transform.position + spawnPosition;
+            _player.transform.position = transform.position + spawnPosition + (Vector3.right * 1);
             _player.gameObject.SetActive(true);
             _player.StartDodge();
 
@@ -145,8 +148,31 @@ public class TDS_Checkpoint : MonoBehaviour
 
             yield return new WaitForSeconds(.5f);
         }
+    }
 
-        // Trigger curtain animation
+    /// <summary>
+    /// Set this checkpoint animation state
+    /// </summary>
+    /// <param name="_state"></param>
+    public void SetAnimState(CheckpointAnimState _state)
+    {
+        switch (_state)
+        {
+            case CheckpointAnimState.Desactivated:
+                animator.SetBool("Activated", false);
+                break;
+
+            case CheckpointAnimState.Resurrect:
+                animator.SetTrigger("Resurrect");
+                break;
+
+            case CheckpointAnimState.Activated:
+                animator.SetBool("Activated", true);
+                break;
+
+            default:
+                break;
+        }
     }
     #endregion
 
