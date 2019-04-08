@@ -319,7 +319,7 @@ public abstract class TDS_Enemy : TDS_Character
                     _position = GetAttackingPosition();
                 }
                 _pathComputed = agent.CheckDestination(_position);
-                yield return new WaitForEndOfFrame();
+                yield return new WaitForSeconds(Random.value);
                 //If the path is computed, reach the end of the path
                 if(_pathComputed)
                 {
