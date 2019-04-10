@@ -246,9 +246,9 @@ public class TDS_Player : TDS_Character
     public TDS_Summoner Summoner = null;
 
     /// <summary>
-    /// <see cref="TDS_Trigger"/> used to detect when possible interactions with the environment are availables.
+    /// <see cref="TDS_Detector"/> used to detect when possible interactions with the environment are availables.
     /// </summary>
-    [SerializeField] protected TDS_Trigger interactionDetector = null;
+    [SerializeField] protected TDS_Detector interactionDetector = null;
 
     /// <summary>
     /// Virtual box used to detect if the player is grounded or not.
@@ -1337,6 +1337,7 @@ public class TDS_Player : TDS_Character
             if (!animator) return;
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (PlayerAnimState)_state });
         }
+
         // Local
         switch (_state)
         {
@@ -1524,7 +1525,7 @@ public class TDS_Player : TDS_Character
         // Try to get components references if they are missing
         if (!interactionDetector)
         {
-            interactionDetector = GetComponentInChildren<TDS_Trigger>();
+            interactionDetector = GetComponentInChildren<TDS_Detector>();
             if (!interactionDetector) Debug.LogWarning("The Interaction Detector of \"" + name + "\" for script TDS_Player is missing !");
         }
     }
