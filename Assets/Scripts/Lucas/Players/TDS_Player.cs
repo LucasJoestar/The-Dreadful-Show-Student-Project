@@ -232,6 +232,13 @@ public class TDS_Player : TDS_Character
 
     #region Fields / Properties
 
+    #region Constants
+    /// <summary>
+    /// Time during which the player is invulnerable after being hit.
+    /// </summary>
+    public const float INVULNERABILITY_TIME = .5f;
+    #endregion
+
     #region Components & References
     /// <summary>
     /// The summoner this player is currently carrying.
@@ -743,11 +750,11 @@ public class TDS_Player : TDS_Character
         // Adds a little force to the player to move him along while dodging
         while (true)
         {
-            float _xForce = isFacingRight.ToSign() * speedCoef * speedMax * (isGrounded ? 5 : 2.5f);
+            float _xForce = isFacingRight.ToSign() * speedCoef * speedMax * (isGrounded ? 7 : 2.5f);
             rigidbody.AddForce(new Vector3(_xForce, isGrounded ? 0 : -.35f, 0));
             Move(transform.position + (isFacingRight ? Vector3.right : Vector3.left));
 
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
     }
 
@@ -858,6 +865,26 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
+    /// Set invulnerability during a certain time.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator Invulnerability()
+    {
+        IsInvulnerable = true;
+
+        float _timer = INVULNERABILITY_TIME;
+        while (_timer > 0)
+        {
+            yield return new WaitForSeconds(INVULNERABILITY_TIME / 7);
+            _timer -= INVULNERABILITY_TIME / 7;
+            sprite.enabled = !sprite.enabled;
+        }
+
+        sprite.enabled = true;
+        IsInvulnerable = false;
+    }
+
+    /// <summary>
     /// Makes this object take damage and decrease its health if it is not invulnerable.
     /// </summary>
     /// <param name="_damage">Amount of damage this inflect to this object.</param>
@@ -865,7 +892,11 @@ public class TDS_Player : TDS_Character
     public override bool TakeDamage(int _damage)
     {
         // Executes base method
-        if (!base.TakeDamage(_damage)) return false;
+        if (!base.TakeDamage(_damage))
+        {
+            TDS_Camera.Instance.ScreenShake(.01f);
+            return false;
+        }
 
         // And if in combo, reset it
         if (comboCurrent.Count > 0) ResetCombo();
@@ -875,6 +906,17 @@ public class TDS_Player : TDS_Character
         {
             // Triggers associated animation
             SetAnim(PlayerAnimState.Hit);
+
+            StartCoroutine(Invulnerability());
+
+            if (photonView.isMine)
+            {
+                TDS_Camera.Instance.ScreenShake(.02f);
+            }
+        }
+        else if (photonView.isMine)
+        {
+            TDS_Camera.Instance.ScreenShake(.25f);
         }
 
         return true;
@@ -888,17 +930,11 @@ public class TDS_Player : TDS_Character
     /// <returns>Returns true if some damages were inflicted, false if none.</returns>
     public override bool TakeDamage(int _damage, Vector3 _position)
     {
-        // Executes base method
-        if (!base.TakeDamage(_damage, _position)) return false;
-
-        // And if in combo, reset it
-        if (comboCurrent.Count > 0) ResetCombo();
-
-        // If not dead, be just hit
-        if (!isDead)
+        if (!base.TakeDamage(_damage, _position))
         {
-            // Triggers associated animation
-            SetAnim(PlayerAnimState.Hit);
+            transform.position += new Vector3(.025f * (_position.x < transform.position.x ? 1 : 1), 0, 0);
+
+            return false;
         }
 
         return true;
@@ -1106,6 +1142,7 @@ public class TDS_Player : TDS_Character
             else
             {
                 speedCoef = 1;
+                rigidbody.velocity = Vector3.zero;
 
                 // Activates event
                 OnGetOnGround?.Invoke();
@@ -1158,9 +1195,9 @@ public class TDS_Player : TDS_Character
         while(Input.GetButton(JumpButton) && _timer < JumpMaximumTime)
         {
             rigidbody.AddForce(Vector3.up * (JumpForce / JumpMaximumTime) * Time.deltaTime);
-            yield return null;
+            yield return new WaitForFixedUpdate();
 
-            _timer += Time.deltaTime;
+            _timer += Time.fixedDeltaTime;
         }
 
         isJumping = false;
@@ -1297,9 +1334,13 @@ public class TDS_Player : TDS_Character
         // Online
         if (photonView.isMine)
         {
-            // RPC
+            if (!animator) return;
+<<<<<<< HEAD
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (PlayerAnimState)_state });
+=======
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"),new object[] {(PlayerAnimState)_state});
+>>>>>>> NewMaster
         }
-
         // Local
         switch (_state)
         {

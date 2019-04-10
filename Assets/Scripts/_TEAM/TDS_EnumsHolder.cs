@@ -90,6 +90,16 @@ public enum BeardState
 }
 
 /// <summary>
+/// All different states for the checkpoint animator.
+/// </summary>
+public enum CheckpointAnimState
+{
+    Desactivated,
+    Resurrect,
+    Activated
+}
+
+/// <summary>
 /// Animation States of the enemies
 /// </summary>
 public enum EnemyAnimationState

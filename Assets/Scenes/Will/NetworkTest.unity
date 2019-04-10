@@ -465,7 +465,7 @@ MonoBehaviour:
   - {fileID: 590812138}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 2
-  instantiationId: 2
+  instantiationId: 3
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!1 &1470101838
@@ -602,6 +602,16 @@ Prefab:
         type: 2}
       propertyPath: instantiationId
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114115008108888442, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: viewIdField
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114115008108888442, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 2}
+      propertyPath: instantiationId
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 131b9c2e9ac901841aa00daa77a82570, type: 2}

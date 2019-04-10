@@ -179,7 +179,7 @@ public class TDS_LevelManager : MonoBehaviour
         TDS_NetworkManager.Instance.InitConnection();
 
         // Spawn local player.
-        //Spawn();
+        Spawn();
     }
 
     // Update is called once per frame
