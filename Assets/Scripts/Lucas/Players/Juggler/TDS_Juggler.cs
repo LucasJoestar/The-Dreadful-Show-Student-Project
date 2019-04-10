@@ -426,6 +426,7 @@ public class TDS_Juggler : TDS_Player
 
             if (Input.GetButtonDown(ParryButton) || TDS_Input.GetAxisDown(ParryButton))
             {
+                Debug.Log("Throw !");
                 // Throws the object to the aiming position
                 ThrowObject();
 

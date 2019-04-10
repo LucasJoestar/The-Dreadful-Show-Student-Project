@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngineInternal.Input;
@@ -66,11 +64,6 @@ public static class TDS_Input
     /// Name of all custom buttons from this project.
     /// </summary>
     public static string[] ButtonNames { get; private set; } = new string[] { };
-
-    /// <summary>
-    /// Helper to update axis each two updates instead of all the time.
-    /// </summary>
-    private static bool doUpdate = true;
     #endregion
 
     #region Methods
@@ -199,16 +192,11 @@ public static class TDS_Input
     /// </summary>
     private static void MyUpdate(NativeInputUpdateType _type, int _int, IntPtr _intPtr)
     {
-        if (doUpdate)
+        // Updates each axis state
+        foreach (TDS_AxisToInput _axis in axis)
         {
-            // Updates each axis state
-            foreach (TDS_AxisToInput _axis in axis)
-            {
-                _axis.UpdateState();
-            }
+            _axis.UpdateState();
         }
-
-        doUpdate = !doUpdate;
     }
     #endregion
 
