@@ -300,7 +300,12 @@ public class TDS_Damageable : PunBehaviour
       // Local
       
         if (IsInvulnerable) return false;
-
+        // Online
+        if (photonView.isMine)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "TakeDamage"), new object[] { (int)_damage });
+        }
+        // Local
         HealthCurrent -= _damage;
         OnTakeDamage?.Invoke(_damage);
 

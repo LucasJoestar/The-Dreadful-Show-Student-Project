@@ -1335,9 +1335,12 @@ public class TDS_Player : TDS_Character
         if (photonView.isMine)
         {
             if (!animator) return;
+<<<<<<< HEAD
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (PlayerAnimState)_state });
+=======
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"),new object[] {(PlayerAnimState)_state});
+>>>>>>> NewMaster
         }
-
         // Local
         switch (_state)
         {
