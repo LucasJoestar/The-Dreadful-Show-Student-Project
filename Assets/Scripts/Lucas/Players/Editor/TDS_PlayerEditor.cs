@@ -88,7 +88,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     /// <summary>SerializedProperties for <see cref="TDS_Player.Summoner"/> of type <see cref="TDS_Summoner"/>.</summary>
     private SerializedProperty summoner = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Player.interactionDetector"/> of type <see cref="TDS_Trigger"/>.</summary>
+    /// <summary>SerializedProperties for <see cref="TDS_Player.interactionDetector"/> of type <see cref="TDS_Detector"/>.</summary>
     private SerializedProperty interactionsDetector = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.groundDetectionBox"/> of type <see cref="TDS_VirtualBox"/>.</summary>
@@ -306,7 +306,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
         GUILayout.Space(5);
 
-        TDS_EditorUtility.ObjectField("Interaction detection Trigger", "Trigger used to detect the available interactions of the player", interactionsDetector, typeof(TDS_Trigger));
+        TDS_EditorUtility.ObjectField("Interaction detection Trigger", "Trigger used to detect the available interactions of the player", interactionsDetector, typeof(TDS_Detector));
         TDS_EditorUtility.ObjectField("Summoner object", "The Summoner the player is actually wearing", summoner, typeof(TDS_Summoner));
     }
 
