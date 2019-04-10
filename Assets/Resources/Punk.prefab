@@ -64,7 +64,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1881167624450526
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,7 +88,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1784521387282082}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.24, y: 0, z: -1.27}
+  m_LocalPosition: {x: 2.47, y: 0, z: -4.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4332666222786238}
@@ -331,6 +331,7 @@ MonoBehaviour:
   healthCurrent: 17
   healthMax: 17
   hitBox: {fileID: 114523981913157094}
+  healthBar: {fileID: 0}
   rigidbody: {fileID: 54781698200110558}
   throwable: {fileID: 0}
   handsTransform: {fileID: 4715489829254572}
