@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 114229332749751792}
   - component: {fileID: 114036370694730720}
   m_Layer: 9
-  m_Name: Fat Lady
+  m_Name: FatLady
   m_TagString: Player|GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -517,6 +517,7 @@ MonoBehaviour:
   healthCurrent: 99
   healthMax: 99
   hitBox: {fileID: 114177014032919358}
+  healthBar: {fileID: 0}
   rigidbody: {fileID: 54157275823838922}
   throwable: {fileID: 0}
   handsTransform: {fileID: 4790306354836658}

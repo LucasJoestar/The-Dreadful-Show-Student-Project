@@ -26,6 +26,14 @@ public abstract class TDS_Enemy : TDS_Character
      *	Date :          [13/02/2019]
      *	Author:         [THIEBAUT Alexis]
      *	
+     *	[Modify the State Machine to get rid of the goto]
+     *	    - Call methods to change the enemy state.
+     *	    - Call Behaviour Recursively at the end of the method and go through another state
+     *	    
+     *	-----------------------------------
+     *	Date :          [13/02/2019]
+     *	Author:         [THIEBAUT Alexis]
+     *	
      *	[Adding the property Area]
      *	    - Area is the TDS_SpawnerArea from which the enemy comes
      *	    
@@ -164,11 +172,16 @@ public abstract class TDS_Enemy : TDS_Character
     /// Used when the enemy has to move
     /// </summary>
     [SerializeField] protected CustomNavMeshAgent agent;
-    #endregion
+
+    /// <summary>
+    /// Throwable to reach and grab
+    /// </summary>
+    private TDS_Throwable targetedThrowable = null;
 
     #endregion
 
-    TDS_Throwable targetedThrowable = null; 
+    #endregion
+
 
     #region Methods
 
@@ -261,7 +274,6 @@ public abstract class TDS_Enemy : TDS_Character
         // If there is no target, the agent has to get one
         if (!playerTarget || playerTarget.IsDead)
             enemyState = EnemyState.Searching;
-        float _distance = 0;
         switch (enemyState)
         {
             #region Searching
@@ -284,61 +296,13 @@ public abstract class TDS_Enemy : TDS_Character
             #endregion
             #region Making Decision
             case EnemyState.MakingDecision:
-                //Take decisions
-                // If the target can't be targeted, search for another target
-                if (!playerTarget || playerTarget.IsDead)
-                {
-                    enemyState = EnemyState.Searching;
-                    break; 
-                    //goto case EnemyState.Searching;
-                }
-                _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                // Check if the agent can attack
-                if (AttackCanBeCasted(_distance))
-                {
-                    enemyState = EnemyState.Attacking;
-                    break; 
-                    //goto case EnemyState.Attacking;
-                }
-                // Else getting in range
-                else
-                {
-                    yield return new WaitForEndOfFrame(); 
-                    enemyState = EnemyState.ComputingPath;
-                    break; 
-                }
+                TakeDecision();
+                break; 
             #endregion
             #region Computing Path
             case EnemyState.ComputingPath:
-                //Compute the path
-                // Select a position
-                bool _pathComputed = false;
-                Vector3 _position; 
-                if(targetedThrowable /*&& canThrow*/)
-                {
-                   _position = targetedThrowable.transform.position;
-                }
-                else
-                {
-                    _position = GetAttackingPosition();
-                }
-                yield return new WaitForEndOfFrame();
-                _pathComputed = agent.CheckDestination(_position);
-                yield return new WaitForEndOfFrame();
-                Debug.Log("CP"); 
-                //If the path is computed, reach the end of the path
-                if (_pathComputed)
-                {
-                    SetAnimationState((int)EnemyAnimationState.Run); 
-                    enemyState = EnemyState.GettingInRange;
-                    break;
-                }
-                else
-                {
-                    SetAnimationState((int)EnemyAnimationState.Idle);
-                    //enemyState = EnemyState.MakingDecision; 
-                    break;
-                }
+                ComputePath();
+                break; 
             #endregion
             #region Getting In Range
             case EnemyState.GettingInRange:
@@ -377,6 +341,11 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected IEnumerator CastAttack()
     {
+        if(IsPacific)
+        {
+            enemyState = EnemyState.MakingDecision;
+            yield break; 
+        }
         //Throw attack
         // If the agent is still moving, stop him
         if (agent.IsMoving)
@@ -573,7 +542,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Die()
     {
         base.Die();
-        StopAllCoroutines(); 
+        StopAllCoroutines();
         SetAnimationState((int)EnemyAnimationState.Death);
         if (Area) Area.RemoveEnemy(this);
     }
@@ -722,6 +691,44 @@ public abstract class TDS_Enemy : TDS_Character
     protected abstract void ActivateAttack(int _animationID);
 
     /// <summary>
+    /// Compute the path
+    /// If the path can be computed, set the state to Getting in Range
+    /// else set the state to MakingDecision
+    /// </summary>
+    protected void ComputePath()
+    {
+        if(IsParalyzed)
+        {
+            enemyState = EnemyState.MakingDecision;
+            return; 
+        }
+        //Compute the path
+        // Select a position
+        bool _pathComputed = false;
+        Vector3 _position;
+        if (targetedThrowable /*&& canThrow*/)
+        {
+            _position = targetedThrowable.transform.position;
+        }
+        else
+        {
+            _position = GetAttackingPosition();
+        }
+        _pathComputed = agent.CheckDestination(_position);
+        //If the path is computed, reach the end of the path
+        if (_pathComputed)
+        {
+            SetAnimationState((int)EnemyAnimationState.Run);
+            enemyState = EnemyState.GettingInRange;
+        }
+        else
+        {
+            SetAnimationState((int)EnemyAnimationState.Idle);
+            enemyState = EnemyState.MakingDecision;
+        }
+    }
+
+    /// <summary>
     /// Set the animation of the enemy to the animationID
     /// </summary>
     /// <param name="_animationID"></param>
@@ -736,6 +743,33 @@ public abstract class TDS_Enemy : TDS_Character
     /// Set the bool isWaiting to false
     /// </summary>
     protected void StopWaiting() => isWaiting = false;
+
+    /// <summary>
+    /// Take a decision using the distance between the agent and its target
+    /// If an attack can be casted, set the state to attack
+    /// Else if the target is too far away, set the state to compute path
+    /// </summary>
+    protected void TakeDecision()
+    {
+        //Take decisions
+        // If the target can't be targeted, search for another target
+        if (!playerTarget || playerTarget.IsDead)
+        {
+            enemyState = EnemyState.Searching;
+            StartCoroutine(Behaviour());
+        }
+        float _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+        // Check if the agent can attack
+        if (AttackCanBeCasted(_distance) && !IsPacific)
+        {
+            enemyState = EnemyState.Attacking;
+        }
+        // Else getting in range
+        else if (!IsParalyzed)
+        {
+            enemyState = EnemyState.ComputingPath;
+        }
+    }
     #endregion
 
     #endregion
