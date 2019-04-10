@@ -109,6 +109,8 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private GameObject pauseMenuParent;
     // Parent of the DialogBox
     [SerializeField] private GameObject dialogBoxParent;
+    // Parent of the NarratorBox
+    [SerializeField] private GameObject narratorBoxParent;
     #endregion
 
     #region UIState
@@ -118,7 +120,9 @@ public class TDS_UIManager : PunBehaviour
 
     #region Text
     //Text of the dialog Box
-    [SerializeField] private TMPro.TMP_Text dialogBoxText ; 
+    [SerializeField] private TMPro.TMP_Text dialogBoxText ;
+    //Text of the narrator Box
+    [SerializeField] private TMPro.TMP_Text narratorBoxText;
     #endregion
 
     #endregion
@@ -189,12 +193,33 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Fill the text of the dialog box as _text
+    /// Set the parent of the dialogbox Active
+    /// </summary>
+    /// <param name="_text">Text to fill in the text fieldw</param>
+    public void ActivateNarratorBox(string _text)
+    {
+        if (!narratorBoxParent || !narratorBoxText) return;
+        narratorBoxText.text = _text;
+        narratorBoxParent.SetActive(true);
+    }
+
+    /// <summary>
     /// Set the dialogbox parent as inactive
     /// </summary>
     public void DesactivateDialogBox()
     {
         if (!dialogBoxParent) return;
         dialogBoxParent.SetActive(false); 
+    }
+
+    /// <summary>
+    /// Set the dialogbox parent as inactive
+    /// </summary>
+    public void DesactivateNarratorBox()
+    {
+        if (!narratorBoxParent) return;
+        narratorBoxParent.SetActive(false);
     }
 
     /// <summary>
