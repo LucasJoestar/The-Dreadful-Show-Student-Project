@@ -60,7 +60,7 @@ public static class PathCalculator
         {
             _groundedDestination = _hit.point;
         }
-        else _groundedDestination = _destination; 
+        else _groundedDestination = GeometryHelper.GetTriangleContainingPosition(_destination, _trianglesDatas).CenterPosition; ; 
         // GET TRIANGLES
         // Get the origin triangle and the destination triangle
         Triangle _originTriangle = GeometryHelper.GetTriangleContainingPosition(_groundedOrigin, _trianglesDatas);

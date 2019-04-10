@@ -780,7 +780,7 @@ public abstract class TDS_Enemy : TDS_Character
     {
         base.Awake();
         if (!agent) agent = GetComponent<CustomNavMeshAgent>();
-        agent.OnDestinationReached += () => enemyState = EnemyState.MakingDecision;
+        //agent.OnDestinationReached += () => enemyState = EnemyState.MakingDecision;
         OnDie += () => StopAllCoroutines();
         OnDie += () => agent.StopAgent();
         //agent.OnAgentStopped += () => speedCurrent = 0;

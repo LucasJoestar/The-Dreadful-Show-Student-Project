@@ -94,7 +94,6 @@ public class TDS_WhiteRabbit : TDS_Consumable
         agent.OnDestinationReached += IncreasePassingCount;
         boundLeft = TDS_Camera.Instance.CurrentBounds.XMin;
         boundRight = TDS_Camera.Instance.CurrentBounds.XMax;
-        Run(); 
     }
     #endregion
 
