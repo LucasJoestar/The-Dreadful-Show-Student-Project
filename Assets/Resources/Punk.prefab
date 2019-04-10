@@ -331,6 +331,7 @@ MonoBehaviour:
   healthCurrent: 17
   healthMax: 17
   hitBox: {fileID: 114523981913157094}
+  healthBar: {fileID: 0}
   rigidbody: {fileID: 54781698200110558}
   throwable: {fileID: 0}
   handsTransform: {fileID: 4715489829254572}
@@ -406,8 +407,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114288389468539316}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 2
-  instantiationId: 2
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!212 &212969000241332684
