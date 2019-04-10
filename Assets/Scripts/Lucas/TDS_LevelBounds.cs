@@ -34,9 +34,9 @@ public class TDS_LevelBounds : MonoBehaviour
 
     #region Fields / Properties
     /// <summary>
-    /// Are these bounds the level bounds ?
+    /// Should this object be disabled after activated ?
     /// </summary>
-    [SerializeField] private bool isLevelBounds = false;
+    [SerializeField] private bool doDisableAfterActive = true;
 
     /// <summary>
     /// Collider trigger to enable these bounds.
@@ -44,17 +44,14 @@ public class TDS_LevelBounds : MonoBehaviour
     [SerializeField] private new BoxCollider collider = null;
 
     /// <summary>
-    /// Parent of all bounds to activate with the bounds.
-    /// </summary>
-    [SerializeField] private GameObject boundsParent = null;
-
-    /// <summary>Public accessor of <see cref="boundsParent"/>.</summary>
-    public GameObject BoundsParent { get { return boundsParent; } }
-
-    /// <summary>
     /// Left bound, so X minimum bounds value.
     /// </summary>
     [SerializeField] private Transform leftBound = null;
+
+    /// <summary>
+    /// Public accessor for <see cref="leftBound"/>.
+    /// </summary>
+    public Transform LeftBound { get { return leftBound; } }
 
     /// <summary>
     /// Right bound, so X maximum bounds value.
@@ -62,14 +59,29 @@ public class TDS_LevelBounds : MonoBehaviour
     [SerializeField] private Transform rightBound = null;
 
     /// <summary>
+    /// Public accessor for <see cref="rightBound"/>.
+    /// </summary>
+    public Transform RightBound { get { return rightBound; } }
+
+    /// <summary>
     /// Bottom bound, so Z minimum bounds value.
     /// </summary>
     [SerializeField] private Transform bottomBound = null;
 
     /// <summary>
+    /// Public accessor for <see cref="bottomBound"/>.
+    /// </summary>
+    public Transform BottomBound { get { return bottomBound; } }
+
+    /// <summary>
     /// Top bound, so Z maximum bounds value.
     /// </summary>
     [SerializeField] private Transform topBound = null;
+
+    /// <summary>
+    /// Public accessor for <see cref="topBound"/>.
+    /// </summary>
+    public Transform TopBound { get { return topBound; } }
     #endregion
 
     #region Methods
@@ -80,27 +92,14 @@ public class TDS_LevelBounds : MonoBehaviour
     /// </summary>
     public void Activate()
     {
-        TDS_Camera.Instance.SetBounds(leftBound.position.x, rightBound.position.x, bottomBound.position.z, topBound.position.z);
-        boundsParent.SetActive(true);
-    }
+        TDS_Camera.Instance.SetBounds(this);
 
-    /// <summary>
-    /// Desactivate these bounds.
-    /// </summary>
-    public void Desactivate()
-    {
-        TDS_Camera.Instance.SetBounds(null);
-        gameObject.SetActive(false);
+        if (doDisableAfterActive) gameObject.SetActive(false);
+        enabled = false;
     }
 	#endregion
 
 	#region Unity Methods
-	// Awake is called when the script instance is being loaded
-    private void Awake()
-    {
-
-    }
-
     // OnTriggerEnter is called when the GameObject collides with another GameObject
     private void OnTriggerEnter(Collider other)
     {
@@ -110,23 +109,7 @@ public class TDS_LevelBounds : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        // If level bounds, set as level bounds
-        if (isLevelBounds)
-        {
-            TDS_Camera.Instance.SetLevelBounds(leftBound.position.x, rightBound.position.x, bottomBound.position.z, topBound.position.z);
-            return;
-        }
-
         // Try to get missing references
-		if (!leftBound || !rightBound || !bottomBound || !topBound)
-        {
-            Debug.LogWarning($"Some Bounds of \"{name}\" are missing !");
-        }
-        if (!boundsParent)
-        {
-            boundsParent = transform.GetChild(0).gameObject;
-            if (!boundsParent) Debug.LogWarning($"The Bounds \"{name}\" doesn't have any child colliders attached !");
-        }
         if (!collider)
         {
             collider = transform.GetComponent<BoxCollider>();
@@ -134,12 +117,6 @@ public class TDS_LevelBounds : MonoBehaviour
         }
         else if (!collider.isTrigger) collider.isTrigger = true;
     }
-	
-	// Update is called once per frame
-	private void Update()
-    {
-        
-	}
 	#endregion
 
 	#endregion

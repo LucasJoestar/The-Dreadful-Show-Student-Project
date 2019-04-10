@@ -91,7 +91,11 @@ public class TDS_Camera : MonoBehaviour
         get { return currentBounds; }
         set
         {
-            if (value == null) value = levelBounds;
+            float _xMin = camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x;
+            float _xMax = camera.ViewportToWorldPoint(new Vector3(1.01f, 0, 0)).x;
+
+            if (value.XMin > _xMin) value.XMinVector.x = _xMin;
+            if (value.XMax < _xMax) value.XMaxVector.x = _xMax;
 
             currentBounds = value;
         }
@@ -121,11 +125,6 @@ public class TDS_Camera : MonoBehaviour
     /// Coroutine used to lerp to bounds.
     /// </summary>
     private Coroutine lerpToBoundsCoroutine = null;
-
-    /// <summary>
-    /// Coroutine used to set bounds.
-    /// </summary>
-    private Coroutine setBoundsCoroutine = null;
 
     /// <summary>Backing field for <see cref="Rotation"/></summary>
     [SerializeField] private float rotation = 0;
@@ -230,6 +229,11 @@ public class TDS_Camera : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Current level bounds object.
+    /// </summary>
+    [SerializeField] protected TDS_LevelBounds currentLevelBounds = null;
+
     /// <summary>Backing field for <see cref="Target"/>.</summary>
     [SerializeField] private Transform target = null;
 
@@ -267,6 +271,19 @@ public class TDS_Camera : MonoBehaviour
     #region Methods
 
     #region Original Methods
+    /// <summary>
+    /// Reset the level bounds.
+    /// </summary>
+    public void ResetBounds()
+    {
+        if (currentLevelBounds)
+        {
+            currentLevelBounds.gameObject.SetActive(false);
+            currentLevelBounds = null;
+        }
+        CurrentBounds = levelBounds;
+    }
+
     /// <summary>
     /// Makes this camera follow its target.
     /// </summary>
@@ -337,16 +354,6 @@ public class TDS_Camera : MonoBehaviour
     }
 
     /// <summary>
-    /// Get if the player is currently in the bounds.
-    /// </summary>
-    /// <param name="_bounds">Bounds to check.</param>
-    /// <returns></returns>
-    private bool IsPlayerInBounds(TDS_Bounds _bounds)
-    {
-        return ((target.transform.position.x > _bounds.XMin) && (target.transform.position.x < _bounds.XMax));
-    }
-
-    /// <summary>
     /// Lerp the camera position to be between bounds.
     /// </summary>
     /// <returns></returns>
@@ -390,48 +397,31 @@ public class TDS_Camera : MonoBehaviour
     /// <summary>
     /// Set new bounds for the camera.
     /// </summary>
-    /// <param name="_bounds">New bounds of the camera.</param>
-    public void SetBounds(TDS_Bounds _bounds)
+    /// <param name="_levelBounds">New level bounds.</param>
+    public void SetBounds(TDS_LevelBounds _levelBounds)
     {
-        if (_bounds == null)
-        {
-            SetBounds(levelBounds);
-            return;
-        }
-        if (IsPlayerInBounds(_bounds)) CurrentBounds = _bounds;
-        else
-        {
-            if (setBoundsCoroutine != null) StopCoroutine(setBoundsCoroutine);
-            setBoundsCoroutine = StartCoroutine(WaitToSetBounds(_bounds));
-        }
-    }
+        if (currentLevelBounds == _levelBounds) return;
 
-    /// <summary>
-    /// Set new bounds for the camera.
-    /// </summary>
-    /// <param name="_xMin">Minimum X value of the bounds.</param>
-    /// <param name="_xMax">Maximum X value of the bounds.</param>
-    /// <param name="_zMin">Minimum Z value of the bounds.</param>
-    /// <param name="_zMax">Maximum Z value of the bounds.</param>
-    public void SetBounds(float _xMin, float _xMax, float _zMin, float _zMax)
-    {
-        SetBounds(new TDS_Bounds(_xMin, _xMax, _zMin, _zMax));
-    }
+        TDS_Bounds _bounds = new TDS_Bounds(_levelBounds.LeftBound != null ?
+                                            _levelBounds.LeftBound.position.x :                             
+                                            levelBounds.XMin,
 
-    /// <summary>
-    /// Set new bounds for the camera.
-    /// </summary>
-    /// <param name="_xMin">Minimum X value of the bounds.</param>
-    /// <param name="_xMax">Maximum X value of the bounds.</param>
-    /// <param name="_zMin">Minimum Z value of the bounds.</param>
-    /// <param name="_zMax">Maximum Z value of the bounds.</param>
-    public void SetLevelBounds(float _xMin, float _xMax, float _zMin, float _zMax)
-    {
-        levelBounds = new TDS_Bounds(_xMin, _xMax, _zMin, _zMax);
-        SetBounds(levelBounds);
+                                            _levelBounds.RightBound != null ?   
+                                            _levelBounds.RightBound.position.x :                    
+                                            levelBounds.XMax,
 
-        if (lerpToBoundsCoroutine != null) StopCoroutine(lerpToBoundsCoroutine);
-        lerpToBoundsCoroutine = StartCoroutine("LerpToBounds");
+                                            _levelBounds.BottomBound != null ? 
+                                            _levelBounds.BottomBound.position.z : 
+                                            levelBounds.ZMin,
+
+                                            _levelBounds.TopBound != null ?
+                                            _levelBounds.TopBound.position.z :                        
+                                            levelBounds.ZMax);
+
+        if (currentLevelBounds) currentLevelBounds.Desactivate();
+        currentLevelBounds = _levelBounds;
+
+        CurrentBounds = _bounds;
     }
 
     /// <summary>
@@ -442,21 +432,6 @@ public class TDS_Camera : MonoBehaviour
     {
         Vector3 _force3 = ((Vector3)Random.insideUnitCircle.normalized) * _force;
         transform.position += _force3;
-    }
-
-    /// <summary>
-    /// Set bounds as current bounds if target is between, or wait.
-    /// </summary>
-    /// <param name="_bounds">Bounds to set as new ones.</param>
-    /// <returns></returns>
-    private IEnumerator WaitToSetBounds(TDS_Bounds _bounds)
-    {
-        while (!IsPlayerInBounds(_bounds))
-        {
-            yield return new WaitForSeconds(.2f);
-        }
-
-        CurrentBounds = _bounds;
     }
     #endregion
 
