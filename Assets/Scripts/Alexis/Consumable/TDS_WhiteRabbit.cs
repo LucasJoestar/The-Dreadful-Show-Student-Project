@@ -39,7 +39,8 @@ public class TDS_WhiteRabbit : TDS_Consumable
     #endregion
 
     #region Fields / Properties
-    private bool goRight = true; 
+    private bool goRight = true;
+    [SerializeField] private bool isLooping = false;
     [SerializeField, Range(1, 10)] private int healingValueMax;
     [SerializeField, Range(1,10)] private int healingValueMin;
     private int passingCountCurrent = 0;
@@ -47,12 +48,43 @@ public class TDS_WhiteRabbit : TDS_Consumable
     private float boundLeft;
     private float boundRight; 
     [SerializeField, Range(1,10)] private float speed;
-    private CustomNavMeshAgent agent; 
+    private CustomNavMeshAgent agent;
+    [SerializeField] private ParticleSystem particles; 
     #endregion
 
     #region Methods
 
     #region Original Methods
+    /// <summary>
+    /// Rotate the rabbit (Local and online)
+    /// </summary>
+    protected void Flip()
+    {
+        transform.Rotate(Vector3.up, 180);
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
+    }
+
+    /// <summary>
+    /// Increase the passing count 
+    /// if the rabbit has made enough passages, destroy itself
+    /// else run again
+    /// </summary>
+    private void IncreasePassingCount()
+    {
+        passingCountCurrent++;
+        if (passingCountCurrent > passingCountMax && !isLooping)
+        {
+            PhotonView.Destroy(gameObject);
+            return; 
+        }
+        Run();
+    }
+
+    /// <summary>
+    /// Called when a player catch the rabbit
+    /// Heal the player and Destroy the rabbit
+    /// </summary>
+    /// <param name="_player"></param>
     protected override void Use(TDS_Player _player)
     {
         int _healingValue = UnityEngine.Random.Range(healingValueMin, healingValueMax);
@@ -60,24 +92,19 @@ public class TDS_WhiteRabbit : TDS_Consumable
         PhotonView.Destroy(gameObject);
     }
 
+    /// <summary>
+    /// Get the next destination of the rabbit and set it on the navmeshagent
+    /// Flip the rabbit and invert its goright boolean
+    /// </summary>
     private void Run()
     {
         float _x = goRight ? boundRight : boundLeft; 
         Vector3 _targetPosition = new Vector3(_x, transform.position.y, transform.position.z);
         goRight = !goRight; 
-        agent.SetDestination(_targetPosition); 
+        agent.SetDestination(_targetPosition);
+        Flip(); 
     }
 
-    private void IncreasePassingCount()
-    {
-        Debug.Log("IN"); 
-        passingCountCurrent++;
-        if(passingCountCurrent > passingCountMax)
-        {
-            PhotonView.Destroy(gameObject); 
-        }
-        Run(); 
-    }
     #endregion
 
     #region Unity Methods
@@ -92,9 +119,9 @@ public class TDS_WhiteRabbit : TDS_Consumable
         if (!agent) return;
         agent.Speed = speed;
         agent.OnDestinationReached += IncreasePassingCount;
-        boundLeft = TDS_Camera.Instance.CurrentBounds.XMin;
-        boundRight = TDS_Camera.Instance.CurrentBounds.XMax;
-        Run(); 
+        boundLeft = TDS_Camera.Instance.CurrentBounds.XMin - 1;
+        boundRight =  TDS_Camera.Instance.CurrentBounds.XMax + 1;
+        Run();
     }
     #endregion
 

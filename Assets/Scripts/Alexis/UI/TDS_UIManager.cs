@@ -18,7 +18,18 @@ public class TDS_UIManager : PunBehaviour
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	#####################
+     *	
+	 * 	Date :			[10/04/2019]
+	 *	Author :		[THIEBAUT Alexis]
 	 *
+	 *	Changes :
+	 *
+	 *	[Adding Buttons to select players and dialogbox]
+     *	    - Buttons to select players 
+     *	    - DialogBox to show Narrator's phrases
+	 *
+	 *	-----------------------------------
+     *	
      * 	Date :			[21/02/2019]
 	 *	Author :		[THIEBAUT Alexis]
 	 *
@@ -48,6 +59,25 @@ public class TDS_UIManager : PunBehaviour
     /// <summary> Singleton of the class TDS_UIManager </summary>
     public static TDS_UIManager Instance;
 
+    #region Buttons
+
+    #region Character Selection
+    //Button to select the BeardLady
+    [SerializeField] private Button ButtonSelectionBeardLady;
+    //Button to select the Juggler
+    [SerializeField] private Button ButtonSelectionJuggler;
+    //Button to select the FatLady
+    [SerializeField] private Button ButtonSelectionFatLady;
+    //Button to select the FireEater 
+    [SerializeField] private Button ButtonSelectionFireEater;
+    #endregion
+
+    #region PauseButton
+    [SerializeField] private Button ButtonQuitPause;
+    #endregion
+
+    #endregion
+
     #region Canvas 
     // Canvas based on the screen
     [SerializeField] private Canvas canvasScreen;
@@ -59,9 +89,15 @@ public class TDS_UIManager : PunBehaviour
     public Canvas CanvasWorld { get { return canvasWorld; } }
     #endregion
 
-    #region UIState
-    //State of the UI
-    [SerializeField] private UIState uiState;
+    #region Coroutines
+    /// <summary>
+    /// Dictionary to stock every filling coroutine started
+    /// </summary>
+    private Dictionary<Image, Coroutine> filledImages = new Dictionary<Image, Coroutine>();
+    #endregion
+
+    #region LifeBar
+    [SerializeField] private TDS_LifeBar playerHealthBar;
     #endregion
 
     #region MenuParents
@@ -71,34 +107,22 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private GameObject inGameMenuParent;
     //Parent of the pause menu UI
     [SerializeField] private GameObject pauseMenuParent;
+    // Parent of the DialogBox
+    [SerializeField] private GameObject dialogBoxParent;
+    // Parent of the NarratorBox
+    [SerializeField] private GameObject narratorBoxParent;
     #endregion
 
-    #region Buttons
-
-    #region Character Selection
-    [SerializeField] private Button ButtonSelectionBeardLady;
-    [SerializeField] private Button ButtonSelectionJuggler;
-    [SerializeField] private Button ButtonSelectionFatLady;
-    [SerializeField] private Button ButtonSelectionFireEater;
+    #region UIState
+    //State of the UI
+    [SerializeField] private UIState uiState;
     #endregion
 
-
-
-    #region PauseButton
-    [SerializeField] private Button ButtonQuitPause;
-    #endregion
-
-    #region LifeBar
-    [SerializeField] private TDS_LifeBar playerHealthBar; 
-    #endregion
-
-    #endregion
-
-    #region Coroutines
-    /// <summary>
-    /// Dictionary to stock every filling coroutine started
-    /// </summary>
-    private Dictionary<Image, Coroutine> filledImages = new Dictionary<Image, Coroutine>();
+    #region Text
+    //Text of the dialog Box
+    [SerializeField] private TMPro.TMP_Text dialogBoxText ;
+    //Text of the narrator Box
+    [SerializeField] private TMPro.TMP_Text narratorBoxText;
     #endregion
 
     #endregion
@@ -128,6 +152,18 @@ public class TDS_UIManager : PunBehaviour
 
     #region void
     /// <summary>
+    /// Fill the text of the dialog box as _text
+    /// Set the parent of the dialogbox Active
+    /// </summary>
+    /// <param name="_text">Text to fill in the text fieldw</param>
+    public void ActivateDialogBox(string _text)
+    {
+        if (!dialogBoxParent || !dialogBoxText) return;
+        dialogBoxText.text = _text;
+        dialogBoxParent.SetActive(true);  
+    }
+
+    /// <summary>
     /// Activate or desactivate Menu depending of the uistate
     /// </summary>
     /// <param name="_state">State</param>
@@ -154,6 +190,36 @@ public class TDS_UIManager : PunBehaviour
             default:
                 break;
         }
+    }
+
+    /// <summary>
+    /// Fill the text of the dialog box as _text
+    /// Set the parent of the dialogbox Active
+    /// </summary>
+    /// <param name="_text">Text to fill in the text fieldw</param>
+    public void ActivateNarratorBox(string _text)
+    {
+        if (!narratorBoxParent || !narratorBoxText) return;
+        narratorBoxText.text = _text;
+        narratorBoxParent.SetActive(true);
+    }
+
+    /// <summary>
+    /// Set the dialogbox parent as inactive
+    /// </summary>
+    public void DesactivateDialogBox()
+    {
+        if (!dialogBoxParent) return;
+        dialogBoxParent.SetActive(false); 
+    }
+
+    /// <summary>
+    /// Set the dialogbox parent as inactive
+    /// </summary>
+    public void DesactivateNarratorBox()
+    {
+        if (!narratorBoxParent) return;
+        narratorBoxParent.SetActive(false);
     }
 
     /// <summary>
