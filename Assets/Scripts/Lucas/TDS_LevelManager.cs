@@ -44,7 +44,7 @@ public class TDS_LevelManager : MonoBehaviour
     /// <summary>
     /// Last activated checkpoint.
     /// </summary>
-    [SerializeField] private TDS_Checkpoint checkpoint = null;
+    [SerializeField] protected TDS_Checkpoint checkpoint = null;
 
     /// <summary>Public accessor for <see cref="checkpoint"/>.</summary>
     public TDS_Checkpoint Checkpoint { get { return checkpoint; } }
@@ -52,12 +52,12 @@ public class TDS_LevelManager : MonoBehaviour
     /// <summary>
     /// Local player, the one who play on this machine.
     /// </summary>
-    [SerializeField] private TDS_Player localPlayer = null;
+    [SerializeField] protected TDS_Player localPlayer = null;
 
     /// <summary>
     /// Online players, the ones that play with the one playing on this machine.
     /// </summary>
-    [SerializeField] private List<TDS_Player> onlinePlayers = new List<TDS_Player>();
+    [SerializeField] protected List<TDS_Player> onlinePlayers = new List<TDS_Player>();
 
     /// <summary>
     /// Get all players of the game, local and online ones.
@@ -74,7 +74,7 @@ public class TDS_LevelManager : MonoBehaviour
     #endregion
 
     #region Proto
-    [SerializeField] private GameObject player = null;
+    [SerializeField] protected GameObject player = null;
     #endregion
 
     #region Singleton
