@@ -176,7 +176,7 @@ public class TDS_LevelManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        TDS_NetworkManager.Instance.InitConnection();
+        //TDS_NetworkManager.Instance.InitConnection();
 
         // Spawn local player.
         Spawn();
