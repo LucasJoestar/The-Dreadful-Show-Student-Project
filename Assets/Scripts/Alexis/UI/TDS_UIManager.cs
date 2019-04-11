@@ -78,6 +78,10 @@ public class TDS_UIManager : PunBehaviour
 
     #endregion
 
+    #region Animator
+    [SerializeField] private Animator curtainsAnimator; 
+    #endregion 
+
     #region Canvas 
     // Canvas based on the screen
     [SerializeField] private Canvas canvasScreen;
@@ -158,7 +162,7 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_text">Text to fill in the text fieldw</param>
     public void ActivateDialogBox(string _text)
     {
-        if (!dialogBoxParent || !dialogBoxText) return;
+        if (dialogBoxParent == null || dialogBoxText == null) return;
         dialogBoxText.text = _text;
         dialogBoxParent.SetActive(true);  
     }
@@ -199,7 +203,7 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_text">Text to fill in the text fieldw</param>
     public void ActivateNarratorBox(string _text)
     {
-        if (!narratorBoxParent || !narratorBoxText) return;
+        if (narratorBoxParent == null || narratorBoxText == null) return;
         narratorBoxText.text = _text;
         narratorBoxParent.SetActive(true);
     }
@@ -209,7 +213,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void DesactivateDialogBox()
     {
-        if (!dialogBoxParent) return;
+        if (dialogBoxParent == null) return;
         dialogBoxParent.SetActive(false); 
     }
 
@@ -218,7 +222,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void DesactivateNarratorBox()
     {
-        if (!narratorBoxParent) return;
+        if (narratorBoxParent == null) return;
         narratorBoxParent.SetActive(false);
     }
 
@@ -297,6 +301,15 @@ public class TDS_UIManager : PunBehaviour
             StopCoroutine(filledImages[_filledImage]);
             filledImages.Remove(_filledImage);
         }
+    }
+
+    /// <summary>
+    /// Display or remove the curtains in the canvas
+    /// </summary>
+    public void SwitchCurtains()
+    {
+        if (!curtainsAnimator) return;
+        curtainsAnimator.SetTrigger("Switch"); 
     }
     #endregion 
 

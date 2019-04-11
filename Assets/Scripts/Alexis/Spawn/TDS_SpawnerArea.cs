@@ -168,6 +168,14 @@ public class TDS_SpawnerArea : PunBehaviour
         OnAreaActivated.AddListener(ActivateSpawn);
     }
 
+    private void Start()
+    {
+        if (TDS_UIManager.Instance )
+        {
+            OnAreaActivated.AddListener(TDS_UIManager.Instance.SwitchCurtains);
+            OnAreaDesactivated.AddListener(TDS_UIManager.Instance.SwitchCurtains);
+        }
+    }
     private void OnTriggerEnter(Collider _coll)
     {
         // If a player enter in the collider

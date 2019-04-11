@@ -436,12 +436,14 @@ public abstract class TDS_Enemy : TDS_Character
                 yield break; 
             }
             //if the target is too far from the destination, recalculate the path
-            if (Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > 10)
+            if (Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > GetMaxRange())
             {
+                yield return new WaitForSeconds(.1f); 
                 enemyState = EnemyState.ComputingPath;
                 yield break; 
             }
         }
+        Debug.Log("OUT"); 
         // At the end of the path, is the agent has to throw an object, throw it
         if (throwable)
         {
@@ -720,6 +722,7 @@ public abstract class TDS_Enemy : TDS_Character
         {
             _position = GetAttackingPosition();
         }
+        Debug.Log(_position); 
         _pathComputed = agent.CheckDestination(_position);
         //If the path is computed, reach the end of the path
         if (_pathComputed)
