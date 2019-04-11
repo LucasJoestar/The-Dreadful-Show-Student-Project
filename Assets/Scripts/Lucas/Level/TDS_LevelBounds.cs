@@ -34,9 +34,9 @@ public class TDS_LevelBounds : MonoBehaviour
 
     #region Fields / Properties
     /// <summary>
-    /// Should this object be disabled after activated ?
+    /// Should this object be disabled when being desactivated ? If not, only this script will be.
     /// </summary>
-    [SerializeField] private bool doDisableAfterActive = true;
+    [SerializeField] private bool doDisableGameObjectOnDesactivate = true;
 
     /// <summary>
     /// Collider trigger to enable these bounds.
@@ -94,12 +94,20 @@ public class TDS_LevelBounds : MonoBehaviour
     {
         TDS_Camera.Instance.SetBounds(this);
 
-        if (doDisableAfterActive) gameObject.SetActive(false);
+        Desactivate();
+    }
+
+    /// <summary>
+    /// Desactivate these bounds.
+    /// </summary>
+    public void Desactivate()
+    {
+        if (doDisableGameObjectOnDesactivate) gameObject.SetActive(false);
         enabled = false;
     }
-	#endregion
+    #endregion
 
-	#region Unity Methods
+    #region Unity Methods
     // OnTriggerEnter is called when the GameObject collides with another GameObject
     private void OnTriggerEnter(Collider other)
     {
