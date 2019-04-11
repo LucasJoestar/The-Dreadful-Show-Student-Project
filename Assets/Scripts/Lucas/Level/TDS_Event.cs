@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+
+using Object = UnityEngine.Object;
 
 [Serializable]
 public class TDS_Event 
@@ -19,7 +21,9 @@ public class TDS_Event
 	 *	####### TO DO #######
 	 *	#####################
 	 *
-	 *	Meh.
+	 *	    • Implement RPC methods if not local.
+     *	    
+     *	    • Wait for a specific action
 	 *
 	 *	#####################
 	 *	### MODIFICATIONS ###
@@ -35,16 +39,18 @@ public class TDS_Event
 	 *	-----------------------------------
 	*/
 
-    #region Events
-
-    #endregion
-
     #region Fields / Properties
+    /// <summary>
+    /// Is this event triggered only if the local player is a specific character ?
+    /// </summary>
+    [SerializeField] private bool doNeedSpecificPlayerType = false;
+
     /// <summary>
     /// Indicates if this event should wait the end of the previous one before starting.
     /// </summary>
     [SerializeField] private bool doWaitPreviousEvent = true;
 
+    /// <summary>Public accessor for <see cref="doWaitPreviousEvent"/>.</summary>
     public bool DoWaitPreviousOne { get { return doWaitPreviousEvent; } }
 
     /// <summary>
@@ -58,14 +64,12 @@ public class TDS_Event
     [SerializeField] private bool isMasterOnly = false;
 
     /// <summary>
-    /// Boolean used to wait if a specific condition is required.
-    /// </summary>
-    private bool isReady = false;
-
-    /// <summary>
     /// Type of this event.
     /// </summary>
     [SerializeField] private CustomEventType eventType = CustomEventType.UnityEvent;
+
+    /// <summary>Public accessor for <see cref="eventType"/>.</summary>
+    public CustomEventType EventType { get { return eventType; } }
 
     /// <summary>
     /// Time to wait.
@@ -73,10 +77,9 @@ public class TDS_Event
     [SerializeField] private float waitTime = 0;
 
     /// <summary>
-    /// ID of this event, shared by all players in the room.
-    /// Used to identify this event.
+    /// Prefab to instantiate.
     /// </summary>
-    private int id = 0;
+    [SerializeField] private GameObject prefab = null;
 
     /// <summary>
     /// Local player type required to execute this action.
@@ -88,6 +91,11 @@ public class TDS_Event
     /// Text ID used to load a narrator quote or information box text.
     /// </summary>
     [SerializeField] private string textID = "ID";
+
+    /// <summary>
+    /// Transform where to instantiate the prefab.
+    /// </summary>
+    [SerializeField] private Transform prefabTransform = null;
 
     /// <summary>
     /// Unity event to invoke.
@@ -102,18 +110,44 @@ public class TDS_Event
     /// <returns></returns>
     public IEnumerator Trigger()
     {
+        Debug.Log("New Event => " + eventType.ToString());
+
         // If this event require a particular player type different than the local one, return
-        if ((playerType != PlayerType.Unknown) && (TDS_LevelManager.Instance.LocalPlayer.PlayerType != playerType)) yield break;
+        if ((isMasterOnly && !PhotonNetwork.isMasterClient) || (doNeedSpecificPlayerType && (TDS_LevelManager.Instance.LocalPlayer.PlayerType != playerType))) yield break;
 
         switch (eventType)
         {
             // Triggers a particular quote of the Narrator
             case CustomEventType.Narrator:
+                string[] _quotes = TDS_GameManager.GetDialog(textID).Split('\n').Select(s => s.Trim()).Where(s => s != string.Empty).ToArray();
+
+                foreach (string _quote in _quotes)
+                {
+                    int _time = _quote.Length / 5;
+                    TDS_UIManager.Instance.ActivateNarratorBox(_quote);
+
+                    // If not local, activate narrator in other players too
+                    if (!isLocal)
+                    {
+                        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateNarratorBox"), new object[] { _quote });
+                    }
+
+                    yield return new WaitForSeconds(_time);
+                }
+
+                TDS_UIManager.Instance.DesactivateNarratorBox();
+
+                // If not local, desactivate narrator in other players too
+                if (!isLocal)
+                {
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "DesactivateNarratorBox"), new object[] { });
+                }
+
                 break;
 
             // Display a message in an information box
             case CustomEventType.DisplayInfoBox:
-                //TDS_UIManager.Instance.ActivateDialogBox();
+                TDS_UIManager.Instance.ActivateDialogBox(TDS_GameManager.GetDialog(textID));
                 break;
 
             // Desactivate the current information box
@@ -121,14 +155,33 @@ public class TDS_Event
                 TDS_UIManager.Instance.DesactivateDialogBox();
                 break;
 
+            // Instantiate a prefab
+            case CustomEventType.Instantiate:
+                Object.Instantiate(prefab, prefabTransform.position, prefabTransform.rotation);
+
+                // If not local, activate narrator in other players too
+                if (!isLocal)
+                {
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, $"{TDS_LevelManager.Instance.phID}#{TDS_UIManager.Instance.GetType()}#Instantiate", new object[] { prefab, prefabTransform.position, prefabTransform.rotation });
+                }
+                break;
+
+            // Wait during a certain time
             case CustomEventType.Wait:
                 yield return new WaitForSeconds(waitTime);
                 break;
 
+            // Wait for an action of the local player
             case CustomEventType.WaitForAction:
+                // To do
                 break;
 
+            // Wait until other players reach this event (Events System manage this)
             case CustomEventType.WaitOthers:
+                while (true)
+                {
+                    yield return null;
+                }
                 break;
 
             // Just invoke a Unity Event, that's it

@@ -242,7 +242,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1942066217794072}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.03, y: 0, z: -0.96}
+  m_LocalPosition: {x: -1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4311397187767890}
@@ -284,7 +284,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1858403930329514}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.275, y: 0, z: 0}
   m_LocalScale: {x: 0.65, y: 0.65, z: 1}
   m_Children: []
@@ -533,6 +533,7 @@ MonoBehaviour:
   healthCurrent: 99
   healthMax: 99
   hitBox: {fileID: 114637021920016826}
+  healthBar: {fileID: 0}
   rigidbody: {fileID: 54280045138941680}
   throwable: {fileID: 0}
   handsTransform: {fileID: 4195684342130554}
@@ -664,9 +665,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18dda57ee8a7f354ba608a59dfff9996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collider: {fileID: 0}
-  Owner: {fileID: 0}
-  HittableTags: []
+  collider: {fileID: 65428636927362380}
+  Owner: {fileID: 114059215239211722}
+  HittableTags:
+  - Enemy
 --- !u!114 &114805191651210132
 MonoBehaviour:
   m_ObjectHideFlags: 1

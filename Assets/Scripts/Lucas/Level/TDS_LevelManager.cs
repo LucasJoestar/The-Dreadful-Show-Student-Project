@@ -50,6 +50,16 @@ public class TDS_LevelManager : MonoBehaviour
     public TDS_Checkpoint Checkpoint { get { return checkpoint; } }
 
     /// <summary>
+    /// Photon view of this object.
+    /// </summary>
+    [SerializeField] private PhotonView photonView = null;
+
+    /// <summary>
+    /// Get the ID of this object photon view.
+    /// </summary>
+    public int phID { get { return photonView.viewID; } }
+
+    /// <summary>
     /// Local player, the one who play on this machine.
     /// </summary>
     [SerializeField] protected TDS_Player localPlayer = null;

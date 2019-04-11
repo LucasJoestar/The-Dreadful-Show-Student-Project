@@ -139,6 +139,7 @@ public enum CustomEventType
     Narrator,
     DisplayInfoBox,
     DesactiveInfoBox,
+    Instantiate,
     Wait,
     WaitForAction,
     WaitOthers,
@@ -187,11 +188,11 @@ public enum PlayerAnimState
 /// </summary>
 public enum PlayerType
 {
+    Unknown,
     BeardLady,
     FatLady,
     FireEater,
     Juggler,
-    Unknown
 }
 
 /// <summary>
