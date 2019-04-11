@@ -339,7 +339,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1333625713991850, guid: 406d9a2f8a7e4da45be9871d5796b1cb, type: 2}
       propertyPath: m_Layer
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4305772617021256, guid: 406d9a2f8a7e4da45be9871d5796b1cb, type: 2}
       propertyPath: m_LocalScale.y
@@ -353,6 +353,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4305772617021256, guid: 406d9a2f8a7e4da45be9871d5796b1cb,
     type: 2}
   m_PrefabInternal: {fileID: 123652292}
+--- !u!1 &129350897 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1086096263968204, guid: d635b766f21f14947a364d7448b4dc2c,
+    type: 2}
+  m_PrefabInternal: {fileID: 820772805}
 --- !u!1 &142266955
 GameObject:
   m_ObjectHideFlags: 0
@@ -1941,6 +1946,10 @@ Prefab:
       propertyPath: instantiationId
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1086096263968204, guid: d635b766f21f14947a364d7448b4dc2c, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d635b766f21f14947a364d7448b4dc2c, type: 2}
   m_IsPrefabAsset: 0
@@ -2549,7 +2558,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1333625713991850, guid: 406d9a2f8a7e4da45be9871d5796b1cb, type: 2}
       propertyPath: m_Layer
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 65316850431927406, guid: 406d9a2f8a7e4da45be9871d5796b1cb,
         type: 2}
@@ -3040,7 +3049,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1333625713991850, guid: 406d9a2f8a7e4da45be9871d5796b1cb, type: 2}
       propertyPath: m_Layer
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4305772617021256, guid: 406d9a2f8a7e4da45be9871d5796b1cb, type: 2}
       propertyPath: m_LocalScale.y
@@ -3651,8 +3660,9 @@ MonoBehaviour:
   checkpoint: {fileID: 0}
   localPlayer: {fileID: 0}
   onlinePlayers: []
-  StartSpawnPoints: []
-  player: {fileID: 0}
+  StartSpawnPoints:
+  - {x: -12, y: 0, z: 0}
+  player: {fileID: 129350897}
 --- !u!4 &1393358469
 Transform:
   m_ObjectHideFlags: 0
@@ -3864,7 +3874,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1333625713991850, guid: 406d9a2f8a7e4da45be9871d5796b1cb, type: 2}
       propertyPath: m_Layer
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 65316850431927406, guid: 406d9a2f8a7e4da45be9871d5796b1cb,
         type: 2}

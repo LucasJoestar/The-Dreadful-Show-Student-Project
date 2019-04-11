@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public static class TDS_GameManager
 {
@@ -60,15 +61,47 @@ public static class TDS_GameManager
     /// Indicates if players are currently in game, or in menu.
     /// </summary>
     private static bool isInGame = true;
+
+    /// <summary>
+    /// Character used to split the text asset.
+    /// </summary>
+    private static char splitCharacter = '#';
+
+    /// <summary>
+    /// Text asset referencing all game dialogs and others.
+    /// </summary>
+    public static TextAsset DialogsAsset { get; private set; }
     #endregion
 
     #region Methods
+    /// <summary>
+    /// Get a dialog with a specific ID.
+    /// </summary>
+    /// <param name="_id">ID of the dialog to load.</param>
+    /// <returns>Returns all lines linked to the specified id.</returns>
+    public static string[] GetDialog(string _id)
+    {
+        string[] _dialogs = DialogsAsset.text.Split(splitCharacter);
+        return _dialogs.Where(d => d.StartsWith(_id)).FirstOrDefault().Split('\n').Select(s => s.Trim()).Where(s => s != string.Empty).ToArray();
+    }
+
     /// <summary>
     /// Leaves the game, and go back to the menu.
     /// </summary>
     public static void LeaveGame()
     {
 
+    }
+
+    /// <summary>
+    /// Loads the text asset of the game when a game is loaded.
+    /// </summary>
+    [RuntimeInitializeOnLoadMethod]
+    private static void LoadTextAsset()
+    {
+        if (DialogsAsset) return;
+        DialogsAsset = Resources.Load<TextAsset>("Dialogs");
+        splitCharacter = DialogsAsset.text[0];
     }
 
     /// <summary>
