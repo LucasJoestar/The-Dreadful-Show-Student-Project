@@ -25,6 +25,15 @@ public class TDS_Camera : MonoBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[11 / 04 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    Adjusted the bounds system, once again, but now it's perfect ! Really cool, I mean.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[04 / 04 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -91,13 +100,13 @@ public class TDS_Camera : MonoBehaviour
         get { return currentBounds; }
         set
         {
-            float _xMin = camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x;
-            float _xMax = camera.ViewportToWorldPoint(new Vector3(1.01f, 0, 0)).x;
-
-            if (value.XMin > _xMin) value.XMinVector.x = _xMin;
-            if (value.XMax < _xMax) value.XMaxVector.x = _xMax;
-
             currentBounds = value;
+
+            // Set new bounds position
+            topBound.transform.position = value.ZMaxVector;
+            leftBound.transform.position = value.XMinVector;
+            rightBound.transform.position = value.XMaxVector;
+            bottomBound.transform.position = value.ZMinVector;
         }
     }
 
@@ -125,6 +134,11 @@ public class TDS_Camera : MonoBehaviour
     /// Coroutine used to lerp to bounds.
     /// </summary>
     private Coroutine lerpToBoundsCoroutine = null;
+
+    /// <summary>
+    /// Coroutine used to wait before setting bounds when needed.
+    /// </summary>
+    private Coroutine waitToSetBoundsCoroutine = null;
 
     /// <summary>Backing field for <see cref="Rotation"/></summary>
     [SerializeField] private float rotation = 0;
@@ -254,6 +268,26 @@ public class TDS_Camera : MonoBehaviour
             target = value;
         }
     }
+
+    /// <summary>
+    /// Top bound collider of the level.
+    /// </summary>
+    [SerializeField] private BoxCollider topBound = null;
+
+    /// <summary>
+    /// Left bound collider of the level.
+    /// </summary>
+    [SerializeField] private BoxCollider leftBound = null;
+
+    /// <summary>
+    /// Right bound collider of the level.
+    /// </summary>
+    [SerializeField] private BoxCollider rightBound = null;
+
+    /// <summary>
+    /// Bottom bound collider of the level.
+    /// </summary>
+    [SerializeField] private BoxCollider bottomBound = null;
 
     /// <summary>
     /// Offset of the camera in X, Y & Z.
@@ -392,6 +426,7 @@ public class TDS_Camera : MonoBehaviour
         }
 
         lerpToBoundsCoroutine = null;
+        yield break;
     }
 
     /// <summary>
@@ -403,25 +438,26 @@ public class TDS_Camera : MonoBehaviour
         if (currentLevelBounds == _levelBounds) return;
 
         TDS_Bounds _bounds = new TDS_Bounds(_levelBounds.LeftBound != null ?
-                                            _levelBounds.LeftBound.position.x :                             
-                                            levelBounds.XMin,
+                                            _levelBounds.LeftBound.position :                             
+                                            levelBounds.XMinVector,
 
                                             _levelBounds.RightBound != null ?   
-                                            _levelBounds.RightBound.position.x :                    
-                                            levelBounds.XMax,
+                                            _levelBounds.RightBound.position :                    
+                                            levelBounds.XMaxVector,
 
                                             _levelBounds.BottomBound != null ? 
-                                            _levelBounds.BottomBound.position.z : 
-                                            levelBounds.ZMin,
+                                            _levelBounds.BottomBound.position : 
+                                            levelBounds.ZMinVector,
 
                                             _levelBounds.TopBound != null ?
-                                            _levelBounds.TopBound.position.z :                        
-                                            levelBounds.ZMax);
+                                            _levelBounds.TopBound.position :                        
+                                            levelBounds.ZMaxVector);
 
         if (currentLevelBounds) currentLevelBounds.Desactivate();
         currentLevelBounds = _levelBounds;
 
-        CurrentBounds = _bounds;
+        if (waitToSetBoundsCoroutine != null) StopCoroutine(waitToSetBoundsCoroutine);
+        waitToSetBoundsCoroutine = StartCoroutine(WaitToSetBounds(_bounds));
     }
 
     /// <summary>
@@ -433,6 +469,35 @@ public class TDS_Camera : MonoBehaviour
         Vector3 _force3 = ((Vector3)Random.insideUnitCircle.normalized) * _force;
         transform.position += _force3;
     }
+
+    /// <summary>
+    /// Wait to set bounds if minimum x value is visible by the camera or to its right.
+    /// </summary>
+    /// <param name="_bounds">Bounds to set.</param>
+    /// <returns></returns>
+    private IEnumerator WaitToSetBounds(TDS_Bounds _bounds)
+    {
+        float _xMin = camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x;
+
+        while (_bounds.XMin > _xMin)
+        {
+            TDS_Bounds _newBounds = currentBounds;
+            if (currentBounds.XMin != _xMin)
+            {
+                currentBounds.XMinVector = new Vector3(_xMin, _bounds.XMinVector.y, _bounds.XMinVector.z);
+                leftBound.transform.position = currentBounds.XMinVector;
+            }
+
+            yield return null;
+            _xMin = camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x;
+        }
+
+        float _xMax = camera.ViewportToWorldPoint(new Vector3(1.01f, 0, 0)).x;
+        if (_bounds.XMax < _xMax) _bounds.XMaxVector.x = _xMax;
+
+        CurrentBounds = _bounds;
+        yield break;
+    }
     #endregion
 
     #region Unity Methods
@@ -441,6 +506,12 @@ public class TDS_Camera : MonoBehaviour
     {
         // Set the singleton instance if null
         if (!Instance) Instance = this;
+
+        // Debug warning is missing bound(s)
+        if (!topBound || !leftBound || !rightBound || !bottomBound)
+        {
+            Debug.LogWarning($"Missing bound(s) for the Camera \"{name}\"");
+        }
     }
 
     // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
@@ -469,6 +540,11 @@ public class TDS_Camera : MonoBehaviour
     // Use this for initialization
     private void Start ()
     {
+        // Set default level bounds
+        levelBounds = new TDS_Bounds(leftBound.transform.position, rightBound.transform.position, bottomBound.transform.position, topBound.transform.position);
+        currentBounds = levelBounds;
+
+        lerpToBoundsCoroutine = StartCoroutine(LerpToBounds());
     }
 	
 	// Update is called once per frame
