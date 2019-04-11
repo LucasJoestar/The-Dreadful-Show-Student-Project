@@ -64,7 +64,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1881167624450526
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,7 +88,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1784521387282082}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.47, y: 0, z: -4.96}
+  m_LocalPosition: {x: 2.47, y: -2.72, z: -4.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4332666222786238}
@@ -117,7 +117,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1469768036730198}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.688, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4055278686339258}
@@ -355,7 +355,7 @@ MonoBehaviour:
   recoilDistance: 0.2
   recoilDistanceDeath: 2.2
   recoilTimeDeath: 0.35
-  throwRange: 6
+  throwRange: 7
   agent: {fileID: 114509155922725266}
   attacks:
   - Name: HeadButt
@@ -365,26 +365,26 @@ MonoBehaviour:
     Description: BOUM
     isDistanceAttack: 0
     cooldown: 1.5
-    predictedRange: 1.1
-    probability: 100
+    predictedRange: 1
+    probability: 33
   - Name: Bar Hit
-    AnimationID: 7
+    AnimationID: 8
     damagesMax: 20
     damagesMin: 15
     Description: PAF!
     isDistanceAttack: 0
     cooldown: 1.5
-    predictedRange: 1.1
-    probability: 0
+    predictedRange: 1.2
+    probability: 33
   - Name: Kick
-    AnimationID: 8
+    AnimationID: 7
     damagesMax: 8
     damagesMin: 5
     Description: KAPOW!
     isDistanceAttack: 0
     cooldown: 1
-    predictedRange: 1.1
-    probability: 0
+    predictedRange: 0.8
+    probability: 33
 --- !u!114 &114939482661549728
 MonoBehaviour:
   m_ObjectHideFlags: 1
