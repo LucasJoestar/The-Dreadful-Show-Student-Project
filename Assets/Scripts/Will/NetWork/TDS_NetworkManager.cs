@@ -66,9 +66,21 @@ public class TDS_NetworkManager : PunBehaviour
     /// <summary>
     /// Connect the player to Photon
     /// </summary>
-    void InitConnection()
+    public void InitConnection()
     {
         PhotonNetwork.ConnectUsingSettings(connectionVersion);
+    }
+    /// <summary>
+    /// Spawn player based on the Enum PlayerType
+    /// </summary>
+    /// <param name="_playerType"></param>
+    /// <returns></returns>
+    public PhotonView InstantiatePlayer (PlayerType _playerType, Vector3 _spawnPosition)
+    {
+        PhotonView _playerId = PhotonNetwork.Instantiate(_playerType.ToString(), _spawnPosition, Quaternion.identity, 0).GetComponent<PhotonView>();
+        localPlayer = _playerType;
+
+        return _playerId;
     }
     /// <summary> 
     /// Join the room if this room already exist else create it with somme parameters 
@@ -100,6 +112,12 @@ public class TDS_NetworkManager : PunBehaviour
         base.OnCreatedRoom();
         isHost = true;
     }
+
+    public void OnleftRoom()
+    {
+
+    }
+    
     /// <summary>
     /// When the player joins the room, instantiate a prefab for the player and set its name with the player name
     /// </summary>
@@ -127,7 +145,7 @@ public class TDS_NetworkManager : PunBehaviour
     }
     void Start ()
     {
-        InitConnection();
+        //InitConnection(); //Deplacé dans le GameManager
         if(!photonView)
         photonView = GetComponent<PhotonView>();
     }	

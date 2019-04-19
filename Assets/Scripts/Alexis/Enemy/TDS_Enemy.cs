@@ -26,6 +26,14 @@ public abstract class TDS_Enemy : TDS_Character
      *	Date :          [13/02/2019]
      *	Author:         [THIEBAUT Alexis]
      *	
+     *	[Modify the State Machine to get rid of the goto]
+     *	    - Call methods to change the enemy state.
+     *	    - Call Behaviour Recursively at the end of the method and go through another state
+     *	    
+     *	-----------------------------------
+     *	Date :          [13/02/2019]
+     *	Author:         [THIEBAUT Alexis]
+     *	
      *	[Adding the property Area]
      *	    - Area is the TDS_SpawnerArea from which the enemy comes
      *	    
@@ -164,9 +172,16 @@ public abstract class TDS_Enemy : TDS_Character
     /// Used when the enemy has to move
     /// </summary>
     [SerializeField] protected CustomNavMeshAgent agent;
+
+    /// <summary>
+    /// Throwable to reach and grab
+    /// </summary>
+    private TDS_Throwable targetedThrowable = null;
+
     #endregion
 
     #endregion
+
 
     #region Methods
 
@@ -259,8 +274,6 @@ public abstract class TDS_Enemy : TDS_Character
         // If there is no target, the agent has to get one
         if (!playerTarget || playerTarget.IsDead)
             enemyState = EnemyState.Searching;
-        float _distance = 0;
-        TDS_Throwable _targetedThrowable = null ; 
         switch (enemyState)
         {
             #region Searching
@@ -283,215 +296,229 @@ public abstract class TDS_Enemy : TDS_Character
             #endregion
             #region Making Decision
             case EnemyState.MakingDecision:
-                //Take decisions
-                // If the target can't be targeted, search for another target
-                if (!playerTarget || playerTarget.IsDead)
-                {
-                    enemyState = EnemyState.Searching;
-                    goto case EnemyState.Searching;
-                }
-                _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                // Check if the agent can attack
-                if (AttackCanBeCasted(_distance))
-                {
-                    enemyState = EnemyState.Attacking;
-                    goto case EnemyState.Attacking;
-                }
-                // Else getting in range
-                else
-                {
-                    enemyState = EnemyState.ComputingPath;
-                    goto case EnemyState.ComputingPath;
-                }
+                TakeDecision();
+                break; 
             #endregion
             #region Computing Path
             case EnemyState.ComputingPath:
-                //Compute the path
-                // Select a position
-                bool _pathComputed = false;
-                Vector3 _position; 
-                if(_targetedThrowable)
-                {
-                   _position = _targetedThrowable.transform.position;
-                }
-                else
-                {
-                    _position = GetAttackingPosition();
-                }
-                _pathComputed = agent.CheckDestination(_position);
-                yield return new WaitForEndOfFrame();
-                //If the path is computed, reach the end of the path
-                if(_pathComputed)
-                {
-                    enemyState = EnemyState.GettingInRange;
-                    goto case EnemyState.GettingInRange;
-                }
-                else break;
+                ComputePath();
+                break; 
             #endregion
             #region Getting In Range
             case EnemyState.GettingInRange:
-                SetAnimationState((int)EnemyAnimationState.Run);
-                // Wait some time before calling again Behaviour(); 
-                Collider[] _colliders; 
-                while (agent.IsMoving)
-                {
-                    //Orientate the agent
-                    if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
-                        Flip();
-
-                    //Increase the speed if necessary
-                    if (speedCurrent < speedMax)
-                    {
-                        IncreaseSpeed();
-                        yield return new WaitForEndOfFrame();
-                    }
-                    else yield return new WaitForSeconds(.1f);
-
-                    //Check if the area allow to grab object
-                    // If the enemy hasn't a throwable, check if he can grab one
-                    if (throwable == null && canThrow)
-                    {
-                        if (_targetedThrowable)
-                        {
-                            //If the targeted throwable is close enough, grab it
-                            _distance = collider.size.x + _targetedThrowable.transform.localScale.x; 
-                            if(Vector3.Distance(transform.position, _targetedThrowable.transform.position) <= _distance)
-                            {
-                                enemyState = EnemyState.PickingUpObject;
-                                goto case EnemyState.PickingUpObject;
-                            }
-                        }
-                        else
-                        {
-                            //Check if there is object around the enemy
-                            _colliders = Physics.OverlapSphere(transform.position, detectionRange);
-                            if (_colliders.Length > 0)
-                            {
-                                _colliders = _colliders.Where(c => c.GetComponent<TDS_Throwable>()).OrderBy(c => Vector3.Distance(transform.position, c.transform.position)).ToArray();
-                                if (_colliders.Length > 0)
-                                {
-                                    //Get the closest throwable
-                                    _targetedThrowable = _colliders.Select(c => c.GetComponent<TDS_Throwable>()).First();
-                                    //Set a new path to the throwable 
-                                    enemyState = EnemyState.ComputingPath;
-                                    goto case EnemyState.ComputingPath;
-                                }
-                            }
-                        }
-                    }
-                    // if any attack can be casted 
-                    _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                    if (AttackCanBeCasted(_distance))
-                    {
-                        enemyState = EnemyState.Attacking;
-                        goto case EnemyState.Attacking;
-                    }
-                    // if the target is too far from the destination, recalculate the path
-                    if (Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > GetMaxRange())
-                    {
-                        enemyState = EnemyState.ComputingPath;
-                        goto case EnemyState.ComputingPath;
-                    }
-                }
-                // At the end of the path, is the agent has to throw an object, throw it
-                if(throwable)
-                {
-                    enemyState = EnemyState.ThrowingObject;
-                    goto case EnemyState.ThrowingObject; 
-                }
-                enemyState = EnemyState.MakingDecision;
-                goto case EnemyState.MakingDecision;
+                yield return StartCoroutine(CastDetection());
+                break; 
             #endregion
             #region Attacking
             case EnemyState.Attacking:
-                //Throw attack
-                // If the agent is still moving, stop him
-                if (agent.IsMoving)
-                {
-                    agent.StopAgent();
-                    speedCurrent = 0;
-                }
-                SetAnimationState((int)EnemyAnimationState.Idle);
-                yield return new WaitForEndOfFrame();
-                //Orientate the agent
-                if (CheckOrientation()) Flip(); 
-                _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-                //Cast Attack
-                float _cooldown = StartAttack(_distance);
-                while (IsAttacking)
-                {
-                    yield return new WaitForSeconds(.1f);
-                }
-                yield return new WaitForSeconds(_cooldown);
-                enemyState = EnemyState.MakingDecision;
-                goto case EnemyState.MakingDecision;
+                yield return StartCoroutine(CastAttack());
+                break; 
             #endregion
             #region Grabbing Object
             case EnemyState.PickingUpObject:
-                //Pick up an object
-                if(agent.IsMoving)
-                {
-                    //Stop the agent if it is moving
-                    agent.StopAgent();
-                    speedCurrent = 0;
-                }
-                // Idle
-                SetAnimationState((int)EnemyAnimationState.Idle);
-                yield return new WaitForEndOfFrame();
-                //Grab the object
-                if (canThrow)
-                {
-                    //Grab the object 
-                    isWaiting = GrabObject(_targetedThrowable);
-                    _targetedThrowable = null;
-                    //Wait until the end of the animation 
-                    while (isWaiting)
-                    {
-                        yield return new WaitForEndOfFrame(); 
-                    }
-                }
-                yield return new WaitForEndOfFrame();
-                enemyState = EnemyState.MakingDecision;
-                goto case EnemyState.MakingDecision;
+                yield return StartCoroutine(CastGrab(targetedThrowable));
+                targetedThrowable = null;
+                break; 
             #endregion
             #region Throwing Object
             case EnemyState.ThrowingObject:
-                //Throw the held object
-                if(agent.IsMoving)
-                {
-                    //Stop agent
-                    agent.StopAgent();
-                    speedCurrent = 0;
-                }
-                //Idle
-                SetAnimationState((int)EnemyAnimationState.Idle);
-                yield return new WaitForEndOfFrame(); 
-                if(canThrow)
-                {
-                    // Orientate the enemy
-                    if (CheckOrientation()) Flip();
-                    // Set the animation state to throw
-                    SetAnimationState((int)EnemyAnimationState.ThrowObject);
-                    isWaiting = true; 
-                    //Wait until the end of the animation
-                    while (isWaiting)
-                    {
-                        yield return new WaitForEndOfFrame(); 
-                    }
-                    canThrow = false;
-                    SetAnimationState((int)EnemyAnimationState.Idle); 
-                }
-                enemyState = EnemyState.MakingDecision;
-                goto case EnemyState.MakingDecision;
+                yield return StartCoroutine(CastThrow());
+                break; 
             #endregion
             default:
                 break;
         }
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForEndOfFrame();
         StartCoroutine(Behaviour());
         yield break;
     }
 
+    /// <summary>
+    /// Stop the agent and orientate it
+    /// Cast an attack that can touch the target
+    /// Wait for the end of the attack
+    /// </summary>
+    /// <returns></returns>
+    protected IEnumerator CastAttack()
+    {
+        if(IsPacific)
+        {
+            enemyState = EnemyState.MakingDecision;
+            yield break; 
+        }
+        //Throw attack
+        // If the agent is still moving, stop him
+        if (agent.IsMoving)
+        {
+            agent.StopAgent();
+            speedCurrent = 0;
+        }
+        SetAnimationState((int)EnemyAnimationState.Idle);
+        //Orientate the agent
+        if (CheckOrientation()) Flip();
+        yield return new WaitForSeconds(.5f);
+        float _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+        //Cast Attack
+        float _cooldown = StartAttack(_distance);
+        while (IsAttacking)
+        {
+            yield return new WaitForSeconds(.1f);
+        }
+        yield return new WaitForSeconds(_cooldown);
+        enemyState = EnemyState.MakingDecision;
+    }
+
+    /// <summary>
+    /// Cast the detection during the agent movements
+    /// Check if there is objects to grab or throw
+    /// Check if there is player to attack  
+    /// </summary>
+    /// <returns></returns>
+    protected IEnumerator CastDetection()
+    {
+        SetAnimationState((int)EnemyAnimationState.Run);
+        // Wait some time before calling again Behaviour(); 
+        Collider[] _colliders;
+        float _distance; 
+        while (agent.IsMoving)
+        {
+            //Orientate the agent
+            if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
+                Flip();
+
+            //Increase the speed if necessary
+            if (speedCurrent < speedMax)
+            {
+                IncreaseSpeed();
+                yield return new WaitForEndOfFrame();
+            }
+            else yield return new WaitForSeconds(.1f);
+            //Check if the area allow to grab object
+            // If the enemy hasn't a throwable, check if he can grab one
+            if (throwable == null && canThrow)
+            {
+                if (targetedThrowable)
+                {
+                    //If the targeted throwable is close enough, grab it
+                    _distance = collider.size.x + targetedThrowable.transform.localScale.x;
+                    if (Vector3.Distance(transform.position, targetedThrowable.transform.position) <= _distance)
+                    {
+                        enemyState = EnemyState.PickingUpObject;
+                        yield break; 
+                    }
+                }
+                else
+                {
+                    //Check if there is object around the enemy
+                    _colliders = Physics.OverlapSphere(transform.position, detectionRange);
+                    if (_colliders.Length > 0)
+                    {
+                        _colliders = _colliders.Where(c => c.GetComponent<TDS_Throwable>()).OrderBy(c => Vector3.Distance(transform.position, c.transform.position)).ToArray();
+                        if (_colliders.Length > 0)
+                        {
+                            if (Vector3.Distance(transform.position, _colliders.First().transform.position) < Vector3.Distance(transform.position, playerTarget.transform.position))
+                            {
+                                //Get the closest throwable
+                                targetedThrowable = _colliders.Select(c => c.GetComponent<TDS_Throwable>()).First();
+                                //Set a new path to the throwable 
+                                enemyState = EnemyState.ComputingPath;
+                                yield break; 
+                            }
+                        }
+                    }
+                }
+            }
+            // if any attack can be casted 
+            _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+            if (AttackCanBeCasted(_distance))
+            {
+                enemyState = EnemyState.Attacking;
+                yield break; 
+            }
+            //if the target is too far from the destination, recalculate the path
+            if (Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > GetMaxRange())
+            {
+                enemyState = EnemyState.ComputingPath;
+                yield break; 
+            }
+        }
+        // At the end of the path, is the agent has to throw an object, throw it
+        if (throwable)
+        {
+            enemyState = EnemyState.ThrowingObject;
+            yield break; 
+        }
+        enemyState = EnemyState.MakingDecision;
+    }
+
+    /// <summary>
+    /// Cast the throwing Method
+    /// Stop the agent, Orientate the agent
+    /// Start and wait for the end of the animation
+    /// <param name="_throwable">Object to throw</param>
+    /// <returns></returns>
+    protected IEnumerator CastGrab(TDS_Throwable _throwable)
+    {
+        //Pick up an object
+        if (agent.IsMoving)
+        {
+            //Stop the agent if it is moving
+            agent.StopAgent();
+            speedCurrent = 0;
+        }
+        // Idle
+        SetAnimationState((int)EnemyAnimationState.Idle);
+        yield return new WaitForEndOfFrame();
+        //Grab the object
+        if (canThrow)
+        {
+            //Grab the object 
+            isWaiting = GrabObject(_throwable);
+            //Wait until the end of the animation 
+            while (isWaiting)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        yield return new WaitForEndOfFrame();
+        enemyState = EnemyState.MakingDecision;
+    }
+
+    /// <summary>
+    /// Cast the throwing Method
+    /// Stop the agent, Orientate the agent
+    /// Start and wait for the end of the animation
+    /// </summary>
+    /// <returns></returns>
+    protected IEnumerator CastThrow()
+    {
+        //Throw the held object
+        if (agent.IsMoving)
+        {
+            //Stop agent
+            agent.StopAgent();
+            speedCurrent = 0;
+        }
+        //Idle
+        SetAnimationState((int)EnemyAnimationState.Idle);
+        yield return new WaitForEndOfFrame();
+        if (canThrow)
+        {
+            // Orientate the enemy
+            if (CheckOrientation()) Flip();
+            // Set the animation state to throw
+            SetAnimationState((int)EnemyAnimationState.ThrowObject);
+            isWaiting = true;
+            //Wait until the end of the animation
+            while (isWaiting)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+            canThrow = false;
+            SetAnimationState((int)EnemyAnimationState.Idle);
+        }
+        enemyState = EnemyState.MakingDecision;
+    }
     #endregion
 
     #region TDS_Player
@@ -501,7 +528,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns>Best player to target</returns>
     protected TDS_Player SearchTarget()
     {
-        TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(c => c.GetComponent<TDS_Player>() != null && c.gameObject != this.gameObject).Select(d => d.GetComponent<TDS_Player>()).ToArray();
+        TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
         if (_targets.Length == 0) return null;
         //Set constraints here (Distance, type, etc...)
         return _targets.Where(t => !t.IsDead).OrderBy(d => Vector3.Distance(transform.position, d.transform.position)).FirstOrDefault();
@@ -515,7 +542,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Die()
     {
         base.Die();
-        StopAllCoroutines(); 
+        StopAllCoroutines();
         SetAnimationState((int)EnemyAnimationState.Death);
         if (Area) Area.RemoveEnemy(this);
     }
@@ -664,6 +691,44 @@ public abstract class TDS_Enemy : TDS_Character
     protected abstract void ActivateAttack(int _animationID);
 
     /// <summary>
+    /// Compute the path
+    /// If the path can be computed, set the state to Getting in Range
+    /// else set the state to MakingDecision
+    /// </summary>
+    protected void ComputePath()
+    {
+        if(IsParalyzed)
+        {
+            enemyState = EnemyState.MakingDecision;
+            return; 
+        }
+        //Compute the path
+        // Select a position
+        bool _pathComputed = false;
+        Vector3 _position;
+        if (targetedThrowable /*&& canThrow*/)
+        {
+            _position = targetedThrowable.transform.position;
+        }
+        else
+        {
+            _position = GetAttackingPosition();
+        }
+        _pathComputed = agent.CheckDestination(_position);
+        //If the path is computed, reach the end of the path
+        if (_pathComputed)
+        {
+            SetAnimationState((int)EnemyAnimationState.Run);
+            enemyState = EnemyState.GettingInRange;
+        }
+        else
+        {
+            SetAnimationState((int)EnemyAnimationState.Idle);
+            enemyState = EnemyState.MakingDecision;
+        }
+    }
+
+    /// <summary>
     /// Set the animation of the enemy to the animationID
     /// </summary>
     /// <param name="_animationID"></param>
@@ -678,6 +743,33 @@ public abstract class TDS_Enemy : TDS_Character
     /// Set the bool isWaiting to false
     /// </summary>
     protected void StopWaiting() => isWaiting = false;
+
+    /// <summary>
+    /// Take a decision using the distance between the agent and its target
+    /// If an attack can be casted, set the state to attack
+    /// Else if the target is too far away, set the state to compute path
+    /// </summary>
+    protected void TakeDecision()
+    {
+        //Take decisions
+        // If the target can't be targeted, search for another target
+        if (!playerTarget || playerTarget.IsDead)
+        {
+            enemyState = EnemyState.Searching;
+            StartCoroutine(Behaviour());
+        }
+        float _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
+        // Check if the agent can attack
+        if (AttackCanBeCasted(_distance) && !IsPacific)
+        {
+            enemyState = EnemyState.Attacking;
+        }
+        // Else getting in range
+        else if (!IsParalyzed)
+        {
+            enemyState = EnemyState.ComputingPath;
+        }
+    }
     #endregion
 
     #endregion
@@ -688,7 +780,7 @@ public abstract class TDS_Enemy : TDS_Character
     {
         base.Awake();
         if (!agent) agent = GetComponent<CustomNavMeshAgent>();
-        agent.OnDestinationReached += () => enemyState = EnemyState.MakingDecision;
+        //agent.OnDestinationReached += () => enemyState = EnemyState.MakingDecision;
         OnDie += () => StopAllCoroutines();
         OnDie += () => agent.StopAgent();
         //agent.OnAgentStopped += () => speedCurrent = 0;

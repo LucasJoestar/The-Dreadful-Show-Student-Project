@@ -90,6 +90,16 @@ public enum BeardState
 }
 
 /// <summary>
+/// All different states for the checkpoint animator.
+/// </summary>
+public enum CheckpointAnimState
+{
+    Desactivated,
+    Resurrect,
+    Activated
+}
+
+/// <summary>
 /// Animation States of the enemies
 /// </summary>
 public enum EnemyAnimationState
@@ -119,6 +129,21 @@ public enum EnemyState
     Attacking, 
     PickingUpObject, 
     ThrowingObject
+}
+
+/// <summary>
+/// All types of events used in the game.
+/// </summary>
+public enum CustomEventType
+{
+    Narrator,
+    DisplayInfoBox,
+    DesactiveInfoBox,
+    Instantiate,
+    Wait,
+    WaitForAction,
+    WaitOthers,
+    UnityEvent
 }
 
 /// <summary>
@@ -163,11 +188,11 @@ public enum PlayerAnimState
 /// </summary>
 public enum PlayerType
 {
+    Unknown,
     BeardLady,
     FatLady,
     FireEater,
     Juggler,
-    Unknown
 }
 
 /// <summary>

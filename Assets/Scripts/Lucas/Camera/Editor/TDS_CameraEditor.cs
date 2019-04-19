@@ -37,8 +37,11 @@ public class TDS_CameraEditor : Editor
     /// <summary>SerializedProperties for <see cref="TDS_Camera.IsMoving"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isMoving = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Camera.Bounds"/> of type <see cref="TDS_Bounds"/>.</summary>
-    private SerializedProperty bounds = null;
+    /// <summary>SerializedProperties for <see cref="TDS_Camera.currentBounds"/> of type <see cref="TDS_Bounds"/>.</summary>
+    private SerializedProperty currentBounds = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Camera.LevelBounds"/> of type <see cref="TDS_Bounds"/>.</summary>
+    private SerializedProperty levelBounds = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Camera.Camera"/> of type <see cref="Camera"/>.</summary>
     private SerializedProperty camera = null;
@@ -63,6 +66,18 @@ public class TDS_CameraEditor : Editor
 
     /// <summary>SerializedProperties for <see cref="TDS_Camera.Target"/> of type <see cref="Transform"/>.</summary>
     private SerializedProperty cTarget = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Camera.topBound"/> of type <see cref="BoxCollider"/>.</summary>
+    private SerializedProperty topBound = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Camera.leftBound"/> of type <see cref="BoxCollider"/>.</summary>
+    private SerializedProperty leftBound = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Camera.rightBound"/> of type <see cref="BoxCollider"/>.</summary>
+    private SerializedProperty rightBound = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Camera.bottomBound"/> of type <see cref="BoxCollider"/>.</summary>
+    private SerializedProperty bottomBound = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Camera.Offset"/> of type <see cref="Vector3"/>.</summary>
     private SerializedProperty offset = null;
@@ -102,7 +117,18 @@ public class TDS_CameraEditor : Editor
 
         GUILayout.Space(3);
 
-        TDS_EditorUtility.PropertyField("Bounds", "Bounds of the camera", bounds);
+        TDS_EditorUtility.ObjectField("Top Bound", "Top bound collider of this level", topBound, typeof(BoxCollider));
+        TDS_EditorUtility.ObjectField("Left Bound", "Left bound collider of this level", leftBound, typeof(BoxCollider));
+        TDS_EditorUtility.ObjectField("Right Bound", "Right bound collider of this level", rightBound, typeof(BoxCollider));
+        TDS_EditorUtility.ObjectField("Bottom Bound", "Bottom bound collider of this level", bottomBound, typeof(BoxCollider));
+
+        GUILayout.Space(3);
+
+        TDS_EditorUtility.PropertyField("Current Bounds", "Current bounds of the camera", currentBounds);
+
+        GUILayout.Space(3);
+
+        TDS_EditorUtility.PropertyField("Level Bounds", "Global bounds of the camera in the Level", levelBounds);
 
         TDS_EditorUtility.Vector3Field("Offset", "Offset of the camera from its target", offset);
 
@@ -155,7 +181,8 @@ public class TDS_CameraEditor : Editor
 
         // Find serialized properties
         isMoving = serializedObject.FindProperty("isMoving");
-        bounds = serializedObject.FindProperty("Bounds");
+        currentBounds = serializedObject.FindProperty("currentBounds");
+        levelBounds = serializedObject.FindProperty("levelBounds");
         camera = serializedObject.FindProperty("camera");
         rotation = serializedObject.FindProperty("rotation");
         speedAccelerationTime = serializedObject.FindProperty("speedAccelerationTime");
@@ -164,6 +191,10 @@ public class TDS_CameraEditor : Editor
         speedInitial = serializedObject.FindProperty("speedInitial");
         speedMax = serializedObject.FindProperty("speedMax");
         cTarget = serializedObject.FindProperty("target");
+        topBound = serializedObject.FindProperty("topBound");
+        leftBound = serializedObject.FindProperty("leftBound");
+        rightBound = serializedObject.FindProperty("rightBound");
+        bottomBound = serializedObject.FindProperty("bottomBound");
         offset = serializedObject.FindProperty("Offset");
     }
 

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic; 
 
 #pragma warning disable 0414
 [RequireComponent(typeof(Rigidbody))]
@@ -143,7 +144,13 @@ public class TDS_Throwable : MonoBehaviour
         transform.SetParent(null, true);
         bonusDamage = _bonusDamage;
         rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position,_finalPosition,_angle);
-        hitBox.Activate(attack);
+        List<string> _hitableTags = new List<string>();
+        _hitableTags.AddRange(owner.HitBox.HittableTags); 
+        if (owner is TDS_Enemy)
+        {
+            _hitableTags.Add("Enemy");
+        }
+        hitBox.Activate(attack, owner, _hitableTags);
         isHeld = false;
     }
     #endregion
@@ -159,6 +166,10 @@ public class TDS_Throwable : MonoBehaviour
         hitBox.OnTouch += BounceObject;
         hitBox.OnTouch += LoseDurability;
         hitBox.OnTouch += () => owner = null;
+    }
+    private void OnCollisionEnter(Collision other)
+    {
+        hitBox.Desactivate();
     }
     private void OnTriggerEnter(Collider other)
     {

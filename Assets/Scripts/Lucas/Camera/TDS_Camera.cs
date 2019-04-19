@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
 public class TDS_Camera : MonoBehaviour 
@@ -24,6 +25,33 @@ public class TDS_Camera : MonoBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[11 / 04 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    Adjusted the bounds system, once again, but now it's perfect ! Really cool, I mean.
+	 *
+	 *	-----------------------------------
+     * 
+     *	Date :			[04 / 04 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    Updated new bounds system.
+	 *
+	 *	-----------------------------------
+     * 
+     *	Date :			[03 / 04 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    When settings new bounds, wait to set them as current if target is not in.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[25 / 03 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -63,9 +91,29 @@ public class TDS_Camera : MonoBehaviour
     }
 
     /// <summary>
-    /// Bounds used to clamp this camera in X & Z axis.
+    /// Current bounds to clamp the camera position.
     /// </summary>
-    public TDS_Bounds Bounds = new TDS_Bounds(new Vector2(-10, 10), new Vector2(-10, 10));
+    [SerializeField] private TDS_Bounds currentBounds = null;
+
+    public TDS_Bounds CurrentBounds
+    {
+        get { return currentBounds; }
+        set
+        {
+            currentBounds = value;
+
+            // Set new bounds position
+            topBound.transform.position = value.ZMaxVector;
+            leftBound.transform.position = value.XMinVector;
+            rightBound.transform.position = value.XMaxVector;
+            bottomBound.transform.position = value.ZMinVector;
+        }
+    }
+
+    /// <summary>
+    /// Base bounds for entire level ; when CurrentBounds are set to null, set the this instead.
+    /// </summary>
+    [SerializeField] private TDS_Bounds levelBounds = new TDS_Bounds(-10, 10, -10, 10);
 
     /// <summary>Backing field for <see cref="Camera"/>.</summary>
     [SerializeField] private new Camera camera = null;
@@ -81,6 +129,16 @@ public class TDS_Camera : MonoBehaviour
             camera = value;
         }
     }
+
+    /// <summary>
+    /// Coroutine used to lerp to bounds.
+    /// </summary>
+    private Coroutine lerpToBoundsCoroutine = null;
+
+    /// <summary>
+    /// Coroutine used to wait before setting bounds when needed.
+    /// </summary>
+    private Coroutine waitToSetBoundsCoroutine = null;
 
     /// <summary>Backing field for <see cref="Rotation"/></summary>
     [SerializeField] private float rotation = 0;
@@ -185,6 +243,11 @@ public class TDS_Camera : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Current level bounds object.
+    /// </summary>
+    [SerializeField] protected TDS_LevelBounds currentLevelBounds = null;
+
     /// <summary>Backing field for <see cref="Target"/>.</summary>
     [SerializeField] private Transform target = null;
 
@@ -200,10 +263,31 @@ public class TDS_Camera : MonoBehaviour
             {
                 speedCurrent = 0;
                 isMoving = false;
-                target = value;
             }
+
+            target = value;
         }
     }
+
+    /// <summary>
+    /// Top bound collider of the level.
+    /// </summary>
+    [SerializeField] private BoxCollider topBound = null;
+
+    /// <summary>
+    /// Left bound collider of the level.
+    /// </summary>
+    [SerializeField] private BoxCollider leftBound = null;
+
+    /// <summary>
+    /// Right bound collider of the level.
+    /// </summary>
+    [SerializeField] private BoxCollider rightBound = null;
+
+    /// <summary>
+    /// Bottom bound collider of the level.
+    /// </summary>
+    [SerializeField] private BoxCollider bottomBound = null;
 
     /// <summary>
     /// Offset of the camera in X, Y & Z.
@@ -222,12 +306,25 @@ public class TDS_Camera : MonoBehaviour
 
     #region Original Methods
     /// <summary>
+    /// Reset the level bounds.
+    /// </summary>
+    public void ResetBounds()
+    {
+        if (currentLevelBounds)
+        {
+            currentLevelBounds.gameObject.SetActive(false);
+            currentLevelBounds = null;
+        }
+        CurrentBounds = levelBounds;
+    }
+
+    /// <summary>
     /// Makes this camera follow its target.
     /// </summary>
     private void FollowTarget()
     {
         // If no target, return
-        if (!Target) return;
+        if (!Target || (lerpToBoundsCoroutine != null)) return;
 
         // If reaching destination, stop moving
         if (transform.position == target.position + Offset)
@@ -252,13 +349,154 @@ public class TDS_Camera : MonoBehaviour
                 SpeedCurrent += Time.deltaTime * ((speedMax - speedInitial) / speedAccelerationTime);
             }
 
-            // Moves the camera
-            Vector3 _destination = target.transform.position + Offset;
-            _destination.x = Mathf.Clamp(_destination.x, Bounds.XBounds.x, Bounds.XBounds.y);
-            _destination.z = Mathf.Clamp(_destination.z, Bounds.ZBounds.x, Bounds.ZBounds.y);
+            // Get movement
+            Vector3 _destination = Vector3.Lerp(transform.position, target.transform.position + Offset, Time.deltaTime * speedCurrent * speedCoef);
+            Vector3 _movement = _destination - transform.position;
 
-            transform.position = Vector3.Lerp(transform.position, _destination, Time.deltaTime * speedCurrent * speedCoef);
+            // Clamp position
+
+            // X movement
+            if (_movement.x != 0)
+            {
+                if (_movement.x > 0)
+                {
+                    if (camera.WorldToViewportPoint(currentBounds.XMaxVector).x < 1.01f)
+                    {
+                        _destination.x = transform.position.x;
+                    }
+                }
+                else if (camera.WorldToViewportPoint(currentBounds.XMinVector).x > -.01f)
+                {
+                    _destination.x = transform.position.x;
+                }
+            }
+
+            // Y & Z movement
+            if (camera.WorldToViewportPoint(currentBounds.ZMaxVector).y < .3f)
+            {
+                if (_movement.z > 0) _destination.z = transform.position.z;
+            }
+            if (camera.WorldToViewportPoint(currentBounds.ZMinVector).y > -.01f)
+            {
+                if (_movement.y < 0) _destination.y = transform.position.y;
+                if (_movement.z < 0) _destination.z = transform.position.z;
+            }
+
+            // Moves the camera
+            transform.position = _destination;
         }
+    }
+
+    /// <summary>
+    /// Lerp the camera position to be between bounds.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator LerpToBounds()
+    {
+        bool _isGoodInX = false;
+
+        yield return null;
+
+        while (true)
+        {
+            yield return new WaitForEndOfFrame();
+
+            // Get movement
+            Vector3 _destination = transform.position;
+
+            // Clamp position
+            if (camera.WorldToViewportPoint(currentBounds.XMaxVector).x < 1.02f)
+            {
+                _destination.x -= 1;
+            }
+            else if (camera.WorldToViewportPoint(currentBounds.XMinVector).x > -.02f)
+            {
+                _destination.x += 1;
+            }
+            else _isGoodInX = true;
+
+            if (camera.WorldToViewportPoint(currentBounds.ZMinVector).y > -.02f)
+            {
+                _destination.z += 1;
+            }
+            else if (_isGoodInX) break;
+
+            // Moves the camera
+            transform.position = Vector3.Lerp(transform.position, _destination, Time.deltaTime * speedMax * 2);
+        }
+
+        lerpToBoundsCoroutine = null;
+        yield break;
+    }
+
+    /// <summary>
+    /// Set new bounds for the camera.
+    /// </summary>
+    /// <param name="_levelBounds">New level bounds.</param>
+    public void SetBounds(TDS_LevelBounds _levelBounds)
+    {
+        if (currentLevelBounds == _levelBounds) return;
+
+        TDS_Bounds _bounds = new TDS_Bounds(_levelBounds.LeftBound != null ?
+                                            _levelBounds.LeftBound.position :                             
+                                            levelBounds.XMinVector,
+
+                                            _levelBounds.RightBound != null ?   
+                                            _levelBounds.RightBound.position :                    
+                                            levelBounds.XMaxVector,
+
+                                            _levelBounds.BottomBound != null ? 
+                                            _levelBounds.BottomBound.position : 
+                                            levelBounds.ZMinVector,
+
+                                            _levelBounds.TopBound != null ?
+                                            _levelBounds.TopBound.position :                        
+                                            levelBounds.ZMaxVector);
+
+        if (currentLevelBounds) currentLevelBounds.Desactivate();
+        currentLevelBounds = _levelBounds;
+
+        if (waitToSetBoundsCoroutine != null) StopCoroutine(waitToSetBoundsCoroutine);
+        waitToSetBoundsCoroutine = StartCoroutine(WaitToSetBounds(_bounds));
+    }
+
+    /// <summary>
+    /// Make a screen shake of a specified force.
+    /// </summary>
+    /// <param name="_force">Screen shake force.</param>
+    public void ScreenShake(float _force)
+    {
+        Vector3 _force3 = ((Vector3)Random.insideUnitCircle.normalized) * _force;
+        transform.position += _force3;
+    }
+
+    /// <summary>
+    /// Wait to set bounds if minimum x value is visible by the camera or to its right.
+    /// </summary>
+    /// <param name="_bounds">Bounds to set.</param>
+    /// <returns></returns>
+    private IEnumerator WaitToSetBounds(TDS_Bounds _bounds)
+    {
+        float _xMin = camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x;
+
+        while (_bounds.XMin > _xMin)
+        {
+            TDS_Bounds _newBounds = currentBounds;
+            if (currentBounds.XMin != _xMin)
+            {
+                currentBounds.XMinVector = new Vector3(_xMin, _bounds.XMinVector.y, _bounds.XMinVector.z);
+                leftBound.transform.position = currentBounds.XMinVector;
+            }
+
+            yield return null;
+            _xMin = camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x;
+        }
+
+        float _xMax = camera.ViewportToWorldPoint(new Vector3(1.01f, 0, 0)).x;
+        if (_bounds.XMax < _xMax) _bounds.XMaxVector.x = _xMax;
+
+        CurrentBounds = _bounds;
+        yield break;
     }
     #endregion
 
@@ -268,6 +506,12 @@ public class TDS_Camera : MonoBehaviour
     {
         // Set the singleton instance if null
         if (!Instance) Instance = this;
+
+        // Debug warning is missing bound(s)
+        if (!topBound || !leftBound || !rightBound || !bottomBound)
+        {
+            Debug.LogWarning($"Missing bound(s) for the Camera \"{name}\"");
+        }
     }
 
     // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
@@ -283,20 +527,24 @@ public class TDS_Camera : MonoBehaviour
         // Draws the camera bounds with lines
         Gizmos.color = Color.yellow;
 
-        Gizmos.DrawCube(new Vector3(Bounds.XBounds.x, transform.position.y, Bounds.ZBounds.x), Vector3.one * .25f);
-        Gizmos.DrawLine(new Vector3(Bounds.XBounds.x, transform.position.y, Bounds.ZBounds.x), new Vector3(Bounds.XBounds.y, transform.position.y, Bounds.ZBounds.x));
-        Gizmos.DrawCube(new Vector3(Bounds.XBounds.x, transform.position.y, Bounds.ZBounds.y), Vector3.one * .25f);
-        Gizmos.DrawLine(new Vector3(Bounds.XBounds.x, transform.position.y, Bounds.ZBounds.x), new Vector3(Bounds.XBounds.x, transform.position.y, Bounds.ZBounds.y));
-        Gizmos.DrawCube(new Vector3(Bounds.XBounds.y, transform.position.y, Bounds.ZBounds.x), Vector3.one * .25f);
-        Gizmos.DrawLine(new Vector3(Bounds.XBounds.x, transform.position.y, Bounds.ZBounds.y), new Vector3(Bounds.XBounds.y, transform.position.y, Bounds.ZBounds.y));
-        Gizmos.DrawCube(new Vector3(Bounds.XBounds.y, transform.position.y, Bounds.ZBounds.y), Vector3.one * .25f);
-        Gizmos.DrawLine(new Vector3(Bounds.XBounds.y, transform.position.y, Bounds.ZBounds.y), new Vector3(Bounds.XBounds.y, transform.position.y, Bounds.ZBounds.x));
+        Gizmos.DrawCube(new Vector3(levelBounds.XMin, transform.position.y, levelBounds.ZMin), Vector3.one * .25f);
+        Gizmos.DrawLine(new Vector3(levelBounds.XMin, transform.position.y, levelBounds.ZMin), new Vector3(levelBounds.XMax, transform.position.y, levelBounds.ZMin));
+        Gizmos.DrawCube(new Vector3(levelBounds.XMin, transform.position.y, levelBounds.ZMax), Vector3.one * .25f);
+        Gizmos.DrawLine(new Vector3(levelBounds.XMin, transform.position.y, levelBounds.ZMin), new Vector3(levelBounds.XMin, transform.position.y, levelBounds.ZMax));
+        Gizmos.DrawCube(new Vector3(levelBounds.XMax, transform.position.y, levelBounds.ZMin), Vector3.one * .25f);
+        Gizmos.DrawLine(new Vector3(levelBounds.XMin, transform.position.y, levelBounds.ZMax), new Vector3(levelBounds.XMax, transform.position.y, levelBounds.ZMax));
+        Gizmos.DrawCube(new Vector3(levelBounds.XMax, transform.position.y, levelBounds.ZMax), Vector3.one * .25f);
+        Gizmos.DrawLine(new Vector3(levelBounds.XMax, transform.position.y, levelBounds.ZMax), new Vector3(levelBounds.XMax, transform.position.y, levelBounds.ZMin));
     }
 
     // Use this for initialization
     private void Start ()
     {
-		
+        // Set default level bounds
+        levelBounds = new TDS_Bounds(leftBound.transform.position, rightBound.transform.position, bottomBound.transform.position, topBound.transform.position);
+        currentBounds = levelBounds;
+
+        lerpToBoundsCoroutine = StartCoroutine(LerpToBounds());
     }
 	
 	// Update is called once per frame

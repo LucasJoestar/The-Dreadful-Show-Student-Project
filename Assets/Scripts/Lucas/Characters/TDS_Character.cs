@@ -118,10 +118,22 @@ public abstract class TDS_Character : TDS_Damageable
     /// </summary>
     [SerializeField] protected TDS_HitBox hitBox = null;
 
+    public TDS_HitBox HitBox { get { return hitBox; } }
+
+    /// <summary>Backing field for <see cref="HealthBar"/>.</summary>
+    [SerializeField] private UnityEngine.UI.Image healthBar;
+
     /// <summary>
     /// Image used to display this character current health status.
     /// </summary>
-    [SerializeField] protected UnityEngine.UI.Image healthBar = null;
+    public UnityEngine.UI.Image HealthBar
+    {
+        get { return healthBar; }
+        set
+        {
+            healthBar = value;
+        }
+    }
 
     /// <summary>
     /// Rigidbody of this character.
@@ -377,6 +389,19 @@ public abstract class TDS_Character : TDS_Damageable
     }
     #endregion
 
+    #region Health
+    /// <summary>
+    /// Method called when the object dies.
+    /// Override this to implement code for a specific object.
+    /// </summary>
+    protected override void Die()
+    {
+        base.Die();
+
+        Debug.Log(name + " " + GetInstanceID() + " die !!");
+    }
+    #endregion
+
     #region Throwable Object
     /// <summary>
     /// Drop the weared throwable.
@@ -441,6 +466,19 @@ public abstract class TDS_Character : TDS_Damageable
         Throwable = null;
     }
     #endregion
+
+    #region void 
+    /// <summary>
+    /// Fill the life bar
+    /// </summary>
+    /// <param name="_health"></param>
+    public void UpdateLifeBar(int _health)
+    {
+        if (!HealthBar || !TDS_UIManager.Instance) return;
+        float _fillingValue = Mathf.Clamp((float)healthCurrent / (float)healthMax, 0, 1);
+        TDS_UIManager.Instance.FillImage(HealthBar, _fillingValue); 
+    }
+    #endregion 
 
     #endregion
 

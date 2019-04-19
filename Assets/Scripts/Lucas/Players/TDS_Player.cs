@@ -220,12 +220,24 @@ public class TDS_Player : TDS_Character
     public event Action OnStopDodge = null;
 
     /// <summary>
+    /// Event called when stopping a dodge. It is cleaned once called.
+    /// </summary>
+    public event Action OnStopDodgeOneShot = null;
+
+    /// <summary>
     /// Event called when stopping parrying.
     /// </summary>
     public event Action OnStopParry = null;
     #endregion
 
     #region Fields / Properties
+
+    #region Constants
+    /// <summary>
+    /// Time during which the player is invulnerable after being hit.
+    /// </summary>
+    public const float INVULNERABILITY_TIME = .5f;
+    #endregion
 
     #region Components & References
     /// <summary>
@@ -234,14 +246,9 @@ public class TDS_Player : TDS_Character
     public TDS_Summoner Summoner = null;
 
     /// <summary>
-    /// Shadow transform of the player.
+    /// <see cref="TDS_Detector"/> used to detect when possible interactions with the environment are availables.
     /// </summary>
-    [SerializeField] protected Transform shadow = null;
-
-    /// <summary>
-    /// <see cref="TDS_Trigger"/> used to detect when possible interactions with the environment are availables.
-    /// </summary>
-    [SerializeField] protected TDS_Trigger interactionDetector = null;
+    [SerializeField] protected TDS_Detector interactionDetector = null;
 
     /// <summary>
     /// Virtual box used to detect if the player is grounded or not.
@@ -726,7 +733,7 @@ public class TDS_Player : TDS_Character
     /// Performs a dodge.
     /// While dodging, the player cannot take damage or attack.
     /// </summary>
-    public virtual IEnumerator Dodge()
+    protected virtual IEnumerator Dodge()
     {
         // Dodge !
         IsInvulnerable = true;
@@ -735,7 +742,7 @@ public class TDS_Player : TDS_Character
         OnStartDodging?.Invoke();
 
         // Adds an little force at the start of the dodge
-        rigidbody.AddForce(Vector3.right * Mathf.Clamp(speedCurrent, speedInitial, speedMax) * speedCoef * isFacingRight.ToSign() * speedMax * 10);
+        rigidbody.AddForce(Vector3.right * Mathf.Clamp(speedCurrent, speedInitial, speedMax) * speedCoef * isFacingRight.ToSign() * speedMax * (isGrounded ? 10 : 2));
 
         // Triggers the associated animation
         SetAnim(PlayerAnimState.Dodge);
@@ -743,10 +750,11 @@ public class TDS_Player : TDS_Character
         // Adds a little force to the player to move him along while dodging
         while (true)
         {
-            rigidbody.AddForce(Vector3.right * isFacingRight.ToSign() * speedCoef * speedMax * (isGrounded ? 5 : 3));
+            float _xForce = isFacingRight.ToSign() * speedCoef * speedMax * (isGrounded ? 7 : 2.5f);
+            rigidbody.AddForce(new Vector3(_xForce, isGrounded ? 0 : -.35f, 0));
             Move(transform.position + (isFacingRight ? Vector3.right : Vector3.left));
 
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
     }
 
@@ -782,6 +790,11 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
+    /// Make the player dodge.
+    /// </summary>
+    public void StartDodge() => dodgeCoroutine = StartCoroutine(Dodge());
+
+    /// <summary>
     /// Stops the current dodge if dodging.
     /// </summary>
     public virtual void StopDodge()
@@ -798,7 +811,11 @@ public class TDS_Player : TDS_Character
         IsInvulnerable = false;
         isDodging = false;
 
+        // Call events
         OnStopDodge?.Invoke();
+
+        OnStopDodgeOneShot?.Invoke();
+        OnStopDodgeOneShot = null;
     }
 
     /// <summary>
@@ -810,10 +827,12 @@ public class TDS_Player : TDS_Character
         {
             StopCoroutine(dodgeCoroutine);
 
-            if (isGrounded)
-            {
-                rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, rigidbody.velocity.z);
-            }
+            float _xVelocity = 0;
+
+            if (isGrounded) _xVelocity = 0;
+            else _xVelocity = rigidbody.velocity.x * .8f;
+
+            rigidbody.velocity = new Vector3(_xVelocity, rigidbody.velocity.y, rigidbody.velocity.z);
         }
     }
 
@@ -846,6 +865,26 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
+    /// Set invulnerability during a certain time.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator Invulnerability()
+    {
+        IsInvulnerable = true;
+
+        float _timer = INVULNERABILITY_TIME;
+        while (_timer > 0)
+        {
+            yield return new WaitForSeconds(INVULNERABILITY_TIME / 7);
+            _timer -= INVULNERABILITY_TIME / 7;
+            sprite.enabled = !sprite.enabled;
+        }
+
+        sprite.enabled = true;
+        IsInvulnerable = false;
+    }
+
+    /// <summary>
     /// Makes this object take damage and decrease its health if it is not invulnerable.
     /// </summary>
     /// <param name="_damage">Amount of damage this inflect to this object.</param>
@@ -853,7 +892,11 @@ public class TDS_Player : TDS_Character
     public override bool TakeDamage(int _damage)
     {
         // Executes base method
-        if (!base.TakeDamage(_damage)) return false;
+        if (!base.TakeDamage(_damage))
+        {
+            TDS_Camera.Instance.ScreenShake(.01f);
+            return false;
+        }
 
         // And if in combo, reset it
         if (comboCurrent.Count > 0) ResetCombo();
@@ -863,6 +906,17 @@ public class TDS_Player : TDS_Character
         {
             // Triggers associated animation
             SetAnim(PlayerAnimState.Hit);
+
+            StartCoroutine(Invulnerability());
+
+            if (photonView.isMine)
+            {
+                TDS_Camera.Instance.ScreenShake(.02f);
+            }
+        }
+        else if (photonView.isMine)
+        {
+            TDS_Camera.Instance.ScreenShake(.25f);
         }
 
         return true;
@@ -876,17 +930,11 @@ public class TDS_Player : TDS_Character
     /// <returns>Returns true if some damages were inflicted, false if none.</returns>
     public override bool TakeDamage(int _damage, Vector3 _position)
     {
-        // Executes base method
-        if (!base.TakeDamage(_damage, _position)) return false;
-
-        // And if in combo, reset it
-        if (comboCurrent.Count > 0) ResetCombo();
-
-        // If not dead, be just hit
-        if (!isDead)
+        if (!base.TakeDamage(_damage, _position))
         {
-            // Triggers associated animation
-            SetAnim(PlayerAnimState.Hit);
+            transform.position += new Vector3(.025f * (_position.x < transform.position.x ? 1 : 1), 0, 0);
+
+            return false;
         }
 
         return true;
@@ -1094,6 +1142,7 @@ public class TDS_Player : TDS_Character
             else
             {
                 speedCoef = 1;
+                rigidbody.velocity = Vector3.zero;
 
                 // Activates event
                 OnGetOnGround?.Invoke();
@@ -1135,9 +1184,6 @@ public class TDS_Player : TDS_Character
     /// <returns>Returns the world.</returns>
     public IEnumerator Jump()
     {
-        // Gives a little force to the player's jump
-        rigidbody.AddForce(Vector3.right * isFacingRight.ToSign() * speedCurrent * 5);
-
         // Creates a float to use as timer
         float _timer = 0;
 
@@ -1149,9 +1195,9 @@ public class TDS_Player : TDS_Character
         while(Input.GetButton(JumpButton) && _timer < JumpMaximumTime)
         {
             rigidbody.AddForce(Vector3.up * (JumpForce / JumpMaximumTime) * Time.deltaTime);
-            yield return null;
+            yield return new WaitForFixedUpdate();
 
-            _timer += Time.deltaTime;
+            _timer += Time.fixedDeltaTime;
         }
 
         isJumping = false;
@@ -1288,7 +1334,8 @@ public class TDS_Player : TDS_Character
         // Online
         if (photonView.isMine)
         {
-            // RPC
+            if (!animator) return;
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (PlayerAnimState)_state });
         }
 
         // Local
@@ -1391,7 +1438,7 @@ public class TDS_Player : TDS_Character
         // Check non-agressive actions
         if (Input.GetButtonDown(InteractButton)) Interact();
 
-        else if (Input.GetButtonDown(DodgeButton)) dodgeCoroutine = StartCoroutine(Dodge());
+        else if (Input.GetButtonDown(DodgeButton)) StartDodge();
 
         else if ((Input.GetButtonDown(ParryButton) || TDS_Input.GetAxisDown(ParryButton)) && isGrounded) StartCoroutine(Parry());
 
@@ -1452,6 +1499,21 @@ public class TDS_Player : TDS_Character
     }
     #endregion
 
+    #region Others
+    /// <summary>
+    /// Activate or desactivate the player.
+    /// </summary>
+    /// <param name="_doActive">Should it be activated or desactivated ?</param>
+    public void ActivePlayer(bool _doActive)
+    {
+        rigidbody.isKinematic = !_doActive;
+        collider.enabled = _doActive;
+        enabled = _doActive;
+
+        Debug.Log("Activate => " + _doActive);
+    }
+    #endregion
+
     #endregion
 
     #region Unity Methods
@@ -1461,13 +1523,9 @@ public class TDS_Player : TDS_Character
         base.Awake();
 
         // Try to get components references if they are missing
-        if (!shadow)
-        {
-            Debug.LogWarning("The Shadow of \"" + name + "\" for script TDS_Player is missing !");
-        }
         if (!interactionDetector)
         {
-            interactionDetector = GetComponentInChildren<TDS_Trigger>();
+            interactionDetector = GetComponentInChildren<TDS_Detector>();
             if (!interactionDetector) Debug.LogWarning("The Interaction Detector of \"" + name + "\" for script TDS_Player is missing !");
         }
     }

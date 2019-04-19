@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -161,6 +162,31 @@ public class TDS_HitBox : MonoBehaviour
 
         OnStopAttack?.Invoke();
     }
+
+    /// <summary>
+    /// Inflict damages to a specified target.
+    /// </summary>
+    /// <param name="_target">Target to hit.</param>
+    private void InflictDamages(TDS_Damageable _target)
+    {
+        int _randomDamages = CurrentAttack.GetDamages;
+        if (!_target.TakeDamage(_randomDamages, collider.transform.position)) return;
+
+        // Create screen shake when player hit
+        TDS_Player _player = Owner as TDS_Player;
+        if (_player && _player.photonView.isMine)
+        {
+            float _force = .005f;
+            if (_player.ComboCurrent.Count == _player.ComboMax) _force *= 1.5f;
+            _force = _force * (_randomDamages / 2);
+            _force = Mathf.Clamp(_force, .01f, .3f);
+
+            TDS_Camera.Instance.ScreenShake(_force);
+        }
+
+        // Triggers event
+        OnTouch?.Invoke();
+    }
     #endregion
 
     #region Unity Methods
@@ -203,13 +229,9 @@ public class TDS_HitBox : MonoBehaviour
         if (!_target || TouchedObjects.ContainsValue(_target)) return;
 
         // Deal damages and apply effect
-        Debug.Log((Owner ? Owner.name : transform.parent.name) + " attack " + other.name + " !");
-        _target.TakeDamage(CurrentAttack.GetDamages, collider.transform.position);
+        InflictDamages(_target);
 
         TouchedObjects.Add(other, _target);
-
-        // Triggers event
-        OnTouch?.Invoke();
     }
 
     // OnTriggerExit is called when the Collider other has stopped touching the trigger

@@ -369,14 +369,16 @@ public sealed class TDS_EditorUtility
     /// <param name="_label">Label to display.</param>
     /// <param name="_tooltip">Tooltip displayed when mouse over.</param>
     /// <param name="_serializedProperty">SerializedProperty to use.</param>
-    public static void PropertyField(string _label, string _tooltip, SerializedProperty _serializedProperty)
+    public static bool PropertyField(string _label, string _tooltip, SerializedProperty _serializedProperty)
     {
         EditorGUILayout.BeginHorizontal();
 
         GUILayout.Space(labelStyle.padding.left);
-        EditorGUILayout.PropertyField(_serializedProperty, new GUIContent(_label, _tooltip), true);
+        bool _hasChanges = EditorGUILayout.PropertyField(_serializedProperty, new GUIContent(_label, _tooltip), true);
 
         EditorGUILayout.EndHorizontal();
+
+        return _hasChanges;
     }
 
     /// <summary>
@@ -385,6 +387,7 @@ public sealed class TDS_EditorUtility
     /// <param name="_label">Label to display.</param>
     /// <param name="_tooltip">Tooltip displayed when mouse over.</param>
     /// <param name="_serializedProperty">SerializedProperty to use.</param>
+    /// <returns>Returns true if the value(s) has changed, false otherwise.</returns>
     public static void RadioToggle(string _label, string _tooltip, SerializedProperty _serializedProperty)
     {
         // Get the original width of the labels for EditorGUI, and reduce it so that it will no longer take so much space
