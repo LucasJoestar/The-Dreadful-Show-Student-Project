@@ -40,33 +40,63 @@ public static class GeometryHelper
     /// <param name="L2_start">start of the second segment</param>
     /// <param name="L2_end">end of the second segment</param>
     /// <returns>return true if segements intersect</returns>
-    public static bool IsIntersecting(Vector3 L1_start, Vector3 L1_end, Vector3 L2_start, Vector3 L2_end)
+    public static bool IsIntersecting(Vector3 _a, Vector3 _b, Vector3 _c, Vector3 _d)
     {
-        bool isIntersecting = false;
+        Vector3 _ab = _b - _a; // I
+        Vector3 _cd = _d - _c; // J
 
-        //3d -> 2d
-        Vector2 p1 = new Vector2(L1_start.x, L1_start.z);
-        Vector2 p2 = new Vector2(L1_end.x, L1_end.z);
+        // P -> Intersection point 
+        // P = _a + k * _ab = _c + m * _cd
+        // A.x + k*_ab.x = _c.x + m *_cd.x
+        // A.y + k*_ab.y = _c.y + m *_cd.y
+        // A.z + k*_ab.z = _c.z + m *_cd.z
 
-        Vector2 p3 = new Vector2(L2_start.x, L2_start.z);
-        Vector2 p4 = new Vector2(L2_end.x, L2_end.z);
+        float _denominator = _ab.magnitude * _cd.magnitude * (Mathf.Sin(Vector3.Angle(_ab, _cd) * Mathf.Deg2Rad));
 
-        float denominator = (p4.y - p3.y) * (p2.x - p1.x) - (p4.x - p3.x) * (p2.y - p1.y);
-
-        //Make sure the denominator is > 0, if so the lines are parallel
-        if (denominator != 0)
+        if (_denominator != 0)
         {
-            float u_a = ((p4.x - p3.x) * (p1.y - p3.y) - (p4.y - p3.y) * (p1.x - p3.x)) / denominator;
-            float u_b = ((p2.x - p1.x) * (p1.y - p3.y) - (p2.y - p1.y) * (p1.x - p3.x)) / denominator;
+            //  m =    -(     -Ix*A.y      +      Ix*Cy     +      Iy*Ax     -      Iy*Cx )
+            float _m = -((-_ab.x * _a.z) + (_ab.x * _c.z) + (_ab.z * _a.x) - (_ab.z * _c.x)) / _denominator;
 
-            //Is intersecting if u_a and u_b are between 0 and 1
-            if (u_a >= 0 && u_a <= 1 && u_b >= 0 && u_b <= 1)
+            //  k =    -(     Jy*Ax     -      Jy*Cx     -      Jx*Ay     +      Jx*Cy )
+            float _k = -((_cd.z * _a.x) - (_cd.z * _c.x) - (_cd.x * _a.z) + (_cd.x * _c.z)) / _denominator;
+
+            if ((_m >= 0 && _m <= 1 && _k >= 0 && _k <= 1) || (_m >= -1 && _m <= 0 && _k >= -1 && _k <= 0))
             {
-                isIntersecting = true;
+                return true;
             }
         }
+        return false;
+    }
 
-        return isIntersecting;
+    public static bool IsIntersecting(Vector3 _a, Vector3 _b, Vector3 _c, Vector3 _d, out Vector3 _intersection)
+    {
+        Vector3 _ab = _b - _a; // I
+        Vector3 _cd = _d - _c; // J
+
+        // P -> Intersection point 
+        // P = _a + k * _ab = _c + m * _cd
+        // A.x + k*_ab.x = _c.x + m *_cd.x
+        // A.y + k*_ab.y = _c.y + m *_cd.y
+        // A.z + k*_ab.z = _c.z + m *_cd.z
+
+        float _denominator = _ab.magnitude * _cd.magnitude * (Mathf.Sin(Vector3.Angle(_ab, _cd) * Mathf.Deg2Rad));
+        if (_denominator != 0)
+        {
+            //  m =    -(     -Ix*A.y      +      Ix*Cy     +      Iy*Ax     -      Iy*Cx )
+            float _m = -((-_ab.x * _a.z) + (_ab.x * _c.z) + (_ab.z * _a.x) - (_ab.z * _c.x)) / _denominator;
+
+            //  k =    -(     Jy*Ax     -      Jy*Cx     -      Jx*Ay     +      Jx*Cy )
+            float _k = -((_cd.z * _a.x) - (_cd.z * _c.x) - (_cd.x * _a.z) + ( _cd.x * _c.z)) / _denominator;
+
+            if ((_m >= 0 && _m <= 1 && _k >= 0 && _k <= 1) || (_m >= -1 && _m <= 0 && _k >= -1 && _k <= 0))
+            {
+                _intersection = _a + _k * _ab; 
+                return true; 
+            }
+        }
+        _intersection = _a; 
+        return false; 
     }
 
     /// <summary>
@@ -78,6 +108,18 @@ public static class GeometryHelper
     {
         Barycentric _barycentric = new Barycentric(_triangle.Vertices[0].Position, _triangle.Vertices[1].Position, _triangle.Vertices[2].Position, _position);
         return _barycentric.IsInside;
+    }
+
+    public static bool IsInAnyTriangle(Vector3 _position, List<Triangle> _triangles)
+    {
+        for (int i = 0; i < _triangles.Count; i++)
+        {
+            if(IsInTriangle(_position, _triangles[i]))
+            {
+                return true; 
+            }
+        }
+        return false;
     }
 
     /// <summary>
@@ -167,6 +209,43 @@ public static class GeometryHelper
         }
         return _normal; 
     }
+
+    #region Vector3
+    public static Vector3 GetClosestPosition(Vector3 _position, List<Triangle> _triangles)
+    {
+        RaycastHit _hit;
+        Vector3 _groundedPosition = _position;
+        if (Physics.Raycast(new Ray(_position, Vector3.down), out _hit))
+        {
+            _groundedPosition = _hit.point;
+        }
+        if (IsInAnyTriangle(_groundedPosition, _triangles))
+        {
+            Debug.Log("Return HitPoint");
+            return _groundedPosition; 
+        }
+        //Get the closest triangle
+        Triangle _triangle = GetTriangleContainingPosition(_position, _triangles);
+        //Get the closest point from position into the triangle 
+        for (int i = 0; i < 2; i++)
+        {
+            if (IsIntersecting(_triangle.Vertices[i].Position, _triangle.Vertices[i + 1].Position, _triangle.CenterPosition, _position, out _groundedPosition))
+            {
+                Debug.Log("Return intersection -> " + _groundedPosition);
+                return _groundedPosition;
+            }
+        }
+        if (IsIntersecting(_triangle.Vertices[0].Position, _triangle.Vertices[2].Position, _triangle.CenterPosition, _position, out _groundedPosition))
+        {
+            Debug.Log("Return intersection");
+            return _groundedPosition;
+        }
+        Debug.Log("Def"); 
+        return _triangle.CenterPosition;
+    }
+
+
+    #endregion
     #endregion
 
     #endregion

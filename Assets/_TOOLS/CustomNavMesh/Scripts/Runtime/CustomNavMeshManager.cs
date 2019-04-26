@@ -57,6 +57,16 @@ public class CustomNavMeshManager
         CustomNavData _datas = _loader.DeserializeFileFromTextAsset(_textDatas);
         triangles = _datas.TrianglesInfos; 
     }
+
+    /*
+    /// <summary>
+    /// Update the weight of each triangle
+    /// </summary>
+    static void UpdateWeights()
+    {
+        triangles.ForEach(t => t.UpdateWeight()); 
+    }
+    */
     #endregion
 
 }
