@@ -132,6 +132,21 @@ public enum EnemyState
 }
 
 /// <summary>
+/// All types of events used in the game.
+/// </summary>
+public enum CustomEventType
+{
+    Narrator,
+    DisplayInfoBox,
+    DesactiveInfoBox,
+    Instantiate,
+    Wait,
+    WaitForAction,
+    WaitOthers,
+    UnityEvent
+}
+
+/// <summary>
 /// Type of the Minion attack 
 /// used when the attack is called to know which effects and actions apply
 /// </summary>
@@ -173,11 +188,11 @@ public enum PlayerAnimState
 /// </summary>
 public enum PlayerType
 {
+    Unknown,
     BeardLady,
     FatLady,
     FireEater,
     Juggler,
-    Unknown
 }
 
 /// <summary>

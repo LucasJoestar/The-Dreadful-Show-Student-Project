@@ -167,6 +167,10 @@ public class TDS_Throwable : MonoBehaviour
         hitBox.OnTouch += LoseDurability;
         hitBox.OnTouch += () => owner = null;
     }
+    private void OnCollisionEnter(Collision other)
+    {
+        hitBox.Desactivate();
+    }
     private void OnTriggerEnter(Collider other)
     {
         if(whatDesactivate != (whatDesactivate | (1 << other.gameObject.layer))) return;

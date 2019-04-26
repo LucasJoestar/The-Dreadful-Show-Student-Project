@@ -61,7 +61,7 @@ public class TDS_RPCManager : MonoBehaviour
     /// <summary>
     /// Call a method with a selected Name on a targeted Script 
     /// /// </summary>
-    /// <param name="_info"> Info: PhtonViewID#Type#MethodName#arguments</param>
+    /// <param name="_info"> Info: PhtonViewID#Type#MethodName</param>
     [PunRPC]
     public void CallMethodOnline(string _info, params object[] args)
     {

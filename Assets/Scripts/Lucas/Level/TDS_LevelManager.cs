@@ -50,14 +50,30 @@ public class TDS_LevelManager : MonoBehaviour
     public TDS_Checkpoint Checkpoint { get { return checkpoint; } }
 
     /// <summary>
+    /// Photon view of this object.
+    /// </summary>
+    [SerializeField] private PhotonView photonView = null;
+
+    /// <summary>
+    /// Get the ID of this object photon view.
+    /// </summary>
+    public int phID { get { return photonView.viewID; } }
+
+    /// <summary>
     /// Local player, the one who play on this machine.
     /// </summary>
     [SerializeField] protected TDS_Player localPlayer = null;
+
+    /// <summary>Public accessor for <see cref="localPlayer"/>.</summary>
+    public TDS_Player LocalPlayer { get { return localPlayer; } }
 
     /// <summary>
     /// Online players, the ones that play with the one playing on this machine.
     /// </summary>
     [SerializeField] protected List<TDS_Player> onlinePlayers = new List<TDS_Player>();
+
+    /// <summary>Public accessor for <see cref="onlinePlayers"/>.</summary>
+    public List<TDS_Player> OnlinePlayers { get { return onlinePlayers; } }
 
     /// <summary>
     /// Get all players of the game, local and online ones.
@@ -176,7 +192,7 @@ public class TDS_LevelManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //TDS_NetworkManager.Instance.InitConnection();
+        TDS_NetworkManager.Instance.InitConnection();
 
         // Spawn local player.
         Spawn();
