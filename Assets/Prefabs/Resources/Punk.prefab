@@ -64,7 +64,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1881167624450526
 GameObject:
   m_ObjectHideFlags: 0
@@ -81,6 +81,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1974785203264322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4182407236673158}
+  - component: {fileID: 33640510412362532}
+  - component: {fileID: 23799235047886078}
+  m_Layer: 0
+  m_Name: Shadow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &4055278686339258
 Transform:
   m_ObjectHideFlags: 1
@@ -88,14 +105,28 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1784521387282082}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.47, y: 0, z: -4.96}
+  m_LocalPosition: {x: 2.47, y: -2.72, z: -4.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4332666222786238}
   - {fileID: 4835677563527838}
   - {fileID: 4715489829254572}
+  - {fileID: 4182407236673158}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4182407236673158
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1974785203264322}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.086, z: 0}
+  m_LocalScale: {x: 1.2807499, y: 0.01, z: 0.83410996}
+  m_Children: []
+  m_Father: {fileID: 4055278686339258}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4332666222786238
 Transform:
@@ -117,7 +148,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1469768036730198}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.688, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4055278686339258}
@@ -136,6 +167,48 @@ Transform:
   m_Father: {fileID: 4055278686339258}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &23799235047886078
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1974785203264322}
+  m_Enabled: 1
+  m_CastShadows: 3
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &33640510412362532
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1974785203264322}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!54 &54781698200110558
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -355,7 +428,7 @@ MonoBehaviour:
   recoilDistance: 0.2
   recoilDistanceDeath: 2.2
   recoilTimeDeath: 0.35
-  throwRange: 6
+  throwRange: 7
   agent: {fileID: 114509155922725266}
   attacks:
   - Name: HeadButt
@@ -365,26 +438,26 @@ MonoBehaviour:
     Description: BOUM
     isDistanceAttack: 0
     cooldown: 1.5
-    predictedRange: 1.1
-    probability: 100
+    predictedRange: 1
+    probability: 33
   - Name: Bar Hit
-    AnimationID: 7
+    AnimationID: 8
     damagesMax: 20
     damagesMin: 15
     Description: PAF!
     isDistanceAttack: 0
     cooldown: 1.5
-    predictedRange: 1.1
-    probability: 0
+    predictedRange: 1.2
+    probability: 33
   - Name: Kick
-    AnimationID: 8
+    AnimationID: 7
     damagesMax: 8
     damagesMin: 5
     Description: KAPOW!
     isDistanceAttack: 0
     cooldown: 1
-    predictedRange: 1.1
-    probability: 0
+    predictedRange: 0.8
+    probability: 33
 --- !u!114 &114939482661549728
 MonoBehaviour:
   m_ObjectHideFlags: 1

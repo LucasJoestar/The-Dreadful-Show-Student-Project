@@ -438,10 +438,12 @@ public abstract class TDS_Enemy : TDS_Character
             //if the target is too far from the destination, recalculate the path
             if (Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > GetMaxRange())
             {
+                yield return new WaitForSeconds(.1f); 
                 enemyState = EnemyState.ComputingPath;
                 yield break; 
             }
         }
+        Debug.Log("OUT"); 
         // At the end of the path, is the agent has to throw an object, throw it
         if (throwable)
         {
@@ -514,6 +516,7 @@ public abstract class TDS_Enemy : TDS_Character
             {
                 yield return new WaitForEndOfFrame();
             }
+            throwable = null; 
             canThrow = false;
             SetAnimationState((int)EnemyAnimationState.Idle);
         }
@@ -607,7 +610,11 @@ public abstract class TDS_Enemy : TDS_Character
             agent.StopAgent();
             StopAllCoroutines();
             enemyState = EnemyState.MakingDecision;
-            if(!isDead) SetAnimationState((int)EnemyAnimationState.Hit);
+            if (!isDead)
+            {
+                SetAnimationState((int)EnemyAnimationState.Hit);
+                if (throwable) DropObject();
+            }
         }
         return _isTakingDamages;
     }
@@ -633,6 +640,7 @@ public abstract class TDS_Enemy : TDS_Character
             if (!isDead)
             {
                 SetAnimationState((int)EnemyAnimationState.Hit);
+                if (throwable) DropObject(); 
             }
             StartCoroutine(ApplyRecoil(_position)); 
         }
@@ -706,7 +714,7 @@ public abstract class TDS_Enemy : TDS_Character
         // Select a position
         bool _pathComputed = false;
         Vector3 _position;
-        if (targetedThrowable /*&& canThrow*/)
+        if (targetedThrowable && canThrow)
         {
             _position = targetedThrowable.transform.position;
         }
@@ -714,11 +722,11 @@ public abstract class TDS_Enemy : TDS_Character
         {
             _position = GetAttackingPosition();
         }
+        Debug.Log(_position); 
         _pathComputed = agent.CheckDestination(_position);
         //If the path is computed, reach the end of the path
         if (_pathComputed)
         {
-            SetAnimationState((int)EnemyAnimationState.Run);
             enemyState = EnemyState.GettingInRange;
         }
         else

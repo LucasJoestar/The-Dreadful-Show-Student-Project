@@ -53,6 +53,23 @@ TextureImporter:
     21300096: Punk_Throw04
     21300098: Punk_Throw05
     21300100: Punk_Throw06
+    21300102: Punk_Kick01
+    21300104: Punk_Kick02
+    21300106: Punk_Taunt01
+    21300108: Punk_Taunt02
+    21300110: Punk_Taunt03
+    21300112: Punk_Taunt04
+    21300114: Punk_Crowbar01
+    21300116: Punk_Crowbar02
+    21300118: Punk_Crowbar03
+    21300120: Punk_Crowbar04
+    21300122: Punk_RunObj01
+    21300124: Punk_RunObj02
+    21300126: Punk_RunObj03
+    21300128: SpriteSheet_Punk_0
+    21300130: Punk_IdleObj01
+    21300132: Punk_IdleObj02
+    21300134: Punk_RunObj04
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -138,8 +155,8 @@ TextureImporter:
       name: Punk_Run01
       rect:
         serializedVersion: 2
-        x: 3
-        y: 1742
+        x: 78
+        y: 3726
         width: 187
         height: 295
       alignment: 7
@@ -158,8 +175,8 @@ TextureImporter:
       name: Punk_Run02
       rect:
         serializedVersion: 2
-        x: 228
-        y: 1743
+        x: 293
+        y: 3725
         width: 134
         height: 253
       alignment: 7
@@ -178,8 +195,8 @@ TextureImporter:
       name: Punk_Run03
       rect:
         serializedVersion: 2
-        x: 419
-        y: 1743
+        x: 489
+        y: 3731
         width: 176
         height: 296
       alignment: 7
@@ -198,8 +215,8 @@ TextureImporter:
       name: Punk_Run04
       rect:
         serializedVersion: 2
-        x: 653
-        y: 1742
+        x: 728
+        y: 3724
         width: 143
         height: 260
       alignment: 7
@@ -218,8 +235,8 @@ TextureImporter:
       name: Punk_Idle01
       rect:
         serializedVersion: 2
-        x: 936
-        y: 1742
+        x: 1011
+        y: 3726
         width: 154
         height: 293
       alignment: 7
@@ -238,8 +255,8 @@ TextureImporter:
       name: Punk_Idle02
       rect:
         serializedVersion: 2
-        x: 1147
-        y: 1742
+        x: 1220
+        y: 3726
         width: 157
         height: 292
       alignment: 7
@@ -258,8 +275,8 @@ TextureImporter:
       name: Punk_Death01
       rect:
         serializedVersion: 2
-        x: 14
-        y: 1404
+        x: 1481
+        y: 3716
         width: 166
         height: 289
       alignment: 7
@@ -278,8 +295,8 @@ TextureImporter:
       name: Punk_Death02
       rect:
         serializedVersion: 2
-        x: 228
-        y: 1404
+        x: 1696
+        y: 3718
         width: 204
         height: 200
       alignment: 7
@@ -298,8 +315,8 @@ TextureImporter:
       name: Punk_Death03
       rect:
         serializedVersion: 2
-        x: 474
-        y: 1404
+        x: 1943
+        y: 3716
         width: 284
         height: 77
       alignment: 7
@@ -318,8 +335,8 @@ TextureImporter:
       name: Punk_Death04
       rect:
         serializedVersion: 2
-        x: 782
-        y: 1409
+        x: 2249
+        y: 3721
         width: 255
         height: 91
       alignment: 7
@@ -338,8 +355,8 @@ TextureImporter:
       name: Punk_Death05
       rect:
         serializedVersion: 2
-        x: 1068
-        y: 1404
+        x: 2537
+        y: 3717
         width: 286
         height: 77
       alignment: 7
@@ -358,8 +375,8 @@ TextureImporter:
       name: Punk_Hit
       rect:
         serializedVersion: 2
-        x: 1431
-        y: 1404
+        x: 2964
+        y: 3730
         width: 180
         height: 316
       alignment: 7
@@ -378,8 +395,8 @@ TextureImporter:
       name: Punk_Grounded01
       rect:
         serializedVersion: 2
-        x: 3
-        y: 1030
+        x: 77
+        y: 3341
         width: 188
         height: 328
       alignment: 7
@@ -398,8 +415,8 @@ TextureImporter:
       name: Punk_Grounded02
       rect:
         serializedVersion: 2
-        x: 228
-        y: 1028
+        x: 302
+        y: 3339
         width: 231
         height: 224
       alignment: 7
@@ -418,8 +435,8 @@ TextureImporter:
       name: Punk_Grounded03
       rect:
         serializedVersion: 2
-        x: 501
-        y: 1028
+        x: 573
+        y: 3340
         width: 323
         height: 88
       alignment: 7
@@ -438,8 +455,8 @@ TextureImporter:
       name: Punk_Grounded04
       rect:
         serializedVersion: 2
-        x: 893
-        y: 1032
+        x: 967
+        y: 3343
         width: 322
         height: 87
       alignment: 7
@@ -458,8 +475,8 @@ TextureImporter:
       name: Punk_Grounded05
       rect:
         serializedVersion: 2
-        x: 1263
-        y: 1028
+        x: 1336
+        y: 3341
         width: 323
         height: 88
       alignment: 7
@@ -478,8 +495,8 @@ TextureImporter:
       name: Punk_Grounded06
       rect:
         serializedVersion: 2
-        x: 1652
-        y: 1023
+        x: 1726
+        y: 3334
         width: 283
         height: 141
       alignment: 7
@@ -498,8 +515,8 @@ TextureImporter:
       name: Punk_Grounded07
       rect:
         serializedVersion: 2
-        x: 14
-        y: 670
+        x: 2073
+        y: 3338
         width: 194
         height: 266
       alignment: 7
@@ -518,8 +535,8 @@ TextureImporter:
       name: Punk_Grounded08
       rect:
         serializedVersion: 2
-        x: 291
-        y: 671
+        x: 2352
+        y: 3339
         width: 121
         height: 259
       alignment: 7
@@ -538,8 +555,8 @@ TextureImporter:
       name: Punk_Grounded09
       rect:
         serializedVersion: 2
-        x: 497
-        y: 671
+        x: 2558
+        y: 3339
         width: 156
         height: 315
       alignment: 7
@@ -558,8 +575,8 @@ TextureImporter:
       name: Punk_Headbutt01
       rect:
         serializedVersion: 2
-        x: 727
-        y: 666
+        x: 76
+        y: 2920
         width: 134
         height: 315
       alignment: 7
@@ -578,8 +595,8 @@ TextureImporter:
       name: Punk_Headbutt02
       rect:
         serializedVersion: 2
-        x: 955
-        y: 665
+        x: 302
+        y: 2920
         width: 164
         height: 305
       alignment: 9
@@ -598,8 +615,8 @@ TextureImporter:
       name: Punk_Headbutt03
       rect:
         serializedVersion: 2
-        x: 1166
-        y: 666
+        x: 512
+        y: 2922
         width: 116
         height: 305
       alignment: 7
@@ -618,8 +635,8 @@ TextureImporter:
       name: Punk_Headbutt04
       rect:
         serializedVersion: 2
-        x: 1320
-        y: 671
+        x: 667
+        y: 2926
         width: 177
         height: 280
       alignment: 9
@@ -638,8 +655,8 @@ TextureImporter:
       name: Punk_Pick01
       rect:
         serializedVersion: 2
-        x: 48
-        y: 281
+        x: 1984
+        y: 2923
         width: 131
         height: 273
       alignment: 7
@@ -658,8 +675,8 @@ TextureImporter:
       name: Punk_PickUp02
       rect:
         serializedVersion: 2
-        x: 258
-        y: 281
+        x: 2192
+        y: 2922
         width: 130
         height: 269
       alignment: 7
@@ -678,8 +695,8 @@ TextureImporter:
       name: Punk_PickUp03
       rect:
         serializedVersion: 2
-        x: 467
-        y: 283
+        x: 2403
+        y: 2925
         width: 147
         height: 286
       alignment: 7
@@ -698,10 +715,10 @@ TextureImporter:
       name: Punk_Throw01
       rect:
         serializedVersion: 2
-        x: 865
-        y: 285
-        width: 160
-        height: 297
+        x: 2732
+        y: 2929
+        width: 170
+        height: 307
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -718,10 +735,10 @@ TextureImporter:
       name: Punk_Throw02
       rect:
         serializedVersion: 2
-        x: 1075
-        y: 284
-        width: 151
-        height: 266
+        x: 2940
+        y: 2928
+        width: 155
+        height: 282
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -738,10 +755,10 @@ TextureImporter:
       name: Punk_Throw03
       rect:
         serializedVersion: 2
-        x: 1315
-        y: 285
-        width: 127
-        height: 274
+        x: 3182
+        y: 2930
+        width: 132
+        height: 290
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -758,10 +775,10 @@ TextureImporter:
       name: Punk_Throw04
       rect:
         serializedVersion: 2
-        x: 1478
-        y: 283
-        width: 140
-        height: 281
+        x: 3346
+        y: 2929
+        width: 149
+        height: 296
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -778,10 +795,10 @@ TextureImporter:
       name: Punk_Throw05
       rect:
         serializedVersion: 2
-        x: 1666
-        y: 281
-        width: 137
-        height: 277
+        x: 3531
+        y: 2925
+        width: 144
+        height: 291
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -798,10 +815,10 @@ TextureImporter:
       name: Punk_Throw06
       rect:
         serializedVersion: 2
-        x: 1838
-        y: 279
-        width: 149
-        height: 291
+        x: 3704
+        y: 2925
+        width: 158
+        height: 305
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -810,6 +827,326 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 40a0bcf30f9844f47bb6d0751f68872d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Punk_Kick01
+      rect:
+        serializedVersion: 2
+        x: 3254
+        y: 3723
+        width: 145
+        height: 297
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7a1b83ecfb513c43aef68c9ca61c94e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Punk_Kick02
+      rect:
+        serializedVersion: 2
+        x: 3487
+        y: 3724
+        width: 209
+        height: 304
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4dffbb2bb24fbfb479f9547a88049adb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Punk_Taunt01
+      rect:
+        serializedVersion: 2
+        x: 2798
+        y: 3334
+        width: 247
+        height: 298
+      alignment: 9
+      pivot: {x: 0.635, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb9ae9006c84df14496ce9351f3cce7b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Punk_Taunt02
+      rect:
+        serializedVersion: 2
+        x: 3127
+        y: 3334
+        width: 158
+        height: 297
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b42d8ec3b51f01b499fa1994c35e23e8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Punk_Taunt03
+      rect:
+        serializedVersion: 2
+        x: 3367
+        y: 3334
+        width: 187
+        height: 297
+      alignment: 9
+      pivot: {x: 0.53, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01b5c698e29b0b1499224081adc86443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Punk_Taunt04
+      rect:
+        serializedVersion: 2
+        x: 3616
+        y: 3334
+        width: 156
+        height: 296
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6fce2ef158c2ac743b136ba8d7efb090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Punk_Crowbar01
+      rect:
+        serializedVersion: 2
+        x: 915
+        y: 2923
+        width: 175
+        height: 288
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 850016a0e26e9564a8147da22893700b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Punk_Crowbar02
+      rect:
+        serializedVersion: 2
+        x: 1171
+        y: 2925
+        width: 117
+        height: 281
+      alignment: 9
+      pivot: {x: 0.56, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f32704cd785e07e4eae593db457c3aa4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Punk_Crowbar03
+      rect:
+        serializedVersion: 2
+        x: 1381
+        y: 2923
+        width: 166
+        height: 308
+      alignment: 9
+      pivot: {x: 0.42, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87e3843cbe97c7b45af2389e1350972b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Punk_Crowbar04
+      rect:
+        serializedVersion: 2
+        x: 1596
+        y: 2921
+        width: 213
+        height: 270
+      alignment: 9
+      pivot: {x: 0.81, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7df3c317e8e625b489473768612abe4c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Punk_RunObj01
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 2546
+        width: 147
+        height: 307
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7e458db34cd7da4baad35ec598a0e13
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Punk_RunObj02
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 2547
+        width: 109
+        height: 263
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb1a980ed81fa7a45b203095c6999a71
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Punk_RunObj03
+      rect:
+        serializedVersion: 2
+        x: 547
+        y: 2544
+        width: 141
+        height: 299
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e84585d448bf2d49bdf5950b1c0a1a1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Punk_RunObj04
+      rect:
+        serializedVersion: 2
+        x: 814
+        y: 2545
+        width: 157
+        height: 270
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9f517747f8051d4aa616eaf45cd35b2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Punk_IdleObj01
+      rect:
+        serializedVersion: 2
+        x: 1055
+        y: 2545
+        width: 151
+        height: 307
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 725d84d71d15d1b4c9d87c5519c949c7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Punk_IdleObj02
+      rect:
+        serializedVersion: 2
+        x: 1278
+        y: 2544
+        width: 151
+        height: 306
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25544b79c3c50e043a5aa03c51a9574b
       vertices: []
       indices: 
       edges: []
