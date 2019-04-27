@@ -126,7 +126,9 @@ public class TDS_LevelManager : MonoBehaviour
     /// <param name="_playerType"></param>
     public void Spawn(PlayerType _playerType)
     {
-        localPlayer = TDS_NetworkManager.Instance.InstantiatePlayer(_playerType, StartSpawnPoints[0]).GetComponent<TDS_Player>();
+        if(_playerType == PlayerType.Juggler)
+            localPlayer = TDS_NetworkManager.Instance.InstantiatePlayer(_playerType, StartSpawnPoints[0]).GetComponentInChildren<TDS_Player>();
+        else localPlayer = TDS_NetworkManager.Instance.InstantiatePlayer(_playerType, StartSpawnPoints[0]).GetComponent<TDS_Player>();
         TDS_Camera.Instance.Target = localPlayer.transform;
         TDS_UIManager.Instance?.SetPlayerLifeBar(localPlayer);
     }
@@ -195,7 +197,7 @@ public class TDS_LevelManager : MonoBehaviour
         TDS_NetworkManager.Instance.InitConnection();
 
         // Spawn local player.
-        Spawn();
+        // Spawn();
     }
 
     // Update is called once per frame

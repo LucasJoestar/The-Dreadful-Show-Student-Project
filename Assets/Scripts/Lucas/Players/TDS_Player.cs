@@ -1331,12 +1331,15 @@ public class TDS_Player : TDS_Character
     /// <param name="_state">State of the player animator to set.</param>
     public void SetAnim(PlayerAnimState _state)
     {
+        /*
         // Online
+        // ATTENTION LE PHOTON ID EST TOUJOURS A SOI, IL FAUT CHECKER SI LE PLAYER EST EN LOCAL
         if (photonView.isMine)
         {
             if (!animator) return;
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (PlayerAnimState)_state });
         }
+        */ 
 
         // Local
         switch (_state)
