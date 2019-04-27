@@ -914,11 +914,12 @@ public class TDS_Player : TDS_Character
                 TDS_Camera.Instance.ScreenShake(.02f);
             }
         }
+        /*
         else if (photonView.isMine)
         {
             TDS_Camera.Instance.ScreenShake(.25f);
         }
-
+        */
         return true;
     }
 
