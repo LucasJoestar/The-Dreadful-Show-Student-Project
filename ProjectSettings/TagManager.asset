@@ -4,9 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Enemy
   - Object
+  - Enemy
   - Boss
+  - Player|GameController
   layers:
   - Default
   - TransparentFX
@@ -16,13 +17,13 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - PostProcessing
+  - Player
+  - Enemy
+  - Object
+  - Ground
+  - Wall
+  - Bound
   - 
   - 
   - 

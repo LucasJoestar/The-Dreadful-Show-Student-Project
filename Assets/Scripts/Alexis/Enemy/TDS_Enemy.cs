@@ -443,7 +443,7 @@ public abstract class TDS_Enemy : TDS_Character
                 yield break; 
             }
         }
-        Debug.Log("OUT"); 
+        //Debug.Log("OUT"); 
         // At the end of the path, is the agent has to throw an object, throw it
         if (throwable)
         {
@@ -722,7 +722,7 @@ public abstract class TDS_Enemy : TDS_Character
         {
             _position = GetAttackingPosition();
         }
-        Debug.Log(_position); 
+        // Debug.Log(_position); 
         _pathComputed = agent.CheckDestination(_position);
         //If the path is computed, reach the end of the path
         if (_pathComputed)
