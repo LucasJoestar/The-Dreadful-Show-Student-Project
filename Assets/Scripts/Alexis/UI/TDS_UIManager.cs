@@ -249,13 +249,13 @@ public class TDS_UIManager : PunBehaviour
         //if (!photonView.isMine) return; 
         ButtonSelectionBeardLady.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.BeardLady));
         ButtonSelectionJuggler.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.Juggler));
-        ButtonSelectionFatLady.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.FatLady));
-        ButtonSelectionFireEater.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.FireEater));
+        //ButtonSelectionFatLady.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.FatLady));
+        //ButtonSelectionFireEater.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.FireEater));
 
         ButtonSelectionBeardLady.onClick.AddListener(() => ActivateMenu(UIState.InGame));
         ButtonSelectionJuggler.onClick.AddListener(() => ActivateMenu(UIState.InGame));
-        ButtonSelectionFatLady.onClick.AddListener(() => ActivateMenu(UIState.InGame));
-        ButtonSelectionFireEater.onClick.AddListener(() => ActivateMenu(UIState.InGame));
+        //ButtonSelectionFatLady.onClick.AddListener(() => ActivateMenu(UIState.InGame));
+        //ButtonSelectionFireEater.onClick.AddListener(() => ActivateMenu(UIState.InGame));
 
         ButtonQuitPause.onClick.AddListener(() => ActivateMenu(UIState.InGame));
     }

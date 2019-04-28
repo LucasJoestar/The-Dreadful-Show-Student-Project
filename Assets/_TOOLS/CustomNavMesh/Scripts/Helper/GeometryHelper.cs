@@ -221,7 +221,7 @@ public static class GeometryHelper
         }
         if (IsInAnyTriangle(_groundedPosition, _triangles))
         {
-            Debug.Log("Return HitPoint");
+            //Debug.Log("Return HitPoint");
             return _groundedPosition; 
         }
         //Get the closest triangle
@@ -231,16 +231,16 @@ public static class GeometryHelper
         {
             if (IsIntersecting(_triangle.Vertices[i].Position, _triangle.Vertices[i + 1].Position, _triangle.CenterPosition, _position, out _groundedPosition))
             {
-                Debug.Log("Return intersection -> " + _groundedPosition);
+                //Debug.Log("Return intersection -> " + _groundedPosition);
                 return _groundedPosition;
             }
         }
         if (IsIntersecting(_triangle.Vertices[0].Position, _triangle.Vertices[2].Position, _triangle.CenterPosition, _position, out _groundedPosition))
         {
-            Debug.Log("Return intersection");
+            //Debug.Log("Return intersection");
             return _groundedPosition;
         }
-        Debug.Log("Def"); 
+        //Debug.Log("Def"); 
         return _triangle.CenterPosition;
     }
 
