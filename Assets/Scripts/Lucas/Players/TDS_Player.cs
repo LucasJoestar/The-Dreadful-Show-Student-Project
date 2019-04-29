@@ -914,12 +914,11 @@ public class TDS_Player : TDS_Character
                 TDS_Camera.Instance.ScreenShake(.02f);
             }
         }
-        /*
         else if (photonView.isMine)
         {
             TDS_Camera.Instance.ScreenShake(.25f);
         }
-        */
+        
         return true;
     }
 
@@ -1332,15 +1331,14 @@ public class TDS_Player : TDS_Character
     /// <param name="_state">State of the player animator to set.</param>
     public void SetAnim(PlayerAnimState _state)
     {
-        /*
+        
         // Online
-        // ATTENTION LE PHOTON ID EST TOUJOURS A SOI, IL FAUT CHECKER SI LE PLAYER EST EN LOCAL
         if (photonView.isMine)
         {
-            if (!animator) return;
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (PlayerAnimState)_state });
+            // if (!animator) return;
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)_state });
         }
-        */ 
+        
 
         // Local
         switch (_state)
@@ -1421,6 +1419,11 @@ public class TDS_Player : TDS_Character
                 break;
         }
     }
+
+    public void SetAnim(int _animState)
+    {
+        SetAnim((PlayerAnimState)_animState); 
+    }
     #endregion
 
     #region Inputs
@@ -1429,6 +1432,7 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void CheckActionsInputs()
     {
+        if (!photonView.isMine) return; 
         // If dodging, parrying or attacking, do not perform action
         if (isAttacking || isDodging || isParrying) return;
 
@@ -1469,6 +1473,7 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void CheckMovementsInputs()
     {
+        if (!photonView.isMine) return; 
         // If the character is paralyzed or attacking, do not move
         if (IsParalyzed || isAttacking || isParrying || isDodging) return;
 
