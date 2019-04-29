@@ -1170,7 +1170,7 @@ public class TDS_Player : TDS_Character
     public override void Flip()
     {
         base.Flip();
-
+        if (photonView.isMine) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
         // Flip X throw velocity
         throwVelocity.x *= -1;
     }

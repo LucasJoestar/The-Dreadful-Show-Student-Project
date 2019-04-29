@@ -667,11 +667,11 @@ public abstract class TDS_Enemy : TDS_Character
     /// Call the base of the method flip
     /// if this client is the master, call the method online to flip the enemy in the other clients
     /// </summary>
-    //public override void Flip()
-    //{
-    //    base.Flip();
-    //    if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
-    //}
+    public override void Flip()
+    {
+        base.Flip();
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
+    }
     #endregion
 
     #region Vector3

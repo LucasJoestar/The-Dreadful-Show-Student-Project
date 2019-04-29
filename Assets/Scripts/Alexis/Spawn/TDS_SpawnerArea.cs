@@ -124,7 +124,7 @@ public class TDS_SpawnerArea : PunBehaviour
     /// </summary>
     private void ActivateSpawn()
     {
-        if (!PhotonNetwork.isMasterClient) return;
+        if (!PhotonNetwork.isMasterClient) return;  
         if (waveIndex == waves.Count && !isLooping)
         {
             OnAreaDesactivated?.Invoke(); 
@@ -164,6 +164,7 @@ public class TDS_SpawnerArea : PunBehaviour
     // Awake is called when the script instance is being loaded
     private void Awake()
     {
+        //if (!PhotonNetwork.isMasterClient) return;
         OnNextWave.AddListener(ActivateSpawn);
         OnAreaActivated.AddListener(ActivateSpawn);
     }
@@ -175,6 +176,7 @@ public class TDS_SpawnerArea : PunBehaviour
             OnAreaActivated.AddListener(TDS_UIManager.Instance.SwitchCurtains);
             OnAreaDesactivated.AddListener(TDS_UIManager.Instance.SwitchCurtains);
         }
+
     }
     private void OnTriggerEnter(Collider _coll)
     {

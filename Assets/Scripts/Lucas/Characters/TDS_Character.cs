@@ -363,7 +363,7 @@ public abstract class TDS_Character : TDS_Damageable
     {
         isFacingRight = !isFacingRight;
         transform.Rotate(Vector3.up, 180);
-        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
+        // if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
         OnFlip?.Invoke();
     }
 
