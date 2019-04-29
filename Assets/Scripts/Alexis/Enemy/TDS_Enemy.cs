@@ -341,6 +341,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected IEnumerator CastAttack()
     {
+        if (isDead) yield break; 
         if(IsPacific)
         {
             enemyState = EnemyState.MakingDecision;
@@ -376,6 +377,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected IEnumerator CastDetection()
     {
+        if (isDead) yield break; 
         SetAnimationState((int)EnemyAnimationState.Run);
         // Wait some time before calling again Behaviour(); 
         Collider[] _colliders;
@@ -461,6 +463,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected IEnumerator CastGrab(TDS_Throwable _throwable)
     {
+        if (isDead) yield break; 
         //Pick up an object
         if (agent.IsMoving)
         {
@@ -494,6 +497,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected IEnumerator CastThrow()
     {
+        if (isDead) yield break; 
         //Throw the held object
         if (agent.IsMoving)
         {
@@ -545,7 +549,6 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Die()
     {
         base.Die();
-        StopAllCoroutines();
         SetAnimationState((int)EnemyAnimationState.Death);
         if (Area) Area.RemoveEnemy(this);
     }
@@ -577,6 +580,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public override void ThrowObject()
     {
+        if (isDead) return; 
         float _range = Vector3.Distance(transform.position, playerTarget.transform.position) <  throwRange ? Vector3.Distance(transform.position, playerTarget.transform.position) : throwRange;
         Vector3 _pos = (transform.position - transform.right * _range);
         ThrowObject(_pos);
@@ -608,12 +612,12 @@ public abstract class TDS_Enemy : TDS_Character
         if (_isTakingDamages)
         {
             agent.StopAgent();
+            if (throwable) DropObject();
             StopAllCoroutines();
             enemyState = EnemyState.MakingDecision;
             if (!isDead)
             {
                 SetAnimationState((int)EnemyAnimationState.Hit);
-                if (throwable) DropObject();
             }
         }
         return _isTakingDamages;
@@ -637,12 +641,12 @@ public abstract class TDS_Enemy : TDS_Character
             agent.StopAgent();
             StopAllCoroutines();
             enemyState = EnemyState.MakingDecision;
+            if (throwable) DropObject();
+            StartCoroutine(ApplyRecoil(_position));
             if (!isDead)
             {
                 SetAnimationState((int)EnemyAnimationState.Hit);
-                if (throwable) DropObject(); 
             }
-            StartCoroutine(ApplyRecoil(_position)); 
         }
         return _isTakingDamages;
     }
@@ -705,6 +709,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     protected void ComputePath()
     {
+        if (isDead) return; 
         if(IsParalyzed)
         {
             enemyState = EnemyState.MakingDecision;
@@ -760,6 +765,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected void TakeDecision()
     {
         //Take decisions
+        if (isDead) return; 
         // If the target can't be targeted, search for another target
         if (!playerTarget || playerTarget.IsDead)
         {
