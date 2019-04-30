@@ -974,6 +974,7 @@ public class TDS_Player : TDS_Character
     /// </summary>
     private void AdjustPositionOnRigidbody()
     {
+        if (!photonView.isMine) return; 
         // If the player rigidbody velocity is null, return
         if (rigidbody.velocity == Vector3.zero) return;
 
@@ -1121,6 +1122,7 @@ public class TDS_Player : TDS_Character
     /// </summary>
     private void CheckGrounded()
     {
+        if (!photonView.isMine) return; 
         // Set the player as grounded if something is detected in the ground detection box
         bool _isGrounded = groundDetectionBox.Overlap(transform.position).Length > 0;
 
@@ -1209,6 +1211,7 @@ public class TDS_Player : TDS_Character
     /// <param name="_newPosition">Position where to move the player. (World space)</param>
     public void Move(Vector3 _newPosition)
     {
+        if (!photonView.isMine) return; 
         // Increases speed if needed
         if (speedCurrent < SpeedMax)
         {
@@ -1331,7 +1334,7 @@ public class TDS_Player : TDS_Character
     /// <param name="_state">State of the player animator to set.</param>
     public void SetAnim(PlayerAnimState _state)
     {
-        
+
         // Online
         if (photonView.isMine)
         {
