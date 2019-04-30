@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4407447, g: 0.48941845, b: 0.5695406, a: 1}
+  m_IndirectSpecularColor: {r: 0.4366757, g: 0.48427194, b: 0.5645252, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1613,7 +1613,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 309929920}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 56.689995, y: 0, z: 2.0599945}
+  m_LocalPosition: {x: 56.689995, y: 0, z: 2.3}
   m_LocalScale: {x: 13.378314, y: 1, z: 0.2350647}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2406,6 +2406,7 @@ GameObject:
   - component: {fileID: 467688195}
   - component: {fileID: 467688194}
   - component: {fileID: 467688193}
+  - component: {fileID: 467688196}
   m_Layer: 0
   m_Name: Tuto - Punks Fight
   m_TagString: Untagged
@@ -2512,6 +2513,33 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.815728, y: 1, z: 12}
   m_Center: {x: 3.3713064, y: 0.5, z: -0.02404499}
+--- !u!114 &467688196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467688191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 1
+  instantiationId: 1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &487205121
 GameObject:
   m_ObjectHideFlags: 0
@@ -7332,6 +7360,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1325878320}
   - component: {fileID: 1325878319}
+  - component: {fileID: 1325878321}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -7349,8 +7378,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 2
+  m_Color: {r: 1, g: 0.93798894, b: 0.7688679, a: 1}
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -7358,10 +7387,10 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 0.5
-    m_Bias: 0
-    m_NormalBias: 0.95
-    m_NearPlane: 5
+    m_Strength: 0.4
+    m_Bias: 0.5
+    m_NormalBias: 0.5
+    m_NearPlane: 1
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
@@ -7384,13 +7413,26 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1325878318}
-  m_LocalRotation: {x: 0.5669756, y: -0.13802305, z: 0.38060504, w: 0.71737593}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 19.7, y: 38.8, z: 14.7}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 66.713005, y: 36.212, z: 80.19}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &1325878321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325878318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UsePipelineSettings: 1
 --- !u!1 &1334087997
 GameObject:
   m_ObjectHideFlags: 0
