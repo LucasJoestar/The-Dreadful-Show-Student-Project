@@ -491,7 +491,6 @@ public abstract class TDS_Character : TDS_Damageable
     protected override void Awake()
     {
         base.Awake();
-
         // Try to get components references if they are missing
         if (!hitBox)
         {
@@ -503,6 +502,7 @@ public abstract class TDS_Character : TDS_Damageable
             rigidbody = GetComponent<Rigidbody>();
             if (!rigidbody) Debug.LogWarning("The Rigidbody of \"" + name + "\" for script TDS_Character is missing !");
         }
+        if (!photonView.isMine) rigidbody.isKinematic = true; 
     }
 
     // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
