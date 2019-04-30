@@ -17,6 +17,17 @@ public static class TDS_Input
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     * Date :			[30 / 04 / 2019]
+	 *	Author :		[THIEBAUT Alexis]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Fix error on Unity Version 2018.3
+     *	        -> Change My Update Method to a delegate on initialisation
+     *	        -> Had to do unsafe code due to pointer
+	 *
+	 *	-----------------------------------
+     *	
      *	Date :			[13 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
