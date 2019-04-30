@@ -168,8 +168,8 @@ public static class TDS_Input
     [RuntimeInitializeOnLoadMethod]
     private static void Initialize()
     {
-        #if UNITY_EDITOR
-       // Debug.Log("Mhmm...");
+#if UNITY_EDITOR
+        // Debug.Log("Mhmm...");
         // Get axis & buttons informations from a scriptable object
 #else
         // Get axis & buttons informations from a PlayerPref, or from a scriptable object if null
@@ -183,10 +183,15 @@ public static class TDS_Input
 
         //Debug.Log("Start => " + Resources.Load<TDS_InputSettings>(TDS_InputSettings.INPUT_SO_DEFAULT_PATH).AxisNames.Length);
         // Subscribe a custom method to the input update system
-        NativeInputSystem.onUpdate -= MyUpdate;
-        NativeInputSystem.onUpdate += MyUpdate;
+        unsafe
+        {
+            NativeUpdateCallback _callBack = MyUpdate;
+            NativeInputSystem.onUpdate -= _callBack;
+            NativeInputSystem.onUpdate += _callBack;
+        }
     }
 
+    /*
     /// <summary>
     /// My custom update method, that should be called on MonoBehaviour Update.
     /// </summary>
@@ -198,6 +203,20 @@ public static class TDS_Input
             _axis.UpdateState();
         }
     }
+    */
+
+    /// <summary>
+    /// My custom update method, that should be called on MonoBehaviour Update.
+    /// </summary>
+    private static unsafe void MyUpdate(NativeInputUpdateType updateType, NativeInputEventBuffer* buffer)
+    {
+        // Updates each axis state
+        foreach (TDS_AxisToInput _axis in axis)
+        {
+            _axis.UpdateState();
+        }
+    }
+
     #endregion
 
     #endregion
