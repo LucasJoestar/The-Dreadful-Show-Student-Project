@@ -387,7 +387,7 @@ public class TDS_DamageableEditor : Editor
         healthCurrent = serializedObject.FindProperty("healthCurrent");
         healthMax = serializedObject.FindProperty("healthMax");
 
-        // Loads the editor folded a unfolded values of this class
+        // Loads the editor folded and unfolded values of this class
         isDamagUnfolded = EditorPrefs.GetBool("isDamagUnfolded", isDamagUnfolded);
         areDamagComponentsUnfolded = EditorPrefs.GetBool("areDamagComponentsUnfolded", areDamagComponentsUnfolded);
         areDamagSettingsUnfolded = EditorPrefs.GetBool("areDamagSettingsUnfolded", areDamagSettingsUnfolded);

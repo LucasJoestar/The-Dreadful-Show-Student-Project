@@ -34,10 +34,6 @@ public class TDS_EventsSystem : MonoBehaviour
 	 *	-----------------------------------
 	*/
 
-    #region Events
-
-    #endregion
-
     #region Fields / Properties
     /// <summary>
     /// Is this event system activated and in process or not ?
@@ -47,7 +43,7 @@ public class TDS_EventsSystem : MonoBehaviour
     /// <summary>
     /// Boolean used when waiting for other players.
     /// </summary>
-    [SerializeField] private bool isWaiting = true;
+    [SerializeField] private bool isWaitingOthers = true;
 
     /// <summary>
     /// All events to trigger in this events system.
@@ -75,7 +71,7 @@ public class TDS_EventsSystem : MonoBehaviour
     {
         if (!playersWaiting.Union(TDS_LevelManager.Instance.AllPlayers).Any())
         {
-            isWaiting = false;
+            isWaitingOthers = false;
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PassEvent"), new object[] { });
         }
     }
@@ -114,11 +110,11 @@ public class TDS_EventsSystem : MonoBehaviour
                     TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "SetPlayerWaiting"), new object[] { TDS_LevelManager.Instance.LocalPlayer.PhotonID });
                 }
 
-                while (isWaiting)
+                while (isWaitingOthers)
                 {
                     yield return null;
                 }
-                isWaiting = true;
+                isWaitingOthers = true;
             }
             else
             {
@@ -139,7 +135,7 @@ public class TDS_EventsSystem : MonoBehaviour
     /// </summary>
     public void PassEvent()
     {
-        isWaiting = false;
+        isWaitingOthers = false;
     }
 
     /// <summary>

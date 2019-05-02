@@ -288,7 +288,7 @@ public class GOTagsEditor : Editor
     #region Unity Methods
     private void OnDisable()
     {
-        if (defaultEditor) DestroyImmediate(defaultEditor);
+        //if (defaultEditor) DestroyImmediate(defaultEditor);
     }
 
     // This function is called when the object is loaded

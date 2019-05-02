@@ -220,14 +220,35 @@ public class TDS_Player : TDS_Character
     public event Action OnStopDodge = null;
 
     /// <summary>
+    /// Event called when stopping parrying.
+    /// </summary>
+    public event Action OnStopParry = null;
+
+
+    /// <summary>
     /// Event called when stopping a dodge. It is cleaned once called.
     /// </summary>
     public event Action OnStopDodgeOneShot = null;
 
     /// <summary>
-    /// Event called when stopping parrying.
+    /// Event called when starting a dodge. It is cleaned once called.
     /// </summary>
-    public event Action OnStopParry = null;
+    public event Action OnStartDodgeOneShot = null;
+
+    /// <summary>
+    /// Event called when starting to jump. It is cleaned once called.
+    /// </summary>
+    public event Action OnStartJumpOneShot = null;
+
+    /// <summary>
+    /// Event called when taking an object. It is cleaned once called.
+    /// </summary>
+    public event Action OnGrabObjectOneShot = null;
+
+    /// <summary>
+    /// Event called when throwing an object. It is cleaned once called.
+    /// </summary>
+    public event Action OnThrowOneShot = null;
     #endregion
 
     #region Fields / Properties
@@ -584,6 +605,10 @@ public class TDS_Player : TDS_Character
     {
         if (!base.GrabObject(_throwable)) return false;
 
+        // Triggers one shot event
+        OnGrabObjectOneShot?.Invoke();
+        OnGrabObjectOneShot = null;
+
         // Updates animator informations
         SetAnim(PlayerAnimState.HasObject);
         return true;
@@ -600,6 +625,10 @@ public class TDS_Player : TDS_Character
         // Update the animator
         if (isGrounded) SetAnim(PlayerAnimState.Throw);
         SetAnim(PlayerAnimState.LostObject);
+
+        // Triggers one shot event
+        OnThrowOneShot?.Invoke();
+        OnThrowOneShot = null;
     }
 
     /// <summary>
@@ -614,6 +643,10 @@ public class TDS_Player : TDS_Character
         // Update the animator
         if (isGrounded) SetAnim(PlayerAnimState.Throw);
         SetAnim(PlayerAnimState.LostObject);
+
+        // Triggers one shot event
+        OnThrowOneShot?.Invoke();
+        OnThrowOneShot = null;
     }
     #endregion
 
@@ -740,6 +773,9 @@ public class TDS_Player : TDS_Character
         isDodging = true;
 
         OnStartDodging?.Invoke();
+
+        OnStartDodgeOneShot?.Invoke();
+        OnStartDodgeOneShot = null;
 
         // Adds an little force at the start of the dodge
         rigidbody.AddForce(Vector3.right * Mathf.Clamp(speedCurrent, speedInitial, speedMax) * speedCoef * isFacingRight.ToSign() * speedMax * (isGrounded ? 10 : 2));
@@ -1190,6 +1226,10 @@ public class TDS_Player : TDS_Character
         float _timer = 0;
 
         isJumping = true;
+
+        // Call one shot event
+        OnStartJumpOneShot?.Invoke();
+        OnStartJumpOneShot = null;
 
         // Adds a base vertical force to the rigidbody to expels the player in the air
         rigidbody.AddForce(Vector3.up * JumpForce);

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TDS_FireEater : TDS_Player 
 {
-	/* TDS_FireEater :
+    /* TDS_FireEater :
 	 *
 	 *	#####################
 	 *	###### PURPOSE ######
@@ -27,39 +27,42 @@ public class TDS_FireEater : TDS_Player
 	 *	-----------------------------------
 	*/
 
-	#region Events
+    #region Events
 
-	#endregion
+    #endregion
 
-	#region Fields / Properties
+    #region Fields / Properties
 
-	#endregion
+    #endregion
 
-	#region Methods
+    #region Methods
 
-	#region Original Methods
+    #region Original Methods
 
-	#endregion
+    #endregion
 
-	#region Unity Methods
-	// Awake is called when the script instance is being loaded
-    private void Awake()
+    #region Unity Methods
+    // Awake is called when the script instance is being loaded
+    protected override void Awake()
     {
-
+        base.Awake();
     }
 
-	// Use this for initialization
-    private void Start()
+    // Use this for initialization
+    protected override void Start()
     {
-		
-    }
-	
-	// Update is called once per frame
-	private void Update()
-    {
-        
-	}
-	#endregion
+        base.Start();
 
-	#endregion
+        // Set player type, just in case
+        PlayerType = PlayerType.FireEater;
+    }
+
+    // Update is called once per frame
+    protected override void Update()
+    {
+        base.Update();
+    }
+    #endregion
+
+    #endregion
 }
