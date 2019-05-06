@@ -246,6 +246,9 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     private void SetButtons()
     {
+        Application.wantsToQuit -= WantsToQuit;
+        Application.wantsToQuit += WantsToQuit; 
+
         //if (!photonView.isMine) return; 
         ButtonSelectionBeardLady.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.BeardLady));
         ButtonSelectionJuggler.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.Juggler));
@@ -256,6 +259,11 @@ public class TDS_UIManager : PunBehaviour
         ButtonSelectionJuggler.onClick.AddListener(() => ActivateMenu(UIState.InGame));
         //ButtonSelectionFatLady.onClick.AddListener(() => ActivateMenu(UIState.InGame));
         //ButtonSelectionFireEater.onClick.AddListener(() => ActivateMenu(UIState.InGame));
+
+        ButtonSelectionBeardLady.onClick.AddListener(() => SetButtonInteractable(ButtonSelectionBeardLady, PlayerType.BeardLady, false)); 
+        ButtonSelectionJuggler.onClick.AddListener(() => SetButtonInteractable(ButtonSelectionJuggler, PlayerType.Juggler, false));
+        //ButtonSelectionFatLady.onClick.AddListener(() => SetButtonInteractable(ButtonSelectionFatLady,  PlayerType.FatLady)); 
+        //ButtonSelectionFireEater.onClick.AddListener(() => SetButtonInteractable(ButtonSelectionFireEater,  PlayerType.FireEater)); 
 
         ButtonQuitPause.onClick.AddListener(() => ActivateMenu(UIState.InGame));
     }
@@ -311,7 +319,63 @@ public class TDS_UIManager : PunBehaviour
         if (!curtainsAnimator) return;
         curtainsAnimator.SetTrigger("Switch"); 
     }
-    #endregion 
+
+    private void SetButtonInteractable(Button _b, PlayerType _type, bool _isInteractable)
+    {
+        _b.interactable = _isInteractable;
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetButtonInteractable"), new object[] { (int)_type, _isInteractable });
+    }
+
+    private void SetButtonInteractable(int _buttonType, bool _isInteractable)
+    {
+        switch ((PlayerType)_buttonType)
+        {
+            case PlayerType.Unknown:
+                break;
+            case PlayerType.BeardLady:
+                ButtonSelectionBeardLady.interactable = _isInteractable; 
+                break;
+            case PlayerType.FatLady:
+                ButtonSelectionFatLady.interactable = _isInteractable;
+                break;
+            case PlayerType.FireEater:
+                ButtonSelectionFireEater.interactable = _isInteractable;
+                break;
+            case PlayerType.Juggler:
+                ButtonSelectionJuggler.interactable = _isInteractable;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private bool WantsToQuit()
+    {
+        // Call Method before disconnect
+        return true; 
+        if (!TDS_LevelManager.Instance || !TDS_LevelManager.Instance.LocalPlayer) return true;
+        switch (TDS_LevelManager.Instance.LocalPlayer.PlayerType)
+        {
+            case PlayerType.Unknown:
+                break;
+            case PlayerType.BeardLady:
+                if (ButtonSelectionBeardLady) SetButtonInteractable(ButtonSelectionBeardLady, PlayerType.BeardLady, true);  
+                break;
+            case PlayerType.FatLady:
+                if (ButtonSelectionFatLady) SetButtonInteractable(ButtonSelectionFatLady, PlayerType.FatLady, true);
+                break;
+            case PlayerType.FireEater:
+                if (ButtonSelectionFireEater) SetButtonInteractable(ButtonSelectionFireEater, PlayerType.FireEater, true);
+                break;
+            case PlayerType.Juggler:
+                if (ButtonSelectionJuggler) SetButtonInteractable(ButtonSelectionJuggler, PlayerType.Juggler, true);
+                break;
+            default:
+                break;
+        }
+        return true; 
+    }
+    #endregion
 
     #endregion
 

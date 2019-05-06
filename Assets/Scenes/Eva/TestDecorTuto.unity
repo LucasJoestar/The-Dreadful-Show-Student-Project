@@ -3562,9 +3562,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActivated: 0
-  isWaiting: 1
+  isWaitingOthers: 1
   events:
-  - doNeedSpecificPlayerType: 0
+  - Name: New Event
+    doNeedSpecificPlayerType: 0
     doWaitPreviousEvent: 0
     isLocal: 0
     isMasterOnly: 0
@@ -3579,6 +3580,7 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
+    actionType: 1
   photonView: {fileID: 649490674}
 --- !u!65 &649490672
 BoxCollider:
