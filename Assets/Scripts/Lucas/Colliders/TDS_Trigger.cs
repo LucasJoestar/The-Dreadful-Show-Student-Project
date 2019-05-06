@@ -51,14 +51,14 @@ public class TDS_Trigger : MonoBehaviour
     /// <summary>
     /// Tags used to detect only authorized objects.
     /// </summary>
-    [SerializeField] private List<string> detectedTags = new List<string>();
+    [SerializeField] private Tags detectedTags = new Tags();
     #endregion
 
     #region Unity Methods
     // OnTriggerEnter is called when the GameObject collides with another GameObject
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetTags().Union(detectedTags).Any())
+        if (other.gameObject.HasTag(detectedTags.ObjectTags))
         {
             OnTriggerEnterE.Invoke();
         }
@@ -67,7 +67,7 @@ public class TDS_Trigger : MonoBehaviour
     // OnTriggerExit is called when the Collider other has stopped touching the trigger
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.GetTags().Union(detectedTags).Any())
+        if (other.gameObject.HasTag(detectedTags.ObjectTags))
         {
             OnTriggerExitE.Invoke();
         }
