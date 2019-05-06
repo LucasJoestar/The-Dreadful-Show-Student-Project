@@ -41,6 +41,11 @@ public class TDS_Event
 
     #region Fields / Properties
     /// <summary>
+    /// Name of this event.
+    /// </summary>
+    public string Name = "New Event";
+
+    /// <summary>
     /// Is this event triggered only if the local player is a specific character ?
     /// </summary>
     [SerializeField] private bool doNeedSpecificPlayerType = false;
@@ -101,6 +106,11 @@ public class TDS_Event
     /// Unity event to invoke.
     /// </summary>
     [SerializeField] private UnityEvent unityEvent;
+
+    /// <summary>
+    /// Action to wait player to perform.
+    /// </summary>
+    [SerializeField] private WaitForPlayerAction actionType = WaitForPlayerAction.Dodge;
 	#endregion
 
 	#region Methods
@@ -159,7 +169,7 @@ public class TDS_Event
             case CustomEventType.Instantiate:
                 Object.Instantiate(prefab, prefabTransform.position, prefabTransform.rotation);
 
-                // If not local, activate narrator in other players too
+                // If not local, instantiate for other players too
                 if (!isLocal)
                 {
                     TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, $"{TDS_LevelManager.Instance.phID}#{TDS_UIManager.Instance.GetType()}#Instantiate", new object[] { prefab, prefabTransform.position, prefabTransform.rotation });
@@ -173,7 +183,34 @@ public class TDS_Event
 
             // Wait for an action of the local player
             case CustomEventType.WaitForAction:
-                // To do
+                bool _isReady = false;
+
+                switch (actionType)
+                {
+                    case WaitForPlayerAction.Jump:
+                        TDS_LevelManager.Instance.LocalPlayer.OnStartJumpOneShot += () => _isReady = true;
+                        break;
+
+                    case WaitForPlayerAction.Dodge:
+                        TDS_LevelManager.Instance.LocalPlayer.OnStartDodgeOneShot += () => _isReady = true;
+                        break;
+
+                    case WaitForPlayerAction.Grab:
+                        TDS_LevelManager.Instance.LocalPlayer.OnGrabObjectOneShot += () => _isReady = true;
+                        break;
+
+                    case WaitForPlayerAction.Throw:
+                        TDS_LevelManager.Instance.LocalPlayer.OnThrowOneShot += () => _isReady = true;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                while (!_isReady)
+                {
+                    yield return null;
+                }
                 break;
 
             // Wait until other players reach this event (Events System manage this)

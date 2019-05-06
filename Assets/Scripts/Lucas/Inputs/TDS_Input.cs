@@ -17,6 +17,17 @@ public static class TDS_Input
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     * Date :			[30 / 04 / 2019]
+	 *	Author :		[THIEBAUT Alexis]
+	 *
+	 *	Changes :
+	 *
+	 *	    - Fix error on Unity Version 2018.3
+     *	        -> Change My Update Method to a delegate on initialisation
+     *	        -> Had to do unsafe code due to pointer
+	 *
+	 *	-----------------------------------
+     *	
      *	Date :			[13 / 02 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -168,8 +179,8 @@ public static class TDS_Input
     [RuntimeInitializeOnLoadMethod]
     private static void Initialize()
     {
-        #if UNITY_EDITOR
-       // Debug.Log("Mhmm...");
+#if UNITY_EDITOR
+        // Debug.Log("Mhmm...");
         // Get axis & buttons informations from a scriptable object
 #else
         // Get axis & buttons informations from a PlayerPref, or from a scriptable object if null
@@ -183,10 +194,15 @@ public static class TDS_Input
 
         //Debug.Log("Start => " + Resources.Load<TDS_InputSettings>(TDS_InputSettings.INPUT_SO_DEFAULT_PATH).AxisNames.Length);
         // Subscribe a custom method to the input update system
-        NativeInputSystem.onUpdate -= MyUpdate;
-        NativeInputSystem.onUpdate += MyUpdate;
+        unsafe
+        {
+            NativeUpdateCallback _callBack = MyUpdate;
+            NativeInputSystem.onUpdate -= _callBack;
+            NativeInputSystem.onUpdate += _callBack;
+        }
     }
 
+    /*
     /// <summary>
     /// My custom update method, that should be called on MonoBehaviour Update.
     /// </summary>
@@ -198,6 +214,20 @@ public static class TDS_Input
             _axis.UpdateState();
         }
     }
+    */
+
+    /// <summary>
+    /// My custom update method, that should be called on MonoBehaviour Update.
+    /// </summary>
+    private static unsafe void MyUpdate(NativeInputUpdateType updateType, NativeInputEventBuffer* buffer)
+    {
+        // Updates each axis state
+        foreach (TDS_AxisToInput _axis in axis)
+        {
+            _axis.UpdateState();
+        }
+    }
+
     #endregion
 
     #endregion

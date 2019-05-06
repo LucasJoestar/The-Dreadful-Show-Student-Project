@@ -204,3 +204,14 @@ public enum UIState
     InGame, 
     InPause
 }
+
+/// <summary>
+/// Type of player action to wait for in event system.
+/// </summary>
+public enum WaitForPlayerAction
+{
+    Jump,
+    Dodge,
+    Grab,
+    Throw
+}

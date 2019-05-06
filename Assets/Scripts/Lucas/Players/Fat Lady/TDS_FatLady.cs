@@ -43,22 +43,25 @@ public class TDS_FatLady : TDS_Player
 
 	#region Unity Methods
 	// Awake is called when the script instance is being loaded
-    private void Awake()
+    protected override void Awake()
     {
-
+        base.Awake();
     }
 
-	// Use this for initialization
-    private void Start()
+    // Use this for initialization
+    protected override void Start()
     {
-		
+        base.Start();
+
+        // Set player type, just in case
+        PlayerType = PlayerType.FatLady;
     }
-	
-	// Update is called once per frame
-	private void Update()
+
+    // Update is called once per frame
+    protected override void Update()
     {
-        
-	}
+        base.Update();
+    }
 	#endregion
 
 	#endregion

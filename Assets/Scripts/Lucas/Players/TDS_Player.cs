@@ -220,14 +220,35 @@ public class TDS_Player : TDS_Character
     public event Action OnStopDodge = null;
 
     /// <summary>
+    /// Event called when stopping parrying.
+    /// </summary>
+    public event Action OnStopParry = null;
+
+
+    /// <summary>
     /// Event called when stopping a dodge. It is cleaned once called.
     /// </summary>
     public event Action OnStopDodgeOneShot = null;
 
     /// <summary>
-    /// Event called when stopping parrying.
+    /// Event called when starting a dodge. It is cleaned once called.
     /// </summary>
-    public event Action OnStopParry = null;
+    public event Action OnStartDodgeOneShot = null;
+
+    /// <summary>
+    /// Event called when starting to jump. It is cleaned once called.
+    /// </summary>
+    public event Action OnStartJumpOneShot = null;
+
+    /// <summary>
+    /// Event called when taking an object. It is cleaned once called.
+    /// </summary>
+    public event Action OnGrabObjectOneShot = null;
+
+    /// <summary>
+    /// Event called when throwing an object. It is cleaned once called.
+    /// </summary>
+    public event Action OnThrowOneShot = null;
     #endregion
 
     #region Fields / Properties
@@ -584,6 +605,10 @@ public class TDS_Player : TDS_Character
     {
         if (!base.GrabObject(_throwable)) return false;
 
+        // Triggers one shot event
+        OnGrabObjectOneShot?.Invoke();
+        OnGrabObjectOneShot = null;
+
         // Updates animator informations
         SetAnim(PlayerAnimState.HasObject);
         return true;
@@ -600,6 +625,10 @@ public class TDS_Player : TDS_Character
         // Update the animator
         if (isGrounded) SetAnim(PlayerAnimState.Throw);
         SetAnim(PlayerAnimState.LostObject);
+
+        // Triggers one shot event
+        OnThrowOneShot?.Invoke();
+        OnThrowOneShot = null;
     }
 
     /// <summary>
@@ -614,6 +643,10 @@ public class TDS_Player : TDS_Character
         // Update the animator
         if (isGrounded) SetAnim(PlayerAnimState.Throw);
         SetAnim(PlayerAnimState.LostObject);
+
+        // Triggers one shot event
+        OnThrowOneShot?.Invoke();
+        OnThrowOneShot = null;
     }
     #endregion
 
@@ -740,6 +773,9 @@ public class TDS_Player : TDS_Character
         isDodging = true;
 
         OnStartDodging?.Invoke();
+
+        OnStartDodgeOneShot?.Invoke();
+        OnStartDodgeOneShot = null;
 
         // Adds an little force at the start of the dodge
         rigidbody.AddForce(Vector3.right * Mathf.Clamp(speedCurrent, speedInitial, speedMax) * speedCoef * isFacingRight.ToSign() * speedMax * (isGrounded ? 10 : 2));
@@ -918,7 +954,7 @@ public class TDS_Player : TDS_Character
         {
             TDS_Camera.Instance.ScreenShake(.25f);
         }
-
+        
         return true;
     }
 
@@ -974,6 +1010,7 @@ public class TDS_Player : TDS_Character
     /// </summary>
     private void AdjustPositionOnRigidbody()
     {
+        if (!photonView.isMine) return; 
         // If the player rigidbody velocity is null, return
         if (rigidbody.velocity == Vector3.zero) return;
 
@@ -1121,6 +1158,7 @@ public class TDS_Player : TDS_Character
     /// </summary>
     private void CheckGrounded()
     {
+        if (!photonView.isMine) return; 
         // Set the player as grounded if something is detected in the ground detection box
         bool _isGrounded = groundDetectionBox.Overlap(transform.position).Length > 0;
 
@@ -1170,7 +1208,7 @@ public class TDS_Player : TDS_Character
     public override void Flip()
     {
         base.Flip();
-
+        if (photonView.isMine) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
         // Flip X throw velocity
         throwVelocity.x *= -1;
     }
@@ -1188,6 +1226,10 @@ public class TDS_Player : TDS_Character
         float _timer = 0;
 
         isJumping = true;
+
+        // Call one shot event
+        OnStartJumpOneShot?.Invoke();
+        OnStartJumpOneShot = null;
 
         // Adds a base vertical force to the rigidbody to expels the player in the air
         rigidbody.AddForce(Vector3.up * JumpForce);
@@ -1209,6 +1251,7 @@ public class TDS_Player : TDS_Character
     /// <param name="_newPosition">Position where to move the player. (World space)</param>
     public void Move(Vector3 _newPosition)
     {
+        if (!photonView.isMine) return; 
         // Increases speed if needed
         if (speedCurrent < SpeedMax)
         {
@@ -1331,12 +1374,14 @@ public class TDS_Player : TDS_Character
     /// <param name="_state">State of the player animator to set.</param>
     public void SetAnim(PlayerAnimState _state)
     {
+
         // Online
         if (photonView.isMine)
         {
-            if (!animator) return;
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (PlayerAnimState)_state });
+            // if (!animator) return;
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)_state });
         }
+        
 
         // Local
         switch (_state)
@@ -1417,6 +1462,11 @@ public class TDS_Player : TDS_Character
                 break;
         }
     }
+
+    public void SetAnim(int _animState)
+    {
+        SetAnim((PlayerAnimState)_animState); 
+    }
     #endregion
 
     #region Inputs
@@ -1425,6 +1475,7 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void CheckActionsInputs()
     {
+        if (!photonView.isMine) return; 
         // If dodging, parrying or attacking, do not perform action
         if (isAttacking || isDodging || isParrying) return;
 
@@ -1465,6 +1516,7 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void CheckMovementsInputs()
     {
+        if (!photonView.isMine) return; 
         // If the character is paralyzed or attacking, do not move
         if (IsParalyzed || isAttacking || isParrying || isDodging) return;
 

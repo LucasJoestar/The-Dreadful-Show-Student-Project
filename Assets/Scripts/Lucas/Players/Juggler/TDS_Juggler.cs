@@ -1063,6 +1063,11 @@ public class TDS_Juggler : TDS_Player
     // Use this for initialization
     protected override void Start()
     {
+        base.Start();
+
+        // Set player type, just in case
+        PlayerType = PlayerType.Juggler;
+
         // Set the juggle transform ideal position
         juggleTransformIdealLocalPosition = new Vector3(.3f, .85f, 0);
 

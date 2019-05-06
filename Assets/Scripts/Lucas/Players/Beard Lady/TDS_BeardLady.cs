@@ -193,6 +193,9 @@ public class TDS_BeardLady : TDS_Player
     {
         base.Start();
 
+        // Set player type, just in case
+        PlayerType = PlayerType.BeardLady;
+
         // Let's make this beard grow repeatedly until it reach its maximum value
         if (currentBeardState != BeardState.VeryVeryLongDude) InvokeBeard();
         SetAnimBeard(currentBeardState);

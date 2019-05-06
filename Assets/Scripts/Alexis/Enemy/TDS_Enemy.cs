@@ -341,6 +341,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected IEnumerator CastAttack()
     {
+        if (isDead) yield break; 
         if(IsPacific)
         {
             enemyState = EnemyState.MakingDecision;
@@ -376,6 +377,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected IEnumerator CastDetection()
     {
+        if (isDead) yield break; 
         SetAnimationState((int)EnemyAnimationState.Run);
         // Wait some time before calling again Behaviour(); 
         Collider[] _colliders;
@@ -443,7 +445,7 @@ public abstract class TDS_Enemy : TDS_Character
                 yield break; 
             }
         }
-        Debug.Log("OUT"); 
+        //Debug.Log("OUT"); 
         // At the end of the path, is the agent has to throw an object, throw it
         if (throwable)
         {
@@ -461,6 +463,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected IEnumerator CastGrab(TDS_Throwable _throwable)
     {
+        if (isDead) yield break; 
         //Pick up an object
         if (agent.IsMoving)
         {
@@ -494,6 +497,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected IEnumerator CastThrow()
     {
+        if (isDead) yield break; 
         //Throw the held object
         if (agent.IsMoving)
         {
@@ -545,7 +549,6 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Die()
     {
         base.Die();
-        StopAllCoroutines();
         SetAnimationState((int)EnemyAnimationState.Death);
         if (Area) Area.RemoveEnemy(this);
     }
@@ -577,6 +580,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public override void ThrowObject()
     {
+        if (isDead) return; 
         float _range = Vector3.Distance(transform.position, playerTarget.transform.position) <  throwRange ? Vector3.Distance(transform.position, playerTarget.transform.position) : throwRange;
         Vector3 _pos = (transform.position - transform.right * _range);
         ThrowObject(_pos);
@@ -604,16 +608,17 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns>if the agent take damages</returns>
     public override bool TakeDamage(int _damage)
     {
+        if (!PhotonNetwork.isMasterClient) return false; 
         bool _isTakingDamages = base.TakeDamage(_damage);
         if (_isTakingDamages)
         {
             agent.StopAgent();
+            if (throwable) DropObject();
             StopAllCoroutines();
             enemyState = EnemyState.MakingDecision;
             if (!isDead)
             {
                 SetAnimationState((int)EnemyAnimationState.Hit);
-                if (throwable) DropObject();
             }
         }
         return _isTakingDamages;
@@ -637,12 +642,12 @@ public abstract class TDS_Enemy : TDS_Character
             agent.StopAgent();
             StopAllCoroutines();
             enemyState = EnemyState.MakingDecision;
+            if (throwable) DropObject();
+            StartCoroutine(ApplyRecoil(_position));
             if (!isDead)
             {
                 SetAnimationState((int)EnemyAnimationState.Hit);
-                if (throwable) DropObject(); 
             }
-            StartCoroutine(ApplyRecoil(_position)); 
         }
         return _isTakingDamages;
     }
@@ -663,11 +668,11 @@ public abstract class TDS_Enemy : TDS_Character
     /// Call the base of the method flip
     /// if this client is the master, call the method online to flip the enemy in the other clients
     /// </summary>
-    //public override void Flip()
-    //{
-    //    base.Flip();
-    //    if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
-    //}
+    public override void Flip()
+    {
+        base.Flip();
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
+    }
     #endregion
 
     #region Vector3
@@ -705,6 +710,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     protected void ComputePath()
     {
+        if (isDead) return; 
         if(IsParalyzed)
         {
             enemyState = EnemyState.MakingDecision;
@@ -722,7 +728,7 @@ public abstract class TDS_Enemy : TDS_Character
         {
             _position = GetAttackingPosition();
         }
-        Debug.Log(_position); 
+        // Debug.Log(_position); 
         _pathComputed = agent.CheckDestination(_position);
         //If the path is computed, reach the end of the path
         if (_pathComputed)
@@ -760,6 +766,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected void TakeDecision()
     {
         //Take decisions
+        if (isDead) return; 
         // If the target can't be targeted, search for another target
         if (!playerTarget || playerTarget.IsDead)
         {

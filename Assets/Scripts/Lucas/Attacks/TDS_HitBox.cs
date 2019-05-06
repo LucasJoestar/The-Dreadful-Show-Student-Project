@@ -104,7 +104,7 @@ public class TDS_HitBox : MonoBehaviour
     /// <summary>
     /// All tags to hit.
     /// </summary>
-    [HideInInspector] public List<string> HittableTags = new List<string>();
+    [HideInInspector] public Tags HittableTags = new Tags();
     #endregion
 
     #endregion
@@ -141,10 +141,10 @@ public class TDS_HitBox : MonoBehaviour
     /// <param name="_attack">Attack used to hit what is in the hit box.</param>
     /// <param name="_owner">The person who attack.</param>
     /// <param name="_attack">Tags to hit.</param>
-    public void Activate(TDS_Attack _attack, TDS_Character _owner, List<string> _hittableTags)
+    public void Activate(TDS_Attack _attack, TDS_Character _owner, Tag[] _hittableTags)
     {
         Owner = _owner;
-        HittableTags = _hittableTags;
+        HittableTags.ObjectTags = _hittableTags;
 
         Activate(_attack);
     }
@@ -222,7 +222,7 @@ public class TDS_HitBox : MonoBehaviour
         // If the collider object should be hit, hit it
 
         // Check if object has 
-        if ((Owner && (other.gameObject == Owner.gameObject)) || !other.gameObject.HasTag(HittableTags.ToArray())) return;
+        if ((Owner && (other.gameObject == Owner.gameObject)) || !other.gameObject.HasTag(HittableTags.ObjectTags)) return;
 
         TDS_Damageable _target = other.GetComponent<TDS_Damageable>();
 

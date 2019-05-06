@@ -4,32 +4,35 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c39479f33b0b54c46bb58971f80805fd, type: 3}
   m_Name: TagsResource
   m_EditorClassIdentifier: 
-  Tags:
-  - Name: Object
-    Color: {r: 1, g: 1, b: 1, a: 1}
-  - Name: Enemy
-    Color: {r: 1, g: 1, b: 1, a: 1}
-  - Name: Boss
-    Color: {r: 1, g: 1, b: 1, a: 1}
+  CustomTags:
+    ObjectTags:
+    - Name: Boss
+      Color: {r: 1, g: 1, b: 1, a: 1}
+    - Name: Enemy
+      Color: {r: 1, g: 1, b: 1, a: 1}
+    - Name: Object
+      Color: {r: 1, g: 1, b: 1, a: 1}
   UnityBuiltInTags:
-  - Name: Untagged
-    Color: {r: 1, g: 1, b: 1, a: 1}
-  - Name: Respawn
-    Color: {r: 1, g: 1, b: 1, a: 1}
-  - Name: Finish
-    Color: {r: 1, g: 1, b: 1, a: 1}
-  - Name: EditorOnly
-    Color: {r: 1, g: 1, b: 1, a: 1}
-  - Name: MainCamera
-    Color: {r: 1, g: 1, b: 1, a: 1}
-  - Name: Player
-    Color: {r: 1, g: 1, b: 1, a: 1}
-  - Name: GameController
-    Color: {r: 1, g: 1, b: 1, a: 1}
+    ObjectTags:
+    - Name: EditorOnly
+      Color: {r: 1, g: 1, b: 1, a: 1}
+    - Name: Finish
+      Color: {r: 1, g: 1, b: 1, a: 1}
+    - Name: GameController
+      Color: {r: 1, g: 1, b: 1, a: 1}
+    - Name: MainCamera
+      Color: {r: 1, g: 1, b: 1, a: 1}
+    - Name: Player
+      Color: {r: 1, g: 1, b: 1, a: 1}
+    - Name: Respawn
+      Color: {r: 1, g: 1, b: 1, a: 1}
+    - Name: Untagged
+      Color: {r: 1, g: 1, b: 1, a: 1}

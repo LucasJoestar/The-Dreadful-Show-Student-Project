@@ -21,9 +21,7 @@ public class TagsEditor : Editor
 	 *	####### TO DO #######
 	 *	#####################
      *  
-     *      • Change the color of existing tags. That should be easy.
-     *      
-     *      • Change the name of created tags. That should be tricky.
+     *      Nothing to see here...
 	 *
 	 *	#####################
 	 *	### MODIFICATIONS ###
@@ -53,7 +51,7 @@ public class TagsEditor : Editor
 	 *
 	 *	Changes :
 	 *
-	 *	Creation of the TagsEditor class.
+	 *	    Creation of the TagsEditor class.
      *	
      *	    • Created the editor for the scriptable object TagsSO from the TagsEditorWindow.
      *	    
@@ -64,86 +62,95 @@ public class TagsEditor : Editor
 	*/
 
     #region Fields / Properties
-
-    #region Editor
     /// <summary>
     /// The editing object of this editor.
     /// </summary>
-    private TagsSO tagsSO = null;
-    #endregion
-
+    private TagsSO      tagsSO      = null;
     #endregion
 
     #region Methods
 
     #region Original Methods
-
-    #region Editor
     /// <summary>
     /// Displays the tags of the project.
     /// </summary>
-    private void DrawTags()
+    public void DrawTags()
     {
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.BeginVertical();
+        GUILayout.Space(10);
+
         // Draws a header
         EditorGUILayout.LabelField("Unity built-in Tags", EditorStyles.boldLabel);
 
+        EditorGUILayout.EndVertical();
+        GUILayout.FlexibleSpace();
+
+        // Draw a button on top right to connect project tags
+        if (GUILayout.Button(new GUIContent("Connect Project Tags", "Use this if Unity tags or tags on this asset have been created without using this editor ;\nThis will connect this project Unity tags with the tags asset to create missing tags on both of them."), GUILayout.Width(150), GUILayout.Height(25))) ConnectProjectTags();
+
+        EditorGUILayout.EndHorizontal();
+
+        GUILayout.Space(10);
+
         // If no tags, draws a information box and return
-        if (tagsSO.UnityBuiltInTags == null || tagsSO.UnityBuiltInTags.Count == 0)
+        if (tagsSO.UnityBuiltInTags == null || tagsSO.UnityBuiltInTags.ObjectTags.Length == 0)
         {
             EditorGUILayout.HelpBox("No built-in tag found on this project", MessageType.Info);
         }
         else
         {
             // Draw Unity built-in tags
-            MultiTagsUtility.DrawTags(tagsSO.UnityBuiltInTags.ToArray());
+            MultiTagsUtility.GUILayoutDisplayTags(tagsSO.UnityBuiltInTags.ObjectTags);
         }
 
-        // Draws a header
-        EditorGUILayout.LabelField("Custom Tags", EditorStyles.boldLabel);
+        GUILayout.Space(10);
+        EditorGUILayout.BeginHorizontal();
+
+        // Draws a header with a little plus button next to it, allowing to create new tags
+        GUIContent _customTags = new GUIContent("Custom Tags", "Tags created by users on this project");
+        EditorGUILayout.LabelField(_customTags, EditorStyles.boldLabel, GUILayout.MaxWidth(EditorStyles.boldLabel.CalcSize(_customTags).x));
+
+        GUIStyle _olPlus = MultiTagsUtility.OLPlusStyle;
+        Rect _buttonRect = GUILayoutUtility.GetRect(GUIContent.none, _olPlus);
+        _buttonRect.y += 2;
+
+        if (GUI.Button(_buttonRect, new GUIContent(string.Empty, "Create a new tag on this project"), _olPlus))
+        {
+            CreateTagWindow.CallWindow();
+        }
+
+        EditorGUILayout.EndHorizontal();
+        GUILayout.Space(10);
 
         // If no tags, draws a information box and return
-        if (tagsSO.Tags == null || tagsSO.Tags.Count == 0)
+        if (tagsSO.CustomTags == null || tagsSO.CustomTags.ObjectTags.Length == 0)
         {
             EditorGUILayout.HelpBox("No tag found on this project. How about create a first one ?", MessageType.Info);
         }
         else
         {
             // Draw all custom tags ; if clicking on a tag left button, remove it from the project and repaint
-            if (MultiTagsUtility.DrawTags(tagsSO.Tags.ToArray(), RemoveTag))
-            {
-                Repaint();
-                return;
-            }
+            MultiTagsUtility.GUILayoutTagsField(tagsSO.CustomTags.ObjectTags, RemoveTag);
         }
     }
 
     /// <summary>
-    /// Draws the multi-tags system editor.
+    /// Connect this project Unity tags with the tags asset to create missing ones on both of them.
     /// </summary>
-    public void DrawTagsEditor()
-    {
-        // Draw all project tags
-        DrawTags();
-    }
-    #endregion
-
-    #region Tags
-    /// <summary>
-    /// Initializes this scriptable object with the project tags, and adds all tags this object contains to the project if not having them yet.
-    /// </summary>
-    public void Initialize()
+    private void ConnectProjectTags()
     {
         List<string> _projectTags = MultiTagsUtility.GetUnityTags().ToList();
-        List<string> _projectMultiTags = _projectTags.SelectMany(t => t.Split(MultiTags.TagSeparator)).Distinct().ToList();
-        string[] _referenceTags = tagsSO.Tags.Select(t => t.Name).ToArray();
-        string[] _referenceUnityTags = tagsSO.UnityBuiltInTags.Select(t => t.Name).ToArray();
+        List<string> _projectMultiTags = _projectTags.SelectMany(t => t.Split(MultiTags.TAG_SEPARATOR)).Distinct().ToList();
+        string[] _referenceTags = tagsSO.CustomTags.TagNames;
+        string[] _referenceUnityTags = tagsSO.UnityBuiltInTags.TagNames;
 
         // Adds each tag of this scriptable object to the project in not having them yet
         foreach (string _tag in _referenceTags)
         {
             if (!_projectTags.Contains(_tag))
             {
-                MultiTagsUtility.AddTag(_tag);
+                MultiTagsUtility.CreateUnityTag(_tag);
             }
             else
             {
@@ -158,27 +165,14 @@ public class TagsEditor : Editor
         {
             if (MultiTags.BuiltInTagsNames.Contains(_tag))
             {
-                if (!_referenceUnityTags.Contains(_tag)) tagsSO.UnityBuiltInTags.Add(new Tag(_tag));
+                if (!_referenceUnityTags.Contains(_tag)) tagsSO.UnityBuiltInTags.AddTag(new Tag(_tag));
             }
-            else tagsSO.Tags.Add(new Tag(_tag));
+            else tagsSO.CustomTags.AddTag(new Tag(_tag));
         }
 
-        SaveAsset();
-    }
-
-    /// <summary>
-    /// Creates a brand new tag and add it to the project.
-    /// </summary>
-    /// <param name="_tag">New tag to add.</param>
-    public void CreateTag(Tag _tag)
-    {
-        Undo.RecordObject(target, "Tag \"" + _tag.Name + "\" Creation");
-
-        MultiTagsUtility.AddTag(_tag.Name);
-        tagsSO.Tags.Add(_tag);
-        tagsSO.Tags = tagsSO.Tags.OrderByDescending(t => t.Color.grayscale).ToList();
-
-        SaveAsset();
+        // Saves the asset
+        EditorUtility.SetDirty(tagsSO);
+        AssetDatabase.SaveAssets();
     }
 
     /// <summary>
@@ -197,43 +191,11 @@ public class TagsEditor : Editor
                                          "Confirm",
                                          "Cancel")) return;
 
-        // Get all project objects with tag to remove it from them
-        GameObject[] _allObjectsWithTag = Resources.FindObjectsOfTypeAll<GameObject>().Where(g => g.GetTags().Contains(_tag.Name)).ToArray();
-
-        Undo.RecordObjects(_allObjectsWithTag, "Game Object(s) Remove Tag \"" + _tag.Name + "\"");
-
-        Undo.RecordObject(target, "Tag \"" + _tag.Name + "\" Destruction");
-
-        // Remove tag from all objects having it
-        MultiTagsUtility.RemoveTagFromGameObjects(_tag.Name, _allObjectsWithTag);
-
-        // Remove all Unity tags containing this tag
-        MultiTagsUtility.GetUnityTags().Where(t => t.Split(MultiTags.TagSeparator).Contains(_tag.Name)).ToList().ForEach(t => MultiTagsUtility.RemoveTag(t));
-
-        // Remove tag from object
-        tagsSO.Tags.Remove(_tag);
-
-        SaveAsset();
+        MultiTagsUtility.DestroyTag(_tag.Name);
     }
-
-    /// <summary>
-    /// Saves this asset.
-    /// </summary>
-    private void SaveAsset()
-    {
-        EditorUtility.SetDirty(target);
-        AssetDatabase.SaveAssets();
-    }
-    #endregion
-
     #endregion
 
     #region Unity Methods
-    private void OnDisable()
-    {
-        //Debug.Log("Disable editor");
-    }
-
     // This function is called when the object is loaded
     private void OnEnable()
     {
@@ -242,14 +204,13 @@ public class TagsEditor : Editor
 
         // Get editing object
         tagsSO = (TagsSO)target;
-
-        //Debug.Log("Enable Editor");
     }
 
     // Implement this function to make a custom inspector
     public override void OnInspectorGUI()
     {
-        DrawTagsEditor();
+        // Draw all project tags
+        DrawTags();
     }
     #endregion
 
