@@ -19,9 +19,9 @@ public class TagsEditorWindow : EditorWindow
 	 *	####### TO DO #######
 	 *	#####################
      * 
-     *      • Search system for tags.
+     *      • Create a cool window with multiple tabs, allowing to edit tags or change settings.
      *      
-     *      • Remove tag from all objects in loaded scene(s).
+     *      • Search system for tags.
      * 
 	 *	#####################
 	 *	### MODIFICATIONS ###
@@ -32,7 +32,7 @@ public class TagsEditorWindow : EditorWindow
 	 *
 	 *	Changes :
 	 *
-	 *	    Moved editor to the TagsEditor class for TagsSO custom editor.
+	 *	    • Moved editor to the TagsEditor class for TagsSO custom editor.
      *	Now, this window display the editor of the object.
      * 
 	 *	-----------------------------------
@@ -42,7 +42,7 @@ public class TagsEditorWindow : EditorWindow
 	 *
 	 *	Changes :
 	 *
-     *	    Finally, tags can be created & removed from this window, and everything is fully
+     *	    • Finally, tags can be created & removed from this window, and everything is fully
      *	saved on a scriptable object reference. Pretty cool, it is.
      *	    Still, tags are not displayed the way I want to, so got to find a way to display them
      *	horizontally and automatically go to the line when reaching the end of the screen.
@@ -58,7 +58,7 @@ public class TagsEditorWindow : EditorWindow
 	 *
 	 *	Changes :
 	 *
-	 *	    The window loads & write dynamically project tags on a scriptable object in the
+	 *	    • The window loads & write dynamically project tags on a scriptable object in the
      *	Resources folder. Plus, all of them are drawn on the window. Pretty cool.
      * 
 	 *	-----------------------------------
@@ -68,9 +68,9 @@ public class TagsEditorWindow : EditorWindow
 	 *
 	 *	Changes :
 	 *
-	 *	Creation of the TagsEditorWindow class.
+	 *	    Creation of the TagsEditorWindow class.
      *	    
-     *	    The window can now be called from a Menu Toolbar button, and... That's it.
+     *	    • The window can now be called from a Menu Toolbar button, and... That's it.
      *	Yeah, I know...
 	 *
 	 *	-----------------------------------
@@ -78,19 +78,36 @@ public class TagsEditorWindow : EditorWindow
 
     #region Fields / Properties
     /// <summary>Backing field for <see cref="Reference"/>.</summary>
-    private TagsSO reference = null;
+    private TagsSO                  reference                       = null;
 
     /// <summary>
     /// Editor of the tags object reference.
     /// </summary>
-    private TagsEditor referenceEditor = null;
+    private TagsEditor              referenceEditor                 = null;
+
+
+    /// <summary>
+    /// Index used for the window toolbar.
+    /// </summary>
+    private int                     toolbarIndex                    = 0;
+
+    /// <summary>
+    /// All available options of the toolbar.
+    /// </summary>
+    private readonly GUIContent[]   toolbarOptions                  = new GUIContent[] { new GUIContent("Tags", "Edit the tags of the project."), new GUIContent("Informations", "Everything you need to know to perfectly use these tags."), new GUIContent("Contact", "How to contact me, if you have any question or suggestion.") };
+
+
+    /// <summary>
+    /// Vector of this window scrollbar.
+    /// </summary>
+    private Vector2                 scrollbar                       = Vector2.zero;
     #endregion
 
     #region Methods
 
     #region Original Methods
 
-    #region Editor
+    #region Editor Window
     /// <summary>
     /// Draws the toolbar on the top of the tags editor window.
     /// </summary>
@@ -101,11 +118,27 @@ public class TagsEditorWindow : EditorWindow
         // Draws a button to create a brand new cool tag
         if (GUILayout.Button("Create Tag", EditorStyles.toolbarButton))
         {
-            GetWindow<CreateTagWindow>("Create new Tag").Show(this);
+            CreateTagWindow.CallWindow();
         }
 
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
+    }
+
+    /// <summary>
+    /// Draws informations about tags and how to use them.
+    /// </summary>
+    private void DrawInformations()
+    {
+        
+    }
+
+    /// <summary>
+    /// Draw contact informations.
+    /// </summary>
+    private void DrawContact()
+    {
+
     }
     #endregion
 
@@ -147,14 +180,44 @@ public class TagsEditorWindow : EditorWindow
     {
         if (!reference)
         {
-            // Call the OnDisable & OnEnable methods to refresh window
+            // Call the OnDisable & OnEnable methods to refresh the window
             OnDisable();
             OnEnable();
         }
 
-        // Draws tags editor
+        // Start the scroll view
+        scrollbar = EditorGUILayout.BeginScrollView(scrollbar);
+
+        // Draw a mini toolbar followed by a menu toolbat in top of the window
         DrawToolbar();
-        referenceEditor.DrawTagsEditor();
+        toolbarIndex = GUILayout.Toolbar(toolbarIndex, toolbarOptions, GUILayout.Height(25), GUILayout.ExpandWidth(true));
+
+        GUILayout.Space(5);
+
+        switch (toolbarIndex)
+        {
+            case 0:
+                // Edit this project tags
+                referenceEditor.DrawTags();
+                break;
+
+            case 1:
+                // Show informations about tags
+                DrawInformations();
+                break;
+
+            case 2:
+                // How to contact me
+                DrawContact();
+                break;
+
+            default:
+                // Nothing to see here...
+                break;
+        }
+
+        // End the scroll view
+        EditorGUILayout.EndScrollView();
     }
 
     // OnInspectorUpdate is called at 10 frames per second to give the inspector a chance to update
@@ -203,69 +266,53 @@ public class CreateTagWindow : EditorWindow
     /// <summary>
     /// Name of the new tag to create.
     /// </summary>
-    private string tagName = "New Tag";
+    private string          tagName                         = "New Tag";
 
     /// <summary>
     /// Color of the new tag to create.
     /// </summary>
-    private Color color = Color.white;
+    private Color           color                           = Color.white;
 
     /// <summary>
     /// Indicates if the name entered is empty.
     /// </summary>
-    private bool isNameEmpty = false;
+    private bool            isNameEmpty                     = false;
 
     /// <summary>
     /// Indicates if a tag with the same name already exist or not.
     /// </summary>
-    private bool doesNameAlreadyExist = false;
+    private bool            doesNameAlreadyExist            = false;
 
     /// <summary>
     /// Indicates if the name entered contains the tag separator or not.
     /// </summary>
-    private bool doesNameContainSeparator = false;
-
-    /// <summary>
-    /// Reference editor creating tags for.
-    /// </summary>
-    private TagsEditor reference = null;
+    private bool            doesNameContainSeparator        = false;
     #endregion
 
     #region Methods
 
     #region Original Method
     /// <summary>
-    /// Initializes the window with an editor reference.
+    /// Call this editor window.
     /// </summary>
-    /// <param name="_reference">Editor to create tag for.</param>
-    public void Show(TagsEditor _reference) => reference = _reference;
+    public static void CallWindow()
+    {
+        GetWindow<CreateTagWindow>("Create new Tag").Show();
+    }
 
     /// <summary>
     /// Draws this editor window content.
     /// </summary>
     private void DrawEditor()
     {
-        // If the name contains the tag separator, indicate it
-        if (doesNameContainSeparator)
-        {
-            EditorGUILayout.HelpBox("The name of the tag cannot contains \'" + MultiTags.TagSeparator + "\'", MessageType.Error);
-        }
-        // If the name is not valid, indicate it
-        else if (doesNameAlreadyExist)
-        {
-            EditorGUILayout.HelpBox("A tag with the same name already exist", MessageType.Error);
-        }
-        // If the name is empty, indicate it
-        else if (isNameEmpty)
-        {
-            EditorGUILayout.HelpBox("You must enter a name", MessageType.Error);
-        }
-
         EditorGUILayout.BeginHorizontal();
 
         // Set the name & color of the new tag
         EditorGUILayout.LabelField(new GUIContent("Name :", "Name of the new tag to create"), GUILayout.Width(50));
+        EditorGUI.BeginChangeCheck();
         tagName = EditorGUILayout.TextField(tagName, GUILayout.Width(100));
+        if (EditorGUI.EndChangeCheck()) CheckName();
+
         EditorGUILayout.LabelField(new GUIContent("Color :", "Color of the new tag to create"), GUILayout.Width(50));
         color = EditorGUILayout.ColorField(color, GUILayout.Width(100));
 
@@ -274,71 +321,76 @@ public class CreateTagWindow : EditorWindow
         EditorGUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
 
-        if (GUILayout.Button("Create", EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
+        if (GUILayout.Button("Create", EditorStyles.miniButton, GUILayout.ExpandWidth(false)) && !doesNameAlreadyExist && !doesNameContainSeparator && !isNameEmpty)
         {
-            // If the new tag name entered contains the tag separator, indicate it and refuse to create the tag
-            if (tagName.Contains(MultiTags.TagSeparator))
-            {
-                doesNameContainSeparator = true;
-                doesNameAlreadyExist = false;
-                isNameEmpty = false;
-
-                SetBigSize();
-                Repaint();
-                return;
-            }
-            else if (doesNameContainSeparator)
-            {
-                doesNameContainSeparator = false;
-                SetSmallSize();
-                Repaint();
-            }
-
-            // If a tag with the same name already exist, indicate it and refuse to create the tag
-            if (MultiTagsUtility.GetUnityTags().Contains(tagName))
-            {
-                doesNameAlreadyExist = true;
-                isNameEmpty = false;
-
-                SetBigSize();
-                Repaint();
-                return;
-            }
-            else if (doesNameAlreadyExist)
-            {
-                doesNameAlreadyExist = false;
-                SetSmallSize();
-                Repaint();
-            }
-
-            // If the name entered is empty, indicate it and refuse to create the tag
-            if (string.IsNullOrEmpty(tagName))
-            {
-                isNameEmpty = true;
-
-                SetBigSize();
-                Repaint();
-                return;
-            }
-
             // If everything is okay, create the new tag
-            if (reference)
-            {
-                reference.CreateTag(new Tag(tagName, color));
-            }
-            else
-            {
-                TagsSO _tagsSO = MultiTagsUtility.GetTagsAsset();
-
-                TagsEditor _editor = (TagsEditor)Editor.CreateEditor(_tagsSO);
-                _editor.CreateTag(new Tag(tagName, color));
-
-                DestroyImmediate(_editor);
-            }
+            MultiTagsUtility.CreateTag(new Tag(tagName, color));
 
             Close();
         }
         EditorGUILayout.EndHorizontal();
+
+        // If the name contains the tag separator, indicate it
+        if (doesNameContainSeparator)
+        {
+            EditorGUILayout.HelpBox("The name of the tag cannot contains \'" + MultiTags.TAG_SEPARATOR + "\'.", MessageType.Warning);
+        }
+        // If the name is not valid, indicate it
+        else if (doesNameAlreadyExist)
+        {
+            EditorGUILayout.HelpBox("A tag with the same name already exist.", MessageType.Warning);
+        }
+        // If the name is empty, indicate it
+        else if (isNameEmpty)
+        {
+            EditorGUILayout.HelpBox("You must enter a name.", MessageType.Warning);
+        }
+    }
+
+    /// <summary>
+    /// Check if the tag name is valid.
+    /// </summary>
+    private void CheckName()
+    {
+        // If the new tag name entered contains the tag separator, indicate it and refuse to create the tag
+        if (tagName.Contains(MultiTags.TAG_SEPARATOR))
+        {
+            doesNameContainSeparator = true;
+            doesNameAlreadyExist = false;
+            isNameEmpty = false;
+
+            SetBigSize();
+        }
+        else if (doesNameContainSeparator)
+        {
+            doesNameContainSeparator = false;
+        }
+
+        // If a tag with the same name already exist, indicate it and refuse to create the tag
+        if (MultiTagsUtility.GetUnityTags().Contains(tagName))
+        {
+            doesNameAlreadyExist = true;
+            isNameEmpty = false;
+
+            SetBigSize();
+        }
+        else if (doesNameAlreadyExist)
+        {
+            doesNameAlreadyExist = false;
+        }
+
+        // If the name entered is empty, indicate it and refuse to create the tag
+        if (string.IsNullOrEmpty(tagName.Trim()))
+        {
+            isNameEmpty = true;
+
+            SetBigSize();
+        }
+        else if (isNameEmpty)
+        {
+            isNameEmpty = false;
+            SetSmallSize();
+        }
     }
 
     /// <summary>
@@ -346,9 +398,11 @@ public class CreateTagWindow : EditorWindow
     /// </summary>
     private void SetBigSize()
     {
-        Vector2 _size = new Vector2(300, 95);
+        Vector2 _size = new Vector2(300, 92);
         minSize = _size;
         maxSize = _size;
+
+        Repaint();
     }
 
     /// <summary>
@@ -359,6 +413,8 @@ public class CreateTagWindow : EditorWindow
         Vector2 _size = new Vector2(300, 50);
         minSize = _size;
         maxSize = _size;
+
+        Repaint();
     }
     #endregion
 
@@ -367,6 +423,7 @@ public class CreateTagWindow : EditorWindow
     private void OnEnable()
     {
         SetSmallSize();
+        CheckName();
         ShowUtility();
     }
 

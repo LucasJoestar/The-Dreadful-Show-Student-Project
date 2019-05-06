@@ -1,42 +1,42 @@
 fileFormatVersion: 2
-guid: c444346ec6cbe7840b8b418f322c6bfb
+guid: 86eb115d0b8932a4e8d8db2655782f38
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Enseigne
-    21300002: Fenetre_2
-    21300004: Devanture
-    21300006: Fenetre_0
-    21300008: Fenetre_1
-    21300010: Fenetre_3
-    21300012: Fenetre_4
-    21300014: Fenetre_5
-    21300016: DevantureMagasin
-    21300018: BoucheEgoutTrottoir
-    21300020: Pilone
-    21300022: InterieurVitrine
-    21300024: DoorHammer_0
-    21300026: PoignetSerrure_0
-    21300028: DoorHammer_1
-    21300030: DoorHammer_2
-    21300032: Poignet
-    21300034: PoignetSerrure_1
-    21300036: Serrure
+    21300000: TextBoard_Long
+    21300002: Window3
+    21300004: Frontage_Bar
+    21300006: Window1
+    21300008: Window2
+    21300010: Window4
+    21300012: Window5
+    21300014: Window6
+    21300016: Frontage_Shop
+    21300018: Sewer_drain
+    21300020: Pillar
+    21300022: Shop
+    21300024: Door_knob1
+    21300026: Door_Handle1
+    21300028: Door_knob2
+    21300030: Door_knob3
+    21300032: Door_Handle2
+    21300034: Door_Handle3
+    21300036: Door_handle4
     21300038: sprite_sheet_batiment_cartoon_19
-    21300040: Door_0
-    21300042: Door_1
-    21300044: Door_2
-    21300046: Vitre_0
-    21300048: Vitre_1
-    21300050: Vitre_2
-    21300052: Door_3
-    21300054: Door_4
-    21300056: Door_5
-    21300058: Vitre_3
-    21300060: Vitre_4
-    21300062: Vitre_5
-    21300064: VitreJaune
-    21300066: Door_6
-    21300068: VitreRouge
+    21300040: Door1
+    21300042: Door2
+    21300044: Door3
+    21300046: Glass1
+    21300048: Glass2
+    21300050: Glass3
+    21300052: Door4
+    21300054: Door5
+    21300056: Door6
+    21300058: Glass4
+    21300060: Glass5
+    21300062: Glass6
+    21300064: Glass7_yellow
+    21300066: Door7
+    21300068: Glass7
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -163,7 +163,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Enseigne
+      name: TextBoard_Long
       rect:
         serializedVersion: 2
         x: 118
@@ -177,13 +177,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c8ba88b13f8a46b4a9d2c70e8a11b3a2
+      spriteID: 507d0ec4bee2cee478f37785419ddd95
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Fenetre_2
+      name: Window3
       rect:
         serializedVersion: 2
         x: 1655
@@ -197,13 +197,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3cadd854cdeac854991111555fa07885
+      spriteID: c51b2e0883e12bd4ebde1aac05a47a1b
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Devanture
+      name: Frontage_Bar
       rect:
         serializedVersion: 2
         x: 48
@@ -217,13 +217,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 04f5a46c1d825d045b2b55428bb70f18
+      spriteID: dec6b5b50dc1b21428ebfa0fdd2f8456
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Fenetre_0
+      name: Window1
       rect:
         serializedVersion: 2
         x: 1211
@@ -237,13 +237,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4d21f6249ae6ad148aac566405cdf66a
+      spriteID: ab5541d30a5bae943bbee7a051d44e55
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Fenetre_1
+      name: Window2
       rect:
         serializedVersion: 2
         x: 1389
@@ -257,13 +257,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9364734808e18b64c83883dd0201ff96
+      spriteID: dec362b174efd794ebe3da338c0241aa
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Fenetre_3
+      name: Window4
       rect:
         serializedVersion: 2
         x: 1220
@@ -277,13 +277,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3c6dea6c1146e8e4aa38f5f5ab6228f7
+      spriteID: 8c36adfeb753c28448ddf9218fa46f0d
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Fenetre_4
+      name: Window5
       rect:
         serializedVersion: 2
         x: 1460
@@ -297,13 +297,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c294b46089531aa4289fc354de0ca679
+      spriteID: 929ddf7e6181b3a4bba2b59165a08fc5
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Fenetre_5
+      name: Window6
       rect:
         serializedVersion: 2
         x: 1748
@@ -317,13 +317,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 05e848afa7553c640882cd9c5566a486
+      spriteID: 046a2cf7581276241ba2b125b1e14022
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DevantureMagasin
+      name: Frontage_Shop
       rect:
         serializedVersion: 2
         x: 79
@@ -337,13 +337,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e556544092fefdf4dbc67f585b55db0c
+      spriteID: 033564f086e06b543a526d537e462bea
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BoucheEgoutTrottoir
+      name: Sewer_drain
       rect:
         serializedVersion: 2
         x: 743
@@ -357,13 +357,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e8f942fdca8914b4787df74bf6094eaa
+      spriteID: a4d42bb86f5195a4d81713c7d8e74f02
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Pilone
+      name: Pillar
       rect:
         serializedVersion: 2
         x: 740
@@ -377,13 +377,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a4542abb879d59042aeccbe30c2644e6
+      spriteID: 0e5aace853ba5344fb16561f4632c396
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: InterieurVitrine
+      name: Shop
       rect:
         serializedVersion: 2
         x: 1024
@@ -397,18 +397,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 740d0c7beb9b74142a6cf86ed32d2901
+      spriteID: 574d8e0179bcf7440b4941351322a236
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DoorHammer_0
+      name: Door_knob1
       rect:
         serializedVersion: 2
         x: 1699
         y: 1186
-        width: 47
+        width: 57
         height: 62
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -417,18 +417,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1ab871aecac047749af7a86b8b0a8b5d
+      spriteID: d72f65adc2820bb4fb65973faae545db
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PoignetSerrure_0
+      name: Door_Handle1
       rect:
         serializedVersion: 2
-        x: 1807
+        x: 1804
         y: 1190
-        width: 36
+        width: 39
         height: 58
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -437,16 +437,16 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4074434248532f54ea0fcadc3aab857e
+      spriteID: e65db1fcdea788f4fa74aabb4c375128
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DoorHammer_1
+      name: Door_knob2
       rect:
         serializedVersion: 2
-        x: 1888
+        x: 1889
         y: 1176
         width: 56
         height: 72
@@ -457,13 +457,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e4891737e43c03f42b5ef13089fa0006
+      spriteID: 3794c8c7d44c6e046807957258705bad
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DoorHammer_2
+      name: Door_knob3
       rect:
         serializedVersion: 2
         x: 1690
@@ -477,13 +477,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 96b016aa01ceadf4097e682e14702293
+      spriteID: 35093ebf5753aa546ba9d1849b03b73a
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Poignet
+      name: Door_Handle2
       rect:
         serializedVersion: 2
         x: 1768
@@ -497,13 +497,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 09665cb9f55169241b55b116d8c8906f
+      spriteID: ccac3f6402f3d1a44811c84ba4f3d6d8
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PoignetSerrure_1
+      name: Door_Handle3
       rect:
         serializedVersion: 2
         x: 1846
@@ -517,13 +517,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: aa20ad5d04162b241aa3479d4579e95c
+      spriteID: c72a12055ea69ec4ea2edc6fbe5d83c8
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Serrure
+      name: Door_handle4
       rect:
         serializedVersion: 2
         x: 1912
@@ -537,16 +537,36 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 53deab981e6a6bd4d9fe8de062040386
+      spriteID: 16bb38c32eb626a4a8a50a7e16c1a25d
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Door_0
+      name: sprite_sheet_batiment_cartoon_19
       rect:
         serializedVersion: 2
-        x: 103
+        x: 100
+        y: 685
+        width: 4
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e84db8be90e00947bcd823a5fd5101d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Door1
+      rect:
+        serializedVersion: 2
+        x: 106
         y: 664
         width: 143
         height: 261
@@ -557,13 +577,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 708fda5c4af7a3243bf50a3ff351a415
+      spriteID: 45a94ea532db95d439147e2af73ef196
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Door_1
+      name: Door2
       rect:
         serializedVersion: 2
         x: 307
@@ -577,13 +597,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 37373cffd7d78c44c925b4bacf37f204
+      spriteID: 093863e409c706e4b8985fa5e9404b0a
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Door_2
+      name: Door3
       rect:
         serializedVersion: 2
         x: 499
@@ -597,13 +617,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2b05e29f3e8aa0c4b9409cc8b18fc862
+      spriteID: 892d11176093f4a488a2bd5fb059601b
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Vitre_0
+      name: Glass1
       rect:
         serializedVersion: 2
         x: 1028
@@ -617,19 +637,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 982ea734c2e692242a413eda7e6977b6
+      spriteID: 32be01aaed312964294fdf440d9bdb01
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Vitre_1
+      name: Glass2
       rect:
         serializedVersion: 2
         x: 1204
         y: 750
         width: 188
-        height: 97
+        height: 82
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -637,19 +657,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a16731aa3c88aa846b2be71bd85a11f9
+      spriteID: e93220f3f8af39a498bb6ae8c13a3428
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Vitre_2
+      name: Glass3
       rect:
         serializedVersion: 2
         x: 1482
-        y: 731
-        width: 170
-        height: 157
+        y: 736
+        width: 157
+        height: 152
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -657,13 +677,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c9b50387978df774a93b4795e0ff7ba5
+      spriteID: 5d15b41ebb9caf240b8451c68e980f37
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Door_3
+      name: Door4
       rect:
         serializedVersion: 2
         x: 110
@@ -677,13 +697,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e68116dbf446b7d40ab07aa20bccfa3e
+      spriteID: b39ab0cac0211aa4eafa9a708b27576c
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Door_4
+      name: Door5
       rect:
         serializedVersion: 2
         x: 276
@@ -697,13 +717,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3e0efc3c17c6d1047b64d4b0652acfe5
+      spriteID: 3294372dd9f3ecf43a316ef99f87a719
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Door_5
+      name: Door6
       rect:
         serializedVersion: 2
         x: 469
@@ -717,13 +737,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5d32c08482a6e2845ab14061ed6b083f
+      spriteID: e6e42e89ab28e554eb3783d710d60ce8
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Vitre_3
+      name: Glass4
       rect:
         serializedVersion: 2
         x: 1032
@@ -737,13 +757,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4b9632fd47d0d764bb67b33c52683c6c
+      spriteID: 36ce8b0a29cf1ec41a944b1a81588dcc
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Vitre_4
+      name: Glass5
       rect:
         serializedVersion: 2
         x: 1284
@@ -757,13 +777,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: deb716f496a216e438841558828c7763
+      spriteID: 37169f25bbf07294da462c08ceb23a89
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Vitre_5
+      name: Glass6
       rect:
         serializedVersion: 2
         x: 1560
@@ -777,13 +797,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5b68e099f73e85d4bbd42fe7a2bc5c2e
+      spriteID: 4a36a1e3f85302449884ee344aa03f5f
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: VitreJaune
+      name: Glass7_yellow
       rect:
         serializedVersion: 2
         x: 904
@@ -797,13 +817,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 49583cc573f51ea48bb78ffe39f70b8a
+      spriteID: c4f5191bb82be214b8985bdde31bef1d
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Door_6
+      name: Door7
       rect:
         serializedVersion: 2
         x: 268
@@ -817,13 +837,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 442e15dcbf25e4f4290d09646cb7a3d7
+      spriteID: a1234d13fc3f75c46b380d6ab944d71e
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: VitreRouge
+      name: Glass7
       rect:
         serializedVersion: 2
         x: 904
@@ -837,7 +857,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 41582f38bd2216f4db81eab33c59e8a3
+      spriteID: bc65e62a6eb0ffc47b445d1185d84152
       vertices: []
       indices: 
       edges: []
@@ -845,7 +865,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: f82c6c47403f806418de17a77612c63b
+    spriteID: 48be568092ea89244a8c129c89b67c1a
     vertices: []
     indices: 
     edges: []

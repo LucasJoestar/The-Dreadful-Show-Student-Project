@@ -144,13 +144,12 @@ public class TDS_Throwable : MonoBehaviour
         transform.SetParent(null, true);
         bonusDamage = _bonusDamage;
         rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position,_finalPosition,_angle);
-        List<string> _hitableTags = new List<string>();
-        _hitableTags.AddRange(owner.HitBox.HittableTags); 
+        Tags _hitableTags = owner.HitBox.HittableTags; 
         if (owner is TDS_Enemy)
         {
-            _hitableTags.Add("Enemy");
+            _hitableTags.AddTag("Enemy");
         }
-        hitBox.Activate(attack, owner, _hitableTags);
+        hitBox.Activate(attack, owner, _hitableTags.ObjectTags);
         isHeld = false;
     }
     #endregion
