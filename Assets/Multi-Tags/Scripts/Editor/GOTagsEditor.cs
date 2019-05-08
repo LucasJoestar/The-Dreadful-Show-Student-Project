@@ -224,7 +224,9 @@ public class GOTagsEditor : Editor
     // This function is called when the scriptable object goes out of scope
     private void OnDisable()
     {
-        //Debug.Log("Game Object Editor => Disable");
+        Debug.Log("Game Object Editor => Disable");
+
+        if (defaultEditor) DestroyImmediate(defaultEditor);
     }
 
     // This function is called when the object is loaded
@@ -240,11 +242,12 @@ public class GOTagsEditor : Editor
 
         // When this inspector is created, also create the built-in inspector
         defaultEditor = CreateEditor(targets, Type.GetType("UnityEditor.GameObjectInspector, UnityEditor"));
+        defaultEditor.GetType().GetMethod("OnEnable").Invoke(defaultEditor, null);
 
         // Get editing object(s) tags
         GetObjectsTags();
 
-        //Debug.Log("Game Object Editor => Enable");
+        Debug.Log("Game Object Editor => Enable");
     }
 
     // Implement this function to make a custom header
