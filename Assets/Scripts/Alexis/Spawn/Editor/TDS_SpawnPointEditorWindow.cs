@@ -74,8 +74,6 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
         scrollView = EditorGUILayout.BeginScrollView(scrollView, true, true);
         //Display properties and settings of the spawn point
         EditorGUILayout.PropertyField(property);
-        // Aplly changes on the SerializedObject
-        property.serializedObject.ApplyModifiedProperties(); 
         GUILayout.Space(5);
         
         // Create two ObjectFields to add normal and random spawning informations
@@ -92,8 +90,10 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
                     return ;
 
             }
+            Debug.Log("ok"); 
             _ref.InsertArrayElementAtIndex(_ref.arraySize);
             _ref.GetArrayElementAtIndex(_ref.arraySize-1).FindPropertyRelative("enemyResourceName").stringValue = _e.EnemyName;
+            Repaint(); 
         }
         _e = null;
         _e = EditorGUILayout.ObjectField("Add Random Enemy", _e, typeof(TDS_Enemy), false) as TDS_Enemy;
@@ -105,13 +105,16 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
             for (int i = 0; i < _ref.arraySize; i++)
             {
                 if (_ref.GetArrayElementAtIndex(i).FindPropertyRelative("enemyResourceName").stringValue == _e.EnemyName)
-                    return;
+                    return ;
 
             }
             _ref.InsertArrayElementAtIndex(_ref.arraySize);
-            _ref.GetArrayElementAtIndex(_ref.arraySize-1).FindPropertyRelative("enemyResourceName").stringValue = _e.EnemyName; 
+            _ref.GetArrayElementAtIndex(_ref.arraySize-1).FindPropertyRelative("enemyResourceName").stringValue = _e.EnemyName;
+            Repaint(); 
         }
         EditorGUILayout.EndScrollView();
+        // Aply changes on the SerializedObject
+        property.serializedObject.ApplyModifiedProperties();
     }
 
     /// <summary>

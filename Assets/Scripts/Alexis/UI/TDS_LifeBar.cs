@@ -115,7 +115,7 @@ public class TDS_LifeBar : PunBehaviour, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if(stream.isWriting)
+        if(stream.isWriting && PhotonNetwork.isMasterClient)
         {
             stream.SendNext(filledImage.fillAmount); 
         }
