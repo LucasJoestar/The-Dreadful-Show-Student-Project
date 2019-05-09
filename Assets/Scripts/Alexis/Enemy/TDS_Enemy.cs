@@ -270,7 +270,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected IEnumerator Behaviour()
     {
         // If the enemy is dead or paralyzed, they can't behave
-        if (isDead || IsParalyzed) yield break;
+        if (isDead || IsParalyzed || IsPacific) yield break;
         // If there is no target, the agent has to get one
         if (!playerTarget || playerTarget.IsDead)
             enemyState = EnemyState.Searching;
@@ -746,7 +746,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// Set the animation of the enemy to the animationID
     /// </summary>
     /// <param name="_animationID"></param>
-    protected void SetAnimationState(int _animationID)
+    public void SetAnimationState(int _animationID)
     {
         if (!animator) return;
         animator.SetInteger("animationState", _animationID);
@@ -784,6 +784,17 @@ public abstract class TDS_Enemy : TDS_Character
         {
             enemyState = EnemyState.ComputingPath;
         }
+    }
+
+    /// <summary>
+    /// Set IsPacific and IsParalyzed to false 
+    /// And start the Behaviour Method
+    /// </summary>
+    protected void ResetBehaviour()
+    {
+        IsPacific = false;
+        IsParalyzed = false;
+        StartCoroutine(Behaviour()); 
     }
     #endregion
 

@@ -71,6 +71,12 @@ public class TDS_Wave
     /// </summary>
     public List<TDS_SpawnPoint> SpawnPoints { get { return spawnPoints; } }
 
+    /// <summary>
+    /// Are the enemies start to behave on an event? 
+    /// </summary>
+    [SerializeField] private bool isActivatedByEvent = false; 
+
+    public bool IsActivatedByEvent { get { return isActivatedByEvent; } }
     #endregion
 
     #region Methods

@@ -136,10 +136,19 @@ public class TDS_SpawnerArea : PunBehaviour
             waveIndex = 0;
         }
         spawnedEnemies.AddRange(waves[waveIndex].GetWaveEnemies(this));
-        waveIndex++;
+        if(waves[waveIndex].IsActivatedByEvent)
+        {
+            foreach (TDS_Enemy e in spawnedEnemies)
+            {
+                e.IsPacific = true;
+                e.IsParalyzed = true;
+                OnNextWave.AddListener(() => e.SetAnimationState(11));
+            }
+        }
         //If the wave is empty, start the next wave
         if (spawnedEnemies.Count == 0)
         {
+            waveIndex++;
             OnNextWave?.Invoke();
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "CallOnNextWaveEvent"), new object[] { });
         }
@@ -157,9 +166,23 @@ public class TDS_SpawnerArea : PunBehaviour
         deadEnemies.Add(_removedEnemy); 
         if(spawnedEnemies.Count == 0)
         {
+            waveIndex++;
             OnNextWave?.Invoke();
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "CallOnNextWaveEvent"), new object[] { });
         }
+    }
+
+    /// <summary>
+    /// Destroy all dead enemies
+    /// Clear the dead enemies list
+    /// </summary>
+    public void ClearDeadEnemies()
+    {
+        foreach (TDS_Enemy e in deadEnemies)
+        {
+            PhotonNetwork.Destroy(e.gameObject); 
+        }
+        deadEnemies.Clear(); 
     }
 
     private void CallOnAreaActivatedEvent() => OnAreaActivated?.Invoke();
