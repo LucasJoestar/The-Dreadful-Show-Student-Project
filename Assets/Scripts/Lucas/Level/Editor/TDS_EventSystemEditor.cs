@@ -81,6 +81,7 @@ public class TDS_EventSystemEditor : Editor
         if (TDS_EditorUtility.Button("+", "Add a new event", EditorStyles.miniButton))
         {
             events.InsertArrayElementAtIndex(0);
+            events.GetArrayElementAtIndex(0).FindPropertyRelative("Name").stringValue = "New Event";
 
             bool[] _newFoldouts = new bool[foldouts.Length + 1];
             Array.Copy(foldouts, 0, _newFoldouts, 1, foldouts.Length);
@@ -161,7 +162,7 @@ public class TDS_EventSystemEditor : Editor
 
                         GUILayout.Space(2);
 
-                        TDS_EditorUtility.Toggle("Local", "Should this event only interact in local or for other players too", _event.FindPropertyRelative("isLocal"));
+                        TDS_EditorUtility.Toggle("Local", "Should this event only interact in local or for other players too", _event.FindPropertyRelative("isOnline"));
                         break;
 
                     case CustomEventType.DisplayInfoBox:
@@ -178,7 +179,7 @@ public class TDS_EventSystemEditor : Editor
 
                         GUILayout.Space(2);
 
-                        TDS_EditorUtility.Toggle("Local", "Should this event only interact in local or for other players too", _event.FindPropertyRelative("isLocal"));
+                        TDS_EditorUtility.Toggle("Local", "Should this event only interact in local or for other players too", _event.FindPropertyRelative("isOnline"));
                         break;
 
                     case CustomEventType.Wait:

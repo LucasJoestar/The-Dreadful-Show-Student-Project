@@ -89,8 +89,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider: {fileID: 65511838606239890}
   Owner: {fileID: 114861555710338680}
-  HittableTags:
-  - Player
+  hittableTags:
+    ObjectTags:
+    - Name: Player
+      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
 --- !u!1 &1784521387282082
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,8 +414,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1881167624450526}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.65, y: 0.65, z: 1}
+  m_LocalPosition: {x: 0, y: 0.21, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4055278686339258}
   m_RootOrder: 0

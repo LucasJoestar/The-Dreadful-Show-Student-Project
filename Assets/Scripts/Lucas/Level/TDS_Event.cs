@@ -59,9 +59,9 @@ public class TDS_Event
     public bool DoWaitPreviousOne { get { return doWaitPreviousEvent; } }
 
     /// <summary>
-    /// Indicates if this event is performed in local only. If not, a RPC will be executed.
+    /// Indicates if this event is performed in online or local only. If online, a RPC will be executed.
     /// </summary>
-    [SerializeField] private bool isLocal = true;
+    [SerializeField] private bool isOnline = false;
 
     /// <summary>
     /// Indicates if this event should only be called by the master.
@@ -111,9 +111,9 @@ public class TDS_Event
     /// Action to wait player to perform.
     /// </summary>
     [SerializeField] private WaitForPlayerAction actionType = WaitForPlayerAction.Dodge;
-	#endregion
+    #endregion
 
-	#region Methods
+    #region Methods
     /// <summary>
     /// Triggers this event.
     /// </summary>
@@ -137,7 +137,7 @@ public class TDS_Event
                     TDS_UIManager.Instance.ActivateNarratorBox(_quote);
 
                     // If not local, activate narrator in other players too
-                    if (!isLocal)
+                    if (isOnline)
                     {
                         TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateNarratorBox"), new object[] { _quote });
                     }
@@ -148,7 +148,7 @@ public class TDS_Event
                 TDS_UIManager.Instance.DesactivateNarratorBox();
 
                 // If not local, desactivate narrator in other players too
-                if (!isLocal)
+                if (isOnline)
                 {
                     TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "DesactivateNarratorBox"), new object[] { });
                 }
@@ -170,7 +170,7 @@ public class TDS_Event
                 Object.Instantiate(prefab, prefabTransform.position, prefabTransform.rotation);
 
                 // If not local, instantiate for other players too
-                if (!isLocal)
+                if (isOnline)
                 {
                     TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, $"{TDS_LevelManager.Instance.phID}#{TDS_UIManager.Instance.GetType()}#Instantiate", new object[] { prefab, prefabTransform.position, prefabTransform.rotation });
                 }
