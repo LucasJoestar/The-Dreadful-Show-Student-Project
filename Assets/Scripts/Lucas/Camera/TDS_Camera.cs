@@ -478,15 +478,17 @@ public class TDS_Camera : MonoBehaviour
     /// <returns></returns>
     private IEnumerator WaitToSetBounds(TDS_Bounds _bounds)
     {
+        Debug.Log("Wait");
+
         float _xMin = camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x;
 
         while (_bounds.XMin > _xMin)
         {
             TDS_Bounds _newBounds = currentBounds;
-            if (currentBounds.XMin != _xMin)
+            if (_newBounds.XMin != _xMin)
             {
-                currentBounds.XMinVector = new Vector3(_xMin, _bounds.XMinVector.y, _bounds.XMinVector.z);
-                leftBound.transform.position = currentBounds.XMinVector;
+                _newBounds.XMinVector = new Vector3(_xMin, _bounds.XMinVector.y, _bounds.XMinVector.z);
+                leftBound.transform.position = _newBounds.XMinVector;
             }
 
             yield return null;
@@ -497,6 +499,7 @@ public class TDS_Camera : MonoBehaviour
         if (_bounds.XMax < _xMax) _bounds.XMaxVector.x = _xMax;
 
         CurrentBounds = _bounds;
+        Debug.Log("Stop Wait");
         yield break;
     }
     #endregion

@@ -103,7 +103,7 @@ public class TDS_LevelBounds : MonoBehaviour
     public void Desactivate()
     {
         if (doDisableGameObjectOnDesactivate) gameObject.SetActive(false);
-        enabled = false;
+        else enabled = false;
     }
     #endregion
 
