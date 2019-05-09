@@ -746,7 +746,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// Set the animation of the enemy to the animationID
     /// </summary>
     /// <param name="_animationID"></param>
-    public void SetAnimationState(int _animationID)
+    protected void SetAnimationState(int _animationID)
     {
         if (!animator) return;
         animator.SetInteger("animationState", _animationID);
@@ -796,6 +796,8 @@ public abstract class TDS_Enemy : TDS_Character
         IsParalyzed = false;
         StartCoroutine(Behaviour()); 
     }
+
+    public abstract void ActivateEnemy(); 
     #endregion
 
     #endregion
