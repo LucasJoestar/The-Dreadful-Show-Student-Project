@@ -25,6 +25,15 @@ public class TDS_ColorLevelEditor : EditorWindow
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[09 / 05 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    • Implemented a system to fusion groups.
+	 *
+	 *	-----------------------------------
+     * 
 	 *	Date :			[08 / 05 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -32,7 +41,7 @@ public class TDS_ColorLevelEditor : EditorWindow
 	 *
 	 *	Creation of the TDS_ColorLevelEditor class.
      *	
-     *	    • 
+     *	    • Created base system to change color by groups.
 	 *
 	 *	-----------------------------------
 	*/
@@ -43,7 +52,15 @@ public class TDS_ColorLevelEditor : EditorWindow
     /// </summary>
     [SerializeField] private TDS_ColorGroup[] colorGroups = new TDS_ColorGroup[] { };
 
+    /// <summary>
+    /// Scrollbar of the window.
+    /// </summary>
     [SerializeField] private Vector2 scrollbar = new Vector2();
+
+    /// <summary>
+    /// Indicates if the user has selected one group or more for fusion.
+    /// </summary>
+    [SerializeField] private bool isInFusionMode = false;
 	#endregion
 
 	#region Methods
@@ -168,24 +185,48 @@ public class TDS_ColorLevelEditor : EditorWindow
                 _colorGroup.Sprites.ForEach(s => s.color = _colorGroup.Color);
             }
 
-            SpriteRenderer _newSprite = EditorGUILayout.ObjectField(null, typeof(SpriteRenderer), true, GUILayout.Width(50)) as SpriteRenderer;
-            if (_newSprite != null)
+            bool _selected = EditorGUILayout.Toggle(_colorGroup.isSelected, GUILayout.Width(15));
+            if (_selected != _colorGroup.isSelected)
             {
-                TDS_ColorGroup _matching = colorGroups.Where(g => g.Sprites.Contains(_newSprite)).FirstOrDefault();
-                if (_matching != null)
+                _colorGroup.isSelected = _selected;
+                if (_selected)
                 {
-                    if (_matching.Color != _newSprite.color)
+                    if (!isInFusionMode) isInFusionMode = true;
+                }
+                else if (!colorGroups.Any(g => g.isSelected)) isInFusionMode = false;
+            }
+
+            if (isInFusionMode && !_colorGroup.isSelected)
+            {
+                Color _original = GUI.color;
+                GUI.color = new Color(0, .75f, 0, 1);
+
+                if (GUILayout.Button("F", GUILayout.Width(25)))
+                {
+                    TDS_ColorGroup[] _groups = colorGroups.Where(g => g.isSelected).ToArray();
+
+                    foreach (TDS_ColorGroup _group in _groups)
                     {
-                        _matching.Sprites.Remove(_newSprite);
-                        if (_matching.Sprites.Count == 0)
+                        Undo.RecordObjects(_group.Sprites.ToArray(), "fusion sprite groups color");
+
+                        foreach (SpriteRenderer _sprite in _group.Sprites)
                         {
-                            colorGroups = colorGroups.Where(g => g != _matching).ToArray();
-                            Repaint();
+                            _sprite.color = _colorGroup.Color;
                         }
+                        _colorGroup.Sprites.AddRange(_group.Sprites);
                     }
+
+                    colorGroups = colorGroups.Except(_groups).ToArray();
+                    isInFusionMode = false;
+
+                    Repaint();
                 }
 
-                LoadSprite(_newSprite);
+                GUI.color = _original;
+            }
+            else
+            {
+                GUILayout.Space(25);
             }
 
             EditorGUILayout.EndHorizontal();
@@ -226,7 +267,7 @@ public class TDS_ColorGroup
      *
      *	Creation of the TDS_ColorGroup class.
      *	
-     *	    • 
+     *	    • Created the whole class with 3 constructors.
      *
      *	-----------------------------------
     */
@@ -246,6 +287,11 @@ public class TDS_ColorGroup
     /// Sprites with the color.
     /// </summary>
     public List<SpriteRenderer> Sprites;
+
+    /// <summary>
+    /// Is this group selected in the window or not.
+    /// </summary>
+    public bool isSelected = false;
     #endregion
 
     #region Constructor
