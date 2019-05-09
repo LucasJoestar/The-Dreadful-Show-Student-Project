@@ -72,6 +72,8 @@ public class TDS_WaveEditor : PropertyDrawer
         // Display them if the fold out is true
         if(property.FindPropertyRelative("isWaveFoldOut").boolValue)
         {
+            //Is the wave activated by event
+            TDS_EditorUtility.Toggle("Is Activated by event", "Are the enemies of this wave starting behaviour on event", property.FindPropertyRelative("isActivatedByEvent")); 
             //Get the size of the array 
             int _arraySize = property.FindPropertyRelative("spawnPoints").arraySize;
             GUIContent _label;
