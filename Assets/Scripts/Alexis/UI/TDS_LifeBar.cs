@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Photon;
 
 [RequireComponent(typeof(PhotonView))]
-public class TDS_LifeBar : PunBehaviour
+public class TDS_LifeBar : PunBehaviour, IPunObservable
 {
     /* TDS_LifeBar :
 	 *
@@ -67,7 +67,7 @@ public class TDS_LifeBar : PunBehaviour
     /// </summary>
     public void FollowOwner()
     {
-        if (!hasToFollowOwner) return;
+        if (!hasToFollowOwner || !PhotonNetwork.isMasterClient) return;
         transform.position = Vector3.MoveTowards(transform.position, owner.transform.position + offset, Time.deltaTime * 10);
     }
 
@@ -79,7 +79,11 @@ public class TDS_LifeBar : PunBehaviour
     public void SetOwner(TDS_Character _owner)
     {
         owner = _owner;
-        if(_owner.gameObject.HasTag("Enemy"))
+        if(_owner.gameObject.HasTag("Player"))
+        {
+            GetComponent<PhotonView>().enabled = false;
+        }
+        if (_owner.gameObject.HasTag("Enemy"))
         {
             owner.OnDie += DestroyLifeBar;
         }
@@ -108,7 +112,20 @@ public class TDS_LifeBar : PunBehaviour
     {
         FollowOwner();
     }
-    #endregion 
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if(stream.isWriting)
+        {
+            stream.SendNext(filledImage.fillAmount); 
+        }
+        else if(stream.isReading)
+        {
+            filledImage.fillAmount = (float)stream.ReceiveNext(); 
+        }
+    }
+
+    #endregion
 
     #endregion
 

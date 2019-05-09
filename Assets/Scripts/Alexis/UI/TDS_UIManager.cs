@@ -59,6 +59,10 @@ public class TDS_UIManager : PunBehaviour
     /// <summary> Singleton of the class TDS_UIManager </summary>
     public static TDS_UIManager Instance;
 
+    #region GameObject
+    [SerializeField] private GameObject uiGameObject; 
+    #endregion
+
     #region Buttons
 
     #region Character Selection
@@ -320,12 +324,25 @@ public class TDS_UIManager : PunBehaviour
         curtainsAnimator.SetTrigger("Switch"); 
     }
 
+    /// <summary>
+    /// Set a button as interractable
+    /// Call the method online to set the button interractability on each player
+    /// </summary>
+    /// <param name="_b">Button to set</param>
+    /// <param name="_type">PlayerType to instanciate</param>
+    /// <param name="_isInteractable">Interractability of the button</param>
     private void SetButtonInteractable(Button _b, PlayerType _type, bool _isInteractable)
     {
         _b.interactable = _isInteractable;
         TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetButtonInteractable"), new object[] { (int)_type, _isInteractable });
     }
 
+    /// <summary>
+    /// Set a selection button interractable 
+    /// Called online
+    /// </summary>
+    /// <param name="_buttonType">Type of player</param>
+    /// <param name="_isInteractable">Interractability</param>
     private void SetButtonInteractable(int _buttonType, bool _isInteractable)
     {
         switch ((PlayerType)_buttonType)
@@ -397,14 +414,10 @@ public class TDS_UIManager : PunBehaviour
 	// Use this for initialization
     private void Start()
     {
+        if (uiGameObject)
+            uiGameObject.SetActive(true); 
         SetButtons();
     }
-	
-	// Update is called once per frame
-	private void Update()
-    {
-        
-	}
 	#endregion
 
 	#endregion
