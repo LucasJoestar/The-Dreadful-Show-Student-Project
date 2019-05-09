@@ -4,7 +4,8 @@
 Preset:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: Camera
   m_TargetType:
     m_NativeTypeID: 114
@@ -21,10 +22,6 @@ Preset:
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: m_Name
-    value: 
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
     propertyPath: m_EditorClassIdentifier
     value: 
     objectReference: {fileID: 0}
@@ -33,19 +30,99 @@ Preset:
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: Bounds.XBounds.x
+    propertyPath: currentBounds.XMinVector.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: currentBounds.XMinVector.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: currentBounds.XMinVector.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: currentBounds.XMaxVector.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: currentBounds.XMaxVector.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: currentBounds.XMaxVector.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: currentBounds.ZMinVector.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: currentBounds.ZMinVector.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: currentBounds.ZMinVector.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: currentBounds.ZMaxVector.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: currentBounds.ZMaxVector.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: currentBounds.ZMaxVector.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: levelBounds.XMinVector.x
     value: -10
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: Bounds.XBounds.y
+    propertyPath: levelBounds.XMinVector.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: levelBounds.XMinVector.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: levelBounds.XMaxVector.x
     value: 10
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: Bounds.ZBounds.x
+    propertyPath: levelBounds.XMaxVector.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: levelBounds.XMaxVector.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: levelBounds.ZMinVector.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: levelBounds.ZMinVector.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: levelBounds.ZMinVector.z
     value: -10
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: Bounds.ZBounds.y
+    propertyPath: levelBounds.ZMaxVector.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: levelBounds.ZMaxVector.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: levelBounds.ZMaxVector.z
     value: 10
     objectReference: {fileID: 0}
   - target: {fileID: 0}
@@ -77,7 +154,27 @@ Preset:
     value: 5
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: currentLevelBounds
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: target
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: topBound
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: leftBound
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: rightBound
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bottomBound
     value: 
     objectReference: {fileID: 0}
   - target: {fileID: 0}

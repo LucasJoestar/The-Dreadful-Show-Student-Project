@@ -4,7 +4,8 @@
 Preset:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: ProjectilePreview
   m_TargetType:
     m_NativeTypeID: 120
@@ -42,6 +43,10 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_RenderingLayerMask
     value: 4294967295
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_RendererPriority
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_Materials.Array.size
@@ -430,6 +435,10 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_Parameters.textureMode
     value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_Parameters.shadowBias
+    value: 0.5
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_Parameters.generateLightingData
