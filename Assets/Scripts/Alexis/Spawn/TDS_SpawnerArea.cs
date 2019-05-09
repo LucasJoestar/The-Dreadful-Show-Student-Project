@@ -142,7 +142,6 @@ public class TDS_SpawnerArea : PunBehaviour
             {
                 e.IsPacific = true;
                 e.IsParalyzed = true;
-                OnNextWave.AddListener(() => e.SetAnimationState(11));
             }
         }
         //If the wave is empty, start the next wave
@@ -153,6 +152,20 @@ public class TDS_SpawnerArea : PunBehaviour
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "CallOnNextWaveEvent"), new object[] { });
         }
     }
+
+    /// <summary>
+    /// Destroy all dead enemies
+    /// Clear the dead enemies list
+    /// </summary>
+    public void ClearDeadEnemies()
+    {
+        foreach (TDS_Enemy e in deadEnemies)
+        {
+            PhotonNetwork.Destroy(e.gameObject);
+        }
+        deadEnemies.Clear();
+    }
+
 
     /// <summary>
     /// Remove the enemy from the spawnedEnemies list and add it to the dead enemies list
@@ -172,18 +185,7 @@ public class TDS_SpawnerArea : PunBehaviour
         }
     }
 
-    /// <summary>
-    /// Destroy all dead enemies
-    /// Clear the dead enemies list
-    /// </summary>
-    public void ClearDeadEnemies()
-    {
-        foreach (TDS_Enemy e in deadEnemies)
-        {
-            PhotonNetwork.Destroy(e.gameObject); 
-        }
-        deadEnemies.Clear(); 
-    }
+    public void ActivateEnemies() => spawnedEnemies.ForEach(e => e.ActivateEnemy()); 
 
     private void CallOnAreaActivatedEvent() => OnAreaActivated?.Invoke();
     private void CallOnAreaDesactivatedEvent() => OnAreaDesactivated?.Invoke();

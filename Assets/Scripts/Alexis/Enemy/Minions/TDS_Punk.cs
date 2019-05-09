@@ -95,6 +95,14 @@ public class TDS_Punk : TDS_Enemy
     }
 
     /// <summary>
+    /// Set its animation state to its taunt -> It will call the behaviour method
+    /// </summary>
+    public override void ActivateEnemy()
+    {
+        SetAnimationState(11);
+    }
+
+    /// <summary>
     /// Return true if the distance is less than the minimum predicted range of the Punk attack
     /// </summary>
     /// <param name="_distance">distance between player and target</param>

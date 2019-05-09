@@ -154,7 +154,12 @@ public abstract class TDS_Minion : TDS_Enemy
         //ApplyAttackEffect(_attack.AttackType); 
         return _attack.Cooldown;
     }
-    #endregion 
+
+    public override void ActivateEnemy()
+    {
+        
+    }
+    #endregion
 
     #region Unity Methods
     // Awake is called when the script instance is being loaded
