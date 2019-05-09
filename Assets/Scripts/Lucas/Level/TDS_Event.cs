@@ -133,7 +133,7 @@ public class TDS_Event
 
                 foreach (string _quote in _quotes)
                 {
-                    int _time = _quote.Length / 10;
+                    int _time = _quote.Length / 20;
                     TDS_UIManager.Instance.ActivateNarratorBox(_quote);
 
                     // If not local, activate narrator in other players too

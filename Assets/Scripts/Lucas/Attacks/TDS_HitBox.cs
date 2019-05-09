@@ -101,12 +101,10 @@ public class TDS_HitBox : MonoBehaviour
     /// </summary>
     public Dictionary<Collider, TDS_Damageable> TouchedObjects { get; private set; } = new Dictionary<Collider, TDS_Damageable>();
 
-    [SerializeField] private Tags hittableTags = new Tags();
-
     /// <summary>
     /// All tags to hit.
     /// </summary>
-    public Tags HittableTags { get { return hittableTags; } }
+    public Tags HittableTags = new Tags();
     #endregion
 
     #endregion
