@@ -374,6 +374,7 @@ public class TDS_Camera : MonoBehaviour
             // Y & Z movement
             if (camera.WorldToViewportPoint(currentBounds.ZMaxVector).y < .3f)
             {
+                if (_movement.y > 0) _destination.y = transform.position.y;
                 if (_movement.z > 0) _destination.z = transform.position.z;
             }
             if (camera.WorldToViewportPoint(currentBounds.ZMinVector).y > -.01f)

@@ -224,7 +224,7 @@ public class GOTagsEditor : Editor
     // This function is called when the scriptable object goes out of scope
     private void OnDisable()
     {
-        Debug.Log("Game Object Editor => Disable");
+        //Debug.Log("Game Object Editor => Disable");
 
         if (defaultEditor) DestroyImmediate(defaultEditor);
     }
@@ -247,7 +247,7 @@ public class GOTagsEditor : Editor
         // Get editing object(s) tags
         GetObjectsTags();
 
-        Debug.Log("Game Object Editor => Enable");
+        //Debug.Log("Game Object Editor => Enable");
     }
 
     // Implement this function to make a custom header
