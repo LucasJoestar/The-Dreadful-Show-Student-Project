@@ -874,6 +874,36 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &116634158
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 116634159}
+  m_Layer: 0
+  m_Name: Left Bounds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &116634159
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116634158}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -9.3, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1687370668}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &118684051 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 65316850431927406, guid: 406d9a2f8a7e4da45be9871d5796b1cb,
@@ -897,7 +927,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4305772617021256, guid: 406d9a2f8a7e4da45be9871d5796b1cb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10.7
+      value: 16.52
       objectReference: {fileID: 0}
     - target: {fileID: 4305772617021256, guid: 406d9a2f8a7e4da45be9871d5796b1cb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1171,6 +1201,12 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &151009754 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 95637899275511930, guid: ca57834bf12a62e4f857e7cd35728f26,
+    type: 3}
+  m_PrefabInstance: {fileID: 298148566}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &160679296
 GameObject:
   m_ObjectHideFlags: 0
@@ -2551,7 +2587,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1312500720897116, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224612949018700402, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
@@ -2643,82 +2679,86 @@ PrefabInstance:
     - target: {fileID: 224386518696684964, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224386518696684964, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224386518696684964, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 215
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224386518696684964, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -140
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224208857047546428, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224208857047546428, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224208857047546428, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 645
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224208857047546428, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -140
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224424298763816890, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224424298763816890, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224424298763816890, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1075
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224424298763816890, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -140
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224931029700395546, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224931029700395546, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224931029700395546, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1505
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224931029700395546, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -140
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1981866161474560, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
@@ -6291,7 +6331,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &903010317
 Transform:
   m_ObjectHideFlags: 0
@@ -6474,6 +6514,18 @@ Transform:
   m_Father: {fileID: 879155976}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &917836347 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114066093410239440, guid: ca57834bf12a62e4f857e7cd35728f26,
+    type: 3}
+  m_PrefabInstance: {fileID: 298148566}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &933774686
 GameObject:
   m_ObjectHideFlags: 0
@@ -6664,6 +6716,36 @@ Transform:
   m_Father: {fileID: 1825220691}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &954669806
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 954669807}
+  m_Layer: 0
+  m_Name: 'Poster Transform #2'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &954669807
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954669806}
+  m_LocalRotation: {x: -0, y: -0, z: 0.04908779, w: 0.9987945}
+  m_LocalPosition: {x: 6.82, y: 2.58, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 992325929}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 5.6270003}
 --- !u!4 &958173020 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3530859268018990058, guid: 68f5aeb1004cc9040b1a48047f0c04b5,
@@ -7208,6 +7290,7 @@ GameObject:
   - component: {fileID: 992325929}
   - component: {fileID: 992325930}
   - component: {fileID: 992325931}
+  - component: {fileID: 992325932}
   m_Layer: 0
   m_Name: Start Trigger
   m_TagString: Untagged
@@ -7225,7 +7308,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1740802533}
+  - {fileID: 954669807}
+  - {fileID: 1687370668}
   m_Father: {fileID: 614094616}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7257,7 +7343,7 @@ MonoBehaviour:
   isActivated: 0
   isWaitingOthers: 1
   events:
-  - Name: New Event
+  - Name: 'Narrator #1'
     doNeedSpecificPlayerType: 0
     doWaitPreviousEvent: 0
     isOnline: 0
@@ -7266,7 +7352,7 @@ MonoBehaviour:
     waitTime: 0
     prefab: {fileID: 0}
     playerType: 0
-    textID: 
+    textID: T01
     prefabTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
@@ -7274,7 +7360,315 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
+  - Name: TEST
+    doNeedSpecificPlayerType: 0
+    doWaitPreviousEvent: 1
+    isOnline: 0
+    isMasterOnly: 0
+    eventType: 7
+    waitTime: 0
+    prefab: {fileID: 0}
+    playerType: 0
+    textID: T01
+    prefabTransform: {fileID: 0}
+    unityEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1687370669}
+          m_MethodName: Activate
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    actionType: 0
+  - Name: 'Narrator #2'
+    doNeedSpecificPlayerType: 0
+    doWaitPreviousEvent: 1
+    isOnline: 0
+    isMasterOnly: 0
+    eventType: 0
+    waitTime: 0
+    prefab: {fileID: 0}
+    playerType: 0
+    textID: T02
+    prefabTransform: {fileID: 0}
+    unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    actionType: 0
+  - Name: 'Narrator #3'
+    doNeedSpecificPlayerType: 0
+    doWaitPreviousEvent: 1
+    isOnline: 0
+    isMasterOnly: 0
+    eventType: 0
+    waitTime: 0
+    prefab: {fileID: 0}
+    playerType: 0
+    textID: T03
+    prefabTransform: {fileID: 0}
+    unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    actionType: 0
+  - Name: Info Box Jump
+    doNeedSpecificPlayerType: 0
+    doWaitPreviousEvent: 1
+    isOnline: 0
+    isMasterOnly: 0
+    eventType: 1
+    waitTime: 0
+    prefab: {fileID: 0}
+    playerType: 0
+    textID: T03A
+    prefabTransform: {fileID: 0}
+    unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    actionType: 0
+  - Name: Instantiate Poster Jump
+    doNeedSpecificPlayerType: 0
+    doWaitPreviousEvent: 1
+    isOnline: 0
+    isMasterOnly: 0
+    eventType: 3
+    waitTime: 0
+    prefab: {fileID: 1035519974621550, guid: 4c5be95092b143d4786173e9ef734820, type: 3}
+    playerType: 0
+    textID: T03A
+    prefabTransform: {fileID: 1740802533}
+    unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    actionType: 0
+  - Name: Wait Jump
+    doNeedSpecificPlayerType: 0
+    doWaitPreviousEvent: 1
+    isOnline: 0
+    isMasterOnly: 0
+    eventType: 5
+    waitTime: 0
+    prefab: {fileID: 0}
+    playerType: 0
+    textID: T03A
+    prefabTransform: {fileID: 0}
+    unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    actionType: 0
+  - Name: Info Box Dodge
+    doNeedSpecificPlayerType: 0
+    doWaitPreviousEvent: 1
+    isOnline: 0
+    isMasterOnly: 0
+    eventType: 1
+    waitTime: 0
+    prefab: {fileID: 0}
+    playerType: 0
+    textID: T03B
+    prefabTransform: {fileID: 0}
+    unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    actionType: 0
+  - Name: Instantiate Poster Dodge
+    doNeedSpecificPlayerType: 0
+    doWaitPreviousEvent: 1
+    isOnline: 0
+    isMasterOnly: 0
+    eventType: 3
+    waitTime: 0
+    prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
+    playerType: 0
+    textID: T03B
+    prefabTransform: {fileID: 954669807}
+    unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    actionType: 0
+  - Name: Wait Dodge
+    doNeedSpecificPlayerType: 0
+    doWaitPreviousEvent: 1
+    isOnline: 0
+    isMasterOnly: 0
+    eventType: 5
+    waitTime: 0
+    prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
+    playerType: 0
+    textID: T03B
+    prefabTransform: {fileID: 954669807}
+    unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    actionType: 1
+  - Name: Desactivate Info Box
+    doNeedSpecificPlayerType: 0
+    doWaitPreviousEvent: 1
+    isOnline: 0
+    isMasterOnly: 0
+    eventType: 2
+    waitTime: 0
+    prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
+    playerType: 0
+    textID: T03B
+    prefabTransform: {fileID: 954669807}
+    unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    actionType: 1
+  - Name: 'Narrator #5'
+    doNeedSpecificPlayerType: 0
+    doWaitPreviousEvent: 1
+    isOnline: 0
+    isMasterOnly: 0
+    eventType: 0
+    waitTime: 0
+    prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
+    playerType: 0
+    textID: T05
+    prefabTransform: {fileID: 954669807}
+    unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    actionType: 1
+  - Name: Wait for the Show
+    doNeedSpecificPlayerType: 0
+    doWaitPreviousEvent: 1
+    isOnline: 0
+    isMasterOnly: 0
+    eventType: 4
+    waitTime: 5
+    prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
+    playerType: 0
+    textID: T05
+    prefabTransform: {fileID: 954669807}
+    unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    actionType: 1
+  - Name: 'Narrator #6'
+    doNeedSpecificPlayerType: 0
+    doWaitPreviousEvent: 1
+    isOnline: 0
+    isMasterOnly: 0
+    eventType: 0
+    waitTime: 5
+    prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
+    playerType: 0
+    textID: T06
+    prefabTransform: {fileID: 954669807}
+    unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    actionType: 1
+  - Name: Unlock Bounds
+    doNeedSpecificPlayerType: 0
+    doWaitPreviousEvent: 1
+    isOnline: 0
+    isMasterOnly: 0
+    eventType: 7
+    waitTime: 5
+    prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
+    playerType: 0
+    textID: T06
+    prefabTransform: {fileID: 954669807}
+    unityEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1687370669}
+          m_MethodName: Activate
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    actionType: 1
   photonView: {fileID: 0}
+--- !u!114 &992325932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992325928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9369aafd20642e947b4bc83641e97566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnTriggerEnterE:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 992325931}
+        m_MethodName: StartEvents
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 992325930}
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnTriggerExitE:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  detectedTags:
+    ObjectTags:
+    - Name: Player
+      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
 --- !u!1 &992655718
 GameObject:
   m_ObjectHideFlags: 0
@@ -7830,6 +8224,12 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1042389820 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1205917953095670, guid: ca57834bf12a62e4f857e7cd35728f26,
+    type: 3}
+  m_PrefabInstance: {fileID: 298148566}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1044760042
 GameObject:
   m_ObjectHideFlags: 0
@@ -10991,12 +11391,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9d17772b3637a479b9335b66cf1633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiGameObject: {fileID: 0}
   ButtonSelectionBeardLady: {fileID: 298148577}
   ButtonSelectionJuggler: {fileID: 298148576}
   ButtonSelectionFatLady: {fileID: 298148575}
   ButtonSelectionFireEater: {fileID: 298148574}
   ButtonQuitPause: {fileID: 298148568}
-  curtainsAnimator: {fileID: 0}
+  curtainsAnimator: {fileID: 151009754}
   canvasScreen: {fileID: 298148579}
   canvasWorld: {fileID: 298148567}
   playerHealthBar: {fileID: 298148572}
@@ -11004,10 +11405,10 @@ MonoBehaviour:
   inGameMenuParent: {fileID: 298148573}
   pauseMenuParent: {fileID: 298148569}
   dialogBoxParent: {fileID: 298148571}
-  narratorBoxParent: {fileID: 0}
+  narratorBoxParent: {fileID: 1042389820}
   uiState: 0
   dialogBoxText: {fileID: 298148570}
-  narratorBoxText: {fileID: 0}
+  narratorBoxText: {fileID: 917836347}
 --- !u!114 &1393358468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13148,6 +13549,36 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1608994363
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1608994364}
+  m_Layer: 0
+  m_Name: Right Bounds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1608994364
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608994363}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 9.7, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1687370668}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1611926166
 GameObject:
   m_ObjectHideFlags: 0
@@ -13658,6 +14089,57 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1687370667
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1687370668}
+  - component: {fileID: 1687370669}
+  m_Layer: 0
+  m_Name: New Bounds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1687370668
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687370667}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 116634159}
+  - {fileID: 1608994364}
+  m_Father: {fileID: 992325929}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1687370669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687370667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402bb3d2977935a4a9272186f6e9c918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doDisableGameObjectOnDesactivate: 1
+  collider: {fileID: 0}
+  leftBound: {fileID: 116634159}
+  rightBound: {fileID: 1608994364}
+  bottomBound: {fileID: 0}
+  topBound: {fileID: 0}
 --- !u!1 &1697881690
 GameObject:
   m_ObjectHideFlags: 0
@@ -14279,6 +14761,36 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1740802532
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1740802533}
+  m_Layer: 0
+  m_Name: 'Poster Transform #1'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1740802533
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1740802532}
+  m_LocalRotation: {x: -0, y: -0, z: -0.016795477, w: 0.999859}
+  m_LocalPosition: {x: 3.5, y: 3.2, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 992325929}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -1.9250001}
 --- !u!1 &1743585870
 GameObject:
   m_ObjectHideFlags: 0

@@ -162,7 +162,7 @@ public class TDS_EventSystemEditor : Editor
 
                         GUILayout.Space(2);
 
-                        TDS_EditorUtility.Toggle("Local", "Should this event only interact in local or for other players too", _event.FindPropertyRelative("isOnline"));
+                        TDS_EditorUtility.Toggle("Online", "Should this event only interact in local or for other players too", _event.FindPropertyRelative("isOnline"));
                         break;
 
                     case CustomEventType.DisplayInfoBox:
@@ -179,7 +179,7 @@ public class TDS_EventSystemEditor : Editor
 
                         GUILayout.Space(2);
 
-                        TDS_EditorUtility.Toggle("Local", "Should this event only interact in local or for other players too", _event.FindPropertyRelative("isOnline"));
+                        TDS_EditorUtility.Toggle("Online", "Should this event only interact in local or for other players too", _event.FindPropertyRelative("isOnline"));
                         break;
 
                     case CustomEventType.Wait:
