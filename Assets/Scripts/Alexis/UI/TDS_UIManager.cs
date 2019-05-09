@@ -279,7 +279,7 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_enemy"></param>
     public void SetEnemyLifebar(TDS_Enemy _enemy)
     {
-        Vector3 _offset = Vector3.up * 2; 
+        Vector3 _offset =  Vector3.up * _enemy.transform.localScale.y * 2; 
         TDS_LifeBar _healthBar = PhotonNetwork.Instantiate("LifeBar", _enemy.transform.position + _offset, Quaternion.identity, 0).GetComponent<TDS_LifeBar>();
         _healthBar.SetOwner(_enemy, _offset, true);
         _enemy.HealthBar = _healthBar.FilledImage; 
