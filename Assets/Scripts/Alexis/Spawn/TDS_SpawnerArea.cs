@@ -198,7 +198,7 @@ public class TDS_SpawnerArea : PunBehaviour
             if (PhotonNetwork.isMasterClient)
             {
                 OnAreaActivated?.Invoke();
-                Debug.Log("CALL by " + photonView.viewID); 
+                //Debug.Log("CALL by " + photonView.viewID); 
                 TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "CallOnAreaActivatedEvent"), new object[] { });
             }
         }
