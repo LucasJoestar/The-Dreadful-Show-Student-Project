@@ -481,6 +481,8 @@ public class TDS_Camera : MonoBehaviour
         Debug.Log("Wait");
 
         float _xMin = camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x;
+        currentBounds.XMaxVector = _bounds.XMaxVector;
+        rightBound.transform.position = _bounds.XMaxVector;
 
         while (_bounds.XMin > _xMin)
         {
