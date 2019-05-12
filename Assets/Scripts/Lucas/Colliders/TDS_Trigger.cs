@@ -49,6 +49,11 @@ public class TDS_Trigger : MonoBehaviour
 
     #region Fields / Properties
     /// <summary>
+    /// Indicates if this object should be destroyed when triggered.
+    /// </summary>
+    public bool doDestroyAfterTrigger = true;
+
+    /// <summary>
     /// Tags used to detect only authorized objects.
     /// </summary>
     [SerializeField] private Tags detectedTags = new Tags();
@@ -61,6 +66,8 @@ public class TDS_Trigger : MonoBehaviour
         if (other.gameObject.HasTag(detectedTags.ObjectTags))
         {
             OnTriggerEnterE.Invoke();
+
+            if (doDestroyAfterTrigger) Destroy(this);
         }
     }
 

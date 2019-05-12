@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
@@ -289,6 +290,55 @@ public class TDS_Camera : MonoBehaviour
     /// </summary>
     [SerializeField] private BoxCollider bottomBound = null;
 
+
+    /// <summary>
+    /// Property to set the top bound position.
+    /// </summary>
+    private Vector3 topBoundVector
+    {
+        set
+        {
+            currentBounds.ZMaxVector = value;
+            topBound.transform.position = value;
+        }
+    }
+
+    /// <summary>
+    /// Property to set the meft bound position.
+    /// </summary>
+    private Vector3 leftBoundVector
+    {
+        set
+        {
+            currentBounds.XMinVector = value;
+            leftBound.transform.position = value;
+        }
+    }
+
+    /// <summary>
+    /// Property to set the right bound position.
+    /// </summary>
+    private Vector3 rightBoundVector
+    {
+        set
+        {
+            currentBounds.XMaxVector = value;
+            rightBound.transform.position = value;
+        }
+    }
+
+    /// <summary>
+    /// Property to set the bottom bound position.
+    /// </summary>
+    private Vector3 bottomBoundVector
+    {
+        set
+        {
+            currentBounds.ZMinVector = value;
+            bottomBound.transform.position = value;
+        }
+    }
+
     /// <summary>
     /// Offset of the camera in X, Y & Z.
     /// </summary>
@@ -352,6 +402,12 @@ public class TDS_Camera : MonoBehaviour
             // Get movement
             Vector3 _destination = Vector3.Lerp(transform.position, target.transform.position + Offset, Time.deltaTime * speedCurrent * speedCoef);
             Vector3 _movement = _destination - transform.position;
+
+            if (_movement.y < .01f)
+            {
+                _destination.y = transform.position.y;
+                _movement.y = 0;
+            }
 
             // Clamp position
 
@@ -478,31 +534,125 @@ public class TDS_Camera : MonoBehaviour
     /// <returns></returns>
     private IEnumerator WaitToSetBounds(TDS_Bounds _bounds)
     {
-        Debug.Log("Wait");
+        // Get the movement direction of the bounds
+        int[] _boundsMovement = new int[4];
 
-        float _xMin = camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x;
-        currentBounds.XMaxVector = _bounds.XMaxVector;
-        rightBound.transform.position = _bounds.XMaxVector;
-
-        while (_bounds.XMin > _xMin)
+        if ((_bounds.XMin <= currentBounds.XMin) || (_bounds.XMin <= camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x))
         {
-            TDS_Bounds _newBounds = currentBounds;
-            if (_newBounds.XMin != _xMin)
+            leftBoundVector = _bounds.XMinVector;
+            _boundsMovement[0] = 0;
+        }
+        else _boundsMovement[0] = _bounds.XMin > currentBounds.XMin ? 1 : -1;
+
+        if ((_bounds.XMax >= currentBounds.XMax) || (_bounds.XMax >= camera.ViewportToWorldPoint(new Vector3(1.01f, 0, 0)).x))
+        {
+            rightBoundVector = _bounds.XMaxVector;
+            _boundsMovement[1] = 0;
+        }
+        else _boundsMovement[1] = _bounds.XMax > currentBounds.XMax ? 1 : -1;
+
+        if ((_bounds.ZMin <= currentBounds.ZMin) || (_bounds.ZMin <= camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).z))
+        {
+            bottomBoundVector = _bounds.ZMinVector;
+            _boundsMovement[2] = 0;
+        }
+        else _boundsMovement[2] = _bounds.ZMin > currentBounds.ZMin ? 1 : -1;
+
+        if ((_bounds.ZMax >= currentBounds.ZMax) || (_bounds.ZMax >= camera.ViewportToWorldPoint(new Vector3(.3f, 0, 0)).z))
+        {
+            topBoundVector = _bounds.ZMaxVector;
+            _boundsMovement[3] = 0;
+        }
+        else _boundsMovement[3] = _bounds.ZMax > currentBounds.ZMax ? 1 : -1;
+
+
+        while (_boundsMovement.Any(m => m != 0))
+        {
+            // Left bound move
+            if (_boundsMovement[0] != 0)
             {
-                _newBounds.XMinVector = new Vector3(_xMin, _bounds.XMinVector.y, _bounds.XMinVector.z);
-                leftBound.transform.position = _newBounds.XMinVector;
+                float _xMin = camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x;
+                int _movement = _xMin == currentBounds.XMin ? 0 : _xMin > currentBounds.XMin ? 1 : -1;
+
+                if (_boundsMovement[0] == _movement)
+                {
+                    if (((_movement == 1) && (_xMin >= _bounds.XMin)) || ((_movement == -1) && (_xMin <= _bounds.XMin)))
+                    {
+                        leftBoundVector = _bounds.XMinVector;
+                        _boundsMovement[0] = 0;
+                    }
+                    else
+                    {
+                        leftBoundVector = new Vector3(_xMin, _bounds.XMinVector.y, _bounds.XMinVector.z);
+                        if (camera.ViewportToWorldPoint(new Vector3(1.01f, 0, 0)).x >= currentBounds.XMax) _boundsMovement[0] = 0;
+                    }
+                }
+            }
+            // Right bound move
+            if (_boundsMovement[1] != 0)
+            {
+                float _xMax = camera.ViewportToWorldPoint(new Vector3(1.01f, 0, 0)).x;
+                int _movement = _xMax == currentBounds.XMax ? 0 : _xMax > currentBounds.XMax ? 1 : -1;
+
+                if (_boundsMovement[1] == _movement)
+                {
+                    if (((_movement == 1) && (_xMax >= _bounds.XMax)) || ((_movement == -1) && (_xMax <= _bounds.XMax)))
+                    {
+                        rightBoundVector = _bounds.XMaxVector;
+                        _boundsMovement[1] = 0;
+                    }
+                    else
+                    {
+                        rightBoundVector = new Vector3(_xMax, _bounds.XMaxVector.y, _bounds.XMaxVector.z);
+                        if (camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x <= currentBounds.XMin) _boundsMovement[1] = 0;
+                    }
+                }
+            }
+            // Bottom bound move
+            if (_boundsMovement[2] != 0)
+            {
+                float _zMin = camera.ViewportToWorldPoint(new Vector3(0, -.01f, 0)).x;
+                int _movement = _zMin == currentBounds.ZMin ? 0 : _zMin > currentBounds.ZMin ? 1 : -1;
+
+                if (_boundsMovement[2] == _movement)
+                {
+                    if (((_movement == 1) && (_zMin >= _bounds.ZMin)) || ((_movement == -1) && (_zMin <= _bounds.ZMin)))
+                    {
+                        bottomBoundVector = _bounds.ZMinVector;
+                        _boundsMovement[2] = 0;
+                    }
+                    else
+                    {
+                        bottomBoundVector = new Vector3(_bounds.ZMinVector.x, _bounds.ZMinVector.y, _zMin);
+                        if (camera.ViewportToWorldPoint(new Vector3(.3f, 0, 0)).z >= currentBounds.ZMax) _boundsMovement[2] = 0;
+                    }
+                }
+            }
+            // Top bound move
+            if (_boundsMovement[3] != 0)
+            {
+                float _zMax = camera.ViewportToWorldPoint(new Vector3(0, .3f, 0)).x;
+                int _movement = _zMax == currentBounds.ZMax ? 0 : _zMax > currentBounds.ZMax ? 1 : -1;
+
+                if (_boundsMovement[3] == _movement)
+                {
+                    if (((_movement == 1) && (_zMax >= _bounds.ZMax)) || ((_movement == -1) && (_zMax <= _bounds.ZMax)))
+                    {
+                        topBoundVector = _bounds.ZMaxVector;
+                        _boundsMovement[3] = 0;
+                    }
+                    else
+                    {
+                        topBoundVector = new Vector3(_bounds.ZMaxVector.x, _bounds.ZMaxVector.y, _zMax);
+                        if (camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).z <= currentBounds.ZMin) _boundsMovement[3] = 0;
+                    }
+                }
             }
 
             yield return null;
-            _xMin = camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x;
         }
 
-        float _xMax = camera.ViewportToWorldPoint(new Vector3(1.01f, 0, 0)).x;
-        if (_bounds.XMax < _xMax) _bounds.XMaxVector.x = _xMax;
-
-        CurrentBounds = _bounds;
-        Debug.Log("Stop Wait");
-        yield break;
+        waitToSetBoundsCoroutine = null;
     }
     #endregion
 
