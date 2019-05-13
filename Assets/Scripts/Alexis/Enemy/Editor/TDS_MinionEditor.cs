@@ -36,7 +36,7 @@ public class TDS_MinionEditor : TDS_EnemyEditor
     /// <summary>SerializedProperty for <see cref="TDS_Minion.hasEvolved"/> of type <see cref="bool"/>.</summary>
     SerializedProperty hasEvolved = null;
 
-    /// <summary>SerializedProperty for <see cref="TDS_Minion.attacks"/> of type <see cref="bool"/>.</summary>
+    /// <summary>SerializedProperty for <see cref="TDS_Minion.Attacks"/> of type <see cref="bool"/>.</summary>
     SerializedProperty attacks = null;
     #endregion
 

@@ -82,6 +82,7 @@ public class TDS_Punk : TDS_Enemy
     #endregion
 
     #region Overriden Methods
+    /* LEGACY
     /// <summary>
     /// Activate the hitbox with the settings of the currently casted attack
     /// Get the attack with its AnimationID
@@ -93,6 +94,7 @@ public class TDS_Punk : TDS_Enemy
         if (_attack == null) return;
         hitBox.Activate(_attack);
     }
+    */
 
     /// <summary>
     /// Set its animation state to its taunt -> It will call the behaviour method
@@ -149,7 +151,6 @@ public class TDS_Punk : TDS_Enemy
         _attack.ConsecutiveUses++;
         attacks.ToList().Where(a => a != _attack).ToList().ForEach(a => a.ConsecutiveUses = 0);
         SetAnimationState(_attack.AnimationID);
-        //hitBox.Activate(_attack); THE HIT BOX IS NOW ACTIVATED INTO THE ANIMATION BY CALLING THE METHOD "ActivateAttack" with the AnimationID of the attack
         return _attack.Cooldown;
     }
 

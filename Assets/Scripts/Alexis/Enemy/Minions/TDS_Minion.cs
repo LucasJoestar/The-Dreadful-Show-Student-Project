@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
 
-public abstract class TDS_Minion : TDS_Enemy
+public abstract class TDS_Minion : TDS_Enemy, TDS_ISpecialAttacker
 {
     /* TDS_Minion :
 	 *
@@ -37,20 +37,13 @@ public abstract class TDS_Minion : TDS_Enemy
     #region Fields / Properties
     [SerializeField] protected bool hasEvolved = false;
 
-    [SerializeField] protected TDS_MinionAttack[] attacks = new TDS_MinionAttack[] {};
+    public TDS_EffectiveEnemyAttack[] Attacks { get;  set; }
     #endregion
 
     #region Methods
 
     #region Original Methods
-    /// <summary>
-    /// Called to apply the effect of an attack 
-    /// This effect can be a movement, an instanciation of an object
-    /// Write effects in each specific minion
-    /// </summary>
-    /// <param name="_type">Type of the attack</param>
-    protected abstract void ApplyAttackEffect(MinionAttackType _type);
-    
+
     /// <summary>
     /// Set the boolean has Evolved to true
     /// </summary>
@@ -59,7 +52,11 @@ public abstract class TDS_Minion : TDS_Enemy
         hasEvolved = true; 
     }
 
-    #region TDS_MinionAttack
+    #endregion
+
+    #region Overridden Methods
+
+    #region Interface 
     /// <summary>
     /// Select the attack to cast
     /// If there is no attack return null
@@ -67,12 +64,12 @@ public abstract class TDS_Minion : TDS_Enemy
     /// </summary>
     /// <param name="_distance">Distance between the agent and its target</param>
     /// <returns>Attack to cast</returns>
-    protected TDS_MinionAttack GetAttack(float _distance)
+    public TDS_EffectiveEnemyAttack GetAttack(float _distance = 0)
     {
         //If the enemy has no attack, return null
-        if (attacks == null || attacks.Length == 0) return null;
+        if (Attacks == null || Attacks.Length == 0) return null;
         // Get all attacks that can hit the target
-        TDS_MinionAttack[] _availableAttacks = attacks.Where(a => a.IsDistanceAttack || a.PredictedRange > _distance).ToArray();
+        TDS_EffectiveEnemyAttack[] _availableAttacks = Attacks.Where(a => a.IsDistanceAttack || a.PredictedRange > _distance).ToArray();
         // If there is no attack in Range, return null
         if (_availableAttacks.Length == 0) return null;
         // Set a random to compare with the probabilities of the attackes
@@ -85,11 +82,38 @@ public abstract class TDS_Minion : TDS_Enemy
         int _randomIndex = UnityEngine.Random.Range(0, _availableAttacks.Length);
         return _availableAttacks[_randomIndex];
     }
+
+    public void ApplyAttackEffect(MinionAttackType _type)
+    {
+        switch (_type)
+        {
+            case MinionAttackType.TypeOne:
+                CastFirstEffect();
+                break;
+            case MinionAttackType.TypeTwo:
+                CastSecondEffect();
+                break;
+            case MinionAttackType.TypeThree:
+                CastThirdEffect();
+                break;
+            case MinionAttackType.TypeSpecial:
+                CastSpecialEffect();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public abstract void CastFirstEffect();
+
+    public abstract void CastSecondEffect();
+
+    public abstract void CastThirdEffect();
+
+    public abstract void CastSpecialEffect();
     #endregion
 
-    #endregion
-
-    #region Overridden Methods
+    /* LEGACY
     /// <summary>
     /// Activate the hitbox with the settings of the currently casted attack
     /// Get the attack with its AnimationID
@@ -97,11 +121,12 @@ public abstract class TDS_Minion : TDS_Enemy
     /// <param name="_animationID">Animation ID entered in the animation window</param>
     protected override void ActivateAttack(int _animationID)
     {
-        TDS_MinionAttack _attack = attacks.Where(a => a.AnimationID == _animationID).FirstOrDefault();
+        TDS_EffectiveEnemyAttack _attack = Attacks.Where(a => a.AnimationID == _animationID).FirstOrDefault();
         if (_attack == null) return;
         hitBox.Activate(_attack);
         ApplyAttackEffect(_attack.AttackType);
     }
+    */
 
     /// <summary>
     /// Return true if the distance is less than the minimum predicted range of the Minion attack
@@ -110,7 +135,7 @@ public abstract class TDS_Minion : TDS_Enemy
     /// <returns>does the attack can be cast</returns>
     protected override bool AttackCanBeCasted(float _distance)
     {
-        return _distance <= attacks.Min(a => a.PredictedRange);
+        return _distance <= Attacks.Min(a => a.PredictedRange);
     }
 
     /// <summary>
@@ -119,7 +144,7 @@ public abstract class TDS_Minion : TDS_Enemy
     /// <returns></returns>
     protected override float GetMaxRange()
     {
-        return attacks.Select(a => a.PredictedRange).Min();
+        return Attacks.Select(a => a.PredictedRange).Min();
     }
 
     /// <summary>
@@ -128,7 +153,7 @@ public abstract class TDS_Minion : TDS_Enemy
     /// <returns></returns>   
     protected override float GetMinRange()
     {
-        return attacks.Select(a => a.PredictedRange).Max();
+        return Attacks.Select(a => a.PredictedRange).Max();
     }
 
     /// <summary>
@@ -141,14 +166,14 @@ public abstract class TDS_Minion : TDS_Enemy
     /// <returns>cooldown of the attack</returns>
     protected override float StartAttack(float _distance)
     {
-        TDS_MinionAttack _attack = GetAttack(_distance);
+        TDS_EffectiveEnemyAttack _attack = GetAttack(_distance);
         if (_attack == null)
         {
             return 0;
         }
         IsAttacking = true;
         _attack.ConsecutiveUses++;
-        attacks.ToList().Where(a => a != _attack).ToList().ForEach(a => a.ConsecutiveUses = 0);
+        Attacks.ToList().Where(a => a != _attack).ToList().ForEach(a => a.ConsecutiveUses = 0);
         SetAnimationState(_attack.AnimationID);
         //hitBox.Activate(_attack); THE HIT BOX IS NOW ACTIVATED INTO THE ANIMATION BY CALLING THE METHOD "ActivateAttack" with the AnimationID of the attack
         //ApplyAttackEffect(_attack.AttackType); 
