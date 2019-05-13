@@ -35,6 +35,12 @@ public class TDS_EventSystemEditor : Editor
 	*/
 
     #region Fields / Properties
+    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doDestroyOnFinish"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty doDestroyOnFinish = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doLoop"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty doLoop = null;
+
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.isActivated"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isActivated = null;
 
@@ -71,8 +77,16 @@ public class TDS_EventSystemEditor : Editor
 
         // Updates the SerializedProperties to get the latest values
         serializedObject.Update();
+        GUILayout.Space(3);
 
         TDS_EditorUtility.RadioToggle("Activated", "Is this event system activated or not", isActivated);
+
+        GUILayout.Space(3);
+
+        TDS_EditorUtility.Toggle("Looping", "Should this event system loop when reaching the end or not", doLoop);
+        TDS_EditorUtility.Toggle("Destroy when Finished", "Should this object be destroyed when event system get finished", doDestroyOnFinish);
+
+        GUILayout.Space(3);
 
         // Button to add a new event
         GUI.backgroundColor = TDS_EditorUtility.BoxLightColor;
@@ -107,9 +121,19 @@ public class TDS_EventSystemEditor : Editor
             if (TDS_EditorUtility.Button(_eventName.stringValue, "Wrap / unwrap this event", TDS_EditorUtility.HeaderStyle)) foldouts[_i] = !foldouts[_i];
 
             GUILayout.FlexibleSpace();
-            GUI.color = Color.red;
+
+            // BUttons to change the event position in the list
+            if ((_i > 0) && TDS_EditorUtility.Button("▲", "Move this element up", EditorStyles.miniButton))
+            {
+                events.MoveArrayElement(_i, _i - 1);
+            }
+            if ((_i < events.arraySize - 1) && TDS_EditorUtility.Button("▼", "Move this element down", EditorStyles.miniButton))
+            {
+                events.MoveArrayElement(_i, _i + 1);
+            }
 
             // Button to delete this event
+            GUI.color = Color.red;
             if (TDS_EditorUtility.Button("X", "Delete this event", EditorStyles.miniButton))
             {
                 events.DeleteArrayElementAtIndex(_i);
@@ -235,6 +259,8 @@ public class TDS_EventSystemEditor : Editor
     // This function is called when the object is loaded
     private void OnEnable()
     {
+        doDestroyOnFinish = serializedObject.FindProperty("doDestroyOnFinish");
+        doLoop = serializedObject.FindProperty("doLoop");
         isActivated = serializedObject.FindProperty("isActivated");
         isWaitingOthers = serializedObject.FindProperty("isWaitingOthers");
         events = serializedObject.FindProperty("events");

@@ -48,6 +48,11 @@ public class TDS_ColorLevelEditor : EditorWindow
 
     #region Fields / Properties
     /// <summary>
+    /// Created folders for color groups.
+    /// </summary>
+    [SerializeField] private TDS_ColorGroupFolder[] colorGroupFolders = new TDS_ColorGroupFolder[] { };
+
+    /// <summary>
     /// Groups of loaded sprite renderers sorted by color.
     /// </summary>
     [SerializeField] private TDS_ColorGroup[] colorGroups = new TDS_ColorGroup[] { };
@@ -94,11 +99,165 @@ public class TDS_ColorLevelEditor : EditorWindow
         TDS_ColorGroup _matching = colorGroups.Where(c => c.Color == _sprite.color).FirstOrDefault();
         if (_matching == null)
         {
-            colorGroups = colorGroups.Append(new TDS_ColorGroup(_sprite.color, new SpriteRenderer[] { _sprite })).ToArray();
+            colorGroups = colorGroups.Append(new TDS_ColorGroup(_sprite.color, new SpriteRenderer[] { _sprite })).OrderBy(g => g.Name).ToArray();
         }
         else if (!_matching.Sprites.Contains(_sprite))
         {
             _matching.Sprites.Add(_sprite);
+        }
+    }
+
+
+    /// <summary>
+    /// Draw some color group folders.
+    /// </summary>
+    /// <param name="_colorGroupFolders">Folders tpo draw.</param>
+    private void DrawColorGroupFolders(IEnumerable<TDS_ColorGroupFolder> _colorGroupFolders)
+    {
+        foreach (TDS_ColorGroupFolder _folder in _colorGroupFolders)
+        {
+            // Draw the folder
+            GUILayout.Space(5);
+            EditorGUILayout.BeginHorizontal();
+
+            // Draw fusion mode buttons
+            if (isInFusionMode && !_folder.isSelected)
+            {
+                Color _original = GUI.color;
+                GUI.color = new Color(.5f, .25f, 0, 1);
+
+                if (GUILayout.Button("S", GUILayout.Width(20), GUILayout.Height(EditorGUIUtility.singleLineHeight)))
+                {
+                    TDS_ColorGroup[] _groups = colorGroups.Where(g => g.isSelected).ToArray();
+
+                    foreach (TDS_ColorGroup _group in _groups)
+                    {
+                        Undo.RecordObjects(_group.Sprites.ToArray(), "fusion sprite groups color");
+
+                        // Fusion To folder
+                    }
+
+                    colorGroups = colorGroups.Except(_groups).ToArray();
+                    isInFusionMode = false;
+
+                    Repaint();
+                }
+
+                GUI.color = _original;
+            }
+            else GUILayout.Space(28);
+
+            // Draw folder
+            _folder.isUnfolded = EditorGUILayout.Foldout(_folder.isUnfolded, _folder.Name, true);
+
+            GUILayout.FlexibleSpace();
+
+            bool _selected = EditorGUILayout.Toggle(_folder.isSelected, GUILayout.Width(15));
+            if (_selected != _folder.isSelected)
+            {
+                _folder.isSelected = _selected;
+                if (_selected)
+                {
+                    if (!isInFusionMode) isInFusionMode = true;
+                }
+                else if (!colorGroups.Any(g => g.isSelected)) isInFusionMode = false;
+
+                // Stock selected objects
+            }
+
+            GUILayout.Space(5);
+            EditorGUILayout.EndHorizontal();
+
+            // Draw this folder color groups
+            if (_folder.isUnfolded)
+            {
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Space(28);
+
+                _folder.Name = EditorGUILayout.TextField(_folder.Name);
+
+                GUILayout.Space(43);
+                EditorGUILayout.EndHorizontal();
+                GUILayout.Space(2);
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Space(10);
+                EditorGUILayout.BeginVertical();
+
+                DrawColorGroups(_folder.ColorGroups);
+
+                EditorGUILayout.EndVertical();
+                EditorGUILayout.EndHorizontal();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Draw some color groups.
+    /// </summary>
+    /// <param name="_colorGroups">Groups to draw.</param>
+    private void DrawColorGroups(IEnumerable<TDS_ColorGroup> _colorGroups)
+    {
+        foreach (TDS_ColorGroup _colorGroup in colorGroups)
+        {
+            GUILayout.Space(3);
+            EditorGUILayout.BeginHorizontal();
+
+            // Draw fusion mode buttons
+            if (isInFusionMode && !_colorGroup.isSelected)
+            {
+                Color _original = GUI.color;
+                GUI.color = new Color(0, .75f, 0, 1);
+
+                if (GUILayout.Button("F", GUILayout.Width(20), GUILayout.Height(EditorGUIUtility.singleLineHeight)))
+                {
+                    TDS_ColorGroup[] _groups = colorGroups.Where(g => g.isSelected).ToArray();
+
+                    foreach (TDS_ColorGroup _group in _groups)
+                    {
+                        Undo.RecordObjects(_group.Sprites.ToArray(), "fusion sprite groups color");
+
+                        foreach (SpriteRenderer _sprite in _group.Sprites)
+                        {
+                            _sprite.color = _colorGroup.Color;
+                        }
+                        _colorGroup.Sprites.AddRange(_group.Sprites);
+                    }
+
+                    colorGroups = colorGroups.Except(_groups).ToArray();
+                    isInFusionMode = false;
+
+                    Repaint();
+                }
+
+                GUI.color = _original;
+            }
+            else GUILayout.Space(28);
+
+            // Draw color group
+            _colorGroup.Name = EditorGUILayout.TextField(_colorGroup.Name);
+
+            GUILayout.FlexibleSpace();
+            EditorGUI.BeginChangeCheck();
+            _colorGroup.Color = EditorGUILayout.ColorField(_colorGroup.Color);
+            if (EditorGUI.EndChangeCheck())
+            {
+                Undo.RecordObjects(_colorGroup.Sprites.ToArray(), "change sprites group color");
+                _colorGroup.Sprites.ForEach(s => s.color = _colorGroup.Color);
+            }
+
+            bool _selected = EditorGUILayout.Toggle(_colorGroup.isSelected, GUILayout.Width(15));
+            if (_selected != _colorGroup.isSelected)
+            {
+                _colorGroup.isSelected = _selected;
+                if (_selected)
+                {
+                    if (!isInFusionMode) isInFusionMode = true;
+                }
+                else if (!colorGroups.Any(g => g.isSelected)) isInFusionMode = false;
+            }
+
+            GUILayout.Space(5);
+            EditorGUILayout.EndHorizontal();
         }
     }
 	#endregion
@@ -107,12 +266,14 @@ public class TDS_ColorLevelEditor : EditorWindow
     // This function is called when the object is loaded
     private void OnEnable()
     {
+        // Load sprites on enable
         LoadSprites();
     }
 
     // Implement your own editor GUI here
     private void OnGUI()
     {
+        // Get non-assignated color groups and associate them with matching one if found
         for (int _i = 0; _i < colorGroups.Length; _i++)
         {
             colorGroups[_i].Sprites = colorGroups[_i].Sprites.Where(s => s != null).ToList();
@@ -143,21 +304,40 @@ public class TDS_ColorLevelEditor : EditorWindow
             }
         }
 
-        scrollbar = EditorGUILayout.BeginScrollView(scrollbar);
-        GUILayout.Space(5);
-        EditorGUILayout.BeginHorizontal();
+        // Draw toolbar
+        EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
 
-        EditorGUILayout.LabelField(new GUIContent("Level Colors", "All colors of the loaded sprites in the level"), EditorStyles.boldLabel);
+        if (GUILayout.Button(new GUIContent("Create Folder", "Create a new folder to order your color groups"), EditorStyles.toolbarButton)) colorGroupFolders = colorGroupFolders.Append(new TDS_ColorGroupFolder()).ToArray();
+
         GUILayout.FlexibleSpace();
-        if (GUILayout.Button(new GUIContent("Load Sprites", "Loads all sprites of this level"))) LoadSprites();
-        if (GUILayout.Button(new GUIContent("Reset", "Clear all loaded sprites and get them from zero point")))
+
+        if (GUILayout.Button(new GUIContent("Range", "Range the groups by name"), EditorStyles.toolbarButton))
         {
-            colorGroups = new TDS_ColorGroup[] { };
-            LoadSprites();
-            Repaint();
+            colorGroupFolders = colorGroupFolders.OrderBy(g => g.Name).ToArray();
+            colorGroups = colorGroups.OrderBy(g => g.Name).ToArray();
+        }
+
+        if (GUILayout.Button(new GUIContent("Load Sprites", "Loads all sprites of this level"), EditorStyles.toolbarButton)) LoadSprites();
+
+        GUILayout.Space(15);
+
+        if (GUILayout.Button(new GUIContent("Reset", "Clear all loaded sprites and get them from zero point"), EditorStyles.toolbarButton))
+        {
+            if (EditorUtility.DisplayDialog("Confirm color groups reset", "Are you sure you want to reset all your color groups ? This action cannot be undone.", "Yes, I'm sure !", "I've changed my mind..."))
+            {
+                colorGroups = new TDS_ColorGroup[] { };
+                LoadSprites();
+                Repaint();
+            }
         }
 
         EditorGUILayout.EndHorizontal();
+        GUILayout.Space(5);
+
+        // Draw color groups editor
+        scrollbar = EditorGUILayout.BeginScrollView(scrollbar);
+
+        EditorGUILayout.LabelField(new GUIContent("Level Colors", "All colors of the loaded sprites in the level"), EditorStyles.boldLabel);
 
         if (colorGroups.Length == 0)
         {
@@ -169,69 +349,11 @@ public class TDS_ColorLevelEditor : EditorWindow
             return;
         }
 
-        foreach (TDS_ColorGroup _colorGroup in colorGroups)
-        {
-            GUILayout.Space(5);
-            EditorGUILayout.BeginHorizontal();
+        // Draw all folders & color groups !!
+        DrawColorGroupFolders(colorGroupFolders);
+        DrawColorGroups(colorGroups);
 
-            _colorGroup.Name = EditorGUILayout.TextField(_colorGroup.Name);
-
-            GUILayout.FlexibleSpace();
-            EditorGUI.BeginChangeCheck();
-            _colorGroup.Color = EditorGUILayout.ColorField(_colorGroup.Color);
-            if (EditorGUI.EndChangeCheck())
-            {
-                Undo.RecordObjects(_colorGroup.Sprites.ToArray(), "change sprites group color");
-                _colorGroup.Sprites.ForEach(s => s.color = _colorGroup.Color);
-            }
-
-            bool _selected = EditorGUILayout.Toggle(_colorGroup.isSelected, GUILayout.Width(15));
-            if (_selected != _colorGroup.isSelected)
-            {
-                _colorGroup.isSelected = _selected;
-                if (_selected)
-                {
-                    if (!isInFusionMode) isInFusionMode = true;
-                }
-                else if (!colorGroups.Any(g => g.isSelected)) isInFusionMode = false;
-            }
-
-            if (isInFusionMode && !_colorGroup.isSelected)
-            {
-                Color _original = GUI.color;
-                GUI.color = new Color(0, .75f, 0, 1);
-
-                if (GUILayout.Button("F", GUILayout.Width(25)))
-                {
-                    TDS_ColorGroup[] _groups = colorGroups.Where(g => g.isSelected).ToArray();
-
-                    foreach (TDS_ColorGroup _group in _groups)
-                    {
-                        Undo.RecordObjects(_group.Sprites.ToArray(), "fusion sprite groups color");
-
-                        foreach (SpriteRenderer _sprite in _group.Sprites)
-                        {
-                            _sprite.color = _colorGroup.Color;
-                        }
-                        _colorGroup.Sprites.AddRange(_group.Sprites);
-                    }
-
-                    colorGroups = colorGroups.Except(_groups).ToArray();
-                    isInFusionMode = false;
-
-                    Repaint();
-                }
-
-                GUI.color = _original;
-            }
-            else
-            {
-                GUILayout.Space(25);
-            }
-
-            EditorGUILayout.EndHorizontal();
-        }
-
+        GUILayout.Space(10);
         EditorGUILayout.EndScrollView();
     }
     #endregion
@@ -324,5 +446,64 @@ public class TDS_ColorGroup
         Color = _color;
         Sprites = _sprites.ToList();
     }
+    #endregion
+}
+
+[Serializable]
+public class TDS_ColorGroupFolder
+{
+    /* TDS_ColorGroupFolder :
+     *
+     *	#####################
+     *	###### PURPOSE ######
+     *	#####################
+     *
+     *	Class used to store multiple color groups or folder like this.
+     *
+     *	#####################
+     *	####### TO DO #######
+     *	#####################
+     *
+     *	...
+     *
+     *	#####################
+     *	### MODIFICATIONS ###
+     *	#####################
+     *
+     *	Date :			[13 / 05 / 2019]
+     *	Author :		[Guibert Lucas]
+     *
+     *	Changes :
+     *
+     *	Creation of the TDS_ColorGroupFolder class.
+     *
+     *	-----------------------------------
+    */
+
+    #region Fields / Properties
+    /// <summary>
+    /// Name of this group.
+    /// </summary>
+    public string Name = "New Folder";
+
+    /// <summary>
+    /// Indicates if this folder is selected or not.
+    /// </summary>
+    public bool isSelected = true;
+
+    /// <summary>
+    /// Indicates if this folder is unfolded or not.
+    /// </summary>
+    public bool isUnfolded = true;
+
+    /// <summary>
+    /// Sprites with the color.
+    /// </summary>
+    public List<TDS_ColorGroupFolder> Folders;
+
+    /// <summary>
+    /// Sprites with the color.
+    /// </summary>
+    public List<TDS_ColorGroup> ColorGroups;
     #endregion
 }

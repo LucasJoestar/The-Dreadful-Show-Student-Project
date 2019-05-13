@@ -244,11 +244,6 @@ public class TDS_Camera : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Current level bounds object.
-    /// </summary>
-    [SerializeField] protected TDS_LevelBounds currentLevelBounds = null;
-
     /// <summary>Backing field for <see cref="Target"/>.</summary>
     [SerializeField] private Transform target = null;
 
@@ -360,11 +355,6 @@ public class TDS_Camera : MonoBehaviour
     /// </summary>
     public void ResetBounds()
     {
-        if (currentLevelBounds)
-        {
-            currentLevelBounds.gameObject.SetActive(false);
-            currentLevelBounds = null;
-        }
         CurrentBounds = levelBounds;
     }
 
@@ -492,26 +482,23 @@ public class TDS_Camera : MonoBehaviour
     /// <param name="_levelBounds">New level bounds.</param>
     public void SetBounds(TDS_LevelBounds _levelBounds)
     {
-        if (currentLevelBounds == _levelBounds) return;
+        TDS_Bounds _bounds = new TDS_Bounds(_levelBounds.LeftBound.x != 0 ?
+                                            _levelBounds.LeftBound :                             
+                                            currentBounds.XMinVector,
 
-        TDS_Bounds _bounds = new TDS_Bounds(_levelBounds.LeftBound != null ?
-                                            _levelBounds.LeftBound.position :                             
-                                            levelBounds.XMinVector,
+                                            _levelBounds.RightBound.x != 0 ?   
+                                            _levelBounds.RightBound :
+                                            currentBounds.XMaxVector,
 
-                                            _levelBounds.RightBound != null ?   
-                                            _levelBounds.RightBound.position :                    
-                                            levelBounds.XMaxVector,
+                                            _levelBounds.BottomBound.z != 0 ? 
+                                            _levelBounds.BottomBound :
+                                            currentBounds.ZMinVector,
 
-                                            _levelBounds.BottomBound != null ? 
-                                            _levelBounds.BottomBound.position : 
-                                            levelBounds.ZMinVector,
+                                            _levelBounds.TopBound.z != 0 ?
+                                            _levelBounds.TopBound :
+                                            currentBounds.ZMaxVector);
 
-                                            _levelBounds.TopBound != null ?
-                                            _levelBounds.TopBound.position :                        
-                                            levelBounds.ZMaxVector);
-
-        if (currentLevelBounds) currentLevelBounds.Desactivate();
-        currentLevelBounds = _levelBounds;
+        if (currentBounds == _bounds) return;
 
         if (waitToSetBoundsCoroutine != null) StopCoroutine(waitToSetBoundsCoroutine);
         waitToSetBoundsCoroutine = StartCoroutine(WaitToSetBounds(_bounds));

@@ -120,8 +120,6 @@ public class TDS_Event
     /// <returns></returns>
     public IEnumerator Trigger()
     {
-        Debug.Log("New Event => " + eventType.ToString());
-
         // If this event require a particular player type different than the local one, return
         if ((isMasterOnly && !PhotonNetwork.isMasterClient) || (doNeedSpecificPlayerType && (TDS_LevelManager.Instance.LocalPlayer.PlayerType != playerType))) yield break;
 

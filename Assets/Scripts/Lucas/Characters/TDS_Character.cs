@@ -397,8 +397,6 @@ public abstract class TDS_Character : TDS_Damageable
     protected override void Die()
     {
         base.Die();
-
-        Debug.Log(name + " " + GetInstanceID() + " die !!");
     }
     #endregion
 
