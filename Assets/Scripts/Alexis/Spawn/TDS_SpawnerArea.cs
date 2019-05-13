@@ -131,7 +131,7 @@ public class TDS_SpawnerArea : PunBehaviour
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "CallOnAreaDesactivatedEvent"), new object[] { });
             return;
         }
-        else
+        else if(waveIndex == waves.Count)
         {
             waveIndex = 0;
         }

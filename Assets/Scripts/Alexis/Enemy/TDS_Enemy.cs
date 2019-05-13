@@ -182,7 +182,6 @@ public abstract class TDS_Enemy : TDS_Character
 
     #endregion
 
-
     #region Methods
 
     #region Original Methods
@@ -267,7 +266,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <see cref="TDS_Minion.Behaviour"/> or <see cref="TDS_Punk.Behaviour"/>
     /// </summary>
     /// <returns></returns>
-    protected IEnumerator Behaviour()
+    protected virtual IEnumerator Behaviour()
     {
         // If the enemy is dead or paralyzed, they can't behave
         if (isDead || IsParalyzed || IsPacific) yield break;
@@ -328,7 +327,7 @@ public abstract class TDS_Enemy : TDS_Character
             default:
                 break;
         }
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(.1f);
         StartCoroutine(Behaviour());
         yield break;
     }
@@ -339,7 +338,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// Wait for the end of the attack
     /// </summary>
     /// <returns></returns>
-    protected IEnumerator CastAttack()
+    protected virtual IEnumerator CastAttack()
     {
         if (isDead) yield break; 
         if(IsPacific)
@@ -375,7 +374,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// Check if there is player to attack  
     /// </summary>
     /// <returns></returns>
-    protected IEnumerator CastDetection()
+    protected virtual IEnumerator CastDetection()
     {
         if (isDead) yield break; 
         SetAnimationState((int)EnemyAnimationState.Run);
@@ -533,7 +532,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// Search the best player to target
     /// </summary>
     /// <returns>Best player to target</returns>
-    protected TDS_Player SearchTarget()
+    protected virtual TDS_Player SearchTarget()
     {
         TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
         if (_targets.Length == 0) return null;
@@ -680,7 +679,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// Get an attacking position within a certain range to cast attacks
     /// </summary>
     /// <returns></returns>
-    protected Vector3 GetAttackingPosition()
+    protected virtual Vector3 GetAttackingPosition()
     {
         Vector3 _offset = Vector3.zero;
         int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;  
@@ -701,14 +700,14 @@ public abstract class TDS_Enemy : TDS_Character
     #endregion
 
     #region Void
-    protected abstract void ActivateAttack(int _animationID);
+    // protected abstract void ActivateAttack(int _animationID);
 
     /// <summary>
     /// Compute the path
     /// If the path can be computed, set the state to Getting in Range
     /// else set the state to MakingDecision
     /// </summary>
-    protected void ComputePath()
+    protected virtual void ComputePath()
     {
         if (isDead) return; 
         if(IsParalyzed)
@@ -763,7 +762,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// If an attack can be casted, set the state to attack
     /// Else if the target is too far away, set the state to compute path
     /// </summary>
-    protected void TakeDecision()
+    protected virtual void TakeDecision()
     {
         //Take decisions
         if (isDead) return; 
@@ -771,7 +770,7 @@ public abstract class TDS_Enemy : TDS_Character
         if (!playerTarget || playerTarget.IsDead)
         {
             enemyState = EnemyState.Searching;
-            StartCoroutine(Behaviour());
+            return; 
         }
         float _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
         // Check if the agent can attack
