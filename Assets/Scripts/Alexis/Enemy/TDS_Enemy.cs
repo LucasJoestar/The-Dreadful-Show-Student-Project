@@ -700,7 +700,11 @@ public abstract class TDS_Enemy : TDS_Character
     #endregion
 
     #region Void
-    // protected abstract void ActivateAttack(int _animationID);
+    /// <summary>
+    /// USED IN ANIMATION
+    /// </summary>
+    /// <param name="_animationID"></param>
+    protected abstract void ActivateAttack(int _animationID);
 
     /// <summary>
     /// Compute the path
@@ -796,6 +800,9 @@ public abstract class TDS_Enemy : TDS_Character
         StartCoroutine(Behaviour()); 
     }
 
+    /// <summary>
+    /// This Method is called when the enemy has to be activated by an event
+    /// </summary>
     public abstract void ActivateEnemy(); 
     #endregion
 

@@ -83,20 +83,20 @@ public abstract class TDS_Minion : TDS_Enemy, TDS_ISpecialAttacker
         return _availableAttacks[_randomIndex];
     }
 
-    public void ApplyAttackEffect(MinionAttackType _type)
+    public void ApplyAttackEffect(EnemyEffectiveAttackType _type)
     {
         switch (_type)
         {
-            case MinionAttackType.TypeOne:
+            case EnemyEffectiveAttackType.TypeOne:
                 CastFirstEffect();
                 break;
-            case MinionAttackType.TypeTwo:
+            case EnemyEffectiveAttackType.TypeTwo:
                 CastSecondEffect();
                 break;
-            case MinionAttackType.TypeThree:
+            case EnemyEffectiveAttackType.TypeThree:
                 CastThirdEffect();
                 break;
-            case MinionAttackType.TypeSpecial:
+            case EnemyEffectiveAttackType.TypeSpecial:
                 CastSpecialEffect();
                 break;
             default:
@@ -113,8 +113,8 @@ public abstract class TDS_Minion : TDS_Enemy, TDS_ISpecialAttacker
     public abstract void CastSpecialEffect();
     #endregion
 
-    /* LEGACY
     /// <summary>
+    /// USED IN ANIMATION
     /// Activate the hitbox with the settings of the currently casted attack
     /// Get the attack with its AnimationID
     /// </summary>
@@ -126,7 +126,6 @@ public abstract class TDS_Minion : TDS_Enemy, TDS_ISpecialAttacker
         hitBox.Activate(_attack);
         ApplyAttackEffect(_attack.AttackType);
     }
-    */
 
     /// <summary>
     /// Return true if the distance is less than the minimum predicted range of the Minion attack

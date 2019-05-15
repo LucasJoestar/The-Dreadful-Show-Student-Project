@@ -82,8 +82,8 @@ public class TDS_Punk : TDS_Enemy
     #endregion
 
     #region Overriden Methods
-    /* LEGACY
     /// <summary>
+    /// USED IN ANIMATION
     /// Activate the hitbox with the settings of the currently casted attack
     /// Get the attack with its AnimationID
     /// </summary>
@@ -94,7 +94,6 @@ public class TDS_Punk : TDS_Enemy
         if (_attack == null) return;
         hitBox.Activate(_attack);
     }
-    */
 
     /// <summary>
     /// Set its animation state to its taunt -> It will call the behaviour method

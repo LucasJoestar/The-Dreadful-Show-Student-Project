@@ -83,10 +83,22 @@ public class TDS_SpawnPoint
 
     /// <summary>
     /// Return a random position around the spawnpoint within the spawnRange
+    /// Take care of the other spawned enemies
     /// </summary>
-    public Vector3 GetRandomSpawnPosition
+    public Vector3 GetRandomSpawnPosition()
     {
-        get { return spawnPosition + new Vector3(Random.Range(-spawnRange, spawnRange), 0, Random.Range(-spawnRange, spawnRange)); }
+        Vector3 _offsetedPosition = Vector3.zero;
+        Collider[] _coll;
+        for (int i = 0; i < 5; i++)
+        {
+            _offsetedPosition = spawnPosition + new Vector3(Random.Range(-spawnRange, spawnRange), 0, Random.Range(-spawnRange, spawnRange));
+            _coll = Physics.OverlapSphere(_offsetedPosition + Vector3.up, 1, LayerMask.NameToLayer("Enemy"));
+            if (_coll.Length == 0)
+            {
+                break; 
+            }
+        }
+        return _offsetedPosition; 
     }
     #endregion
 
@@ -111,7 +123,7 @@ public class TDS_SpawnPoint
         TDS_Enemy _e; 
         for (int i = 0; i < _enemiesNames.Count; i++)
         {
-            _e = PhotonNetwork.Instantiate(_enemiesNames[i], GetRandomSpawnPosition, Quaternion.identity, 0).GetComponent<TDS_Enemy>();
+            _e = PhotonNetwork.Instantiate(_enemiesNames[i], GetRandomSpawnPosition(), Quaternion.identity, 0).GetComponent<TDS_Enemy>();
             _e.Area = _owner;
             //INIT LIFEBAR
             if(TDS_UIManager.Instance?.CanvasWorld)

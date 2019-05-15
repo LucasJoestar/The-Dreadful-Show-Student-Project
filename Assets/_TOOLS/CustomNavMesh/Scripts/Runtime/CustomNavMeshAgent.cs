@@ -270,7 +270,7 @@ public class CustomNavMeshAgent : MonoBehaviour
         while (Vector3.Distance(OffsetPosition, LastPosition) > radius)
         {
             /* Apply the velocity to the transform position multiply by the speed and by Time.deltaTime to move*/
-            velocity = velocity.normalized * speed;
+            velocity = velocity.normalized * speed; 
             velocity = Vector3.ClampMagnitude(velocity, speed);
             transform.position += velocity * Time.deltaTime;
 

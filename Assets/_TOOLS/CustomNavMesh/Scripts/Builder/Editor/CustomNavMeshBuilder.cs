@@ -257,7 +257,7 @@ public class CustomNavMeshBuilder : EditorWindow
     void OnEnable()
     {
         //Create the material necessary to draw the navMesh
-        material = new Material(Shader.Find("Specular"));
+        material = new Material(Shader.Find("Lightweight Render Pipeline/Lit"));
         LoadDatas(); 
         //Implement the event to draw the navmesh on the scene
         SceneView.onSceneGUIDelegate += OnSceneGUI;

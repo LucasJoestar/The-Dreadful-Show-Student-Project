@@ -149,9 +149,10 @@ public class TDS_UIManager : PunBehaviour
     /// <returns></returns>
     private IEnumerator UpdateFilledImage(Image _filledImage, float _fillingValue)
     {
-        while (_filledImage.fillAmount != _fillingValue && _filledImage != null)
+        while (_filledImage.fillAmount > _fillingValue &&  _filledImage != null)
         {
-            _filledImage.fillAmount = Mathf.Lerp(_filledImage.fillAmount, _fillingValue, Time.deltaTime * 10);
+            _filledImage.fillAmount = Mathf.Lerp(_filledImage.fillAmount, _fillingValue, Time.deltaTime * 2);
+            _filledImage.fillAmount = (float)Math.Round(_filledImage.fillAmount, 3) - 0.001f; 
             yield return new WaitForEndOfFrame();
         }
         filledImages.Remove(_filledImage);
@@ -239,8 +240,13 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_fillingValue">Filling value to reach</param>
     public void FillImage(Image _filledImage, float _fillingValue)
     {
+        _fillingValue = (float)Math.Round((double)_fillingValue, 3);
         StopFilling(_filledImage); 
         filledImages.Add(_filledImage, StartCoroutine(UpdateFilledImage(_filledImage, _fillingValue))); 
+        if(PhotonNetwork.isMasterClient)
+        {
+            //CALL ONLINE METHOD HERE
+        }
     }
 
     /// <summary>
@@ -279,7 +285,7 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_enemy"></param>
     public void SetEnemyLifebar(TDS_Enemy _enemy)
     {
-        Vector3 _offset =  Vector3.up * _enemy.transform.localScale.y * 2; 
+        Vector3 _offset =  Vector3.up * _enemy.transform.localScale.y * 4; 
         TDS_LifeBar _healthBar = PhotonNetwork.Instantiate("LifeBar", _enemy.transform.position + _offset, Quaternion.identity, 0).GetComponent<TDS_LifeBar>();
         _healthBar.SetOwner(_enemy, _offset, true);
         _enemy.HealthBar = _healthBar.FilledImage; 

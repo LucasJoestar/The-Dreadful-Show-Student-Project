@@ -151,8 +151,9 @@ public enum CustomEventType
 /// Type of the Minion attack 
 /// used when the attack is called to know which effects and actions apply
 /// </summary>
-public enum MinionAttackType
+public enum EnemyEffectiveAttackType
 {
+    None,
     TypeOne,
     TypeTwo,
     TypeThree,
