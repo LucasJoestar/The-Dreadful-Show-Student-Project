@@ -46,11 +46,6 @@ public class TDS_Attack
     /// </summary>
     public string Name = string.Empty;
 
-    /// <summary>
-    /// ID of the animation used to play this attack.
-    /// </summary>
-    public int AnimationID = 0;
-
     /// <summary>Backing field for <see cref="DamagesMax"/></summary>
     [SerializeField] protected int damagesMax = 1;
 

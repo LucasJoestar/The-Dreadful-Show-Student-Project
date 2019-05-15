@@ -230,25 +230,21 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public event Action OnStopDodgeOneShot = null;
 
-    /// <summary>
-    /// Event called when starting a dodge. It is cleaned once called.
-    /// </summary>
-    public event Action OnStartDodgeOneShot = null;
 
     /// <summary>
-    /// Event called when starting to jump. It is cleaned once called.
+    /// Event called when starting to jump.
     /// </summary>
-    public event Action OnStartJumpOneShot = null;
+    public event Action OnJump = null;
 
     /// <summary>
-    /// Event called when taking an object. It is cleaned once called.
+    /// Event called when taking an object.
     /// </summary>
-    public event Action OnGrabObjectOneShot = null;
+    public event Action OnGrabObject = null;
 
     /// <summary>
-    /// Event called when throwing an object. It is cleaned once called.
+    /// Event called when throwing an object.
     /// </summary>
-    public event Action OnThrowOneShot = null;
+    public event Action OnThrow = null;
     #endregion
 
     #region Fields / Properties
@@ -606,8 +602,7 @@ public class TDS_Player : TDS_Character
         if (!base.GrabObject(_throwable)) return false;
 
         // Triggers one shot event
-        OnGrabObjectOneShot?.Invoke();
-        OnGrabObjectOneShot = null;
+        OnGrabObject?.Invoke();
 
         // Updates animator informations
         SetAnim(PlayerAnimState.HasObject);
@@ -627,8 +622,7 @@ public class TDS_Player : TDS_Character
         SetAnim(PlayerAnimState.LostObject);
 
         // Triggers one shot event
-        OnThrowOneShot?.Invoke();
-        OnThrowOneShot = null;
+        OnThrow?.Invoke();
     }
 
     /// <summary>
@@ -645,8 +639,7 @@ public class TDS_Player : TDS_Character
         SetAnim(PlayerAnimState.LostObject);
 
         // Triggers one shot event
-        OnThrowOneShot?.Invoke();
-        OnThrowOneShot = null;
+        OnThrow?.Invoke();
     }
     #endregion
 
@@ -753,8 +746,7 @@ public class TDS_Player : TDS_Character
     /// <summary>
     /// Performs the catch attack of this player.
     /// </summary>
-    /// <param name="_minion">Minion to try to catch</param>
-    public virtual void Catch(/*TDS_Minion _minion*/)
+    public virtual void Catch()
     {
         // Catch
 
@@ -773,9 +765,6 @@ public class TDS_Player : TDS_Character
         isDodging = true;
 
         OnStartDodging?.Invoke();
-
-        OnStartDodgeOneShot?.Invoke();
-        OnStartDodgeOneShot = null;
 
         // Adds an little force at the start of the dodge
         rigidbody.AddForce(Vector3.right * Mathf.Clamp(speedCurrent, speedInitial, speedMax) * speedCoef * isFacingRight.ToSign() * speedMax * (isGrounded ? 10 : 2));
@@ -1228,8 +1217,7 @@ public class TDS_Player : TDS_Character
         isJumping = true;
 
         // Call one shot event
-        OnStartJumpOneShot?.Invoke();
-        OnStartJumpOneShot = null;
+        OnJump?.Invoke();
 
         // Adds a base vertical force to the rigidbody to expels the player in the air
         rigidbody.AddForce(Vector3.up * JumpForce);

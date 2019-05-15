@@ -64,6 +64,11 @@ public class TDS_EnemyAttack : TDS_Attack
 
     #region int
     /// <summary>
+    /// ID of the animation used to play this attack.
+    /// </summary>
+    public int AnimationID = 0;
+
+    /// <summary>
     /// Backing field of <see cref="ConsecutiveUses"/>
     /// </summary>
     protected int consecutiveUses = 0;

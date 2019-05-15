@@ -40,16 +40,6 @@ public class TDS_Bounds
 
     #region Fields / Properties
     /// <summary>
-    /// X minimum value of the bounds.
-    /// </summary>
-    public float XMin { get{ return XMinVector.x; } }
-
-    /// <summary>
-    /// Vector for X minimum value of the bounds.
-    /// </summary>
-    public Vector3 XMinVector = Vector3.zero;
-
-    /// <summary>
     /// X maximum value of the bounds.
     /// </summary>
     public float XMax { get { return XMaxVector.x; } }
@@ -58,6 +48,16 @@ public class TDS_Bounds
     /// Vector for X maximum value of the bounds.
     /// </summary>
     public Vector3 XMaxVector = Vector3.zero;
+
+    /// <summary>
+    /// X minimum value of the bounds.
+    /// </summary>
+    public float XMin { get{ return XMinVector.x; } }
+
+    /// <summary>
+    /// Vector for X minimum value of the bounds.
+    /// </summary>
+    public Vector3 XMinVector = Vector3.zero;
 
     /// <summary>
     /// Z maximum value of the bounds.

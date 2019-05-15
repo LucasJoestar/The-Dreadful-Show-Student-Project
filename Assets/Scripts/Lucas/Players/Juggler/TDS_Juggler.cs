@@ -385,8 +385,7 @@ public class TDS_Juggler : TDS_Player
     /// <summary>
     /// Performs the catch attack of this player.
     /// </summary>
-    /// <param name="_minion">Minion to try to catch</param>
-    public override void Catch(/*TDS_Minion _minion*/)
+    public override void Catch()
     {
         // If aiming, stop
         if (isAiming) StopAiming();

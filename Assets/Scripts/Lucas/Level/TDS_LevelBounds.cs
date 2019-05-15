@@ -38,19 +38,14 @@ public class TDS_LevelBounds : MonoBehaviour
     /// </summary>
     [SerializeField] private bool doDestroyOnActivate = true;
 
-    /// <summary>
-    /// Collider trigger to enable these bounds.
-    /// </summary>
-    [SerializeField] private new BoxCollider collider = null;
-
 
     /// <summary>
-    /// Top bound position.
+    /// Bottom bound position.
     /// </summary>
-    [SerializeField] private Vector3 topBound = Vector3.zero;
+    [SerializeField] private Vector3 bottomBound = Vector3.zero;
 
-    /// <summary>Public accessor for <see cref="topBound"/>.</summary>
-    public Vector3 TopBound { get { return topBound; } }
+    /// <summary>Public accessor for <see cref="bottomBound"/>.</summary>
+    public Vector3 BottomBound { get { return bottomBound; } }
 
     /// <summary>
     /// Left bound position.
@@ -69,12 +64,12 @@ public class TDS_LevelBounds : MonoBehaviour
     public Vector3 RightBound { get { return rightBound; } }
 
     /// <summary>
-    /// Bottom bound position.
+    /// Top bound position.
     /// </summary>
-    [SerializeField] private Vector3 bottomBound = Vector3.zero;
+    [SerializeField] private Vector3 topBound = Vector3.zero;
 
-    /// <summary>Public accessor for <see cref="bottomBound"/>.</summary>
-    public Vector3 BottomBound { get { return bottomBound; } }
+    /// <summary>Public accessor for <see cref="topBound"/>.</summary>
+    public Vector3 TopBound { get { return topBound; } }
 
     /// <summary>
     /// Tags detected by the trigger to enable.
@@ -101,18 +96,6 @@ public class TDS_LevelBounds : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.HasTag(detectedTags.ObjectTags)) Activate();
-    }
-
-    // Use this for initialization
-    private void Start()
-    {
-        // Try to get missing references
-        if (!collider)
-        {
-            collider = transform.GetComponent<BoxCollider>();
-            if (!collider) Debug.LogWarning($"The Bounds \"{name}\" collider is missing !");
-        }
-        else if (!collider.isTrigger) collider.isTrigger = true;
     }
 	#endregion
 

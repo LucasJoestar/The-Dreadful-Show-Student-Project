@@ -199,7 +199,7 @@ public class TDS_EventSystemEditor : Editor
                     case CustomEventType.Instantiate:
                         TDS_EditorUtility.PropertyField("Prefab", "Prefab to instantiate", _event.FindPropertyRelative("prefab"));
 
-                        TDS_EditorUtility.PropertyField("Instantiation transform reference", "Transform to use as reference for position & rotation for the transform of the instantiated object", _event.FindPropertyRelative("prefabTransform"));
+                        TDS_EditorUtility.PropertyField("Instantiation transform reference", "Transform to use as reference for position & rotation for the transform of the instantiated object", _event.FindPropertyRelative("eventTransform"));
 
                         GUILayout.Space(2);
 
@@ -216,6 +216,14 @@ public class TDS_EventSystemEditor : Editor
 
                     case CustomEventType.WaitOthers:
                         TDS_EditorUtility.RadioToggle("Waiting Other Players...", "Currently waiting for other players...", serializedObject.FindProperty("isWaitingOthers"));
+                        break;
+
+                    case CustomEventType.CameraMovement:
+                        TDS_EditorUtility.PropertyField("Target", "Target to make the camera look ", _event.FindPropertyRelative("eventTransform"));
+
+                        TDS_EditorUtility.FloatField("Duration", "Time to look at the target", _event.FindPropertyRelative("waitTime"));
+
+                        TDS_EditorUtility.FloatField("Speed Coef", "Coefficient applied to the speed of the camera.", _event.FindPropertyRelative("cameraSpeedCoef"));
                         break;
 
                     case CustomEventType.UnityEvent:

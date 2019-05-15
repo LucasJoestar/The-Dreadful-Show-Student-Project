@@ -192,11 +192,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doDestroyOnActivate: 1
-  collider: {fileID: 0}
-  topBound: {x: 0, y: 0, z: 0}
+  bottomBound: {x: 0, y: 0, z: 0}
   leftBound: {x: 0, y: 0, z: 0}
   rightBound: {x: 0, y: 0, z: 0}
-  bottomBound: {x: 0, y: 0, z: 0}
+  topBound: {x: 0, y: 0, z: 0}
   detectedTags:
     ObjectTags: []
 --- !u!1 &46266592
@@ -4158,11 +4157,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doDestroyOnActivate: 1
-  collider: {fileID: 0}
-  topBound: {x: 0, y: 0, z: 0}
+  bottomBound: {x: 0, y: 0, z: 0}
   leftBound: {x: -1, y: 0, z: 0}
   rightBound: {x: 11.95426, y: 0, z: 0}
-  bottomBound: {x: 0, y: 0, z: 0}
+  topBound: {x: 0, y: 0, z: 0}
   detectedTags:
     ObjectTags:
     - Name: Player
@@ -4495,6 +4493,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9369aafd20642e947b4bc83641e97566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doDestroyAfterTriggerEnter: 1
+  doDestroyAfterTriggerExit: 1
+  detectedTags:
+    ObjectTags:
+    - Name: Player
+      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
   OnTriggerEnterE:
     m_PersistentCalls:
       m_Calls:
@@ -4527,11 +4531,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  doDestroyAfterTrigger: 1
-  detectedTags:
-    ObjectTags:
-    - Name: Player
-      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
 --- !u!114 &535417807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4547,8 +4546,37 @@ MonoBehaviour:
   doDestroyOnFinish: 0
   doLoop: 0
   isActivated: 0
-  isWaitingOthers: 1
+  isWaitingForOthers: 1
   events:
+  - Name: Look at Punks
+    doNeedSpecificPlayerType: 0
+    doWaitPreviousEvent: 1
+    isOnline: 0
+    isMasterOnly: 0
+    eventType: 7
+    waitTime: 2
+    cameraSpeedCoef: 1
+    prefab: {fileID: 1853205734537288, guid: 5de1affbc0ca46d4ab943ae669cfcd68, type: 3}
+    playerType: 0
+    textID: T03A
+    eventTransform: {fileID: 535417805}
+    unityEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1036104224}
+          m_MethodName: 
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    actionType: 0
   - Name: Activate Punks
     doNeedSpecificPlayerType: 0
     doWaitPreviousEvent: 1
@@ -4556,10 +4584,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 7
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1853205734537288, guid: 5de1affbc0ca46d4ab943ae669cfcd68, type: 3}
     playerType: 0
     textID: T03A
-    prefabTransform: {fileID: 1489731089}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls:
@@ -4584,10 +4613,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 4
     waitTime: 2
+    cameraSpeedCoef: 1
     prefab: {fileID: 1853205734537288, guid: 5de1affbc0ca46d4ab943ae669cfcd68, type: 3}
     playerType: 0
     textID: T03A
-    prefabTransform: {fileID: 1489731089}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls:
@@ -4612,10 +4642,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 3
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1853205734537288, guid: 5de1affbc0ca46d4ab943ae669cfcd68, type: 3}
     playerType: 0
     textID: T03A
-    prefabTransform: {fileID: 1489731089}
+    eventTransform: {fileID: 1489731089}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -4629,10 +4660,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 4
     waitTime: 2
+    cameraSpeedCoef: 1
     prefab: {fileID: 0}
     playerType: 0
     textID: T03A
-    prefabTransform: {fileID: 0}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -4646,10 +4678,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 3
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1542729878264576, guid: 31fc6ac08b8af8c4ba7d7f29c3244895, type: 3}
     playerType: 0
     textID: T03B
-    prefabTransform: {fileID: 1887304967}
+    eventTransform: {fileID: 1887304967}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -4663,10 +4696,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 4
     waitTime: 2.5
+    cameraSpeedCoef: 1
     prefab: {fileID: 0}
     playerType: 0
     textID: T03B
-    prefabTransform: {fileID: 0}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -4680,10 +4714,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 3
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1490374484740400, guid: ab51f5948d52cd0439374fb65c17f264, type: 3}
     playerType: 0
     textID: T03B
-    prefabTransform: {fileID: 1438978791}
+    eventTransform: {fileID: 1438978791}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -6517,11 +6552,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doDestroyOnActivate: 1
-  collider: {fileID: 0}
-  topBound: {x: 0, y: 0, z: 0}
+  bottomBound: {x: 0, y: 0, z: 0}
   leftBound: {x: 31.198008, y: 0, z: 0}
   rightBound: {x: 49.32663, y: 0, z: 0}
-  bottomBound: {x: 0, y: 0, z: 0}
+  topBound: {x: 0, y: 0, z: 0}
   detectedTags:
     ObjectTags: []
 --- !u!1 &879155975
@@ -7764,7 +7798,7 @@ MonoBehaviour:
   doDestroyOnFinish: 0
   doLoop: 0
   isActivated: 0
-  isWaitingOthers: 1
+  isWaitingForOthers: 1
   events:
   - Name: 'Narrator #1'
     doNeedSpecificPlayerType: 0
@@ -7773,10 +7807,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 0
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 0}
     playerType: 0
     textID: T01
-    prefabTransform: {fileID: 0}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7790,10 +7825,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 0
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 0}
     playerType: 0
     textID: T02
-    prefabTransform: {fileID: 0}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7807,10 +7843,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 0
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 0}
     playerType: 0
     textID: T03
-    prefabTransform: {fileID: 0}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7824,10 +7861,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 1
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 0}
     playerType: 0
     textID: T03A
-    prefabTransform: {fileID: 0}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7841,10 +7879,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 3
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1035519974621550, guid: 4c5be95092b143d4786173e9ef734820, type: 3}
     playerType: 0
     textID: T03A
-    prefabTransform: {fileID: 1740802533}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7858,10 +7897,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 5
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 0}
     playerType: 0
     textID: T03A
-    prefabTransform: {fileID: 0}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7875,10 +7915,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 1
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 0}
     playerType: 0
     textID: T03B
-    prefabTransform: {fileID: 0}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7892,10 +7933,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 3
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
     playerType: 0
     textID: T03B
-    prefabTransform: {fileID: 954669807}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7909,10 +7951,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 5
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
     playerType: 0
     textID: T03B
-    prefabTransform: {fileID: 954669807}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7926,10 +7969,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 2
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
     playerType: 0
     textID: T03B
-    prefabTransform: {fileID: 954669807}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7943,10 +7987,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 0
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
     playerType: 0
     textID: T05
-    prefabTransform: {fileID: 954669807}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7960,10 +8005,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 4
     waitTime: 5
+    cameraSpeedCoef: 1
     prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
     playerType: 0
     textID: T05
-    prefabTransform: {fileID: 954669807}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7977,10 +8023,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 0
     waitTime: 5
+    cameraSpeedCoef: 1
     prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
     playerType: 0
     textID: T06
-    prefabTransform: {fileID: 954669807}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7994,10 +8041,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 7
     waitTime: 5
+    cameraSpeedCoef: 1
     prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
     playerType: 0
     textID: T06
-    prefabTransform: {fileID: 954669807}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls:
@@ -8028,6 +8076,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9369aafd20642e947b4bc83641e97566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doDestroyAfterTriggerEnter: 1
+  doDestroyAfterTriggerExit: 1
+  detectedTags:
+    ObjectTags:
+    - Name: Player
+      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
   OnTriggerEnterE:
     m_PersistentCalls:
       m_Calls:
@@ -8060,11 +8114,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  doDestroyAfterTrigger: 1
-  detectedTags:
-    ObjectTags:
-    - Name: Player
-      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
 --- !u!1 &992655718
 GameObject:
   m_ObjectHideFlags: 0
@@ -8620,6 +8669,12 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1036104224 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1990868951965578, guid: f779e414787ad55469d20eb6e2786070,
+    type: 3}
+  m_PrefabInstance: {fileID: 389128741}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1042389820 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1205917953095670, guid: ca57834bf12a62e4f857e7cd35728f26,
@@ -11937,7 +11992,6 @@ MonoBehaviour:
   onlinePlayers: []
   StartSpawnPoints:
   - {x: -12, y: 0, z: 0}
-  player: {fileID: 1086095473936905}
 --- !u!4 &1393358469
 Transform:
   m_ObjectHideFlags: 0
@@ -13708,6 +13762,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9369aafd20642e947b4bc83641e97566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doDestroyAfterTriggerEnter: 1
+  doDestroyAfterTriggerExit: 1
+  detectedTags:
+    ObjectTags:
+    - Name: Player
+      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
   OnTriggerEnterE:
     m_PersistentCalls:
       m_Calls:
@@ -13740,11 +13800,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  doDestroyAfterTrigger: 1
-  detectedTags:
-    ObjectTags:
-    - Name: Player
-      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
 --- !u!114 &1586127667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13760,7 +13815,7 @@ MonoBehaviour:
   doDestroyOnFinish: 0
   doLoop: 0
   isActivated: 0
-  isWaitingOthers: 1
+  isWaitingForOthers: 1
   events:
   - Name: Instantiate Poster Jump
     doNeedSpecificPlayerType: 0
@@ -13769,10 +13824,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 3
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1035519974621550, guid: 4c5be95092b143d4786173e9ef734820, type: 3}
     playerType: 0
     textID: T03A
-    prefabTransform: {fileID: 470140171}
+    eventTransform: {fileID: 470140171}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -13786,10 +13842,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 1
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 0}
     playerType: 0
     textID: T03A
-    prefabTransform: {fileID: 0}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -13803,10 +13860,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 5
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 0}
     playerType: 0
     textID: T03A
-    prefabTransform: {fileID: 0}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -13820,10 +13878,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 3
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
     playerType: 0
     textID: T03B
-    prefabTransform: {fileID: 1568847695}
+    eventTransform: {fileID: 1568847695}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -13837,10 +13896,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 1
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 0}
     playerType: 0
     textID: T03B
-    prefabTransform: {fileID: 0}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -13854,10 +13914,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 5
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
     playerType: 0
     textID: T03B
-    prefabTransform: {fileID: 1568847695}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -13871,10 +13932,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 2
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
     playerType: 0
     textID: T03B
-    prefabTransform: {fileID: 1568847695}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -13886,12 +13948,13 @@ MonoBehaviour:
     doWaitPreviousEvent: 1
     isOnline: 0
     isMasterOnly: 0
-    eventType: 7
+    eventType: 8
     waitTime: 5
+    cameraSpeedCoef: 1
     prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
     playerType: 0
     textID: T06
-    prefabTransform: {fileID: 1568847695}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls:
@@ -14943,11 +15006,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doDestroyOnActivate: 1
-  collider: {fileID: 0}
-  topBound: {x: 0, y: 0, z: 0}
+  bottomBound: {x: 0, y: 0, z: 0}
   leftBound: {x: 0, y: 0, z: 0}
   rightBound: {x: 0, y: 0, z: 0}
-  bottomBound: {x: 0, y: 0, z: 0}
+  topBound: {x: 0, y: 0, z: 0}
   detectedTags:
     ObjectTags: []
 --- !u!1 &1697881690
@@ -15922,11 +15984,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doDestroyOnActivate: 1
-  collider: {fileID: 0}
-  topBound: {x: 0, y: 0, z: 0}
+  bottomBound: {x: 0, y: 0, z: 0}
   leftBound: {x: 43.363678, y: 0, z: 0}
   rightBound: {x: 72.78999, y: 0, z: 0}
-  bottomBound: {x: 0, y: 0, z: 0}
+  topBound: {x: 0, y: 0, z: 0}
   detectedTags:
     ObjectTags: []
 --- !u!1 &1825220690
@@ -17721,12 +17782,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1086095473936905 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7181379643535501126, guid: d635b766f21f14947a364d7448b4dc2c,
-    type: 3}
-  m_PrefabInstance: {fileID: 7181756450590240079}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4081390318997267 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7179926860357853788, guid: d635b766f21f14947a364d7448b4dc2c,

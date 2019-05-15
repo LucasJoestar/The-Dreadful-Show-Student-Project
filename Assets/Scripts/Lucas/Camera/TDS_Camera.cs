@@ -116,6 +116,28 @@ public class TDS_Camera : MonoBehaviour
     /// </summary>
     [SerializeField] private TDS_Bounds levelBounds = new TDS_Bounds(-10, 10, -10, 10);
 
+
+    /// <summary>
+    /// Bottom bound collider of the level.
+    /// </summary>
+    [SerializeField] private BoxCollider bottomBound = null;
+
+    /// <summary>
+    /// Left bound collider of the level.
+    /// </summary>
+    [SerializeField] private BoxCollider leftBound = null;
+
+    /// <summary>
+    /// Right bound collider of the level.
+    /// </summary>
+    [SerializeField] private BoxCollider rightBound = null;
+
+    /// <summary>
+    /// Top bound collider of the level.
+    /// </summary>
+    [SerializeField] private BoxCollider topBound = null;
+
+
     /// <summary>Backing field for <see cref="Camera"/>.</summary>
     [SerializeField] private new Camera camera = null;
 
@@ -135,6 +157,11 @@ public class TDS_Camera : MonoBehaviour
     /// Coroutine used to lerp to bounds.
     /// </summary>
     private Coroutine lerpToBoundsCoroutine = null;
+
+    /// <summary>
+    /// Coroutine used to look a target.
+    /// </summary>
+    private Coroutine lookTargetCoroutine = null;
 
     /// <summary>
     /// Coroutine used to wait before setting bounds when needed.
@@ -266,35 +293,20 @@ public class TDS_Camera : MonoBehaviour
     }
 
     /// <summary>
-    /// Top bound collider of the level.
+    /// Offset of the camera in X, Y & Z.
     /// </summary>
-    [SerializeField] private BoxCollider topBound = null;
-
-    /// <summary>
-    /// Left bound collider of the level.
-    /// </summary>
-    [SerializeField] private BoxCollider leftBound = null;
-
-    /// <summary>
-    /// Right bound collider of the level.
-    /// </summary>
-    [SerializeField] private BoxCollider rightBound = null;
-
-    /// <summary>
-    /// Bottom bound collider of the level.
-    /// </summary>
-    [SerializeField] private BoxCollider bottomBound = null;
+    public Vector3 Offset = Vector3.zero;
 
 
     /// <summary>
-    /// Property to set the top bound position.
+    /// Property to set the bottom bound position.
     /// </summary>
-    private Vector3 topBoundVector
+    private Vector3 bottomBoundVector
     {
         set
         {
-            currentBounds.ZMaxVector = value;
-            topBound.transform.position = value;
+            currentBounds.ZMinVector = value;
+            bottomBound.transform.position = value;
         }
     }
 
@@ -323,21 +335,16 @@ public class TDS_Camera : MonoBehaviour
     }
 
     /// <summary>
-    /// Property to set the bottom bound position.
+    /// Property to set the top bound position.
     /// </summary>
-    private Vector3 bottomBoundVector
+    private Vector3 topBoundVector
     {
         set
         {
-            currentBounds.ZMinVector = value;
-            bottomBound.transform.position = value;
+            currentBounds.ZMaxVector = value;
+            topBound.transform.position = value;
         }
     }
-
-    /// <summary>
-    /// Offset of the camera in X, Y & Z.
-    /// </summary>
-    public Vector3 Offset = Vector3.zero;
     #endregion
 
     #region Singleton
@@ -351,20 +358,12 @@ public class TDS_Camera : MonoBehaviour
 
     #region Original Methods
     /// <summary>
-    /// Reset the level bounds.
-    /// </summary>
-    public void ResetBounds()
-    {
-        CurrentBounds = levelBounds;
-    }
-
-    /// <summary>
     /// Makes this camera follow its target.
     /// </summary>
     private void FollowTarget()
     {
         // If no target, return
-        if (!Target || (lerpToBoundsCoroutine != null)) return;
+        if (!Target || (lerpToBoundsCoroutine != null) || (lookTargetCoroutine != null)) return;
 
         // If reaching destination, stop moving
         if (transform.position == target.position + Offset)
@@ -477,6 +476,67 @@ public class TDS_Camera : MonoBehaviour
     }
 
     /// <summary>
+    /// Method starting a coroutine that makes the camera look a particular transform for a certain duration.
+    /// </summary>
+    /// <param name="_target">Target to look.</param>
+    /// <param name="_duration">Time during which fixing the target.</param>
+    /// <param name="_speedCoef">New camera speed coefficient.</param>
+    /// <returns>Returns the started coroutine.</returns>
+    public Coroutine LookTarget(Transform _target, float _duration, float _speedCoef)
+    {
+        if (lookTargetCoroutine != null) StopCoroutine(lookTargetCoroutine);
+        return lookTargetCoroutine = StartCoroutine(LookTargetCoroutine(_target, _duration, _speedCoef));
+    }
+
+    /// <summary>
+    /// Coroutine to make the camera look a particular transform for a certain duration.
+    /// </summary>
+    /// <param name="_target">Target to look.</param>
+    /// <param name="_duration">Time during which fixing the target.</param>
+    /// <param name="_speedCoef">New camera speed coefficient.</param>
+    private IEnumerator LookTargetCoroutine(Transform _target, float _duration, float _speedCoef)
+    {
+        while (_duration > 0)
+        {
+            // When starting moving, initializes initial speed
+            if (!isMoving)
+            {
+                speedCurrent = speedInitial;
+                isMoving = true;
+            }
+            // If not, increase speed if needed
+            else if (speedCurrent != speedMax)
+            {
+                SpeedCurrent += Time.deltaTime * ((speedMax - speedInitial) / speedAccelerationTime);
+            }
+
+            // Get movement
+            Vector3 _destination = Vector3.Lerp(transform.position, _target.position + Offset, ((Time.deltaTime * speedCurrent) / 5) * _speedCoef);
+
+            transform.position = _destination;
+
+            yield return null;
+
+            Vector3 _movement = _destination - transform.position;
+
+            if (_movement.magnitude <= .001f)
+            {
+                _duration -= Time.deltaTime;
+            }
+        }
+
+        lookTargetCoroutine = null;
+    }
+
+    /// <summary>
+    /// Reset the level bounds.
+    /// </summary>
+    public void ResetBounds()
+    {
+        CurrentBounds = levelBounds;
+    }
+
+    /// <summary>
     /// Set new bounds for the camera.
     /// </summary>
     /// <param name="_levelBounds">New level bounds.</param>
@@ -512,6 +572,25 @@ public class TDS_Camera : MonoBehaviour
     {
         Vector3 _force3 = ((Vector3)Random.insideUnitCircle.normalized) * _force;
         transform.position += _force3;
+    }
+
+    /// <summary>
+    /// Make a screen shake of a specified force.
+    /// </summary>
+    /// <param name="_force">Screen shake force.</param>
+    /// <param name="_time">Total duration of the screen shake.</param>
+    public IEnumerator ScreenShake(float _force, float _time)
+    {
+        float _timer = _time;
+
+        while (_timer > 0)
+        {
+            Vector3 _force3 = ((Vector3)Random.insideUnitCircle.normalized) * _force;
+            transform.position += _force3;
+
+            yield return null;
+            _timer -= Time.deltaTime;
+        }
     }
 
     /// <summary>

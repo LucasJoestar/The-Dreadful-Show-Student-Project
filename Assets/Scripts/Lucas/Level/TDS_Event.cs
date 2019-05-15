@@ -69,6 +69,11 @@ public class TDS_Event
     [SerializeField] private bool isMasterOnly = false;
 
     /// <summary>
+    /// Indicates if the waiting action is complete or not.
+    /// </summary>
+    private bool isActionComplete = false;
+
+    /// <summary>
     /// Type of this event.
     /// </summary>
     [SerializeField] private CustomEventType eventType = CustomEventType.UnityEvent;
@@ -80,6 +85,11 @@ public class TDS_Event
     /// Time to wait.
     /// </summary>
     [SerializeField] private float waitTime = 0;
+
+    /// <summary>
+    /// Speed coefficient applied to the camera movement.
+    /// </summary>
+    [SerializeField] private float cameraSpeedCoef = 1;
 
     /// <summary>
     /// Prefab to instantiate.
@@ -98,9 +108,9 @@ public class TDS_Event
     [SerializeField] private string textID = "ID";
 
     /// <summary>
-    /// Transform where to instantiate the prefab.
+    /// Transform used for the event.
     /// </summary>
-    [SerializeField] private Transform prefabTransform = null;
+    [SerializeField] private Transform eventTransform = null;
 
     /// <summary>
     /// Unity event to invoke.
@@ -165,12 +175,12 @@ public class TDS_Event
 
             // Instantiate a prefab
             case CustomEventType.Instantiate:
-                Object.Instantiate(prefab, prefabTransform.position, prefabTransform.rotation);
+                Object.Instantiate(prefab, eventTransform.position, eventTransform.rotation);
 
                 // If not local, instantiate for other players too
                 if (isOnline)
                 {
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, $"{TDS_LevelManager.Instance.phID}#{TDS_UIManager.Instance.GetType()}#Instantiate", new object[] { prefab, prefabTransform.position, prefabTransform.rotation });
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, $"{TDS_LevelManager.Instance.phID}#{TDS_UIManager.Instance.GetType()}#Instantiate", new object[] { prefab, eventTransform.position, eventTransform.rotation });
                 }
                 break;
 
@@ -181,34 +191,57 @@ public class TDS_Event
 
             // Wait for an action of the local player
             case CustomEventType.WaitForAction:
-                bool _isReady = false;
-
                 switch (actionType)
                 {
                     case WaitForPlayerAction.Jump:
-                        TDS_LevelManager.Instance.LocalPlayer.OnStartJumpOneShot += () => _isReady = true;
+                        TDS_LevelManager.Instance.LocalPlayer.OnJump += StopWaitingAction;
                         break;
 
                     case WaitForPlayerAction.Dodge:
-                        TDS_LevelManager.Instance.LocalPlayer.OnStartDodgeOneShot += () => _isReady = true;
+                        TDS_LevelManager.Instance.LocalPlayer.OnStartDodging += StopWaitingAction;
                         break;
 
                     case WaitForPlayerAction.Grab:
-                        TDS_LevelManager.Instance.LocalPlayer.OnGrabObjectOneShot += () => _isReady = true;
+                        TDS_LevelManager.Instance.LocalPlayer.OnGrabObject += StopWaitingAction;
                         break;
 
                     case WaitForPlayerAction.Throw:
-                        TDS_LevelManager.Instance.LocalPlayer.OnThrowOneShot += () => _isReady = true;
+                        TDS_LevelManager.Instance.LocalPlayer.OnThrow += StopWaitingAction;
                         break;
 
                     default:
                         break;
                 }
 
-                while (!_isReady)
+                while (!isActionComplete)
                 {
                     yield return null;
                 }
+
+                switch (actionType)
+                {
+                    case WaitForPlayerAction.Jump:
+                        TDS_LevelManager.Instance.LocalPlayer.OnJump -= StopWaitingAction;
+                        break;
+
+                    case WaitForPlayerAction.Dodge:
+                        TDS_LevelManager.Instance.LocalPlayer.OnStartDodging -= StopWaitingAction;
+                        break;
+
+                    case WaitForPlayerAction.Grab:
+                        TDS_LevelManager.Instance.LocalPlayer.OnGrabObject -= StopWaitingAction;
+                        break;
+
+                    case WaitForPlayerAction.Throw:
+                        TDS_LevelManager.Instance.LocalPlayer.OnThrow -= StopWaitingAction;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                isActionComplete = false;
+
                 break;
 
             // Wait until other players reach this event (Events System manage this)
@@ -217,6 +250,11 @@ public class TDS_Event
                 {
                     yield return null;
                 }
+                break;
+
+            // Make a camera movement
+            case CustomEventType.CameraMovement:
+                yield return TDS_Camera.Instance.LookTarget(eventTransform, waitTime, cameraSpeedCoef);
                 break;
 
             // Just invoke a Unity Event, that's it
@@ -230,6 +268,14 @@ public class TDS_Event
         }
         
         yield break;
+    }
+
+    /// <summary>
+    /// Stop to wait for the action.
+    /// </summary>
+    private void StopWaitingAction()
+    {
+        isActionComplete = true;
     }
 	#endregion
 }

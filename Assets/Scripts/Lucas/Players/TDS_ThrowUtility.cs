@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class TDS_ThrowUtility 
+public static class TDS_ThrowUtility 
 {
     /* TDS_ThrowUtility :
 	 *

@@ -389,17 +389,6 @@ public abstract class TDS_Character : TDS_Damageable
     }
     #endregion
 
-    #region Health
-    /// <summary>
-    /// Method called when the object dies.
-    /// Override this to implement code for a specific object.
-    /// </summary>
-    protected override void Die()
-    {
-        base.Die();
-    }
-    #endregion
-
     #region Throwable Object
     /// <summary>
     /// Drop the weared throwable.
@@ -465,7 +454,7 @@ public abstract class TDS_Character : TDS_Damageable
     }
     #endregion
 
-    #region void 
+    #region UI 
     /// <summary>
     /// Fill the life bar
     /// </summary>
@@ -477,10 +466,6 @@ public abstract class TDS_Character : TDS_Damageable
         TDS_UIManager.Instance.FillImage(HealthBar, _fillingValue); 
     }
     #endregion 
-
-    #endregion
-
-    #region Photon Methods
 
     #endregion
 
@@ -512,18 +497,6 @@ public abstract class TDS_Character : TDS_Damageable
             Gizmos.DrawCube(collider.bounds.center, collider.bounds.size);
         }
     }
-
-    // Use this for initialization
-    protected override void Start()
-    {
-        base.Start();
-    }
-	
-	// Update is called once per frame
-	protected override void Update()
-    {
-        base.Update();
-	}
 	#endregion
 
 	#endregion

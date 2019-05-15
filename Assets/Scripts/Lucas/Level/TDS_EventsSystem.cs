@@ -53,7 +53,7 @@ public class TDS_EventsSystem : MonoBehaviour
     /// <summary>
     /// Boolean used when waiting for other players.
     /// </summary>
-    [SerializeField] private bool isWaitingOthers = true;
+    [SerializeField] private bool isWaitingForOthers = true;
 
     /// <summary>
     /// Current event of the system.
@@ -73,7 +73,7 @@ public class TDS_EventsSystem : MonoBehaviour
     /// <summary>
     /// Players who are waiting at an event.
     /// </summary>
-    private List<TDS_Player> playersWaiting = new List<TDS_Player>();
+    private List<TDS_Player> waitingPlayers = new List<TDS_Player>();
     #endregion
 
     #region Methods
@@ -84,9 +84,9 @@ public class TDS_EventsSystem : MonoBehaviour
     /// </summary>
     private void CheckPlayersWaiting()
     {
-        if (!playersWaiting.Union(TDS_LevelManager.Instance.AllPlayers).Any())
+        if (!waitingPlayers.Union(TDS_LevelManager.Instance.AllPlayers).Any())
         {
-            isWaitingOthers = false;
+            isWaitingForOthers = false;
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PassEvent"), new object[] { });
         }
     }
@@ -130,7 +130,7 @@ public class TDS_EventsSystem : MonoBehaviour
             {
                 if (PhotonNetwork.isMasterClient)
                 {
-                    playersWaiting.Add(TDS_LevelManager.Instance.LocalPlayer);
+                    waitingPlayers.Add(TDS_LevelManager.Instance.LocalPlayer);
                     CheckPlayersWaiting();
                 }
                 else
@@ -138,11 +138,11 @@ public class TDS_EventsSystem : MonoBehaviour
                     TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "SetPlayerWaiting"), new object[] { TDS_LevelManager.Instance.LocalPlayer.PhotonID });
                 }
 
-                while (isWaitingOthers)
+                while (isWaitingForOthers)
                 {
                     yield return null;
                 }
-                isWaitingOthers = true;
+                isWaitingForOthers = true;
             }
             else
             {
@@ -167,9 +167,9 @@ public class TDS_EventsSystem : MonoBehaviour
     /// <summary>
     /// Pass the event where waiting for others.
     /// </summary>
-    public void PassEvent()
+    public void PassWaitingEvent()
     {
-        isWaitingOthers = false;
+        isWaitingForOthers = false;
     }
 
     /// <summary>
@@ -178,7 +178,7 @@ public class TDS_EventsSystem : MonoBehaviour
     /// <param name="_playerID">ID of the player who is waiting.</param>
     public void SetPlayerWaiting(int _playerID)
     {
-        playersWaiting.Add(PhotonView.Find(_playerID).GetComponent<TDS_Player>());
+        waitingPlayers.Add(PhotonView.Find(_playerID).GetComponent<TDS_Player>());
         CheckPlayersWaiting();
     }
     #endregion

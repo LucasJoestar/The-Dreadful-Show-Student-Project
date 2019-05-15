@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TDS_BeardLady : TDS_Player 
 {
@@ -11,7 +8,7 @@ public class TDS_BeardLady : TDS_Player
 	 *	###### PURPOSE ######
 	 *	#####################
 	 *
-	 *	[PURPOSE]
+	 *	Gameplay class manipulating the Beard Lady player.
 	 *
 	 *	#####################
 	 *	### MODIFICATIONS ###
@@ -44,11 +41,19 @@ public class TDS_BeardLady : TDS_Player
         {
             currentBeardState = value;
 
+            if (value != BeardState.VeryVeryLongDude)
+            {
+                InvokeGrowBeard();
+            }
+
+            CancelInvokeHealBeard();
+            BeardCurrentLife = beardMaxLife;
+
             SetAnimBeard(value);
         }
     }
 
-    /// <summary>Backing field for <see cref=""/>.</summary>
+    /// <summary>Backing field for <see cref="BeardGrowInterval"/>.</summary>
     [SerializeField] private float beardGrowInterval = 5;
 
     /// <summary>
@@ -65,6 +70,64 @@ public class TDS_BeardLady : TDS_Player
             ResetBeardGrow();
         }
     }
+
+    /// <summary>Backing field for <see cref="BeardCurrentLife"/>.</summary>
+    [SerializeField] private int beardCurrentLife = 0;
+
+    /// <summary>
+    /// Current life of the beard.
+    /// </summary>
+    public int BeardCurrentLife
+    {
+        get { return beardCurrentLife; }
+        private set
+        {
+            value = Mathf.Clamp(value, 0, beardMaxLife);
+            if (value == 0)
+            {
+                DegradeBeard();
+                return;
+            }
+            else if (value != beardMaxLife)
+            {
+                InvokeHealBeard();
+            }
+
+            beardCurrentLife = value;
+        }
+    }
+
+    /// <summary>Backing field for <see cref="BeardHealInterval"/>.</summary>
+    [SerializeField] private int beardHealInterval = 1;
+
+    /// <summary>
+    /// Interval at which the beard get healed.
+    /// </summary>
+    public int BeardHealInterval
+    {
+        get { return beardHealInterval; }
+        set
+        {
+            if (value < 0) value = 0;
+            beardGrowInterval = value;
+        }
+    }
+
+    /// <summary>Backing field for <see cref="beardMaxLife"/>.</summary>
+    [SerializeField] private int beardMaxLife = 5;
+
+    /// <summary>
+    /// Maximum life of the beard.
+    /// </summary>
+    public int BeardMaxLife
+    {
+        get { return beardMaxLife; }
+        set
+        {
+            if (value < 1) value = 1;
+            beardMaxLife = value;
+        }
+    }
     #endregion
 
     #region Methods
@@ -77,15 +140,8 @@ public class TDS_BeardLady : TDS_Player
     /// </summary>
     private void DegradeBeard()
     {
-        if (currentBeardState > 0)
-        {
-            if (currentBeardState == BeardState.VeryVeryLongDude)
-            {
-                InvokeBeard();
-            }
-
-            CurrentBeardState--;
-        }
+        CancelInvokeGrowBeard();
+        CurrentBeardState--;
     }
 
     /// <summary>
@@ -94,11 +150,14 @@ public class TDS_BeardLady : TDS_Player
     private void GrowBeard()
     {
         CurrentBeardState++;
+    }
 
-        if (currentBeardState == BeardState.VeryVeryLongDude)
-        {
-            CancelInvokeBeard();
-        }
+    /// <summary>
+    /// Heals the beard life.
+    /// </summary>
+    private void HealBeard()
+    {
+        BeardCurrentLife++;
     }
 
     /// <summary>
@@ -106,19 +165,29 @@ public class TDS_BeardLady : TDS_Player
     /// </summary>
     private void ResetBeardGrow()
     {
-        CancelInvokeBeard();
-        InvokeBeard();
+        CancelInvokeGrowBeard();
+        InvokeGrowBeard();
     }
 
     /// <summary>
-    /// Invoke repeatedly the method to grow the beard.
+    /// Invoke the method to grow the beard after a certain time.
     /// </summary>
-    private void InvokeBeard() => InvokeRepeating("GrowBeard", beardGrowInterval, beardGrowInterval);
+    private void InvokeGrowBeard() => Invoke("GrowBeard", beardGrowInterval);
 
     /// <summary>
     /// Cancel invoke of the method to grow the beard.
     /// </summary>
-    private void CancelInvokeBeard() => CancelInvoke("GrowBeard");
+    private void CancelInvokeGrowBeard() => CancelInvoke("GrowBeard");
+
+    /// <summary>
+    /// Invoke the method to heal the beard after a certain time.
+    /// </summary>
+    private void InvokeHealBeard() => Invoke("HealBeard", beardHealInterval);
+
+    /// <summary>
+    /// Cancel invoke of the method to heal the beard.
+    /// </summary>
+    private void CancelInvokeHealBeard() => CancelInvoke("HealBeard");
     #endregion
 
     #region Health
@@ -131,7 +200,7 @@ public class TDS_BeardLady : TDS_Player
         base.Die();
 
         // Stop beard from growing
-        CancelInvoke("GrowBeard");
+        CancelInvokeGrowBeard();
     }
 
     /// <summary>
@@ -175,7 +244,7 @@ public class TDS_BeardLady : TDS_Player
     /// <param name="_state">State of the beard.</param>
     public void SetAnimBeard(BeardState _state)
     {
-        animator.SetInteger("Beard", (int)_state);
+        animator.SetFloat("Beard", (int)_state);
     }
     #endregion
 
@@ -197,8 +266,13 @@ public class TDS_BeardLady : TDS_Player
         PlayerType = PlayerType.BeardLady;
 
         // Let's make this beard grow repeatedly until it reach its maximum value
-        if (currentBeardState != BeardState.VeryVeryLongDude) InvokeBeard();
+        if (currentBeardState != BeardState.VeryVeryLongDude) InvokeGrowBeard();
         SetAnimBeard(currentBeardState);
+
+        beardCurrentLife = beardMaxLife;
+
+        // Degragde beard when hitting something.
+        hitBox.OnTouch += () => BeardCurrentLife--;
     }
 	
 	// Update is called once per frame

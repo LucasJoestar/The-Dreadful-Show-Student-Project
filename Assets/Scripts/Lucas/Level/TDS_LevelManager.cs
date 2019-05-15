@@ -89,10 +89,6 @@ public class TDS_LevelManager : MonoBehaviour
     public Vector3[] StartSpawnPoints = new Vector3[] { };
     #endregion
 
-    #region Proto
-    [SerializeField] protected GameObject player = null;
-    #endregion
-
     #region Singleton
     /// <summary>
     /// Singleton instance of this class.
@@ -103,23 +99,6 @@ public class TDS_LevelManager : MonoBehaviour
     #region Methods
 
     #region Original Methods
-    /// <summary>
-    /// Make local player spawn.
-    /// </summary>
-    public void Spawn()
-    {
-        // Test things
-        localPlayer = Instantiate(player, StartSpawnPoints[0], Quaternion.identity).GetComponentInChildren<TDS_Player>();
-        TDS_Camera.Instance.Target = localPlayer.transform;
-
-        localPlayer.OnDie += Respawn;
-
-        // Instantiate the player
-        PlayerType _type = player.GetComponentInChildren<TDS_Player>().PlayerType;
-        //TDS_NetworkManager.Instance.InstantiatePlayer(_type);
-
-    }
-
     /// <summary>
     /// Make Player which a particulary type spawn and set it as the camera target
     /// </summary>
@@ -198,12 +177,6 @@ public class TDS_LevelManager : MonoBehaviour
 
         // Spawn local player.
         // Spawn();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
     #endregion
 

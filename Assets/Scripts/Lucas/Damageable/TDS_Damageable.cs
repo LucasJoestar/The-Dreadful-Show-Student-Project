@@ -255,8 +255,6 @@ public class TDS_Damageable : PunBehaviour
     {
         get { return photonView.viewID; }
     }
-
-    protected PhotonView photonView;
     #endregion
 
     #endregion
@@ -270,7 +268,6 @@ public class TDS_Damageable : PunBehaviour
     /// </summary>
     protected virtual void Die()
     {
-
     }
 
     /// <summary>
@@ -348,18 +345,11 @@ public class TDS_Damageable : PunBehaviour
             sprite = GetComponent<SpriteRenderer>();
             if (!sprite) Debug.LogWarning("The SpriteRenderer of \"" + name + "\" for script TDS_Damageable is missing !");
         }
-        if(!photonView)
-        {
-            photonView = GetComponent<PhotonView>();
-            if (!photonView) Debug.LogWarning("The PhotonView of \"" + name + "\" for script TDS_Damageable is missing !");
-        }
     }
 
     // Use this for initialization
     protected virtual void Start ()
     {
-        // Set the current health of the object to its maximum on start
-        HealthCurrent = healthMax;
     }
 	
 	// Update is called once per frame
@@ -367,7 +357,6 @@ public class TDS_Damageable : PunBehaviour
     {
 
     }
-
     #endregion
 
     #endregion

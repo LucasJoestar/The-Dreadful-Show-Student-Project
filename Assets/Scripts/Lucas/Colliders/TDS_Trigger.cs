@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 public class TDS_Trigger : MonoBehaviour 
@@ -35,7 +33,22 @@ public class TDS_Trigger : MonoBehaviour
 	 *	-----------------------------------
 	*/
 
-    #region Events
+    #region Fields / Properties
+    /// <summary>
+    /// Indicates if this object should be destroyed when entering trigger.
+    /// </summary>
+    public bool doDestroyAfterTriggerEnter = true;
+
+    /// <summary>
+    /// Indicates if this object should be destroyed when exiting trigger.
+    /// </summary>
+    public bool doDestroyAfterTriggerExit = true;
+
+    /// <summary>
+    /// Tags used to detect only authorized objects.
+    /// </summary>
+    [SerializeField] private Tags detectedTags = new Tags();
+
     /// <summary>
     /// Event called when something enters this trigger.
     /// </summary>
@@ -47,18 +60,6 @@ public class TDS_Trigger : MonoBehaviour
     public UnityEvent OnTriggerExitE = new UnityEvent();
     #endregion
 
-    #region Fields / Properties
-    /// <summary>
-    /// Indicates if this object should be destroyed when triggered.
-    /// </summary>
-    public bool doDestroyAfterTrigger = true;
-
-    /// <summary>
-    /// Tags used to detect only authorized objects.
-    /// </summary>
-    [SerializeField] private Tags detectedTags = new Tags();
-    #endregion
-
     #region Unity Methods
     // OnTriggerEnter is called when the GameObject collides with another GameObject
     private void OnTriggerEnter(Collider other)
@@ -67,7 +68,7 @@ public class TDS_Trigger : MonoBehaviour
         {
             OnTriggerEnterE.Invoke();
 
-            if (doDestroyAfterTrigger) Destroy(this);
+            if (doDestroyAfterTriggerEnter) Destroy(this);
         }
     }
 
@@ -77,6 +78,8 @@ public class TDS_Trigger : MonoBehaviour
         if (other.gameObject.HasTag(detectedTags.ObjectTags))
         {
             OnTriggerExitE.Invoke();
+
+            if (doDestroyAfterTriggerExit) Destroy(this);
         }
     }
     #endregion

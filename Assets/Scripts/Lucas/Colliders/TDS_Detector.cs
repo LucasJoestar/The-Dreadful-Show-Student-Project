@@ -57,35 +57,7 @@ public class TDS_Detector : MonoBehaviour
 	 *	-----------------------------------
 	*/
 
-    #region Events
-    /// <summary>
-    /// Subscribes on this to get when a new collider enters this game object trigger.
-    /// </summary>
-    public event Action<Collider> OnColliderEnter = null;
-
-    /// <summary>
-    /// Subscribes on this to get when a collider exits this game object trigger
-    /// </summary>
-    public event Action<Collider> OnColliderExit = null;
-
-    /// <summary>
-    /// Event called when nothing is detected anymore.
-    /// </summary>
-    public event Action OnNothingDetected = null;
-
-    /// <summary>
-    /// Event called when a first object is detected. (After nothing was detected.)
-    /// </summary>
-    public event Action OnSomethingDetected = null;
-    #endregion
-
     #region Fields / Properties
-    /// <summary>
-    /// Determines of sorting colliders by tag.
-    /// Automatically set to false when <see cref="DetectedTags"/> is empty.
-    /// </summary>
-    private bool doSortByTag = false;
-
     /// <summary>Backing field for <see cref="DetectedColliders"/>.</summary>
     [SerializeField] private List<Collider> detectedColliders = new List<Collider>();
 
@@ -119,22 +91,10 @@ public class TDS_Detector : MonoBehaviour
         }
     }
 
-    /// <summary>Backing field for </summary>
-    [SerializeField] private List<string> detectedTags = new List<string>();
-
     /// <summary>
     /// List of all detected tags used to sort colliders detection.
-    /// If empty, just detect everything.
     /// </summary>
-    public List<string> DetectedTags
-    {
-        get { return detectedTags; }
-        set
-        {
-            detectedTags = value;
-            doSortByTag = value.Count > 0;
-        }
-    }
+    public Tags DetectedTags = new Tags();
     #endregion
 
     #region Methods
@@ -156,10 +116,7 @@ public class TDS_Detector : MonoBehaviour
         foreach (Collider _collider in _toRemove)
         {
             DetectedColliders.Remove(_collider);
-            OnColliderExit?.Invoke(_collider);
         }
-
-        if (detectedColliders.Count == 0) OnNothingDetected?.Invoke();
     }
     #endregion
 
@@ -167,25 +124,15 @@ public class TDS_Detector : MonoBehaviour
     // OnTriggerEnter is called when the GameObject collides with another GameObject
     private void OnTriggerEnter(Collider other)
     {
-        // If sorting by tag and this object one does not match, ignores it
-        if ((doSortByTag && !detectedTags.Contains(other.tag)) || detectedColliders.Contains(other)) return;
-
-        DetectedColliders.Add(other);
-        OnColliderEnter?.Invoke(other);
-
-        if (detectedColliders.Count == 1) OnSomethingDetected?.Invoke();
+        // If detected object has matching tag, add it
+        if (other.gameObject.HasTag(DetectedTags.ObjectTags) && !DetectedColliders.Contains(other)) DetectedColliders.Add(other);
     }
 
     // OnTriggerExit is called when the Collider other has stopped touching the trigger
     private void OnTriggerExit(Collider other)
     {
-        // If the collider is not in the list of the detected ones, ignores it
-        if (!detectedColliders.Contains(other)) return;
-
-        DetectedColliders.Remove(other);
-        OnColliderExit?.Invoke(other);
-
-        if (detectedColliders.Count == 0) OnNothingDetected?.Invoke();
+        // Remove detected object when leaving
+        if (detectedColliders.Contains(other)) DetectedColliders.Remove(other);
     }
 
     // Use this for initialization
