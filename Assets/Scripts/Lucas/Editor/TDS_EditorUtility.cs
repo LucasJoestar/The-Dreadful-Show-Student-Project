@@ -188,7 +188,7 @@ public sealed class TDS_EditorUtility
     {
         // Get the original width of the labels for EditorGUI, and reduce it so that it will no longer take so much space
         float _originalWidth = EditorGUIUtility.labelWidth;
-        EditorGUIUtility.labelWidth -= labelStyle.padding.left;
+        EditorGUIUtility.labelWidth -= LabelStyle.padding.left;
 
         EditorGUILayout.BeginHorizontal();
 
@@ -229,7 +229,7 @@ public sealed class TDS_EditorUtility
     {
         // Get the original width of the labels for EditorGUI, and reduce it so that it will no longer take so much space
         float _originalWidth = EditorGUIUtility.labelWidth;
-        EditorGUIUtility.labelWidth -= labelStyle.padding.left;
+        EditorGUIUtility.labelWidth -= LabelStyle.padding.left;
 
         EditorGUILayout.BeginHorizontal();
 
@@ -258,7 +258,7 @@ public sealed class TDS_EditorUtility
     {
         // Get the original width of the labels for EditorGUI, and reduce it so that it will no longer take so much space
         float _originalWidth = EditorGUIUtility.labelWidth;
-        EditorGUIUtility.labelWidth -= labelStyle.padding.left;
+        EditorGUIUtility.labelWidth -= LabelStyle.padding.left;
 
         EditorGUILayout.BeginHorizontal();
 
@@ -299,7 +299,7 @@ public sealed class TDS_EditorUtility
     {
         // Get the original width of the labels for EditorGUI, and reduce it so that it will no longer take so much space
         float _originalWidth = EditorGUIUtility.labelWidth;
-        EditorGUIUtility.labelWidth -= labelStyle.padding.left;
+        EditorGUIUtility.labelWidth -= LabelStyle.padding.left;
 
         EditorGUILayout.BeginHorizontal();
 
@@ -422,7 +422,7 @@ public sealed class TDS_EditorUtility
     {
         // Get the original width of the labels for EditorGUI, and reduce it so that it will no longer take so much space
         float _originalWidth = EditorGUIUtility.labelWidth;
-        EditorGUIUtility.labelWidth -= labelStyle.padding.left;
+        EditorGUIUtility.labelWidth -= LabelStyle.padding.left;
 
         EditorGUILayout.BeginHorizontal();
 
@@ -461,7 +461,7 @@ public sealed class TDS_EditorUtility
     {
         // Get the original width of the labels for EditorGUI, and reduce it so that it will no longer take so much space
         float _originalWidth = EditorGUIUtility.labelWidth;
-        EditorGUIUtility.labelWidth -= labelStyle.padding.left;
+        EditorGUIUtility.labelWidth -= LabelStyle.padding.left;
 
         EditorGUILayout.BeginHorizontal();
 
@@ -501,7 +501,7 @@ public sealed class TDS_EditorUtility
     {
         // Get the original width of the labels for EditorGUI, and reduce it so that it will no longer take so much space
         float _originalWidth = EditorGUIUtility.labelWidth;
-        EditorGUIUtility.labelWidth -= labelStyle.padding.left;
+        EditorGUIUtility.labelWidth -= LabelStyle.padding.left;
 
         EditorGUILayout.BeginHorizontal();
 
@@ -541,7 +541,7 @@ public sealed class TDS_EditorUtility
     {
         // Get the original width of the labels for EditorGUI, and reduce it so that it will no longer take so much space
         float _originalWidth = EditorGUIUtility.labelWidth;
-        EditorGUIUtility.labelWidth -= labelStyle.padding.left;
+        EditorGUIUtility.labelWidth -= LabelStyle.padding.left;
 
         EditorGUILayout.BeginHorizontal();
 

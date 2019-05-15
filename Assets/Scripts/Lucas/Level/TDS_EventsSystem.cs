@@ -36,6 +36,16 @@ public class TDS_EventsSystem : MonoBehaviour
 
     #region Fields / Properties
     /// <summary>
+    /// Indicates if this object should be destroyed when finished.
+    /// </summary>
+    [SerializeField] private bool doDestroyOnFinish = false;
+
+    /// <summary>
+    /// Indicates if the event system should loop or not.
+    /// </summary>
+    [SerializeField] private bool doLoop = false;
+
+    /// <summary>
     /// Is this event system activated and in process or not ?
     /// </summary>
     [SerializeField] private bool isActivated = false;
@@ -44,6 +54,11 @@ public class TDS_EventsSystem : MonoBehaviour
     /// Boolean used when waiting for other players.
     /// </summary>
     [SerializeField] private bool isWaitingOthers = true;
+
+    /// <summary>
+    /// Current event of the system.
+    /// </summary>
+    private Coroutine currentEvent = null;
 
     /// <summary>
     /// All events to trigger in this events system.
@@ -88,13 +103,26 @@ public class TDS_EventsSystem : MonoBehaviour
     }
 
     /// <summary>
+    /// Starts this event system !
+    /// </summary>
+    public void StopEvents()
+    {
+        if (!isActivated) return;
+
+        if (currentEvent != null) StopCoroutine(currentEvent);
+        StopAllCoroutines();
+
+        isActivated = false;
+
+        if (doDestroyOnFinish) Destroy(this);
+    }
+
+    /// <summary>
     /// Main coroutine managing the whole system and triggering the events one after the other.
     /// </summary>
     /// <returns></returns>
     private IEnumerator EventsSystem()
     {
-        Coroutine _coroutine = null;
-
         for (int _i = 0; _i < events.Length; _i++)
         {
             // If this event is to wait other players, do not start a coroutine
@@ -119,14 +147,20 @@ public class TDS_EventsSystem : MonoBehaviour
             else
             {
                 // Starts the coroutine
-                _coroutine = StartCoroutine(events[_i].Trigger());
+                currentEvent = StartCoroutine(events[_i].Trigger());
 
                 // If next one wait the previous, wait
-                if ((_i < events.Length - 1) && events[_i + 1].DoWaitPreviousOne) yield return _coroutine;
+                if ((_i < events.Length - 1) && events[_i + 1].DoWaitPreviousOne) yield return currentEvent;
             }
         }
 
-        isActivated = false;
+        if (doLoop) StartCoroutine(EventsSystem());
+        else
+        {
+            isActivated = false;
+            if (doDestroyOnFinish) Destroy(this);
+        }
+
         yield break;
     }
 

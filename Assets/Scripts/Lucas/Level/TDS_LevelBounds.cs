@@ -34,54 +34,52 @@ public class TDS_LevelBounds : MonoBehaviour
 
     #region Fields / Properties
     /// <summary>
-    /// Should this object be disabled when being desactivated ? If not, only this script will be.
+    /// Should this object be destroyed after being activated ?
     /// </summary>
-    [SerializeField] private bool doDisableGameObjectOnDesactivate = true;
+    [SerializeField] private bool doDestroyOnActivate = true;
 
     /// <summary>
     /// Collider trigger to enable these bounds.
     /// </summary>
     [SerializeField] private new BoxCollider collider = null;
 
-    /// <summary>
-    /// Left bound, so X minimum bounds value.
-    /// </summary>
-    [SerializeField] private Transform leftBound = null;
 
     /// <summary>
-    /// Public accessor for <see cref="leftBound"/>.
+    /// Top bound position.
     /// </summary>
-    public Transform LeftBound { get { return leftBound; } }
+    [SerializeField] private Vector3 topBound = Vector3.zero;
+
+    /// <summary>Public accessor for <see cref="topBound"/>.</summary>
+    public Vector3 TopBound { get { return topBound; } }
 
     /// <summary>
-    /// Right bound, so X maximum bounds value.
+    /// Left bound position.
     /// </summary>
-    [SerializeField] private Transform rightBound = null;
+    [SerializeField] private Vector3 leftBound = Vector3.zero;
+
+    /// <summary>Public accessor for <see cref="leftBound"/>.</summary>
+    public Vector3 LeftBound { get { return leftBound; } }
 
     /// <summary>
-    /// Public accessor for <see cref="rightBound"/>.
+    /// Right bound position.
     /// </summary>
-    public Transform RightBound { get { return rightBound; } }
+    [SerializeField] private Vector3 rightBound = Vector3.zero;
+
+    /// <summary>Public accessor for <see cref="rightBound"/>.</summary>
+    public Vector3 RightBound { get { return rightBound; } }
 
     /// <summary>
-    /// Bottom bound, so Z minimum bounds value.
+    /// Bottom bound position.
     /// </summary>
-    [SerializeField] private Transform bottomBound = null;
+    [SerializeField] private Vector3 bottomBound = Vector3.zero;
+
+    /// <summary>Public accessor for <see cref="bottomBound"/>.</summary>
+    public Vector3 BottomBound { get { return bottomBound; } }
 
     /// <summary>
-    /// Public accessor for <see cref="bottomBound"/>.
+    /// Tags detected by the trigger to enable.
     /// </summary>
-    public Transform BottomBound { get { return bottomBound; } }
-
-    /// <summary>
-    /// Top bound, so Z maximum bounds value.
-    /// </summary>
-    [SerializeField] private Transform topBound = null;
-
-    /// <summary>
-    /// Public accessor for <see cref="topBound"/>.
-    /// </summary>
-    public Transform TopBound { get { return topBound; } }
+    [SerializeField] private Tags detectedTags = new Tags();
     #endregion
 
     #region Methods
@@ -93,16 +91,7 @@ public class TDS_LevelBounds : MonoBehaviour
     public void Activate()
     {
         TDS_Camera.Instance.SetBounds(this);
-
-        Desactivate();
-    }
-
-    /// <summary>
-    /// Desactivate these bounds.
-    /// </summary>
-    public void Desactivate()
-    {
-        if (doDisableGameObjectOnDesactivate) gameObject.SetActive(false);
+        if (doDestroyOnActivate) Destroy(this);
         else enabled = false;
     }
     #endregion
@@ -111,7 +100,7 @@ public class TDS_LevelBounds : MonoBehaviour
     // OnTriggerEnter is called when the GameObject collides with another GameObject
     private void OnTriggerEnter(Collider other)
     {
-        Activate();
+        if (other.gameObject.HasTag(detectedTags.ObjectTags)) Activate();
     }
 
     // Use this for initialization
