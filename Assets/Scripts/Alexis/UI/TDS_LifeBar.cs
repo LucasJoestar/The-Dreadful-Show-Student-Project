@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Photon;
 
 [RequireComponent(typeof(PhotonView))]
-public class TDS_LifeBar : PunBehaviour, IPunObservable
+public class TDS_LifeBar : PunBehaviour
 {
     /* TDS_LifeBar :
 	 *
@@ -104,25 +104,12 @@ public class TDS_LifeBar : PunBehaviour, IPunObservable
         hasToFollowOwner = _hasToFollow;
         owner.OnDie += DestroyLifeBar;
     }
-
     #endregion
 
     #region Unity Methods
     private void Update()
     {
         FollowOwner();
-    }
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if(stream.isWriting && PhotonNetwork.isMasterClient)
-        {
-            stream.SendNext(filledImage.fillAmount); 
-        }
-        else if(stream.isReading)
-        {
-            filledImage.fillAmount = (float)stream.ReceiveNext(); 
-        }
     }
 
     #endregion

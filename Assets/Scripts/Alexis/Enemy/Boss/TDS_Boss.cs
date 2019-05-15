@@ -69,20 +69,20 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
         return _availableAttacks[_randomIndex];
     }
 
-    public void ApplyAttackEffect(MinionAttackType _type)
+    public void ApplyAttackEffect(EnemyEffectiveAttackType _type)
     {
         switch (_type)
         {
-            case MinionAttackType.TypeOne:
+            case EnemyEffectiveAttackType.TypeOne:
                 CastFirstEffect();
                 break;
-            case MinionAttackType.TypeTwo:
+            case EnemyEffectiveAttackType.TypeTwo:
                 CastSecondEffect(); 
                 break;
-            case MinionAttackType.TypeThree:
+            case EnemyEffectiveAttackType.TypeThree:
                 CastThirdEffect(); 
                 break;
-            case MinionAttackType.TypeSpecial:
+            case EnemyEffectiveAttackType.TypeSpecial:
                 CastSpecialEffect(); 
                 break;
             default:
@@ -275,12 +275,14 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
         throw new NotImplementedException();
     }
 
-    /* LEGACY
+    /// <summary>
+    /// USED IN ANIMATION
+    /// </summary>
+    /// <param name="_animationID"></param>
     protected override void ActivateAttack(int _animationID)
     {
 
     }
-    */
 
     protected override void ComputePath()
     {

@@ -700,7 +700,11 @@ public abstract class TDS_Enemy : TDS_Character
     #endregion
 
     #region Void
-    // protected abstract void ActivateAttack(int _animationID);
+    /// <summary>
+    /// USED IN ANIMATION
+    /// </summary>
+    /// <param name="_animationID"></param>
+    protected abstract void ActivateAttack(int _animationID);
 
     /// <summary>
     /// Compute the path

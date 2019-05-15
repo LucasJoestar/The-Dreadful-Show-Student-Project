@@ -29,6 +29,9 @@ public interface TDS_ISpecialAttacker
 	 *	Changes :
 	 *
 	 *	[Initialisation of the interface]
+     *	    - Array of TDS_EnemyEffectiveAttacks
+     *	    - Method to get an attack
+     *	    - Method to cast effect of the attack
 	 *
 	 *	-----------------------------------
 	*/
@@ -41,7 +44,7 @@ public interface TDS_ISpecialAttacker
 
     #region Original Methods
     TDS_EffectiveEnemyAttack GetAttack(float _distance = 0);
-    void ApplyAttackEffect(MinionAttackType _type);
+    void ApplyAttackEffect(EnemyEffectiveAttackType _type);
     void CastFirstEffect();
     void CastSecondEffect();
     void CastThirdEffect();

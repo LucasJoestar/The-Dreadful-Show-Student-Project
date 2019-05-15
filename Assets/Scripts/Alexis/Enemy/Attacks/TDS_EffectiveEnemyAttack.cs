@@ -31,8 +31,8 @@ public class TDS_EffectiveEnemyAttack : TDS_EnemyAttack
 	*/
 
     #region Fields / Properties
-    [SerializeField] protected MinionAttackType attackType; 
-    public MinionAttackType AttackType { get { return attackType; } }
+    [SerializeField] protected EnemyEffectiveAttackType attackType; 
+    public EnemyEffectiveAttackType AttackType { get { return attackType; } }
     #endregion
 
 }
