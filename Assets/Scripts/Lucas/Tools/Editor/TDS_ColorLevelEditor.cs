@@ -111,7 +111,7 @@ public class TDS_ColorLevelEditor : EditorWindow
     /// Draw some color group folders.
     /// </summary>
     /// <param name="_colorGroupFolders">Folders tpo draw.</param>
-    private void DrawColorGroupFolders(IEnumerable<TDS_ColorGroupFolder> _colorGroupFolders)
+    private void DrawColorGroupFolders(IEnumerable<TDS_ColorGroupFolder> _colorGroupFolders, TDS_ColorGroupFolder _previousFolder)
     {
         foreach (TDS_ColorGroupFolder _folder in _colorGroupFolders)
         {
@@ -148,8 +148,39 @@ public class TDS_ColorLevelEditor : EditorWindow
 
             // Draw folder
             _folder.isUnfolded = EditorGUILayout.Foldout(_folder.isUnfolded, _folder.Name, true);
-
             GUILayout.FlexibleSpace();
+
+            Color _originalColor = GUI.color;
+            GUI.color = Color.red;
+
+            if (GUILayout.Button("X", GUILayout.Width(20)) && EditorUtility.DisplayDialog("Confirm folder suppression", "Are you sure you want to delete this folder ?\nThis action cannot be undone", "Yep", "Cancel"))
+            {
+                if (_previousFolder == null)
+                {
+                    colorGroups = colorGroups.Concat(_folder.ColorGroups).ToArray();
+                    colorGroupFolders = colorGroupFolders.Where(c => c != _folder).ToArray();
+                }
+                else
+                {
+                    _previousFolder.ColorGroups = _previousFolder.ColorGroups.Concat(_folder.ColorGroups).ToList();
+                    _previousFolder.Folders.Remove(_folder);
+                }
+
+                Repaint();
+            } 
+
+            GUI.color = new Color(.95f, .7f, .0f);
+
+            if (GUILayout.Button("Edit Name")) _folder.isEditingName = !_folder.isEditingName;
+
+            GUI.color = _originalColor;
+
+            if (_folder.isEditingName)
+            {
+                _folder.Name = EditorGUILayout.TextField(_folder.Name);
+            }
+
+            GUILayout.Space(20);
 
             bool _selected = EditorGUILayout.Toggle(_folder.isSelected, GUILayout.Width(15));
             if (_selected != _folder.isSelected)
@@ -170,19 +201,21 @@ public class TDS_ColorLevelEditor : EditorWindow
             // Draw this folder color groups
             if (_folder.isUnfolded)
             {
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Space(28);
-
-                _folder.Name = EditorGUILayout.TextField(_folder.Name);
-
-                GUILayout.Space(43);
-                EditorGUILayout.EndHorizontal();
                 GUILayout.Space(2);
                 EditorGUILayout.BeginHorizontal();
-                GUILayout.Space(10);
+                GUILayout.Space(38);
                 EditorGUILayout.BeginVertical();
 
-                DrawColorGroups(_folder.ColorGroups);
+                DrawColorGroupFolders(_folder.Folders, _folder);
+
+                if (_folder.ColorGroups.Count > 0)
+                {
+                    DrawColorGroups(_folder.ColorGroups);
+                }
+                else
+                {
+                    EditorGUILayout.HelpBox("There is no color group in this folder.", MessageType.Info);
+                }
 
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.EndHorizontal();
@@ -196,7 +229,7 @@ public class TDS_ColorLevelEditor : EditorWindow
     /// <param name="_colorGroups">Groups to draw.</param>
     private void DrawColorGroups(IEnumerable<TDS_ColorGroup> _colorGroups)
     {
-        foreach (TDS_ColorGroup _colorGroup in colorGroups)
+        foreach (TDS_ColorGroup _colorGroup in _colorGroups)
         {
             GUILayout.Space(3);
             EditorGUILayout.BeginHorizontal();
@@ -349,7 +382,8 @@ public class TDS_ColorLevelEditor : EditorWindow
         }
 
         // Draw all folders & color groups !!
-        DrawColorGroupFolders(colorGroupFolders);
+        DrawColorGroupFolders(colorGroupFolders, null);
+        GUILayout.Space(10);
         DrawColorGroups(colorGroups);
 
         GUILayout.Space(10);
@@ -484,6 +518,11 @@ public class TDS_ColorGroupFolder
     /// Name of this group.
     /// </summary>
     public string Name = "New Folder";
+
+    /// <summary>
+    /// Indicates if currently editing name.
+    /// </summary>
+    [NonSerialized] public bool isEditingName = false;
 
     /// <summary>
     /// Indicates if this folder is selected or not.
