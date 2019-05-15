@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1469768036730198}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.2, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4055278686339258}
@@ -89,7 +89,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider: {fileID: 65511838606239890}
   Owner: {fileID: 114861555710338680}
-  hittableTags:
+  HittableTags:
     ObjectTags:
     - Name: Player
       Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
@@ -124,7 +124,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1784521387282082}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.47, y: -2.72, z: -4.96}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4332666222786238}
@@ -161,8 +161,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.8, z: 1}
-  m_Center: {x: 0, y: 0.9, z: 0}
+  m_Size: {x: 1, y: 2.4, z: 1}
+  m_Center: {x: 0, y: 1.2, z: 0}
 --- !u!95 &95962912165042768
 Animator:
   serializedVersion: 3
@@ -195,12 +195,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: 0
-  positionOffset: {x: 0, y: 0.9, z: 0}
+  positionOffset: {x: 0, y: 1.2, z: 0}
   avoidanceForce: 5
   baseOffset: 0
-  detectionRange: 2
-  height: 1.8
-  radius: 0.5
+  detectionRange: 2.5
+  height: 2.4
+  radius: 0.75
   speed: 4
   steerForce: 10
   agentPriority: 1
@@ -414,7 +414,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1881167624450526}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.21, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4055278686339258}

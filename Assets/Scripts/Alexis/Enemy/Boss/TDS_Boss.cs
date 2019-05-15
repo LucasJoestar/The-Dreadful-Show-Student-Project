@@ -24,8 +24,8 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
  *	### MODIFICATIONS ###
  *	#####################
  *
- *	Date :			[DATE]
- *	Author :		[NAME]
+ *	Date :			[13/05/2019]
+ *	Author :		[Thiebaut Alexis]
  *
  *	Changes :
  *
