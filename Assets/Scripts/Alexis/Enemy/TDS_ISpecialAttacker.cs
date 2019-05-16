@@ -37,7 +37,7 @@ public interface TDS_ISpecialAttacker
 	*/
 
     #region Fields / Properties
-    TDS_EffectiveEnemyAttack[] Attacks { get;  set; }
+    TDS_EffectiveEnemyAttack[] Attacks { get; }
     #endregion
 
     #region Methods

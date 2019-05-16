@@ -120,8 +120,8 @@ public class TDS_PunkEditor : TDS_EnemyEditor
         if (targets.Length == 1) isPunkMultiEditing = false;
         else isPunkMultiEditing = true; 
 
-       //Get the property
-       attacks = serializedObject.FindProperty("attacks");
+        //Get the property
+        attacks = serializedObject.FindProperty("attacks");
 
         //Load the editor folded and unfolded values of this class
         isPunkUnfolded = EditorPrefs.GetBool("isPunkUnfolded", isPunkUnfolded);

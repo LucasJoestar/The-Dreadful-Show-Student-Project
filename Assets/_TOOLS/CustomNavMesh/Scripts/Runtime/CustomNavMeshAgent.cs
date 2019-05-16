@@ -424,6 +424,11 @@ public class CustomNavMeshAgent : MonoBehaviour
         pathState = CalculatingState.Waiting;
         OnAgentStopped?.Invoke(); 
     }
+
+    public void StartAgent()
+    {
+        StartCoroutine(FollowPath()); 
+    }
     #endregion
 
     #region UnityMethods

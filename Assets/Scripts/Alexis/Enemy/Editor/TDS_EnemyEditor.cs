@@ -105,7 +105,7 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.canThrow"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty canThrow = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.throwRange"/> of type <see cref="bool"/>.</summary>
-    private SerializedProperty throwRange = null;
+    protected SerializedProperty throwRange = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.detectionRange"/> of type <see cref="float"/>.</summary>
     protected SerializedProperty detectionRange = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.recoilDistance"/> of type <see cref="float"/>.</summary>
