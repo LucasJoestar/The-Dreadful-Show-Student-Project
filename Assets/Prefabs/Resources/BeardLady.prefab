@@ -68,7 +68,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300008, guid: 8be46f0b796ce8440bb9db8609214206, type: 3}
+  m_Sprite: {fileID: 21300008, guid: 88e119b7c7cba224387ef3bfc8cecd59, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -185,27 +185,22 @@ MonoBehaviour:
   VerticalAxis: Vertical
   attacks:
   - Name: Light Attack
-    AnimationID: 0
     damagesMax: 7
     damagesMin: 4
     Description: 'Attack used for both #1 & #2 light attacks.'
   - Name: Heavy Attack
-    AnimationID: 0
     damagesMax: 9
     damagesMin: 6
     Description: 'Attack used for both #1 & #2 heavy attacks.'
   - Name: Arc Circle
-    AnimationID: 0
     damagesMax: 10
     damagesMin: 7
     Description: Final combo light attack.
   - Name: Turnstile
-    AnimationID: 0
     damagesMax: 12
     damagesMin: 9
     Description: Final combo heavy attack.
   - Name: Link Dude
-    AnimationID: 0
     damagesMax: 5
     damagesMin: 3
     Description: Move an opponent in the player direction.
@@ -225,6 +220,9 @@ MonoBehaviour:
   playerType: 0
   currentBeardState: 1
   beardGrowInterval: 5
+  beardCurrentLife: 0
+  beardHealInterval: 1
+  beardMaxLife: 5
 --- !u!95 &7132007744230118298
 Animator:
   serializedVersion: 3
@@ -486,8 +484,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectedColliders: []
-  detectedTags:
-  - Object
+  DetectedTags:
+    ObjectTags: []
 --- !u!65 &7152645853103543906
 BoxCollider:
   m_ObjectHideFlags: 0
