@@ -37,7 +37,8 @@ public abstract class TDS_Minion : TDS_Enemy, TDS_ISpecialAttacker
     #region Fields / Properties
     [SerializeField] protected bool hasEvolved = false;
 
-    public TDS_EffectiveEnemyAttack[] Attacks { get;  set; }
+    [SerializeField] protected TDS_EffectiveEnemyAttack[] attacks; 
+    public TDS_EffectiveEnemyAttack[] Attacks { get { return attacks; } }
     #endregion
 
     #region Methods
@@ -175,13 +176,14 @@ public abstract class TDS_Minion : TDS_Enemy, TDS_ISpecialAttacker
         Attacks.ToList().Where(a => a != _attack).ToList().ForEach(a => a.ConsecutiveUses = 0);
         SetAnimationState(_attack.AnimationID);
         //hitBox.Activate(_attack); THE HIT BOX IS NOW ACTIVATED INTO THE ANIMATION BY CALLING THE METHOD "ActivateAttack" with the AnimationID of the attack
-        //ApplyAttackEffect(_attack.AttackType); 
         return _attack.Cooldown;
     }
 
     public override void ActivateEnemy()
     {
-        
+        IsPacific = false;
+        IsParalyzed = false;
+        StartCoroutine(Behaviour()); 
     }
     #endregion
 

@@ -12,7 +12,7 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
  *	###### PURPOSE ######
  *	#####################
  *
- *	[PURPOSE]
+ *	[General Behaviour of a boss]
  *
  *	#####################
  *	####### TO DO #######
@@ -29,7 +29,12 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
  *
  *	Changes :
  *
- *	[CHANGES]
+ *	[Initialisation of the Boss Class]
+ *	    - Implementing the Interface TDS_ISpecialAttack
+ *	    - Implementing the Attacks array
+ *	    - Overriding the abstract and the virtual methods
+ *	        GetAttack, ApplyAttackEffect, CastFirstEffect, CastSecondEffect, CastThirdEffect
+ *	        
  *
  *	-----------------------------------
 */
@@ -41,7 +46,14 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
     #region Fields / Properties
     protected TDS_EffectiveEnemyAttack castedAttack = null;
 
-    public TDS_EffectiveEnemyAttack[] Attacks { get ; set; }
+    [SerializeField] protected TDS_EffectiveEnemyAttack[] attacks; 
+    public TDS_EffectiveEnemyAttack[] Attacks
+    {
+        get
+        {
+            return attacks;
+        }
+    }
     #endregion
 
     #region Methods
@@ -69,8 +81,13 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
         return _availableAttacks[_randomIndex];
     }
 
+    /// <summary>
+    /// Call the cast of the type of the Attack
+    /// </summary>
+    /// <param name="_type"></param>
     public void ApplyAttackEffect(EnemyEffectiveAttackType _type)
     {
+        if (!PhotonNetwork.isMasterClient) return;
         switch (_type)
         {
             case EnemyEffectiveAttackType.TypeOne:
@@ -100,22 +117,43 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
     
     #endregion
 
+    /// <summary>
+    /// Check if the casted attack can be casted 
+    /// </summary>
+    /// <param name="_distance">Distance between the enemy and its target</param>
+    /// <returns></returns>
     protected override bool AttackCanBeCasted(float _distance)
     {
         if (castedAttack == null) return false;
+        if (transform.position.z - playerTarget.transform.position.z >= .5f)
+            return false;
         return castedAttack.PredictedRange <= _distance; 
     }
 
+    /// <summary>
+    /// Get the maximal range of the enemy's attacks
+    /// </summary>
+    /// <returns></returns>
     protected override float GetMaxRange()
     {
         return Attacks.Max(a => a.PredictedRange);
     }
 
+    /// <summary>
+    /// Get the Minimal Range of the enemy's attacks
+    /// </summary>
+    /// <returns></returns>
     protected override float GetMinRange()
     {
         return Attacks.Min(a => a.PredictedRange);
     }
 
+    /// <summary>
+    /// Attack and increase the uses of the current attack
+    /// Set the animation and return the cooldown of the attack
+    /// </summary>
+    /// <param name="_distance"></param>
+    /// <returns>The Cooldown of the casted attack</returns>
     protected override float StartAttack(float _distance = 0)
     {
         if (castedAttack == null) return 0;
@@ -123,12 +161,16 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
         castedAttack.ConsecutiveUses++;
         Attacks.ToList().Where(a => a != castedAttack).ToList().ForEach(a => a.ConsecutiveUses = 0);
         SetAnimationState(castedAttack.AnimationID);
-        ApplyAttackEffect(castedAttack.AttackType); 
         return castedAttack.Cooldown;
     }
 
+    /// <summary>
+    /// General Behaviour of a Boss
+    /// </summary>
+    /// <returns></returns>
     protected override IEnumerator Behaviour()
     {
+        if (!PhotonNetwork.isMasterClient) yield break; 
         // If the enemy is dead or paralyzed, they can't behave
         if (isDead || IsParalyzed || IsPacific) yield break;
         // If there is no target, the agent has to get one
@@ -192,6 +234,14 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
         yield break;
     }
 
+    /// <summary>
+    /// Cast an the casted Attack
+    /// Stop the agent movements
+    /// Set its orientation
+    /// Start the attack and wait until its end, then wait for the cooldown of the attack
+    /// Set the casted as null then set its state to search
+    /// </summary>
+    /// <returns></returns>
     protected override IEnumerator CastAttack()
     {
         if (isDead) yield break;
@@ -218,9 +268,15 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
             yield return new WaitForSeconds(.1f);
         }
         yield return new WaitForSeconds(_cooldown);
+        castedAttack = null; 
         enemyState = EnemyState.Searching;
     }
 
+    /// <summary>
+    /// Check around the boss to see if the attack can be casted with anticipation
+    /// Also check if the path has to be recalculated
+    /// </summary>
+    /// <returns></returns>
     protected override IEnumerator CastDetection()
     {
         if (isDead) yield break;
@@ -251,7 +307,14 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
                 _colliders = _colliders.Where(t => t.gameObject.HasTag("Player")).OrderBy(c => Vector3.Distance(transform.position, c.transform.position)).ToArray();
                 if (_colliders.Length > 0)
                 {
-                    _distance = Vector3.Distance(transform.position, _colliders.First().transform.position); 
+                    for (int i = 0; i < _colliders.Length; i++)
+                    {
+                        if(transform.position.z - _colliders[i].transform.position.z <= .5f)
+                        {
+                            _distance = Vector3.Distance(transform.position, _colliders[i].transform.position);
+                            break; 
+                        }
+                    }
                 }
             }
             if (AttackCanBeCasted(_distance))
@@ -260,7 +323,7 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
                 yield break;
             }
             //if the target is too far from the destination, recalculate the path
-            if (Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > GetMaxRange())
+            if (Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > castedAttack.PredictedRange)
             {
                 yield return new WaitForSeconds(.1f);
                 enemyState = EnemyState.ComputingPath;
@@ -270,20 +333,32 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
         enemyState = EnemyState.MakingDecision;
     }
 
+    /// <summary>
+    /// Activate the enemy
+    /// </summary>
     public override void ActivateEnemy()
     {
-        throw new NotImplementedException();
+        if (!PhotonNetwork.isMasterClient) return;
+        IsPacific = false;
+        IsParalyzed = false;
+        StartCoroutine(Behaviour()); 
     }
 
     /// <summary>
     /// USED IN ANIMATION
+    /// Activate the hitbox and Apply the effect of the attack
     /// </summary>
     /// <param name="_animationID"></param>
     protected override void ActivateAttack(int _animationID)
     {
-
+        if (!PhotonNetwork.isMasterClient || castedAttack == null) return;
+        hitBox.Activate(castedAttack);
+        ApplyAttackEffect(castedAttack.AttackType);
     }
 
+    /// <summary>
+    /// Compute the path to the atacking Position
+    /// </summary>
     protected override void ComputePath()
     {
         if (isDead) return;
@@ -310,11 +385,18 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
         }
     }
 
+    /// <summary>
+    /// Called when the boss dies
+    /// </summary>
     protected override void Die()
     {
         base.Die();
     }
 
+    /// <summary>
+    /// Get the casted attack and check if it can be casted, if so, cast it
+    /// Else compute path until reaching a attacking position
+    /// </summary>
     protected override void TakeDecision()
     {
         castedAttack = GetAttack();
@@ -329,17 +411,24 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
         }
     }
 
+    /// <summary>
+    /// Get a random player to target
+    /// </summary>
+    /// <returns>Return a random player within the detection Range</returns>
     protected override TDS_Player SearchTarget()
     {
         TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
         if (_targets.Length == 0) return null;
-        //Set constraints here (Distance, type, etc...)
         _targets = _targets.Where(t => !t.IsDead).ToArray();
         if (_targets.Length == 0) return null;
         int _randomIndex = UnityEngine.Random.Range(0, _targets.Length - 1);
         return _targets[_randomIndex];
     }
 
+    /// <summary>
+    /// Get an attacking position for the casted attack
+    /// </summary>
+    /// <returns>Return an attacking position</returns>
     protected override Vector3 GetAttackingPosition()
     {
         Vector3 _offset = Vector3.zero;

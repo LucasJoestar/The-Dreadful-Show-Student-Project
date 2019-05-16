@@ -192,11 +192,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doDestroyOnActivate: 1
-  collider: {fileID: 0}
-  topBound: {x: 0, y: 0, z: 0}
+  bottomBound: {x: 0, y: 0, z: 0}
   leftBound: {x: 0, y: 0, z: 0}
   rightBound: {x: 0, y: 0, z: 0}
-  bottomBound: {x: 0, y: 0, z: 0}
+  topBound: {x: 0, y: 0, z: 0}
   detectedTags:
     ObjectTags: []
 --- !u!1 &46266592
@@ -6131,7 +6130,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1784521387282082, guid: 07d30d07974b21944ad020e637081982, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4055278686339258, guid: 07d30d07974b21944ad020e637081982, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7531,7 +7530,7 @@ MonoBehaviour:
   doDestroyOnFinish: 0
   doLoop: 0
   isActivated: 0
-  isWaitingOthers: 1
+  isWaitingForOthers: 1
   events:
   - Name: Info Box Jump
     doNeedSpecificPlayerType: 0
@@ -7540,10 +7539,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 1
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 0}
     playerType: 0
     textID: T03A
-    prefabTransform: {fileID: 0}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7557,10 +7557,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 3
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1035519974621550, guid: 4c5be95092b143d4786173e9ef734820, type: 3}
     playerType: 0
     textID: T03A
-    prefabTransform: {fileID: 1740802533}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7574,10 +7575,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 5
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 0}
     playerType: 0
     textID: T03A
-    prefabTransform: {fileID: 0}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7591,10 +7593,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 1
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 0}
     playerType: 0
     textID: T03B
-    prefabTransform: {fileID: 0}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7608,10 +7611,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 3
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
     playerType: 0
     textID: T03B
-    prefabTransform: {fileID: 954669807}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7625,10 +7629,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 5
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
     playerType: 0
     textID: T03B
-    prefabTransform: {fileID: 954669807}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7642,10 +7647,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 2
     waitTime: 0
+    cameraSpeedCoef: 1
     prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
     playerType: 0
     textID: T03B
-    prefabTransform: {fileID: 954669807}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7659,10 +7665,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 4
     waitTime: 5
+    cameraSpeedCoef: 1
     prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
     playerType: 0
     textID: T05
-    prefabTransform: {fileID: 954669807}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -7676,10 +7683,11 @@ MonoBehaviour:
     isMasterOnly: 0
     eventType: 7
     waitTime: 5
+    cameraSpeedCoef: 1
     prefab: {fileID: 1299264343821394, guid: e97ca00de1b066b49af450567195498f, type: 3}
     playerType: 0
     textID: T06
-    prefabTransform: {fileID: 954669807}
+    eventTransform: {fileID: 0}
     unityEvent:
       m_PersistentCalls:
         m_Calls:
@@ -7710,6 +7718,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9369aafd20642e947b4bc83641e97566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doDestroyAfterTriggerEnter: 1
+  doDestroyAfterTriggerExit: 1
+  detectedTags:
+    ObjectTags:
+    - Name: Player
+      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
   OnTriggerEnterE:
     m_PersistentCalls:
       m_Calls:
@@ -7742,11 +7756,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  doDestroyAfterTrigger: 1
-  detectedTags:
-    ObjectTags:
-    - Name: Player
-      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
 --- !u!1 &992655718
 GameObject:
   m_ObjectHideFlags: 0
@@ -8828,6 +8837,69 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1321913765}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1174143129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1174143130}
+  - component: {fileID: 1174143132}
+  - component: {fileID: 1174143131}
+  m_Layer: 10
+  m_Name: SiameseHitBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1174143130
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174143129}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1237685092}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1174143131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174143129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18dda57ee8a7f354ba608a59dfff9996, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collider: {fileID: 1174143132}
+  Owner: {fileID: 1237685093}
+  HittableTags:
+    ObjectTags:
+    - Name: Player
+      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
+--- !u!65 &1174143132
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174143129}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1181929792
 GameObject:
   m_ObjectHideFlags: 0
@@ -9764,6 +9836,312 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1228879499}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1237685091
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1237685092}
+  - component: {fileID: 1237685099}
+  - component: {fileID: 1237685098}
+  - component: {fileID: 1237685097}
+  - component: {fileID: 1237685096}
+  - component: {fileID: 1237685095}
+  - component: {fileID: 1237685094}
+  - component: {fileID: 1237685093}
+  m_Layer: 10
+  m_Name: Test Siamois
+  m_TagString: Boss|Enemy
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1237685092
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237685091}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.6417713, y: 1.29, z: -9.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1730920810}
+  - {fileID: 1174143130}
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1237685093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237685091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67a41a41c548bf84c974e9ed712dc63a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1237685096}
+  collider: {fileID: 1237685097}
+  sprite: {fileID: 0}
+  isDead: 0
+  isIndestructible: 0
+  IsInvulnerable: 0
+  healthCurrent: 100
+  healthMax: 100
+  hitBox: {fileID: 1174143131}
+  healthBar: {fileID: 0}
+  rigidbody: {fileID: 0}
+  throwable: {fileID: 0}
+  handsTransform: {fileID: 0}
+  isAttacking: 0
+  isFacingRight: 1
+  IsPacific: 0
+  IsParalyzed: 0
+  aimAngle: 15
+  speedAccelerationTime: 0.5
+  speedCoef: 1
+  speedCurrent: 0
+  speedInitial: 1
+  speedMax: 2
+  throwBonusDamagesMax: 0
+  throwBonusDamagesMin: 0
+  throwAimingPoint: {x: 0, y: 0, z: 0}
+  canBeDown: 1
+  canThrow: 0
+  enemyState: 0
+  detectionRange: 5
+  recoilDistance: 0.1
+  recoilDistanceDeath: 0.1
+  recoilTimeDeath: 0.1
+  throwRange: 1
+  agent: {fileID: 1237685099}
+  attacks:
+  - Name: Baffe
+    damagesMax: 5
+    damagesMin: 10
+    Description: "Donne une baffe de gauche \xE0 droite"
+    isDistanceAttack: 0
+    AnimationID: 6
+    cooldown: 1
+    predictedRange: 2
+    probability: 15
+    attackType: 2
+  - Name: Coup bas
+    damagesMax: 5
+    damagesMin: 10
+    Description: "Frappe depuis son ventre avec un bras cach\xE9"
+    isDistanceAttack: 0
+    AnimationID: 7
+    cooldown: 1
+    predictedRange: 1.5
+    probability: 15
+    attackType: 1
+  - Name: Toupie
+    damagesMax: 5
+    damagesMin: 10
+    Description: Fait la toupie dans la zone des bounds
+    isDistanceAttack: 0
+    AnimationID: 8
+    cooldown: 1
+    predictedRange: 20
+    probability: 15
+    attackType: 3
+  - Name: Cadeau explosif
+    damagesMax: 10
+    damagesMin: 12
+    Description: "Lance un cadeau qui explose apr\xE8s x secondes"
+    isDistanceAttack: 1
+    AnimationID: 9
+    cooldown: 2
+    predictedRange: 15
+    probability: 12
+    attackType: 4
+--- !u!114 &1237685094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237685091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PositionModel:
+    SynchronizeEnabled: 0
+    TeleportEnabled: 1
+    TeleportIfDistanceGreaterThan: 3
+    InterpolateOption: 2
+    InterpolateMoveTowardsSpeed: 1
+    InterpolateLerpSpeed: 1
+    InterpolateMoveTowardsAcceleration: 2
+    InterpolateMoveTowardsDeceleration: 2
+    InterpolateSpeedCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: -1
+        value: 0
+        inSlope: 0
+        outSlope: Infinity
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 1
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 4
+        value: 4
+        inSlope: 1
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    ExtrapolateOption: 0
+    ExtrapolateSpeed: 1
+    ExtrapolateIncludingRoundTripTime: 1
+    ExtrapolateNumberOfStoredPositions: 1
+    DrawErrorGizmo: 1
+  m_RotationModel:
+    SynchronizeEnabled: 0
+    InterpolateOption: 1
+    InterpolateRotateTowardsSpeed: 180
+    InterpolateLerpSpeed: 5
+  m_ScaleModel:
+    SynchronizeEnabled: 0
+    InterpolateOption: 0
+    InterpolateMoveTowardsSpeed: 1
+    InterpolateLerpSpeed: 0
+--- !u!114 &1237685095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237685091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents: []
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 8
+  instantiationId: 8
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
+--- !u!95 &1237685096
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237685091}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &1237685097
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237685091}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &1237685098
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237685091}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &1237685099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237685091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53bdbd26138585f4aa59027c60557c6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: 0
+  positionOffset: {x: 0, y: 0, z: 0}
+  avoidanceForce: 2
+  baseOffset: 0
+  detectionRange: 2
+  height: 1
+  radius: 1
+  speed: 1
+  steerForce: 0.1
+  agentPriority: 1
+  detectionAccuracy: 3
+  detectionFieldOfView: 90
+  avoidanceLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &1245028912
 GameObject:
   m_ObjectHideFlags: 0
@@ -11586,7 +11964,6 @@ MonoBehaviour:
   onlinePlayers: []
   StartSpawnPoints:
   - {x: -12, y: 0, z: 0}
-  player: {fileID: 1086095473936905}
 --- !u!4 &1393358469
 Transform:
   m_ObjectHideFlags: 0
@@ -14093,6 +14470,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9369aafd20642e947b4bc83641e97566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doDestroyAfterTriggerEnter: 1
+  doDestroyAfterTriggerExit: 1
+  detectedTags:
+    ObjectTags:
+    - Name: Player
+      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
   OnTriggerEnterE:
     m_PersistentCalls:
       m_Calls:
@@ -14125,11 +14508,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  doDestroyAfterTrigger: 1
-  detectedTags:
-    ObjectTags:
-    - Name: Player
-      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
 --- !u!1 &1672778182
 GameObject:
   m_ObjectHideFlags: 0
@@ -14332,11 +14710,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doDestroyOnActivate: 1
-  collider: {fileID: 0}
-  topBound: {x: 0, y: 0, z: 0}
+  bottomBound: {x: 0, y: 0, z: 0}
   leftBound: {x: 31, y: 0, z: 0}
   rightBound: {x: 49, y: 0, z: 0}
-  bottomBound: {x: 0, y: 0, z: 0}
+  topBound: {x: 0, y: 0, z: 0}
   detectedTags:
     ObjectTags: []
 --- !u!1 &1697881690
@@ -14718,6 +15095,85 @@ SpriteRenderer:
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 5.22, y: 7.33}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!1 &1730920809
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1730920810}
+  - component: {fileID: 1730920811}
+  m_Layer: 10
+  m_Name: Siamese-Sprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1730920810
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730920809}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1237685092}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1730920811
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730920809}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 02029a1392ce2954bb3203450d37bc86, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -15313,11 +15769,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doDestroyOnActivate: 1
-  collider: {fileID: 0}
-  topBound: {x: 0, y: 0, z: 0}
+  bottomBound: {x: 0, y: 0, z: 0}
   leftBound: {x: 0, y: 0, z: 0}
   rightBound: {x: 0, y: 0, z: 0}
-  bottomBound: {x: 0, y: 0, z: 0}
+  topBound: {x: 0, y: 0, z: 0}
   detectedTags:
     ObjectTags: []
 --- !u!1 &1810150735
@@ -17137,12 +17592,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1086095473936905 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7181379643535501126, guid: d635b766f21f14947a364d7448b4dc2c,
-    type: 3}
-  m_PrefabInstance: {fileID: 7181756450590240079}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4081390318997267 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7179926860357853788, guid: d635b766f21f14947a364d7448b4dc2c,
