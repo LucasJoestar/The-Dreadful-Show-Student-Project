@@ -70,7 +70,7 @@ public class TDS_Siamese : TDS_Boss
     public override void CastThirdEffect()
     {
         // THIRD ATTACK MOVE WITHIN THE BOUNDS OF THE CAMERA
-        //agent.OnDestinationReached += StopSpinning;
+        agent.OnDestinationReached += StopSpinning;
         TDS_Bounds _bounds = TDS_Camera.Instance.CurrentBounds; 
         Vector3[] _positions = new Vector3[4] {new Vector3(_bounds.XMin, 0, _bounds.ZMin),
                                                new Vector3(_bounds.XMin, 0, _bounds.ZMax),
@@ -85,9 +85,10 @@ public class TDS_Siamese : TDS_Boss
     public override void CastSpecialEffect()
     {
         // SPECIAL ATTACK THROW A PROJECTILE THAT EXPLODES AFTER A CERTAIN AMOUNT OF TIME
-        throwable = PhotonNetwork.Instantiate("potato", handsTransform.position, Quaternion.identity, 0).GetComponent<TDS_Throwable>();
+        throwable = PhotonNetwork.Instantiate("potato", handsTransform.position, Quaternion.identity, 0).GetComponent<TDS_ExplosiveThrowable>();
         throwable.PickUp(this, handsTransform); 
         ThrowObject(playerTarget.transform.position); 
+
     }
 
     /// <summary>
