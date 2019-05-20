@@ -34,38 +34,38 @@ public class TDS_Throwable : MonoBehaviour
     #region Fields / Properties
     #region ObjectSettings
     [SerializeField,Header("Object settings")]
-    bool canBeTakeByEnemies = false;
+    protected bool canBeTakeByEnemies = false;
     [SerializeField]
-    bool isHeld = false;
+    protected bool isHeld = false;
     [SerializeField]
-    bool isHoldByPlayer = false;
+    protected bool isHoldByPlayer = false;
     [SerializeField]
-    float bouncePower = .5f;
+    protected float bouncePower = .5f;
     [SerializeField]
-    float objectSpeed = 15f;
+    protected float objectSpeed = 15f;
     [SerializeField, Range(0, 20)]
-    int bonusDamage = 0;
+    protected int bonusDamage = 0;
     [SerializeField,Range(0,10)]
-    int durabilityToWithdraw = 2;
+    protected int durabilityToWithdraw = 2;
     [SerializeField, Range(0, 10)]
-    int objectDurability = 10;
+    protected int objectDurability = 10;
     [SerializeField]
-    int weight = 2;
+    protected int weight = 2;
     public int Weight { get { return weight; } }
     [SerializeField]
-    new Rigidbody rigidbody = null;    
+    protected new Rigidbody rigidbody = null;    
     #endregion
     #region PlayerSettings
     [SerializeField, Header("Character settings")]       
-    TDS_Character owner = null;
+    protected TDS_Character owner = null;
     #endregion
     #region Hitbox
     [SerializeField]
-    TDS_HitBox hitBox;
+    protected TDS_HitBox hitBox;
     [SerializeField]
-    TDS_Attack attack = new TDS_Attack();
+    protected TDS_Attack attack = new TDS_Attack();
     [SerializeField]
-    LayerMask whatDesactivate = new LayerMask();
+    protected LayerMask whatDesactivate = new LayerMask();
     #endregion
     #endregion
 
@@ -74,14 +74,14 @@ public class TDS_Throwable : MonoBehaviour
     /// <summary>
     /// bounce object when it touches a collider
     /// </summary>
-    void BounceObject()
+    protected void BounceObject()
     {
         rigidbody.velocity *= bouncePower*-1;
     }
     /// <summary>
     /// Destroy the gameObject Throwable if the durability is less or equal to zero 
     /// </summary>
-    void DestroyThrowableObject()
+    protected virtual void DestroyThrowableObject()
     {
         Destroy(gameObject);
     }
@@ -99,12 +99,13 @@ public class TDS_Throwable : MonoBehaviour
     /// Reduces the durability of the object and if the durability is lower or equal to zero called the method that destroys the object. 
     /// </summary> 
     /// <param name="_valueToWithdraw"></param> 
-    void LoseDurability()
+    protected virtual void LoseDurability()
     {
         objectDurability -= durabilityToWithdraw;
         if (!(objectDurability <= 0)) return;
         DestroyThrowableObject();
     }
+
     /// <summary> 
     /// Picks up the object and parent it at the corresponding root 
     /// </summary> 
@@ -127,13 +128,14 @@ public class TDS_Throwable : MonoBehaviour
         owner = _carrier;
         return true;
     }
+
     /// <summary> 
     /// Throws the object to a given position by converting the final position to velocity 
     /// </summary> 
     /// <param name="_finalPosition"></param> 
     /// <param name="_angle"></param> 
     /// <param name="_bonusDamage"></param> 
-    public void Throw(Vector3 _finalPosition,float _angle, int _bonusDamage)
+    public virtual void Throw(Vector3 _finalPosition,float _angle, int _bonusDamage)
     {
         if (!isHeld) return;
         if(hitBox.IsActive)
@@ -155,7 +157,7 @@ public class TDS_Throwable : MonoBehaviour
     #endregion
 
     #region Unity Methods
-    void Awake()
+    protected virtual void Awake()
     {
         if(!hitBox)
         {
@@ -166,23 +168,24 @@ public class TDS_Throwable : MonoBehaviour
         hitBox.OnTouch += LoseDurability;
         hitBox.OnTouch += () => owner = null;
     }
-    private void OnCollisionEnter(Collision other)
+
+    protected virtual void OnCollisionEnter(Collision other)
     {
         hitBox.Desactivate();
     }
-    private void OnTriggerEnter(Collider other)
+
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if(whatDesactivate != (whatDesactivate | (1 << other.gameObject.layer))) return;
         hitBox.Desactivate();
     }
-    void Start ()
+
+    protected virtual void Start ()
     {
         if(!rigidbody) rigidbody = GetComponent<Rigidbody>();
-    }	
-	void Update ()
-    {
-        
-	}
+    }
+    
+
 	#endregion
 	#endregion
 }
