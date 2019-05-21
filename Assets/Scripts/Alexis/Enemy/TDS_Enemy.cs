@@ -192,7 +192,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     /// <param name="_distance"></param>
     /// <returns></returns>
-    protected abstract bool AttackCanBeCasted(float _distance); 
+    protected abstract bool AttackCanBeCasted(); 
 
     /// <summary>
     /// Check if the enemy is in the right orientation to face the target
@@ -268,6 +268,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected virtual IEnumerator Behaviour()
     {
+        if (!PhotonNetwork.isMasterClient) yield break; 
         // If the enemy is dead or paralyzed, they can't behave
         if (isDead || IsParalyzed || IsPacific) yield break;
         // If there is no target, the agent has to get one
@@ -430,8 +431,7 @@ public abstract class TDS_Enemy : TDS_Character
                 }
             }
             // if any attack can be casted 
-            _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-            if (AttackCanBeCasted(_distance))
+            if (AttackCanBeCasted())
             {
                 enemyState = EnemyState.Attacking;
                 yield break; 
@@ -776,9 +776,8 @@ public abstract class TDS_Enemy : TDS_Character
             enemyState = EnemyState.Searching;
             return; 
         }
-        float _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
         // Check if the agent can attack
-        if (AttackCanBeCasted(_distance) && !IsPacific)
+        if (AttackCanBeCasted() && !IsPacific)
         {
             enemyState = EnemyState.Attacking;
         }
@@ -824,7 +823,10 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Start()
     {
         base.Start();
-        if (PhotonNetwork.isMasterClient) StartCoroutine(Behaviour());
+        if (PhotonNetwork.isMasterClient)
+        {
+            StartCoroutine(Behaviour());
+        }
     }
 
     // Update is called once per frame

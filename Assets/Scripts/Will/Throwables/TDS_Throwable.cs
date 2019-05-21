@@ -159,7 +159,8 @@ public class TDS_Throwable : MonoBehaviour
     #region Unity Methods
     protected virtual void Awake()
     {
-        if(!hitBox)
+        if (!rigidbody) rigidbody = GetComponent<Rigidbody>();
+        if (!hitBox)
         {
             hitBox = GetComponentInChildren<TDS_HitBox>();
         }
@@ -182,7 +183,6 @@ public class TDS_Throwable : MonoBehaviour
 
     protected virtual void Start ()
     {
-        if(!rigidbody) rigidbody = GetComponent<Rigidbody>();
     }
     
 

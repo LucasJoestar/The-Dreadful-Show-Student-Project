@@ -108,9 +108,9 @@ public class TDS_Punk : TDS_Enemy
     /// </summary>
     /// <param name="_distance">distance between player and target</param>
     /// <returns>does the attack can be cast</returns>
-    protected override bool AttackCanBeCasted(float _distance)
+    protected override bool AttackCanBeCasted()
     {
-        return _distance <= attacks.Min(a => a.PredictedRange);
+        return Mathf.Abs(transform.position.x - playerTarget.transform.position.x) <= attacks.Min(a => a.PredictedRange);
     }
 
     /// <summary>

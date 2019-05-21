@@ -258,29 +258,29 @@ MonoBehaviour:
   agent: {fileID: 114509155922725266}
   attacks:
   - Name: HeadButt
-    AnimationID: 6
     damagesMax: 15
     damagesMin: 10
     Description: BOUM
     isDistanceAttack: 0
+    AnimationID: 6
     cooldown: 1.5
     predictedRange: 1
     probability: 33
   - Name: Bar Hit
-    AnimationID: 8
     damagesMax: 20
     damagesMin: 15
     Description: PAF!
     isDistanceAttack: 0
+    AnimationID: 8
     cooldown: 1.5
     predictedRange: 1.2
     probability: 33
   - Name: Kick
-    AnimationID: 7
     damagesMax: 8
     damagesMin: 5
     Description: KAPOW!
     isDistanceAttack: 0
+    AnimationID: 7
     cooldown: 1
     predictedRange: 0.8
     probability: 33

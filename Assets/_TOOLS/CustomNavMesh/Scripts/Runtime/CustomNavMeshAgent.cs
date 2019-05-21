@@ -189,6 +189,7 @@ public class CustomNavMeshAgent : MonoBehaviour
     /// <param name="_direction">Direction from the center position of the obstacle to the hit point of the ray cast</param>
     private void Avoid(Vector3 _direction)
     {
+        Debug.Log("Avoid"); 
         _direction.Normalize();
         Vector3 _avoidance = _direction * avoidanceForce * Time.deltaTime;
         _avoidance.y = 0;
@@ -254,7 +255,8 @@ public class CustomNavMeshAgent : MonoBehaviour
 
         float _distance = 0;
         // Angle theta is the angle between forward and velocity direction
-        float _theta; 
+        float _theta;
+        float _scalarProduct;
 
         RaycastHit _hitInfo;
         Ray _ray;
@@ -264,7 +266,7 @@ public class CustomNavMeshAgent : MonoBehaviour
 
         /* First the velocity is equal to the normalized direction from the agent position to the next position */
         if (velocity == Vector3.zero)
-            velocity = transform.forward * speed;
+            velocity = (_nextPosition - OffsetPosition).normalized * speed;
         Seek(_nextPosition); 
 
         while (Vector3.Distance(OffsetPosition, LastPosition) > radius)
@@ -282,6 +284,7 @@ public class CustomNavMeshAgent : MonoBehaviour
              */
             if (Vector3.Distance(OffsetPosition, _nextPosition) <= radius)
             {
+                Debug.Log("NEXT"); 
                 //set the new previous position
                 _previousPosition = _followingPath[_pathIndex];
                 //Increasing path index
@@ -307,7 +310,7 @@ public class CustomNavMeshAgent : MonoBehaviour
                 if(Physics.Raycast(_ray , out _hitInfo, detectionRange, avoidanceLayer.value))
                 {
                     //If the hit object isn't a navsurface's child 
-                    if (!_hitInfo.transform.GetComponentInParent<NavMeshSurface>())
+                    if (!_hitInfo.transform.GetComponentInParent<NavMeshSurface>() && _hitInfo.collider.gameObject != this.gameObject)
                     {
                         // Add the direction to avoid to the list
                         _obstaclesPos.Add((_hitInfo.point - _hitInfo.transform.position).normalized);
@@ -347,7 +350,8 @@ public class CustomNavMeshAgent : MonoBehaviour
             * If the distance is greater than the radius, it has to steer to get closer
             */
             _distance = Vector3.Distance(_predictedPosition, _normalPoint);
-            if (_distance > radius/2)
+            _scalarProduct = Vector3.Dot(velocity.normalized, _dir.normalized); 
+            if (_distance > radius/2 || _scalarProduct == -1)
             {
                 Seek(_targetPosition);
             }
@@ -382,6 +386,7 @@ public class CustomNavMeshAgent : MonoBehaviour
     /// <param name="_target"></param>
     private void Seek(Vector3 _target)
     {
+        Debug.Log("SEEK"); 
         Vector3 _desiredVelocity = (_target - OffsetPosition).normalized * speed;
         Vector3 _steer = ((_desiredVelocity - velocity) * steerForce * Time.deltaTime );
         velocity += _steer;
