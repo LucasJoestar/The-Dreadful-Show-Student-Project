@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4673729681779936063
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2984869754189752940}
+  m_Layer: 9
+  m_Name: Beard FXs Transform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2984869754189752940
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4673729681779936063}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.227, y: 1.082, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7179926860357853788}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7181286282021754452
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,6 +145,7 @@ Transform:
   - {fileID: 7186367790445237866}
   - {fileID: 7180263978548296200}
   - {fileID: 7186105264957389434}
+  - {fileID: 2984869754189752940}
   - {fileID: 7186068338060500962}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -218,11 +249,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 24576
   playerType: 0
-  currentBeardState: 1
+  beardMagicFX: {fileID: 1548626687783702, guid: 07aec73cd6dacd740b40eb5ff76f0fe0,
+    type: 3}
+  beardFXTransform: {fileID: 2984869754189752940}
+  currentBeardState: 0
   beardGrowInterval: 5
-  beardCurrentLife: 0
   beardHealInterval: 1
+  beardCurrentLife: 2
   beardMaxLife: 5
+  growBeardTimer: 0
+  healBeardTimer: 0
 --- !u!95 &7132007744230118298
 Animator:
   serializedVersion: 3
@@ -406,7 +442,7 @@ Transform:
   - {fileID: 7180254616243949648}
   - {fileID: 7186609278662822794}
   m_Father: {fileID: 7179926860357853788}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7182153347379059864
 GameObject:

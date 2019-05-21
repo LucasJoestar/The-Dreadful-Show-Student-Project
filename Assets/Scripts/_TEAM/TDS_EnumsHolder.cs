@@ -161,6 +161,15 @@ public enum EnemyEffectiveAttackType
 }
 
 /// <summary>
+/// All animation states specific to the Fire Eater.
+/// </summary>
+public enum FireEaterAnimState
+{
+    Sober,
+    Drunk
+}
+
+/// <summary>
 /// All animation states shared by all players.
 /// </summary>
 public enum PlayerAnimState

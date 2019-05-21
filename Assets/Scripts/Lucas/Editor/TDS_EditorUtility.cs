@@ -374,7 +374,10 @@ public sealed class TDS_EditorUtility
         EditorGUILayout.BeginHorizontal();
 
         GUILayout.Space(labelStyle.padding.left);
-        bool _hasChanges = EditorGUILayout.PropertyField(_serializedProperty, new GUIContent(_label, _tooltip), true);
+
+        EditorGUI.BeginChangeCheck();
+        EditorGUILayout.PropertyField(_serializedProperty, new GUIContent(_label, _tooltip), true);
+        bool _hasChanges = EditorGUI.EndChangeCheck();
 
         EditorGUILayout.EndHorizontal();
 

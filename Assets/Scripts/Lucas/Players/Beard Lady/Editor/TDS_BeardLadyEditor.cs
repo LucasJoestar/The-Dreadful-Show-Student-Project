@@ -35,6 +35,37 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
 
     #region SerializedProperties
 
+    #region Components & References
+    /// <summary>SerializedProperties for <see cref="TDS_Player.beardMagicFX"/> of type <see cref="GameObject"/>.</summary>
+    private SerializedProperty beardMagicFX = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.beardFXTransform"/> of type <see cref="Transform"/>.</summary>
+    private SerializedProperty beardFXTransform = null;
+    #endregion
+
+    #region Variables
+    /// <summary>SerializedProperties for <see cref="TDS_Player.currentBeardState"/> of type <see cref="BeardState"/>.</summary>
+    private SerializedProperty currentBeardState = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.beardGrowInterval"/> of type <see cref="float"/>.</summary>
+    private SerializedProperty beardGrowInterval = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.beardHealInterval"/> of type <see cref="float"/>.</summary>
+    private SerializedProperty beardHealInterval = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.growBeardTimer"/> of type <see cref="float"/>.</summary>
+    private SerializedProperty growBeardTimer = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.healBeardTimer"/> of type <see cref="float"/>.</summary>
+    private SerializedProperty healBeardTimer = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.beardCurrentLife"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty beardCurrentLife = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.beardMaxLife"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty beardMaxLife = null;
+    #endregion
+
     #endregion
 
     #region Foldouts
@@ -53,6 +84,24 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
 
             // Save this value
             EditorPrefs.SetBool("areBeardLadyComponentsUnfolded", value);
+        }
+    }
+
+    /// <summary>Backing field for <see cref="AreBeardLadyDebugsUnfolded"/>.</summary>
+    private bool areBeardLadyDebugsUnfolded = false;
+
+    /// <summary>
+    /// Indicates if the debugs editor of this class is unfolded.
+    /// </summary>
+    public bool AreBeardLadyDebugsUnfolded
+    {
+        get { return areBeardLadyDebugsUnfolded; }
+        set
+        {
+            areBeardLadyDebugsUnfolded = value;
+
+            // Save this value
+            EditorPrefs.SetBool("areBeardLadyDebugsUnfolded", value);
         }
     }
 
@@ -115,7 +164,23 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
     /// </summary>
     private void DrawComponentsAndReferences()
     {
+        EditorGUILayout.ObjectField(beardMagicFX, new GUIContent("Beard State", "Current state of the Beard Lady's beard"));
 
+        EditorGUILayout.ObjectField(beardFXTransform, new GUIContent("Beard FXs Transform", "Transform used to instantiate beard-related FXs"));
+    }
+
+    /// <summary>
+    /// Draws the debugs editor of the TDS_Juggler editing objects.
+    /// </summary>
+    private void DrawDebugs()
+    {
+        GUILayout.Space(5);
+        TDS_EditorUtility.ProgressBar(25, growBeardTimer.floatValue / beardGrowInterval.floatValue, "Beard Grow Progress");
+
+        GUILayout.Space(10);
+
+        TDS_EditorUtility.ProgressBar(25, healBeardTimer.floatValue / beardHealInterval.floatValue, "Beard Heal Progress");
+        GUILayout.Space(5);
     }
 
     /// <summary>
@@ -169,6 +234,23 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
 
             EditorGUILayout.EndVertical();
 
+            if (Application.isPlaying)
+            {
+                GUILayout.Space(15);
+                EditorGUILayout.BeginVertical("Box");
+
+                // Button to show or not the Beard Lady class debugs
+                if (TDS_EditorUtility.Button("Debugs", "Wrap / unwrap debugs", TDS_EditorUtility.HeaderStyle)) AreBeardLadyDebugsUnfolded = !areBeardLadyDebugsUnfolded;
+
+                // If unfolded, draws the custom editor for the debugs
+                if (areBeardLadyDebugsUnfolded)
+                {
+                    DrawDebugs();
+                }
+
+                EditorGUILayout.EndVertical();
+            }
+
             // Applies all modified properties on the SerializedObjects
             serializedObject.ApplyModifiedProperties();
         }
@@ -182,7 +264,38 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
     /// </summary>
     private void DrawSettings()
     {
+        if (TDS_EditorUtility.PropertyField("Beard State", "Current state of the Beard Lady's beard", currentBeardState) && Application.isPlaying)
+        {
+            beardLadies.ForEach(b => b.CancelInvokeGrowBeard());
+            beardLadies.ForEach(b => b.CurrentBeardState = (BeardState)currentBeardState.enumValueIndex);
+        }
 
+        GUILayout.Space(3);
+        TDS_EditorUtility.ProgressBar(25, (float)currentBeardState.enumValueIndex / 3, "Beard State");
+        GUILayout.Space(5);
+
+        if (TDS_EditorUtility.FloatField("Beard Grow Interval", "Interval between two beard grow up", beardGrowInterval))
+        {
+            beardLadies.ForEach(b => b.BeardGrowInterval = beardGrowInterval.floatValue);
+        }
+
+        if (TDS_EditorUtility.IntSlider("Beard Life", "Current beard life", beardCurrentLife, 0, beardMaxLife.intValue) && Application.isPlaying)
+        {
+            beardLadies.ForEach(b => b.BeardCurrentLife = beardCurrentLife.intValue);
+        }
+
+        GUILayout.Space(3);
+        TDS_EditorUtility.ProgressBar(25, (float)beardCurrentLife.intValue / beardMaxLife.intValue, "Beard Life");
+        GUILayout.Space(5);
+
+        if (TDS_EditorUtility.IntField("Beard Max Life", "Maximum beard life value", beardMaxLife))
+        {
+            beardLadies.ForEach(b => b.BeardMaxLife = beardMaxLife.intValue);
+        }
+        if (TDS_EditorUtility.FloatField("Beard Heal Interval", "Interval between two beard heal", beardHealInterval))
+        {
+            beardLadies.ForEach(b => b.BeardHealInterval = beardHealInterval.floatValue);
+        }
     }
     #endregion
 
@@ -198,11 +311,21 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
         else isBeardLadyMultiEditing = true;
 
         // Get the serializedProperties from the serializedObject
+        beardMagicFX = serializedObject.FindProperty("beardMagicFX");
+        beardFXTransform = serializedObject.FindProperty("beardFXTransform");
 
+        currentBeardState = serializedObject.FindProperty("currentBeardState");
+        beardGrowInterval = serializedObject.FindProperty("beardGrowInterval");
+        beardHealInterval = serializedObject.FindProperty("beardHealInterval");
+        growBeardTimer = serializedObject.FindProperty("growBeardTimer");
+        healBeardTimer = serializedObject.FindProperty("healBeardTimer");
+        beardCurrentLife = serializedObject.FindProperty("beardCurrentLife");
+        beardMaxLife = serializedObject.FindProperty("beardMaxLife");
 
         // Loads the editor folded & unfolded values of this script
         isBeardLadyUnfolded = EditorPrefs.GetBool("isBeardLadyUnfolded", isBeardLadyUnfolded);
         areBeardLadyComponentsUnfolded = EditorPrefs.GetBool("areBeardLadyComponentsUnfolded", areBeardLadyComponentsUnfolded);
+        areBeardLadyDebugsUnfolded = EditorPrefs.GetBool("areBeardLadyDebugsUnfolded", areBeardLadyDebugsUnfolded);
         areBeardLadySettingsUnfolded = EditorPrefs.GetBool("areBeardLadySettingsUnfolded", areBeardLadySettingsUnfolded);
     }
 

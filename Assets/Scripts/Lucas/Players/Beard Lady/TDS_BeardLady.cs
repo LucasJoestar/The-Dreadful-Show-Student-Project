@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class TDS_BeardLady : TDS_Player 
 {
@@ -27,6 +28,20 @@ public class TDS_BeardLady : TDS_Player
 	*/
 
     #region Fields / Properties
+
+    #region Components & References
+    /// <summary>
+    /// FX instantiated when the beard grows up.
+    /// </summary>
+    [SerializeField] private GameObject beardMagicFX = null;
+
+    /// <summary>
+    /// Transform used to instantiate the beard FX.
+    /// </summary>
+    [SerializeField] private Transform beardFXTransform = null;
+    #endregion
+
+    #region Variables
     /// <summary>Backing field for <see cref="CurrentBeardState"/>.</summary>
     [SerializeField] private BeardState currentBeardState = BeardState.Normal;
 
@@ -37,8 +52,17 @@ public class TDS_BeardLady : TDS_Player
     public BeardState CurrentBeardState
     {
         get { return currentBeardState; }
-        private set
+        set
         {
+            if (value > currentBeardState)
+            {
+                Instantiate(beardMagicFX, beardFXTransform, false);
+            }
+            else
+            {
+                CancelInvokeGrowBeard();
+            }
+
             currentBeardState = value;
 
             if (value != BeardState.VeryVeryLongDude)
@@ -49,7 +73,7 @@ public class TDS_BeardLady : TDS_Player
             CancelInvokeHealBeard();
             BeardCurrentLife = beardMaxLife;
 
-            SetAnimBeard(value);
+            SetBeardAnim(value);
         }
     }
 
@@ -71,6 +95,22 @@ public class TDS_BeardLady : TDS_Player
         }
     }
 
+    /// <summary>Backing field for <see cref="BeardHealInterval"/>.</summary>
+    [SerializeField] private float beardHealInterval = 1;
+
+    /// <summary>
+    /// Interval at which the beard get healed.
+    /// </summary>
+    public float BeardHealInterval
+    {
+        get { return beardHealInterval; }
+        set
+        {
+            if (value < 0) value = 0;
+            beardGrowInterval = value;
+        }
+    }
+
     /// <summary>Backing field for <see cref="BeardCurrentLife"/>.</summary>
     [SerializeField] private int beardCurrentLife = 0;
 
@@ -80,12 +120,12 @@ public class TDS_BeardLady : TDS_Player
     public int BeardCurrentLife
     {
         get { return beardCurrentLife; }
-        private set
+        set
         {
             value = Mathf.Clamp(value, 0, beardMaxLife);
             if (value == 0)
             {
-                DegradeBeard();
+                CurrentBeardState--;
                 return;
             }
             else if (value != beardMaxLife)
@@ -94,22 +134,6 @@ public class TDS_BeardLady : TDS_Player
             }
 
             beardCurrentLife = value;
-        }
-    }
-
-    /// <summary>Backing field for <see cref="BeardHealInterval"/>.</summary>
-    [SerializeField] private int beardHealInterval = 1;
-
-    /// <summary>
-    /// Interval at which the beard get healed.
-    /// </summary>
-    public int BeardHealInterval
-    {
-        get { return beardHealInterval; }
-        set
-        {
-            if (value < 0) value = 0;
-            beardGrowInterval = value;
         }
     }
 
@@ -130,64 +154,105 @@ public class TDS_BeardLady : TDS_Player
     }
     #endregion
 
+    #region Coroutines
+    /// <summary>
+    /// Reference of the current coroutine of the grow beard method.
+    /// </summary>
+    private Coroutine growBeardCoroutine = null;
+
+    /// <summary>
+    /// Reference of the current coroutine of the heal beard method.
+    /// </summary>
+    private Coroutine healBeardCoroutine = null;
+    #endregion
+
+    #region Memory
+    /// <summary>
+    /// Timer for the grow beard coroutine, also used in the Beard Lady custom editor.
+    /// </summary>
+    [SerializeField] private float growBeardTimer = 0;
+
+    /// <summary>
+    /// Timer for the heal beard coroutine, also used in the Beard Lady custom editor.
+    /// </summary>
+    [SerializeField] private float healBeardTimer = 0;
+    #endregion
+
+    #endregion
+
     #region Methods
 
     #region Original Methods
 
     #region Beard
     /// <summary>
-    /// Let's degrade that kind woman's beard !
-    /// </summary>
-    private void DegradeBeard()
-    {
-        CancelInvokeGrowBeard();
-        CurrentBeardState--;
-    }
-
-    /// <summary>
     /// Let's grow the beard of this sweet lady !
     /// </summary>
-    private void GrowBeard()
+    private IEnumerator GrowBeard()
     {
+        growBeardTimer = beardGrowInterval;
+
+        while (growBeardTimer > 0)
+        {
+            yield return null;
+            growBeardTimer -= Time.deltaTime;
+        }
+
+        growBeardCoroutine = null;
         CurrentBeardState++;
     }
 
     /// <summary>
     /// Heals the beard life.
     /// </summary>
-    private void HealBeard()
+    private IEnumerator HealBeard()
     {
+        healBeardTimer = BeardHealInterval;
+
+        while (healBeardTimer > 0)
+        {
+            yield return null;
+            healBeardTimer -= Time.deltaTime;
+        }
+
+        healBeardCoroutine = null;
         BeardCurrentLife++;
     }
 
     /// <summary>
     /// Reset variables used to grow the beard.
     /// </summary>
-    private void ResetBeardGrow()
+    public void ResetBeardGrow()
     {
         CancelInvokeGrowBeard();
         InvokeGrowBeard();
     }
 
     /// <summary>
-    /// Invoke the method to grow the beard after a certain time.
+    /// Starts the coroutine to grow the beard after a certain time.
     /// </summary>
-    private void InvokeGrowBeard() => Invoke("GrowBeard", beardGrowInterval);
+    public void InvokeGrowBeard() => growBeardCoroutine = StartCoroutine(GrowBeard());
 
     /// <summary>
-    /// Cancel invoke of the method to grow the beard.
+    /// Stops the coroutine of the method to grow the beard.
     /// </summary>
-    private void CancelInvokeGrowBeard() => CancelInvoke("GrowBeard");
+    public void CancelInvokeGrowBeard()
+    {
+        if (growBeardCoroutine != null) StopCoroutine(growBeardCoroutine);
+    }
 
     /// <summary>
-    /// Invoke the method to heal the beard after a certain time.
+    /// Starts the coroutine to heal the beard after a certain time.
     /// </summary>
-    private void InvokeHealBeard() => Invoke("HealBeard", beardHealInterval);
+    public void InvokeHealBeard() => healBeardCoroutine = StartCoroutine(HealBeard());
 
     /// <summary>
-    /// Cancel invoke of the method to heal the beard.
+    /// Stops the coroutine of the method to heal the beard.
     /// </summary>
-    private void CancelInvokeHealBeard() => CancelInvoke("HealBeard");
+    public void CancelInvokeHealBeard()
+    {
+        if (healBeardCoroutine != null) StopCoroutine(healBeardCoroutine);
+    }
     #endregion
 
     #region Health
@@ -242,7 +307,7 @@ public class TDS_BeardLady : TDS_Player
     /// Set the Beard Lady's beard animator state.
     /// </summary>
     /// <param name="_state">State of the beard.</param>
-    public void SetAnimBeard(BeardState _state)
+    public void SetBeardAnim(BeardState _state)
     {
         animator.SetFloat("Beard", (int)_state);
     }
@@ -267,7 +332,7 @@ public class TDS_BeardLady : TDS_Player
 
         // Let's make this beard grow repeatedly until it reach its maximum value
         if (currentBeardState != BeardState.VeryVeryLongDude) InvokeGrowBeard();
-        SetAnimBeard(currentBeardState);
+        SetBeardAnim(currentBeardState);
 
         beardCurrentLife = beardMaxLife;
 
