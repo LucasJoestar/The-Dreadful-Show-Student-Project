@@ -122,12 +122,14 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
     /// </summary>
     /// <param name="_distance">Distance between the enemy and its target</param>
     /// <returns></returns>
-    protected override bool AttackCanBeCasted(float _distance)
+    protected override bool AttackCanBeCasted()
     {
         if (castedAttack == null) return false;
-        if (transform.position.z - playerTarget.transform.position.z >= .5f)
+        if (Mathf.Abs(transform.position.z - playerTarget.transform.position.z) >= .6f)
+        {
             return false;
-        return castedAttack.PredictedRange <= _distance; 
+        }
+        return castedAttack.PredictedRange >= Mathf.Abs(transform.position.x - playerTarget.transform.position.x); 
     }
 
     /// <summary>
@@ -161,6 +163,7 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
         castedAttack.ConsecutiveUses++;
         Attacks.ToList().Where(a => a != castedAttack).ToList().ForEach(a => a.ConsecutiveUses = 0);
         SetAnimationState(castedAttack.AnimationID);
+        ApplyAttackEffect(castedAttack.AttackType); 
         return castedAttack.Cooldown;
     }
 
@@ -317,7 +320,7 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
                     }
                 }
             }
-            if (AttackCanBeCasted(_distance))
+            if (AttackCanBeCasted())
             {
                 enemyState = EnemyState.Attacking;
                 yield break;
@@ -353,7 +356,7 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
     {
         if (!PhotonNetwork.isMasterClient || castedAttack == null) return;
         hitBox.Activate(castedAttack);
-        ApplyAttackEffect(castedAttack.AttackType);
+        //ApplyAttackEffect(castedAttack.AttackType);
     }
 
     /// <summary>
@@ -393,6 +396,15 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
         base.Die();
     }
 
+    protected override void InitLifeBar()
+    {
+        if (TDS_UIManager.Instance?.CanvasScreen)
+        {
+            TDS_UIManager.Instance.SetBossLifeBar(this);
+            OnTakeDamage += UpdateLifeBar;
+        }
+    }
+
     /// <summary>
     /// Get the casted attack and check if it can be casted, if so, cast it
     /// Else compute path until reaching a attacking position
@@ -401,7 +413,7 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
     {
         castedAttack = GetAttack();
         float _distance = Vector3.Distance(transform.position, playerTarget.transform.position); 
-        if(AttackCanBeCasted(_distance))
+        if(AttackCanBeCasted())
         {
             enemyState = EnemyState.Attacking; 
         }
@@ -431,12 +443,14 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
     /// <returns>Return an attacking position</returns>
     protected override Vector3 GetAttackingPosition()
     {
-        Vector3 _offset = Vector3.zero;
-        int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;
-        _offset.z = UnityEngine.Random.Range(-.5f, .5f);
-        _offset.x = castedAttack.PredictedRange - .1f;
-        _offset.x *= _coeff;
-        return playerTarget.transform.position + _offset;
+        Vector3 _attackingPosition = transform.position;
+        if (playerTarget)
+        {
+            int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;
+            _attackingPosition.x = Mathf.Abs(transform.position.x - playerTarget.transform.position.x) < castedAttack.PredictedRange ? transform.position.x : playerTarget.transform.position.x + (castedAttack.PredictedRange * _coeff); 
+            _attackingPosition.z = playerTarget.transform.position.z + UnityEngine.Random.Range(-.4f, .4f);
+        }
+        return _attackingPosition;
     }
     #endregion
 

@@ -90,7 +90,6 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
                     return ;
 
             }
-            Debug.Log("ok"); 
             _ref.InsertArrayElementAtIndex(_ref.arraySize);
             _ref.GetArrayElementAtIndex(_ref.arraySize-1).FindPropertyRelative("enemyResourceName").stringValue = _e.EnemyName;
             Repaint(); 

@@ -133,9 +133,9 @@ public abstract class TDS_Minion : TDS_Enemy, TDS_ISpecialAttacker
     /// </summary>
     /// <param name="_distance">distance between player and target</param>
     /// <returns>does the attack can be cast</returns>
-    protected override bool AttackCanBeCasted(float _distance)
+    protected override bool AttackCanBeCasted()
     {
-        return _distance <= Attacks.Min(a => a.PredictedRange);
+        return Mathf.Abs(transform.position.x - playerTarget.transform.position.x) <= Attacks.Min(a => a.PredictedRange);
     }
 
     /// <summary>
