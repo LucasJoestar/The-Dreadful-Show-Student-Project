@@ -106,6 +106,7 @@ public class TDS_UIManager : PunBehaviour
 
     #region LifeBar
     [SerializeField] private TDS_LifeBar playerHealthBar;
+    [SerializeField] private TDS_LifeBar bossHealthBar;
     #endregion
 
     #region MenuParents
@@ -276,6 +277,22 @@ public class TDS_UIManager : PunBehaviour
         //ButtonSelectionFireEater.onClick.AddListener(() => SetButtonInteractable(ButtonSelectionFireEater,  PlayerType.FireEater)); 
 
         ButtonQuitPause.onClick.AddListener(() => ActivateMenu(UIState.InGame));
+    }
+
+    /// <summary>
+    /// Set the BossLifeBar's owner and set the game object active
+    /// Add the updating method when the boss take damage
+    /// When the boss dies, set the life to inactive
+    /// </summary>
+    /// <param name="_boss"></param>
+    public void SetBossLifeBar(TDS_Boss _boss)
+    {
+        if (!PhotonNetwork.isMasterClient || !bossHealthBar) return;
+        bossHealthBar.SetOwner(_boss);
+        _boss.HealthBar = bossHealthBar.FilledImage;
+        _boss.OnTakeDamage += _boss.UpdateLifeBar;
+        _boss.OnDie += () => bossHealthBar.gameObject.SetActive(false);
+        bossHealthBar.gameObject.SetActive(true); 
     }
 
     /// <summary>

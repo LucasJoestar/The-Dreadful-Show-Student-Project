@@ -189,7 +189,6 @@ public class CustomNavMeshAgent : MonoBehaviour
     /// <param name="_direction">Direction from the center position of the obstacle to the hit point of the ray cast</param>
     private void Avoid(Vector3 _direction)
     {
-        Debug.Log("Avoid"); 
         _direction.Normalize();
         Vector3 _avoidance = _direction * avoidanceForce * Time.deltaTime;
         _avoidance.y = 0;
@@ -284,7 +283,6 @@ public class CustomNavMeshAgent : MonoBehaviour
              */
             if (Vector3.Distance(OffsetPosition, _nextPosition) <= radius)
             {
-                Debug.Log("NEXT"); 
                 //set the new previous position
                 _previousPosition = _followingPath[_pathIndex];
                 //Increasing path index
@@ -386,7 +384,6 @@ public class CustomNavMeshAgent : MonoBehaviour
     /// <param name="_target"></param>
     private void Seek(Vector3 _target)
     {
-        Debug.Log("SEEK"); 
         Vector3 _desiredVelocity = (_target - OffsetPosition).normalized * speed;
         Vector3 _steer = ((_desiredVelocity - velocity) * steerForce * Time.deltaTime );
         velocity += _steer;

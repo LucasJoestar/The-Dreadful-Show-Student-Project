@@ -78,20 +78,25 @@ public class TDS_BossEditor : TDS_EnemyEditor
         if (TDS_EditorUtility.Button(serializedObject.targetObject.name, "Wrap / unwrap Punk class settings", TDS_EditorUtility.HeaderStyle)) IsBossUnfolded = !isBossUnfolded;
         if (isBossUnfolded)
         {
-            GUI.backgroundColor = TDS_EditorUtility.BoxLightColor;
-            EditorGUILayout.BeginVertical("HelpBox");
-
-            //Draw a header for the enemy evolution settings
-            EditorGUILayout.LabelField("Attack Settings", TDS_EditorUtility.HeaderStyle);
-            TDS_EditorUtility.PropertyField("Boss Attacks", "", attacks);
-
-            EditorGUILayout.EndVertical();
+            DisplaySettings(); 
         }
 
         serializedObject.ApplyModifiedProperties();
 
         EditorGUILayout.EndVertical();
         GUI.backgroundColor = _originalColor;
+    }
+
+    protected virtual void DisplaySettings()
+    {
+        GUI.backgroundColor = TDS_EditorUtility.BoxLightColor;
+        EditorGUILayout.BeginVertical("HelpBox");
+
+        //Draw a header for the enemy evolution settings
+        EditorGUILayout.LabelField("Attack Settings", TDS_EditorUtility.HeaderStyle);
+        TDS_EditorUtility.PropertyField("Boss Attacks", "", attacks);
+
+        EditorGUILayout.EndVertical();
     }
     #endregion
 

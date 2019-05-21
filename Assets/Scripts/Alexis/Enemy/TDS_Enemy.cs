@@ -745,6 +745,16 @@ public abstract class TDS_Enemy : TDS_Character
         }
     }
 
+    protected virtual void InitLifeBar()
+    {
+        //INIT LIFEBAR
+        if (TDS_UIManager.Instance?.CanvasWorld)
+        {
+            TDS_UIManager.Instance.SetEnemyLifebar(this);
+            OnTakeDamage += UpdateLifeBar;
+        }
+    }
+
     /// <summary>
     /// Set the animation of the enemy to the animationID
     /// </summary>
@@ -817,6 +827,7 @@ public abstract class TDS_Enemy : TDS_Character
         OnDie += () => StopAllCoroutines();
         OnDie += () => agent.StopAgent();
         //agent.OnAgentStopped += () => speedCurrent = 0;
+        InitLifeBar(); 
     }
 
     // Use this for initialization

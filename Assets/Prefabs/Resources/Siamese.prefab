@@ -117,7 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: 0
   positionOffset: {x: 0, y: 1.2, z: 0}
-  avoidanceForce: 1
+  avoidanceForce: 10
   baseOffset: 0
   detectionRange: 2.5
   height: 2.4
@@ -370,6 +370,7 @@ MonoBehaviour:
     predictedRange: 10
     probability: 0
     attackType: 4
+  spinningSpeed: 8
 --- !u!1 &2085316961818940415
 GameObject:
   m_ObjectHideFlags: 0

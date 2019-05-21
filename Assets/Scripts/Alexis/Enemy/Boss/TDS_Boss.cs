@@ -396,6 +396,15 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
         base.Die();
     }
 
+    protected override void InitLifeBar()
+    {
+        if (TDS_UIManager.Instance?.CanvasScreen)
+        {
+            TDS_UIManager.Instance.SetBossLifeBar(this);
+            OnTakeDamage += UpdateLifeBar;
+        }
+    }
+
     /// <summary>
     /// Get the casted attack and check if it can be casted, if so, cast it
     /// Else compute path until reaching a attacking position

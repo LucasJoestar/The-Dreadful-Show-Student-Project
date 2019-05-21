@@ -11,7 +11,7 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
 	 *	###### PURPOSE ######
 	 *	#####################
 	 *
-	 *	[PURPOSE]
+	 *	[Throwable that explodes after a delay]
 	 *
 	 *	#####################
 	 *	####### TO DO #######
@@ -23,13 +23,14 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
-	 *	Date :			[DATE]
-	 *	Author :		[NAME]
+	 *	Date :			[20/05/2019]
+	 *	Author :		[THIEBAUT Alexis]
 	 *
 	 *	Changes :
 	 *
-	 *	[CHANGES]
-	 *
+	 *	[Initialisation of the class]
+	 *  - Initialisation of the Overriden methods of the throwable class
+     *  - Initalise the explosion settings
 	 *	-----------------------------------
 	*/
 
