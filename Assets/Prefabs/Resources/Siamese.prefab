@@ -200,8 +200,8 @@ MonoBehaviour:
   ownershipTransfer: 0
   ObservedComponents: []
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 8
+  instantiationId: 8
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &2085316961524171248
@@ -338,8 +338,8 @@ MonoBehaviour:
     AnimationID: 6
     cooldown: 1
     predictedRange: 2
-    probability: 0
-    attackType: 2
+    probability: 80
+    attackType: 0
   - Name: Coup bas
     damagesMax: 5
     damagesMin: 10
@@ -348,8 +348,8 @@ MonoBehaviour:
     AnimationID: 7
     cooldown: 1
     predictedRange: 1.5
-    probability: 0
-    attackType: 1
+    probability: 75
+    attackType: 0
   - Name: Toupie
     damagesMax: 5
     damagesMin: 10
@@ -358,7 +358,7 @@ MonoBehaviour:
     AnimationID: 8
     cooldown: 1
     predictedRange: 150
-    probability: 100
+    probability: 25
     attackType: 3
   - Name: Cadeau explosif
     damagesMax: 10
@@ -368,9 +368,17 @@ MonoBehaviour:
     AnimationID: 9
     cooldown: 2
     predictedRange: 10
-    probability: 0
+    probability: 50
     attackType: 4
   spinningSpeed: 8
+  splitingEnemiesNames:
+  - Punk
+  - Punk
+  - Punk
+  splitingPosition:
+  - {x: -0.20119524, y: 0, z: 3.6054945}
+  - {x: -1.6992164, y: 0, z: 5.205257}
+  - {x: 1.370285, y: 0, z: 6.084891}
 --- !u!1 &2085316961818940415
 GameObject:
   m_ObjectHideFlags: 0

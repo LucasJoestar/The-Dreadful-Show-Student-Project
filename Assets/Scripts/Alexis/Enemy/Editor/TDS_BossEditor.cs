@@ -38,7 +38,7 @@ public class TDS_BossEditor : TDS_EnemyEditor
 
 
     #region Fields / Properties
-    /// <summary>SerializedProperty for <see cref="TDS_Boss.Attacks"/> of type <see cref="bool"/>.</summary>
+    /// <summary>SerializedProperty for <see cref="TDS_Boss.attacks"/> of type <see cref="bool"/>.</summary>
     SerializedProperty attacks = null;
 
     #region FoldOut
