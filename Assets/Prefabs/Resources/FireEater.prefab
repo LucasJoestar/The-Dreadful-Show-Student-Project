@@ -363,9 +363,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300024, guid: f2883d437a753be449292fa70f150205, type: 3}
+  m_Sprite: {fileID: 21300016, guid: 0ca4e71d5149a0e4693e699d92df8f87, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1.62, y: 2.7}
@@ -440,6 +440,7 @@ MonoBehaviour:
   throwable: {fileID: 0}
   handsTransform: {fileID: 1789801893027054814}
   isAttacking: 0
+  IsDown: 0
   isFacingRight: 1
   IsPacific: 0
   IsParalyzed: 0
@@ -493,6 +494,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 24576
   playerType: 3
+  isDrunk: 0
+  soberUpTime: 10
+  soberUpTimer: 0
 --- !u!95 &1843503580909251902
 Animator:
   serializedVersion: 3

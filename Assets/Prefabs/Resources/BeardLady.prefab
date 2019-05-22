@@ -176,6 +176,7 @@ MonoBehaviour:
   throwable: {fileID: 0}
   handsTransform: {fileID: 7186105264957389434}
   isAttacking: 0
+  IsDown: 0
   isFacingRight: 1
   IsPacific: 0
   IsParalyzed: 0
@@ -216,22 +217,57 @@ MonoBehaviour:
   VerticalAxis: Vertical
   attacks:
   - Name: Light Attack
+    Effect:
+      EffectType: 0
+      duration: 5
+      percentageHighest: 100
+      percentageLowest: 100
+      damagesMax: 5
+      damagesMin: 5
     damagesMax: 7
     damagesMin: 4
     Description: 'Attack used for both #1 & #2 light attacks.'
   - Name: Heavy Attack
+    Effect:
+      EffectType: 0
+      duration: 5
+      percentageHighest: 100
+      percentageLowest: 100
+      damagesMax: 5
+      damagesMin: 5
     damagesMax: 9
     damagesMin: 6
     Description: 'Attack used for both #1 & #2 heavy attacks.'
   - Name: Arc Circle
+    Effect:
+      EffectType: 0
+      duration: 5
+      percentageHighest: 100
+      percentageLowest: 100
+      damagesMax: 5
+      damagesMin: 5
     damagesMax: 10
     damagesMin: 7
     Description: Final combo light attack.
   - Name: Turnstile
+    Effect:
+      EffectType: 0
+      duration: 5
+      percentageHighest: 100
+      percentageLowest: 100
+      damagesMax: 5
+      damagesMin: 5
     damagesMax: 12
     damagesMin: 9
     Description: Final combo heavy attack.
   - Name: Link Dude
+    Effect:
+      EffectType: 0
+      duration: 5
+      percentageHighest: 100
+      percentageLowest: 100
+      damagesMax: 5
+      damagesMin: 5
     damagesMax: 5
     damagesMin: 3
     Description: Move an opponent in the player direction.
