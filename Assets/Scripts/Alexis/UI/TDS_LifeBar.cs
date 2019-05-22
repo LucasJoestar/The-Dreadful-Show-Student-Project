@@ -83,10 +83,12 @@ public class TDS_LifeBar : PunBehaviour
         {
             GetComponent<PhotonView>().enabled = false;
         }
+        /*
         if (_owner.gameObject.HasTag("Enemy"))
         {
             owner.OnDie += DestroyLifeBar;
         }
+        */
     }
 
     /// <summary>
@@ -115,6 +117,5 @@ public class TDS_LifeBar : PunBehaviour
     #endregion
 
     #endregion
-
 
 }

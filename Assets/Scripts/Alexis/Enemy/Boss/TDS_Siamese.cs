@@ -93,6 +93,7 @@ public class TDS_Siamese : TDS_Boss
 
     /// <summary>
     /// Instantiate the splitting enemies at their splitting position
+    /// CALL IN ANIMATION
     /// </summary>
     private void SplitSiamese()
     {
@@ -163,7 +164,8 @@ public class TDS_Siamese : TDS_Boss
     // Awake is called when the script instance is being loaded
     protected override void Awake()
     {
-        base.Awake(); 
+        base.Awake();
+        //OnDie += SplitSiamese; 
     }
 
 	// Use this for initialization
