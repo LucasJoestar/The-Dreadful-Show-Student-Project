@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
-public class TDS_AttackEditor : MonoBehaviour 
+[CustomPropertyDrawer(typeof(TDS_Attack))]
+public class TDS_AttackEditor : PropertyDrawer 
 {
-	/* TDS_AttackEditor :
+    /* TDS_AttackEditor :
 	 *
 	 *	#####################
 	 *	###### PURPOSE ######
@@ -33,39 +35,50 @@ public class TDS_AttackEditor : MonoBehaviour
 	 *	-----------------------------------
 	*/
 
-	#region Events
+    #region Events
 
-	#endregion
+    #endregion
 
-	#region Fields / Properties
+    #region Fields / Properties
 
-	#endregion
+    #endregion
 
-	#region Methods
+    #region Methods
 
-	#region Original Methods
+    #region Original Methods
 
-	#endregion
+    #endregion
 
-	#region Unity Methods
-	// Awake is called when the script instance is being loaded
-    private void Awake()
+    #region Unity Methods
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
+        EditorGUI.BeginProperty(position, label, property);
+
+        Rect _rect = new Rect(position.position.x, position.position.y, position.width, 20);
+        property.FindPropertyRelative("isAttackFoldOut").boolValue = EditorGUI.Foldout(_rect, property.FindPropertyRelative("isAttackFoldOut").boolValue, label, true, TDS_EditorUtility.HeaderStyle);
+
+        if(property.FindPropertyRelative("isAttackFoldOut").boolValue)
+        {
+            _rect = new Rect(position.position.x, position.position.y + 20, position.width, 20);
+            property.FindPropertyRelative("name").stringValue = EditorGUI.TextField(_rect, "Name: ", property.FindPropertyRelative("name").stringValue);
+
+            _rect = new Rect(position.position.x, position.position.y + 20, position.width, 20);
+            property.FindPropertyRelative("name").stringValue = EditorGUI.TextField(_rect, "Name: ", property.FindPropertyRelative("name").stringValue);
+
+            _rect = new Rect(position.position.x, position.position.y + 40, position.width, 20);
+            EditorGUI.IntSlider(_rect,property.FindPropertyRelative("damagesMin"), 1, property.FindPropertyRelative("damagesMax").intValue);
+            _rect = new Rect(position.position.x, position.position.y + 60, position.width, 20);
+            EditorGUI.IntSlider(_rect, property.FindPropertyRelative("damagesMax"), property.FindPropertyRelative("damagesMin").intValue, 50);
+
+            _rect = new Rect(position.position.x, position.position.y + 80, position.width, 20);
+
+        }
+
+        property.serializedObject.ApplyModifiedProperties();
+        EditorGUI.EndProperty(); 
 
     }
+    #endregion
 
-	// Use this for initialization
-    private void Start()
-    {
-		
-    }
-	
-	// Update is called once per frame
-	private void Update()
-    {
-        
-	}
-	#endregion
-
-	#endregion
+    #endregion
 }

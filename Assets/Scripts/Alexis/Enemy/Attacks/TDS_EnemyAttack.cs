@@ -14,7 +14,6 @@ public class TDS_EnemyAttack : TDS_Attack
 	 *
 	 *	- Inherited class from TDS_Attack 
      *	- Contains complementary informations for the enemies
-     *	    - bool isDistanceAttack
      *	    - float predictedRange
      *	    - float probability
      *	    - int consecutiveUses
@@ -22,6 +21,14 @@ public class TDS_EnemyAttack : TDS_Attack
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	#####################
+     *	
+     *	Date :			[22/05/2019]
+	 *	Author :		[THIEBAUT Alexis]
+	 *
+	 *	Changes : - Adding the method Apply Effect
+     *	          - Removing the IsDistance boolean
+	 *
+	 *	-----------------------------------
      *	
 	 *	Date :			[06/02/2019]
 	 *	Author :		[THIEBAUT Alexis]
