@@ -150,10 +150,9 @@ public class TDS_UIManager : PunBehaviour
     /// <returns></returns>
     private IEnumerator UpdateFilledImage(Image _filledImage, float _fillingValue)
     {
-        while (_filledImage.fillAmount > _fillingValue &&  _filledImage != null)
+        while (_filledImage.fillAmount != _fillingValue &&  _filledImage != null)
         {
-            _filledImage.fillAmount = Mathf.Lerp(_filledImage.fillAmount, _fillingValue, Time.deltaTime * 2);
-            _filledImage.fillAmount = (float)Math.Round(_filledImage.fillAmount, 3) - 0.001f; 
+            _filledImage.fillAmount = Mathf.MoveTowards(_filledImage.fillAmount, _fillingValue, Time.deltaTime/2 );
             yield return new WaitForEndOfFrame();
         }
         filledImages.Remove(_filledImage);
@@ -241,7 +240,6 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_fillingValue">Filling value to reach</param>
     public void FillImage(Image _filledImage, float _fillingValue)
     {
-        _fillingValue = (float)Math.Round((double)_fillingValue, 3);
         StopFilling(_filledImage); 
         filledImages.Add(_filledImage, StartCoroutine(UpdateFilledImage(_filledImage, _fillingValue))); 
         if(PhotonNetwork.isMasterClient)
@@ -290,7 +288,7 @@ public class TDS_UIManager : PunBehaviour
         if (!PhotonNetwork.isMasterClient || !bossHealthBar) return;
         bossHealthBar.SetOwner(_boss);
         _boss.HealthBar = bossHealthBar.FilledImage;
-        _boss.OnTakeDamage += _boss.UpdateLifeBar;
+        //_boss.OnTakeDamage += _boss.UpdateLifeBar;
         _boss.OnDie += () => bossHealthBar.gameObject.SetActive(false);
         bossHealthBar.gameObject.SetActive(true); 
     }
@@ -320,7 +318,7 @@ public class TDS_UIManager : PunBehaviour
         {
             playerHealthBar.SetOwner(_player);
             _player.HealthBar = playerHealthBar.FilledImage;
-            _player.OnTakeDamage += _player.UpdateLifeBar; 
+            //_player.OnTakeDamage += _player.UpdateLifeBar; 
         }
 
     }
@@ -333,7 +331,7 @@ public class TDS_UIManager : PunBehaviour
     {
         if (filledImages.ContainsKey(_filledImage))
         {
-            StopCoroutine(filledImages[_filledImage]);
+            if(filledImages[_filledImage] != null) StopCoroutine(filledImages[_filledImage]);
             filledImages.Remove(_filledImage);
         }
     }
