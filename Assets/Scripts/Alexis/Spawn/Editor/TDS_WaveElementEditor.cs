@@ -44,7 +44,7 @@ public class TDS_WaveElementEditor : PropertyDrawer
         {
             EditorGUILayout.PropertyField(property.FindPropertyRelative($"spawningInformations.Array.data[{i}]"));
             //Create a button to remove the spawning informations
-            GUITools.ActionButton("Delete this info", property.FindPropertyRelative($"spawningInformations.Array").DeleteArrayElementAtIndex, i, Color.white, Color.white); 
+            GUITools.ActionButton("Delete this info", property.FindPropertyRelative($"spawningInformations.Array").DeleteArrayElementAtIndex, i, Color.white, Color.black); 
         }
         // Display the settings of the random spawning Informations
         GUILayout.Box("RANDOM SPAWNING");
@@ -52,7 +52,7 @@ public class TDS_WaveElementEditor : PropertyDrawer
         {
             EditorGUILayout.PropertyField(property.FindPropertyRelative($"randomSpawningInformations.Array.data[{i}]"));
             //Create a button to remove the spawning informations
-            GUITools.ActionButton("Delete this info", property.FindPropertyRelative($"randomSpawningInformations.Array").DeleteArrayElementAtIndex, i, Color.white, Color.white);
+            GUITools.ActionButton("Delete this info", property.FindPropertyRelative($"randomSpawningInformations.Array").DeleteArrayElementAtIndex, i, Color.white, Color.black);
         }
         EditorGUILayout.HelpBox("", MessageType.None, true); 
     }

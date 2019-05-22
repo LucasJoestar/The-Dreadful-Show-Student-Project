@@ -41,27 +41,6 @@ public class TDS_EnemyAttack : TDS_Attack
 	*/
 
     #region Fields / Properties
-    #region bool
-    /// <summary>
-    /// Backing field of <see cref="IsDistanceAttack"/> 
-    /// </summary>
-    [SerializeField]protected bool isDistanceAttack = false;
-    /// <summary>
-    /// Is the attack distance or not 
-    /// </summary>
-    public bool IsDistanceAttack
-    {
-        get
-        {
-            return isDistanceAttack;
-        }
-        set
-        {
-            isDistanceAttack = value;
-        }
-    }
-    #endregion
-
     #region int
     /// <summary>
     /// ID of the animation used to play this attack.
@@ -103,23 +82,23 @@ public class TDS_EnemyAttack : TDS_Attack
     public float Cooldown { get { return cooldown; } }
 
     /// <summary>
-    /// Backing field <see cref="PredictedRange"/>
+    /// Backing field <see cref="MaxRange"/>
     /// </summary>
-    [SerializeField] protected float predictedRange = 0;
+    [SerializeField] protected float maxRange = 0;
     /// <summary>
     /// Predicted Range of the attack. 
     /// Used in debug and to check if the enemy is in range to cast this attack
     /// </summary>
-    public float PredictedRange
+    public float MaxRange
     {
         get
         {
-            return predictedRange; 
+            return maxRange; 
         }
         set
         {
-            if (value < 0) predictedRange = 0;
-            else predictedRange = value; 
+            if (value < 0) maxRange = 0;
+            else maxRange = value; 
         }
     }
 
@@ -138,5 +117,13 @@ public class TDS_EnemyAttack : TDS_Attack
         }
     }
     #endregion
-	#endregion
+    #endregion
+
+    #region Methods 
+    public virtual void ApplyAttackBehaviour(TDS_Enemy _caster)
+    {
+        // DO NOT IMPLEMENT BEHAVIOUR HERE
+        // CREATE AN INHERITED CLASS TO IMPLEMENT A NEW BEHAVIOUR
+    }
+    #endregion 
 }

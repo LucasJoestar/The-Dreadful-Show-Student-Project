@@ -255,35 +255,32 @@ MonoBehaviour:
   recoilDistanceDeath: 2.2
   recoilTimeDeath: 0.35
   throwRange: 7
-  agent: {fileID: 114509155922725266}
   attacks:
   - Name: HeadButt
     damagesMax: 15
     damagesMin: 10
     Description: BOUM
-    isDistanceAttack: 0
     AnimationID: 6
     cooldown: 1.5
-    predictedRange: 1
+    maxRange: 1.4
     probability: 33
   - Name: Bar Hit
     damagesMax: 20
     damagesMin: 15
     Description: PAF!
-    isDistanceAttack: 0
     AnimationID: 8
     cooldown: 1.5
-    predictedRange: 1.2
+    maxRange: 1.8
     probability: 33
   - Name: Kick
     damagesMax: 8
     damagesMin: 5
     Description: KAPOW!
-    isDistanceAttack: 0
     AnimationID: 7
     cooldown: 1
-    predictedRange: 0.8
+    maxRange: 1.5
     probability: 33
+  agent: {fileID: 114509155922725266}
 --- !u!114 &114939482661549728
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -151,7 +151,7 @@ public class TDS_PunkEditor : TDS_EnemyEditor
                     Handles.color = Color.white; 
                     break;
             }
-            Handles.DrawWireDisc(_pos, Vector3.up, _attack.FindPropertyRelative("predictedRange").floatValue); 
+            Handles.DrawWireDisc(_pos, Vector3.up, _attack.FindPropertyRelative("maxRange").floatValue); 
         }
     }
     #endregion
