@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Photon;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Photon;
 
 public class TDS_LobbyManager : PunBehaviour
 {
@@ -33,78 +32,64 @@ public class TDS_LobbyManager : PunBehaviour
 
     #region Fields / Properties
     [SerializeField]
-    string connectionVersion = "2.1";
-    [SerializeField]
     GameObject[] entryButtons;
+    string connectionVersion = "2.1";
     #endregion
 
     #region Methods
     #region Original Methods   
+    public void ConnectToLobby()
+    {
+        PhotonNetwork.JoinLobby();
+    }
     public void CreateRoom()
     {
         PhotonNetwork.CreateRoom("Room Name", new RoomOptions() { MaxPlayers = 4 }, null);
-        Debug.Log("Creating N Joining room !!");
+        Debug.Log("Creating N joining lobby !!");
     }
-
     public void GetRoomList()
     {
-        RoomInfo[] _allRoom = PhotonNetwork.GetRoomList();
-        if(_allRoom.Length > 0)
+        RoomInfo[] _allRooms = PhotonNetwork.GetRoomList();
+        Debug.Log(_allRooms.Length);
+
+
+        if (_allRooms.Length > 0)
         {
-            for (int i = 0; i < _allRoom.Length; i++)
+            for (int i = 0; i < _allRooms.Length; i++)
             {
-                RoomInfo _room = _allRoom[i];
+                RoomInfo _room = _allRooms[i];
                 GameObject _entry = entryButtons[i];
                 Text _entryText = _entry.GetComponentInChildren<Text>();
                 _entryText.text = _room.Name;
+                Debug.Log("I'm in !!");
             }
         }
     }
-
-    private void Init()
+    void InitLobbyConnection()
     {
-       if(!PhotonNetwork.connected)
+        if (!PhotonNetwork.connected)
         {
             PhotonNetwork.autoJoinLobby = false;
             PhotonNetwork.automaticallySyncScene = true;
             PhotonNetwork.ConnectUsingSettings(connectionVersion);
         }
     }
-
     public void JoinRoom(Text _entryText)
     {
         PhotonNetwork.JoinRoom(_entryText.text);
     }
     #endregion
 
-    #region Photon Methods
-    public override void OnConnectedToMaster()
-    {
-        Debug.Log("connect to master");
-        PhotonNetwork.JoinLobby();
-    }
+    #region Unity Methods
 
     public override void OnJoinedLobby()
     {
-        Debug.Log("connect to Lobby");
+        Debug.Log("connected to lobby");
     }
 
-    public override void OnJoinedRoom()
-    {
-        Debug.Log("Joined room");
-    }
-
-    public override void OnPhotonPlayerConnected(PhotonPlayer _newPlayer)
-    {
-        Debug.Log(_newPlayer.NickName + "joined the room");
-        if (PhotonNetwork.isMasterClient && PhotonNetwork.room.PlayerCount == 4) PhotonNetwork.LoadLevel(1);
-    }
-    #endregion
-
-    #region Unity Methods
     private void Start()
     {
-        Init();
+        InitLobbyConnection();
     }
     #endregion
     #endregion

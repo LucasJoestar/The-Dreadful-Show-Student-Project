@@ -45,6 +45,7 @@ public class TDS_NetworkManager : PunBehaviour
     new PhotonView  photonView ;
     [SerializeField]
     string connectionVersion = "1.1";
+    public string ConnectionVersion { get { return connectionVersion; } }
     [SerializeField]
     string roomName = "TDS_EPIIC";
     bool canLeave = false;
