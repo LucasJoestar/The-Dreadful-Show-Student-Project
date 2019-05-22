@@ -44,7 +44,7 @@ public class TDS_ColorLevelEditor : EditorWindow
 	 *
 	 *	-----------------------------------
 	*/
-
+    
     #region Fields / Properties
     /// <summary>
     /// Main folder containing all other folders & groups.

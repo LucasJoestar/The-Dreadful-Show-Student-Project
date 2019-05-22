@@ -175,6 +175,11 @@ public abstract class TDS_Character : TDS_Damageable
         }
     }
 
+    /// <summary>
+    /// Indicates if the character is down on the ground.
+    /// </summary>
+    public bool IsDown = false;
+
     /// <summary>Backing field for <see cref="IsFacingRight"/>.</summary>
     [SerializeField] protected bool isFacingRight = true;
 
@@ -465,7 +470,29 @@ public abstract class TDS_Character : TDS_Damageable
         float _fillingValue = Mathf.Clamp((float)healthCurrent / (float)healthMax, 0, 1);
         TDS_UIManager.Instance.FillImage(HealthBar, _fillingValue); 
     }
-    #endregion 
+    #endregion
+
+    #region Effects
+    /// <summary>
+    /// Tells the Character that he's getting up.
+    /// </summary>
+    public virtual void GetUp()
+    {
+        IsDown = false;
+    }
+
+    /// <summary>
+    /// Put the character on the ground.
+    /// </summary>
+    public virtual void PutOnTheGround()
+    {
+        if (IsDown) return;
+
+        if (bringingCloserCoroutine != null) StopCoroutine(bringingCloserCoroutine);
+
+        IsDown = true;
+    }
+    #endregion
 
     #endregion
 

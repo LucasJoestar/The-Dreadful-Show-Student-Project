@@ -46,6 +46,13 @@ public class TDS_Attack
     /// </summary>
     public string Name = string.Empty;
 
+
+    /// <summary>
+    /// Effect associated with this attack.
+    /// </summary>
+    public TDS_AttackEffect Effect = new TDS_AttackEffect();
+
+
     /// <summary>Backing field for <see cref="DamagesMax"/></summary>
     [SerializeField] protected int damagesMax = 1;
 

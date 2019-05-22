@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
@@ -171,6 +169,8 @@ public class TDS_HitBox : MonoBehaviour
     {
         int _randomDamages = CurrentAttack.GetDamages;
         if (!_target.TakeDamage(_randomDamages, collider.transform.position)) return;
+
+
 
         // Create screen shake when player hit
         TDS_Player _player = Owner as TDS_Player;

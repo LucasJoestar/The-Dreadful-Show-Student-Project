@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 public class TDS_FireEater : TDS_Player 
@@ -26,10 +24,6 @@ public class TDS_FireEater : TDS_Player
 	 *
 	 *	-----------------------------------
 	*/
-
-    #region Events
-
-    #endregion
 
     #region Fields / Properties
 

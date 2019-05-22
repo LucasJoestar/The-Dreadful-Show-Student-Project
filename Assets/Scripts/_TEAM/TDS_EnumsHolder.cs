@@ -68,6 +68,17 @@
 */
 
 /// <summary>
+/// All possible attack effects of the game.
+/// </summary>
+public enum AttackEffectType
+{
+    None,
+    Burn,
+    PutOnTheGround,
+    BringCloser
+}
+
+/// <summary>
 /// All possible states of the axis once converted into an input.
 /// </summary>
 public enum AxisState

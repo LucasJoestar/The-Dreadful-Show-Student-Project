@@ -1,6 +1,10 @@
 ﻿using Photon;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(BoxCollider), typeof(Animator), typeof(PhotonView)), RequireComponent(typeof(PhotonTransformView))]
 public class TDS_Damageable : PunBehaviour
@@ -247,6 +251,18 @@ public class TDS_Damageable : PunBehaviour
     }
     #endregion
 
+    #region Coroutines
+    /// <summary>
+    /// Coroutine for the burning effect.
+    /// </summary>
+    protected List<Coroutine> burningCoroutine = new List<Coroutine>();
+
+    /// <summary>
+    /// Coroutine for the effect-related movement to bring the damageable closer.
+    /// </summary>
+    protected Coroutine bringingCloserCoroutine = null;
+    #endregion
+
     #region Photon
     /// <summary>
     /// Get the view ID of this object photon view.
@@ -262,6 +278,8 @@ public class TDS_Damageable : PunBehaviour
     #region Methods
 
     #region Original Methods
+
+    #region Health
     /// <summary>
     /// Method called when the object dies.
     /// Override this to implement code for a specific object.
@@ -323,6 +341,75 @@ public class TDS_Damageable : PunBehaviour
     {
         return TakeDamage(_damage);
     }
+    #endregion
+
+    #region Effects
+    /// <summary>
+    /// Bring this damageable closer from a certain distance.
+    /// </summary>
+    /// <param name="_distance">Distance to browse.</param>
+    public void BringCloser(float _distance)
+    {
+        if (bringingCloserCoroutine != null) StopCoroutine(bringingCloserCoroutine);
+
+        bringingCloserCoroutine = StartCoroutine(BringingCloser(_distance));
+    }
+
+    /// <summary>
+    /// Bring the damageable closer across time.
+    /// </summary>
+    /// <param name="_distance">Distance to browse.</param>
+    /// <returns>IEnumerator, baby.</returns>
+    protected virtual IEnumerator BringingCloser(float _distance)
+    {
+        float _movement = Mathf.Sin(_distance) * .5f;
+        while (_distance > 0)
+        {
+            transform.position += Vector3.right * _movement;
+            _distance -= _movement;
+
+            yield return null;
+        }
+
+        bringingCloserCoroutine = null;
+    }
+
+
+    /// <summary>
+    /// Make this damageable burn.
+    /// </summary>
+    /// <param name="_damagesMin">Minimum damages of the flames.</param>
+    /// <param name="_damagesMax">Maximum damages of the flames.</param>
+    /// <param name="_duration">Duration of the burn.</param
+    public virtual void Burn(int _damagesMin, int _damagesMax, float _duration)
+    {
+        burningCoroutine.Add(StartCoroutine(Burning(_damagesMin, _damagesMax, _duration)));
+    }
+
+    /// <summary>
+    /// Burn the damageable across time.
+    /// </summary>
+    /// <param name="_damagesMin">Minimum damages of the flames.</param>
+    /// <param name="_damagesMax">Maximum damages of the flames.</param>
+    /// <param name="_duration">Duration of the burn.</param
+    /// <returns>IEnumerator, baby.</returns>
+    protected virtual IEnumerator Burning(int _damagesMin, int _damagesMax, float _duration)
+    {
+        _damagesMax++;
+
+        while (_duration > 0)
+        {
+            float _wait = Random.Range(.5f, 2);
+            yield return new WaitForSeconds(_wait);
+
+            TakeDamage(Random.Range(_damagesMin, _damagesMax));
+            _duration -= _wait;
+        }
+
+        burningCoroutine = null;
+    }
+    #endregion
+
     #endregion
 
     #region Unity Methods
