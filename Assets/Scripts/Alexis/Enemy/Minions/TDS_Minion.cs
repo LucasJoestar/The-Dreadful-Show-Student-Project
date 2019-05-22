@@ -18,6 +18,16 @@ public abstract class TDS_Minion : TDS_Enemy
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :          [22/05/2019]
+     *	Author:         [THIEBAUT Alexis]
+     *	
+     *	[Refactoring of the class and its inheritances]
+     *	    - Removing all methods that can be virtual in the TDS_EnemyClass
+     *	    - Removing the Interface
+
+     *	    
+     *	-----------------------------------
+     * 
 	 *	Date :			[22/01/2019]
 	 *	Author :		[THIEBAUT Alexis]
 	 *

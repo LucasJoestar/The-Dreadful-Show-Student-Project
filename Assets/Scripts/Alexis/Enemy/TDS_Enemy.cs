@@ -23,6 +23,16 @@ public abstract class TDS_Enemy : TDS_Character
 	 *	### MODIFICATIONS ###
 	 *	##################### 
      *	
+     *  Date :          [22/05/2019]
+     *	Author:         [THIEBAUT Alexis]
+     *	
+     *	[Refactoring of the class and its inheritances]
+     *	    - Removing all methods in double in the following scripts: TDS_Minion, TDS_Punk, TDS_Boss, TDS_Siamese
+     *	    - Adding the calling of the Method "ApplyBehaviour" when the attack is activated
+     *	    
+     *	-----------------------------------
+     *	
+     *	
      *	Date :          [13/02/2019]
      *	Author:         [THIEBAUT Alexis]
      *	

@@ -12,7 +12,7 @@ public class TDS_Siamese : TDS_Boss
  *	###### PURPOSE ######
  *	#####################
  *
- *	[PURPOSE]
+ *	[Behaviour of the Siamese boss]
  *
  *	#####################
  *	####### TO DO #######
@@ -24,12 +24,15 @@ public class TDS_Siamese : TDS_Boss
  *	### MODIFICATIONS ###
  *	#####################
  *
- *	Date :			[DATE]
- *	Author :		[NAME]
+ *	Date :			[22/05/2019]
+ *	Author :		[THIEBAUT Alexis]
  *
  *	Changes :
  *
- *	[CHANGES]
+ *	[Initialisation of the class]
+ *	    - Start with Interface but then remove it
+ *	    - Using inheritance with TDS_Boss
+ *	    - Initialise the method SplitSiamese
  *
  *	-----------------------------------
 */

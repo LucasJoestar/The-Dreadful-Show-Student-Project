@@ -41,10 +41,11 @@ public class TDS_Attack
 	*/
 
     #region Fields / Properties
+    [SerializeField] protected string name = string.Empty; 
     /// <summary>
     /// Name of this attack, used to reference it.
     /// </summary>
-    public string Name = string.Empty;
+    public string Name { get { return name; } }
 
 
     /// <summary>
@@ -97,9 +98,18 @@ public class TDS_Attack
         get { return Random.Range(damagesMin, damagesMax + 1); }
     }
 
+    [SerializeField] protected string description = string.Empty;  
     /// <summary>
     /// Short (or long) description of this attack, and what it does.
     /// </summary>
-    public string Description = string.Empty;
-	#endregion
+    public string Description { get { return description; } }
+
+    #region Editor
+    /// <summary>
+    /// Is the Attack foldout in the Editor
+    /// </summary>
+    [SerializeField] protected bool isAttackFoldOut = false;
+    #endregion
+
+    #endregion
 }

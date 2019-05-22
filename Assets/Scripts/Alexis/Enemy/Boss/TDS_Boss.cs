@@ -24,6 +24,16 @@ public abstract class TDS_Boss : TDS_Enemy
  *	### MODIFICATIONS ###
  *	#####################
  *
+ *  Date :          [22/05/2019]
+ *	Author:         [THIEBAUT Alexis]
+ *	
+ *	[Refactoring of the class and its inheritances]
+ *	    - Removing all methods that can be virtual in the TDS_EnemyClass
+ *	    - Implementing all methods that had to be overriden
+ *	    - Removing the Interface
+ *	    
+ *	-----------------------------------
+ * 
  *	Date :			[13/05/2019]
  *	Author :		[Thiebaut Alexis]
  *
