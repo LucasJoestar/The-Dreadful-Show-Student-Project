@@ -98,16 +98,17 @@ public class TDS_Attack
         get { return Random.Range(damagesMin, damagesMax + 1); }
     }
 
+    [SerializeField] protected string description = string.Empty;  
     /// <summary>
     /// Short (or long) description of this attack, and what it does.
     /// </summary>
-    public string Description = string.Empty;
+    public string Description { get { return description; } }
 
     #region Editor
     /// <summary>
     /// Is the Attack foldout in the Editor
     /// </summary>
-    [SerializeField] private bool isAttackFoldOut = false;
+    [SerializeField] protected bool isAttackFoldOut = false;
     #endregion
 
     #endregion

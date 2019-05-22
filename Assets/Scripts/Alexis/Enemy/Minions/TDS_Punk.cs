@@ -19,6 +19,14 @@ public class TDS_Punk : TDS_Enemy
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *  Date :          [22/05/2019]
+     *	Author:         [THIEBAUT Alexis]
+     *	
+     *	[Refactoring of the class and its inheritances]
+     *	    - Removing all methods that can be virtual in the TDS_EnemyClass
+     *	    
+     *	-----------------------------------
+     *	
      *  Date :			[13/02/2019]
 	 *	Author :		[THIEBAUT Alexis]
 	 *

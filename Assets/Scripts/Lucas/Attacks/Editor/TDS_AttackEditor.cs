@@ -62,15 +62,15 @@ public class TDS_AttackEditor : PropertyDrawer
             _rect = new Rect(position.position.x, position.position.y + 20, position.width, 20);
             property.FindPropertyRelative("name").stringValue = EditorGUI.TextField(_rect, "Name: ", property.FindPropertyRelative("name").stringValue);
 
-            _rect = new Rect(position.position.x, position.position.y + 20, position.width, 20);
-            property.FindPropertyRelative("name").stringValue = EditorGUI.TextField(_rect, "Name: ", property.FindPropertyRelative("name").stringValue);
+            _rect = new Rect(position.position.x, position.position.y + 40, position.width, 40);
+            property.FindPropertyRelative("description").stringValue = EditorGUI.TextArea(_rect, property.FindPropertyRelative("description").stringValue);
 
-            _rect = new Rect(position.position.x, position.position.y + 40, position.width, 20);
+            _rect = new Rect(position.position.x, position.position.y + 100, position.width, 20);
             EditorGUI.IntSlider(_rect,property.FindPropertyRelative("damagesMin"), 1, property.FindPropertyRelative("damagesMax").intValue);
-            _rect = new Rect(position.position.x, position.position.y + 60, position.width, 20);
+            _rect = new Rect(position.position.x, position.position.y + 120, position.width, 20);
             EditorGUI.IntSlider(_rect, property.FindPropertyRelative("damagesMax"), property.FindPropertyRelative("damagesMin").intValue, 50);
 
-            _rect = new Rect(position.position.x, position.position.y + 80, position.width, 20);
+           // _rect = new Rect(position.position.x, position.position.y + 120, position.width, 20);
 
         }
 
