@@ -44,57 +44,14 @@ public class TDS_Punk : TDS_Enemy
 
     #region Fields / Properties
 
-    /// <summary>
-    /// Array of attacks that can be called
-    /// </summary>
-    [SerializeField] private TDS_EnemyAttack[] attacks;
-
     #endregion
 
     #region Methods
 
     #region Original Methods
-    /// <summary>
-    /// Select the attack to cast
-    /// If there is no attack return null
-    /// Selection is based on the Range and on the Probability of an attack
-    /// </summary>
-    /// <param name="_distance">Distance between the agent and its target</param>
-    /// <returns>Attack to cast</returns>
-    private TDS_EnemyAttack GetAttack(float _distance)
-    {
-        //If the enemy has no attack, return null
-        if (attacks == null || attacks.Length == 0) return null;
-        // Get all attacks that can hit the target
-        TDS_EnemyAttack[] _availableAttacks = attacks.Where(a => a.IsDistanceAttack || a.PredictedRange > _distance).ToArray();
-        // If there is no attack in Range, return null
-        if (_availableAttacks.Length == 0) return null;
-        // Set a random to compare with the probabilities of the attackes
-        float _random = UnityEngine.Random.Range(0, _availableAttacks.Max(a => a.Probability));
-        // If a probability is less than the random, this attack can be selected
-        _availableAttacks = _availableAttacks.Where(a => a.Probability >= _random).ToArray();
-        // If there is no attack, return null
-        if (_availableAttacks.Length == 0) return null;
-        // Get a random Index to cast a random attack
-        int _randomIndex = UnityEngine.Random.Range(0, _availableAttacks.Length);
-        return _availableAttacks[_randomIndex];
-    }
     #endregion
 
     #region Overriden Methods
-    /// <summary>
-    /// USED IN ANIMATION
-    /// Activate the hitbox with the settings of the currently casted attack
-    /// Get the attack with its AnimationID
-    /// </summary>
-    /// <param name="_animationID">Animation ID entered in the animation window</param>
-    protected override void ActivateAttack(int _animationID)
-    {
-        TDS_EnemyAttack _attack = attacks.Where(a => a.AnimationID == _animationID).FirstOrDefault();
-        if (_attack == null) return;
-        hitBox.Activate(_attack);
-    }
-
     /// <summary>
     /// Set its animation state to its taunt -> It will call the behaviour method
     /// </summary>
@@ -102,57 +59,6 @@ public class TDS_Punk : TDS_Enemy
     {
         SetAnimationState(11);
     }
-
-    /// <summary>
-    /// Return true if the distance is less than the minimum predicted range of the Punk attack
-    /// </summary>
-    /// <param name="_distance">distance between player and target</param>
-    /// <returns>does the attack can be cast</returns>
-    protected override bool AttackCanBeCasted()
-    {
-        return Mathf.Abs(transform.position.x - playerTarget.transform.position.x) <= attacks.Min(a => a.PredictedRange);
-    }
-
-    /// <summary>
-    /// Return the minimum attack range 
-    /// </summary>
-    /// <returns></returns>
-    protected override float GetMaxRange()
-    {
-        return attacks.Select(a => a.PredictedRange).Max();
-    }
-
-    /// <summary>
-    /// Return the maximal attack range 
-    /// </summary>
-    /// <returns></returns>   
-    protected override float GetMinRange()
-    {
-        return attacks.Select(a => a.PredictedRange).Min();
-    }
-
-    /// <summary>
-    /// Cast an attack: Add a use to the attack and activate the enemy hitbox with this attack
-    /// Set the animation to the animation state linked to the AnimationID of the attack 
-    /// Reset to 0 consecutive uses of the other attacks
-    /// Return the cooldown of the attack if it can find one
-    /// </summary>
-    /// <param name="_attack">Attack to cast</param>
-    /// <returns>cooldown of the attack</returns>
-    protected override float StartAttack(float _distance)
-    {
-        TDS_EnemyAttack _attack = GetAttack(_distance);
-        if (_attack == null)
-        {
-            return 0;
-        }
-        IsAttacking = true;
-        _attack.ConsecutiveUses++;
-        attacks.ToList().Where(a => a != _attack).ToList().ForEach(a => a.ConsecutiveUses = 0);
-        SetAnimationState(_attack.AnimationID);
-        return _attack.Cooldown;
-    }
-
     #endregion
 
     #region Unity Methods

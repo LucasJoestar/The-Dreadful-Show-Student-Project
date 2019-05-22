@@ -48,35 +48,6 @@ public class TDS_BrutalSiamese : TDS_Enemy
     #endregion
 
     #region Overriden Methods
-    public override void ActivateEnemy()
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override void ActivateAttack(int _animationID)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override bool AttackCanBeCasted()
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override float GetMaxRange()
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override float GetMinRange()
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override float StartAttack(float _distance)
-    {
-        throw new NotImplementedException();
-    }
     #endregion
 
     #region Unity Methods

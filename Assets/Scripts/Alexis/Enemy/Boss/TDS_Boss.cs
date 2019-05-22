@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
 
-public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
+public abstract class TDS_Boss : TDS_Enemy
 {
     /* TDS_Boss :
  *
@@ -44,16 +44,8 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
     #endregion
 
     #region Fields / Properties
-    protected TDS_EffectiveEnemyAttack castedAttack = null;
+    protected TDS_EnemyAttack castedAttack = null;
 
-    [SerializeField] protected TDS_EffectiveEnemyAttack[] attacks; 
-    public TDS_EffectiveEnemyAttack[] Attacks
-    {
-        get
-        {
-            return attacks;
-        }
-    }
     #endregion
 
     #region Methods
@@ -62,60 +54,23 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
 
     #region Overidden Methods
 
-    #region Interface
     /// <summary>
     /// Get the next attack to cast independently of the distance
     /// </summary>
     /// <returns></returns>
-    public TDS_EffectiveEnemyAttack GetAttack(float _distance = 0)
+    protected override TDS_EnemyAttack GetAttack(float _distance = 0)
     {
-        if (Attacks.Length == 0) return null;
+        if (attacks.Length == 0) return null;
         // Set a random to compare with the probabilities of the attackes
-        float _random = UnityEngine.Random.Range(0, Attacks.Max(a => a.Probability));
+        float _random = UnityEngine.Random.Range(0, attacks.Max(a => a.Probability));
         // If a probability is less than the random, this attack can be selected
-        TDS_EffectiveEnemyAttack[] _availableAttacks = Attacks.Where(a => a.Probability >= _random).ToArray();
+        TDS_EnemyAttack[] _availableAttacks = attacks.Where(a => a.Probability >= _random).ToArray();
         // If there is no attack, return null
         if (_availableAttacks.Length == 0) return null;
         // Get a random Index to cast a random attack
         int _randomIndex = UnityEngine.Random.Range(0, _availableAttacks.Length);
         return _availableAttacks[_randomIndex];
     }
-
-    /// <summary>
-    /// Call the cast of the type of the Attack
-    /// </summary>
-    /// <param name="_type"></param>
-    public void ApplyAttackEffect(EnemyEffectiveAttackType _type)
-    {
-        if (!PhotonNetwork.isMasterClient) return;
-        switch (_type)
-        {
-            case EnemyEffectiveAttackType.TypeOne:
-                CastFirstEffect();
-                break;
-            case EnemyEffectiveAttackType.TypeTwo:
-                CastSecondEffect(); 
-                break;
-            case EnemyEffectiveAttackType.TypeThree:
-                CastThirdEffect(); 
-                break;
-            case EnemyEffectiveAttackType.TypeSpecial:
-                CastSpecialEffect(); 
-                break;
-            default:
-                break;
-        }
-    }
-
-    public abstract void CastFirstEffect();
-
-    public abstract void CastSecondEffect();
-
-    public abstract void CastThirdEffect();
-
-    public abstract void CastSpecialEffect();
-    
-    #endregion
 
     /// <summary>
     /// Check if the casted attack can be casted 
@@ -129,41 +84,26 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
         {
             return false;
         }
-        return castedAttack.PredictedRange >= Mathf.Abs(transform.position.x - playerTarget.transform.position.x); 
+        return castedAttack.MaxRange >= Mathf.Abs(transform.position.x - playerTarget.transform.position.x); 
     }
 
     /// <summary>
-    /// Get the maximal range of the enemy's attacks
+    /// Cast the casted attack: Add a use to the attack
+    /// Set the animation to the animation state linked to the AnimationID of the attack 
+    /// Reset to 0 consecutive uses of the other attacks
+    /// Return the cooldown of the attack if it can find one
     /// </summary>
-    /// <returns></returns>
-    protected override float GetMaxRange()
+    /// <returns>cooldown of the attack</returns>
+    protected override float StartAttack()
     {
-        return Attacks.Max(a => a.PredictedRange);
-    }
-
-    /// <summary>
-    /// Get the Minimal Range of the enemy's attacks
-    /// </summary>
-    /// <returns></returns>
-    protected override float GetMinRange()
-    {
-        return Attacks.Min(a => a.PredictedRange);
-    }
-
-    /// <summary>
-    /// Attack and increase the uses of the current attack
-    /// Set the animation and return the cooldown of the attack
-    /// </summary>
-    /// <param name="_distance"></param>
-    /// <returns>The Cooldown of the casted attack</returns>
-    protected override float StartAttack(float _distance = 0)
-    {
-        if (castedAttack == null) return 0;
-        IsAttacking = true;
+        if(castedAttack == null)
+        {
+            return 0; 
+        }
+        isAttacking = true;
         castedAttack.ConsecutiveUses++;
-        Attacks.ToList().Where(a => a != castedAttack).ToList().ForEach(a => a.ConsecutiveUses = 0);
+        attacks.ToList().Where(a => a != castedAttack).ToList().ForEach(a => a.ConsecutiveUses = 0);
         SetAnimationState(castedAttack.AnimationID);
-        ApplyAttackEffect(castedAttack.AttackType); 
         return castedAttack.Cooldown;
     }
 
@@ -247,32 +187,8 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
     /// <returns></returns>
     protected override IEnumerator CastAttack()
     {
-        if (isDead) yield break;
-        if (IsPacific)
-        {
-            enemyState = EnemyState.MakingDecision;
-            yield break;
-        }
-        //Throw attack
-        // If the agent is still moving, stop him
-        if (agent.IsMoving)
-        {
-            agent.StopAgent();
-            speedCurrent = 0;
-        }
-        SetAnimationState((int)EnemyAnimationState.Idle);
-        //Orientate the agent
-        if (CheckOrientation()) Flip();
-        yield return new WaitForSeconds(.5f);
-        //Cast Attack
-        float _cooldown = StartAttack();
-        while (IsAttacking)
-        {
-            yield return new WaitForSeconds(.1f);
-        }
-        yield return new WaitForSeconds(_cooldown);
-        castedAttack = null; 
-        enemyState = EnemyState.Searching;
+        yield return base.CastAttack();
+        castedAttack = null;
     }
 
     /// <summary>
@@ -326,7 +242,7 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
                 yield break;
             }
             //if the target is too far from the destination, recalculate the path
-            if (Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > castedAttack.PredictedRange)
+            if (Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > castedAttack.MaxRange)
             {
                 yield return new WaitForSeconds(.1f);
                 enemyState = EnemyState.ComputingPath;
@@ -334,29 +250,6 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
             }
         }
         enemyState = EnemyState.MakingDecision;
-    }
-
-    /// <summary>
-    /// Activate the enemy
-    /// </summary>
-    public override void ActivateEnemy()
-    {
-        if (!PhotonNetwork.isMasterClient) return;
-        IsPacific = false;
-        IsParalyzed = false;
-        StartCoroutine(Behaviour()); 
-    }
-
-    /// <summary>
-    /// USED IN ANIMATION
-    /// Activate the hitbox and Apply the effect of the attack
-    /// </summary>
-    /// <param name="_animationID"></param>
-    protected override void ActivateAttack(int _animationID)
-    {
-        if (!PhotonNetwork.isMasterClient || castedAttack == null) return;
-        hitBox.Activate(castedAttack);
-        //ApplyAttackEffect(castedAttack.AttackType);
     }
 
     /// <summary>
@@ -388,14 +281,6 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
         }
     }
 
-    /// <summary>
-    /// Called when the boss dies
-    /// </summary>
-    protected override void Die()
-    {
-        base.Die();
-    }
-
     protected override void InitLifeBar()
     {
         if (TDS_UIManager.Instance?.CanvasScreen)
@@ -412,15 +297,7 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
     protected override void TakeDecision()
     {
         castedAttack = GetAttack();
-        float _distance = Vector3.Distance(transform.position, playerTarget.transform.position); 
-        if(AttackCanBeCasted())
-        {
-            enemyState = EnemyState.Attacking; 
-        }
-        else
-        {
-            enemyState = EnemyState.ComputingPath; 
-        }
+        base.TakeDecision(); 
     }
 
     /// <summary>
@@ -447,7 +324,7 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
         if (playerTarget)
         {
             int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;
-            _attackingPosition.x = Mathf.Abs(transform.position.x - playerTarget.transform.position.x) < castedAttack.PredictedRange ? transform.position.x : playerTarget.transform.position.x + (castedAttack.PredictedRange * _coeff); 
+            _attackingPosition.x = Mathf.Abs(transform.position.x - playerTarget.transform.position.x) < castedAttack.MaxRange ? transform.position.x : playerTarget.transform.position.x + (castedAttack.MaxRange * _coeff); 
             _attackingPosition.z = playerTarget.transform.position.z + UnityEngine.Random.Range(-.4f, .4f);
         }
         return _attackingPosition;
@@ -460,7 +337,7 @@ public abstract class TDS_Boss : TDS_Enemy, TDS_ISpecialAttacker
     // Awake is called when the script instance is being loaded
     protected override void Awake()
     {
-        base.Awake(); 
+        base.Awake();
     }
 
     // Use this for initialization

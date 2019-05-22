@@ -151,6 +151,11 @@ public abstract class TDS_Enemy : TDS_Character
     [SerializeField] protected float throwRange = 1;
 
     /// <summary>
+    /// Attacks of the enemy
+    /// </summary>
+    [SerializeField] protected TDS_EnemyAttack[] attacks = new TDS_EnemyAttack[] { }; 
+
+    /// <summary>
     /// Return the name of the enemy
     /// </summary>
     public string EnemyName { get { return gameObject.name; } }
@@ -161,9 +166,19 @@ public abstract class TDS_Enemy : TDS_Character
     protected TDS_Player playerTarget = null;
 
     /// <summary>
+    /// Accessor of the playerTarget property
+    /// </summary>
+    public TDS_Player PlayerTarget { get { return playerTarget; } }
+
+    /// <summary>
     /// Spawner Area from which the enemy comes
     /// </summary>
     public TDS_SpawnerArea Area { get; set; }
+
+    /// <summary>
+    /// Accessor of the handsTransform Property
+    /// </summary>
+    public Transform HandsTransform { get { return handsTransform;  } }
     #endregion
 
     #region Components and References
@@ -172,6 +187,11 @@ public abstract class TDS_Enemy : TDS_Character
     /// Used when the enemy has to move
     /// </summary>
     [SerializeField] protected CustomNavMeshAgent agent;
+
+    /// <summary>
+    /// Accessor of the agent propertym
+    /// </summary>
+    public CustomNavMeshAgent Agent { get { return agent; } }
 
     /// <summary>
     /// Throwable to reach and grab
@@ -186,13 +206,44 @@ public abstract class TDS_Enemy : TDS_Character
 
     #region Original Methods
 
+    #region TDS_EnemyAttack
+    /// <summary>
+    /// Select the attack to cast
+    /// If there is no attack return null
+    /// Selection is based on the Range and on the Probability of an attack
+    /// </summary>
+    /// <param name="_distance">Distance between the agent and its target</param>
+    /// <returns>Attack to cast</returns>
+    protected virtual TDS_EnemyAttack GetAttack(float _distance = 0)
+    {
+        //If the enemy has no attack, return null
+        if (attacks == null || attacks.Length == 0) return null;
+        // Get all attacks that can hit the target
+        TDS_EnemyAttack[] _availableAttacks = attacks.Where(a => a.MaxRange > _distance).ToArray();
+        // If there is no attack in Range, return null
+        if (_availableAttacks.Length == 0) return null;
+        // Set a random to compare with the probabilities of the attackes
+        float _random = UnityEngine.Random.Range(0, _availableAttacks.Max(a => a.Probability));
+        // If a probability is less than the random, this attack can be selected
+        _availableAttacks = _availableAttacks.Where(a => a.Probability >= _random).ToArray();
+        // If there is no attack, return null
+        if (_availableAttacks.Length == 0) return null;
+        // Get a random Index to cast a random attack
+        int _randomIndex = UnityEngine.Random.Range(0, _availableAttacks.Length);
+        return _availableAttacks[_randomIndex];
+    }
+    #endregion
+
     #region bool 
     /// <summary>
-    /// Return if any attack of the enemy can be casted 
+    /// Return true if the distance is less than the minimum predicted range of the Punk attack
     /// </summary>
-    /// <param name="_distance"></param>
-    /// <returns></returns>
-    protected abstract bool AttackCanBeCasted(); 
+    /// <param name="_distance">distance between player and target</param>
+    /// <returns>does the attack can be cast</returns>
+    protected virtual bool AttackCanBeCasted()
+    {
+        return Mathf.Abs(transform.position.x - playerTarget.transform.position.x) <= attacks.Min(a => a.MaxRange);
+    }
 
     /// <summary>
     /// Check if the enemy is in the right orientation to face the target
@@ -209,15 +260,44 @@ public abstract class TDS_Enemy : TDS_Character
 
     #region float 
     /// <summary>
-    /// Method Abstract
-    /// <see cref="TDS_Minion.StartAttack(float)"/>
+    /// Cast an attack: Add a use to the attack and activate the enemy hitbox with this attack
+    /// Set the animation to the animation state linked to the AnimationID of the attack 
+    /// Reset to 0 consecutive uses of the other attacks
+    /// Return the cooldown of the attack if it can find one
     /// </summary>
-    /// <param name="_distance"></param>
-    protected abstract float StartAttack(float _distance);
+    /// <param name="_attack">Attack to cast</param>
+    /// <returns>cooldown of the attack</returns>
+    protected virtual float StartAttack()
+    {
+        TDS_EnemyAttack _attack = GetAttack(Vector3.Distance(transform.position, playerTarget.transform.position));
+        if (_attack == null)
+        {
+            return 0;
+        }
+        IsAttacking = true;
+        _attack.ConsecutiveUses++;
+        attacks.ToList().Where(a => a != _attack).ToList().ForEach(a => a.ConsecutiveUses = 0);
+        SetAnimationState(_attack.AnimationID);
+        return _attack.Cooldown;
+    }
 
-    protected abstract float GetMaxRange();
+    /// <summary>
+    /// Return the maximum Attack Range
+    /// </summary>
+    /// <returns></returns>
+    protected float GetMaxRange()
+    {
+        return attacks.Select(a => a.MaxRange).Min();
+    }
 
-    protected abstract float GetMinRange();
+    /// <summary>
+    /// Return the minimum AttackRange
+    /// </summary>
+    /// <returns></returns>
+    protected float GetMinRange()
+    {
+        return attacks.Select(a => a.MaxRange).Max();
+    }
     #endregion
 
     #region IEnumerator
@@ -358,9 +438,8 @@ public abstract class TDS_Enemy : TDS_Character
         //Orientate the agent
         if (CheckOrientation()) Flip();
         yield return new WaitForSeconds(.5f);
-        float _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
         //Cast Attack
-        float _cooldown = StartAttack(_distance);
+        float _cooldown = StartAttack();
         while (IsAttacking)
         {
             yield return new WaitForSeconds(.1f);
@@ -534,6 +613,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns>Best player to target</returns>
     protected virtual TDS_Player SearchTarget()
     {
+        SetAnimationState((int)EnemyAnimationState.Idle); 
         TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
         if (_targets.Length == 0) return null;
         //Set constraints here (Distance, type, etc...)
@@ -702,9 +782,17 @@ public abstract class TDS_Enemy : TDS_Character
     #region Void
     /// <summary>
     /// USED IN ANIMATION
+    /// Activate the hitbox with the settings of the currently casted attack
+    /// Get the attack with its AnimationID
     /// </summary>
-    /// <param name="_animationID"></param>
-    protected abstract void ActivateAttack(int _animationID);
+    /// <param name="_animationID">Animation ID entered in the animation window</param>
+    protected void ActivateAttack(int _animationID)
+    {
+        if (!PhotonNetwork.isMasterClient) return; 
+        TDS_EnemyAttack _attack = attacks.Where(a => a.AnimationID == _animationID).FirstOrDefault();
+        if (_attack == null) return;
+        hitBox.Activate(_attack);
+    }
 
     /// <summary>
     /// Compute the path
@@ -767,6 +855,19 @@ public abstract class TDS_Enemy : TDS_Character
     }
 
     /// <summary>
+    /// Set a trigger in the animator
+    /// </summary>
+    /// <param name="_triggerName">Name of the trigger</param>
+    public void SetAnimationTrigger(string _triggerName)
+    {
+        if (PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationTrigger"), new object[] { _triggerName });
+        }
+        if (animator) animator.SetTrigger(_triggerName);
+    }
+
+    /// <summary>
     /// Set the bool isWaiting to false
     /// </summary>
     protected void StopWaiting() => isWaiting = false;
@@ -812,7 +913,13 @@ public abstract class TDS_Enemy : TDS_Character
     /// <summary>
     /// This Method is called when the enemy has to be activated by an event
     /// </summary>
-    public abstract void ActivateEnemy(); 
+    public virtual void ActivateEnemy()
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+        IsPacific = false;
+        IsParalyzed = false;
+        StartCoroutine(Behaviour());
+    }
     #endregion
 
     #endregion
