@@ -158,37 +158,8 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     #region Methods
 
     #region Original Methods
-    void AddAttack(string _typeString)
-    {
-        if(_typeString == typeof(TDS_EnemyAttack).ToString())
-        {
-            attacks.InsertArrayElementAtIndex(attacks.arraySize - 1);
-            serializedObject.ApplyModifiedProperties(); 
-            (serializedObject.targetObject as TDS_Enemy).Attacks[attacks.arraySize - 1] = new TDS_EnemyAttack(); 
-        }
-        else if(_typeString == typeof(TDS_ThrowingAttackBehaviour).ToString())
-        {
-            attacks.InsertArrayElementAtIndex(attacks.arraySize - 1);
-            serializedObject.ApplyModifiedProperties();
-            (serializedObject.targetObject as TDS_Enemy).Attacks[attacks.arraySize - 1] = new TDS_ThrowingAttackBehaviour();
-
-        }
-        else if(_typeString == typeof(TDS_SpinningAttackBehaviour).ToString())
-        {
-            attacks.InsertArrayElementAtIndex(attacks.arraySize - 1);
-            serializedObject.ApplyModifiedProperties();
-            (serializedObject.targetObject as TDS_Enemy).Attacks[attacks.arraySize - 1] = new TDS_SpinningAttackBehaviour();
-        }
-        else
-        {
-            Debug.Log("Cancel"); 
-        }
-    }
-
-
     private void DrawAttacks()
     {
-
         EditorGUILayout.BeginVertical("Box");
 
         //Draw a header for the enemy evolution settings
@@ -196,28 +167,6 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         TDS_EditorUtility.PropertyField("Attacks", "", attacks);
 
         EditorGUILayout.EndVertical();
-
-        EditorGUILayout.BeginVertical("Box");
-
-        if (TDS_EditorUtility.Button("Add new Attack", "Add a new attack to this enemy's attack list", TDS_EditorUtility.HeaderStyle))
-        {
-            GenericMenu _menu = new GenericMenu();
-            GenericMenu.MenuFunction _func = new GenericMenu.MenuFunction(() => AddAttack(typeof(TDS_EnemyAttack).ToString()) ); 
-            _menu.AddItem(new GUIContent("Normal Attack"), false, _func);
-
-            _func = new GenericMenu.MenuFunction(() => AddAttack(typeof(TDS_ThrowingAttackBehaviour).ToString()));
-            _menu.AddItem(new GUIContent("Throwing Attack"), false, _func);
-
-            _func = new GenericMenu.MenuFunction(() => AddAttack(typeof(TDS_SpinningAttackBehaviour).ToString()));
-            _menu.AddItem(new GUIContent("Spinning Attack"), false, _func);
-
-            _func = new GenericMenu.MenuFunction(() => Debug.Log("Cancel") );
-            _menu.AddItem(new GUIContent("Cancel"), true, _func);
-             
-            _menu.ShowAsContext(); 
-        }
-
-        EditorGUILayout.EndVertical(); 
 
     }
 

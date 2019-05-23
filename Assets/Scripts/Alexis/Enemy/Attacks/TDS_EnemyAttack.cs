@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine; 
+using UnityEngine;
 
-[Serializable]
+[CreateAssetMenu(fileName = "Enemy_Attack", menuName = "Attacks/Enemy Attack", order = 2)]
 public class TDS_EnemyAttack : TDS_Attack 
 {
     /* TDS_EnemyAttack :

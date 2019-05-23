@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "Spinning_Attack", menuName = "Attacks/Spinning Attack", order = 4)]
 public class TDS_SpinningAttackBehaviour : TDS_EnemyAttack
 {
     /* TDS_SpinningAttackBehaviour :
@@ -52,13 +53,6 @@ public class TDS_SpinningAttackBehaviour : TDS_EnemyAttack
     private Vector3[] spinningPositions = null;
 
     private TDS_Enemy caster = null;
-    #endregion
-
-    #region Constructor
-    public TDS_SpinningAttackBehaviour()
-    {
-        name = "SpinningAttack"; 
-    }
     #endregion
 
     #region Methods
