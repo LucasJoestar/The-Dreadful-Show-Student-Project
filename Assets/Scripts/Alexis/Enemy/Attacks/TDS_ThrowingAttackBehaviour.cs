@@ -38,7 +38,14 @@ public class TDS_ThrowingAttackBehaviour : TDS_EnemyAttack
     #endregion
 
     #region Fields / Properties
-    [SerializeField] private string thrownObjectName = string.Empty;  
+    [SerializeField] private string thrownObjectName = string.Empty;
+    #endregion
+
+    #region Constructor 
+    public TDS_ThrowingAttackBehaviour()
+    {
+        name = "ThrowingAttack"; 
+    }
     #endregion
 
     #region Methods

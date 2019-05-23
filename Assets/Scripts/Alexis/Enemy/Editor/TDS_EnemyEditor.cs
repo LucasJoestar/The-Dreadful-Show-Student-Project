@@ -37,6 +37,24 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     #region Fields / Properties
 
     #region ForldOut
+    /// <summary>Backing field for <see cref="AreEnemyAttacksUnfolded"/></summary>
+    private bool areEnemyAttacksUnfolded = false;
+
+    /// <summary>
+    /// Are the attacks of the enemy class unfolded for editor ?
+    /// </summary>
+    public bool AreEnemyAttacksUnfolded
+    {
+        get { return areEnemyAttacksUnfolded; }
+        set
+        {
+            areEnemyAttacksUnfolded = value;
+
+            // Saves this value
+            EditorPrefs.SetBool("areEnemyAttacksUnfolded", value);
+        }
+    }
+
     /// <summary>Backing field for <see cref="AreEnemyComponentsUnfolded"/></summary>
     private bool areEnemyComponentsUnfolded = false;
 
@@ -116,6 +134,9 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     private SerializedProperty recoilTimeDeath = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.enemyState"/> of type <see cref="EnemyState"/>.</summary>
     private SerializedProperty enemyState = null;
+    /// <summary>SerializedProperty for <see cref="TDS_Enemy.attacks"/> of type <see cref="TDS_EnemyAttack[]"/>.</summary>
+    private SerializedProperty attacks = null;
+
     #endregion
 
     #endregion
@@ -137,6 +158,69 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     #region Methods
 
     #region Original Methods
+    void AddAttack(string _typeString)
+    {
+        if(_typeString == typeof(TDS_EnemyAttack).ToString())
+        {
+            attacks.InsertArrayElementAtIndex(attacks.arraySize - 1);
+            serializedObject.ApplyModifiedProperties(); 
+            (serializedObject.targetObject as TDS_Enemy).Attacks[attacks.arraySize - 1] = new TDS_EnemyAttack(); 
+        }
+        else if(_typeString == typeof(TDS_ThrowingAttackBehaviour).ToString())
+        {
+            attacks.InsertArrayElementAtIndex(attacks.arraySize - 1);
+            serializedObject.ApplyModifiedProperties();
+            (serializedObject.targetObject as TDS_Enemy).Attacks[attacks.arraySize - 1] = new TDS_ThrowingAttackBehaviour();
+
+        }
+        else if(_typeString == typeof(TDS_SpinningAttackBehaviour).ToString())
+        {
+            attacks.InsertArrayElementAtIndex(attacks.arraySize - 1);
+            serializedObject.ApplyModifiedProperties();
+            (serializedObject.targetObject as TDS_Enemy).Attacks[attacks.arraySize - 1] = new TDS_SpinningAttackBehaviour();
+        }
+        else
+        {
+            Debug.Log("Cancel"); 
+        }
+    }
+
+
+    private void DrawAttacks()
+    {
+
+        EditorGUILayout.BeginVertical("Box");
+
+        //Draw a header for the enemy evolution settings
+        EditorGUILayout.LabelField("Attack Settings", TDS_EditorUtility.HeaderStyle);
+        TDS_EditorUtility.PropertyField("Attacks", "", attacks);
+
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.BeginVertical("Box");
+
+        if (TDS_EditorUtility.Button("Add new Attack", "Add a new attack to this enemy's attack list", TDS_EditorUtility.HeaderStyle))
+        {
+            GenericMenu _menu = new GenericMenu();
+            GenericMenu.MenuFunction _func = new GenericMenu.MenuFunction(() => AddAttack(typeof(TDS_EnemyAttack).ToString()) ); 
+            _menu.AddItem(new GUIContent("Normal Attack"), false, _func);
+
+            _func = new GenericMenu.MenuFunction(() => AddAttack(typeof(TDS_ThrowingAttackBehaviour).ToString()));
+            _menu.AddItem(new GUIContent("Throwing Attack"), false, _func);
+
+            _func = new GenericMenu.MenuFunction(() => AddAttack(typeof(TDS_SpinningAttackBehaviour).ToString()));
+            _menu.AddItem(new GUIContent("Spinning Attack"), false, _func);
+
+            _func = new GenericMenu.MenuFunction(() => Debug.Log("Cancel") );
+            _menu.AddItem(new GUIContent("Cancel"), true, _func);
+             
+            _menu.ShowAsContext(); 
+        }
+
+        EditorGUILayout.EndVertical(); 
+
+    }
+
 
     /// <summary>
     /// Draw the Editor of the enemy's components and references
@@ -158,7 +242,7 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         EditorGUILayout.BeginVertical("HelpBox");
 
         // Button to show or not the enemy class settings
-        if (TDS_EditorUtility.Button("Enemy", "Wrap / unwrap Character class settings", TDS_EditorUtility.HeaderStyle)) IsEnemyUnfolded = !isEnemyUnfolded;
+        if (TDS_EditorUtility.Button( serializedObject.targetObject.name , "Wrap / unwrap Character class settings", TDS_EditorUtility.HeaderStyle)) IsEnemyUnfolded = !isEnemyUnfolded;
         if(isEnemyUnfolded)
         {
             // Records any changements on the editing objects to allow undo
@@ -190,6 +274,17 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
             if (areEnemySettingsUnfolded)
             {
                 DrawSettings();
+            }
+
+            EditorGUILayout.EndVertical();
+            GUILayout.Space(15);
+
+            EditorGUILayout.BeginVertical("Box");
+
+            if (TDS_EditorUtility.Button("Attacks", "Wrap / unwrap attacks class settings", TDS_EditorUtility.HeaderStyle)) AreEnemyAttacksUnfolded = !areEnemyAttacksUnfolded;
+            if (areEnemyAttacksUnfolded)
+            {
+                DrawAttacks();
             }
 
             EditorGUILayout.EndVertical();
@@ -239,6 +334,11 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
 
         GUILayout.Space(3);
     }
+
+    private void OnAttackTypeSelected(TDS_EnemyAttack _attack)
+    {
+        Debug.Log(_attack.GetType().ToString()); 
+    }
     #endregion
 
     #region Unity Methods
@@ -263,7 +363,9 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         recoilDistanceDeath = serializedObject.FindProperty("recoilDistanceDeath");
         recoilTimeDeath = serializedObject.FindProperty("recoilTimeDeath");
 
-        enemyState = serializedObject.FindProperty("enemyState"); 
+        enemyState = serializedObject.FindProperty("enemyState");
+
+        attacks = serializedObject.FindProperty("attacks"); 
 
         //Load the editor folded and unfolded values of this class
         isEnemyUnfolded = EditorPrefs.GetBool("isEnemyUnfolded", isEnemyUnfolded);
@@ -283,13 +385,35 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     // Implement this method to draw Handles 
     protected virtual void OnSceneGUI()
     {
-        Handles.color = Color.cyan; 
-        if(canThrow.boolValue)
+        if (Selection.activeGameObject == null) return;
+        Vector3 _pos = Selection.activeGameObject.transform.position;
+        for (int i = 0; i < attacks.arraySize; i++)
+        {
+            SerializedProperty _attack = attacks.GetArrayElementAtIndex(i);
+            switch (_attack.FindPropertyRelative("AnimationID").intValue)
+            {
+                case 6:
+                    Handles.color = Color.red;
+                    break;
+                case 7:
+                    Handles.color = Color.green;
+                    break;
+                case 8:
+                    Handles.color = Color.blue;
+                    break;
+                default:
+                    Handles.color = Color.white;
+                    break;
+            }
+            Handles.DrawWireDisc(_pos, Vector3.up, _attack.FindPropertyRelative("maxRange").floatValue);
+        }
+
+        Handles.color = Color.cyan;
+        if (canThrow.boolValue)
         {
             Handles.DrawWireDisc((serializedObject.targetObject as TDS_Enemy).transform.position, Vector3.up, throwRange.floatValue);
         }
     }
-
 
     #endregion
 

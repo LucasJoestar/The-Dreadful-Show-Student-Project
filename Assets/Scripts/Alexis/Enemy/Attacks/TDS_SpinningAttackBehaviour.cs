@@ -51,7 +51,14 @@ public class TDS_SpinningAttackBehaviour : TDS_EnemyAttack
     /// </summary>
     private Vector3[] spinningPositions = null;
 
-    private TDS_Enemy caster = null; 
+    private TDS_Enemy caster = null;
+    #endregion
+
+    #region Constructor
+    public TDS_SpinningAttackBehaviour()
+    {
+        name = "SpinningAttack"; 
+    }
     #endregion
 
     #region Methods
