@@ -41,7 +41,9 @@ public class TDS_Attack
 	*/
 
     #region Fields / Properties
-    [SerializeField] protected string name = string.Empty; 
+    /// <summary>Backing field for <see cref="Name"/>.</summary>
+    [SerializeField] protected string name = "New Attack"; 
+
     /// <summary>
     /// Name of this attack, used to reference it.
     /// </summary>
@@ -54,7 +56,7 @@ public class TDS_Attack
     public TDS_AttackEffect Effect = new TDS_AttackEffect();
 
 
-    /// <summary>Backing field for <see cref="DamagesMax"/></summary>
+    /// <summary>Backing field for <see cref="DamagesMax"/>.</summary>
     [SerializeField] protected int damagesMax = 1;
 
     /// <summary>
@@ -73,7 +75,7 @@ public class TDS_Attack
         }
     }
 
-    /// <summary>Backing field for <see cref="DamagesMin"/></summary>
+    /// <summary>Backing field for <see cref="DamagesMin"/>.</summary>
     [SerializeField] protected int damagesMin = 1;
 
     /// <summary>
@@ -103,13 +105,5 @@ public class TDS_Attack
     /// Short (or long) description of this attack, and what it does.
     /// </summary>
     public string Description { get { return description; } }
-
-    #region Editor
-    /// <summary>
-    /// Is the Attack foldout in the Editor
-    /// </summary>
-    [SerializeField] protected bool isAttackFoldOut = false;
-    #endregion
-
     #endregion
 }

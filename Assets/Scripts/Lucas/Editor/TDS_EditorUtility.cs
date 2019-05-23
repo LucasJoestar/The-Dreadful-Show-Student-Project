@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+
+using Object = UnityEngine.Object;
 
 public sealed class TDS_EditorUtility 
 {
@@ -177,6 +180,7 @@ public sealed class TDS_EditorUtility
         return false;
     }
 
+
     /// <summary>
     /// Draws a custom float field.
     /// </summary>
@@ -186,27 +190,37 @@ public sealed class TDS_EditorUtility
     /// <returns>Returns true if the value(s) has changed, false otherwise.</returns>
     public static bool FloatField(string _label, string _tooltip, SerializedProperty _serializedProperty)
     {
+        return FloatField(EditorGUILayout.GetControlRect(true), _label, _tooltip, _serializedProperty);
+    }
+
+    /// <summary>
+    /// Draws a custom float field.
+    /// </summary>
+    /// <param name="_position">Position where to draw field.</param>
+    /// <param name="_label">Label to display.</param>
+    /// <param name="_tooltip">Tooltip displayed when mouse over.</param>
+    /// <param name="_serializedProperty">SerializedProperty to use.</param>
+    /// <returns>Returns true if the value(s) has changed, false otherwise.</returns>
+    public static bool FloatField(Rect _position, string _label, string _tooltip, SerializedProperty _serializedProperty)
+    {
         // Get the original width of the labels for EditorGUI, and reduce it so that it will no longer take so much space
         float _originalWidth = EditorGUIUtility.labelWidth;
         EditorGUIUtility.labelWidth -= LabelStyle.padding.left;
 
-        EditorGUILayout.BeginHorizontal();
-
         // Draws a label, and the float field next to it
-        EditorGUILayout.LabelField(new GUIContent(_label, _tooltip), labelStyle, GUILayout.MaxWidth(EditorGUIUtility.labelWidth));
+        EditorGUI.LabelField(new Rect(_position.position, new Vector2(EditorGUIUtility.labelWidth, _position.height)), new GUIContent(_label, _tooltip), labelStyle);
+
+        // Restore the original widths for EditorGUI labels
+        EditorGUIUtility.labelWidth = _originalWidth;
 
         EditorGUI.showMixedValue = _serializedProperty.hasMultipleDifferentValues;
 
         EditorGUI.BeginChangeCheck();
-        float _newValue = EditorGUILayout.FloatField(_serializedProperty.floatValue, GUILayout.MinWidth(EditorGUIUtility.fieldWidth));
+
+        float _newValue = EditorGUI.FloatField(new Rect(new Vector2(_position.position.x + EditorGUIUtility.labelWidth, _position.position.y), new Vector2(_position.width - EditorGUIUtility.labelWidth, _position.height)), _serializedProperty.floatValue);
         bool _hasChanged = EditorGUI.EndChangeCheck();
 
         EditorGUI.showMixedValue = false;
-
-        EditorGUILayout.EndHorizontal();
-
-        // Restore the original widths for EditorGUI labels
-        EditorGUIUtility.labelWidth = _originalWidth;
 
         if (_hasChanged)
         {
@@ -227,25 +241,48 @@ public sealed class TDS_EditorUtility
     /// <returns>Returns true if the value(s) has changed, false otherwise.</returns>
     public static bool FloatSlider(string _label, string _tooltip, SerializedProperty _serializedProperty, float _min, float _max)
     {
+        return FloatSlider(EditorGUILayout.GetControlRect(true), _label, _tooltip, _serializedProperty, _min, _max);
+    }
+
+    /// <summary><
+    /// Draws a custom float slider.
+    /// </summary>
+    /// <param name="_position">Position where to draw field.</param>
+    /// <param name="_label">Label to display.</param>
+    /// <param name="_tooltip">Tooltip displayed when mouse over.</param>
+    /// <param name="_serializedProperty">SerializedProperty to use.</param>
+    /// <param name="_min">Minimum value of the slider.</param>
+    /// <param name="_max">Maximum value of the slider.</param>
+    /// <returns>Returns true if the value(s) has changed, false otherwise.</returns>
+    public static bool FloatSlider(Rect _position, string _label, string _tooltip, SerializedProperty _serializedProperty, float _min, float _max)
+    {
         // Get the original width of the labels for EditorGUI, and reduce it so that it will no longer take so much space
         float _originalWidth = EditorGUIUtility.labelWidth;
         EditorGUIUtility.labelWidth -= LabelStyle.padding.left;
 
-        EditorGUILayout.BeginHorizontal();
-
         // Draws a label, and the float slider next to it
-        EditorGUILayout.LabelField(new GUIContent(_label, _tooltip), labelStyle, GUILayout.MaxWidth(EditorGUIUtility.labelWidth));
-
-        EditorGUI.BeginChangeCheck();
-        EditorGUILayout.Slider(_serializedProperty, _min, _max, string.Empty, GUILayout.MinWidth(EditorGUIUtility.fieldWidth));
-
-        EditorGUILayout.EndHorizontal();
+        EditorGUI.LabelField(new Rect(_position.position, new Vector2(EditorGUIUtility.labelWidth, _position.height)), new GUIContent(_label, _tooltip), labelStyle);
 
         // Restore the original widths for EditorGUI labels
         EditorGUIUtility.labelWidth = _originalWidth;
 
-        return EditorGUI.EndChangeCheck();
+        EditorGUI.showMixedValue = _serializedProperty.hasMultipleDifferentValues;
+
+        EditorGUI.BeginChangeCheck();
+
+        float _value = EditorGUI.Slider(new Rect(new Vector2(_position.position.x + EditorGUIUtility.labelWidth, _position.position.y), new Vector2(_position.width - EditorGUIUtility.labelWidth, _position.height)), _serializedProperty.floatValue, _min, _max);
+        bool _hasChanged = EditorGUI.EndChangeCheck();
+
+        if (_hasChanged)
+        {
+            _serializedProperty.floatValue = _value;
+        }
+
+        EditorGUI.showMixedValue = false;
+
+        return _hasChanged;
     }
+
 
     /// <summary>
     /// Draws a custom int field.
@@ -256,27 +293,37 @@ public sealed class TDS_EditorUtility
     /// <returns>Returns true if the value(s) has changed, false otherwise.</returns>
     public static bool IntField(string _label, string _tooltip, SerializedProperty _serializedProperty)
     {
+        return IntField(EditorGUILayout.GetControlRect(true), _label, _tooltip, _serializedProperty);
+    }
+
+    /// <summary>
+    /// Draws a custom int field.
+    /// </summary>
+    /// <param name="_position">Position where to draw field.</param>
+    /// <param name="_label">Label to display.</param>
+    /// <param name="_tooltip">Tooltip displayed when mouse over.</param>
+    /// <param name="_serializedProperty">SerializedProperty to use.</param>
+    /// <returns>Returns true if the value(s) has changed, false otherwise.</returns>
+    public static bool IntField(Rect _position, string _label, string _tooltip, SerializedProperty _serializedProperty)
+    {
         // Get the original width of the labels for EditorGUI, and reduce it so that it will no longer take so much space
         float _originalWidth = EditorGUIUtility.labelWidth;
         EditorGUIUtility.labelWidth -= LabelStyle.padding.left;
 
-        EditorGUILayout.BeginHorizontal();
+        // Draws a label, and the float field next to it
+        EditorGUI.LabelField(new Rect(_position.position, new Vector2(EditorGUIUtility.labelWidth, _position.height)), new GUIContent(_label, _tooltip), labelStyle);
 
-        // Draws a label, and the int field next to it
-        EditorGUILayout.LabelField(new GUIContent(_label, _tooltip), labelStyle, GUILayout.MaxWidth(EditorGUIUtility.labelWidth));
+        // Restore the original widths for EditorGUI labels
+        EditorGUIUtility.labelWidth = _originalWidth;
 
         EditorGUI.showMixedValue = _serializedProperty.hasMultipleDifferentValues;
 
         EditorGUI.BeginChangeCheck();
-        int _newValue = EditorGUILayout.IntField(_serializedProperty.intValue, GUILayout.MinWidth(EditorGUIUtility.fieldWidth));
+
+        int _newValue = EditorGUI.IntField(new Rect(new Vector2(_position.position.x + EditorGUIUtility.labelWidth, _position.position.y), new Vector2(_position.width - EditorGUIUtility.labelWidth, _position.height)), _serializedProperty.intValue);
         bool _hasChanged = EditorGUI.EndChangeCheck();
 
         EditorGUI.showMixedValue = false;
-
-        EditorGUILayout.EndHorizontal();
-
-        // Restore the original widths for EditorGUI labels
-        EditorGUIUtility.labelWidth = _originalWidth;
 
         if (_hasChanged)
         {
@@ -297,25 +344,48 @@ public sealed class TDS_EditorUtility
     /// <returns>Returns true if the value(s) has changed, false otherwise.</returns>
     public static bool IntSlider(string _label, string _tooltip, SerializedProperty _serializedProperty, int _min, int _max)
     {
+        return IntSlider(EditorGUILayout.GetControlRect(true), _label, _tooltip, _serializedProperty, _min, _max);
+    }
+
+    /// <summary>
+    /// Draws a custom int slider.
+    /// </summary>
+    /// <param name="_position">Position where to draw field.</param>
+    /// <param name="_label">Label to display.</param>
+    /// <param name="_tooltip">Tooltip displayed when mouse over.</param>
+    /// <param name="_serializedProperty">SerializedProperty to use.</param>
+    /// <param name="_min">Minimum value of the slider.</param>
+    /// <param name="_max">Maximum value of the slider.</param>
+    /// <returns>Returns true if the value(s) has changed, false otherwise.</returns>
+    public static bool IntSlider(Rect _position, string _label, string _tooltip, SerializedProperty _serializedProperty, int _min, int _max)
+    {
         // Get the original width of the labels for EditorGUI, and reduce it so that it will no longer take so much space
         float _originalWidth = EditorGUIUtility.labelWidth;
         EditorGUIUtility.labelWidth -= LabelStyle.padding.left;
 
-        EditorGUILayout.BeginHorizontal();
-
-        // Draws a label, and the int slider next to it
-        EditorGUILayout.LabelField(new GUIContent(_label, _tooltip), labelStyle, GUILayout.MaxWidth(EditorGUIUtility.labelWidth));
-
-        EditorGUI.BeginChangeCheck();
-        EditorGUILayout.IntSlider(_serializedProperty, _min, _max, string.Empty, GUILayout.MinWidth(EditorGUIUtility.fieldWidth));
-
-        EditorGUILayout.EndHorizontal();
+        // Draws a label, and the float slider next to it
+        EditorGUI.LabelField(new Rect(_position.position, new Vector2(EditorGUIUtility.labelWidth, _position.height)), new GUIContent(_label, _tooltip), labelStyle);
 
         // Restore the original widths for EditorGUI labels
         EditorGUIUtility.labelWidth = _originalWidth;
 
-        return EditorGUI.EndChangeCheck();
+        EditorGUI.showMixedValue = _serializedProperty.hasMultipleDifferentValues;
+
+        EditorGUI.BeginChangeCheck();
+
+        int _value = EditorGUI.IntSlider(new Rect(new Vector2(_position.position.x + EditorGUIUtility.labelWidth, _position.position.y), new Vector2(_position.width - EditorGUIUtility.labelWidth, _position.height)), _serializedProperty.intValue, _min, _max);
+        bool _hasChanged = EditorGUI.EndChangeCheck();
+
+        if (_hasChanged)
+        {
+            _serializedProperty.intValue = _value;
+        }
+
+        EditorGUI.showMixedValue = false;
+
+        return _hasChanged;
     }
+
 
     /// <summary>
     /// Draws a custom object field.
@@ -423,27 +493,36 @@ public sealed class TDS_EditorUtility
     /// <returns>Returns true if the value(s) has changed, false otherwise.</returns>
     public static bool TextField(string _label, string _tooltip, SerializedProperty _serializedProperty)
     {
+        return TextField(EditorGUILayout.GetControlRect(true), _label, _tooltip, _serializedProperty);
+    }
+
+    /// <summary>
+    /// Draws a custom text field
+    /// </summary>
+    /// <param name="_position">Position where to draw field.</param>
+    /// <param name="_label">Label to display.</param>
+    /// <param name="_tooltip">Tooltip displayed when mouse over.</param>
+    /// <param name="_serializedProperty">SerializedProperty to use.</param>
+    /// <returns>Returns true if the value(s) has changed, false otherwise.</returns>
+    public static bool TextField(Rect _position, string _label, string _tooltip, SerializedProperty _serializedProperty)
+    {
         // Get the original width of the labels for EditorGUI, and reduce it so that it will no longer take so much space
         float _originalWidth = EditorGUIUtility.labelWidth;
         EditorGUIUtility.labelWidth -= LabelStyle.padding.left;
 
-        EditorGUILayout.BeginHorizontal();
-
         // Draws a label, and the string field next to it
-        EditorGUILayout.LabelField(new GUIContent(_label, _tooltip), labelStyle, GUILayout.MaxWidth(EditorGUIUtility.labelWidth));
+        EditorGUI.LabelField(new Rect(_position.x, _position.y, EditorGUIUtility.labelWidth, _position.height), new GUIContent(_label, _tooltip), labelStyle);
+
+        // Restore the original widths for EditorGUI labels
+        EditorGUIUtility.labelWidth = _originalWidth;
 
         EditorGUI.showMixedValue = _serializedProperty.hasMultipleDifferentValues;
 
         EditorGUI.BeginChangeCheck();
-        string _newValue = EditorGUILayout.TextField(_serializedProperty.stringValue, GUILayout.MinWidth(EditorGUIUtility.fieldWidth));
+        string _newValue = EditorGUI.TextField(new Rect(_position.x + EditorGUIUtility.labelWidth, _position.y, _position.width - EditorGUIUtility.labelWidth, _position.height), _serializedProperty.stringValue);
         bool _hasChanged = EditorGUI.EndChangeCheck();
 
         EditorGUI.showMixedValue = false;
-
-        EditorGUILayout.EndHorizontal();
-
-        // Restore the original widths for EditorGUI labels
-        EditorGUIUtility.labelWidth = _originalWidth;
 
         if (_hasChanged)
         {
