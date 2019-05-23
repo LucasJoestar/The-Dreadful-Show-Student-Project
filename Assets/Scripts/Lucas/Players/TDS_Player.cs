@@ -817,7 +817,7 @@ public class TDS_Player : TDS_Character
     /// <summary>
     /// Make the player dodge.
     /// </summary>
-    public void StartDodge() => dodgeCoroutine = StartCoroutine(Dodge());
+    public virtual void StartDodge() => dodgeCoroutine = StartCoroutine(Dodge());
 
     /// <summary>
     /// Stops the current dodge if dodging.
@@ -1209,7 +1209,7 @@ public class TDS_Player : TDS_Character
     /// <see cref="JumpMaximumTime"/> determines the maximum time of a jump.
     /// </summary>
     /// <returns>Returns the world.</returns>
-    public IEnumerator Jump()
+    private IEnumerator Jump()
     {
         // Creates a float to use as timer
         float _timer = 0;
@@ -1352,6 +1352,17 @@ public class TDS_Player : TDS_Character
             isMoving = false;
             SetAnim(PlayerAnimState.Idle);
         }
+    }
+
+    /// <summary>
+    /// Starts a brand new jump !
+    /// </summary>
+    public virtual void StartJump()
+    {
+        // If there is already a jump coroutine running, stop it before starting the new one
+        if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
+
+        jumpCoroutine = StartCoroutine(Jump());
     }
     #endregion
 
@@ -1531,10 +1542,7 @@ public class TDS_Player : TDS_Character
         // When pressing the jump method, check if on ground ; If it's all good, then let's jump
         if (Input.GetButtonDown(JumpButton) && IsGrounded)
         {
-            // If there is already a jump coroutine running, stop it before starting the new one
-            if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
-
-            jumpCoroutine = StartCoroutine(Jump());
+            StartJump();
         }
     }
     #endregion

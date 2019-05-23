@@ -495,7 +495,9 @@ MonoBehaviour:
     m_Bits: 24576
   playerType: 3
   isDrunk: 0
+  drunkSpeedCoef: 0.8
   soberUpTime: 10
+  drunkJumpForce: 200
   soberUpTimer: 0
 --- !u!95 &1843503580909251902
 Animator:
@@ -527,8 +529,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 1.8, z: 1}
-  m_Center: {x: 0, y: 0.9, z: 0}
+  m_Size: {x: 0.9, y: 2.5, z: 1}
+  m_Center: {x: 0, y: 1.25, z: 0}
 --- !u!54 &1731511335411897444
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -568,8 +570,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 1824394482898569924}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 9
-  instantiationId: 9
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &1824394482898569924
