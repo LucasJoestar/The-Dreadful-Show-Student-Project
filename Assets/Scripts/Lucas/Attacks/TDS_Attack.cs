@@ -2,8 +2,8 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-[Serializable]
-public class TDS_Attack 
+[CreateAssetMenu(fileName = "Attack", menuName = "Attacks/Attack", order = 1), Serializable]
+public class TDS_Attack : ScriptableObject
 {
     /* TDS_Attack :
 	 *

@@ -164,6 +164,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// Attacks of the enemy
     /// </summary>
     [SerializeField] protected TDS_EnemyAttack[] attacks = new TDS_EnemyAttack[] { }; 
+    public TDS_EnemyAttack[] Attacks { get { return attacks;  } }
 
     /// <summary>
     /// Return the name of the enemy

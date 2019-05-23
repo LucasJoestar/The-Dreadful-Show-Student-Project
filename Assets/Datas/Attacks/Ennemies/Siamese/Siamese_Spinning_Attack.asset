@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1e1ca2ea0e89464f926dd1ae8da10cd, type: 3}
+  m_Name: Siamese_Spinning_Attack
+  m_EditorClassIdentifier: 
+  name: Attaque Napolitaine
+  Effect:
+    EffectType: 0
+    duration: 5
+    percentageHighest: 100
+    percentageLowest: 100
+    damagesMax: 5
+    damagesMin: 5
+  damagesMax: 10
+  damagesMin: 8
+  description: You spin me round (Like a record)
+  AnimationID: 9
+  cooldown: 3
+  maxRange: 15
+  probability: 10
+  spinningSpeed: 8

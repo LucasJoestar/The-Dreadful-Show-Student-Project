@@ -37,6 +37,24 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     #region Fields / Properties
 
     #region ForldOut
+    /// <summary>Backing field for <see cref="AreEnemyAttacksUnfolded"/></summary>
+    private bool areEnemyAttacksUnfolded = false;
+
+    /// <summary>
+    /// Are the attacks of the enemy class unfolded for editor ?
+    /// </summary>
+    public bool AreEnemyAttacksUnfolded
+    {
+        get { return areEnemyAttacksUnfolded; }
+        set
+        {
+            areEnemyAttacksUnfolded = value;
+
+            // Saves this value
+            EditorPrefs.SetBool("areEnemyAttacksUnfolded", value);
+        }
+    }
+
     /// <summary>Backing field for <see cref="AreEnemyComponentsUnfolded"/></summary>
     private bool areEnemyComponentsUnfolded = false;
 
@@ -116,6 +134,9 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     private SerializedProperty recoilTimeDeath = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.enemyState"/> of type <see cref="EnemyState"/>.</summary>
     private SerializedProperty enemyState = null;
+    /// <summary>SerializedProperty for <see cref="TDS_Enemy.attacks"/> of type <see cref="TDS_EnemyAttack[]"/>.</summary>
+    private SerializedProperty attacks = null;
+
     #endregion
 
     #endregion
@@ -137,6 +158,18 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     #region Methods
 
     #region Original Methods
+    private void DrawAttacks()
+    {
+        EditorGUILayout.BeginVertical("Box");
+
+        //Draw a header for the enemy evolution settings
+        EditorGUILayout.LabelField("Attack Settings", TDS_EditorUtility.HeaderStyle);
+        TDS_EditorUtility.PropertyField("Attacks", "", attacks);
+
+        EditorGUILayout.EndVertical();
+
+    }
+
 
     /// <summary>
     /// Draw the Editor of the enemy's components and references
@@ -148,17 +181,11 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         GUILayout.Space(3);
     }
 
-    void DrawEnemyEditor()
+    protected virtual void DrawEnemyEditor()
     {
-        // Make a space at the beginning of the editor
-        GUILayout.Space(10);
-        Color _originalColor = GUI.backgroundColor;
-
-        GUI.backgroundColor = TDS_EditorUtility.BoxDarkColor;
-        EditorGUILayout.BeginVertical("HelpBox");
-
+        
         // Button to show or not the enemy class settings
-        if (TDS_EditorUtility.Button("Enemy", "Wrap / unwrap Character class settings", TDS_EditorUtility.HeaderStyle)) IsEnemyUnfolded = !isEnemyUnfolded;
+        if (TDS_EditorUtility.Button( serializedObject.targetObject.name , "Wrap / unwrap Character class settings", TDS_EditorUtility.HeaderStyle)) IsEnemyUnfolded = !isEnemyUnfolded;
         if(isEnemyUnfolded)
         {
             // Records any changements on the editing objects to allow undo
@@ -193,13 +220,23 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
             }
 
             EditorGUILayout.EndVertical();
+            GUILayout.Space(15);
+
+            EditorGUILayout.BeginVertical("Box");
+
+            if (TDS_EditorUtility.Button("Attacks", "Wrap / unwrap attacks class settings", TDS_EditorUtility.HeaderStyle)) AreEnemyAttacksUnfolded = !areEnemyAttacksUnfolded;
+            if (areEnemyAttacksUnfolded)
+            {
+                DrawAttacks();
+            }
+
+            EditorGUILayout.EndVertical();
 
             // Applies all modified properties on the SerializedObjects
             serializedObject.ApplyModifiedProperties();
         }
 
-        EditorGUILayout.EndVertical();
-        GUI.backgroundColor = _originalColor;
+
     }
 
     /// <summary>
@@ -239,6 +276,11 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
 
         GUILayout.Space(3);
     }
+
+    private void OnAttackTypeSelected(TDS_EnemyAttack _attack)
+    {
+        Debug.Log(_attack.GetType().ToString()); 
+    }
     #endregion
 
     #region Unity Methods
@@ -263,7 +305,9 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         recoilDistanceDeath = serializedObject.FindProperty("recoilDistanceDeath");
         recoilTimeDeath = serializedObject.FindProperty("recoilTimeDeath");
 
-        enemyState = serializedObject.FindProperty("enemyState"); 
+        enemyState = serializedObject.FindProperty("enemyState");
+
+        attacks = serializedObject.FindProperty("attacks"); 
 
         //Load the editor folded and unfolded values of this class
         isEnemyUnfolded = EditorPrefs.GetBool("isEnemyUnfolded", isEnemyUnfolded);
@@ -274,8 +318,18 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     // Implement this method to make a custom inspector
     public override void OnInspectorGUI()
     {
+        // Make a space at the beginning of the editor
+        GUILayout.Space(10);
+        Color _originalColor = GUI.backgroundColor;
+
+        GUI.backgroundColor = TDS_EditorUtility.BoxDarkColor;
+        EditorGUILayout.BeginVertical("HelpBox");
+
         //Draw The inspector for the enemy class
-        DrawEnemyEditor(); 
+        DrawEnemyEditor();
+
+        EditorGUILayout.EndVertical();
+        GUI.backgroundColor = _originalColor;
 
         base.OnInspectorGUI();
     }
@@ -283,13 +337,39 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     // Implement this method to draw Handles 
     protected virtual void OnSceneGUI()
     {
-        Handles.color = Color.cyan; 
-        if(canThrow.boolValue)
+        if (Selection.activeGameObject == null) return;
+        Vector3 _pos = Selection.activeGameObject.transform.position;
+        for (int i = 0; i < attacks.arraySize; i++)
+        {
+            TDS_EnemyAttack _attack = (serializedObject.targetObject as TDS_Enemy).Attacks[i];
+            if(_attack == null)
+            {
+                continue;
+            }
+            switch (_attack.AnimationID)
+            {
+                case 6:
+                    Handles.color = Color.red;
+                    break;
+                case 7:
+                    Handles.color = Color.green;
+                    break;
+                case 8:
+                    Handles.color = Color.blue;
+                    break;
+                default:
+                    Handles.color = Color.white;
+                    break;
+            }
+            Handles.DrawWireDisc(_pos, Vector3.up, _attack.MaxRange);
+        }
+
+        Handles.color = Color.cyan;
+        if (canThrow.boolValue)
         {
             Handles.DrawWireDisc((serializedObject.targetObject as TDS_Enemy).transform.position, Vector3.up, throwRange.floatValue);
         }
     }
-
 
     #endregion
 

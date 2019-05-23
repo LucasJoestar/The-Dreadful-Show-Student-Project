@@ -235,6 +235,7 @@ MonoBehaviour:
   throwable: {fileID: 0}
   handsTransform: {fileID: 4715489829254572}
   isAttacking: 0
+  IsDown: 0
   isFacingRight: 1
   IsPacific: 0
   IsParalyzed: 0
@@ -256,30 +257,9 @@ MonoBehaviour:
   recoilTimeDeath: 0.35
   throwRange: 7
   attacks:
-  - Name: HeadButt
-    damagesMax: 15
-    damagesMin: 10
-    Description: BOUM
-    AnimationID: 6
-    cooldown: 1.5
-    maxRange: 1.4
-    probability: 33
-  - Name: Bar Hit
-    damagesMax: 20
-    damagesMin: 15
-    Description: PAF!
-    AnimationID: 8
-    cooldown: 1.5
-    maxRange: 1.8
-    probability: 33
-  - Name: Kick
-    damagesMax: 8
-    damagesMin: 5
-    Description: KAPOW!
-    AnimationID: 7
-    cooldown: 1
-    maxRange: 1.5
-    probability: 33
+  - {fileID: 11400000, guid: 58365662fdbb075468cff94d4fb5030c, type: 2}
+  - {fileID: 11400000, guid: f71bb1e0e61f69c4aaf9ef79d98d963a, type: 2}
+  - {fileID: 11400000, guid: c55c54222873b97488c9a762cc26e5dc, type: 2}
   agent: {fileID: 114509155922725266}
 --- !u!114 &114939482661549728
 MonoBehaviour:
