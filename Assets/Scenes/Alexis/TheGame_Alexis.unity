@@ -6610,90 +6610,6 @@ Transform:
   m_Father: {fileID: 879155976}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &915398151
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 7181379643535501126, guid: d635b766f21f14947a364d7448b4dc2c,
-        type: 3}
-      propertyPath: m_Name
-      value: BeardLady
-      objectReference: {fileID: 0}
-    - target: {fileID: 7179926860357853788, guid: d635b766f21f14947a364d7448b4dc2c,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -3.88
-      objectReference: {fileID: 0}
-    - target: {fileID: 7179926860357853788, guid: d635b766f21f14947a364d7448b4dc2c,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7179926860357853788, guid: d635b766f21f14947a364d7448b4dc2c,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -3.66
-      objectReference: {fileID: 0}
-    - target: {fileID: 7179926860357853788, guid: d635b766f21f14947a364d7448b4dc2c,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7179926860357853788, guid: d635b766f21f14947a364d7448b4dc2c,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7179926860357853788, guid: d635b766f21f14947a364d7448b4dc2c,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7179926860357853788, guid: d635b766f21f14947a364d7448b4dc2c,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7179926860357853788, guid: d635b766f21f14947a364d7448b4dc2c,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7179926860357853788, guid: d635b766f21f14947a364d7448b4dc2c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7179926860357853788, guid: d635b766f21f14947a364d7448b4dc2c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7179926860357853788, guid: d635b766f21f14947a364d7448b4dc2c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7078619270156273062, guid: d635b766f21f14947a364d7448b4dc2c,
-        type: 3}
-      propertyPath: viewIdField
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7078619270156273062, guid: d635b766f21f14947a364d7448b4dc2c,
-        type: 3}
-      propertyPath: instantiationId
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7078812957687010776, guid: d635b766f21f14947a364d7448b4dc2c,
-        type: 3}
-      propertyPath: attacks.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d635b766f21f14947a364d7448b4dc2c, type: 3}
 --- !u!114 &917836347 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114066093410239440, guid: ca57834bf12a62e4f857e7cd35728f26,
@@ -11284,7 +11200,7 @@ MonoBehaviour:
         maxRandomSpawn: 0
         spawningInformations:
         - enemyResourceName: Punk
-          enemyCount: 2
+          enemyCount: 1
         randomSpawningInformations: []
     isActivatedByEvent: 0
 --- !u!114 &1331645433

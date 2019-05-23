@@ -47,14 +47,30 @@ public class TDS_SiameseEditor : TDS_BossEditor
     SerializedProperty splitingEnemiesNames = null;
     /// <summary>SerializedProperty for <see cref="TDS_Siamese.splitingPosition"/> of type <see cref="Vector3[]"/>. </summary>
     SerializedProperty splitingPosition = null;
+
+    /// <summary>Backing field for <see cref="AreSplittingSettingsUnfolded"/></summary>
+    private bool areSplittingSettingsUnfolded = false;
+
+    /// <summary>
+    /// Indicates if the editor for the Character class is unfolded or not.
+    /// </summary>
+    public bool AreSplittingSettingsUnfolded
+    {
+        get { return areSplittingSettingsUnfolded; }
+        set
+        {
+            areSplittingSettingsUnfolded = value;
+
+            // Saves this value
+            EditorPrefs.SetBool("areSplittingSettingsUnfolded", value);
+        }
+    }
     #endregion
 
     #region Methods
-
-    protected override void DisplaySettings()
+    /*
+    protected void DisplaySettings()
     {
-        base.DisplaySettings();
-
         EditorGUILayout.Space();
 
         GUI.backgroundColor = TDS_EditorUtility.BoxLightColor;
@@ -69,46 +85,56 @@ public class TDS_SiameseEditor : TDS_BossEditor
 
         EditorGUILayout.Space();
 
-        DrawSplittingSettings();
 
         serializedObject.ApplyModifiedProperties();
 
     }
+    */
 
+    protected override void DrawEnemyEditor()
+    {
+        base.DrawEnemyEditor();
+
+        DrawSplittingSettings(); 
+    }
 
     /// <summary>
     /// Draw the split settings
     /// </summary>
     private void DrawSplittingSettings()
     {
-        GUI.backgroundColor = TDS_EditorUtility.BoxLightColor;
-        EditorGUILayout.BeginVertical("HelpBox");
+
+        EditorGUILayout.Space(); 
+
+        EditorGUILayout.BeginVertical("Box");
 
         //Draw a header for the enemy spinning settings
-        EditorGUILayout.LabelField("Splitting Settings", TDS_EditorUtility.HeaderStyle);
-        EditorGUILayout.Space();
-        for (int i = 0; i < splitingEnemiesNames.arraySize; i++)
+        if (TDS_EditorUtility.Button("Splitting Enemies", "Wrap / unwrap splitting enemies", TDS_EditorUtility.HeaderStyle)) AreSplittingSettingsUnfolded = !areSplittingSettingsUnfolded;
+        if (areSplittingSettingsUnfolded)
         {
-            EditorGUILayout.BeginHorizontal(); 
-            EditorGUILayout.LabelField(splitingEnemiesNames.GetArrayElementAtIndex(i).stringValue, TDS_EditorUtility.HeaderStyle);
-            GUITools.ActionButton("X", RemoveSettingsAtIndex, i, Color.white, Color.black, "Remove this spliting enemy");
-            Repaint(); 
-            EditorGUILayout.EndHorizontal();
-            //TDS_EditorUtility.Vector3Field("Offset Spawn Position", "Change the offset position of the spawn position" , splitingPosition.GetArrayElementAtIndex(i)); 
-        }
-        EditorGUILayout.Space();
+            EditorGUILayout.Space();
+            for (int i = 0; i < splitingEnemiesNames.arraySize; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(splitingEnemiesNames.GetArrayElementAtIndex(i).stringValue, TDS_EditorUtility.HeaderStyle);
+                GUITools.ActionButton("X", RemoveSettingsAtIndex, i, Color.white, Color.black, "Remove this spliting enemy");
+                Repaint();
+                EditorGUILayout.EndHorizontal();
+            }
+            EditorGUILayout.Space();
 
-        TDS_Enemy _e = null;
-        _e = EditorGUILayout.ObjectField("Add Splitting Enemy", _e, typeof(TDS_Enemy), false) as TDS_Enemy;
-        if(_e != null)
-        {
-            splitingEnemiesNames.InsertArrayElementAtIndex(0);
-            splitingEnemiesNames.GetArrayElementAtIndex(0).stringValue = _e.EnemyName ;
-            splitingPosition.InsertArrayElementAtIndex(0);
-            splitingPosition.GetArrayElementAtIndex(0).vector3Value = Vector3.forward;
+            TDS_Enemy _e = null;
+            _e = EditorGUILayout.ObjectField("Add Splitting Enemy", _e, typeof(TDS_Enemy), false) as TDS_Enemy;
+            if (_e != null)
+            {
+                splitingEnemiesNames.InsertArrayElementAtIndex(0);
+                splitingEnemiesNames.GetArrayElementAtIndex(0).stringValue = _e.EnemyName;
+                splitingPosition.InsertArrayElementAtIndex(0);
+                splitingPosition.GetArrayElementAtIndex(0).vector3Value = Vector3.forward;
+            }
         }
         EditorGUILayout.EndVertical();
-        EditorGUILayout.Space(); 
+        EditorGUILayout.Space();
     }
 
     private void RemoveSettingsAtIndex(int _index)
@@ -116,6 +142,7 @@ public class TDS_SiameseEditor : TDS_BossEditor
         splitingEnemiesNames.DeleteArrayElementAtIndex(_index);
         splitingPosition.DeleteArrayElementAtIndex(_index); 
     }
+
     #region Unity Methods
     protected override void OnEnable()
     {

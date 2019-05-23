@@ -181,15 +181,9 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         GUILayout.Space(3);
     }
 
-    void DrawEnemyEditor()
+    protected virtual void DrawEnemyEditor()
     {
-        // Make a space at the beginning of the editor
-        GUILayout.Space(10);
-        Color _originalColor = GUI.backgroundColor;
-
-        GUI.backgroundColor = TDS_EditorUtility.BoxDarkColor;
-        EditorGUILayout.BeginVertical("HelpBox");
-
+        
         // Button to show or not the enemy class settings
         if (TDS_EditorUtility.Button( serializedObject.targetObject.name , "Wrap / unwrap Character class settings", TDS_EditorUtility.HeaderStyle)) IsEnemyUnfolded = !isEnemyUnfolded;
         if(isEnemyUnfolded)
@@ -242,8 +236,7 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
             serializedObject.ApplyModifiedProperties();
         }
 
-        EditorGUILayout.EndVertical();
-        GUI.backgroundColor = _originalColor;
+
     }
 
     /// <summary>
@@ -325,8 +318,18 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     // Implement this method to make a custom inspector
     public override void OnInspectorGUI()
     {
+        // Make a space at the beginning of the editor
+        GUILayout.Space(10);
+        Color _originalColor = GUI.backgroundColor;
+
+        GUI.backgroundColor = TDS_EditorUtility.BoxDarkColor;
+        EditorGUILayout.BeginVertical("HelpBox");
+
         //Draw The inspector for the enemy class
-        DrawEnemyEditor(); 
+        DrawEnemyEditor();
+
+        EditorGUILayout.EndVertical();
+        GUI.backgroundColor = _originalColor;
 
         base.OnInspectorGUI();
     }
@@ -339,6 +342,10 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         for (int i = 0; i < attacks.arraySize; i++)
         {
             TDS_EnemyAttack _attack = (serializedObject.targetObject as TDS_Enemy).Attacks[i];
+            if(_attack == null)
+            {
+                continue;
+            }
             switch (_attack.AnimationID)
             {
                 case 6:

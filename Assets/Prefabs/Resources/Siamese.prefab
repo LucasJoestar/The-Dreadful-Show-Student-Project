@@ -200,8 +200,8 @@ MonoBehaviour:
   ownershipTransfer: 0
   ObservedComponents: []
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 8
-  instantiationId: 8
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &2085316961524171248
@@ -308,6 +308,7 @@ MonoBehaviour:
   throwable: {fileID: 0}
   handsTransform: {fileID: 3193193236961257252}
   isAttacking: 0
+  IsDown: 0
   isFacingRight: 1
   IsPacific: 0
   IsParalyzed: 0
@@ -328,49 +329,12 @@ MonoBehaviour:
   recoilDistanceDeath: 0.1
   recoilTimeDeath: 0.1
   throwRange: 1
-  agent: {fileID: 2085316961524171261}
   attacks:
-  - Name: Baffe
-    damagesMax: 5
-    damagesMin: 10
-    Description: "Donne une baffe de gauche \xE0 droite"
-    isDistanceAttack: 0
-    AnimationID: 6
-    cooldown: 1
-    predictedRange: 2
-    probability: 80
-    attackType: 0
-  - Name: Coup bas
-    damagesMax: 5
-    damagesMin: 10
-    Description: "Frappe depuis son ventre avec un bras cach\xE9"
-    isDistanceAttack: 0
-    AnimationID: 7
-    cooldown: 1
-    predictedRange: 1.5
-    probability: 75
-    attackType: 0
-  - Name: Toupie
-    damagesMax: 5
-    damagesMin: 10
-    Description: Fait la toupie dans la zone des bounds
-    isDistanceAttack: 0
-    AnimationID: 8
-    cooldown: 1
-    predictedRange: 150
-    probability: 25
-    attackType: 3
-  - Name: Cadeau explosif
-    damagesMax: 10
-    damagesMin: 12
-    Description: "Lance un cadeau qui explose apr\xE8s x secondes"
-    isDistanceAttack: 1
-    AnimationID: 9
-    cooldown: 2
-    predictedRange: 10
-    probability: 50
-    attackType: 4
-  spinningSpeed: 8
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  agent: {fileID: 2085316961524171261}
   splitingEnemiesNames:
   - Punk
   - Punk
