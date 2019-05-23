@@ -36,6 +36,9 @@ public class TDS_LobbyManager : PunBehaviour
     string connectionVersion = "2.1";
     [SerializeField]
     GameObject[] entryButtons;
+    [SerializeField]
+    InputField nameInputField;
+    static string playerNamePref = "PlayerName";
     #endregion
 
     #region Methods
@@ -49,7 +52,8 @@ public class TDS_LobbyManager : PunBehaviour
     public void GetRoomList()
     {
         RoomInfo[] _allRoom = PhotonNetwork.GetRoomList();
-        if(_allRoom.Length > 0)
+        Debug.Log(_allRoom.Length);
+        if (_allRoom.Length > 0)
         {
             for (int i = 0; i < _allRoom.Length; i++)
             {
@@ -69,11 +73,27 @@ public class TDS_LobbyManager : PunBehaviour
             PhotonNetwork.automaticallySyncScene = true;
             PhotonNetwork.ConnectUsingSettings(connectionVersion);
         }
+        string _defaultName = string.Empty;
+        //InputField _nameInputField = GetComponent<InputField>();
+        if (nameInputField != null)
+        {
+            if (PlayerPrefs.HasKey(playerNamePref))
+            {
+                _defaultName = PlayerPrefs.GetString(playerNamePref);
+                nameInputField.text = _defaultName;
+            }
+        }
     }
 
     public void JoinRoom(Text _entryText)
     {
         PhotonNetwork.JoinRoom(_entryText.text);
+    }
+
+    public void SetPlayerName(string _playerName)
+    {
+        PhotonNetwork.playerName = _playerName + " ";
+        PlayerPrefs.SetString(playerNamePref,_playerName);
     }
     #endregion
 
