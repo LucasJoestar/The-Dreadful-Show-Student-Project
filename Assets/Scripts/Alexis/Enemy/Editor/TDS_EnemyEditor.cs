@@ -338,8 +338,8 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         Vector3 _pos = Selection.activeGameObject.transform.position;
         for (int i = 0; i < attacks.arraySize; i++)
         {
-            SerializedProperty _attack = attacks.GetArrayElementAtIndex(i);
-            switch (_attack.FindPropertyRelative("AnimationID").intValue)
+            TDS_EnemyAttack _attack = (serializedObject.targetObject as TDS_Enemy).Attacks[i];
+            switch (_attack.AnimationID)
             {
                 case 6:
                     Handles.color = Color.red;
@@ -354,7 +354,7 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
                     Handles.color = Color.white;
                     break;
             }
-            Handles.DrawWireDisc(_pos, Vector3.up, _attack.FindPropertyRelative("maxRange").floatValue);
+            Handles.DrawWireDisc(_pos, Vector3.up, _attack.MaxRange);
         }
 
         Handles.color = Color.cyan;

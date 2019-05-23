@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Spinning_Attack", menuName = "Attacks/Spinning Attack", order = 4)]
+[CreateAssetMenu(fileName = "Spinning_Attack", menuName = "Attacks/Spinning Attack", order = 4), Serializable]
 public class TDS_SpinningAttackBehaviour : TDS_EnemyAttack
 {
     /* TDS_SpinningAttackBehaviour :

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Enemy_Attack", menuName = "Attacks/Enemy Attack", order = 2)]
+[CreateAssetMenu(fileName = "Enemy_Attack", menuName = "Attacks/Enemy Attack", order = 2), Serializable]
 public class TDS_EnemyAttack : TDS_Attack 
 {
     /* TDS_EnemyAttack :
