@@ -46,6 +46,9 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
     /// <summary>SerializedProperties for <see cref="TDS_FireEater.soberUpTimer"/> of type <see cref="float"/>.</summary>
     private SerializedProperty soberUpTimer = null;
 
+    /// <summary>SerializedProperties for <see cref="TDS_FireEater.xMovementAfterDrunkenDodge"/> of type <see cref="float"/>.</summary>
+    private SerializedProperty xMovementAfterDrunkenDodge = null;
+
     /// <summary>SerializedProperties for <see cref="TDS_FireEater.drunkJumpForce"/> of type <see cref="int"/>.</summary>
     private SerializedProperty drunkJumpForce = null;
     #endregion
@@ -252,7 +255,11 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
 
             if (GUILayout.Button(new GUIContent("Get Drunk", "Get the Fire Eater drunk"), GUILayout.Width(100), GUILayout.Height(20)))
             {
-                fireEaters.ForEach(f => f.GetDrunk());
+                foreach (TDS_FireEater _fireEater in fireEaters)
+                {
+                    if (_fireEater.ComboCurrent.Count > 0) _fireEater.ResetCombo();
+                    _fireEater.GetDrunk();
+                }
             }
 
             EditorGUILayout.EndHorizontal();
@@ -261,21 +268,21 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
             GUILayout.Space(10);
         }
 
-        
-
         if (TDS_EditorUtility.FloatField("Sober Up Time", "Time it takes to the Fire Eater to sober up (in seconds)", soberUpTime))
         {
             fireEaters.ForEach(f => f.SoberUpTime = soberUpTime.floatValue);
         }
 
-        if (TDS_EditorUtility.IntField("Drunk Jump Force", "Force applied when performing a jump when drunk", drunkJumpForce))
-        {
-            fireEaters.ForEach(f => f.DrunkJumpForce = drunkJumpForce.intValue);
-        }
-
         if (TDS_EditorUtility.FloatField("Drunk Speed Coef", "Coefficient applied to speed when drunk", drunkSpeedCoef))
         {
             fireEaters.ForEach(f => f.DrunkSpeedCoef = drunkSpeedCoef.floatValue);
+        }
+
+        TDS_EditorUtility.FloatField("X Mov. after Drunken Dodge", "Distance to move the Fire Eater before getting up after a drunken dodge", xMovementAfterDrunkenDodge);
+
+        if (TDS_EditorUtility.IntField("Drunk Jump Force", "Force applied when performing a jump when drunk", drunkJumpForce))
+        {
+            fireEaters.ForEach(f => f.DrunkJumpForce = drunkJumpForce.intValue);
         }
 
         GUILayout.Space(3);
@@ -298,6 +305,7 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
         drunkSpeedCoef = serializedObject.FindProperty("drunkSpeedCoef");
         soberUpTime = serializedObject.FindProperty("soberUpTime");
         soberUpTimer = serializedObject.FindProperty("soberUpTimer");
+        xMovementAfterDrunkenDodge = serializedObject.FindProperty("xMovementAfterDrunkenDodge");
         drunkJumpForce = serializedObject.FindProperty("drunkJumpForce");
 
         // Loads the editor folded & unfolded values of this script
