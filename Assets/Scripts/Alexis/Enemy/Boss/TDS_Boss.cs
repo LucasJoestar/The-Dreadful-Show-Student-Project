@@ -54,6 +54,7 @@ public abstract class TDS_Boss : TDS_Enemy
     #endregion
 
     #region Fields / Properties
+    [SerializeField] protected int damagesThreshold = 10; 
     protected TDS_EnemyAttack castedAttack = null;
 
     #endregion
@@ -63,7 +64,6 @@ public abstract class TDS_Boss : TDS_Enemy
     #region Original Methods
 
     #region Overidden Methods
-
     /// <summary>
     /// Get the next attack to cast independently of the distance
     /// </summary>
@@ -338,6 +338,31 @@ public abstract class TDS_Boss : TDS_Enemy
             _attackingPosition.z = playerTarget.transform.position.z + UnityEngine.Random.Range(-.4f, .4f);
         }
         return _attackingPosition;
+    }
+
+    /// <summary>
+    /// Called when the enemy takes damages greater than his damages threshold
+    /// Stop the agent
+    /// Stop all the current Coroutines
+    /// set its state to making decisions
+    /// Apply the recoil and set the animation to hit if he's not dead
+    /// </summary>
+    /// <param name="_damage">Dealt damages</param>
+    /// <param name="_position">Position of the attacker</param>
+    protected override void ApplyDamagesBehaviour(int _damage, Vector3 _position)
+    {
+        if (!isDead && _damage >= damagesThreshold)
+        {
+            SetAnimationState((int)EnemyAnimationState.Hit);
+            agent.StopAgent();
+            StartCoroutine(ApplyRecoil(_position));
+            enemyState = EnemyState.MakingDecision;
+        }
+        else if(isDead)
+        {
+            agent.StopAgent();
+            StartCoroutine(ApplyRecoil(_position)); 
+        }
     }
     #endregion
 
