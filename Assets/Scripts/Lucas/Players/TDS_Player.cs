@@ -777,7 +777,7 @@ public class TDS_Player : TDS_Character
         {
             float _xForce = isFacingRight.ToSign() * speedCoef * speedMax * (isGrounded ? 7 : 2.5f);
             rigidbody.AddForce(new Vector3(_xForce, isGrounded ? 0 : -.35f, 0));
-            Move(transform.position + (isFacingRight ? Vector3.right : Vector3.left));
+            MoveInDirection(transform.position + (isFacingRight ? Vector3.right : Vector3.left));
 
             yield return new WaitForFixedUpdate();
         }
@@ -1237,7 +1237,7 @@ public class TDS_Player : TDS_Character
     /// Moves the player in a direction according to a position.
     /// </summary>
     /// <param name="_newPosition">Position where to move the player. (World space)</param>
-    public void Move(Vector3 _newPosition)
+    public void MoveInDirection(Vector3 _newPosition)
     {
         if (!photonView.isMine) return; 
         // Increases speed if needed
@@ -1251,6 +1251,16 @@ public class TDS_Player : TDS_Character
         // Adjust future position by checking possible collisions
         _newPosition = Vector3.Lerp(transform.position, _newPosition, Time.deltaTime * _speed);
 
+        // Move the player
+        MoveTo(_newPosition);
+    }
+
+    /// <summary>
+    /// Move directly the player to a new position.
+    /// </summary>
+    /// <param name="_newPosition">New position to move to.</param>
+    public void MoveTo(Vector3 _newPosition)
+    {
         // For X & Z axis, overlap in the zone between this position and the future one ; priority order is X, & Z.
         // If something is touched, use the bounds of the collider to set the position of the player against the obstacle.
 
@@ -1528,7 +1538,7 @@ public class TDS_Player : TDS_Character
             // Flip the player on the X axis if needed
             if ((_horizontal > 0 && !isFacingRight) || (_horizontal < 0 && isFacingRight)) Flip();
 
-            Move(transform.position + new Vector3(_horizontal, 0, _vertical));
+            MoveInDirection(transform.position + new Vector3(_horizontal, 0, _vertical));
         }
         // If stoping moving, update informations
         else if (isMoving)

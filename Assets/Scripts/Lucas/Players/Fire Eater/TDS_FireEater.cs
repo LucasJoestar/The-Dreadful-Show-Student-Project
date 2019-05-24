@@ -80,6 +80,11 @@ public class TDS_FireEater : TDS_Player
         }
     }
 
+    /// <summary>
+    /// Distance to move the Fire Eater on x before getting up on a drunken dodge.
+    /// </summary>
+    [SerializeField] private float xMovementAfterDrunkenDodge = 1.5f;
+
     /// <summary>Backing field for <see cref="DrunkJumpForce"/>.</summary>
     [SerializeField] private int drunkJumpForce = 200;
 
@@ -150,10 +155,9 @@ public class TDS_FireEater : TDS_Player
     /// <summary>
     /// Call this before starting to get up from ground after a drunken dodge to correctly set the character position.
     /// </summary>
-    /// <param name="_xMovement">Movement on the X axis to teleport the character from.</param>
-    public void TeleportAfterDrunkenDodge(float _xMovement)
+    public void MoveAfterDrunkenDodge()
     {
-        transform.position += Vector3.right * isFacingRight.ToSign() * _xMovement;
+        MoveTo(transform.position + (Vector3.right * isFacingRight.ToSign() * xMovementAfterDrunkenDodge));
     }
     #endregion
 
