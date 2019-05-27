@@ -53,6 +53,10 @@ public class TDS_SpinningAttackBehaviour : TDS_EnemyAttack
     private Vector3[] spinningPositions = null;
 
     private TDS_Enemy caster = null;
+
+    private float casterInitialRadius = 0;
+
+    [SerializeField, Range(1, 10)] private float spinningRadius = 3.6f; 
     #endregion
 
     #region Methods
@@ -61,17 +65,16 @@ public class TDS_SpinningAttackBehaviour : TDS_EnemyAttack
 
     public override void ApplyAttackBehaviour(TDS_Enemy _caster)
     {
-        if (spinningPositions == null)
-        {
-            TDS_Bounds _bounds = TDS_Camera.Instance.CurrentBounds;
-            spinningPositions = new Vector3[5] {new Vector3(_bounds.XMin + 2, 0, _bounds.ZMax + 2 ),
-                                            new Vector3(_bounds.XMin + 2, 0, _bounds.ZMin - 2 ),
-                                            new Vector3(_bounds.XMax - 2, 0, _bounds.ZMax + 2 ),
-                                            new Vector3(_bounds.XMax - 2, 0, _bounds.ZMin - 2 ),
-                                            new Vector3((_bounds.XMin + _bounds.XMax) / 2, 0, (_bounds.ZMin + _bounds.ZMax) / 2)};
-        }
+        TDS_Bounds _bounds = TDS_Camera.Instance.CurrentBounds;
+        spinningPositions = new Vector3[5] {new Vector3(_bounds.XMin + 3, 0, _bounds.ZMax + 3 ),
+                                        new Vector3(_bounds.XMin + 3, 0, _bounds.ZMin - 3 ),
+                                        new Vector3(_bounds.XMax - 3, 0, _bounds.ZMax + 3 ),
+                                        new Vector3(_bounds.XMax - 3, 0, _bounds.ZMin - 3 ),
+                                        new Vector3((_bounds.XMin + _bounds.XMax) / 2, 0, (_bounds.ZMin + _bounds.ZMax) / 2)};
         caster = _caster;
         caster.Agent.Speed = spinningSpeed;
+        casterInitialRadius = caster.Agent.Radius;
+        caster.Agent.Radius = spinningRadius; 
         caster.Agent.OnDestinationReached += GoNextSpinningPosition;
         GoNextSpinningPosition();
     }
@@ -88,7 +91,8 @@ public class TDS_SpinningAttackBehaviour : TDS_EnemyAttack
             caster.Agent.OnDestinationReached -= GoNextSpinningPosition;
             spinningIndex = 0;
             StopSpinning();
-            //casterAgent.Speed = SpeedInitial;
+            caster.Agent.Speed = caster.SpeedInitial;
+            caster.Agent.Radius = casterInitialRadius;
             return;
         }
         caster.Agent.SetDestination(spinningPositions[spinningIndex]);

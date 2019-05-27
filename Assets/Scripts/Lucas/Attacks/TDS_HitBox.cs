@@ -124,7 +124,6 @@ public class TDS_HitBox : MonoBehaviour
             Debug.LogWarning("The given attack to activate " + Owner.name + "'s hit box is null ! Activation is canceled.");
             return;
         }
-
         CurrentAttack = _attack;
         collider.enabled = true;
         IsActive = true;
@@ -169,7 +168,6 @@ public class TDS_HitBox : MonoBehaviour
     {
         int _randomDamages = CurrentAttack.GetDamages;
         if (!_target.TakeDamage(_randomDamages, collider.transform.position)) return;
-
 
 
         // Create screen shake when player hit
@@ -220,10 +218,11 @@ public class TDS_HitBox : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // If the collider object should be hit, hit it
-
+        Debug.Log("Collide");
         // Check if object has 
+        Debug.Log(other.gameObject.name); 
         if ((Owner && (other.gameObject == Owner.gameObject)) || !other.gameObject.HasTag(HittableTags.ObjectTags)) return;
-
+        Debug.Log("Bis"); 
         TDS_Damageable _target = other.GetComponent<TDS_Damageable>();
 
         if (!_target || TouchedObjects.ContainsValue(_target)) return;

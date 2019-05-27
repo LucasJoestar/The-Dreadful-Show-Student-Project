@@ -651,7 +651,7 @@ public abstract class TDS_Enemy : TDS_Character
     public override bool GrabObject(TDS_Throwable _throwable)
     {
         bool _grabobject = base.GrabObject(_throwable);
-        if(_grabobject) SetAnimationState((int)EnemyAnimationState.GrabObject);
+        if(_grabobject && canThrow) SetAnimationState((int)EnemyAnimationState.GrabObject);
         return _grabobject;
         // Does the agent has a different behaviour from the players? 
     }
@@ -795,6 +795,7 @@ public abstract class TDS_Enemy : TDS_Character
         TDS_EnemyAttack _attack = attacks.Where(a => a.AnimationID == _animationID).FirstOrDefault();
         if (_attack == null) return;
         hitBox.Activate(_attack);
+        _attack.ApplyAttackBehaviour(this); 
     }
 
     /// <summary>

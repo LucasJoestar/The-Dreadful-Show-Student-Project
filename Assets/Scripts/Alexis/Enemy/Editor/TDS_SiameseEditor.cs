@@ -103,38 +103,41 @@ public class TDS_SiameseEditor : TDS_BossEditor
     /// </summary>
     private void DrawSplittingSettings()
     {
-
-        EditorGUILayout.Space(); 
-
-        EditorGUILayout.BeginVertical("Box");
-
-        //Draw a header for the enemy spinning settings
-        if (TDS_EditorUtility.Button("Splitting Enemies", "Wrap / unwrap splitting enemies", TDS_EditorUtility.HeaderStyle)) AreSplittingSettingsUnfolded = !areSplittingSettingsUnfolded;
-        if (areSplittingSettingsUnfolded)
+        if(IsEnemyUnfolded)
         {
             EditorGUILayout.Space();
-            for (int i = 0; i < splitingEnemiesNames.arraySize; i++)
-            {
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(splitingEnemiesNames.GetArrayElementAtIndex(i).stringValue, TDS_EditorUtility.HeaderStyle);
-                GUITools.ActionButton("X", RemoveSettingsAtIndex, i, Color.white, Color.black, "Remove this spliting enemy");
-                Repaint();
-                EditorGUILayout.EndHorizontal();
-            }
-            EditorGUILayout.Space();
 
-            TDS_Enemy _e = null;
-            _e = EditorGUILayout.ObjectField("Add Splitting Enemy", _e, typeof(TDS_Enemy), false) as TDS_Enemy;
-            if (_e != null)
+            EditorGUILayout.BeginVertical("Box");
+
+            //Draw a header for the enemy spinning settings
+            if (TDS_EditorUtility.Button("Splitting Enemies", "Wrap / unwrap splitting enemies", TDS_EditorUtility.HeaderStyle)) AreSplittingSettingsUnfolded = !areSplittingSettingsUnfolded;
+            if (areSplittingSettingsUnfolded)
             {
-                splitingEnemiesNames.InsertArrayElementAtIndex(0);
-                splitingEnemiesNames.GetArrayElementAtIndex(0).stringValue = _e.EnemyName;
-                splitingPosition.InsertArrayElementAtIndex(0);
-                splitingPosition.GetArrayElementAtIndex(0).vector3Value = Vector3.forward;
+                EditorGUILayout.Space();
+                for (int i = 0; i < splitingEnemiesNames.arraySize; i++)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.LabelField(splitingEnemiesNames.GetArrayElementAtIndex(i).stringValue, TDS_EditorUtility.HeaderStyle);
+                    GUITools.ActionButton("X", RemoveSettingsAtIndex, i, Color.white, Color.black, "Remove this spliting enemy");
+                    Repaint();
+                    EditorGUILayout.EndHorizontal();
+                }
+                EditorGUILayout.Space();
+
+                TDS_Enemy _e = null;
+                _e = EditorGUILayout.ObjectField("Add Splitting Enemy", _e, typeof(TDS_Enemy), false) as TDS_Enemy;
+                if (_e != null)
+                {
+                    splitingEnemiesNames.InsertArrayElementAtIndex(0);
+                    splitingEnemiesNames.GetArrayElementAtIndex(0).stringValue = _e.EnemyName;
+                    splitingPosition.InsertArrayElementAtIndex(0);
+                    splitingPosition.GetArrayElementAtIndex(0).vector3Value = Vector3.forward;
+                }
             }
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.Space();
         }
-        EditorGUILayout.EndVertical();
-        EditorGUILayout.Space();
+       
     }
 
     private void RemoveSettingsAtIndex(int _index)
