@@ -54,6 +54,7 @@ public abstract class TDS_Boss : TDS_Enemy
     #endregion
 
     #region Fields / Properties
+    [SerializeField] protected int damagesThreshold = 10; 
     protected TDS_EnemyAttack castedAttack = null;
 
     #endregion
@@ -63,7 +64,6 @@ public abstract class TDS_Boss : TDS_Enemy
     #region Original Methods
 
     #region Overidden Methods
-
     /// <summary>
     /// Get the next attack to cast independently of the distance
     /// </summary>
@@ -90,8 +90,10 @@ public abstract class TDS_Boss : TDS_Enemy
     protected override bool AttackCanBeCasted()
     {
         if (castedAttack == null) return false;
+        if (castedAttack.GetType() == typeof(TDS_SpinningAttackBehaviour)) return true; 
         if (Mathf.Abs(transform.position.z - playerTarget.transform.position.z) >= .6f)
         {
+            //Debug.Log(Mathf.Abs(transform.position.z - playerTarget.transform.position.z)); 
             return false;
         }
         return castedAttack.MaxRange >= Mathf.Abs(transform.position.x - playerTarget.transform.position.x); 
@@ -252,14 +254,14 @@ public abstract class TDS_Boss : TDS_Enemy
                 yield break;
             }
             //if the target is too far from the destination, recalculate the path
-            if (Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > castedAttack.MaxRange)
+            if (Mathf.Abs(agent.LastPosition.z - playerTarget.transform.position.z) > .6f ||  Mathf.Abs(transform.position.x - playerTarget.transform.position.x) > castedAttack.MaxRange)
             {
                 yield return new WaitForSeconds(.1f);
                 enemyState = EnemyState.ComputingPath;
                 yield break;
             }
-        }
-        enemyState = EnemyState.MakingDecision;
+        } 
+        enemyState = EnemyState.Attacking;
     }
 
     /// <summary>
@@ -306,7 +308,7 @@ public abstract class TDS_Boss : TDS_Enemy
     /// </summary>
     protected override void TakeDecision()
     {
-        castedAttack = GetAttack();
+        if(!castedAttack) castedAttack = GetAttack();
         base.TakeDecision(); 
     }
 
@@ -330,14 +332,41 @@ public abstract class TDS_Boss : TDS_Enemy
     /// <returns>Return an attacking position</returns>
     protected override Vector3 GetAttackingPosition()
     {
+        //return playerTarget.transform.position; 
         Vector3 _attackingPosition = transform.position;
         if (playerTarget)
         {
             int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;
-            _attackingPosition.x = Mathf.Abs(transform.position.x - playerTarget.transform.position.x) < castedAttack.MaxRange ? transform.position.x : playerTarget.transform.position.x + (castedAttack.MaxRange * _coeff); 
-            _attackingPosition.z = playerTarget.transform.position.z + UnityEngine.Random.Range(-.4f, .4f);
+            _attackingPosition.x = Mathf.Abs(transform.position.x - playerTarget.transform.position.x) < castedAttack.MaxRange ? transform.position.x : playerTarget.transform.position.x + ((castedAttack.MaxRange - agent.Radius) * _coeff);
+            _attackingPosition.z = playerTarget.transform.position.z; // + UnityEngine.Random.Range(-.4f, .4f);
         }
+        //Debug.Log(_attackingPosition); 
         return _attackingPosition;
+    }
+
+    /// <summary>
+    /// Called when the enemy takes damages greater than his damages threshold
+    /// Stop the agent
+    /// Stop all the current Coroutines
+    /// set its state to making decisions
+    /// Apply the recoil and set the animation to hit if he's not dead
+    /// </summary>
+    /// <param name="_damage">Dealt damages</param>
+    /// <param name="_position">Position of the attacker</param>
+    protected override void ApplyDamagesBehaviour(int _damage, Vector3 _position)
+    {
+        if (!isDead && _damage >= damagesThreshold)
+        {
+            SetAnimationState((int)EnemyAnimationState.Hit);
+            agent.StopAgent();
+            StartCoroutine(ApplyRecoil(_position));
+            enemyState = EnemyState.MakingDecision;
+        }
+        else if(isDead)
+        {
+            agent.StopAgent();
+            StartCoroutine(ApplyRecoil(_position)); 
+        }
     }
     #endregion
 

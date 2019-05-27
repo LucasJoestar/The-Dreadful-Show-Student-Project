@@ -83,7 +83,8 @@ public class TDS_UIManager : PunBehaviour
     #endregion
 
     #region Animator
-    [SerializeField] private Animator curtainsAnimator; 
+    [SerializeField] private Animator curtainsAnimator;
+    [SerializeField] private Animator arrowAnimator; 
     #endregion 
 
     #region Canvas 
@@ -334,6 +335,15 @@ public class TDS_UIManager : PunBehaviour
             if(filledImages[_filledImage] != null) StopCoroutine(filledImages[_filledImage]);
             filledImages.Remove(_filledImage);
         }
+    }
+
+    /// <summary>
+    /// Display or remove the curtains in the canvas
+    /// </summary>
+    public void SwitchArrow()
+    {
+        if (!arrowAnimator) return;
+        arrowAnimator.SetTrigger("Switch");
     }
 
     /// <summary>

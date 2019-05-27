@@ -185,11 +185,7 @@ MonoBehaviour:
   rigidbody: {fileID: 7593376261498355140}
   owner: {fileID: 0}
   hitBox: {fileID: 0}
-  attack:
-    Name: 
-    damagesMax: 1
-    damagesMin: 1
-    Description: 
+  attack: {fileID: 11400000, guid: b6d5b61386be20d41900816b63cf19ee, type: 2}
   whatDesactivate:
     serializedVersion: 2
     m_Bits: 0
@@ -231,7 +227,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 8
+  instantiationId: 8
   currentMasterID: -1
   isRuntimeInstantiated: 0

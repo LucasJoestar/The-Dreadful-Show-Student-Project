@@ -242,7 +242,7 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     /// <summary>
     /// Draw the editor for the variables settings of the enemy
     /// </summary>
-    private void DrawSettings()
+    protected virtual void DrawSettings()
     {
         if(EditorApplication.isPlaying)
         {

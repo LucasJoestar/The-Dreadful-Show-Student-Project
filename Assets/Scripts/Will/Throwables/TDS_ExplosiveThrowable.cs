@@ -117,6 +117,7 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
     // Awake is called when the script instance is being loaded
     protected override void Awake()
     {
+        //base.Awake(); 
         if (!hitBox)
         {
             hitBox = GetComponentInChildren<TDS_HitBox>();

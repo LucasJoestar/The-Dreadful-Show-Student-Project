@@ -651,7 +651,7 @@ public abstract class TDS_Enemy : TDS_Character
     public override bool GrabObject(TDS_Throwable _throwable)
     {
         bool _grabobject = base.GrabObject(_throwable);
-        if(_grabobject) SetAnimationState((int)EnemyAnimationState.GrabObject);
+        if(_grabobject && canThrow) SetAnimationState((int)EnemyAnimationState.GrabObject);
         return _grabobject;
         // Does the agent has a different behaviour from the players? 
     }
@@ -729,15 +729,7 @@ public abstract class TDS_Enemy : TDS_Character
         bool _isTakingDamages = base.TakeDamage(_damage);
         if (_isTakingDamages)
         {
-            agent.StopAgent();
-            StopAllCoroutines();
-            enemyState = EnemyState.MakingDecision;
-            if (throwable) DropObject();
-            StartCoroutine(ApplyRecoil(_position));
-            if (!isDead)
-            {
-                SetAnimationState((int)EnemyAnimationState.Hit);
-            }
+            ApplyDamagesBehaviour(_damage, _position); 
         }
         return _isTakingDamages;
     }
@@ -803,6 +795,7 @@ public abstract class TDS_Enemy : TDS_Character
         TDS_EnemyAttack _attack = attacks.Where(a => a.AnimationID == _animationID).FirstOrDefault();
         if (_attack == null) return;
         hitBox.Activate(_attack);
+        _attack.ApplyAttackBehaviour(this); 
     }
 
     /// <summary>
@@ -930,6 +923,28 @@ public abstract class TDS_Enemy : TDS_Character
         IsPacific = false;
         IsParalyzed = false;
         StartCoroutine(Behaviour());
+    }
+
+    /// <summary>
+    /// Called when the enemy takes damages
+    /// Stop the agent
+    /// Stop all the current Coroutines
+    /// set its state to making decisions
+    /// Apply the recoil and set the animation to hit if he's not dead
+    /// </summary>
+    /// <param name="_damage">Dealt damages</param>
+    /// <param name="_position">Position of the attacker</param>
+    protected virtual void ApplyDamagesBehaviour(int _damage, Vector3 _position)
+    {
+        agent.StopAgent();
+        StopAllCoroutines();
+        enemyState = EnemyState.MakingDecision;
+        if (throwable) DropObject();
+        StartCoroutine(ApplyRecoil(_position));
+        if (!isDead)
+        {
+            SetAnimationState((int)EnemyAnimationState.Hit);
+        }
     }
     #endregion
 

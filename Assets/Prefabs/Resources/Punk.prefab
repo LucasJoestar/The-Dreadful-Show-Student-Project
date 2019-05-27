@@ -194,13 +194,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53bdbd26138585f4aa59027c60557c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 0
   positionOffset: {x: 0, y: 1.2, z: 0}
   avoidanceForce: 5
   baseOffset: 0
   detectionRange: 2.5
   height: 2.4
   radius: 0.75
+  pathRadius: 1
   speed: 4
   steerForce: 10
   agentPriority: 1

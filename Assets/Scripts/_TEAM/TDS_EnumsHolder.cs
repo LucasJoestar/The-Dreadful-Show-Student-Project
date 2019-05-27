@@ -111,6 +111,22 @@ public enum CheckpointAnimState
 }
 
 /// <summary>
+/// All types of events used in the game.
+/// </summary>
+public enum CustomEventType
+{
+    Narrator,
+    DisplayInfoBox,
+    DesactiveInfoBox,
+    Instantiate,
+    Wait,
+    WaitForAction,
+    WaitOthers,
+    CameraMovement,
+    UnityEvent
+}
+
+/// <summary>
 /// Animation States of the enemies
 /// </summary>
 public enum EnemyAnimationState
@@ -140,22 +156,6 @@ public enum EnemyState
     Attacking, 
     PickingUpObject, 
     ThrowingObject
-}
-
-/// <summary>
-/// All types of events used in the game.
-/// </summary>
-public enum CustomEventType
-{
-    Narrator,
-    DisplayInfoBox,
-    DesactiveInfoBox,
-    Instantiate,
-    Wait,
-    WaitForAction,
-    WaitOthers,
-    CameraMovement,
-    UnityEvent
 }
 
 /// <summary>
@@ -202,6 +202,18 @@ public enum PlayerType
     FatLady,
     FireEater,
     Juggler,
+}
+
+/// <summary>
+/// All the Id for the differents rooms 
+/// </summary>
+public enum RoomId
+{
+    FirstRoom = 15,
+    SecondRoom = 25,
+    ThirdRoom = 35,
+    FourthRoom = 45,
+    FifthRoom = 55
 }
 
 /// <summary>
