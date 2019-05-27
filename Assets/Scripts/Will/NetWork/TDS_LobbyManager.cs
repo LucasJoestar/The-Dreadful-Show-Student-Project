@@ -28,12 +28,12 @@ public class TDS_LobbyManager : PunBehaviour
 	*/
 
     #region Fields / Properties
-
+    string roomName = string.Empty;
     #endregion
 
     #region Methods
     #region Original Methods   
-    public void CreateRoom(Button _btn)
+    public void SelectRoom(Button _btn)
     {
         RoomId _roomId;
 
@@ -44,17 +44,14 @@ public class TDS_LobbyManager : PunBehaviour
                   _btn.name == "FifthRoom" ? RoomId.FifthRoom : 
                   RoomId.WaitForIt;
 
+        roomName = _btn.name;
+
         if (_roomId == RoomId.WaitForIt)
-        {
+        {            
             Debug.LogError("Can't connect to the room");
             return;
         }
 
-        InitLobbyConnection(_roomId);
-    }
-
-    void InitLobbyConnection(RoomId _roomId)
-    {
         int _getIndex = (int)_roomId;
         string _stringID = _getIndex.ToString();
 
@@ -64,15 +61,39 @@ public class TDS_LobbyManager : PunBehaviour
             PhotonNetwork.automaticallySyncScene = true;
             PhotonNetwork.ConnectUsingSettings(_stringID);
         }
+        
+    }
+
+    void CreateRoom()
+    {
+        PhotonNetwork.CreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
+        Debug.Log("room name : " + roomName);
     }
     #endregion
 
     #region Photon Methods   
-
+    public override void OnCreatedRoom()
+    {
+        Debug.Log("room created");
+        PhotonNetwork.JoinRoom(roomName);
+    }
+    public override void OnConnectedToMaster()
+    {
+        Debug.Log("connected to Master");
+        CreateRoom();
+    }
+    public override void OnJoinedLobby()
+    {
+        Debug.Log("connected to Lobby");
+    }
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("connected to Room");
+    }    
     #endregion
 
     #region Unity Methods
-    
+
     #endregion
     #endregion
 }
