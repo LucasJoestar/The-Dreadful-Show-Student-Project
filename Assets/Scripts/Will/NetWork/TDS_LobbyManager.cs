@@ -34,7 +34,7 @@ public class TDS_LobbyManager : PunBehaviour
     #region Methods
     #region Original Methods   
     public void SelectRoom(Button _btn)
-    {
+    {        
         RoomId _roomId;
 
         _roomId = _btn.name == "FirstRoom" ? RoomId.FirstRoom :
@@ -60,13 +60,12 @@ public class TDS_LobbyManager : PunBehaviour
             PhotonNetwork.autoJoinLobby = false;
             PhotonNetwork.automaticallySyncScene = true;
             PhotonNetwork.ConnectUsingSettings(_stringID);
-        }
-        
+        }        
     }
 
     void CreateRoom()
     {
-        PhotonNetwork.CreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
+        PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
         Debug.Log("room name : " + roomName);
     }
     #endregion
@@ -75,7 +74,7 @@ public class TDS_LobbyManager : PunBehaviour
     public override void OnCreatedRoom()
     {
         Debug.Log("room created");
-        PhotonNetwork.JoinRoom(roomName);
+        PhotonNetwork.JoinLobby();        
     }
     public override void OnConnectedToMaster()
     {
@@ -85,6 +84,7 @@ public class TDS_LobbyManager : PunBehaviour
     public override void OnJoinedLobby()
     {
         Debug.Log("connected to Lobby");
+        PhotonNetwork.JoinRoom(roomName);        
     }
     public override void OnJoinedRoom()
     {
