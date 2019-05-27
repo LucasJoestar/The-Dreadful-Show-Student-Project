@@ -534,7 +534,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectedColliders: []
-  detectedTags: []
+  DetectedTags:
+    ObjectTags: []
 --- !u!65 &65003699534248384
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -725,6 +726,7 @@ MonoBehaviour:
   throwable: {fileID: 0}
   handsTransform: {fileID: 4195684342130554}
   isAttacking: 0
+  IsDown: 0
   isFacingRight: 1
   IsPacific: 0
   IsParalyzed: 0
@@ -764,16 +766,8 @@ MonoBehaviour:
   UseObjectButton: Use Object
   VerticalAxis: Vertical
   attacks:
-  - Name: Light Attack
-    AnimationID: 0
-    damagesMax: 5
-    damagesMin: 3
-    Description: 
-  - Name: Heavy Attack
-    AnimationID: 0
-    damagesMax: 7
-    damagesMin: 3
-    Description: 
+  - {fileID: 11400000, guid: 89a190834ad18554f898e7777331f784, type: 2}
+  - {fileID: 11400000, guid: 1e86dba0ecf99834a8f7bfb75721ce4f, type: 2}
   isDodging: 0
   isGrounded: 1
   isJumping: 0

@@ -100,7 +100,7 @@ public class TDS_Attack : ScriptableObject
         get { return Random.Range(damagesMin, damagesMax + 1); }
     }
 
-    [SerializeField] protected string description = string.Empty;  
+    [SerializeField, TextArea] protected string description = string.Empty;  
     /// <summary>
     /// Short (or long) description of this attack, and what it does.
     /// </summary>

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9554a16853e0c2743b24d63e40cbb9bd, type: 3}
+  m_Name: FireEater_Fire_Attack#1
+  m_EditorClassIdentifier: 
+  name: 'Fire Eater - Attack #1 (Fire)'
+  Effect:
+    EffectType: 1
+    duration: 3
+    percentageHighest: 15
+    percentageLowest: 15
+    damagesMax: 5
+    damagesMin: 3
+  damagesMax: 8
+  damagesMin: 7
+  description: 'Simple attack of the Fire Eater, with a torch in fire.
+
+    Big attack aiming to deal damages ; has a little chance to burn enemies.'

@@ -23,7 +23,7 @@ public class GOTagsEditor : Editor
 	 *	####### TO DO #######
 	 *	#####################
      * 
-     *      • Make sure everything work perfectly for many Unity versions.
+     *      Nothing to see here...
      * 
 	 *	#####################
 	 *	### MODIFICATIONS ###
@@ -106,34 +106,34 @@ public class GOTagsEditor : Editor
     /// <summary>
     /// Unity GameObject class built-in editor.
     /// </summary>
-    private Editor defaultEditor = null;
+    private Editor              defaultEditor                   = null;
 
     /// <summary>
     /// All editing game objects.
     /// </summary>
-    private GameObject[] targetGO = null;
+    private GameObject[]        targetGO                        = null;
 
     /// <summary>
     /// Is the tag editor visible or not ?
     /// </summary>
-    private bool isUnfolded = true;
+    private bool                isUnfolded                      = true;
 
     /// <summary>
     /// Last Unity tag of the editing objects ; used to refresh tags on inspector.
     /// </summary>
-    private string[] lastTags = new string[] { };
+    private string[]            lastTags                        = new string[] { };
 
     /// <summary>
     /// Indicates if editing targets do have different tags
     /// </summary>
-    private bool haveTargetsDifferentTags = false;
+    private bool                haveTargetsDifferentTags        = false;
     #endregion
 
     #region Target Script(s) Variables
     /// <summary>
     /// Alls tags of the editing object, or tags in common of editing objects if performing multi-editing.
     /// </summary>
-    private Tag[] editingTags = new Tag[] { };
+    private Tag[]                editingTags                      = new Tag[] { };
     #endregion
 
     #endregion
@@ -200,12 +200,12 @@ public class GOTagsEditor : Editor
         // get tags in common between them
         if (serializedObject.isEditingMultipleObjects)
         {
-            string[][] _objectTags = targetGO.Select(t => t.GetTagsName()).ToArray();
+            string[][] _objectTags = targetGO.Select(t => t.GetTagNames()).ToArray();
             string[] _tagsInCommon = _objectTags.Aggregate((previousList, nextList) => previousList.Intersect(nextList).ToArray());
 
             editingTags = MultiTags.GetTags(_tagsInCommon);
             lastTags = targetGO.Select(g => g.tag).ToArray();
-
+    
             haveTargetsDifferentTags = _objectTags.Any(t => !Enumerable.SequenceEqual(t, _tagsInCommon));
         }
         // Else, just get tags of the first editing object
@@ -229,7 +229,6 @@ public class GOTagsEditor : Editor
         {
             if (defaultEditor.GetType().GetField("m_PreviewCache", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(defaultEditor) == null)
             {
-                Debug.Log("Force Enable");
                 defaultEditor.GetType().GetMethod("OnEnable").Invoke(defaultEditor, null);
             }
 
@@ -253,8 +252,6 @@ public class GOTagsEditor : Editor
 
         // Get editing object(s) tags
         GetObjectsTags();
-
-        //Debug.Log("Game Object Editor => Enable");
     }
 
     // Implement this function to make a custom header
@@ -271,7 +268,7 @@ public class GOTagsEditor : Editor
         DrawTagSystem();
         defaultEditor.OnInspectorGUI();
     }
-    #endregion
+	#endregion
 
-    #endregion
+	#endregion
 }

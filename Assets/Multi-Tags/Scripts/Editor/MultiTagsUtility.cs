@@ -25,10 +25,7 @@ public static class MultiTagsUtility
 	 *	####### TO DO #######
 	 *	#####################
      *  
-     *  [OPTIONAL]
-     *  
-     *      • Found a way to make Tags fields work fine with GUILayout groups... I don't even know if it is possible.
-     *  Maybe with creating a GUIStyle for it, since there are methods to calculate its size.
+     *      Nothing to see here...
      * 
 	 *	#####################
 	 *	### MODIFICATIONS ###
@@ -387,7 +384,7 @@ public static class MultiTagsUtility
         TagsSO _tagsAsset = GetTagsAsset();
 
         // Get all project objects with tag to remove it from them
-        GameObject[] _allObjectsWithTag = Resources.FindObjectsOfTypeAll<GameObject>().Where(g => g.GetTagsName().Contains(_tag)).ToArray();
+        GameObject[] _allObjectsWithTag = Resources.FindObjectsOfTypeAll<GameObject>().Where(g => g.GetTagNames().Contains(_tag)).ToArray();
 
         Undo.RecordObjects(_allObjectsWithTag, "Game Object(s) Remove Tag \"" + _tag + "\"");
 
@@ -472,7 +469,7 @@ public static class MultiTagsUtility
 
         foreach (GameObject _gameObject in _gameObjects)
         {
-            if (!_gameObject.GetTagsName().Contains(_tagName))
+            if (!_gameObject.GetTagNames().Contains(_tagName))
             {
                 // If object is tag "Untagged", just tag it with the new one
                 if (_gameObject.tag == MultiTags.BuiltInTagsNames[0])
@@ -525,7 +522,7 @@ public static class MultiTagsUtility
         Undo.RecordObjects(_gameObjects, "Game Object(s) Remove Tag \"" + _tagName + "\"");
 
         // Get object having specified tag
-        _gameObjects = _gameObjects.Where(g => g.GetTagsName().Contains(_tagName)).ToArray();
+        _gameObjects = _gameObjects.Where(g => g.GetTagNames().Contains(_tagName)).ToArray();
 
         string[] _previousTags = _gameObjects.Where(g => g.tag.Contains(MultiTags.TAG_SEPARATOR)).Select(g => g.tag).Distinct().ToArray();
 
@@ -2138,7 +2135,7 @@ public static class MultiTagsUtility
         olMinusStyle = new GUIStyle("OL Minus");
         olPlusStyle = new GUIStyle("OL Plus");
 
-        tagHeight = tagStyle.CalcHeight(GUIContent.none, 0);
+        tagHeight = tagStyle.CalcHeight(GUIContent.none, 0) + 1;
         foldoutWidth = EditorStyles.foldout.CalcSize(GUIContent.none).x;
         olMinusSize = olMinusStyle.CalcSize(GUIContent.none);
         olPlusSize = olPlusStyle.CalcSize(GUIContent.none);
@@ -2170,7 +2167,7 @@ public class TagDrawer : PropertyDrawer
 	 *	####### TO DO #######
 	 *	#####################
      * 
-     *      • Optimization, if possible.
+     *      Nothing to see here...
      * 
 	 *	#####################
 	 *	### MODIFICATIONS ###
@@ -2274,6 +2271,9 @@ public class TagsDrawer : PropertyDrawer
     // Override this method to specify how tall the GUI for this field is in pixels
     public override float GetPropertyHeight(SerializedProperty _property, GUIContent _label)
     {
+        if (!MultiTagsUtility.AreTagsUnfolded) return MultiTagsUtility.TagHeight;
+
+
         // Get tags to display, and calcul height depending on their size and field width
         Tags[] _allTags = new Tags[_property.serializedObject.targetObjects.Length];
 
