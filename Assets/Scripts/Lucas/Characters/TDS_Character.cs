@@ -452,7 +452,6 @@ public abstract class TDS_Character : TDS_Damageable
     {
         // If no throwable, return
         if (!throwable) return;
-
         // Alright, then throw it !
         throwable.Throw(_targetPosition, aimAngle, RandomThrowBonusDamages);
         Throwable = null;

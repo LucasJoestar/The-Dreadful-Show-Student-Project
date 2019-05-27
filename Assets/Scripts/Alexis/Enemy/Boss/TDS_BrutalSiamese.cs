@@ -6,32 +6,32 @@ using UnityEngine;
 public class TDS_BrutalSiamese : TDS_Enemy 
 {
     /* TDS_BrutalSiamese :
- *
- *	#####################
- *	###### PURPOSE ######
- *	#####################
- *
- *	[PURPOSE]
- *
- *	#####################
- *	####### TO DO #######
- *	#####################
- *
- *	[TO DO]
- *
- *	#####################
- *	### MODIFICATIONS ###
- *	#####################
- *
- *	Date :			[DATE]
- *	Author :		[NAME]
- *
- *	Changes :
- *
- *	[CHANGES]
- *
- *	-----------------------------------
-*/
+     *
+     *	#####################
+     *	###### PURPOSE ######
+     *	#####################
+     *
+     *	[Behaviour of the brutal siamese]
+     *
+     *	#####################
+     *	####### TO DO #######
+     *	#####################
+     *
+     *	[TO DO]
+     *
+     *	#####################
+     *	### MODIFICATIONS ###
+     *	#####################
+     *
+     *	Date :			[24/05/2019]
+     *	Author :		[THIEBAUT Alexis]
+     *
+     *	Changes :
+     *
+     *	[Initialisation of the class]
+     *  
+     *	-----------------------------------
+    */
 
     #region Events
 
@@ -52,21 +52,21 @@ public class TDS_BrutalSiamese : TDS_Enemy
 
     #region Unity Methods
     // Awake is called when the script instance is being loaded
-    private void Awake()
+    protected override void Awake()
     {
-
+        base.Awake();
     }
 
 	// Use this for initialization
-    private void Start()
+    protected override void Start()
     {
-		
+        //base.Start(); 
     }
 	
 	// Update is called once per frame
-	private void Update()
+	protected override void Update()
     {
-        
+        base.Update(); 
 	}
 	#endregion
 
