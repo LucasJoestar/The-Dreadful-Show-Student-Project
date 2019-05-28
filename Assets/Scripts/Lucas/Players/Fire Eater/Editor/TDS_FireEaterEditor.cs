@@ -245,20 +245,23 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
     /// </summary>
     private void DrawSettings()
     {
-        if (Application.isPlaying && !isDrunk.boolValue)
+        if (Application.isPlaying)
         {
             Color _originalColor = GUI.color;
-            GUI.color = new Color(.8f, .25f, .25f);
+            GUI.color = !isDrunk.boolValue ? new Color(.8f, .25f, .25f) : new Color(.25f, .8f, .25f);
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(15);
 
-            if (GUILayout.Button(new GUIContent("Get Drunk", "Get the Fire Eater drunk"), GUILayout.Width(100), GUILayout.Height(20)))
+            if (GUILayout.Button(!isDrunk.boolValue ? new GUIContent("Get Drunk", "Get the Fire Eater drunk") : new GUIContent("Get Sober", "Make the Fire Eater sober again"), GUILayout.Width(100), GUILayout.Height(20)))
             {
                 foreach (TDS_FireEater _fireEater in fireEaters)
                 {
                     if (_fireEater.ComboCurrent.Count > 0) _fireEater.ResetCombo();
-                    _fireEater.GetDrunk();
+
+                    if (!isDrunk.boolValue) _fireEater.GetDrunk();
+                    else soberUpTimer.floatValue = 0;
+
                 }
             }
 
