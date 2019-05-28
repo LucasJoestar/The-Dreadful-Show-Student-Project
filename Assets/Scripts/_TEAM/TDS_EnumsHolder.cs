@@ -141,7 +141,9 @@ public enum EnemyAnimationState
     AttackTwo,
     AttackThree,
     SpecialAttack,
-    Death
+    Death, 
+    Taunt, 
+    Brought
 }
 
 /// <summary>
