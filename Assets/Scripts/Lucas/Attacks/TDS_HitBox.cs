@@ -218,11 +218,9 @@ public class TDS_HitBox : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // If the collider object should be hit, hit it
-        Debug.Log("Collide");
+
         // Check if object has 
-        Debug.Log(other.gameObject.name); 
         if ((Owner && (other.gameObject == Owner.gameObject)) || !other.gameObject.HasTag(HittableTags.ObjectTags)) return;
-        Debug.Log("Bis"); 
         TDS_Damageable _target = other.GetComponent<TDS_Damageable>();
 
         if (!_target || TouchedObjects.ContainsValue(_target)) return;
