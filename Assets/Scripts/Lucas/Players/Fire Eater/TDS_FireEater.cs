@@ -117,19 +117,9 @@ public class TDS_FireEater : TDS_Player
 
     #region Drunk
     /// <summary>
-    /// Method to call when crashing on ground to prevent the character from moving.
-    /// </summary>
-    public void CrashOnGround() => IsParalyzed = true;
-
-    /// <summary>
     /// Starts the coroutine to make the Fire Eater get drunk.
     /// </summary>
     public void GetDrunk() => StartCoroutine(GetDrunkCotourine());
-
-    /// <summary>
-    /// Call this when the character is getting up from crashing on ground.
-    /// </summary>
-    public void GetUpFromCrash() => IsParalyzed = false;
 
     /// <summary>
     /// Makes the Fire Eater get drunk, and sober him up after a certain time.
@@ -184,6 +174,19 @@ public class TDS_FireEater : TDS_Player
     #endregion
 
     #region Attacks
+    /// <summary>
+    /// Spit a fire ball in front of the Fire Eater.
+    /// </summary>
+    /// <param name="_isUltra">Set 0 for small fire ball, anything else for ultra.
+    /// 'Just cause animation don't take a boolean... What a waste.</param>
+    public void SpitFireBall(int _isUltra)
+    {
+        GameObject _fireBall = PhotonNetwork.Instantiate("FireBall", transform.position + (transform.right * .025f) + (Vector3.up * 1.35f), transform.rotation, 0);
+
+        _fireBall.GetComponentInChildren<TDS_HitBox>().Activate(attacks[_isUltra == 0 ? 12 : 13]);
+        if (_isUltra != 0) _fireBall.transform.localScale *= 1.15f;
+    }
+
     /// <summary>
     /// Performs the Super attack if the gauge is filled enough.
     /// </summary>

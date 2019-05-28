@@ -727,7 +727,7 @@ public class TDS_Player : TDS_Character
     public override void StopAttack()
     {
         // Stop it, please
-        DesactiveHitBox();
+        if (hitBox.IsActive) DesactiveHitBox();
 
         Invoke("EndAttack", .1f);
     }
@@ -1203,6 +1203,11 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
+    /// Freezes the player's movements.
+    /// </summary>
+    public void FreezePlayer() => IsParalyzed = true;
+
+    /// <summary>
     /// Starts a jump.
     /// Jump higher while maintaining the jump button.
     /// When releasing the button, stop adding force to the jump.
@@ -1374,6 +1379,11 @@ public class TDS_Player : TDS_Character
 
         jumpCoroutine = StartCoroutine(Jump());
     }
+
+    /// <summary>
+    /// Unfreezes the player's movements.
+    /// </summary>
+    public void UnfreezePlayer() => IsParalyzed = false;
     #endregion
 
     #region Animator
