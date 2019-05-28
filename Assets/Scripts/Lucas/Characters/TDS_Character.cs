@@ -463,7 +463,7 @@ public abstract class TDS_Character : TDS_Damageable
     /// Fill the life bar
     /// </summary>
     /// <param name="_health"></param>
-    public void UpdateLifeBar(int _health)
+    public virtual void UpdateLifeBar(int _health)
     {
         if (!HealthBar || !TDS_UIManager.Instance) return;
         float _fillingValue = Mathf.Clamp((float)healthCurrent / (float)healthMax, 0, 1);
