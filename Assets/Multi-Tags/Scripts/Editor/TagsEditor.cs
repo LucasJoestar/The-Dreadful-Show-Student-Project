@@ -172,7 +172,6 @@ public class TagsEditor : Editor
 
         // Saves the asset
         EditorUtility.SetDirty(tagsSO);
-        AssetDatabase.SaveAssets();
     }
 
     /// <summary>

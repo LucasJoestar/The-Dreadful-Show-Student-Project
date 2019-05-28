@@ -166,7 +166,7 @@ public static class MultiTags
     /// <returns>Returns first game object found having the tag, or null if none.</returns>
     public static GameObject FindObjectWithTag(string _tag)
     {
-        return Object.FindObjectsOfType<GameObject>().Where(g => g.GetTagsName().Contains(_tag)).FirstOrDefault();
+        return Object.FindObjectsOfType<GameObject>().Where(g => g.GetTagNames().Contains(_tag)).FirstOrDefault();
     }
 
     /// <summary>
@@ -176,7 +176,7 @@ public static class MultiTags
     /// <returns>Returns an array of all the game objects found having the tag.</returns>
     public static GameObject[] FindObjectsWithTag(string _tag)
     {
-        return Object.FindObjectsOfType<GameObject>().Where(g => g.GetTagsName().Contains(_tag)).ToArray();
+        return Object.FindObjectsOfType<GameObject>().Where(g => g.GetTagNames().Contains(_tag)).ToArray();
     }
     #endregion
 }

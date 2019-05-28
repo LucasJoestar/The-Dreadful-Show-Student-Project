@@ -19,9 +19,7 @@ public class TagsEditorWindow : EditorWindow
 	 *	####### TO DO #######
 	 *	#####################
      * 
-     *      • Create a cool window with multiple tabs, allowing to edit tags or change settings.
-     *      
-     *      • Search system for tags.
+     *      Nothing to see here...
      * 
 	 *	#####################
 	 *	### MODIFICATIONS ###
@@ -77,30 +75,42 @@ public class TagsEditorWindow : EditorWindow
 	*/
 
     #region Fields / Properties
+    /// <summary>
+    /// E-mail address used for contact.
+    /// </summary>
+    private const string                            CONTACT_EMAIL                   = "LucasGuibert.Pro@laposte.net";
+
+
     /// <summary>Backing field for <see cref="Reference"/>.</summary>
-    private TagsSO                  reference                       = null;
+    [SerializeField] private TagsSO                 reference                       = null;
 
     /// <summary>
     /// Editor of the tags object reference.
     /// </summary>
-    private TagsEditor              referenceEditor                 = null;
+    [SerializeField] private TagsEditor             referenceEditor                 = null;
 
 
     /// <summary>
     /// Index used for the window toolbar.
     /// </summary>
-    private int                     toolbarIndex                    = 0;
+    [SerializeField] private int                    toolbarIndex                    = 0;
 
     /// <summary>
     /// All available options of the toolbar.
     /// </summary>
-    private readonly GUIContent[]   toolbarOptions                  = new GUIContent[] { new GUIContent("Tags", "Edit the tags of the project."), new GUIContent("Informations", "Everything you need to know to perfectly use these tags."), new GUIContent("Contact", "How to contact me, if you have any question or suggestion.") };
+    [SerializeField] private readonly GUIContent[]  toolbarOptions                  = new GUIContent[] { new GUIContent("Tags", "Edit the tags of the project."), new GUIContent("Informations", "Everything you need to know to perfectly use these tags."), new GUIContent("Contact", "How to contact me, if you have any question or suggestion.") };
+
+
+    /// <summary>
+    /// GUIStyle used to draw a clickable link.
+    /// </summary>
+    [SerializeField] private GUIStyle               linkStyle                       = null;
 
 
     /// <summary>
     /// Vector of this window scrollbar.
     /// </summary>
-    private Vector2                 scrollbar                       = Vector2.zero;
+    [SerializeField] private Vector2                scrollbar                       = Vector2.zero;
     #endregion
 
     #region Methods
@@ -126,11 +136,85 @@ public class TagsEditorWindow : EditorWindow
     }
 
     /// <summary>
+    /// Draws tags of the project.
+    /// </summary>
+    private void DrawTags()
+    {
+        referenceEditor.DrawTags();
+    }
+
+    /// <summary>
     /// Draws informations about tags and how to use them.
     /// </summary>
     private void DrawInformations()
     {
-        
+        GUILayout.Space(10);
+        EditorGUILayout.LabelField("Multi-Tags System : What it is and how does it works", EditorStyles.boldLabel);
+        GUILayout.Space(5);
+
+        GUILayout.Label("     This Multi-Tags system has been created it the purpose of adding multiple tags to a single GameObject. " +
+                        "Its structure is reflected around the Unity tag system, to avoid adding any component, and allowing the use it directly on any GameObject.\n\n" +
+                        "This system works by creating a Unity tag containing all your GameObject tags separated by a specific char.\n\n" +
+                        "All created tags are stored in a Scriptable Object located in a Resources folder, in another folder named \"Tags\". " +
+                        "You can copy / paste this asset to import the tags of a project to another one.", EditorStyles.wordWrappedLabel);
+
+        GUILayout.Space(10);
+        EditorGUILayout.LabelField("How to add tags to a GameObject", EditorStyles.boldLabel);
+        GUILayout.Space(5);
+
+        GUILayout.Label("     You can add any created tag to a GameObject by using the little \"+\" button in top of the inspector, in the Tag section. " +
+                        "To remove a tag, just click on the \"-\" button to the left of the tag you want to remove.\n\n" +
+                        "You can create a new tag in the Tags editor window, which you can open by clicking on the \"Edit Tags\" button to the right of the Tag section in the Inspector " +
+                        "of any GameObject, or in the main toolbar by clicking on \"Window/Tags\".", EditorStyles.wordWrappedLabel);
+
+        GUILayout.Space(10);
+        EditorGUILayout.LabelField("The Tag & Tags classes", EditorStyles.boldLabel);
+        GUILayout.Space(5);
+
+        GUILayout.Label("     In order to simplify the use of tags, two classes are here to help you : the Tag & Tags ones.\n\n" +
+                        "   • The first one, \"Tag\", allows you to stock a simple tag reference in a field. You can access this tag name with the \"Name\" field inside it.\n\n" +
+                        "   • The second one, \"Tags\", allows you to stock multiple tag references in one field. It contains a Tag array in the field named \"ObjectTags\", " +
+                        "along with multiple methods to add or remove tags from it. You can also get all this object tag names with the property \"TagNames\".\n\n" +
+                        "Those two classes also have their own property drawer, to make them more pleasant to use.", EditorStyles.wordWrappedLabel);
+
+        GUILayout.Space(10);
+        EditorGUILayout.LabelField("Compare GameObjects tags", EditorStyles.boldLabel);
+        GUILayout.Space(5);
+
+        GUILayout.Label("     You can access any GameObject tags with the \"GetTags\" and \"GetTagNames\" extension methods. " +
+                        "To compare the tags of a GameObject, you can use the \"HasTag\" and \"HasTags\" extension methods. Note that for this, you can store tags to compare to " +
+                        "in your own scripts in a \"Tag\" or \"Tags\" field, two classes which are described just above.", EditorStyles.wordWrappedLabel);
+
+        GUILayout.Space(10);
+        EditorGUILayout.LabelField("Useful utility classes", EditorStyles.boldLabel);
+        GUILayout.Space(5);
+
+        GUILayout.Label("     There are also two big static classes that should prove their utility if you want to have more control over your tags.\n\n" +
+                        "   • The first one if the \"MultiTags\" class : this is a runtime accessible class with multiple useful methods and properties allowing things such as " +
+                        "finding a GameObject with a specific tag, getting all tags of the game, getting the Tag object from a tag name, adding a new tag to the game at runtime, and more.\n\n" +
+                        "   • The second one is called \"MultiTagsUtility\" : this is an editor only class with multiple useful methods and properties, allowing things like adding or removing " +
+                        "a tag to a GameObject, creating or destroying a tag, or draw Tag and Tags fields in the Editor with or without auto-layout.", EditorStyles.wordWrappedLabel);
+
+        GUILayout.Space(10);
+        EditorGUILayout.LabelField("Other stuff", EditorStyles.boldLabel);
+        GUILayout.Space(5);
+
+        GUILayout.Label("     All classes, along with their methods, fields and properties, are fully commentated, so feel free to explore them so that you'll get a better understanding " +
+                        "of their behaviour and all the things you can do with them.\n\n" +
+                        "Note that you cannot change a GameObject tags at runtime. Well, that's true ; by working around the Unity tag system, this contrains such possibilities, since " +
+                        "tags need to be created before compilation.\n " +
+                        "But in fact, there is a trick : you can access your GameObject tags with the \"GetTags\" extension method, which returns you a Tag array, and then create " +
+                        "a Tags object with it, and store it in a field. Then, you can change the tags contained in this field, and compare these tags instead of " +
+                        "the GameObject ones. Yeah, this is not the most practical way to proceed, but it's a possible way to do that.", EditorStyles.wordWrappedLabel);
+
+        GUILayout.Space(10);
+        EditorGUILayout.LabelField("That's the end of that overview", EditorStyles.boldLabel);
+        GUILayout.Space(5);
+
+        GUILayout.Label("     Well, now you have all the informations that you need to use this Multi-Tags system ; so go on, give it a try, and I hope you'll have fun with it !",
+                        EditorStyles.wordWrappedLabel);
+
+        GUILayout.Space(15);
     }
 
     /// <summary>
@@ -138,7 +222,27 @@ public class TagsEditorWindow : EditorWindow
     /// </summary>
     private void DrawContact()
     {
+        GUILayout.Space(10);
 
+        GUILayout.Label("     If you encounter any bug, issue, or other problem with this Multi-Tags system, or if you have any suggestion to improve this plugin, " +
+                        "you can reach me at the following e-mail address :\n", EditorStyles.wordWrappedLabel);
+
+        if (linkStyle == null)
+        {
+            linkStyle = new GUIStyle(EditorStyles.label);
+            linkStyle.richText = true;
+        }
+
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(10);
+        if (GUILayout.Button("<b><color=blue>" + CONTACT_EMAIL + "</color></b>", linkStyle))
+        {
+            Application.OpenURL("mailto: " + CONTACT_EMAIL + " ? subject = " + "Multi-Tags");
+
+        }
+        EditorGUILayout.EndHorizontal();
+
+        GUILayout.Space(15);
     }
     #endregion
 
@@ -198,7 +302,7 @@ public class TagsEditorWindow : EditorWindow
         {
             case 0:
                 // Edit this project tags
-                referenceEditor.DrawTags();
+                DrawTags();
                 break;
 
             case 1:
@@ -364,6 +468,8 @@ public class CreateTagWindow : EditorWindow
         else if (doesNameContainSeparator)
         {
             doesNameContainSeparator = false;
+
+            SetSmallSize();
         }
 
         // If a tag with the same name already exist, indicate it and refuse to create the tag
@@ -377,6 +483,8 @@ public class CreateTagWindow : EditorWindow
         else if (doesNameAlreadyExist)
         {
             doesNameAlreadyExist = false;
+
+            SetSmallSize();
         }
 
         // If the name entered is empty, indicate it and refuse to create the tag

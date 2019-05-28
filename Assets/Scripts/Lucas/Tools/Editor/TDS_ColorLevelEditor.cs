@@ -428,7 +428,7 @@ public class TDS_ColorLevelEditor : EditorWindow
         DrawColorGroupFolders(mainFolder.Folders, mainFolder);
         GUILayout.Space(10);
         DrawColorGroups(mainFolder.ColorGroups, mainFolder);
-        Debug.Log("Length => " + allGroups.Count);
+
         GUILayout.Space(10);
         EditorGUILayout.EndScrollView();
     }
