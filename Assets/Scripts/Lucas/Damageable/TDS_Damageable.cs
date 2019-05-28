@@ -89,6 +89,11 @@ public class TDS_Damageable : PunBehaviour
 
     #region Events
     /// <summary>
+    /// Event called when the damageable gets burn, with the burning damages as parameter.
+    /// </summary>
+    public event Action<int> OnBurn = null;
+
+    /// <summary>
     /// Die event.
     /// Called when this object just die, meaning when it is not indestructible and its health reach zero.
     /// </summary>
@@ -105,6 +110,11 @@ public class TDS_Damageable : PunBehaviour
     /// Called when this object health changed, with its new value as parameter
     /// </summary>
     public event Action<int> OnHealthChanged = null;
+
+    /// <summary>
+    /// Event called when stopping this damageable from bringing it closer.
+    /// </summary>
+    public event Action OnStopBringingCloser = null;
 
     /// <summary>
     /// Take damage event.
@@ -171,10 +181,14 @@ public class TDS_Damageable : PunBehaviour
             {
                 animator.SetTrigger("REVIVE");
                 IsInvulnerable = false;
+                gameObject.layer = layerBeforeDeath;
             }
             else
             {
                 IsInvulnerable = true;
+
+                layerBeforeDeath = gameObject.layer;
+                gameObject.layer = LayerMask.NameToLayer("Dead");
             }
 
             if (value == true)
@@ -250,6 +264,11 @@ public class TDS_Damageable : PunBehaviour
             if (healthCurrent > value) HealthCurrent = value;
         }
     }
+
+    /// <summary>
+    /// Layer of this object just before its death.
+    /// </summary>
+    private int layerBeforeDeath = 0;
     #endregion
 
     #region Coroutines
@@ -287,7 +306,6 @@ public class TDS_Damageable : PunBehaviour
     /// </summary>
     protected virtual void Die()
     {
-        gameObject.layer = LayerMask.NameToLayer("Dead");
     }
 
     /// <summary>
@@ -374,6 +392,8 @@ public class TDS_Damageable : PunBehaviour
         }
 
         bringingCloserCoroutine = null;
+
+        OnStopBringingCloser?.Invoke();
     }
 
 
@@ -404,8 +424,11 @@ public class TDS_Damageable : PunBehaviour
             float _wait = Random.Range(.5f, 2);
             yield return new WaitForSeconds(_wait);
 
-            TakeDamage(Random.Range(_damagesMin, _damagesMax));
+            int _damages = Random.Range(_damagesMin, _damagesMax);
+            TakeDamage(_damages);
             _duration -= _wait;
+
+            OnBurn?.Invoke(_damages);
         }
 
         burningCoroutine = null;
