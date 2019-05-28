@@ -243,10 +243,6 @@ public class TDS_UIManager : PunBehaviour
     {
         StopFilling(_filledImage); 
         filledImages.Add(_filledImage, StartCoroutine(UpdateFilledImage(_filledImage, _fillingValue))); 
-        if(PhotonNetwork.isMasterClient)
-        {
-            //CALL ONLINE METHOD HERE
-        }
     }
 
     /// <summary>
@@ -286,11 +282,14 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_boss"></param>
     public void SetBossLifeBar(TDS_Boss _boss)
     {
-        if (!PhotonNetwork.isMasterClient || !bossHealthBar) return;
-        bossHealthBar.SetOwner(_boss);
-        _boss.HealthBar = bossHealthBar.FilledImage;
-        //_boss.OnTakeDamage += _boss.UpdateLifeBar;
-        _boss.OnDie += () => bossHealthBar.gameObject.SetActive(false);
+        if (!bossHealthBar) return;
+        if(PhotonNetwork.isMasterClient)
+        {
+            bossHealthBar.SetOwner(_boss);
+            _boss.HealthBar = bossHealthBar.FilledImage;
+            //_boss.OnTakeDamage += _boss.UpdateLifeBar;
+            _boss.OnDie += () => bossHealthBar.gameObject.SetActive(false);
+        }
         bossHealthBar.gameObject.SetActive(true); 
     }
 
@@ -301,6 +300,7 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_enemy"></param>
     public void SetEnemyLifebar(TDS_Enemy _enemy)
     {
+        if (!PhotonNetwork.isMasterClient) return; 
         Vector3 _offset =  Vector3.up * _enemy.transform.localScale.y * 4; 
         TDS_LifeBar _healthBar = PhotonNetwork.Instantiate("LifeBar", _enemy.transform.position + _offset, Quaternion.identity, 0).GetComponent<TDS_LifeBar>();
         _healthBar.SetOwner(_enemy, _offset, true);
@@ -319,7 +319,7 @@ public class TDS_UIManager : PunBehaviour
         {
             playerHealthBar.SetOwner(_player);
             _player.HealthBar = playerHealthBar.FilledImage;
-            //_player.OnTakeDamage += _player.UpdateLifeBar; 
+            _player.OnTakeDamage += _player.UpdateLifeBar; 
         }
 
     }
