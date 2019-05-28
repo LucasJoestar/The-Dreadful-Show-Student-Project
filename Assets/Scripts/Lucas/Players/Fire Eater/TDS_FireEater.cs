@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
+
+using Random = UnityEngine.Random;
 
 public class TDS_FireEater : TDS_Player 
 {
@@ -25,6 +28,13 @@ public class TDS_FireEater : TDS_Player
 	 *	-----------------------------------
 	*/
 
+    #region Events
+    /// <summary>
+    /// Event called when triggering the mini game.
+    /// </summary>
+    public event Action OnTriggerMiniGame = null;
+    #endregion
+
     #region Fields / Properties
 
     #region Variables
@@ -45,6 +55,11 @@ public class TDS_FireEater : TDS_Player
             isDrunk = value;
         }
     }
+
+    /// <summary>
+    /// Indicates if the Fire Eater is currently in the mini game.
+    /// </summary>
+    [SerializeField] private bool isInMiniGame = false;
 
     /// <summary>Backing field for <see cref="DrunkSpeedCoef"/>.</summary>
     [SerializeField] private float drunkSpeedCoef = .8f;
@@ -100,6 +115,11 @@ public class TDS_FireEater : TDS_Player
             drunkJumpForce = value;
         }
     }
+
+    /// <summary>
+    /// Anchor used for the mini game sprites.
+    /// </summary>
+    [SerializeField] private Transform miniGameAnchor = null;
     #endregion
 
     #region Memory
@@ -151,6 +171,59 @@ public class TDS_FireEater : TDS_Player
     }
     #endregion
 
+    #region MiniGame
+    /// <summary>
+    /// Make the mini game fun !
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator MiniGame()
+    {
+        OnTriggerMiniGame = () => animator.SetInteger("FireID", 999999);
+        OnTriggerMiniGame += GetDrunk;
+
+        animator.SetFloat("MiniGameSpeed", Random.Range(.25f, 1.05f));
+        isInMiniGame = true;
+
+        while (isInMiniGame)
+        {
+            yield return null;
+
+            if (Input.GetButtonDown(LightAttackButton) || Input.GetButtonDown(HeavyAttackButton))
+            {
+                OnTriggerMiniGame?.Invoke();
+                animator.SetTrigger("Fire");
+                break;
+            }   
+        }
+    }
+
+    /// <summary>
+    /// Set the Fire Eater mini game state.
+    /// </summary>
+    /// <param name="_state"></param>
+    public void SetMiniGameState(int _state)
+    {
+        switch (_state)
+        {
+            case 0:
+                StartCoroutine(MiniGame());
+                break;
+
+            case 1:
+                OnTriggerMiniGame = null;
+                break;
+
+            case 2:
+                OnTriggerMiniGame = () => animator.SetInteger("FireID", 0);
+                break;
+
+            default:
+                isInMiniGame = false;
+                break;
+        }
+    }
+    #endregion
+
     #region Actions
     /// <summary>
     /// Performs the catch attack of this player.
@@ -183,6 +256,8 @@ public class TDS_FireEater : TDS_Player
     {
         GameObject _fireBall = PhotonNetwork.Instantiate("FireBall", transform.position + (transform.right * .025f) + (Vector3.up * 1.35f), transform.rotation, 0);
 
+        _fireBall.layer = gameObject.layer;
+
         _fireBall.GetComponentInChildren<TDS_HitBox>().Activate(attacks[_isUltra == 0 ? 12 : 13]);
         if (_isUltra != 0) _fireBall.transform.localScale *= 1.15f;
     }
@@ -199,6 +274,16 @@ public class TDS_FireEater : TDS_Player
     #endregion
 
     #region Movements
+    /// <summary>
+    /// Flips this character to have they looking at the opposite side.
+    /// </summary>
+    public override void Flip()
+    {
+        base.Flip();
+
+        miniGameAnchor.Rotate(Vector3.up, 180);
+    }
+
     /// <summary>
     /// Starts a brand new jump !
     /// </summary>

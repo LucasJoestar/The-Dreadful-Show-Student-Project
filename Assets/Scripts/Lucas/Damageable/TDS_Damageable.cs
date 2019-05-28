@@ -165,6 +165,8 @@ public class TDS_Damageable : PunBehaviour
 
             #if UNITY_EDITOR
             if (!UnityEditor.EditorApplication.isPlaying) return;
+            #endif
+
             else if (value == false)
             {
                 animator.SetTrigger("REVIVE");
@@ -174,7 +176,6 @@ public class TDS_Damageable : PunBehaviour
             {
                 IsInvulnerable = true;
             }
-            #endif
 
             if (value == true)
             {
@@ -286,6 +287,7 @@ public class TDS_Damageable : PunBehaviour
     /// </summary>
     protected virtual void Die()
     {
+        gameObject.layer = LayerMask.NameToLayer("Dead");
     }
 
     /// <summary>
@@ -348,7 +350,7 @@ public class TDS_Damageable : PunBehaviour
     /// Bring this damageable closer from a certain distance.
     /// </summary>
     /// <param name="_distance">Distance to browse.</param>
-    public void BringCloser(float _distance)
+    public virtual void BringCloser(float _distance)
     {
         if (bringingCloserCoroutine != null) StopCoroutine(bringingCloserCoroutine);
 

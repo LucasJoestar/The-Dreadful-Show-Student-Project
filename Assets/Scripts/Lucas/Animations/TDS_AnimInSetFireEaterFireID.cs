@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 
-public class TDS_AnimStopAttack : StateMachineBehaviour
+public class TDS_AnimInSetFireEaterFireID : StateMachineBehaviour
 {
     /// <summary>
-    /// Player associated to this animator.
+    /// ID used for the next fire attack.
     /// </summary>
-    private TDS_Player player = null;
+    [SerializeField] private int fireID = 0;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        animator.SetInteger("FireID", fireID);
+    }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -20,11 +20,10 @@ public class TDS_AnimStopAttack : StateMachineBehaviour
     //}
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        if (!player) player = animator.GetComponent<TDS_Player>();
-        player.StopAttack();
-    }
+    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    //{
+    //    
+    //}
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

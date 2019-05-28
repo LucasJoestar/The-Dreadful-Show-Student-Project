@@ -51,6 +51,9 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
 
     /// <summary>SerializedProperties for <see cref="TDS_FireEater.drunkJumpForce"/> of type <see cref="int"/>.</summary>
     private SerializedProperty drunkJumpForce = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_FireEater.miniGameAnchor"/> of type <see cref="Transform"/>.</summary>
+    private SerializedProperty miniGameAnchor = null;
     #endregion
 
     #region Foldouts
@@ -149,7 +152,7 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
     /// </summary>
     private void DrawComponentsAndReferences()
     {
-
+        TDS_EditorUtility.ObjectField("Mini Game Anchor", "Anchor used for the mini game sprites", miniGameAnchor, typeof(Transform));
     }
 
     /// <summary>
@@ -310,6 +313,7 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
         soberUpTimer = serializedObject.FindProperty("soberUpTimer");
         xMovementAfterDrunkenDodge = serializedObject.FindProperty("xMovementAfterDrunkenDodge");
         drunkJumpForce = serializedObject.FindProperty("drunkJumpForce");
+        miniGameAnchor = serializedObject.FindProperty("miniGameAnchor");
 
         // Loads the editor folded & unfolded values of this script
         isFireEaterUnfolded = EditorPrefs.GetBool("isFireEaterUnfolded", isFireEaterUnfolded);
