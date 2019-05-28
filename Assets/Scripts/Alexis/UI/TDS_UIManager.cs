@@ -19,6 +19,18 @@ public class TDS_UIManager : PunBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
      *	
+     *	
+     *	Date :			[28/05/2019]
+	 *	Author :		[THIEBAUT Alexis]
+	 *
+	 *	Changes :
+	 *
+	 *	[Set the lifebars managed in local]
+     *	    - Set a new SerializeField for the prefab of the lifebars
+     *	    - Modify methods to manage the lifebat in local
+	 *
+	 *	-----------------------------------
+     *	
 	 * 	Date :			[10/04/2019]
 	 *	Author :		[THIEBAUT Alexis]
 	 *
@@ -37,7 +49,7 @@ public class TDS_UIManager : PunBehaviour
 	 *
 	 *	[Adding method to stop the filling coroutine]
      *	    - Implementing method to stop the filling coroutine linked to an image
-     *	    - Implementing Method to set the life bar of an enemy
+     *	    - Implementing Method SetBossLifeBar, SetEnemyLifeBar and SetPlayerLifeBar to set the life bar of an enemy
 	 *
 	 *	-----------------------------------
      *	
@@ -304,7 +316,7 @@ public class TDS_UIManager : PunBehaviour
     public void SetEnemyLifebar(TDS_Enemy _enemy)
     {
         if (lifeBarPrefab == null || !canvasWorld) return; 
-        Vector3 _offset =  Vector3.up * _enemy.transform.localScale.y * 4; 
+        Vector3 _offset =  Vector3.up * _enemy.transform.localScale.y * 2; 
         TDS_LifeBar _healthBar = UnityEngine.Object.Instantiate(lifeBarPrefab, _enemy.transform.position + _offset, Quaternion.identity, canvasWorld.transform).GetComponent<TDS_LifeBar>();
 
         _healthBar.SetOwner(_enemy, _offset, true);

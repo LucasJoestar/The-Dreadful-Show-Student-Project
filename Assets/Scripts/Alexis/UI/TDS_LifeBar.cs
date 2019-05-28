@@ -20,6 +20,18 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     * 
+     *  Date :			[28/05/2019]
+	 *	Author :		[THIEBAUT Alexis]
+	 *
+	 *	Changes :
+	 *
+	 *	[Removing the online settings]
+     *	    - Remove the inheritance from PunBehaviour and the Interface IPunObservable
+     *	    - Set filling values are now set in local
+	 *
+	 *	-----------------------------------
+     *	
 	 *	Date :			[01/04/2019]
 	 *	Author :		[THIEBAUT Alexis]
 	 *

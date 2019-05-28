@@ -163,12 +163,14 @@ public abstract class TDS_Boss : TDS_Enemy
             #endregion
             #region Getting In Range
             case EnemyState.GettingInRange:
-                yield return StartCoroutine(CastDetection());
+                additionalCoroutine = StartCoroutine(CastDetection());
+                yield return additionalCoroutine; 
                 break;
             #endregion
             #region Attacking
             case EnemyState.Attacking:
-                yield return StartCoroutine(CastAttack());
+                additionalCoroutine = StartCoroutine(CastAttack());
+                yield return additionalCoroutine;
                 break;
             #endregion
             #region Grabbing Object
@@ -184,8 +186,9 @@ public abstract class TDS_Boss : TDS_Enemy
             default:
                 break;
         }
+        additionalCoroutine = null; 
         yield return new WaitForSeconds(.1f);
-        StartCoroutine(Behaviour());
+        behaviourCoroutine = StartCoroutine(Behaviour());
         yield break;
     }
 
@@ -359,12 +362,14 @@ public abstract class TDS_Boss : TDS_Enemy
         {
             SetAnimationState((int)EnemyAnimationState.Hit);
             agent.StopAgent();
+            hitBox.Desactivate();
             StartCoroutine(ApplyRecoil(_position));
             enemyState = EnemyState.MakingDecision;
         }
         else if(isDead)
         {
             agent.StopAgent();
+            hitBox.Desactivate();
             StartCoroutine(ApplyRecoil(_position)); 
         }
     }
