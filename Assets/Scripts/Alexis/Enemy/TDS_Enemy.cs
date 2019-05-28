@@ -646,6 +646,10 @@ public abstract class TDS_Enemy : TDS_Character
     #endregion
 
     #region Overridden Methods
+    /// <summary>
+    /// Called when the enemy has to be brought closer
+    /// </summary>
+    /// <param name="_distance"></param>
     public override void BringCloser(float _distance)
     {
         StopAll();
@@ -820,7 +824,7 @@ public abstract class TDS_Enemy : TDS_Character
     {
         Vector3 _offset = Vector3.zero;
         int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;  
-        _offset.z = Random.Range(-.5f, .5f); 
+        _offset.z = Random.Range(-.2f, .2f); 
         if (throwable)
         {
             //Check if the agent is near enough to throw immediatly, or if he is to far away to throw
@@ -829,7 +833,7 @@ public abstract class TDS_Enemy : TDS_Character
         }
         else
         {
-            _offset.x = (Random.Range(GetMinRange(), GetMaxRange()) -.2f); 
+            _offset.x = .25f; 
         }
         _offset.x *= _coeff; 
         return playerTarget.transform.position + _offset; 
