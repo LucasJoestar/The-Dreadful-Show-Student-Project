@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon;
+using TMPro;
 using System;
 
 public class TDS_LobbyManager : PunBehaviour
@@ -28,11 +29,65 @@ public class TDS_LobbyManager : PunBehaviour
 	*/
 
     #region Fields / Properties
+    [Space]
+    [Space]
+    [SerializeField]
+    GameObject roomsUIRoot;
+    [Space]
+    [SerializeField]
+    GameObject launchButton;
+    [Space]
+    [SerializeField]
+    GameObject leaveButton;
+    [Space]
+    [SerializeField,Range(1,4)]
+    int minimumPlayerToLaunch = 1;
     string roomName = string.Empty;
+    [Space]
+    [SerializeField]
+    TMP_Text textPlayerCounter;
     #endregion
 
     #region Methods
     #region Original Methods   
+    void CreateRoom()
+    {
+        PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
+        Debug.Log("room name : " + roomName);
+    }
+
+    void InitMulti()
+    {
+        #region UI
+        launchButton.SetActive(false);
+        leaveButton.SetActive(false);
+        roomsUIRoot.SetActive(true);
+        textPlayerCounter.gameObject.SetActive(false);
+        #endregion
+    }
+
+    public void LaunchNLoadGame()
+    {
+        if (PhotonNetwork.isMasterClient && PhotonNetwork.room.PlayerCount >= minimumPlayerToLaunch)
+            PhotonNetwork.LoadLevel(1);
+    }
+
+    public void LeaveRoom()
+    {
+        //PhotonNetwork.LeaveRoom();
+        //PhotonNetwork.LeaveLobby();
+        PhotonNetwork.Disconnect();               
+    }
+
+    void PlayerCount()
+    {
+        if (!textPlayerCounter.gameObject.activeInHierarchy)
+            textPlayerCounter.gameObject.SetActive(true);
+        textPlayerCounter.text = $"Player : {PhotonNetwork.room.PlayerCount}/4";            
+        bool _canLaunch = PhotonNetwork.room.PlayerCount >= minimumPlayerToLaunch && PhotonNetwork.isMasterClient ? true : false ;
+        launchButton.SetActive(_canLaunch);
+    }
+
     public void SelectRoom(Button _btn)
     {        
         RoomId _roomId;
@@ -60,13 +115,9 @@ public class TDS_LobbyManager : PunBehaviour
             PhotonNetwork.autoJoinLobby = false;
             PhotonNetwork.automaticallySyncScene = true;
             PhotonNetwork.ConnectUsingSettings(_stringID);
-        }        
-    }
+        }
 
-    void CreateRoom()
-    {
-        PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
-        Debug.Log("room name : " + roomName);
+        roomsUIRoot.SetActive(false);
     }
     #endregion
 
@@ -81,6 +132,10 @@ public class TDS_LobbyManager : PunBehaviour
         Debug.Log("connected to Master");
         CreateRoom();
     }
+    public override void OnDisconnectedFromPhoton()
+    {
+        InitMulti();        
+    }
     public override void OnJoinedLobby()
     {
         Debug.Log("connected to Lobby");
@@ -88,12 +143,25 @@ public class TDS_LobbyManager : PunBehaviour
     }
     public override void OnJoinedRoom()
     {
-        Debug.Log("connected to Room");
-    }    
+        Debug.Log("connected to Room there is : " + PhotonNetwork.room.PlayerCount + " player here !!");
+        leaveButton.SetActive(true);
+        PlayerCount();
+    }
+    public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
+    {
+        PlayerCount();
+    }
+    public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
+    {
+        PlayerCount();
+    }
     #endregion
 
     #region Unity Methods
-
+    private void Start()
+    {
+        InitMulti();
+    }
     #endregion
     #endregion
 }
