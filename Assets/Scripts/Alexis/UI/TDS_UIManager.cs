@@ -259,17 +259,17 @@ public class TDS_UIManager : PunBehaviour
         ButtonSelectionBeardLady.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.BeardLady));
         ButtonSelectionJuggler.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.Juggler));
         //ButtonSelectionFatLady.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.FatLady));
-        //ButtonSelectionFireEater.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.FireEater));
+        ButtonSelectionFireEater.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.FireEater));
 
         ButtonSelectionBeardLady.onClick.AddListener(() => ActivateMenu(UIState.InGame));
         ButtonSelectionJuggler.onClick.AddListener(() => ActivateMenu(UIState.InGame));
         //ButtonSelectionFatLady.onClick.AddListener(() => ActivateMenu(UIState.InGame));
-        //ButtonSelectionFireEater.onClick.AddListener(() => ActivateMenu(UIState.InGame));
+        ButtonSelectionFireEater.onClick.AddListener(() => ActivateMenu(UIState.InGame));
 
         ButtonSelectionBeardLady.onClick.AddListener(() => SetButtonInteractable(ButtonSelectionBeardLady, PlayerType.BeardLady, false)); 
         ButtonSelectionJuggler.onClick.AddListener(() => SetButtonInteractable(ButtonSelectionJuggler, PlayerType.Juggler, false));
         //ButtonSelectionFatLady.onClick.AddListener(() => SetButtonInteractable(ButtonSelectionFatLady,  PlayerType.FatLady)); 
-        //ButtonSelectionFireEater.onClick.AddListener(() => SetButtonInteractable(ButtonSelectionFireEater,  PlayerType.FireEater)); 
+        ButtonSelectionFireEater.onClick.AddListener(() => SetButtonInteractable(ButtonSelectionFireEater,  PlayerType.FireEater, false)); 
 
         ButtonQuitPause.onClick.AddListener(() => ActivateMenu(UIState.InGame));
     }
