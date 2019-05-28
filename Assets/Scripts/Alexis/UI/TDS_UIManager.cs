@@ -316,7 +316,7 @@ public class TDS_UIManager : PunBehaviour
     public void SetEnemyLifebar(TDS_Enemy _enemy)
     {
         if (lifeBarPrefab == null || !canvasWorld) return; 
-        Vector3 _offset =  Vector3.up * _enemy.transform.localScale.y * 2; 
+        Vector3 _offset =  Vector3.up * _enemy.transform.localScale.y * 3; 
         TDS_LifeBar _healthBar = UnityEngine.Object.Instantiate(lifeBarPrefab, _enemy.transform.position + _offset, Quaternion.identity, canvasWorld.transform).GetComponent<TDS_LifeBar>();
 
         _healthBar.SetOwner(_enemy, _offset, true);

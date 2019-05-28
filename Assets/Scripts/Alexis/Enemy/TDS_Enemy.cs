@@ -646,30 +646,26 @@ public abstract class TDS_Enemy : TDS_Character
     #endregion
 
     #region Overridden Methods
-    public override void PutOnTheGround()
+    /// <summary>
+    /// Called when the enemy has to be brought closer
+    /// </summary>
+    /// <param name="_distance"></param>
+    public override void BringCloser(float _distance)
     {
-        if (!canBeDown || isDead) return; 
-        base.PutOnTheGround();
-        if (IsDown)
-        {
-            agent.StopAgent();
-            if (throwable) DropObject();
+        StopAll();
+        SetAnimationState((int)EnemyAnimationState.Brought); 
+        base.BringCloser(_distance);
+    }
 
-            //StopAllCoroutines();
-            if (behaviourCoroutine != null)
-            {
-                StopCoroutine(behaviourCoroutine);
-                behaviourCoroutine = null;
-            }
-            if (additionalCoroutine != null)
-            {
-                StopCoroutine(additionalCoroutine);
-                additionalCoroutine = null;
-            }
-
-            enemyState = EnemyState.MakingDecision;
-            SetAnimationState((int)EnemyAnimationState.Grounded); 
-        }
+    /// <summary>
+    /// Burn the character during a certain amount of time
+    /// </summary>
+    /// <param name="_damagesMin">Min burn damages</param>
+    /// <param name="_damagesMax">Max Burn damages</param>
+    /// <param name="_duration">Duration of the burning effect</param>
+    public override void Burn(int _damagesMin, int _damagesMax, float _duration)
+    {
+        base.Burn(_damagesMin, _damagesMax, _duration);
     }
 
     /// <summary>
@@ -712,6 +708,20 @@ public abstract class TDS_Enemy : TDS_Character
     {
         base.IncreaseSpeed();
         agent.Speed = speedCurrent;
+    }
+
+    /// <summary>
+    /// Put the character on the ground
+    /// </summary>
+    public override void PutOnTheGround()
+    {
+        if (!canBeDown || isDead || IsDown) return;
+        base.PutOnTheGround();
+        if (IsDown)
+        {
+            StopAll();
+            SetAnimationState((int)EnemyAnimationState.Grounded);
+        }
     }
 
     /// <summary>
@@ -763,22 +773,8 @@ public abstract class TDS_Enemy : TDS_Character
         bool _isTakingDamages = base.TakeDamage(_damage);
         if (_isTakingDamages)
         {
-            agent.StopAgent();
-            if (throwable) DropObject();
+            StopAll(); 
 
-            //StopAllCoroutines();
-            if (behaviourCoroutine != null)
-            {
-                StopCoroutine(behaviourCoroutine);
-                behaviourCoroutine = null;
-            }
-            if (additionalCoroutine != null)
-            {
-                StopCoroutine(additionalCoroutine);
-                additionalCoroutine = null;
-            }
-
-            enemyState = EnemyState.MakingDecision;
             if (!isDead && !IsDown)
             {
                 SetAnimationState((int)EnemyAnimationState.Hit);
@@ -828,7 +824,7 @@ public abstract class TDS_Enemy : TDS_Character
     {
         Vector3 _offset = Vector3.zero;
         int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;  
-        _offset.z = Random.Range(-.5f, .5f); 
+        _offset.z = Random.Range(-.2f, .2f); 
         if (throwable)
         {
             //Check if the agent is near enough to throw immediatly, or if he is to far away to throw
@@ -837,7 +833,7 @@ public abstract class TDS_Enemy : TDS_Character
         }
         else
         {
-            _offset.x = (Random.Range(GetMinRange(), GetMaxRange()) -.2f); 
+            _offset.x = .25f; 
         }
         _offset.x *= _coeff; 
         return playerTarget.transform.position + _offset; 
@@ -936,6 +932,27 @@ public abstract class TDS_Enemy : TDS_Character
     }
 
     /// <summary>
+    /// Stop the agent, drop the held object and stop the coroutines
+    /// </summary>
+    protected void StopAll()
+    {
+        agent.StopAgent();
+        if (throwable) DropObject();
+
+        //StopAllCoroutines();
+        if (behaviourCoroutine != null)
+        {
+            StopCoroutine(behaviourCoroutine);
+            behaviourCoroutine = null;
+        }
+        if (additionalCoroutine != null)
+        {
+            StopCoroutine(additionalCoroutine);
+            additionalCoroutine = null;
+        }
+    }
+
+    /// <summary>
     /// Set the bool isWaiting to false
     /// </summary>
     protected void StopWaiting() => isWaiting = false;
@@ -1000,22 +1017,8 @@ public abstract class TDS_Enemy : TDS_Character
     /// <param name="_position">Position of the attacker</param>
     protected virtual void ApplyDamagesBehaviour(int _damage, Vector3 _position)
     {
-        agent.StopAgent();
+        StopAll(); 
         hitBox.Desactivate(); 
-
-        //StopAllCoroutines();
-        if(behaviourCoroutine != null)
-        {
-            StopCoroutine(behaviourCoroutine);
-            behaviourCoroutine = null;
-        }
-        if(additionalCoroutine != null)
-        {
-            StopCoroutine(additionalCoroutine);
-            additionalCoroutine = null;
-        }
-        enemyState = EnemyState.MakingDecision;
-        if (throwable) DropObject();
         StartCoroutine(ApplyRecoil(_position));
 
         if (!isDead)
@@ -1037,6 +1040,8 @@ public abstract class TDS_Enemy : TDS_Character
         {
             OnDie += () => StopAllCoroutines();
             OnDie += () => agent.StopAgent();
+            OnStopBringingCloser += () => SetAnimationState((int)EnemyAnimationState.Idle); 
+            OnStopBringingCloser += () => behaviourCoroutine = StartCoroutine(Behaviour());
         }
         InitLifeBar(); 
     }

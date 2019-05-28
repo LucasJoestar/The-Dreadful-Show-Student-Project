@@ -65,7 +65,7 @@ public class TDS_Punk : TDS_Minion
     /// </summary>
     public override void ActivateEnemy()
     {
-        SetAnimationState(11);
+        SetAnimationState((int)EnemyAnimationState.Taunt);
     }
     #endregion
 
