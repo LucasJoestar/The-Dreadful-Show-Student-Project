@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 using Random = UnityEngine.Random;
@@ -248,6 +249,29 @@ public class TDS_FireEater : TDS_Player
 
     #region Attacks
     /// <summary>
+    /// Ends definitively the current attack and enables back the capacity to attack once more.
+    /// </summary>
+    protected override void EndAttack()
+    {
+        base.EndAttack();
+
+        if (isDrunk)
+        {
+            ComboCurrent = new List<bool>();
+            CancelInvoke("ResetCombo");
+        }
+    }
+
+    /// <summary>
+    /// Make the Fire Eater puke.
+    /// </summary>
+    public void Puke()
+    {
+        IsAttacking = true;
+        animator.SetTrigger("Puke");
+    }
+
+    /// <summary>
     /// Spit a fire ball in front of the Fire Eater.
     /// </summary>
     /// <param name="_isUltra">Set 0 for small fire ball, anything else for ultra.
@@ -330,7 +354,11 @@ public class TDS_FireEater : TDS_Player
     /// <returns>Returns true if interacted with something. False if nothing was found.</returns>
     public override bool Interact()
     {
-        if (isDrunk) return false;
+        if (isDrunk)
+        {
+            Puke();
+            return false;
+        }
 
         return base.Interact();
     }

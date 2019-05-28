@@ -677,12 +677,6 @@ public class TDS_Player : TDS_Character
         // Adds the current combo to the list
         ComboCurrent.Add(_isLight);
 
-        // If haven't yet reached the end of the combo, plan to reset it in X seconds if  not attacking before
-        if (comboCurrent.Count < comboMax)
-        {
-            Invoke("ResetCombo", comboResetTime);
-        }
-
         // Set animator
         if (_isLight) SetAnim(PlayerAnimState.LightAttack);
         else SetAnim(PlayerAnimState.HeavyAttack);
@@ -705,8 +699,16 @@ public class TDS_Player : TDS_Character
         IsAttacking = false;
         OnStopAttack?.Invoke();
 
-        // Reset the combo when reaching its end
-        if (comboCurrent.Count == comboMax) ResetCombo();
+        // If haven't yet reached the end of the combo, plan to reset it in X seconds if  not attacking before
+        if (comboCurrent.Count < comboMax)
+        {
+            Invoke("ResetCombo", comboResetTime);
+        }
+        else
+        {
+            // Reset the combo when reaching its end
+            ResetCombo();
+        }
     }
 
     /// <summary>
@@ -717,6 +719,7 @@ public class TDS_Player : TDS_Character
         if (ComboCurrent.Count < comboMax) SetAnim(PlayerAnimState.ComboBreaker);
 
         ComboCurrent = new List<bool>();
+        CancelInvoke("ResetCombo");
 
         if (IsAttacking) StopAttack();
     }
@@ -729,7 +732,7 @@ public class TDS_Player : TDS_Character
         // Stop it, please
         if (hitBox.IsActive) DesactiveHitBox();
 
-        Invoke("EndAttack", .1f);
+        if (isAttacking) Invoke("EndAttack", .1f);
     }
 
     /// <summary>
