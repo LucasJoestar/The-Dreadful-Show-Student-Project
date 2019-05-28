@@ -755,6 +755,17 @@ public abstract class TDS_Enemy : TDS_Character
         base.Flip();
         if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
     }
+
+    /// <summary>
+    /// Overriden method of the UpdateLifeBarMethod
+    /// If the client is master, call the method on every other clients
+    /// </summary>
+    /// <param name="_health"></param>
+    public override void UpdateLifeBar(int _health)
+    {
+        //if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateLifeBar"), new object[] { _health });
+        base.UpdateLifeBar(_health);
+    }
     #endregion
 
     #region Vector3
@@ -840,7 +851,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected virtual void InitLifeBar()
     {
         //INIT LIFEBAR
-        if (TDS_UIManager.Instance?.CanvasWorld)
+        if (TDS_UIManager.Instance?.CanvasWorld && PhotonNetwork.isMasterClient)
         {
             TDS_UIManager.Instance.SetEnemyLifebar(this);
             OnTakeDamage += UpdateLifeBar;
@@ -956,10 +967,11 @@ public abstract class TDS_Enemy : TDS_Character
     {
         base.Awake();
         if (!agent) agent = GetComponent<CustomNavMeshAgent>();
-        //agent.OnDestinationReached += () => enemyState = EnemyState.MakingDecision;
-        OnDie += () => StopAllCoroutines();
-        OnDie += () => agent.StopAgent();
-        //agent.OnAgentStopped += () => speedCurrent = 0;
+        if(PhotonNetwork.isMasterClient)
+        {
+            OnDie += () => StopAllCoroutines();
+            OnDie += () => agent.StopAgent();
+        }
         InitLifeBar(); 
     }
 
