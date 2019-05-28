@@ -213,7 +213,8 @@ public enum RoomId
     SecondRoom = 25,
     ThirdRoom = 35,
     FourthRoom = 45,
-    FifthRoom = 55
+    FifthRoom = 55,
+    WaitForIt = 99
 }
 
 /// <summary>
