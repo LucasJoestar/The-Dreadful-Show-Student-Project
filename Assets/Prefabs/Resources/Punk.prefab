@@ -199,8 +199,8 @@ MonoBehaviour:
   baseOffset: 0
   detectionRange: 2.5
   height: 2.4
-  radius: 0.75
-  pathRadius: 1
+  radius: 0.5
+  pathRadius: 0.25
   speed: 4
   steerForce: 10
   agentPriority: 1
@@ -261,6 +261,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f71bb1e0e61f69c4aaf9ef79d98d963a, type: 2}
   - {fileID: 11400000, guid: c55c54222873b97488c9a762cc26e5dc, type: 2}
   agent: {fileID: 114509155922725266}
+  hasEvolved: 0
 --- !u!114 &114939482661549728
 MonoBehaviour:
   m_ObjectHideFlags: 0

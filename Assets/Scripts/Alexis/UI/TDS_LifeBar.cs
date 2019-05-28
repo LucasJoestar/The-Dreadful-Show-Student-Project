@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon;
 
-[RequireComponent(typeof(PhotonView))]
-public class TDS_LifeBar : PunBehaviour , IPunObservable
+public class TDS_LifeBar : UnityEngine.MonoBehaviour
 {
     /* TDS_LifeBar :
 	 *
@@ -21,6 +20,18 @@ public class TDS_LifeBar : PunBehaviour , IPunObservable
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     * 
+     *  Date :			[28/05/2019]
+	 *	Author :		[THIEBAUT Alexis]
+	 *
+	 *	Changes :
+	 *
+	 *	[Removing the online settings]
+     *	    - Remove the inheritance from PunBehaviour and the Interface IPunObservable
+     *	    - Set filling values are now set in local
+	 *
+	 *	-----------------------------------
+     *	
 	 *	Date :			[01/04/2019]
 	 *	Author :		[THIEBAUT Alexis]
 	 *
@@ -59,7 +70,8 @@ public class TDS_LifeBar : PunBehaviour , IPunObservable
         {
             TDS_UIManager.Instance.StopFilling(filledImage);
         }
-        PhotonNetwork.Destroy(this.gameObject);
+        UnityEngine.Object.Destroy(this.gameObject);
+        owner.OnDie -= DestroyLifeBar;
     }
 
     /// <summary>
@@ -67,7 +79,7 @@ public class TDS_LifeBar : PunBehaviour , IPunObservable
     /// </summary>
     public void FollowOwner()
     {
-        if (!hasToFollowOwner || !owner || !PhotonNetwork.isMasterClient) return;
+        if (!hasToFollowOwner || !owner) return;
         transform.position = Vector3.MoveTowards(transform.position, owner.transform.position + offset, Time.deltaTime * 10);
     }
 
@@ -79,16 +91,6 @@ public class TDS_LifeBar : PunBehaviour , IPunObservable
     public void SetOwner(TDS_Character _owner)
     {
         owner = _owner;
-        if(_owner.gameObject.HasTag("Player"))
-        {
-            GetComponent<PhotonView>().enabled = false;
-        }
-        /*
-        if (_owner.gameObject.HasTag("Enemy"))
-        {
-            owner.OnDie += DestroyLifeBar;
-        }
-        */
     }
 
     /// <summary>
@@ -113,19 +115,6 @@ public class TDS_LifeBar : PunBehaviour , IPunObservable
     {
         FollowOwner();
     }
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if(PhotonNetwork.isMasterClient && filledImage && stream.isWriting)
-        {
-            stream.SendNext(filledImage.fillAmount); 
-        }
-        else if(stream.isReading && filledImage)
-        {
-            filledImage.fillAmount = (float)stream.ReceiveNext(); 
-        }
-    }
-
     #endregion
 
     #endregion

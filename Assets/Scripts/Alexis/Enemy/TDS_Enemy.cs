@@ -209,6 +209,14 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     private TDS_Throwable targetedThrowable = null;
 
+    /// <summary>
+    /// Behaviour Coroutine, used when the Behaviour is called and stopped
+    /// </summary>
+    protected Coroutine behaviourCoroutine = null;
+    /// <summary>
+    /// Additional Coroutine, used when the CastAttack, CastDetection, CastGrab and CastThrow are called or stopped
+    /// </summary>
+    protected Coroutine additionalCoroutine = null; 
     #endregion
 
     #endregion
@@ -349,7 +357,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected IEnumerator ApplyRecoveryTime(float _recoveryTime)
     {
         yield return new WaitForSeconds(_recoveryTime);
-        StartCoroutine(Behaviour());
+        behaviourCoroutine = StartCoroutine(Behaviour());
         yield break;
     }
 
@@ -397,30 +405,35 @@ public abstract class TDS_Enemy : TDS_Character
             #endregion
             #region Getting In Range
             case EnemyState.GettingInRange:
-                yield return StartCoroutine(CastDetection());
+                additionalCoroutine = StartCoroutine(CastDetection());
+                yield return additionalCoroutine; 
                 break; 
             #endregion
             #region Attacking
             case EnemyState.Attacking:
-                yield return StartCoroutine(CastAttack());
+                additionalCoroutine = StartCoroutine(CastAttack());
+                yield return additionalCoroutine; 
                 break; 
             #endregion
             #region Grabbing Object
             case EnemyState.PickingUpObject:
-                yield return StartCoroutine(CastGrab(targetedThrowable));
+                additionalCoroutine = StartCoroutine(CastGrab(targetedThrowable));
+                yield return additionalCoroutine; 
                 targetedThrowable = null;
                 break; 
             #endregion
             #region Throwing Object
             case EnemyState.ThrowingObject:
-                yield return StartCoroutine(CastThrow());
+                additionalCoroutine = StartCoroutine(CastThrow());
+                yield return additionalCoroutine;
                 break; 
             #endregion
             default:
                 break;
         }
+        additionalCoroutine = null; 
         yield return new WaitForSeconds(.1f);
-        StartCoroutine(Behaviour());
+        behaviourCoroutine = StartCoroutine(Behaviour());
         yield break;
     }
 
@@ -633,6 +646,32 @@ public abstract class TDS_Enemy : TDS_Character
     #endregion
 
     #region Overridden Methods
+    public override void PutOnTheGround()
+    {
+        if (!canBeDown || isDead) return; 
+        base.PutOnTheGround();
+        if (IsDown)
+        {
+            agent.StopAgent();
+            if (throwable) DropObject();
+
+            //StopAllCoroutines();
+            if (behaviourCoroutine != null)
+            {
+                StopCoroutine(behaviourCoroutine);
+                behaviourCoroutine = null;
+            }
+            if (additionalCoroutine != null)
+            {
+                StopCoroutine(additionalCoroutine);
+                additionalCoroutine = null;
+            }
+
+            enemyState = EnemyState.MakingDecision;
+            SetAnimationState((int)EnemyAnimationState.Grounded); 
+        }
+    }
+
     /// <summary>
     /// When the enemy dies, set its animation state to Death and remove it from the Area
     /// </summary>
@@ -641,6 +680,16 @@ public abstract class TDS_Enemy : TDS_Character
         base.Die();
         SetAnimationState((int)EnemyAnimationState.Death);
         if (Area) Area.RemoveEnemy(this);
+    }
+
+    /// <summary>
+    /// Call the base of the method flip
+    /// if this client is the master, call the method online to flip the enemy in the other clients
+    /// </summary>
+    public override void Flip()
+    {
+        base.Flip();
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
     }
 
     /// <summary>
@@ -663,6 +712,18 @@ public abstract class TDS_Enemy : TDS_Character
     {
         base.IncreaseSpeed();
         agent.Speed = speedCurrent;
+    }
+
+    /// <summary>
+    /// Stop the current attack of the agent
+    /// Desactivate the hitbox
+    /// Set the bool IsAttacking to false
+    /// Set the animation state to idle
+    /// </summary>
+    public override void StopAttack()
+    {
+        SetAnimationState((int)EnemyAnimationState.Idle);
+        base.StopAttack();
     }
 
     /// <summary>
@@ -704,9 +765,21 @@ public abstract class TDS_Enemy : TDS_Character
         {
             agent.StopAgent();
             if (throwable) DropObject();
-            StopAllCoroutines();
+
+            //StopAllCoroutines();
+            if (behaviourCoroutine != null)
+            {
+                StopCoroutine(behaviourCoroutine);
+                behaviourCoroutine = null;
+            }
+            if (additionalCoroutine != null)
+            {
+                StopCoroutine(additionalCoroutine);
+                additionalCoroutine = null;
+            }
+
             enemyState = EnemyState.MakingDecision;
-            if (!isDead)
+            if (!isDead && !IsDown)
             {
                 SetAnimationState((int)EnemyAnimationState.Hit);
             }
@@ -732,28 +805,6 @@ public abstract class TDS_Enemy : TDS_Character
             ApplyDamagesBehaviour(_damage, _position); 
         }
         return _isTakingDamages;
-    }
-
-    /// <summary>
-    /// Stop the current attack of the agent
-    /// Desactivate the hitbox
-    /// Set the bool IsAttacking to false
-    /// Set the animation state to idle
-    /// </summary>
-    public override void StopAttack()
-    {
-        SetAnimationState((int)EnemyAnimationState.Idle);
-        base.StopAttack();
-    }
-
-    /// <summary>
-    /// Call the base of the method flip
-    /// if this client is the master, call the method online to flip the enemy in the other clients
-    /// </summary>
-    public override void Flip()
-    {
-        base.Flip();
-        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
     }
 
     /// <summary>
@@ -848,13 +899,15 @@ public abstract class TDS_Enemy : TDS_Character
         }
     }
 
+    /// <summary>
+    /// Init the life bar of the enemy
+    /// </summary>
     protected virtual void InitLifeBar()
     {
         //INIT LIFEBAR
-        if (TDS_UIManager.Instance?.CanvasWorld && PhotonNetwork.isMasterClient)
+        if (TDS_UIManager.Instance?.CanvasWorld)
         {
             TDS_UIManager.Instance.SetEnemyLifebar(this);
-            OnTakeDamage += UpdateLifeBar;
         }
     }
 
@@ -922,7 +975,7 @@ public abstract class TDS_Enemy : TDS_Character
     {
         IsPacific = false;
         IsParalyzed = false;
-        StartCoroutine(Behaviour()); 
+        behaviourCoroutine = StartCoroutine(Behaviour()); 
     }
 
     /// <summary>
@@ -933,7 +986,7 @@ public abstract class TDS_Enemy : TDS_Character
         if (!PhotonNetwork.isMasterClient) return;
         IsPacific = false;
         IsParalyzed = false;
-        StartCoroutine(Behaviour());
+        behaviourCoroutine = StartCoroutine(Behaviour());
     }
 
     /// <summary>
@@ -948,10 +1001,23 @@ public abstract class TDS_Enemy : TDS_Character
     protected virtual void ApplyDamagesBehaviour(int _damage, Vector3 _position)
     {
         agent.StopAgent();
-        StopAllCoroutines();
+        hitBox.Desactivate(); 
+
+        //StopAllCoroutines();
+        if(behaviourCoroutine != null)
+        {
+            StopCoroutine(behaviourCoroutine);
+            behaviourCoroutine = null;
+        }
+        if(additionalCoroutine != null)
+        {
+            StopCoroutine(additionalCoroutine);
+            additionalCoroutine = null;
+        }
         enemyState = EnemyState.MakingDecision;
         if (throwable) DropObject();
         StartCoroutine(ApplyRecoil(_position));
+
         if (!isDead)
         {
             SetAnimationState((int)EnemyAnimationState.Hit);
@@ -981,7 +1047,7 @@ public abstract class TDS_Enemy : TDS_Character
         base.Start();
         if (PhotonNetwork.isMasterClient)
         {
-            StartCoroutine(Behaviour());
+            behaviourCoroutine = StartCoroutine(Behaviour());
         }
     }
 
