@@ -135,6 +135,10 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private TMPro.TMP_Text narratorBoxText;
     #endregion
 
+    #region Resources
+    [SerializeField] GameObject lifeBarPrefab = null;
+    #endregion
+
     #endregion
 
     #region Methods
@@ -283,14 +287,13 @@ public class TDS_UIManager : PunBehaviour
     public void SetBossLifeBar(TDS_Boss _boss)
     {
         if (!bossHealthBar) return;
-        if(PhotonNetwork.isMasterClient)
-        {
-            bossHealthBar.SetOwner(_boss);
-            _boss.HealthBar = bossHealthBar.FilledImage;
-            //_boss.OnTakeDamage += _boss.UpdateLifeBar;
-            _boss.OnDie += () => bossHealthBar.gameObject.SetActive(false);
-        }
-        bossHealthBar.gameObject.SetActive(true); 
+        bossHealthBar.SetOwner(_boss);
+        bossHealthBar.gameObject.SetActive(true);
+
+        _boss.HealthBar = bossHealthBar.FilledImage;
+
+        _boss.OnTakeDamage += _boss.UpdateLifeBar;
+        _boss.OnDie += () => bossHealthBar.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -300,12 +303,14 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_enemy"></param>
     public void SetEnemyLifebar(TDS_Enemy _enemy)
     {
-        if (!PhotonNetwork.isMasterClient) return; 
+        if (lifeBarPrefab == null || !canvasWorld) return; 
         Vector3 _offset =  Vector3.up * _enemy.transform.localScale.y * 4; 
-        TDS_LifeBar _healthBar = PhotonNetwork.Instantiate("LifeBar", _enemy.transform.position + _offset, Quaternion.identity, 0).GetComponent<TDS_LifeBar>();
+        TDS_LifeBar _healthBar = UnityEngine.Object.Instantiate(lifeBarPrefab, _enemy.transform.position + _offset, Quaternion.identity, canvasWorld.transform).GetComponent<TDS_LifeBar>();
+
         _healthBar.SetOwner(_enemy, _offset, true);
-        _enemy.HealthBar = _healthBar.FilledImage; 
-        _healthBar.transform.SetParent(canvasWorld.transform);
+        _enemy.HealthBar = _healthBar.FilledImage;
+
+        _enemy.OnTakeDamage += _enemy.UpdateLifeBar; 
     }
 
     /// <summary>

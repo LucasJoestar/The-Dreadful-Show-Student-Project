@@ -2745,6 +2745,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1211078769374454, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
 --- !u!223 &298148567 stripped
@@ -3980,6 +3984,12 @@ Transform:
   m_Father: {fileID: 1841692699}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &526819398 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1196991789799237996, guid: ca57834bf12a62e4f857e7cd35728f26,
+    type: 3}
+  m_PrefabInstance: {fileID: 298148566}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &526902385
 GameObject:
   m_ObjectHideFlags: 0
@@ -11310,7 +11320,7 @@ MonoBehaviour:
   ButtonSelectionFireEater: {fileID: 298148574}
   ButtonQuitPause: {fileID: 298148568}
   curtainsAnimator: {fileID: 151009754}
-  arrowAnimator: {fileID: 0}
+  arrowAnimator: {fileID: 526819398}
   canvasScreen: {fileID: 298148579}
   canvasWorld: {fileID: 298148567}
   playerHealthBar: {fileID: 298148572}
@@ -11323,6 +11333,8 @@ MonoBehaviour:
   uiState: 0
   dialogBoxText: {fileID: 298148570}
   narratorBoxText: {fileID: 917836347}
+  lifeBarPrefab: {fileID: 1447132950476282, guid: 21b16712bcdb7cd43805f8e61c69824f,
+    type: 3}
 --- !u!114 &1393358468
 MonoBehaviour:
   m_ObjectHideFlags: 0

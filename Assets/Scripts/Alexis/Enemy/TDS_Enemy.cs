@@ -848,13 +848,15 @@ public abstract class TDS_Enemy : TDS_Character
         }
     }
 
+    /// <summary>
+    /// Init the life bar of the enemy
+    /// </summary>
     protected virtual void InitLifeBar()
     {
         //INIT LIFEBAR
-        if (TDS_UIManager.Instance?.CanvasWorld && PhotonNetwork.isMasterClient)
+        if (TDS_UIManager.Instance?.CanvasWorld)
         {
             TDS_UIManager.Instance.SetEnemyLifebar(this);
-            OnTakeDamage += UpdateLifeBar;
         }
     }
 
