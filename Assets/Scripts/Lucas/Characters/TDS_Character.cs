@@ -519,7 +519,7 @@ public abstract class TDS_Character : TDS_Damageable
     {
         if (collider)
         {
-            Gizmos.color = IsInvulnerable ? new Color(0, 0, 1, .5f) : new Color(0, 1, 0, .5f);
+            Gizmos.color = IsInvulnerable ? new Color(0, 0, 1, .5f) : isDead ? new Color(0, 0, 0, .5f) : new Color(0, 1, 0, .5f);
             Gizmos.DrawCube(collider.bounds.center, collider.bounds.size);
         }
     }
