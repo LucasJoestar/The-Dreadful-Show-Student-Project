@@ -49,7 +49,7 @@ public class TDS_LobbyManager : PunBehaviour
     #endregion
 
     #region Methods
-    #region Original Methods   
+    #region Lobby Methods   
     void CreateRoom()
     {
         PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
@@ -122,15 +122,15 @@ public class TDS_LobbyManager : PunBehaviour
     #endregion
 
     #region Photon Methods   
-    public override void OnCreatedRoom()
-    {
-        Debug.Log("room created");
-        PhotonNetwork.JoinLobby();        
-    }
     public override void OnConnectedToMaster()
     {
         Debug.Log("connected to Master");
         CreateRoom();
+    }
+    public override void OnCreatedRoom()
+    {
+        Debug.Log("room created");
+        PhotonNetwork.JoinLobby();
     }
     public override void OnDisconnectedFromPhoton()
     {

@@ -173,8 +173,10 @@ public class TDS_LevelManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        TDS_NetworkManager.Instance.InitConnection();
-
+        #region Test
+        string _idTest = "475";
+        TDS_NetworkManager.Instance.DemoTest(_idTest);
+        #endregion
         // Spawn local player.
         // Spawn();
     }

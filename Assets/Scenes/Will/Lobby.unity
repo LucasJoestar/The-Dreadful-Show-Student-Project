@@ -2141,6 +2141,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2092978565}
+  - component: {fileID: 2092978566}
   - component: {fileID: 2092978564}
   m_Layer: 0
   m_Name: LobbyLogik
@@ -2158,13 +2159,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2092978563}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71fe347b1f4f6ec4e859d15422bc5519, type: 3}
+  m_Script: {fileID: 11500000, guid: 6b39060268534184d998ac07ef7bceba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   roomsUIRoot: {fileID: 841777730}
   launchButton: {fileID: 1186321441}
   leaveButton: {fileID: 1464707750}
-  minimumPlayerToLaunch: 2
+  minimumPlayerToLaunch: 1
+  photonView: {fileID: 2092978566}
   textPlayerCounter: {fileID: 191961546}
 --- !u!4 &2092978565
 Transform:
@@ -2180,3 +2182,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2092978566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092978563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 1
+  instantiationId: 1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
