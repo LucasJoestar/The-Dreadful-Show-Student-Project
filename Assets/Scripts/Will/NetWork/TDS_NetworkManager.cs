@@ -34,6 +34,7 @@ public class TDS_NetworkManager : PunBehaviour
     #endregion
 
     #region Fields / Properties
+    #region Lobby
     bool canLeave = false;
     [Space]
     [Space]   
@@ -55,12 +56,17 @@ public class TDS_NetworkManager : PunBehaviour
     [Space]
     [SerializeField]
     TMP_Text textPlayerCounter;
+    #endregion
     //
     public static TDS_NetworkManager Instance;
     #region Player     
     PlayerType localPlayer = PlayerType.BeardLady;
     bool isHost = false;
     public bool IsHost { get { return isHost; } }
+    static string PlayerNamePrefKey = "PlayerName";
+    [Space]
+    [SerializeField]
+    TMP_InputField nameInputField;
     #endregion
     #endregion
 
@@ -70,18 +76,6 @@ public class TDS_NetworkManager : PunBehaviour
         PhotonNetwork.ConnectUsingSettings(_iD);
     }
     #region Original Methods
-    /// <summary>
-    /// Spawn player based on the Enum PlayerType
-    /// </summary>
-    /// <param name="_playerType"></param>
-    /// <returns></returns>
-    public PhotonView InstantiatePlayer (PlayerType _playerType, Vector3 _spawnPosition)
-    {
-        PhotonView _playerId = PhotonNetwork.Instantiate(_playerType.ToString(), _spawnPosition, Quaternion.identity, 0).GetComponent<PhotonView>();
-        localPlayer = _playerType;
-
-        return _playerId;
-    }   
     #region Lobby Methods   
     void CreateRoom()
     {
@@ -91,12 +85,26 @@ public class TDS_NetworkManager : PunBehaviour
 
     void InitMulti()
     {
+        #region Player
+        string _defaultName = " ";
+        //TMP_InputField _nameInputField = GetComponent<TMP_InputField>();
+        if(nameInputField != null)
+        {
+            if (PlayerPrefs.HasKey(PlayerNamePrefKey))
+            {
+                _defaultName = PlayerPrefs.GetString(PlayerNamePrefKey);
+                nameInputField.text = _defaultName;
+            }
+        }
+        PhotonNetwork.playerName = _defaultName;
+        #endregion
+
         #region UI
         launchButton.SetActive(false);
         leaveButton.SetActive(false);
         roomsUIRoot.SetActive(true);
         textPlayerCounter.gameObject.SetActive(false);
-        #endregion
+        #endregion        
     }
 
     public void LaunchNLoadGame()
@@ -153,7 +161,28 @@ public class TDS_NetworkManager : PunBehaviour
         roomsUIRoot.SetActive(false);
     }
     #endregion
-    
+
+    #region Player
+    /// <summary>
+    /// Spawn player based on the Enum PlayerType
+    /// </summary>
+    /// <param name="_playerType"></param>
+    /// <returns></returns>
+    public PhotonView InstantiatePlayer(PlayerType _playerType, Vector3 _spawnPosition)
+    {
+        PhotonView _playerId = PhotonNetwork.Instantiate(_playerType.ToString(), _spawnPosition, Quaternion.identity, 0).GetComponent<PhotonView>();
+        localPlayer = _playerType;
+
+        return _playerId;
+    }
+    public void SetPlayerName(string _nickname)
+    {
+        PhotonNetwork.playerName = _nickname + " ";
+        PlayerPrefs.SetString(PlayerNamePrefKey,_nickname);
+    }
+    #endregion
+    #endregion
+
     #region PhotonMethods
     /// <summary>
     /// When the player is connected to master, he joins the room
@@ -193,7 +222,6 @@ public class TDS_NetworkManager : PunBehaviour
     {
         PlayerCount();
     }
-    #endregion
     #endregion
 
     #region Unity Methods
