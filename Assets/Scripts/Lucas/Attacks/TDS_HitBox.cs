@@ -137,7 +137,19 @@ public class TDS_HitBox : MonoBehaviour
     /// </summary>
     /// <param name="_attack">Attack used to hit what is in the hit box.</param>
     /// <param name="_owner">The person who attack.</param>
-    /// <param name="_attack">Tags to hit.</param>
+    public void Activate(TDS_Attack _attack, TDS_Character _owner)
+    {
+        Owner = _owner;
+        Activate(_attack);
+    }
+
+    /// <summary>
+    /// Activates the hit box.
+    /// When activated, produces the effect of the given attack to any <see cref="TDS_Damageable"/> in <see cref="collider"/> zone whose layer is in <see cref="WhatHit"/>.
+    /// </summary>
+    /// <param name="_attack">Attack used to hit what is in the hit box.</param>
+    /// <param name="_owner">The person who attack.</param>
+    /// <param name="_hittableTags">Tags to hit.</param>
     public void Activate(TDS_Attack _attack, TDS_Character _owner, Tag[] _hittableTags)
     {
         Owner = _owner;
@@ -219,7 +231,7 @@ public class TDS_HitBox : MonoBehaviour
     {
         // If the collider object should be hit, hit it
 
-        // Check if object has 
+        // Check if object has tags
         if ((Owner && (other.gameObject == Owner.gameObject)) || !other.gameObject.HasTag(HittableTags.ObjectTags)) return;
         TDS_Damageable _target = other.GetComponent<TDS_Damageable>();
 
@@ -242,7 +254,10 @@ public class TDS_HitBox : MonoBehaviour
     private void Start()
     {
         // Desactivate the hitbox at start time
-        Desactivate();
+        if (CurrentAttack == null) Desactivate();
+
+        // If hit box is not set as trigger, set it
+        if (!collider.isTrigger) collider.isTrigger = true;
     }
     #endregion
 

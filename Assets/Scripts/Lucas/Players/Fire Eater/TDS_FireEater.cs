@@ -179,10 +179,9 @@ public class TDS_FireEater : TDS_Player
     /// <returns></returns>
     private IEnumerator MiniGame()
     {
-        OnTriggerMiniGame = () => animator.SetInteger("FireID", 999999);
-        OnTriggerMiniGame += GetDrunk;
+        OnTriggerMiniGame = () => animator.SetInteger("FireID", 0);
 
-        animator.SetFloat("MiniGameSpeed", Random.Range(.25f, 1.05f));
+        animator.SetFloat("MiniGameSpeed", Random.Range(.35f, 1f));
         isInMiniGame = true;
 
         while (isInMiniGame)
@@ -215,7 +214,8 @@ public class TDS_FireEater : TDS_Player
                 break;
 
             case 2:
-                OnTriggerMiniGame = () => animator.SetInteger("FireID", 0);
+                OnTriggerMiniGame = () => animator.SetInteger("FireID", 999999);
+                OnTriggerMiniGame += GetDrunk;
                 break;
 
             default:
@@ -278,11 +278,9 @@ public class TDS_FireEater : TDS_Player
     /// 'Just cause animation don't take a boolean... What a waste.</param>
     public void SpitFireBall(int _isUltra)
     {
-        GameObject _fireBall = PhotonNetwork.Instantiate("FireBall", transform.position + (transform.right * .025f) + (Vector3.up * 1.35f), transform.rotation, 0);
+        GameObject _fireBall = PhotonNetwork.Instantiate("FireBall", transform.position + (transform.right * .03f) + (Vector3.up * 1.35f), transform.rotation, 0);
 
-        _fireBall.layer = gameObject.layer;
-
-        _fireBall.GetComponentInChildren<TDS_HitBox>().Activate(attacks[_isUltra == 0 ? 12 : 13]);
+        _fireBall.GetComponentInChildren<TDS_HitBox>().Activate(attacks[_isUltra == 0 ? 12 : 13], this);
         if (_isUltra != 0) _fireBall.transform.localScale *= 1.15f;
     }
 

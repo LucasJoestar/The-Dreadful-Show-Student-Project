@@ -38,6 +38,11 @@ public class TDS_FireBall : MonoBehaviour
     [SerializeField] private Animator animator = null;
 
     /// <summary>
+    /// Indicates if the fire ball is actually destroying itself.
+    /// </summary>
+    [SerializeField] private bool isDestroying = false;
+
+    /// <summary>
     /// Maximum lifetime of the fire ball.
     /// </summary>
     [SerializeField] private float lifetime = 7;
@@ -72,7 +77,7 @@ public class TDS_FireBall : MonoBehaviour
     /// <summary>
     /// Destroys the fire ball.
     /// </summary>
-    public void Destroy() => Destroy(this);
+    public void Destroy() => Destroy(gameObject);
 
     /// <summary>
     /// Make the fire ball explode.
@@ -129,13 +134,15 @@ public class TDS_FireBall : MonoBehaviour
         }
     }
 
-    // OnCollisionEnter is called when this collider/rigidbody has begun touching another rigidbody/collider
-    private void OnCollisionEnter(Collision collision)
+    // OnTriggerEnter is called when the GameObject collides with another GameObject
+    private void OnTriggerEnter(Collider collider)
     {
-        if (!photonView.isMine) return;
+        if (!photonView.isMine || isDestroying) return;
+
+        isDestroying = true;
 
         StopAllCoroutines();
-        CallExplode();
+        Invoke("CallExplode", .001f);
     }
 
     // Use this for initialization

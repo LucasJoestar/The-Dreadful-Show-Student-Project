@@ -180,13 +180,10 @@ public class TDS_Damageable : PunBehaviour
             else if (value == false)
             {
                 animator.SetTrigger("REVIVE");
-                IsInvulnerable = false;
                 gameObject.layer = layerBeforeDeath;
             }
             else
             {
-                IsInvulnerable = true;
-
                 layerBeforeDeath = gameObject.layer;
                 gameObject.layer = LayerMask.NameToLayer("Dead");
             }
@@ -235,7 +232,7 @@ public class TDS_Damageable : PunBehaviour
         get { return healthCurrent; }
         set
         {
-            value = Mathf.Clamp(value, 0, healthMax);
+            value = Mathf.Clamp(value, isIndestructible ? 1 : 0, healthMax);
             healthCurrent = value;
 
             OnHealthChanged?.Invoke(value);
@@ -336,12 +333,12 @@ public class TDS_Damageable : PunBehaviour
 
         // Local
       
-        if (IsInvulnerable) return false;
+        if (IsInvulnerable || isDead) return false;
         // Online
         
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "TakeDamage"), new object[] { (int)_damage });
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "TakeDamage"), new object[] { _damage });
         }
         
         // Local
