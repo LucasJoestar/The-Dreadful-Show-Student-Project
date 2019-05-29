@@ -60,7 +60,8 @@ public class TDS_BrutalSiamese : TDS_Enemy
 	// Use this for initialization
     protected override void Start()
     {
-        //base.Start(); 
+        base.Start();
+        canThrow = false; 
     }
 	
 	// Update is called once per frame

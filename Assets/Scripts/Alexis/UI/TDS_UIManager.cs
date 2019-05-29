@@ -198,7 +198,7 @@ public class TDS_UIManager : PunBehaviour
         uiState = _state;
         switch (uiState)
         {
-            case UIState.InMenu:
+            case UIState.InMainMenu:
                 mainMenuParent.SetActive(true);
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false); 

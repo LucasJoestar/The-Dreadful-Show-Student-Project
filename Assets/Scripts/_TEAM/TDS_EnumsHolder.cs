@@ -224,7 +224,9 @@ public enum RoomId
 /// </summary>
 public enum UIState
 {
-    InMenu, 
+    InMainMenu, 
+    InRoomSelection,
+    InCharacterSelection,
     InGame, 
     InPause
 }
