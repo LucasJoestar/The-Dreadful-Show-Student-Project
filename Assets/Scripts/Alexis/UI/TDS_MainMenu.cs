@@ -144,6 +144,7 @@ public class TDS_MainMenu : PunBehaviour
     public void ShowRoomSelection()
     {
         SetMenuState(UIState.InRoomSelection);
+        playersName.ToList().ForEach(n => n.gameObject.SetActive(false));
     }
 
     /// <summary>
