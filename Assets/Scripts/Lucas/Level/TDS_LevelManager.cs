@@ -105,9 +105,19 @@ public class TDS_LevelManager : MonoBehaviour
     /// <param name="_playerType"></param>
     public void Spawn(PlayerType _playerType)
     {
-        if (_playerType == PlayerType.Juggler)
-            localPlayer = PhotonNetwork.Instantiate(_playerType.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponentInChildren<TDS_Player>();
-        else localPlayer = PhotonNetwork.Instantiate(_playerType.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponent<TDS_Player>();
+        if(PhotonNetwork.connected)
+        {
+            if (_playerType == PlayerType.Juggler)
+                localPlayer = PhotonNetwork.Instantiate(_playerType.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponentInChildren<TDS_Player>();
+            else localPlayer = PhotonNetwork.Instantiate(_playerType.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponent<TDS_Player>();
+        }
+        else
+        {
+            TDS_GameManager.LocalPlayer = _playerType; 
+            if (_playerType == PlayerType.Juggler)
+                localPlayer = (Instantiate(Resources.Load(_playerType.ToString()), StartSpawnPoints[0], Quaternion.identity) as GameObject).GetComponentInChildren<TDS_Player>();
+            else localPlayer = (Instantiate(Resources.Load(_playerType.ToString()), StartSpawnPoints[0], Quaternion.identity) as GameObject).GetComponent<TDS_Player>();
+        }
         TDS_Camera.Instance.Target = localPlayer.transform;
         TDS_UIManager.Instance?.SetPlayerLifeBar(localPlayer);
     }
@@ -117,6 +127,7 @@ public class TDS_LevelManager : MonoBehaviour
     /// </summary>
     private void Spawn()
     {
+        if (!PhotonNetwork.connected) return; 
         if (TDS_GameManager.LocalPlayer == PlayerType.Juggler)
             localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponentInChildren<TDS_Player>();
         else localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponent<TDS_Player>();
@@ -185,12 +196,19 @@ public class TDS_LevelManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        #region Test
-        string _idTest = "475";
-        TDS_NetworkManager.Instance.DemoTest(_idTest);
-        #endregion
+        if(!PhotonNetwork.connected)
+        {
+            #region Test
+            string _idTest = "475";
+            TDS_NetworkManager.Instance.DemoTest(_idTest);
+            #endregion
+        }
+
         // Spawn local player.
-        Spawn();
+        if (PhotonNetwork.connected)
+        {
+            Spawn();
+        }
     }
     #endregion
 

@@ -85,6 +85,7 @@ public class TDS_NetworkManager : PunBehaviour
     #region Lobby Methods   
     void CreateRoom()
     {
+        if (roomName == string.Empty) roomName = "RoomTest"; 
         PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
         Debug.Log("room name : " + roomName);
     }

@@ -382,7 +382,7 @@ public class TDS_UIManager : PunBehaviour
     private void SetButtonInteractable(Button _b, PlayerType _type, bool _isInteractable)
     {
         _b.interactable = _isInteractable;
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetButtonInteractable"), new object[] { (int)_type, _isInteractable });
+        if(PhotonNetwork.connected) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetButtonInteractable"), new object[] { (int)_type, _isInteractable });
     }
 
     /// <summary>
@@ -464,6 +464,11 @@ public class TDS_UIManager : PunBehaviour
     {
         if (uiGameObject)
             uiGameObject.SetActive(true); 
+        if(PhotonNetwork.connected)
+        {
+            ActivateMenu(UIState.InGame); 
+            return; 
+        }
         SetButtons();
     }
 	#endregion
