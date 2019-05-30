@@ -121,12 +121,12 @@ public abstract class TDS_Character : TDS_Damageable
     public TDS_HitBox HitBox { get { return hitBox; } }
 
     /// <summary>Backing field for <see cref="HealthBar"/>.</summary>
-    [SerializeField] private UnityEngine.UI.Image healthBar;
+    [SerializeField] private TDS_LifeBar healthBar;
 
     /// <summary>
     /// Image used to display this character current health status.
     /// </summary>
-    public UnityEngine.UI.Image HealthBar
+    public TDS_LifeBar HealthBar
     {
         get { return healthBar; }
         set

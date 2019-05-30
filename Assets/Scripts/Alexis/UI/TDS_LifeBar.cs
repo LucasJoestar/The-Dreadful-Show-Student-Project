@@ -50,6 +50,8 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
     #region Fields and properties
     private bool hasToFollowOwner = false;
 
+    [SerializeField] private Image foregroundFilledImage; 
+    public Image ForegroundFilledImage { get { return foregroundFilledImage; }}
     [SerializeField] private Image filledImage;
     public Image FilledImage { get { return filledImage; } }
 
@@ -68,7 +70,7 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
     {
         if (TDS_UIManager.Instance)
         {
-            TDS_UIManager.Instance.StopFilling(filledImage);
+            TDS_UIManager.Instance.StopFilling(this);
         }
         UnityEngine.Object.Destroy(this.gameObject);
         owner.OnDie -= DestroyLifeBar;
