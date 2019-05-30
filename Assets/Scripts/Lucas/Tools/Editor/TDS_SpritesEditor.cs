@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-public class TDS_ColorLevelEditor : EditorWindow
+public class TDS_SpritesEditor : EditorWindow
 {
     /* TDS_ColorLevelEditor :
 	 *
@@ -44,8 +44,28 @@ public class TDS_ColorLevelEditor : EditorWindow
 	 *
 	 *	-----------------------------------
 	*/
-    
+
     #region Fields / Properties
+    /// <summary>
+    /// All editor modes displayed in the toolbar.
+    /// </summary>
+    [SerializeField] private readonly string[] editorModes = new string[] { "General", "Color" };
+
+    /// <summary>
+    /// Index of the selected mode from <see cref="editorModes"/>.
+    /// </summary>
+    [SerializeField] private int selectedMode = 0;
+
+    /// <summary>
+    /// Indicates if editor manipulation should also take selected objects children sprites.
+    /// </summary>
+    [SerializeField] private bool doUseChildrenSprites = true;
+
+    /// <summary>
+    /// Value used to increment sprites layer.
+    /// </summary>
+    [SerializeField] private int layerIncrementValue = 0;
+
     /// <summary>
     /// Main folder containing all other folders & groups.
     /// </summary>
@@ -80,12 +100,190 @@ public class TDS_ColorLevelEditor : EditorWindow
     #region Methods
 
     #region Original Methods
+
+    #region Menus
     /// <summary>
     /// Method to call this window from the Unity toolbar.
     /// </summary>
-    [MenuItem("Window/Color Level Editor")]
-    public static void CallWindow() => GetWindow<TDS_ColorLevelEditor>("Color Level Editor").Show();
+    [MenuItem("Window/Sprites Editor")]
+    public static void CallWindow() => GetWindow<TDS_SpritesEditor>("Color Level Editor").Show();
 
+    /// <summary>
+    /// Draws this editor.
+    /// </summary>
+    public void DrawEditor()
+    {
+        selectedMode = GUILayout.Toolbar(selectedMode, editorModes, GUILayout.Height(30));
+
+        switch (selectedMode)
+        {
+            case 0:
+                DrawGeneralMode();
+                break;
+
+            case 1:
+                DrawColorMode();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Draws the general mode.
+    /// </summary>
+    public void DrawGeneralMode()
+    {
+        if (Selection.gameObjects.Length == 0)
+        {
+            EditorGUILayout.HelpBox("No sprite actually selected !", MessageType.Info);
+            return;
+        }
+
+        GUILayout.Space(15);
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(15);
+
+        doUseChildrenSprites = EditorGUILayout.Toggle(new GUIContent("Use children sprites", "Should the manipulations automatically also select the selected GameObjects sprites children or not"), doUseChildrenSprites);
+
+        GUILayout.FlexibleSpace();
+
+        if (GUILayout.Button(new GUIContent("Increment Layer", "Increment the selected GameObjects layer by the above number"), GUILayout.Height(25), GUILayout.Width(200)))
+        {
+            SpriteRenderer[] _selected = null;
+            if (doUseChildrenSprites)
+            {
+                _selected = Selection.gameObjects.ToList().SelectMany(s => s.GetComponentsInChildren<SpriteRenderer>()).ToArray();
+            }
+            else
+            {
+                _selected = Selection.gameObjects.ToList().Select(g => g.GetComponent<SpriteRenderer>()).Distinct().ToArray();
+            }
+
+            Undo.RecordObjects(_selected, "Increment Sprites layer order");
+
+            foreach (SpriteRenderer _sprite in _selected)
+            {
+                _sprite.sortingOrder += layerIncrementValue;
+            }
+        }
+
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+
+        layerIncrementValue = EditorGUILayout.IntField(new GUIContent("Layer Increment value", "Value used to increment selected objects layer"), layerIncrementValue, GUILayout.Width(200));
+
+        EditorGUILayout.EndHorizontal();
+    }
+
+    /// <summary>
+    /// Draws the color mode.
+    /// </summary>
+    public void DrawColorMode()
+    {
+        // Get non-assignated color groups and associate them with matching one if found
+        for (int _i = 0; _i < allGroups.Count; _i++)
+        {
+            allGroups[_i].Sprites = allGroups[_i].Sprites.Where(s => s != null).ToList();
+
+            SpriteRenderer[] _differents = allGroups[_i].Sprites.Where(s => s.color != allGroups[_i].Color).ToArray();
+
+            if (_differents.Length > 0)
+            {
+                if (_differents.Length == allGroups[_i].Sprites.Count)
+                {
+                    allGroups[_i].Color = _differents[0].color;
+                }
+
+                else
+                {
+                    foreach (SpriteRenderer _sprite in _differents)
+                    {
+                        allGroups[_i].Sprites.Remove(_sprite);
+                        LoadSprite(_sprite);
+                    }
+
+                    if (allGroups[_i].Sprites.Count == 0)
+                    {
+                        allGroups[_i].Name = "REMOVE ME";
+                        Repaint();
+                    }
+                }
+            }
+        }
+
+        // Draw toolbar
+        EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
+
+        if (GUILayout.Button(new GUIContent("Create Folder", "Create a new folder to order your color groups"), EditorStyles.toolbarButton))
+        {
+            mainFolder.Folders = mainFolder.Folders.Append(new TDS_ColorGroupFolder()).ToList();
+            allFolders.Add(mainFolder.Folders.Last());
+        }
+
+        GUILayout.FlexibleSpace();
+
+        if (GUILayout.Button(new GUIContent("Range", "Range the groups by name"), EditorStyles.toolbarButton))
+        {
+            mainFolder.Folders = mainFolder.Folders.OrderBy(g => g.Name).ToList();
+            foreach (TDS_ColorGroupFolder _folder in allFolders)
+            {
+                _folder.ColorGroups = _folder.ColorGroups.OrderBy(g => g.Name).ToList();
+            }
+        }
+
+        if (GUILayout.Button(new GUIContent("Load Sprites", "Loads all sprites of this level"), EditorStyles.toolbarButton)) LoadSprites();
+
+        GUILayout.Space(15);
+
+        if (GUILayout.Button(new GUIContent("Reset", "Clear all loaded sprites and get them from zero point"), EditorStyles.toolbarButton))
+        {
+            if (EditorUtility.DisplayDialog("Confirm color groups reset", "Are you sure you want to reset all your color groups ? This action cannot be undone.", "Yes, I'm sure !", "I've changed my mind..."))
+            {
+                mainFolder = new TDS_ColorGroupFolder();
+                allGroups = new List<TDS_ColorGroup>();
+                allFolders = new List<TDS_ColorGroupFolder>();
+
+                LoadSprites();
+                Repaint();
+            }
+        }
+
+        EditorGUILayout.EndHorizontal();
+        GUILayout.Space(5);
+
+        // Draw color groups editor
+        scrollbar = EditorGUILayout.BeginScrollView(scrollbar);
+
+        EditorGUILayout.LabelField(new GUIContent("Level Colors", "All colors of the loaded sprites in the level"), EditorStyles.boldLabel);
+
+        if ((mainFolder.ColorGroups.Count == 0) && (mainFolder.Folders.Count == 0))
+        {
+            GUILayout.Space(5);
+
+            EditorGUILayout.HelpBox(new GUIContent("No sprites loaded !", "Click on the \"Load Sprites\" button to get sprites of the scene, or add some to load them next"));
+
+            EditorGUILayout.EndScrollView();
+            return;
+        }
+
+        // Draw all folders & color groups !!
+        DrawColorGroupFolders(mainFolder.Folders, mainFolder);
+        GUILayout.Space(10);
+        DrawColorGroups(mainFolder.ColorGroups, mainFolder);
+
+        GUILayout.Space(10);
+        EditorGUILayout.EndScrollView();
+    }
+    #endregion
+
+    #region General
+
+    #endregion
+
+    #region Color
     /// <summary>
     /// Loads all sprite renderers of the level.
     /// </summary>
@@ -327,6 +525,8 @@ public class TDS_ColorLevelEditor : EditorWindow
     }
     #endregion
 
+    #endregion
+
     #region Unity Methods
     // This function is called when the object is loaded
     private void OnEnable()
@@ -338,99 +538,7 @@ public class TDS_ColorLevelEditor : EditorWindow
     // Implement your own editor GUI here
     private void OnGUI()
     {
-        // Get non-assignated color groups and associate them with matching one if found
-        for (int _i = 0; _i < allGroups.Count; _i++)
-        {
-            allGroups[_i].Sprites = allGroups[_i].Sprites.Where(s => s != null).ToList();
-
-            SpriteRenderer[] _differents = allGroups[_i].Sprites.Where(s => s.color != allGroups[_i].Color).ToArray();
-
-            if (_differents.Length > 0)
-            {
-                if (_differents.Length == allGroups[_i].Sprites.Count)
-                {
-                    allGroups[_i].Color = _differents[0].color;
-                }
-
-                else
-                {
-                    foreach (SpriteRenderer _sprite in _differents)
-                    {
-                        allGroups[_i].Sprites.Remove(_sprite);
-                        LoadSprite(_sprite);
-                    }
-
-                    if (allGroups[_i].Sprites.Count == 0)
-                    {
-                        allGroups[_i].Name = "REMOVE ME";
-                        Repaint();
-                    }
-                }
-            }
-        }
-
-        // Draw toolbar
-        EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
-
-        if (GUILayout.Button(new GUIContent("Create Folder", "Create a new folder to order your color groups"), EditorStyles.toolbarButton))
-        {
-            mainFolder.Folders = mainFolder.Folders.Append(new TDS_ColorGroupFolder()).ToList();
-            allFolders.Add(mainFolder.Folders.Last());
-        }
-
-        GUILayout.FlexibleSpace();
-
-        if (GUILayout.Button(new GUIContent("Range", "Range the groups by name"), EditorStyles.toolbarButton))
-        {
-            mainFolder.Folders = mainFolder.Folders.OrderBy(g => g.Name).ToList();
-            foreach (TDS_ColorGroupFolder _folder in allFolders)
-            {
-                _folder.ColorGroups = _folder.ColorGroups.OrderBy(g => g.Name).ToList();
-            }
-        }
-
-        if (GUILayout.Button(new GUIContent("Load Sprites", "Loads all sprites of this level"), EditorStyles.toolbarButton)) LoadSprites();
-
-        GUILayout.Space(15);
-
-        if (GUILayout.Button(new GUIContent("Reset", "Clear all loaded sprites and get them from zero point"), EditorStyles.toolbarButton))
-        {
-            if (EditorUtility.DisplayDialog("Confirm color groups reset", "Are you sure you want to reset all your color groups ? This action cannot be undone.", "Yes, I'm sure !", "I've changed my mind..."))
-            {
-                mainFolder = new TDS_ColorGroupFolder();
-                allGroups = new List<TDS_ColorGroup>();
-                allFolders = new List<TDS_ColorGroupFolder>();
-
-                LoadSprites();
-                Repaint();
-            }
-        }
-
-        EditorGUILayout.EndHorizontal();
-        GUILayout.Space(5);
-
-        // Draw color groups editor
-        scrollbar = EditorGUILayout.BeginScrollView(scrollbar);
-
-        EditorGUILayout.LabelField(new GUIContent("Level Colors", "All colors of the loaded sprites in the level"), EditorStyles.boldLabel);
-
-        if ((mainFolder.ColorGroups.Count == 0) && (mainFolder.Folders.Count == 0))
-        {
-            GUILayout.Space(5);
-
-            EditorGUILayout.HelpBox(new GUIContent("No sprites loaded !", "Click on the \"Load Sprites\" button to get sprites of the scene, or add some to load them next"));
-
-            EditorGUILayout.EndScrollView();
-            return;
-        }
-
-        // Draw all folders & color groups !!
-        DrawColorGroupFolders(mainFolder.Folders, mainFolder);
-        GUILayout.Space(10);
-        DrawColorGroups(mainFolder.ColorGroups, mainFolder);
-
-        GUILayout.Space(10);
-        EditorGUILayout.EndScrollView();
+        DrawEditor();
     }
     #endregion
 
