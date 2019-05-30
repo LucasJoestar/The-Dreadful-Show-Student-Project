@@ -105,9 +105,21 @@ public class TDS_LevelManager : MonoBehaviour
     /// <param name="_playerType"></param>
     public void Spawn(PlayerType _playerType)
     {
-        if(_playerType == PlayerType.Juggler)
-            localPlayer = TDS_NetworkManager.Instance.InstantiatePlayer(_playerType, StartSpawnPoints[0]).GetComponentInChildren<TDS_Player>();
-        else localPlayer = TDS_NetworkManager.Instance.InstantiatePlayer(_playerType, StartSpawnPoints[0]).GetComponent<TDS_Player>();
+        if (_playerType == PlayerType.Juggler)
+            localPlayer = PhotonNetwork.Instantiate(_playerType.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponentInChildren<TDS_Player>();
+        else localPlayer = PhotonNetwork.Instantiate(_playerType.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponent<TDS_Player>();
+        TDS_Camera.Instance.Target = localPlayer.transform;
+        TDS_UIManager.Instance?.SetPlayerLifeBar(localPlayer);
+    }
+
+    /// <summary>
+    /// Make the player with the type contained in the GameManager spawn
+    /// </summary>
+    private void Spawn()
+    {
+        if (TDS_GameManager.LocalPlayer == PlayerType.Juggler)
+            localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponentInChildren<TDS_Player>();
+        else localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponent<TDS_Player>();
         TDS_Camera.Instance.Target = localPlayer.transform;
         TDS_UIManager.Instance?.SetPlayerLifeBar(localPlayer);
     }
@@ -178,7 +190,7 @@ public class TDS_LevelManager : MonoBehaviour
         TDS_NetworkManager.Instance.DemoTest(_idTest);
         #endregion
         // Spawn local player.
-        // Spawn();
+        Spawn();
     }
     #endregion
 
