@@ -378,6 +378,7 @@ public abstract class TDS_Enemy : TDS_Character
             #region Searching
             case EnemyState.Searching:
                 // If there is no target, search a new target
+                SetAnimationState((int)EnemyAnimationState.Idle); 
                 playerTarget = SearchTarget();
                 //If a target is found -> Set the state to TakingDecision
                 if (playerTarget)
@@ -482,7 +483,6 @@ public abstract class TDS_Enemy : TDS_Character
     {
         if (isDead) yield break; 
         SetAnimationState((int)EnemyAnimationState.Run);
-        // Wait some time before calling again Behaviour(); 
         Collider[] _colliders;
         float _distance; 
         while (agent.IsMoving)
@@ -637,7 +637,6 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns>Best player to target</returns>
     protected virtual TDS_Player SearchTarget()
     {
-        SetAnimationState((int)EnemyAnimationState.Idle); 
         TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
         if (_targets.Length == 0) return null;
         //Set constraints here (Distance, type, etc...)
@@ -864,6 +863,11 @@ public abstract class TDS_Enemy : TDS_Character
     protected virtual void ComputePath()
     {
         if (isDead) return; 
+        if(!playerTarget || playerTarget.IsDead)
+        {
+            enemyState = EnemyState.Searching;
+            return; 
+        }
         if(IsParalyzed)
         {
             enemyState = EnemyState.MakingDecision;

@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -11271,9 +11271,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b39060268534184d998ac07ef7bceba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minimumPlayerToLaunch: 1
   photonView: {fileID: 1393358466}
-  connectionVersion: 2.2
-  roomName: TDS_EPIIC_LUCAS
 --- !u!114 &1393358466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11379,7 +11378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51f2b185721e7054cba63b6eed071020, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RPCPhotonView: {fileID: 1393358466}
+  RPCPhotonView: {fileID: 0}
 --- !u!1 &1399725926
 GameObject:
   m_ObjectHideFlags: 0
@@ -16500,6 +16499,10 @@ PrefabInstance:
       propertyPath: instantiationId
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1942066217794072, guid: 131b9c2e9ac901841aa00daa77a82570, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 114956625424719710, guid: 131b9c2e9ac901841aa00daa77a82570,
         type: 3}
       propertyPath: viewIdField
@@ -16509,10 +16512,6 @@ PrefabInstance:
         type: 3}
       propertyPath: instantiationId
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1942066217794072, guid: 131b9c2e9ac901841aa00daa77a82570, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 131b9c2e9ac901841aa00daa77a82570, type: 3}

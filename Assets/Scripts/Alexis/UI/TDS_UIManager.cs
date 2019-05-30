@@ -114,7 +114,7 @@ public class TDS_UIManager : PunBehaviour
     /// <summary>
     /// Dictionary to stock every filling coroutine started
     /// </summary>
-    private Dictionary<Image, Coroutine> filledImages = new Dictionary<Image, Coroutine>();
+    private Dictionary<TDS_LifeBar, Coroutine> filledImages = new Dictionary<TDS_LifeBar, Coroutine>();
     #endregion
 
     #region LifeBar
@@ -162,17 +162,18 @@ public class TDS_UIManager : PunBehaviour
     /// Fill the image until its fillAmount until it reaches the fillingValue
     /// At the end of the filling, remove the entry of the dictionary at the key _filledImage
     /// </summary>
-    /// <param name="_filledImage">Image to fill</param>
+    /// <param name="_lifebar">Image to fill</param>
     /// <param name="_fillingValue">Fill amount to reach</param>
     /// <returns></returns>
-    private IEnumerator UpdateFilledImage(Image _filledImage, float _fillingValue)
+    private IEnumerator UpdateFilledImage(TDS_LifeBar _lifebar, float _fillingValue)
     {
-        while (_filledImage.fillAmount != _fillingValue &&  _filledImage != null)
+        _lifebar.ForegroundFilledImage.fillAmount = _fillingValue; 
+        while (_lifebar.FilledImage.fillAmount != _fillingValue &&  _lifebar != null)
         {
-            _filledImage.fillAmount = Mathf.MoveTowards(_filledImage.fillAmount, _fillingValue, Time.deltaTime/2 );
+            _lifebar.FilledImage.fillAmount = Mathf.MoveTowards(_lifebar.FilledImage.fillAmount, _fillingValue, Time.deltaTime/2 );
             yield return new WaitForEndOfFrame();
         }
-        filledImages.Remove(_filledImage);
+        filledImages.Remove(_lifebar);
     }
     #endregion
 
@@ -198,7 +199,7 @@ public class TDS_UIManager : PunBehaviour
         uiState = _state;
         switch (uiState)
         {
-            case UIState.InMenu:
+            case UIState.InMainMenu:
                 mainMenuParent.SetActive(true);
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false); 
@@ -255,10 +256,10 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     /// <param name="_filledImage">Image to fill</param>
     /// <param name="_fillingValue">Filling value to reach</param>
-    public void FillImage(Image _filledImage, float _fillingValue)
+    public void FillImage(TDS_LifeBar _lifebar, float _fillingValue)
     {
-        StopFilling(_filledImage); 
-        filledImages.Add(_filledImage, StartCoroutine(UpdateFilledImage(_filledImage, _fillingValue))); 
+        StopFilling(_lifebar); 
+        filledImages.Add(_lifebar, StartCoroutine(UpdateFilledImage(_lifebar, _fillingValue))); 
     }
 
     /// <summary>
@@ -302,7 +303,7 @@ public class TDS_UIManager : PunBehaviour
         bossHealthBar.SetOwner(_boss);
         bossHealthBar.gameObject.SetActive(true);
 
-        _boss.HealthBar = bossHealthBar.FilledImage;
+        _boss.HealthBar = bossHealthBar;
 
         _boss.OnTakeDamage += _boss.UpdateLifeBar;
         _boss.OnDie += () => bossHealthBar.gameObject.SetActive(false);
@@ -320,7 +321,7 @@ public class TDS_UIManager : PunBehaviour
         TDS_LifeBar _healthBar = UnityEngine.Object.Instantiate(lifeBarPrefab, _enemy.transform.position + _offset, Quaternion.identity, canvasWorld.transform).GetComponent<TDS_LifeBar>();
 
         _healthBar.SetOwner(_enemy, _offset, true);
-        _enemy.HealthBar = _healthBar.FilledImage;
+        _enemy.HealthBar = _healthBar;
 
         _enemy.OnTakeDamage += _enemy.UpdateLifeBar; 
     }
@@ -335,7 +336,7 @@ public class TDS_UIManager : PunBehaviour
         if(photonView.isMine)
         {
             playerHealthBar.SetOwner(_player);
-            _player.HealthBar = playerHealthBar.FilledImage;
+            _player.HealthBar = playerHealthBar;
             _player.OnTakeDamage += _player.UpdateLifeBar; 
         }
 
@@ -344,13 +345,13 @@ public class TDS_UIManager : PunBehaviour
     /// <summary>
     /// Stop the coroutine that fill the image
     /// </summary>
-    /// <param name="_filledImage"></param>
-    public void StopFilling(Image _filledImage)
+    /// <param name="_lifeBar"></param>
+    public void StopFilling(TDS_LifeBar _lifeBar)
     {
-        if (filledImages.ContainsKey(_filledImage))
+        if (filledImages.ContainsKey(_lifeBar))
         {
-            if(filledImages[_filledImage] != null) StopCoroutine(filledImages[_filledImage]);
-            filledImages.Remove(_filledImage);
+            if(filledImages[_lifeBar] != null) StopCoroutine(filledImages[_lifeBar]);
+            filledImages.Remove(_lifeBar);
         }
     }
 
@@ -382,7 +383,7 @@ public class TDS_UIManager : PunBehaviour
     private void SetButtonInteractable(Button _b, PlayerType _type, bool _isInteractable)
     {
         _b.interactable = _isInteractable;
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetButtonInteractable"), new object[] { (int)_type, _isInteractable });
+        if(PhotonNetwork.connected) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetButtonInteractable"), new object[] { (int)_type, _isInteractable });
     }
 
     /// <summary>
@@ -464,6 +465,11 @@ public class TDS_UIManager : PunBehaviour
     {
         if (uiGameObject)
             uiGameObject.SetActive(true); 
+        if(PhotonNetwork.connected)
+        {
+            ActivateMenu(UIState.InGame); 
+            return; 
+        }
         SetButtons();
     }
 	#endregion

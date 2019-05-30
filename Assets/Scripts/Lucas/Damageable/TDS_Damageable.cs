@@ -177,7 +177,7 @@ public class TDS_Damageable : PunBehaviour
             if (!UnityEditor.EditorApplication.isPlaying) return;
             #endif
 
-            else if (value == false)
+            if (value == false)
             {
                 animator.SetTrigger("REVIVE");
                 gameObject.layer = layerBeforeDeath;

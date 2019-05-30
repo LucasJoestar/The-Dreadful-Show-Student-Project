@@ -136,6 +136,7 @@ public abstract class TDS_Boss : TDS_Enemy
             #region Searching
             case EnemyState.Searching:
                 // If there is no target, search a new target
+                SetAnimationState((int)EnemyAnimationState.Idle); 
                 playerTarget = SearchTarget();
                 //If a target is found -> Set the state to TakingDecision
                 if (playerTarget)

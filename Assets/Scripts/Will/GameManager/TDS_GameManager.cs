@@ -71,6 +71,8 @@ public static class TDS_GameManager
     /// Text asset referencing all game dialogs and others.
     /// </summary>
     public static TextAsset DialogsAsset { get; private set; }
+
+    public static PlayerType LocalPlayer { get; set; }
     #endregion
 
     #region Methods

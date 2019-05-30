@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq; 
 using UnityEngine;
+using UnityEngine.UI;
 using Photon;
+using TMPro;
 
 #pragma warning disable 0414
 [RequireComponent(typeof(PhotonView))]
@@ -36,102 +35,162 @@ public class TDS_NetworkManager : PunBehaviour
     #endregion
 
     #region Fields / Properties
-    public static TDS_NetworkManager Instance;
-    #region Conection settings
-    
-    #endregion
-    #region Photon
-    [SerializeField, Header("Photon settings")]
-    new PhotonView  photonView ;
-    [SerializeField]
-    string connectionVersion = "1.1";
-    public string ConnectionVersion { get { return connectionVersion; } }
-    [SerializeField]
-    string roomName = "TDS_EPIIC";
+    #region Lobby
     bool canLeave = false;
+    [Space]
+    [SerializeField, Range(1, 4)]
+    int minimumPlayerToLaunch = 1;
+    string roomName = string.Empty;
+
+    [Space]
+    [SerializeField]
+    new PhotonView photonView;
+
+    /*
+    [Space]
+    [SerializeField]
+    TMP_Text textPlayerCounter;
+    */
+
     #endregion
+    public static TDS_NetworkManager Instance;
+
     #region Player     
-    //Player type in local
-    PlayerType localPlayer = PlayerType.BeardLady;
     bool isHost = false;
     public bool IsHost { get { return isHost; } }
-
-    //Player name in local
-    //[SerializeField]
-    //string playerName = "Player";
+    private string playerNamePrefKey = "Local Player"; 
+    public string PlayerNamePrefKey
+    {
+        get { return playerNamePrefKey; }
+        set
+        {
+            playerNamePrefKey = value;
+            PhotonNetwork.playerName = value; 
+            PlayerPrefs.SetString(PlayerNamePrefKey, value);
+        }
+    }
     #endregion
+
     #endregion
 
     #region Methods
-    #region Original Methods
-    /// <summary>
-    /// Connect the player to Photon
-    /// </summary>
-    public void InitConnection()
+    public void DemoTest(string _iD)
     {
-        PhotonNetwork.ConnectUsingSettings(connectionVersion);
+        PhotonNetwork.ConnectUsingSettings(_iD);
     }
-    /// <summary>
-    /// Spawn player based on the Enum PlayerType
-    /// </summary>
-    /// <param name="_playerType"></param>
-    /// <returns></returns>
-    public PhotonView InstantiatePlayer (PlayerType _playerType, Vector3 _spawnPosition)
-    {
-        PhotonView _playerId = PhotonNetwork.Instantiate(_playerType.ToString(), _spawnPosition, Quaternion.identity, 0).GetComponent<PhotonView>();
-        localPlayer = _playerType;
 
-        return _playerId;
-    }
-    /// <summary> 
-    /// Join the room if this room already exist else create it with somme parameters 
-    /// </summary> 
-    void JoinRoom()
+    #region Original Methods
+
+
+    #region Lobby Methods   
+    void CreateRoom()
     {
-        RoomOptions _options = new RoomOptions()
-        {
-            IsVisible = true,
-            MaxPlayers = 4,
-        };
-        PhotonNetwork.JoinOrCreateRoom(roomName,_options,null);
-        Debug.Log(roomName);
+        if (roomName == string.Empty) roomName = "RoomTest"; 
+        PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
+        Debug.Log("room name : " + roomName);
     }
+
+    void InitMulti()
+    {
+        #region Player
+        if (PlayerPrefs.HasKey(PlayerNamePrefKey))
+        {
+            PlayerNamePrefKey = PlayerPrefs.GetString(PlayerNamePrefKey);
+            TDS_MainMenu.Instance.PlayerNameField.text = playerNamePrefKey; 
+        }
+        #endregion
+    }
+
+    public void LeaveRoom()
+    {
+        //PhotonNetwork.LeaveRoom();
+        //PhotonNetwork.LeaveLobby();
+        PhotonNetwork.Disconnect();
+    }
+
+    void PlayerCount()
+    {
+        bool _canLaunch = PhotonNetwork.room.PlayerCount >= minimumPlayerToLaunch && PhotonNetwork.isMasterClient ? true : false;
+        TDS_MainMenu.Instance?.UpdatePlayerCount(PhotonNetwork.room.PlayerCount, _canLaunch, PhotonNetwork.playerList); 
+    }
+
+    public void SelectRoom(Button _btn)
+    {
+        RoomId _roomId;
+
+        _roomId = _btn.name == "FirstRoomButton" ? RoomId.FirstRoom :
+                  _btn.name == "SecondRoomButton" ? RoomId.SecondRoom :
+                  _btn.name == "ThirdRoomButton" ? RoomId.ThirdRoom :
+                  _btn.name == "FourthRoomButton" ? RoomId.FourthRoom :
+                  _btn.name == "FifthRoomButton" ? RoomId.FifthRoom :
+                  RoomId.WaitForIt;
+
+        roomName = _btn.name;
+
+        if (_roomId == RoomId.WaitForIt)
+        {
+            Debug.LogError("Can't connect to the room");
+            return;
+        }
+
+        int _getIndex = (int)_roomId;
+        string _stringID = _getIndex.ToString();
+
+        if (!PhotonNetwork.connected)
+        {
+            PhotonNetwork.autoJoinLobby = false;
+            PhotonNetwork.automaticallySyncScene = true;
+            PhotonNetwork.ConnectUsingSettings(_stringID);
+        }
+    }
+    #endregion
+
+    #region Player   
+    public void SetPlayerName(string _nickname)
+    {
+        PhotonNetwork.playerName = _nickname + " ";
+        PlayerPrefs.SetString(PlayerNamePrefKey,_nickname);
+    }
+    #endregion
+
+    #endregion
+
     #region PhotonMethods
     /// <summary>
     /// When the player is connected to master, he joins the room
     /// </summary>
     public override void OnConnectedToMaster()
     {
-        base.OnConnectedToMaster();
-        JoinRoom();
+        Debug.Log("connected to Master");
+        CreateRoom();
     }
     /// <summary>
     /// When the player create a room, he's the host of the game
     /// </summary>
     public override void OnCreatedRoom()
     {
-        base.OnCreatedRoom();
+        Debug.Log("room created");
+        PhotonNetwork.JoinLobby();
         isHost = true;
     }
-
-    public void OnleftRoom()
+    public override void OnDisconnectedFromPhoton()
     {
-
+        InitMulti();
     }
-    
-    /// <summary>
-    /// When the player joins the room, instantiate a prefab for the player and set its name with the player name
-    /// </summary>
     public override void OnJoinedRoom()
     {
-        base.OnJoinedRoom();
-
-        if (!PhotonNetwork.isMasterClient)
-        {
-           //SendInGamePlayers
-        }
+        Debug.Log("connected to Room there is : " + PhotonNetwork.room.PlayerCount + " player here !!");
+        //leaveButton.SetActive(true);
+        PlayerCount();
     }
-    #endregion
+    public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
+    {
+        PlayerCount();
+    }
+    public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
+    {
+        PlayerCount();
+    }
     #endregion
 
     #region Unity Methods
@@ -143,17 +202,13 @@ public class TDS_NetworkManager : PunBehaviour
     {
         GUILayout.Box(PhotonNetwork.connectionStateDetailed.ToString());
         GUILayout.Box(PhotonNetwork.isMasterClient.ToString());
+        GUILayout.Box(TDS_GameManager.LocalPlayer.ToString()); 
     }
     void Start ()
     {
-        InitConnection(); //Deplacé dans le GameManager
-        if(!photonView)
-        photonView = GetComponent<PhotonView>();
-    }	
-	void Update ()
-    {
-        
-	}    
+        if(!photonView) photonView = GetComponent<PhotonView>();
+        InitMulti();
+    }
     #endregion
     #endregion
 }
