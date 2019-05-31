@@ -34,27 +34,41 @@ public class TDS_WaveElementEditor : PropertyDrawer
     #region Methods
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
+
         //Int sliders to display and modify the min and max random Spawn
-        TDS_EditorUtility.IntSlider("Minimum Random Spawn", "", property.FindPropertyRelative("minRandomSpawn"), 0, property.FindPropertyRelative("maxRandomSpawn").intValue);
-        TDS_EditorUtility.IntSlider("Maximum Random Spawn", "", property.FindPropertyRelative("maxRandomSpawn"), property.FindPropertyRelative("minRandomSpawn").intValue, 10);
-        GUILayout.Space(10); 
+        Rect _rect = new Rect(position.position.x, position.position.y, position.width - 25, 20);
+        property.FindPropertyRelative("minRandomSpawn").intValue = EditorGUI.IntSlider(_rect, "Min Random Spawn",  property.FindPropertyRelative("minRandomSpawn").intValue, 0, property.FindPropertyRelative("maxRandomSpawn").intValue);
+        _rect = new Rect(position.position.x, position.position.y + 25, position.width - 25, 20);
+        property.FindPropertyRelative("maxRandomSpawn").intValue = EditorGUI.IntSlider(_rect, "Max Random Spawn", property.FindPropertyRelative("maxRandomSpawn").intValue, property.FindPropertyRelative("minRandomSpawn").intValue, 10);
+
+        EditorGUILayout.Space();
+        EditorGUILayout.Space();
+        EditorGUILayout.Space();
+        EditorGUILayout.Space();
+
+        GUILayout.BeginVertical("Box");
+        GUILayout.Label("Normal Spawns", TDS_EditorUtility.HeaderStyle);
         // Display the settings of the normal spawning Informations
-        GUILayout.Box("NORMAL SPAWNING"); 
         for (int i = 0; i < property.FindPropertyRelative("spawningInformations").arraySize; i++)
         {
             EditorGUILayout.PropertyField(property.FindPropertyRelative($"spawningInformations.Array.data[{i}]"));
             //Create a button to remove the spawning informations
             GUITools.ActionButton("Delete this info", property.FindPropertyRelative($"spawningInformations.Array").DeleteArrayElementAtIndex, i, Color.white, Color.black); 
         }
+        GUILayout.EndVertical();
+
+        //GUI.backgroundColor = TDS_EditorUtility.BoxDarkColor;
+        GUILayout.BeginVertical("Box");
+        GUILayout.Label("Random Spawns", TDS_EditorUtility.HeaderStyle);
         // Display the settings of the random spawning Informations
-        GUILayout.Box("RANDOM SPAWNING");
         for (int i = 0; i < property.FindPropertyRelative("randomSpawningInformations").arraySize; i++)
         {
             EditorGUILayout.PropertyField(property.FindPropertyRelative($"randomSpawningInformations.Array.data[{i}]"));
             //Create a button to remove the spawning informations
             GUITools.ActionButton("Delete this info", property.FindPropertyRelative($"randomSpawningInformations.Array").DeleteArrayElementAtIndex, i, Color.white, Color.black);
         }
-        EditorGUILayout.HelpBox("", MessageType.None, true); 
+        GUILayout.EndVertical();
+
     }
     #endregion
 }

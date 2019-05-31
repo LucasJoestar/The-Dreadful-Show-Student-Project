@@ -6191,7 +6191,7 @@ MonoBehaviour:
         maxRandomSpawn: 0
         spawningInformations:
         - enemyResourceName: Punk
-          enemyCount: 1
+          enemyCount: 
         randomSpawningInformations: []
     isActivatedByEvent: 1
 --- !u!65 &903010319
@@ -10855,15 +10855,20 @@ MonoBehaviour:
   - isWaveFoldOut: 1
     debugColor: {r: 1, g: 0, b: 0, a: 1}
     spawnPoints:
-    - spawnRange: 2
-      spawnPosition: {x: 4.690322, y: 0, z: -9.255096}
+    - spawnRange: 0
+      spawnPosition: {x: 0, y: 0, z: 0}
       waveElement:
         minRandomSpawn: 0
         maxRandomSpawn: 0
         spawningInformations:
         - enemyResourceName: Punk
-          enemyCount: 1
-        randomSpawningInformations: []
+          enemyCount: 0300000005000000070000000a000000
+        - enemyResourceName: Siamese
+          enemyCount: 0300000005000000070000000a000000
+        randomSpawningInformations:
+        - enemyResourceName: Punk
+          enemyCount: 00000000000000000000000000000000
+          spawnChance: 0
     isActivatedByEvent: 0
 --- !u!114 &1331645433
 MonoBehaviour:
