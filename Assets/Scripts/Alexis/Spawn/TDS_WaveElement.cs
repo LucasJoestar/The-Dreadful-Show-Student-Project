@@ -77,7 +77,7 @@ public class TDS_WaveElement
         // Get enemies
         foreach (TDS_SpawningInformations _info in spawningInformations)
         {
-            for (int i = 0; i < _info.EnemyCount; i++)
+            for (int i = 0; i < _info.EnemyCount[TDS_GameManager.PlayerCount - 1]; i++)
             {
                 _enemies.Add(_info.EnemyResourceName);
             }
@@ -95,20 +95,20 @@ public class TDS_WaveElement
         for (int i = 0; i < _randomCount; i++)
         {
             //Get the total of all spawn chances 
-            _max = randomSpawningInformations.Where(a => a.EnemyCount > 0).Sum(a => a.SpawnChance);
+            _max = randomSpawningInformations.Where(a => a.EnemyCount[TDS_GameManager.PlayerCount - 1] > 0).Sum(a => a.SpawnChance);
             if (_max == 0) break;
             //Get a random value
             _value = Random.Range(0, _max);
             for (int j = 0; j < randomSpawningInformations.Count; j++)
             {
                 //Reference value is the sum of every previous spawnchance added to the current spawn chance
-                _referenceValue += randomSpawningInformations[j].SpawnChance; 
+                _referenceValue += randomSpawningInformations[j].SpawnChance;
                 //If the value is less than the reference value
-                if(_value <= _referenceValue)
+                if (_value <= _referenceValue)
                 {
                     //Add the enemy name to the list and decrease the enemy count for the selected enemy
                     _enemies.Add(randomSpawningInformations[j].EnemyResourceName);
-                    randomSpawningInformations[j].EnemyCount--; 
+                    randomSpawningInformations[j].EnemyCount[TDS_GameManager.PlayerCount - 1]--; 
                     break; 
                 }
             }

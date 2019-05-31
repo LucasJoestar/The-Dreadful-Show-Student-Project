@@ -73,6 +73,11 @@ public static class TDS_GameManager
     public static TextAsset DialogsAsset { get; private set; }
 
     public static PlayerType LocalPlayer { get; set; }
+
+    public static int PlayerCount
+    {
+        get { return PhotonNetwork.room.PlayerCount;  }
+    }
     #endregion
 
     #region Methods

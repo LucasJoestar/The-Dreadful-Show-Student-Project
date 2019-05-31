@@ -29,7 +29,6 @@ public class TDS_SpawningInformations
 	 *
 	 *	-----------------------------------
 	*/
-
     /// <summary>
     /// Kind of enemies to spawn
     /// </summary>
@@ -42,19 +41,15 @@ public class TDS_SpawningInformations
     /// <summary>
     /// Number of enemies to spawn 
     /// </summary>
-    [SerializeField] protected int enemyCount = 1;
+    [SerializeField] protected int[] enemyCount; 
     /// <summary>
     /// Property of the enemyCount Field
     /// </summary>
-    public int EnemyCount
+    public int[] EnemyCount
     {
         get
         {
             return enemyCount;
-        }
-        set
-        {
-            if (value >= 0) enemyCount = value; 
         }
     }
 
@@ -66,6 +61,7 @@ public class TDS_SpawningInformations
     public TDS_SpawningInformations(TDS_Enemy _e)
     {
         enemyResourceName = _e.EnemyName;
+        enemyCount = new int[4] { 0, 0, 1, 1 };
     }
 }
 
@@ -112,6 +108,6 @@ public class TDS_RandomSpawningInformations : TDS_SpawningInformations
     /// <param name="_e">selected enemy</param>
     public TDS_RandomSpawningInformations(TDS_Enemy _e) : base(_e)
     {
-        enemyResourceName = _e.EnemyName;
+
     }
 }

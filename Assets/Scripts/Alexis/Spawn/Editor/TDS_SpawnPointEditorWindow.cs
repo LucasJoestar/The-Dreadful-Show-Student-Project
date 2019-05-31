@@ -75,7 +75,8 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
         //Display properties and settings of the spawn point
         EditorGUILayout.PropertyField(property);
         GUILayout.Space(5);
-        
+
+        GUILayout.BeginVertical("Box"); 
         // Create two ObjectFields to add normal and random spawning informations
         TDS_Enemy _e = null;
         _e = EditorGUILayout.ObjectField("Add Enemy", _e, typeof(TDS_Enemy), false) as TDS_Enemy;
@@ -111,6 +112,9 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
             _ref.GetArrayElementAtIndex(_ref.arraySize-1).FindPropertyRelative("enemyResourceName").stringValue = _e.EnemyName;
             Repaint(); 
         }
+        GUILayout.EndVertical();
+
+
         EditorGUILayout.EndScrollView();
         // Aply changes on the SerializedObject
         property.serializedObject.ApplyModifiedProperties();
