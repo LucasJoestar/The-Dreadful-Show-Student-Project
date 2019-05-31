@@ -137,35 +137,21 @@ public class TDS_Event
         {
             // Triggers a particular quote of the Narrator
             case CustomEventType.Narrator:
-                string[] _quotes = TDS_GameManager.GetDialog(textID).Split('\n').Select(s => s.Trim()).Where(s => s != string.Empty).ToArray();
 
-                foreach (string _quote in _quotes)
-                {
-                    int _time = _quote.Length / 20;
-                    TDS_UIManager.Instance.ActivateNarratorBox(_quote);
+                string[] _quotes = TDS_GameManager.GetDialog(textID);
+                TDS_UIManager.Instance.ActivateNarratorBox(_quotes);
 
-                    // If not local, activate narrator in other players too
-                    if (isOnline)
-                    {
-                        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateNarratorBox"), new object[] { _quote });
-                    }
-
-                    yield return new WaitForSeconds(_time);
-                }
-
-                TDS_UIManager.Instance.DesactivateNarratorBox();
-
-                // If not local, desactivate narrator in other players too
+                // If not local, activate narrator in other players too
                 if (isOnline)
                 {
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "DesactivateNarratorBox"), new object[] { });
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateNarratorBox")
+                        , new object[] { _quotes });
                 }
-
                 break;
 
             // Display a message in an information box
             case CustomEventType.DisplayInfoBox:
-                TDS_UIManager.Instance.ActivateDialogBox(TDS_GameManager.GetDialog(textID));
+                TDS_UIManager.Instance.ActivateDialogBox(TDS_GameManager.GetDialog(textID)[0]);
                 break;
 
             // Desactivate the current information box

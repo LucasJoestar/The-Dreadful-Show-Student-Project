@@ -64,7 +64,7 @@ public class TDS_UIManager : PunBehaviour
 	*/
 
     #region Events
-
+    public event Action OnNarratorDialogEnded; 
     #endregion
 
     #region Fields / Properties
@@ -78,6 +78,7 @@ public class TDS_UIManager : PunBehaviour
     #region Buttons
 
     #region Character Selection
+    [Header("Character Selection")]
     //Button to select the BeardLady
     [SerializeField] private Button ButtonSelectionBeardLady;
     //Button to select the Juggler
@@ -95,11 +96,13 @@ public class TDS_UIManager : PunBehaviour
     #endregion
 
     #region Animator
+    [Header("Animator")]
     [SerializeField] private Animator curtainsAnimator;
     [SerializeField] private Animator arrowAnimator; 
     #endregion 
 
     #region Canvas 
+    [Header("Canvas")]
     // Canvas based on the screen
     [SerializeField] private Canvas canvasScreen;
     /// <summary> Backing field of <see cref="canvasScreen"/>  </summary>
@@ -115,14 +118,19 @@ public class TDS_UIManager : PunBehaviour
     /// Dictionary to stock every filling coroutine started
     /// </summary>
     private Dictionary<TDS_LifeBar, Coroutine> filledImages = new Dictionary<TDS_LifeBar, Coroutine>();
+
+    private Coroutine narratorCoroutine; 
+    
     #endregion
 
     #region LifeBar
+    [Header("Health Bars")]
     [SerializeField] private TDS_LifeBar playerHealthBar;
     [SerializeField] private TDS_LifeBar bossHealthBar;
     #endregion
 
     #region MenuParents
+    [Header("Menu parent")]
     //Parent of the main menu UI
     [SerializeField] private GameObject mainMenuParent;
     //Parent of the InGame UI
@@ -141,6 +149,7 @@ public class TDS_UIManager : PunBehaviour
     #endregion
 
     #region Text
+    [Header("Dialog/Narrator Box")]
     //Text of the dialog Box
     [SerializeField] private TMPro.TMP_Text dialogBoxText ;
     //Text of the narrator Box
@@ -148,6 +157,7 @@ public class TDS_UIManager : PunBehaviour
     #endregion
 
     #region Resources
+    [Header("LifeBar")]
     [SerializeField] GameObject lifeBarPrefab = null;
     #endregion
 
@@ -175,6 +185,25 @@ public class TDS_UIManager : PunBehaviour
             yield return new WaitForEndOfFrame();
         }
         filledImages.Remove(_lifebar);
+    }
+
+    /// <summary>
+    /// Display all quotes in the narrator box
+    /// </summary>
+    /// <param name="_quotes">Quotes to display</param>
+    /// <returns></returns>
+    private IEnumerator PlayNarratorQuotes(string[] _quotes)
+    {
+        if (narratorBoxParent == null || narratorBoxText == null) yield break;
+        narratorBoxParent.SetActive(true);
+        foreach (string _quote in _quotes)
+        {
+            narratorBoxText.text = _quote; 
+            yield return new WaitForSeconds(_quote.Length/20);
+        }
+        narratorBoxParent.SetActive(false);
+        OnNarratorDialogEnded?.Invoke();
+        narratorCoroutine = null; 
     }
     #endregion
 
@@ -225,11 +254,14 @@ public class TDS_UIManager : PunBehaviour
     /// Set the parent of the dialogbox Active
     /// </summary>
     /// <param name="_text">Text to fill in the text fieldw</param>
-    public void ActivateNarratorBox(string _text)
+    public void ActivateNarratorBox(string[] _text)
     {
-        if (narratorBoxParent == null || narratorBoxText == null) return;
-        narratorBoxText.text = _text;
-        narratorBoxParent.SetActive(true);
+        if (narratorCoroutine != null)
+        {
+            OnNarratorDialogEnded?.Invoke(); 
+            StopCoroutine(narratorCoroutine);
+        }
+        narratorCoroutine = StartCoroutine(PlayNarratorQuotes(_text)); 
     }
 
     /// <summary>

@@ -81,10 +81,9 @@ public static class TDS_GameManager
     /// </summary>
     /// <param name="_id">ID of the dialog to load.</param>
     /// <returns>Returns all text linked to the specified id.</returns>
-    public static string GetDialog(string _id)
+    public static string[] GetDialog(string _id)
     {
-        string[] _dialogs = DialogsAsset.text.Split(splitCharacter);
-        return _dialogs.Where(d => d.StartsWith(_id)).FirstOrDefault().Replace(_id + '\n', string.Empty);
+        return DialogsAsset.text.Split(splitCharacter).Where(d => d.StartsWith(_id)).FirstOrDefault().Replace(_id + '\n', string.Empty).Split('\n').Select(s => s.Trim()).Where(s => s != string.Empty).ToArray();
     }
 
     /// <summary>

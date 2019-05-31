@@ -941,7 +941,8 @@ public abstract class TDS_Enemy : TDS_Character
     protected void StopAll()
     {
         agent.StopAgent();
-        if (throwable) DropObject();
+        base.StopAttack(); 
+        DropObject();
 
         //StopAllCoroutines();
         if (behaviourCoroutine != null)
@@ -969,7 +970,9 @@ public abstract class TDS_Enemy : TDS_Character
     protected virtual void TakeDecision()
     {
         //Take decisions
-        if (isDead) return; 
+        if (isDead) return;
+        if (isAttacking || hitBox.IsActive) StopAttack();
+        if (agent.IsMoving) agent.StopAgent(); 
         // If the target can't be targeted, search for another target
         if (!playerTarget || playerTarget.IsDead)
         {
@@ -1021,10 +1024,9 @@ public abstract class TDS_Enemy : TDS_Character
     /// <param name="_position">Position of the attacker</param>
     protected virtual void ApplyDamagesBehaviour(int _damage, Vector3 _position)
     {
-        StopAll(); 
-        hitBox.Desactivate(); 
+        StopAll();
         StartCoroutine(ApplyRecoil(_position));
-
+        enemyState = EnemyState.MakingDecision; 
         if (!isDead)
         {
             SetAnimationState((int)EnemyAnimationState.Hit);
@@ -1043,7 +1045,6 @@ public abstract class TDS_Enemy : TDS_Character
         if(PhotonNetwork.isMasterClient)
         {
             OnDie += () => StopAllCoroutines();
-            OnDie += () => agent.StopAgent();
             OnStopBringingCloser += () => SetAnimationState((int)EnemyAnimationState.Idle); 
             OnStopBringingCloser += () => behaviourCoroutine = StartCoroutine(Behaviour());
         }
