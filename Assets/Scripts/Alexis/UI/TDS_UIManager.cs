@@ -167,8 +167,9 @@ public class TDS_UIManager : PunBehaviour
     /// <returns></returns>
     private IEnumerator UpdateFilledImage(TDS_LifeBar _lifebar, float _fillingValue)
     {
-        _lifebar.ForegroundFilledImage.fillAmount = _fillingValue; 
-        while (_lifebar.FilledImage.fillAmount != _fillingValue &&  _lifebar != null)
+        if (!_lifebar) yield break;  
+        if(_lifebar.ForegroundFilledImage) _lifebar.ForegroundFilledImage.fillAmount = _fillingValue; 
+        while (_lifebar.FilledImage.fillAmount != _fillingValue &&  _lifebar.FilledImage != null)
         {
             _lifebar.FilledImage.fillAmount = Mathf.MoveTowards(_lifebar.FilledImage.fillAmount, _fillingValue, Time.deltaTime/2 );
             yield return new WaitForEndOfFrame();
