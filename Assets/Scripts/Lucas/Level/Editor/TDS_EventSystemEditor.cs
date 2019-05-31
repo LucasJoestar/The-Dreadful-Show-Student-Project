@@ -34,6 +34,12 @@ public class TDS_EventSystemEditor : Editor
 	*/
 
     #region Fields / Properties
+    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doAutoTriggerOnEnter"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty doAutoTriggerOnEnter = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doDesactivateTriggerOnStart"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty doDesactivateTriggerOnStart = null;
+
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doDestroyOnFinish"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty doDestroyOnFinish = null;
 
@@ -84,6 +90,11 @@ public class TDS_EventSystemEditor : Editor
 
         TDS_EditorUtility.Toggle("Looping", "Should this event system loop when reaching the end or not", doLoop);
         TDS_EditorUtility.Toggle("Destroy when Finished", "Should this object be destroyed when event system get finished", doDestroyOnFinish);
+
+        GUILayout.Space(2);
+
+        TDS_EditorUtility.Toggle("Activate on Trigger Enter", "Should this event system automatically be activated when entering this object trigger", doAutoTriggerOnEnter);
+        TDS_EditorUtility.Toggle("Desactivate collider on activated", "Should this object collider be desactivated when starting events", doDesactivateTriggerOnStart);
 
         GUILayout.Space(3);
 
@@ -266,6 +277,8 @@ public class TDS_EventSystemEditor : Editor
     // This function is called when the object is loaded
     private void OnEnable()
     {
+        doAutoTriggerOnEnter = serializedObject.FindProperty("doAutoTriggerOnEnter");
+        doDesactivateTriggerOnStart = serializedObject.FindProperty("doDesactivateTriggerOnStart");
         doDestroyOnFinish = serializedObject.FindProperty("doDestroyOnFinish");
         doLoop = serializedObject.FindProperty("doLoop");
         isActivated = serializedObject.FindProperty("isActivated");

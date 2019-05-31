@@ -183,7 +183,17 @@ public class TDS_LevelManager : MonoBehaviour
     {
         // Set the singleton instance if null
         if (!Instance) Instance = this;
-        else Destroy(this);
+        else
+        {
+            Destroy(this);
+            return;
+        }
+
+        if (!photonView)
+        {
+            photonView = GetComponent<PhotonView>();
+            if (!photonView) Debug.LogWarning("No PhotonView on Level Manager !");
+        }
     }
 
     // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy

@@ -36,6 +36,16 @@ public class TDS_EventsSystem : MonoBehaviour
 
     #region Fields / Properties
     /// <summary>
+    /// Indicates if this trigger should automatically starts when entering object trigger.
+    /// </summary>
+    [SerializeField] private bool doAutoTriggerOnEnter = true;
+
+    /// <summary>
+    /// Indicates if this object trigger should be desactivated when starting events.
+    /// </summary>
+    [SerializeField] private bool doDesactivateTriggerOnStart = true;
+
+    /// <summary>
     /// Indicates if this object should be destroyed when finished.
     /// </summary>
     [SerializeField] private bool doDestroyOnFinish = false;
@@ -191,6 +201,21 @@ public class TDS_EventsSystem : MonoBehaviour
         {
             photonView = GetComponent<PhotonView>();
             if (!photonView) Debug.LogWarning($"Missing Photon View on the Events System \"{name}\"");
+        }
+    }
+
+    // OnTriggerEnter is called when the GameObject collides with another GameObject
+    private void OnTriggerEnter(Collider other)
+    {
+        if (doAutoTriggerOnEnter && !isActivated)
+        {
+            StartEvents();
+
+            if (doDesactivateTriggerOnStart)
+            {
+                BoxCollider _trigger = GetComponent<BoxCollider>();
+                if (_trigger) _trigger.enabled = false;
+            }
         }
     }
     #endregion
