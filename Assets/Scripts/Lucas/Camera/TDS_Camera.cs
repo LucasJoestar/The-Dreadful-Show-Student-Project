@@ -417,15 +417,15 @@ public class TDS_Camera : MonoBehaviour
             }
 
             // Y & Z movement
-            if (camera.WorldToViewportPoint(currentBounds.ZMaxVector).y < .4f)
-            {
-                if (_movement.y > 0) _destination.y = transform.position.y;
-                if (_movement.z > 0) _destination.z = transform.position.z;
-            }
             if (camera.WorldToViewportPoint(currentBounds.ZMinVector).y > -.01f)
             {
                 if (_movement.y < 0) _destination.y = transform.position.y;
                 if (_movement.z < 0) _destination.z = transform.position.z;
+            }
+            if (camera.WorldToViewportPoint(currentBounds.ZMaxVector).y < .4f)
+            {
+                if (_movement.y > 0) _destination.y = transform.position.y;
+                if (_movement.z > 0) _destination.z = transform.position.z;
             }
 
             // Moves the camera
@@ -461,9 +461,13 @@ public class TDS_Camera : MonoBehaviour
             }
             else _isGoodInX = true;
 
-            if (camera.WorldToViewportPoint(currentBounds.ZMinVector).y > -.02f)
+            if (camera.WorldToViewportPoint(currentBounds.ZMinVector).y > -.01f)
             {
-                _destination.z += 1;
+                _destination.y += 1;
+            }
+            else if (camera.WorldToViewportPoint(currentBounds.ZMaxVector).y < .1f)
+            {
+                _destination.y -= 1;
             }
             else if (_isGoodInX) break;
 

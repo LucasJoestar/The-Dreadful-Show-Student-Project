@@ -16,9 +16,9 @@ GameObject:
   - component: {fileID: 212239229007302888}
   - component: {fileID: 1725797096084194985}
   - component: {fileID: 2742738669462884067}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: WhiteRabbit
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -81,13 +81,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53bdbd26138585f4aa59027c60557c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 0
   positionOffset: {x: 0, y: 0.25, z: 0}
   avoidanceForce: 5
   baseOffset: 0
   detectionRange: 5
   height: 0.5
   radius: 0.5
+  pathRadius: 1
   speed: 1
   steerForce: 10
   agentPriority: 1
@@ -114,7 +114,8 @@ MonoBehaviour:
   healingValueMin: 1
   passingCountMax: 5
   speed: 2.5
-  particles: {fileID: 0}
+  particles: {fileID: 198742772223849486, guid: 3b0abeaf23607974eb0e95d5e78dae82,
+    type: 3}
 --- !u!212 &212239229007302888
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -132,7 +133,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9e32ce224446c4746a4f714514e29c74, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

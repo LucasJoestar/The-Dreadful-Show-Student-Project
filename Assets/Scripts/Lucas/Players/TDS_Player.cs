@@ -992,6 +992,14 @@ public class TDS_Player : TDS_Character
             return true;
         }
 
+        TDS_WhiteRabbit _whiteRabbit = null;
+        if (_whiteRabbit = _nearestObject.GetComponent<TDS_WhiteRabbit>())
+        {
+            _whiteRabbit.Use(this);
+
+            return true;
+        }
+
         return false;
     }
     #endregion
@@ -1599,6 +1607,9 @@ public class TDS_Player : TDS_Character
             interactionDetector = GetComponentInChildren<TDS_Detector>();
             if (!interactionDetector) Debug.LogWarning("The Interaction Detector of \"" + name + "\" for script TDS_Player is missing !");
         }
+
+        // Set animation on revive
+        OnRevive += () => animator.SetTrigger("REVIVE");
     }
 
     // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations

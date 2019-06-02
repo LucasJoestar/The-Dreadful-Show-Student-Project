@@ -2,24 +2,24 @@ fileFormatVersion: 2
 guid: 6bf354262c014b849a60a0aac647b131
 TextureImporter:
   fileIDToRecycleName:
-    21300000: sprite_sheet_habillage_ville02_0
-    21300002: sprite_sheet_habillage_ville02_1
-    21300004: sprite_sheet_habillage_ville02_2
-    21300006: sprite_sheet_habillage_ville02_3
-    21300008: sprite_sheet_habillage_ville02_4
-    21300010: sprite_sheet_habillage_ville02_5
-    21300012: sprite_sheet_habillage_ville02_6
-    21300014: sprite_sheet_habillage_ville02_7
-    21300016: sprite_sheet_habillage_ville02_8
-    21300018: sprite_sheet_habillage_ville02_9
+    21300000: Flowers_1
+    21300002: Clock
+    21300004: Balcony
+    21300006: Bell
+    21300008: Cracks_1
+    21300010: Cracks_2
+    21300012: FrenchWindow
+    21300014: Penthouse
+    21300016: FenceGrid
+    21300018: Cracks_3
     21300020: sprite_sheet_habillage_ville02_10
-    21300022: sprite_sheet_habillage_ville02_11
-    21300024: sprite_sheet_habillage_ville02_12
-    21300026: sprite_sheet_habillage_ville02_13
-    21300028: sprite_sheet_habillage_ville02_14
-    21300030: sprite_sheet_habillage_ville02_15
-    21300032: sprite_sheet_habillage_ville02_16
-    21300034: sprite_sheet_habillage_ville02_17
+    21300022: FrenchWindow_Glass
+    21300024: Fence
+    21300026: Sheets
+    21300028: Flowers_2
+    21300030: Flowers_3
+    21300032: GreatSignboard
+    21300034: Chain Post
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -146,15 +146,15 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_0
+      name: Flowers_1
       rect:
         serializedVersion: 2
         x: 140
         y: 1790
         width: 197
         height: 136
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -166,15 +166,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_1
+      name: Clock
       rect:
         serializedVersion: 2
         x: 632
         y: 1616
         width: 377
         height: 380
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -186,15 +186,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_2
+      name: Balcony
       rect:
         serializedVersion: 2
         x: 1136
         y: 1556
         width: 213
         height: 258
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -206,15 +206,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_3
+      name: Bell
       rect:
         serializedVersion: 2
         x: 1439
         y: 1524
         width: 574
         height: 486
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -226,7 +226,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_4
+      name: Cracks_1
       rect:
         serializedVersion: 2
         x: 38
@@ -234,7 +234,7 @@ TextureImporter:
         width: 129
         height: 301
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -246,7 +246,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_5
+      name: Cracks_2
       rect:
         serializedVersion: 2
         x: 316
@@ -254,7 +254,7 @@ TextureImporter:
         width: 203
         height: 340
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -266,15 +266,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_6
+      name: FrenchWindow
       rect:
         serializedVersion: 2
         x: 727
         y: 1160
         width: 177
         height: 352
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -286,15 +286,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_7
+      name: Penthouse
       rect:
         serializedVersion: 2
         x: 1072
         y: 1206
         width: 430
         height: 189
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -306,15 +306,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_8
+      name: FenceGrid
       rect:
         serializedVersion: 2
         x: 1565
         y: 998
         width: 439
         height: 422
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -326,7 +326,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_9
+      name: Cracks_3
       rect:
         serializedVersion: 2
         x: 113
@@ -334,7 +334,7 @@ TextureImporter:
         width: 154
         height: 192
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -346,35 +346,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_10
+      name: FrenchWindow_Glass
       rect:
         serializedVersion: 2
         x: 408
-        y: 815
-        width: 72
-        height: 266
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e130c64dc73e7cb4188c31f1441684a7
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_11
-      rect:
-        serializedVersion: 2
-        x: 482
-        y: 817
-        width: 74
+        y: 816
+        width: 148
         height: 278
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -386,15 +366,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_12
+      name: Fence
       rect:
         serializedVersion: 2
         x: 698
         y: 551
         width: 273
         height: 547
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -406,15 +386,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_13
+      name: Sheets
       rect:
         serializedVersion: 2
         x: 1188
         y: 672
         width: 593
         height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -426,15 +406,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_14
+      name: Flowers_2
       rect:
         serializedVersion: 2
         x: 31
         y: 513
         width: 197
         height: 136
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -446,15 +426,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_15
+      name: Flowers_3
       rect:
         serializedVersion: 2
         x: 312
         y: 511
         width: 197
         height: 137
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -466,15 +446,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_16
+      name: GreatSignboard
       rect:
         serializedVersion: 2
         x: 1084
-        y: 23
+        y: 26
         width: 851
         height: 574
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -486,15 +466,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sprite_sheet_habillage_ville02_17
+      name: Chain Post
       rect:
         serializedVersion: 2
         x: 726
         y: 38
         width: 248
         height: 298
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.16, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

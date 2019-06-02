@@ -46,7 +46,7 @@ public abstract class TDS_Consumable : PunBehaviour
     #region Methods
 
     #region Original Methods
-    abstract protected void Use(TDS_Player _player); 
+    abstract public void Use(TDS_Player _player); 
 	#endregion
 
 	#region Unity Methods

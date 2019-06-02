@@ -7,7 +7,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(BoxCollider), typeof(Animator), typeof(PhotonView)), RequireComponent(typeof(PhotonTransformView))]
-public class TDS_Damageable : PunBehaviour
+public abstract class TDS_Damageable : PunBehaviour
 {
     /* TDS_Damageable :
 	 *
@@ -112,6 +112,11 @@ public class TDS_Damageable : PunBehaviour
     public event Action<int> OnHealthChanged = null;
 
     /// <summary>
+    /// Event called when the damageable come back from the deads.
+    /// </summary>
+    public event Action OnRevive = null;
+
+    /// <summary>
     /// Event called when stopping this damageable from bringing it closer.
     /// </summary>
     public event Action OnStopBringingCloser = null;
@@ -179,20 +184,18 @@ public class TDS_Damageable : PunBehaviour
 
             if (value == false)
             {
-                animator.SetTrigger("REVIVE");
+                OnRevive?.Invoke();
                 gameObject.layer = layerBeforeDeath;
             }
             else
             {
                 layerBeforeDeath = gameObject.layer;
                 gameObject.layer = LayerMask.NameToLayer("Dead");
-            }
 
-            if (value == true)
-            {
                 OnDie?.Invoke();
                 Die();
             }
+
             enabled = !value;
         }
     }
@@ -297,6 +300,11 @@ public class TDS_Damageable : PunBehaviour
     #region Original Methods
 
     #region Health
+    /// <summary>
+    /// Destroys this GameObject.
+    /// </summary>
+    public void Destroy() => Destroy(gameObject);
+
     /// <summary>
     /// Method called when the object dies.
     /// Override this to implement code for a specific object.

@@ -35,7 +35,10 @@ public class TDS_WhiteRabbit : TDS_Consumable
 */
 
     #region Events
-
+    /// <summary>
+    /// Event called when using a rabbit.
+    /// </summary>
+    public static event Action OnUseRabbit = null;
     #endregion
 
     #region Fields / Properties
@@ -85,10 +88,14 @@ public class TDS_WhiteRabbit : TDS_Consumable
     /// Heal the player and Destroy the rabbit
     /// </summary>
     /// <param name="_player"></param>
-    protected override void Use(TDS_Player _player)
+    public override void Use(TDS_Player _player)
     {
         int _healingValue = UnityEngine.Random.Range(healingValueMin, healingValueMax);
         _player.Heal(_healingValue);
+
+        OnUseRabbit?.Invoke();
+
+        Instantiate(particles, transform.position + Vector3.up, Quaternion.identity);
         PhotonView.Destroy(gameObject);
     }
 

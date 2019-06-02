@@ -75,8 +75,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectedColliders: []
-  detectedTags:
-  - Object
+  DetectedTags:
+    ObjectTags:
+    - Name: Object
+      Color: {r: 0.25231397, g: 0.8490566, b: 0.2986929, a: 1}
 --- !u!65 &65237134778586120
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -151,7 +153,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1366139620063678}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.38, y: 0, z: -3.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -188,6 +190,7 @@ MonoBehaviour:
   throwable: {fileID: 0}
   handsTransform: {fileID: 4790306354836658}
   isAttacking: 0
+  IsDown: 0
   isFacingRight: 1
   IsPacific: 0
   IsParalyzed: 0
@@ -440,8 +443,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider: {fileID: 65359125261754794}
   Owner: {fileID: 0}
-  hittableTags:
-    ObjectTags: []
+  HittableTags:
+    ObjectTags:
+    - Name: Boss
+      Color: {r: 0.8962264, g: 0.13950695, b: 0.13950695, a: 1}
+    - Name: Enemy
+      Color: {r: 0.8980392, g: 0.14117648, b: 0.14117648, a: 1}
+    - Name: Hittable
+      Color: {r: 0.8773585, g: 0.6957892, b: 0.16140087, a: 1}
 --- !u!65 &65359125261754794
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -580,7 +589,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9e32ce224446c4746a4f714514e29c74, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -2,13 +2,13 @@ fileFormatVersion: 2
 guid: 456a731829a427646a20b2f47fc743d8
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Background_0
-    21300002: Background_1
-    21300004: Background_2
-    21300006: Background_3
-    21300008: Background_4
-    21300010: Background_5
-    21300012: Background_6
+    21300000: Arrow
+    21300002: Moon
+    21300004: Star
+    21300006: Wave
+    21300008: Rope_1
+    21300010: Rope_2
+    21300012: Cloud
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -135,7 +135,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Background_0
+      name: Arrow
       rect:
         serializedVersion: 2
         x: 55
@@ -143,7 +143,7 @@ TextureImporter:
         width: 851
         height: 367
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -155,15 +155,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Background_1
+      name: Moon
       rect:
         serializedVersion: 2
         x: 1111
         y: 968
         width: 929
         height: 1073
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -175,15 +175,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Background_2
+      name: Star
       rect:
         serializedVersion: 2
         x: 424
         y: 1236
         width: 289
         height: 276
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.45, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -195,15 +195,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Background_3
+      name: Wave
       rect:
         serializedVersion: 2
         x: 56
         y: 514
         width: 1172
         height: 457
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -215,15 +215,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Background_4
+      name: Rope_1
       rect:
         serializedVersion: 2
         x: 1432
         y: 42
         width: 56
         height: 630
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -235,15 +235,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Background_5
+      name: Rope_2
       rect:
         serializedVersion: 2
         x: 1695
         y: 44
         width: 61
         height: 684
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -255,15 +255,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Background_6
+      name: Cloud
       rect:
         serializedVersion: 2
         x: 84
         y: 91
         width: 628
         height: 319
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

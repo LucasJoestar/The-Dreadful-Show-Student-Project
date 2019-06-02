@@ -127,6 +127,16 @@ public enum CustomEventType
 }
 
 /// <summary>
+/// All available animation states for the destructibles.
+/// </summary>
+public enum DestructibleAnimState
+{
+    Normal,
+    Hit,
+    Destruction
+}
+
+/// <summary>
 /// Animation States of the enemies
 /// </summary>
 public enum EnemyAnimationState
@@ -232,12 +242,13 @@ public enum UIState
 }
 
 /// <summary>
-/// Type of player action to wait for in event system.
+/// Type of action to wait for in event system.
 /// </summary>
-public enum WaitForPlayerAction
+public enum WaitForAction
 {
     Jump,
     Dodge,
     Grab,
-    Throw
+    Throw,
+    UseRabbit
 }

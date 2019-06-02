@@ -120,7 +120,7 @@ public class TDS_Event
     /// <summary>
     /// Action to wait player to perform.
     /// </summary>
-    [SerializeField] private WaitForPlayerAction actionType = WaitForPlayerAction.Dodge;
+    [SerializeField] private WaitForAction actionType = WaitForAction.Dodge;
     #endregion
 
     #region Methods
@@ -179,20 +179,24 @@ public class TDS_Event
             case CustomEventType.WaitForAction:
                 switch (actionType)
                 {
-                    case WaitForPlayerAction.Jump:
+                    case WaitForAction.Jump:
                         TDS_LevelManager.Instance.LocalPlayer.OnJump += StopWaitingAction;
                         break;
 
-                    case WaitForPlayerAction.Dodge:
+                    case WaitForAction.Dodge:
                         TDS_LevelManager.Instance.LocalPlayer.OnStartDodging += StopWaitingAction;
                         break;
 
-                    case WaitForPlayerAction.Grab:
+                    case WaitForAction.Grab:
                         TDS_LevelManager.Instance.LocalPlayer.OnGrabObject += StopWaitingAction;
                         break;
 
-                    case WaitForPlayerAction.Throw:
+                    case WaitForAction.Throw:
                         TDS_LevelManager.Instance.LocalPlayer.OnThrow += StopWaitingAction;
+                        break;
+
+                    case WaitForAction.UseRabbit:
+                        TDS_WhiteRabbit.OnUseRabbit += StopWaitingAction;
                         break;
 
                     default:
@@ -206,20 +210,24 @@ public class TDS_Event
 
                 switch (actionType)
                 {
-                    case WaitForPlayerAction.Jump:
+                    case WaitForAction.Jump:
                         TDS_LevelManager.Instance.LocalPlayer.OnJump -= StopWaitingAction;
                         break;
 
-                    case WaitForPlayerAction.Dodge:
+                    case WaitForAction.Dodge:
                         TDS_LevelManager.Instance.LocalPlayer.OnStartDodging -= StopWaitingAction;
                         break;
 
-                    case WaitForPlayerAction.Grab:
+                    case WaitForAction.Grab:
                         TDS_LevelManager.Instance.LocalPlayer.OnGrabObject -= StopWaitingAction;
                         break;
 
-                    case WaitForPlayerAction.Throw:
+                    case WaitForAction.Throw:
                         TDS_LevelManager.Instance.LocalPlayer.OnThrow -= StopWaitingAction;
+                        break;
+
+                    case WaitForAction.UseRabbit:
+                        TDS_WhiteRabbit.OnUseRabbit -= StopWaitingAction;
                         break;
 
                     default:
