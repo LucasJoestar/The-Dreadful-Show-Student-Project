@@ -229,7 +229,7 @@ public abstract class TDS_Boss : TDS_Enemy
             if (speedCurrent < speedMax)
             {
                 IncreaseSpeed();
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
             else yield return new WaitForSeconds(.1f);
             //Check if the area allow to grab object

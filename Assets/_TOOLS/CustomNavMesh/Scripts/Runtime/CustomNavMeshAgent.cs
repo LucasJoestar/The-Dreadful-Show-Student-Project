@@ -353,7 +353,7 @@ public class CustomNavMeshAgent : MonoBehaviour
                 _obstaclesPos.ForEach(p => _v += p);
                 Avoid(_v);
                 _obstaclesPos = new List<Vector3>();
-                yield return new WaitForEndOfFrame();
+                yield return null;
                 continue;
             }
 
@@ -383,7 +383,7 @@ public class CustomNavMeshAgent : MonoBehaviour
             {
                 Seek(_targetPosition);
             }
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
         StopAgent();
         OnDestinationReached?.Invoke();

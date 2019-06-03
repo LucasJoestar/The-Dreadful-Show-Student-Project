@@ -335,7 +335,7 @@ public abstract class TDS_Enemy : TDS_Character
             while (Vector3.Distance(transform.position, _pos) > .1f)
             {
                 transform.position = Vector3.MoveTowards(transform.position, _pos, recoilDistanceDeath / recoilTimeDeath * Time.deltaTime);
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
             yield break;
         }
@@ -344,7 +344,7 @@ public abstract class TDS_Enemy : TDS_Character
         {
             _pos = transform.position + (_direction * recoilDistance);
             transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * 10);
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
     }
 
@@ -495,7 +495,7 @@ public abstract class TDS_Enemy : TDS_Character
             if (speedCurrent < speedMax)
             {
                 IncreaseSpeed();
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
             else yield return new WaitForSeconds(.1f);
             //Check if the area allow to grab object
@@ -575,7 +575,7 @@ public abstract class TDS_Enemy : TDS_Character
         }
         // Idle
         SetAnimationState((int)EnemyAnimationState.Idle);
-        yield return new WaitForEndOfFrame();
+        yield return null;
         //Grab the object
         if (canThrow)
         {
@@ -584,10 +584,10 @@ public abstract class TDS_Enemy : TDS_Character
             //Wait until the end of the animation 
             while (isWaiting)
             {
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
         }
-        yield return new WaitForEndOfFrame();
+        yield return null;
         enemyState = EnemyState.MakingDecision;
     }
 
@@ -609,7 +609,7 @@ public abstract class TDS_Enemy : TDS_Character
         }
         //Idle
         SetAnimationState((int)EnemyAnimationState.Idle);
-        yield return new WaitForEndOfFrame();
+        yield return null;
         if (canThrow)
         {
             // Orientate the enemy
@@ -620,7 +620,7 @@ public abstract class TDS_Enemy : TDS_Character
             //Wait until the end of the animation
             while (isWaiting)
             {
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
             throwable = null; 
             canThrow = false;
