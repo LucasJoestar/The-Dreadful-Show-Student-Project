@@ -63,8 +63,9 @@ public class TDS_WhiteRabbit : TDS_Consumable
     #region Methods
 
     #region Original Methods
-    private void Destroy()
+    private void Destroy(bool _instantiateFX)
     {
+        if(_instantiateFX) PhotonNetwork.Instantiate(particlesName, transform.position + Vector3.up, Quaternion.identity, 0);
         if (!PhotonNetwork.isMasterClient) return;
         PhotonNetwork.Destroy(gameObject);
     }
@@ -90,10 +91,10 @@ public class TDS_WhiteRabbit : TDS_Consumable
         {
             if (!PhotonNetwork.isMasterClient)
             {
-                TDS_RPCManager.Instance.RPCPhotonView.RPC("Call MethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Destroy"));
+                TDS_RPCManager.Instance.RPCPhotonView.RPC("Call MethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Destroy"), new object[] { false });
             }
             else
-                Destroy(); 
+                Destroy(false); 
             OnLoseRabbit?.Invoke();
             return; 
         }
@@ -112,14 +113,13 @@ public class TDS_WhiteRabbit : TDS_Consumable
 
         OnUseRabbit?.Invoke();
 
-        PhotonNetwork.Instantiate(particlesName, transform.position + Vector3.up, Quaternion.identity, 0);
         if (!PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("Call MethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Destroy")); 
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("Call MethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Destroy"), new object[] { true }); 
             return;
         }
 
-        Destroy();
+        Destroy(true);
     }
 
     /// <summary>
