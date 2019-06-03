@@ -71,6 +71,13 @@ public class TDS_Destructible : TDS_Damageable
     /// <param name="_state">New animation state of the destructible.</param>
     public void SetAnimationState(DestructibleAnimState _state)
     {
+        // Online
+        if (PhotonNetwork.isMasterClient)
+        {
+            // if (!animator) return;
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_state });
+        }
+
         switch (_state)
         {
             case DestructibleAnimState.Normal:
@@ -88,6 +95,15 @@ public class TDS_Destructible : TDS_Damageable
             default:
                 break;
         }
+    }
+
+    /// <summary>
+    /// Set this destructible animation state.
+    /// </summary>
+    /// <param name="_state">New animation state of the destructible.</param>
+    public void SetAnimationState(int _state)
+    {
+        SetAnimationState((DestructibleAnimState)_state);
     }
 
     /// <summary>
