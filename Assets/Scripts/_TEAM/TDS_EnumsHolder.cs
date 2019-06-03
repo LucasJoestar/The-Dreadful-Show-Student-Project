@@ -131,7 +131,6 @@ public enum CustomEventType
 /// </summary>
 public enum DestructibleAnimState
 {
-    Normal,
     Hit,
     Destruction
 }

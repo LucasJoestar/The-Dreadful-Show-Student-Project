@@ -114,8 +114,7 @@ MonoBehaviour:
   healingValueMin: 1
   passingCountMax: 5
   speed: 2.5
-  particles: {fileID: 198742772223849486, guid: 3b0abeaf23607974eb0e95d5e78dae82,
-    type: 3}
+  particlesName: Rabbit_PoufMagic
 --- !u!114 &1725797096084194985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,8 +138,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 2742738669462884067}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 2
-  instantiationId: 2
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &2742738669462884067

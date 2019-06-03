@@ -57,7 +57,7 @@ public class TDS_Destructible : TDS_Damageable
         
         if (!isDead)
         {
-            StartCoroutine(SetHitAnim());
+            SetAnimationState(DestructibleAnimState.Hit);
         }
 
         return true;
@@ -80,16 +80,12 @@ public class TDS_Destructible : TDS_Damageable
 
         switch (_state)
         {
-            case DestructibleAnimState.Normal:
-                animator.SetInteger("State", 0);
-                break;
-
             case DestructibleAnimState.Hit:
-                animator.SetInteger("State", 1);
+                animator.SetInteger("Hit", 1);
                 break;
 
             case DestructibleAnimState.Destruction:
-                animator.SetInteger("State", 2);
+                animator.SetInteger("Destruction", 2);
                 break;
 
             default:
@@ -104,19 +100,6 @@ public class TDS_Destructible : TDS_Damageable
     public void SetAnimationState(int _state)
     {
         SetAnimationState((DestructibleAnimState)_state);
-    }
-
-    /// <summary>
-    /// Set the hit animation, then back to normal.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator SetHitAnim()
-    {
-        SetAnimationState(DestructibleAnimState.Hit);
-
-        yield return new WaitForSeconds(.25f);
-
-        SetAnimationState(DestructibleAnimState.Normal);
     }
     #endregion
 
