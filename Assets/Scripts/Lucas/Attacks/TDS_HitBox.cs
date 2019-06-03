@@ -117,6 +117,7 @@ public class TDS_HitBox : MonoBehaviour
     /// <param name="_attack">Attack used to hit what is in the hit box.</param>
     public void Activate(TDS_Attack _attack)
     {
+        Debug.Log("Activate");
         if (!PhotonNetwork.isMasterClient) return;
         // If the given attack is null, send the information in the console
         // and return before activating the hit box.
@@ -165,6 +166,7 @@ public class TDS_HitBox : MonoBehaviour
     /// </summary>
     public void Desactivate()
     {
+        Debug.Log("Desactivate");
         CurrentAttack = null;
         collider.enabled = false;
         TouchedObjects.Clear();

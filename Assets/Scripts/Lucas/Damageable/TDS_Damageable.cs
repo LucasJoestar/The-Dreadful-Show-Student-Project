@@ -196,7 +196,7 @@ public abstract class TDS_Damageable : PunBehaviour
                 Die();
             }
 
-            enabled = !value;
+            //enabled = !value;
         }
     }
 
