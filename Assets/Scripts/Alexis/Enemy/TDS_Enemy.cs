@@ -736,7 +736,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public override void StopAttack()
     {
-        if (!PhotonNetwork.isMasterClient) return; 
+        if (!PhotonNetwork.isMasterClient || isDead ) return; 
         SetAnimationState((int)EnemyAnimationState.Idle);
         base.StopAttack();
     }
