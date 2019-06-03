@@ -768,12 +768,9 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns>if the agent take damages</returns>
     public override bool TakeDamage(int _damage)
     {
-        if (!PhotonNetwork.isMasterClient) return false; 
         bool _isTakingDamages = base.TakeDamage(_damage);
         if (_isTakingDamages)
         {
-            StopAll(); 
-
             if (!isDead && !IsDown)
             {
                 SetAnimationState((int)EnemyAnimationState.Hit);
@@ -1027,7 +1024,7 @@ public abstract class TDS_Enemy : TDS_Character
         StopAll();
         StartCoroutine(ApplyRecoil(_position));
         enemyState = EnemyState.MakingDecision; 
-        if (!isDead)
+        if (!isDead && !IsDown)
         {
             SetAnimationState((int)EnemyAnimationState.Hit);
         }
