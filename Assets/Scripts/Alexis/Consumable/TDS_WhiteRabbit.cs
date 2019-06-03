@@ -91,7 +91,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
         {
             if (!PhotonNetwork.isMasterClient)
             {
-                TDS_RPCManager.Instance.RPCPhotonView.RPC("Call MethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Destroy"), new object[] { false });
+                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Destroy"), new object[] { false });
             }
             else
                 Destroy(false); 
@@ -115,7 +115,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
 
         if (!PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("Call MethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Destroy"), new object[] { true }); 
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Destroy"), new object[] { true }); 
             return;
         }
 
