@@ -91,9 +91,9 @@ public class TDS_Event
     [SerializeField] private float cameraSpeedCoef = 1;
 
     /// <summary>
-    /// Prefab to instantiate.
+    /// Name of the prefab to instantiate.
     /// </summary>
-    [SerializeField] private GameObject prefab = null;
+    [SerializeField] private string prefabName = null;
 
     /// <summary>
     /// Local player type required to execute this action.
@@ -160,14 +160,10 @@ public class TDS_Event
 
             // Instantiate a prefab
             case CustomEventType.Instantiate:
-                Object.Instantiate(prefab, eventTransform.position, eventTransform.rotation);
-
-                // TO CHANGE
-
                 // If not local, instantiate for other players too
                 if (isOnline)
                 {
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_LevelManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "Instantiate"), new object[] { prefab, eventTransform.position, eventTransform.rotation });
+                    PhotonNetwork.Instantiate(prefabName, eventTransform.position, eventTransform.rotation, 0);
                 }
                 break;
 

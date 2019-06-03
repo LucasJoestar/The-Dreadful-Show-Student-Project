@@ -607,28 +607,29 @@ public class TDS_Camera : MonoBehaviour
         // Get the movement direction of the bounds
         int[] _boundsMovement = new int[4];
 
-        if ((_bounds.XMin <= currentBounds.XMin) || (_bounds.XMin <= camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x))
+        if ((_bounds.XMin <= currentBounds.XMin) ||
+            ((_bounds.XMin <= camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.x > _bounds.XMin)))
         {
             leftBoundVector = _bounds.XMinVector;
             _boundsMovement[0] = 0;
         }
         else _boundsMovement[0] = _bounds.XMin > currentBounds.XMin ? 1 : -1;
 
-        if ((_bounds.XMax >= currentBounds.XMax) || (_bounds.XMax >= camera.ViewportToWorldPoint(new Vector3(1.01f, 0, 0)).x))
+        if ((_bounds.XMax >= currentBounds.XMax) || ((_bounds.XMax >= camera.ViewportToWorldPoint(new Vector3(1.01f, 0, 0)).x) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.x < _bounds.XMax)))
         {
             rightBoundVector = _bounds.XMaxVector;
             _boundsMovement[1] = 0;
         }
         else _boundsMovement[1] = _bounds.XMax > currentBounds.XMax ? 1 : -1;
 
-        if ((_bounds.ZMin <= currentBounds.ZMin) || (_bounds.ZMin <= camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).z))
+        if ((_bounds.ZMin <= currentBounds.ZMin) || ((_bounds.ZMin <= camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).z) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.z > _bounds.ZMin)))
         {
             bottomBoundVector = _bounds.ZMinVector;
             _boundsMovement[2] = 0;
         }
         else _boundsMovement[2] = _bounds.ZMin > currentBounds.ZMin ? 1 : -1;
 
-        if ((_bounds.ZMax >= currentBounds.ZMax) || (_bounds.ZMax >= camera.ViewportToWorldPoint(new Vector3(.3f, 0, 0)).z))
+        if ((_bounds.ZMax >= currentBounds.ZMax) || ((_bounds.ZMax >= camera.ViewportToWorldPoint(new Vector3(.3f, 0, 0)).z) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.z < _bounds.ZMax)))
         {
             topBoundVector = _bounds.ZMaxVector;
             _boundsMovement[3] = 0;
@@ -644,7 +645,7 @@ public class TDS_Camera : MonoBehaviour
                 float _xMin = camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x;
                 int _movement = _xMin == currentBounds.XMin ? 0 : _xMin > currentBounds.XMin ? 1 : -1;
 
-                if (_boundsMovement[0] == _movement)
+                if ((_boundsMovement[0] == _movement) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.x > _xMin))
                 {
                     if (((_movement == 1) && (_xMin >= _bounds.XMin)) || ((_movement == -1) && (_xMin <= _bounds.XMin)))
                     {
@@ -664,7 +665,7 @@ public class TDS_Camera : MonoBehaviour
                 float _xMax = camera.ViewportToWorldPoint(new Vector3(1.01f, 0, 0)).x;
                 int _movement = _xMax == currentBounds.XMax ? 0 : _xMax > currentBounds.XMax ? 1 : -1;
 
-                if (_boundsMovement[1] == _movement)
+                if ((_boundsMovement[1] == _movement) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.x < _xMax))
                 {
                     if (((_movement == 1) && (_xMax >= _bounds.XMax)) || ((_movement == -1) && (_xMax <= _bounds.XMax)))
                     {
@@ -684,7 +685,7 @@ public class TDS_Camera : MonoBehaviour
                 float _zMin = camera.ViewportToWorldPoint(new Vector3(0, -.01f, 0)).x;
                 int _movement = _zMin == currentBounds.ZMin ? 0 : _zMin > currentBounds.ZMin ? 1 : -1;
 
-                if (_boundsMovement[2] == _movement)
+                if ((_boundsMovement[2] == _movement) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.z > _zMin))
                 {
                     if (((_movement == 1) && (_zMin >= _bounds.ZMin)) || ((_movement == -1) && (_zMin <= _bounds.ZMin)))
                     {
@@ -704,7 +705,7 @@ public class TDS_Camera : MonoBehaviour
                 float _zMax = camera.ViewportToWorldPoint(new Vector3(0, .3f, 0)).x;
                 int _movement = _zMax == currentBounds.ZMax ? 0 : _zMax > currentBounds.ZMax ? 1 : -1;
 
-                if (_boundsMovement[3] == _movement)
+                if ((_boundsMovement[3] == _movement) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.z < _zMax))
                 {
                     if (((_movement == 1) && (_zMax >= _bounds.ZMax)) || ((_movement == -1) && (_zMax <= _bounds.ZMax)))
                     {
