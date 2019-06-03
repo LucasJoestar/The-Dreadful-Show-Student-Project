@@ -319,6 +319,10 @@ public abstract class TDS_Damageable : PunBehaviour
     /// <param name="_heal">Amount of health point to restore.</param>
     public virtual void Heal(int _heal)
     {
+        if(PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Heal"), new object[] { _heal });
+        }
         HealthCurrent += _heal;
         OnHeal?.Invoke(_heal);
     }
