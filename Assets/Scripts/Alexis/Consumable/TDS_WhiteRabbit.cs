@@ -52,7 +52,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
     private float boundRight; 
     [SerializeField, Range(1,10)] private float speed;
     private CustomNavMeshAgent agent;
-    [SerializeField] private ParticleSystem particles; 
+    [SerializeField] private string particlesName; 
     #endregion
 
     #region Methods
@@ -95,8 +95,9 @@ public class TDS_WhiteRabbit : TDS_Consumable
 
         OnUseRabbit?.Invoke();
 
-        Instantiate(particles, transform.position + Vector3.up, Quaternion.identity);
-        PhotonView.Destroy(gameObject);
+        PhotonNetwork.Instantiate(particlesName, transform.position + Vector3.up, Quaternion.identity, 0);
+
+        PhotonNetwork.Destroy(gameObject);
     }
 
     /// <summary>
