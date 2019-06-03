@@ -327,6 +327,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected IEnumerator ApplyRecoil(Vector3 _position)
     {
+        if (!PhotonNetwork.isMasterClient) yield break ; 
         Vector3 _direction = new Vector3(transform.position.x - _position.x, 0, 0).normalized;
         Vector3 _pos = Vector3.zero; 
         if (isDead)
@@ -356,6 +357,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected IEnumerator ApplyRecoveryTime(float _recoveryTime)
     {
+        if (!PhotonNetwork.isMasterClient) yield break; 
         yield return new WaitForSeconds(_recoveryTime);
         behaviourCoroutine = StartCoroutine(Behaviour());
         yield break;
@@ -446,7 +448,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected virtual IEnumerator CastAttack()
     {
-        if (isDead) yield break; 
+        if (isDead || !PhotonNetwork.isMasterClient) yield break; 
         if(IsPacific)
         {
             enemyState = EnemyState.MakingDecision;
@@ -481,7 +483,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected virtual IEnumerator CastDetection()
     {
-        if (isDead) yield break; 
+        if (isDead || !PhotonNetwork.isMasterClient) yield break; 
         SetAnimationState((int)EnemyAnimationState.Run);
         Collider[] _colliders;
         float _distance; 
@@ -565,7 +567,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected IEnumerator CastGrab(TDS_Throwable _throwable)
     {
-        if (isDead) yield break; 
+        if (isDead || !PhotonNetwork.isMasterClient) yield break; 
         //Pick up an object
         if (agent.IsMoving)
         {
@@ -599,7 +601,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected IEnumerator CastThrow()
     {
-        if (isDead) yield break; 
+        if (isDead || !PhotonNetwork.isMasterClient) yield break; 
         //Throw the held object
         if (agent.IsMoving)
         {
@@ -673,8 +675,11 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Die()
     {
         base.Die();
-        SetAnimationState((int)EnemyAnimationState.Death);
-        if (Area) Area.RemoveEnemy(this);
+        if(PhotonNetwork.isMasterClient)
+        {
+            SetAnimationState((int)EnemyAnimationState.Death);
+            if (Area) Area.RemoveEnemy(this);
+        }
     }
 
     /// <summary>
@@ -714,7 +719,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public override void PutOnTheGround()
     {
-        if (!canBeDown || isDead || IsDown) return;
+        if (!canBeDown || isDead || IsDown || !PhotonNetwork.isMasterClient) return;
         base.PutOnTheGround();
         if (IsDown)
         {
@@ -731,6 +736,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public override void StopAttack()
     {
+        if (!PhotonNetwork.isMasterClient) return; 
         SetAnimationState((int)EnemyAnimationState.Idle);
         base.StopAttack();
     }
@@ -859,7 +865,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     protected virtual void ComputePath()
     {
-        if (isDead) return; 
+        if (isDead || !PhotonNetwork.isMasterClient) return; 
         if(!playerTarget || playerTarget.IsDead)
         {
             enemyState = EnemyState.Searching;

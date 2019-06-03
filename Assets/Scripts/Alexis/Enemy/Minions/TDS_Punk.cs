@@ -65,7 +65,7 @@ public class TDS_Punk : TDS_Minion
     /// </summary>
     public override void ActivateEnemy()
     {
-        SetAnimationState((int)EnemyAnimationState.Taunt);
+        if(PhotonNetwork.isMasterClient)SetAnimationState((int)EnemyAnimationState.Taunt);
     }
     #endregion
 
