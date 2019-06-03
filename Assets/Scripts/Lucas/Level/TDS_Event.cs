@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -163,10 +162,12 @@ public class TDS_Event
             case CustomEventType.Instantiate:
                 Object.Instantiate(prefab, eventTransform.position, eventTransform.rotation);
 
+                // TO CHANGE
+
                 // If not local, instantiate for other players too
                 if (isOnline)
                 {
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, $"{TDS_LevelManager.Instance.phID}#{TDS_UIManager.Instance.GetType()}#Instantiate", new object[] { prefab, eventTransform.position, eventTransform.rotation });
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_LevelManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "Instantiate"), new object[] { prefab, eventTransform.position, eventTransform.rotation });
                 }
                 break;
 

@@ -106,7 +106,7 @@ public class TDS_SpritesEditor : EditorWindow
     /// Method to call this window from the Unity toolbar.
     /// </summary>
     [MenuItem("Window/Sprites Editor")]
-    public static void CallWindow() => GetWindow<TDS_SpritesEditor>("Color Level Editor").Show();
+    public static void CallWindow() => GetWindow<TDS_SpritesEditor>("Sprites Editor").Show();
 
     /// <summary>
     /// Draws this editor.
