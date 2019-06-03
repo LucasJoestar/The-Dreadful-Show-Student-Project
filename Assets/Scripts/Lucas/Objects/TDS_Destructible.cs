@@ -114,7 +114,7 @@ public class TDS_Destructible : TDS_Damageable
     {
         SetAnimationState(DestructibleAnimState.Hit);
 
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(.25f);
 
         SetAnimationState(DestructibleAnimState.Normal);
     }

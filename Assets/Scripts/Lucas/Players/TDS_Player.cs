@@ -1158,7 +1158,8 @@ public class TDS_Player : TDS_Character
     /// </summary>
     private void CheckGrounded()
     {
-        if (!photonView.isMine) return; 
+        if (!photonView.isMine || isAttacking) return; 
+
         // Set the player as grounded if something is detected in the ground detection box
         bool _isGrounded = groundDetectionBox.Overlap(transform.position).Length > 0;
 
@@ -1192,9 +1193,6 @@ public class TDS_Player : TDS_Character
         {
             if (rigidbody.velocity.y < 0) SetAnim(PlayerAnimState.Falling);
             else SetAnim(PlayerAnimState.Jumping);
-
-            // If were attacking, stop the attack
-            if (isAttacking) StopAttack();
         }
         else
         {
