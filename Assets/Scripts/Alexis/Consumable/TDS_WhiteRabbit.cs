@@ -119,7 +119,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
             return;
         }
 
-        Destroy(true);
+        Destroy(true );
     }
 
     /// <summary>

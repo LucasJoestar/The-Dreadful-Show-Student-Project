@@ -924,7 +924,7 @@ public abstract class TDS_Enemy : TDS_Character
         animator.SetInteger("animationState", _animationID);
         if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID });
 
-        Debug.Log(GetInstanceID() + "New Anim => " + (EnemyAnimationState)_animationID);
+        //Debug.Log(GetInstanceID() + "New Anim => " + (EnemyAnimationState)_animationID);
     }
 
     /// <summary>
