@@ -59,7 +59,7 @@ public static class CustomNavMeshManager
         TextAsset _textDatas = Resources.Load(Path.Combine(ResourcesPath, _fileName), typeof(TextAsset)) as TextAsset;
         if (_textDatas == null)
         {
-            Debug.LogError($"{_fileName} not found.");
+            Debug.LogWarning($"{_fileName} not found.");
             return;
         }
         CustomNavDataSaver<CustomNavData> _loader = new CustomNavDataSaver<CustomNavData>();
