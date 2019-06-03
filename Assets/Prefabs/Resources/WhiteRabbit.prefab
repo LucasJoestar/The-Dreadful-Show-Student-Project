@@ -113,7 +113,7 @@ MonoBehaviour:
   healingValueMax: 10
   healingValueMin: 1
   passingCountMax: 5
-  speed: 2.5
+  speed: 5
   particlesName: Rabbit_PoufMagic
 --- !u!114 &1725797096084194985
 MonoBehaviour:
@@ -138,8 +138,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 2742738669462884067}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 2
-  instantiationId: 2
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &2742738669462884067
@@ -158,9 +158,9 @@ MonoBehaviour:
     SynchronizeEnabled: 1
     TeleportEnabled: 1
     TeleportIfDistanceGreaterThan: 3
-    InterpolateOption: 3
+    InterpolateOption: 4
     InterpolateMoveTowardsSpeed: 10
-    InterpolateLerpSpeed: 1
+    InterpolateLerpSpeed: 5
     InterpolateMoveTowardsAcceleration: 2
     InterpolateMoveTowardsDeceleration: 2
     InterpolateSpeedCurve:
