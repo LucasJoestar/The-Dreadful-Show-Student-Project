@@ -36,6 +36,11 @@ public class TDS_WhiteRabbit : TDS_Consumable
 
     #region Events
     /// <summary>
+    /// Event called when loosing a rabbit.
+    /// </summary>
+    public static event Action OnLoseRabbit = null;
+
+    /// <summary>
     /// Event called when using a rabbit.
     /// </summary>
     public static event Action OnUseRabbit = null;
@@ -77,7 +82,8 @@ public class TDS_WhiteRabbit : TDS_Consumable
         passingCountCurrent++;
         if (passingCountCurrent > passingCountMax && !isLooping)
         {
-            PhotonView.Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
+            OnLoseRabbit?.Invoke();
             return; 
         }
         Run();
