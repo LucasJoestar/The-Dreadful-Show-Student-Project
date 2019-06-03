@@ -675,9 +675,9 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Die()
     {
         base.Die();
+        SetAnimationState((int)EnemyAnimationState.Death);
         if (PhotonNetwork.isMasterClient)
         {
-            SetAnimationState((int)EnemyAnimationState.Death);
             if (Area) Area.RemoveEnemy(this);
         }
     }
