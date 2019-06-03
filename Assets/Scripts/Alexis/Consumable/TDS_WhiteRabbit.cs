@@ -57,12 +57,18 @@ public class TDS_WhiteRabbit : TDS_Consumable
     private float boundRight; 
     [SerializeField, Range(1,10)] private float speed;
     private CustomNavMeshAgent agent;
-    [SerializeField] private string particlesName; 
+    [SerializeField] private string particlesName;
     #endregion
 
     #region Methods
 
     #region Original Methods
+    private void Destroy()
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+        PhotonNetwork.Destroy(gameObject);
+    }
+
     /// <summary>
     /// Rotate the rabbit (Local and online)
     /// </summary>
@@ -82,7 +88,12 @@ public class TDS_WhiteRabbit : TDS_Consumable
         passingCountCurrent++;
         if (passingCountCurrent > passingCountMax && !isLooping)
         {
-            PhotonNetwork.Destroy(gameObject);
+            if (!PhotonNetwork.isMasterClient)
+            {
+                TDS_RPCManager.Instance.RPCPhotonView.RPC("Call MethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Destroy"));
+            }
+            else
+                Destroy(); 
             OnLoseRabbit?.Invoke();
             return; 
         }
@@ -102,8 +113,13 @@ public class TDS_WhiteRabbit : TDS_Consumable
         OnUseRabbit?.Invoke();
 
         PhotonNetwork.Instantiate(particlesName, transform.position + Vector3.up, Quaternion.identity, 0);
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("Call MethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Destroy")); 
+            return;
+        }
 
-        PhotonNetwork.Destroy(gameObject);
+        Destroy();
     }
 
     /// <summary>
