@@ -94,7 +94,7 @@ public class TDS_UnicycleSiamese : TDS_Enemy
             if (speedCurrent < speedMax)
             {
                 IncreaseSpeed();
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
             else yield return new WaitForSeconds(.1f);
             playerTarget = SearchTarget(); 

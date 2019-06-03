@@ -182,7 +182,7 @@ public class TDS_UIManager : PunBehaviour
         while (_lifebar.FilledImage.fillAmount != _fillingValue &&  _lifebar.FilledImage != null)
         {
             _lifebar.FilledImage.fillAmount = Mathf.MoveTowards(_lifebar.FilledImage.fillAmount, _fillingValue, Time.deltaTime/2 );
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
         filledImages.Remove(_lifebar);
     }
