@@ -81,11 +81,11 @@ public class TDS_Destructible : TDS_Damageable
         switch (_state)
         {
             case DestructibleAnimState.Hit:
-                animator.SetInteger("Hit", 1);
+                animator.SetTrigger("Hit");
                 break;
 
             case DestructibleAnimState.Destruction:
-                animator.SetInteger("Destruction", 2);
+                animator.SetTrigger("Destruction");
                 break;
 
             default:
