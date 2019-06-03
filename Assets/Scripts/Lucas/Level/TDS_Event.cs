@@ -194,7 +194,7 @@ public class TDS_Event
 
                     case WaitForAction.UseRabbit:
                         TDS_WhiteRabbit.OnUseRabbit += StopWaitingAction;
-                        TDS_WhiteRabbit.OnLostRabbit += StopWaitingAction;
+                        TDS_WhiteRabbit.OnLoseRabbit += StopWaitingAction;
                         break;
 
                     default:
@@ -226,7 +226,7 @@ public class TDS_Event
 
                     case WaitForAction.UseRabbit:
                         TDS_WhiteRabbit.OnUseRabbit -= StopWaitingAction;
-                        TDS_WhiteRabbit.OnLostRabbit -= StopWaitingAction;
+                        TDS_WhiteRabbit.OnLoseRabbit -= StopWaitingAction;
                         break;
 
                     default:
