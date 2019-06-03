@@ -148,6 +148,8 @@ public class TDS_FireBall : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
+        if (!photonView.isMine) return;
+
         StartCoroutine(MakeTrajectory());
     }
 	#endregion
