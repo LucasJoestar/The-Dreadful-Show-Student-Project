@@ -46,8 +46,11 @@ public static class CustomNavMeshManager
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     public static void InitManager()
     {
-        SceneManager.sceneLoaded += LoadDatas; 
-        
+        SceneManager.sceneLoaded += LoadDatas;
+#if UNITY_EDITOR
+        LoadDatas(SceneManager.GetActiveScene(), LoadSceneMode.Additive); 
+#endif
+
     }
 
     public static void LoadDatas(Scene scene, LoadSceneMode _mode)
