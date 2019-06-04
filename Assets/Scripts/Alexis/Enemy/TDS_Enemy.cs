@@ -642,7 +642,9 @@ public abstract class TDS_Enemy : TDS_Character
         TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
         if (_targets.Length == 0) return null;
         //Set constraints here (Distance, type, etc...)
-        return _targets.Where(t => !t.IsDead).OrderBy(d => Vector3.Distance(transform.position, d.transform.position)).FirstOrDefault();
+        _targets = _targets.Where(t => !t.IsDead).OrderBy(p => Vector3.Distance(transform.position, p.transform.position)).ToArray();
+        if (Area) _targets.OrderBy(t => Area.GetPlayerTargetCount(t.PlayerType)); 
+        return _targets.FirstOrDefault();
     }
     #endregion
 
@@ -859,6 +861,17 @@ public abstract class TDS_Enemy : TDS_Character
     }
 
     /// <summary>
+    /// This Method is called when the enemy has to be activated by an event
+    /// </summary>
+    public virtual void ActivateEnemy()
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+        IsPacific = false;
+        IsParalyzed = false;
+        behaviourCoroutine = StartCoroutine(Behaviour());
+    }
+
+    /// <summary>
     /// Compute the path
     /// If the path can be computed, set the state to Getting in Range
     /// else set the state to MakingDecision
@@ -1007,16 +1020,6 @@ public abstract class TDS_Enemy : TDS_Character
         behaviourCoroutine = StartCoroutine(Behaviour()); 
     }
 
-    /// <summary>
-    /// This Method is called when the enemy has to be activated by an event
-    /// </summary>
-    public virtual void ActivateEnemy()
-    {
-        if (!PhotonNetwork.isMasterClient) return;
-        IsPacific = false;
-        IsParalyzed = false;
-        behaviourCoroutine = StartCoroutine(Behaviour());
-    }
 
     /// <summary>
     /// Called when the enemy takes damages

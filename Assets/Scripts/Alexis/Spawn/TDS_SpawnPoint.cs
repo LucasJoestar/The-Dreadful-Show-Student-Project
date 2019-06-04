@@ -79,7 +79,12 @@ public class TDS_SpawnPoint
     /// <summary>
     /// Wave Element of the SpawnPoint
     /// </summary>
-    [SerializeField] private TDS_WaveElement waveElement; 
+    [SerializeField] private TDS_WaveElement waveElement;
+    #endregion
+
+    #region Methods
+
+    #region Original Methods
 
     /// <summary>
     /// Return a random position around the spawnpoint within the spawnRange
@@ -95,17 +100,11 @@ public class TDS_SpawnPoint
             _coll = Physics.OverlapSphere(_offsetedPosition + Vector3.up, 1, LayerMask.NameToLayer("Enemy"));
             if (_coll.Length == 0)
             {
-                break; 
+                break;
             }
         }
-        return _offsetedPosition; 
+        return _offsetedPosition;
     }
-    #endregion
-
-    #region Methods
-
-    #region Original Methods
-
     /// <summary>
     /// Get all enemies resources Names
     /// Instantiate them and set their owner as the spawner area that owns this SpawnPoint

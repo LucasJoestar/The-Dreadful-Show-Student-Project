@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq; 
 using UnityEngine;
 using UnityEngine.Events; 
 using Photon;
@@ -120,6 +121,16 @@ public class TDS_SpawnerArea : PunBehaviour
 
     #region Original Methods
     /// <summary>
+    /// Get the count of targeted players of a certain player type within the spanwed enemies
+    /// </summary>
+    /// <param name="_type"></param>
+    /// <returns></returns>
+    public int GetPlayerTargetCount(PlayerType _type)
+    {
+        return spawnedEnemies.Where(e => e.PlayerTarget != null && e.PlayerTarget.PlayerType == _type).Count();
+    }
+
+    /// <summary>
     /// Make spawn all enemies at every point of the wave index
     /// Increase Wave Index
     /// </summary>
@@ -154,6 +165,8 @@ public class TDS_SpawnerArea : PunBehaviour
         }
     }
 
+    public void ActivateEnemies() => spawnedEnemies.ForEach(e => e.ActivateEnemy());
+
     /// <summary>
     /// Destroy all dead enemies
     /// Clear the dead enemies list
@@ -186,8 +199,11 @@ public class TDS_SpawnerArea : PunBehaviour
         }
     }
 
-    public void ActivateEnemies() => spawnedEnemies.ForEach(e => e.ActivateEnemy()); 
 
+    /// <summary>
+    /// Call the events OnAreaActivated, OnAreaDesactivated and OnNextWave 
+    /// used when online to call the events on non-master clients
+    /// </summary>
     private void CallOnAreaActivatedEvent() => OnAreaActivated?.Invoke();
     private void CallOnAreaDesactivatedEvent() => OnAreaDesactivated?.Invoke();
     private void CallOnNextWaveEvent() => OnNextWave?.Invoke(); 
@@ -226,7 +242,6 @@ public class TDS_SpawnerArea : PunBehaviour
             if (PhotonNetwork.isMasterClient)
             {
                 OnAreaActivated?.Invoke();
-                //Debug.Log("CALL by " + photonView.viewID); 
                 TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "CallOnAreaActivatedEvent"), new object[] { });
             }
         }
