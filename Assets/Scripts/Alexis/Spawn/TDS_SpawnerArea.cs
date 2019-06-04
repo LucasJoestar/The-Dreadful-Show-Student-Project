@@ -82,13 +82,14 @@ public class TDS_SpawnerArea : PunBehaviour
     #region Fields / Properties
 
     #region Components and references
-    /// <summary>
-    /// Photon view of the area
-    /// </summary>
-    [SerializeField] protected PhotonView photonView;
     #endregion
 
     #region Variables
+    /// <summary>
+    /// Does the area has to be called by event or by its trigger
+    /// </summary>
+    [SerializeField] protected bool isActivatedByEvent = false; 
+
     /// <summary>
     /// Is the area call the first wave when the last wave is over  
     /// </summary>
@@ -122,7 +123,7 @@ public class TDS_SpawnerArea : PunBehaviour
     /// Make spawn all enemies at every point of the wave index
     /// Increase Wave Index
     /// </summary>
-    private void ActivateSpawn()
+    public void ActivateSpawn()
     {
         if (!PhotonNetwork.isMasterClient) return;  
         if (waveIndex == waves.Count && !isLooping)
@@ -196,21 +197,23 @@ public class TDS_SpawnerArea : PunBehaviour
     // Awake is called when the script instance is being loaded
     private void Awake()
     {
-        if (!photonView) photonView = GetComponent<PhotonView>(); 
         // Call it when the player is connected
-        //if (!PhotonNetwork.isMasterClient) return;
+        if (!PhotonNetwork.isMasterClient) return;
         OnNextWave.AddListener(ActivateSpawn);
         OnAreaActivated.AddListener(ActivateSpawn);
     }
 
     private void Start()
     {
-        if (TDS_UIManager.Instance )
+        if (TDS_UIManager.Instance)
         {
             OnAreaActivated.AddListener(TDS_UIManager.Instance.SwitchCurtains);
             OnAreaDesactivated.AddListener(TDS_UIManager.Instance.SwitchCurtains);
         }
-
+        if(!PhotonNetwork.isMasterClient || isActivatedByEvent)
+        {
+            GetComponent<BoxCollider>().enabled = false; 
+        }
     }
 
     private void OnTriggerEnter(Collider _coll)
