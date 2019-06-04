@@ -94,14 +94,11 @@ public class TDS_SpawnerAreaEditor : Editor
     }
     #endregion
 
-    #region Components and references
-    /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.photonView"/> of type <see cref="PhotonView"/>.</summary>
-    private SerializedProperty photonView = null;
-    #endregion
-
     #region Variables
     /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.isLooping"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isLooping = null;
+    /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.isActivatedByEvent"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isActivatedByEvent = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.waves"/> of type <see cref="List{TDS_Wave}"/>.</summary>
     private SerializedProperty waves = null;
@@ -124,7 +121,6 @@ public class TDS_SpawnerAreaEditor : Editor
     /// </summary>
     void DrawComponentsAndReferences()
     {
-        TDS_EditorUtility.ObjectField("Photon View", "Photon view of this area.", photonView, typeof(CustomNavMeshAgent));
         GUILayout.Space(3);
     }
 
@@ -145,6 +141,7 @@ public class TDS_SpawnerAreaEditor : Editor
         Color _originalColor = GUI.backgroundColor;
 
         GUI.backgroundColor = TDS_EditorUtility.BoxDarkColor;
+        /*
         EditorGUILayout.BeginVertical("HelpBox");
 
         
@@ -159,6 +156,7 @@ public class TDS_SpawnerAreaEditor : Editor
 
         EditorGUILayout.EndVertical();
         GUILayout.Space(15);
+        */
         EditorGUILayout.BeginVertical("HelpBox");
 
         // Button to show or not the Character class settings
@@ -203,6 +201,7 @@ public class TDS_SpawnerAreaEditor : Editor
         // Draw a header for the Spawner Area global settings
         EditorGUILayout.LabelField("Global settings", TDS_EditorUtility.HeaderStyle);
         TDS_EditorUtility.Toggle("is Looping", "Is the area start again when all the waves are cleared.", isLooping);
+        TDS_EditorUtility.Toggle("Is Activated by event", "Does the area start by event or by trigger.", isActivatedByEvent);
         GUILayout.Space(10);
         EditorGUILayout.BeginHorizontal(); 
         EditorGUILayout.LabelField("WAVES", TDS_EditorUtility.HeaderStyle);
@@ -256,9 +255,9 @@ public class TDS_SpawnerAreaEditor : Editor
     private void OnEnable()
     {
         //Get the serialized properties from the serializedObject
-        photonView = serializedObject.FindProperty("photonView");
 
         isLooping = serializedObject.FindProperty("isLooping");
+        isActivatedByEvent = serializedObject.FindProperty("isActivatedByEvent"); 
         waves = serializedObject.FindProperty("waves");
         eventOnAreaActivated = serializedObject.FindProperty("OnAreaActivated");
         eventOnAreaDesactivated = serializedObject.FindProperty("OnAreaDesactivated");

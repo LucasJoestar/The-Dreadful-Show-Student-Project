@@ -98,7 +98,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
     {
         if(!PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UseOnline"), new object[] { _player.photonView.viewID });
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UseOnline"), new object[] { _player.PhotonID });
             return; 
         }
         int _healingValue = UnityEngine.Random.Range(healingValueMin, healingValueMax);

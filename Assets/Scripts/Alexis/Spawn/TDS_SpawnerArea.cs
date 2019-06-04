@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq; 
 using UnityEngine;
 using UnityEngine.Events; 
 using Photon;
@@ -82,13 +83,14 @@ public class TDS_SpawnerArea : PunBehaviour
     #region Fields / Properties
 
     #region Components and references
-    /// <summary>
-    /// Photon view of the area
-    /// </summary>
-    [SerializeField] protected PhotonView photonView;
     #endregion
 
     #region Variables
+    /// <summary>
+    /// Does the area has to be called by event or by its trigger
+    /// </summary>
+    [SerializeField] protected bool isActivatedByEvent = false; 
+
     /// <summary>
     /// Is the area call the first wave when the last wave is over  
     /// </summary>
@@ -119,10 +121,20 @@ public class TDS_SpawnerArea : PunBehaviour
 
     #region Original Methods
     /// <summary>
+    /// Get the count of targeted players of a certain player type within the spanwed enemies
+    /// </summary>
+    /// <param name="_type"></param>
+    /// <returns></returns>
+    public int GetPlayerTargetCount(PlayerType _type)
+    {
+        return spawnedEnemies.Where(e => e.PlayerTarget != null && e.PlayerTarget.PlayerType == _type).Count();
+    }
+
+    /// <summary>
     /// Make spawn all enemies at every point of the wave index
     /// Increase Wave Index
     /// </summary>
-    private void ActivateSpawn()
+    public void ActivateSpawn()
     {
         if (!PhotonNetwork.isMasterClient) return;  
         if (waveIndex == waves.Count && !isLooping)
@@ -152,6 +164,8 @@ public class TDS_SpawnerArea : PunBehaviour
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "CallOnNextWaveEvent"), new object[] { });
         }
     }
+
+    public void ActivateEnemies() => spawnedEnemies.ForEach(e => e.ActivateEnemy());
 
     /// <summary>
     /// Destroy all dead enemies
@@ -185,8 +199,11 @@ public class TDS_SpawnerArea : PunBehaviour
         }
     }
 
-    public void ActivateEnemies() => spawnedEnemies.ForEach(e => e.ActivateEnemy()); 
 
+    /// <summary>
+    /// Call the events OnAreaActivated, OnAreaDesactivated and OnNextWave 
+    /// used when online to call the events on non-master clients
+    /// </summary>
     private void CallOnAreaActivatedEvent() => OnAreaActivated?.Invoke();
     private void CallOnAreaDesactivatedEvent() => OnAreaDesactivated?.Invoke();
     private void CallOnNextWaveEvent() => OnNextWave?.Invoke(); 
@@ -196,21 +213,23 @@ public class TDS_SpawnerArea : PunBehaviour
     // Awake is called when the script instance is being loaded
     private void Awake()
     {
-        if (!photonView) photonView = GetComponent<PhotonView>(); 
         // Call it when the player is connected
-        //if (!PhotonNetwork.isMasterClient) return;
+        if (!PhotonNetwork.isMasterClient) return;
         OnNextWave.AddListener(ActivateSpawn);
         OnAreaActivated.AddListener(ActivateSpawn);
     }
 
     private void Start()
     {
-        if (TDS_UIManager.Instance )
+        if (TDS_UIManager.Instance)
         {
             OnAreaActivated.AddListener(TDS_UIManager.Instance.SwitchCurtains);
             OnAreaDesactivated.AddListener(TDS_UIManager.Instance.SwitchCurtains);
         }
-
+        if(!PhotonNetwork.isMasterClient || isActivatedByEvent)
+        {
+            GetComponent<BoxCollider>().enabled = false; 
+        }
     }
 
     private void OnTriggerEnter(Collider _coll)
@@ -223,7 +242,6 @@ public class TDS_SpawnerArea : PunBehaviour
             if (PhotonNetwork.isMasterClient)
             {
                 OnAreaActivated?.Invoke();
-                //Debug.Log("CALL by " + photonView.viewID); 
                 TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "CallOnAreaActivatedEvent"), new object[] { });
             }
         }

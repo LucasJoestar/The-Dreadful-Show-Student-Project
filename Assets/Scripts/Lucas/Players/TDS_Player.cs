@@ -1659,6 +1659,11 @@ public class TDS_Player : TDS_Character
     {
         base.Start();
 
+        if(!photonView.isMine)
+        {
+            rigidbody.useGravity = false; 
+        }
+
         // Since all players except the Juggler cannot change their throw angle & the point they are aiming,
         // get the throw velocity & projectile motion in local space at start time
         throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(handsTransform.localPosition, throwAimingPoint, aimAngle);

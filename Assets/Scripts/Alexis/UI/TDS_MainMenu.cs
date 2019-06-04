@@ -163,6 +163,7 @@ public class TDS_MainMenu : PunBehaviour
     /// <param name="_displayLaunchButton">LaunchButton</param>
     public void UpdatePlayerCount(int _playerCount, bool _displayLaunchButton, PhotonPlayer[] _players)
     {
+        if (TDS_UIManager.Instance && TDS_UIManager.Instance.UIState != UIState.InMainMenu) return;
         if (playerCountText) playerCountText.text = $"Players : {_playerCount}/4";
         for (int i = 0; i < _playerCount; i++)
         {
@@ -186,7 +187,7 @@ public class TDS_MainMenu : PunBehaviour
     /// <param name="_nextPlayerType"></param>
     public void UpdatePlayerSelectionInfo(int _previousPlayerType, int _nextPlayerType)
     {
-        characterSelectionMenu.UpdateMenu((PlayerType)_previousPlayerType, (PlayerType)_nextPlayerType); 
+        characterSelectionMenu.UpdateMenuOnline((PlayerType)_previousPlayerType, (PlayerType)_nextPlayerType); 
     }
 
     /// <summary>
@@ -197,6 +198,7 @@ public class TDS_MainMenu : PunBehaviour
     {
         TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdatePlayerSelectionInfo"), new object[] { (int)TDS_GameManager.LocalPlayer, _newPlayerType });
         TDS_GameManager.LocalPlayer = (PlayerType)_newPlayerType == TDS_GameManager.LocalPlayer ? PlayerType.Unknown : (PlayerType)_newPlayerType;
+        characterSelectionMenu.UpdateLocalSelection();  
     }
 
     /// <summary>
@@ -218,6 +220,16 @@ public class TDS_MainMenu : PunBehaviour
             return; 
         }
         Instance = this; 
+    }
+
+    private void Start()
+    {
+        if (playerNameField)
+        {
+            playerNameField.text = "New Player";
+            playerNameField.GetComponentInChildren<TMP_Text>().text = "NewPlayer"; 
+            SetNewName();
+        }
     }
     #endregion 
 
