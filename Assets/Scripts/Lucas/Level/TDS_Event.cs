@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -50,6 +51,16 @@ public class TDS_Event
     [SerializeField] private bool doNeedSpecificPlayerType = false;
 
     /// <summary>
+    /// Should the event system wait for all players performing an action or not.
+    /// </summary>
+    [SerializeField] private bool doWaitForAllPlayers = false;
+
+    /// <summary>
+    /// Public accessor for <see cref="doWaitForAllPlayers"/>.
+    /// </summary>
+    public bool DoWaitForAllPlayers { get { return doWaitForAllPlayers; } }
+
+    /// <summary>
     /// Indicates if this event should wait the end of the previous one before starting.
     /// </summary>
     [SerializeField] private bool doWaitPreviousEvent = true;
@@ -58,19 +69,9 @@ public class TDS_Event
     public bool DoWaitPreviousOne { get { return doWaitPreviousEvent; } }
 
     /// <summary>
-    /// Indicates if this event is performed in online or local only. If online, a RPC will be executed.
-    /// </summary>
-    [SerializeField] private bool isOnline = false;
-
-    /// <summary>
-    /// Indicates if this event should only be called by the master.
-    /// </summary>
-    [SerializeField] private bool isMasterOnly = false;
-
-    /// <summary>
     /// Indicates if the waiting action is complete or not.
     /// </summary>
-    private bool isActionComplete = false;
+    public bool IsActionComplete { get; private set; }
 
     /// <summary>
     /// Type of this event.
@@ -89,6 +90,11 @@ public class TDS_Event
     /// Speed coefficient applied to the camera movement.
     /// </summary>
     [SerializeField] private float cameraSpeedCoef = 1;
+
+    /// <summary>
+    /// ID of this event associated Event System photon view.
+    /// </summary>
+    public int EventSystemID = 0;
 
     /// <summary>
     /// Name of the prefab to instantiate.
@@ -129,42 +135,58 @@ public class TDS_Event
     /// <returns></returns>
     public IEnumerator Trigger()
     {
-        // If this event require a particular player type different than the local one, return
-        if ((isMasterOnly && !PhotonNetwork.isMasterClient) || (doNeedSpecificPlayerType && (TDS_LevelManager.Instance.LocalPlayer.PlayerType != playerType))) yield break;
-
         switch (eventType)
         {
             // Triggers a particular quote of the Narrator
             case CustomEventType.Narrator:
 
-                string[] _quotes = TDS_GameManager.GetDialog(textID);
-                TDS_UIManager.Instance.ActivateNarratorBox(_quotes);
-
-                // If not local, activate narrator in other players too
-                if (isOnline)
+                // Activate narrator in other players too
+                if(doNeedSpecificPlayerType && TDS_LevelManager.Instance.AllPlayers.Any(p => p.PlayerType == playerType))
                 {
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateNarratorBox")
-                        , new object[] { _quotes });
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", TDS_LevelManager.Instance.AllPlayers.ToList().Where(p => p.PlayerType == playerType).Select(p => p.photonView.owner).First(), TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateNarratorBox")
+                      , new object[] { TDS_GameManager.GetDialog(textID).Skip(1).ToArray() });
+                }
+                else
+                {
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateNarratorBox")
+                      , new object[] { TDS_GameManager.GetDialog(textID).Skip(1).ToArray() });
                 }
                 break;
 
             // Display a message in an information box
             case CustomEventType.DisplayInfoBox:
-                TDS_UIManager.Instance.ActivateDialogBox(TDS_GameManager.GetDialog(textID)[0]);
+                // Activate narrator in other players too
+                if (doNeedSpecificPlayerType && TDS_LevelManager.Instance.AllPlayers.Any(p => p.PlayerType == playerType))
+                {
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", TDS_LevelManager.Instance.AllPlayers.ToList().Where(p => p.PlayerType == playerType).Select(p => p.photonView.owner).First(), TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateDialogBox")
+                      , new object[] { TDS_GameManager.GetDialog(textID)[1] });
+                }
+                else
+                {
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateDialogBox")
+                      , new object[] { TDS_GameManager.GetDialog(textID)[1] });
+                }
                 break;
 
             // Desactivate the current information box
             case CustomEventType.DesactiveInfoBox:
-                TDS_UIManager.Instance.DesactivateDialogBox();
+                if (doNeedSpecificPlayerType && TDS_LevelManager.Instance.AllPlayers.Any(p => p.PlayerType == playerType))
+                {
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", TDS_LevelManager.Instance.AllPlayers.ToList().Where(p => p.PlayerType == playerType).Select(p => p.photonView.owner).First(), TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "DesactivateDialogBox")
+                      , new object[] {  });
+                }
+                else
+                {
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "DesactivateDialogBox")
+                      , new object[] {  });
+                }
                 break;
 
             // Instantiate a prefab
             case CustomEventType.Instantiate:
-                // If not local, instantiate for other players too
-                if (isOnline)
-                {
-                    PhotonNetwork.Instantiate(prefabName, eventTransform.position, eventTransform.rotation, 0);
-                }
+                // Instantiate for other players too
+                // CHANGE IF LOCAL INSTANTIATIONS NEEDED
+                PhotonNetwork.Instantiate(prefabName, eventTransform.position, eventTransform.rotation, 0);
                 break;
 
             // Wait during a certain time
@@ -201,7 +223,7 @@ public class TDS_Event
                         break;
                 }
 
-                while (!isActionComplete)
+                while (!IsActionComplete)
                 {
                     yield return null;
                 }
@@ -233,21 +255,15 @@ public class TDS_Event
                         break;
                 }
 
-                isActionComplete = false;
+                IsActionComplete = false;
 
-                break;
-
-            // Wait until other players reach this event (Events System manage this)
-            case CustomEventType.WaitOthers:
-                while (true)
-                {
-                    yield return null;
-                }
+                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(PhotonView.Find(EventSystemID), typeof(TDS_EventsSystem), "SetPlayerWaiting")
+                      , new object[] { TDS_LevelManager.Instance.LocalPlayer.PhotonID });
                 break;
 
             // Make a camera movement
             case CustomEventType.CameraMovement:
-                yield return TDS_Camera.Instance.LookTarget(eventTransform, waitTime, cameraSpeedCoef);
+                yield return TDS_Camera.Instance.LookTarget(eventTransform.position.x, eventTransform.position.y, eventTransform.position.z, waitTime, cameraSpeedCoef);
                 break;
 
             // Just invoke a Unity Event, that's it
@@ -266,9 +282,9 @@ public class TDS_Event
     /// <summary>
     /// Stop to wait for the action.
     /// </summary>
-    private void StopWaitingAction()
+    public void StopWaitingAction()
     {
-        isActionComplete = true;
+        IsActionComplete = true;
     }
 	#endregion
 }

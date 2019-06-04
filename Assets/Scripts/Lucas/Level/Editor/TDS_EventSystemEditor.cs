@@ -175,10 +175,6 @@ public class TDS_EventSystemEditor : Editor
                 {
                     TDS_EditorUtility.PropertyField("Required type of Player", "Required type of player to trigger this event", _event.FindPropertyRelative("playerType"));
                 }
-                else
-                {
-                    TDS_EditorUtility.Toggle("Master Only", "Indicates of this event should only be called by the master", _event.FindPropertyRelative("isMasterOnly"));
-                }
 
                 if (_i > 0)
                 {
@@ -193,10 +189,6 @@ public class TDS_EventSystemEditor : Editor
                 {
                     case CustomEventType.Narrator:
                         TDS_EditorUtility.TextField("Text ID", "ID of the text to use for the Narrator", _event.FindPropertyRelative("textID"));
-
-                        GUILayout.Space(2);
-
-                        TDS_EditorUtility.Toggle("Online", "Should this event only interact in local or for other players too", _event.FindPropertyRelative("isOnline"));
                         break;
 
                     case CustomEventType.DisplayInfoBox:
@@ -210,10 +202,6 @@ public class TDS_EventSystemEditor : Editor
                         TDS_EditorUtility.PropertyField("Prefab Name", "Name of the prefab to instantiate", _event.FindPropertyRelative("prefabName"));
 
                         TDS_EditorUtility.PropertyField("Instantiation transform reference", "Transform to use as reference for position & rotation for the transform of the instantiated object", _event.FindPropertyRelative("eventTransform"));
-
-                        GUILayout.Space(2);
-
-                        TDS_EditorUtility.Toggle("Online", "Should this event only interact in local or for other players too", _event.FindPropertyRelative("isOnline"));
                         break;
 
                     case CustomEventType.Wait:
@@ -222,10 +210,6 @@ public class TDS_EventSystemEditor : Editor
 
                     case CustomEventType.WaitForAction:
                         TDS_EditorUtility.PropertyField("Action to wait", "Action to wait the player to perform", _event.FindPropertyRelative("actionType"));
-                        break;
-
-                    case CustomEventType.WaitOthers:
-                        TDS_EditorUtility.RadioToggle("Waiting Other Players...", "Currently waiting for other players...", serializedObject.FindProperty("isWaitingOthers"));
                         break;
 
                     case CustomEventType.CameraMovement:

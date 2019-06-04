@@ -363,16 +363,18 @@ public class TDS_Camera : MonoBehaviour
     private void FollowTarget()
     {
         // If no target, return
-        if (!Target || (lerpToBoundsCoroutine != null) || (lookTargetCoroutine != null)) return;
+        if (!target || (lerpToBoundsCoroutine != null) || (lookTargetCoroutine != null)) return;
 
         // If reaching destination, stop moving
-        if (transform.position == target.position + Offset)
+        if ((transform.position - (target.position + Offset)).magnitude < .01f)
         {
             if (isMoving)
             {
                 speedCurrent = 0;
                 isMoving = false;
             }
+
+            return;
         }
         else
         {
@@ -482,23 +484,25 @@ public class TDS_Camera : MonoBehaviour
     /// <summary>
     /// Method starting a coroutine that makes the camera look a particular transform for a certain duration.
     /// </summary>
-    /// <param name="_target">Target to look.</param>
+    /// <param name="_x">X position to look.</param>
+    /// <param name="_y">Y position to look.</param>
+    /// <param name="_z">Z position to look.</param>
     /// <param name="_duration">Time during which fixing the target.</param>
     /// <param name="_speedCoef">New camera speed coefficient.</param>
     /// <returns>Returns the started coroutine.</returns>
-    public Coroutine LookTarget(Transform _target, float _duration, float _speedCoef)
+    public Coroutine LookTarget(float _x, float _y, float _z, float _duration, float _speedCoef)
     {
         if (lookTargetCoroutine != null) StopCoroutine(lookTargetCoroutine);
-        return lookTargetCoroutine = StartCoroutine(LookTargetCoroutine(_target, _duration, _speedCoef));
+        return lookTargetCoroutine = StartCoroutine(LookTargetCoroutine(new Vector3(_x, _y, _z), _duration, _speedCoef));
     }
 
     /// <summary>
     /// Coroutine to make the camera look a particular transform for a certain duration.
     /// </summary>
-    /// <param name="_target">Target to look.</param>
+    /// <param name="_target">Target position to look.</param>
     /// <param name="_duration">Time during which fixing the target.</param>
     /// <param name="_speedCoef">New camera speed coefficient.</param>
-    private IEnumerator LookTargetCoroutine(Transform _target, float _duration, float _speedCoef)
+    private IEnumerator LookTargetCoroutine(Vector3 _target, float _duration, float _speedCoef)
     {
         while (_duration > 0)
         {
@@ -515,7 +519,7 @@ public class TDS_Camera : MonoBehaviour
             }
 
             // Get movement
-            Vector3 _destination = Vector3.Lerp(transform.position, _target.position + Offset, ((Time.deltaTime * speedCurrent) / 5) * _speedCoef);
+            Vector3 _destination = Vector3.Lerp(transform.position, _target + Offset, ((Time.deltaTime * speedCurrent) / 5) * _speedCoef);
 
             transform.position = _destination;
 
@@ -751,17 +755,6 @@ public class TDS_Camera : MonoBehaviour
     // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
     private void OnDrawGizmos()
     {
-        // Draws the camera bounds with lines
-        Gizmos.color = Color.yellow;
-
-        Gizmos.DrawCube(new Vector3(levelBounds.XMin, transform.position.y, levelBounds.ZMin), Vector3.one * .25f);
-        Gizmos.DrawLine(new Vector3(levelBounds.XMin, transform.position.y, levelBounds.ZMin), new Vector3(levelBounds.XMax, transform.position.y, levelBounds.ZMin));
-        Gizmos.DrawCube(new Vector3(levelBounds.XMin, transform.position.y, levelBounds.ZMax), Vector3.one * .25f);
-        Gizmos.DrawLine(new Vector3(levelBounds.XMin, transform.position.y, levelBounds.ZMin), new Vector3(levelBounds.XMin, transform.position.y, levelBounds.ZMax));
-        Gizmos.DrawCube(new Vector3(levelBounds.XMax, transform.position.y, levelBounds.ZMin), Vector3.one * .25f);
-        Gizmos.DrawLine(new Vector3(levelBounds.XMin, transform.position.y, levelBounds.ZMax), new Vector3(levelBounds.XMax, transform.position.y, levelBounds.ZMax));
-        Gizmos.DrawCube(new Vector3(levelBounds.XMax, transform.position.y, levelBounds.ZMax), Vector3.one * .25f);
-        Gizmos.DrawLine(new Vector3(levelBounds.XMax, transform.position.y, levelBounds.ZMax), new Vector3(levelBounds.XMax, transform.position.y, levelBounds.ZMin));
     }
 
     // Use this for initialization

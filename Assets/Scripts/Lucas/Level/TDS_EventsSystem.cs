@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using Photon;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class TDS_EventsSystem : MonoBehaviour
+public class TDS_EventsSystem : PunBehaviour
 {
     /* TDS_EventsSystem :
 	 *
@@ -63,22 +64,27 @@ public class TDS_EventsSystem : MonoBehaviour
     /// <summary>
     /// Boolean used when waiting for other players.
     /// </summary>
-    [SerializeField] private bool isWaitingForOthers = true;
+    [SerializeField] private bool isWaitingForOthers = false;
+
+    /// <summary>
+    /// BoxCollider of the objecT.
+    /// </summary>
+    [SerializeField] private BoxCollider boxCollider = null;
 
     /// <summary>
     /// Current event of the system.
     /// </summary>
-    private Coroutine currentEvent = null;
+    private Coroutine currentEventCoroutine = null;
+
+    /// <summary>
+    /// Current event processing.
+    /// </summary>
+    private TDS_Event currentEvent = null;
 
     /// <summary>
     /// All events to trigger in this events system.
     /// </summary>
     [SerializeField] private TDS_Event[] events = new TDS_Event[] { };
-
-    /// <summary>
-    /// This object photon view.
-    /// </summary>
-    [SerializeField] private PhotonView photonView = null;
 
     /// <summary>
     /// Players who are waiting at an event.
@@ -89,18 +95,6 @@ public class TDS_EventsSystem : MonoBehaviour
     #region Methods
 
     #region Original Methods
-    /// <summary>
-    /// Check if every players is waiting. If so, pass the event
-    /// </summary>
-    private void CheckPlayersWaiting()
-    {
-        if (!waitingPlayers.Union(TDS_LevelManager.Instance.AllPlayers).Any())
-        {
-            isWaitingForOthers = false;
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PassEvent"), new object[] { });
-        }
-    }
-
     /// <summary>
     /// Starts this event system !
     /// </summary>
@@ -119,7 +113,7 @@ public class TDS_EventsSystem : MonoBehaviour
     {
         if (!isActivated) return;
 
-        if (currentEvent != null) StopCoroutine(currentEvent);
+        if (currentEventCoroutine != null) StopCoroutine(currentEventCoroutine);
         StopAllCoroutines();
 
         isActivated = false;
@@ -135,33 +129,24 @@ public class TDS_EventsSystem : MonoBehaviour
     {
         for (int _i = 0; _i < events.Length; _i++)
         {
-            // If this event is to wait other players, do not start a coroutine
-            if (events[_i].EventType == CustomEventType.WaitOthers)
+            // Starts the coroutine
+            if (events[_i].EventType == CustomEventType.WaitForAction)
             {
-                if (PhotonNetwork.isMasterClient)
-                {
-                    waitingPlayers.Add(TDS_LevelManager.Instance.LocalPlayer);
-                    CheckPlayersWaiting();
-                }
-                else
-                {
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "SetPlayerWaiting"), new object[] { TDS_LevelManager.Instance.LocalPlayer.PhotonID });
-                }
-
-                while (isWaitingForOthers)
-                {
-                    yield return null;
-                }
                 isWaitingForOthers = true;
             }
-            else
-            {
-                // Starts the coroutine
-                currentEvent = StartCoroutine(events[_i].Trigger());
 
-                // If next one wait the previous, wait
-                if ((_i < events.Length - 1) && events[_i + 1].DoWaitPreviousOne) yield return currentEvent;
+            currentEventCoroutine = StartCoroutine(_i);
+
+            if ((events[_i].EventType == CustomEventType.CameraMovement) ||
+                (events[_i].EventType == CustomEventType.WaitForAction))
+            {
+                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "StartCoroutine"), new object[] { _i });
             }
+
+            // If next one wait the previous, wait
+            if ((_i < events.Length - 1) && events[_i + 1].DoWaitPreviousOne) yield return currentEventCoroutine;
+
+            while (isWaitingForOthers) yield return null;
         }
 
         if (doLoop) StartCoroutine(EventsSystem());
@@ -175,21 +160,48 @@ public class TDS_EventsSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// Pass the event where waiting for others.
-    /// </summary>
-    public void PassWaitingEvent()
-    {
-        isWaitingForOthers = false;
-    }
-
-    /// <summary>
     /// Set a player as waiting.
     /// </summary>
     /// <param name="_playerID">ID of the player who is waiting.</param>
     public void SetPlayerWaiting(int _playerID)
     {
-        waitingPlayers.Add(PhotonView.Find(_playerID).GetComponent<TDS_Player>());
-        CheckPlayersWaiting();
+        if (!isWaitingForOthers) return;
+
+        if (currentEvent.DoWaitForAllPlayers)
+        {
+            waitingPlayers.Add(PhotonView.Find(_playerID).GetComponent<TDS_Player>());
+
+            if (!waitingPlayers.Union(TDS_LevelManager.Instance.AllPlayers).Any())
+            {
+                isWaitingForOthers = false;
+                waitingPlayers = new List<TDS_Player>();
+            }
+        }
+        else
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "StopWaitingForEvent"), new object[] { });
+
+            isWaitingForOthers = false;
+        }
+    }
+
+    /// <summary>
+    /// Starts an event coroutine at a given index.
+    /// </summary>
+    /// <param name="_id">Index of the event to start.</param>
+    /// <returns></returns>
+    public Coroutine StartCoroutine(int _id)
+    {
+        currentEvent = events[_id];
+        return StartCoroutine(events[_id].Trigger());
+    }
+
+    /// <summary>
+    /// Stop waiting for an event.
+    /// </summary>
+    public void StopWaitingForEvent()
+    {
+        currentEvent.StopWaitingAction();
     }
     #endregion
 
@@ -197,26 +209,38 @@ public class TDS_EventsSystem : MonoBehaviour
     // Awake is called when the script instance is being loaded
     private void Awake()
     {
-        if (!photonView)
+        if (!boxCollider)
         {
-            photonView = GetComponent<PhotonView>();
-            if (!photonView) Debug.LogWarning($"Missing Photon View on the Events System \"{name}\"");
+            boxCollider = GetComponent<BoxCollider>();
+            if (!boxCollider)
+            {
+                Debug.Log("BoxCollider on Event System \"" + name + "\" is missing !");
+                return;
+            }
+        }
+    }
+
+    // Use this for initialization
+    private void Start()
+    {
+        // Set photon view ID for each event
+        foreach (TDS_Event _event in events)
+        {
+            _event.EventSystemID = photonView.viewID;
         }
     }
 
     // OnTriggerEnter is called when the GameObject collides with another GameObject
     private void OnTriggerEnter(Collider other)
     {
-        if (doAutoTriggerOnEnter && !isActivated)
-        {
-            StartEvents();
+        if (!PhotonNetwork.isMasterClient || !doAutoTriggerOnEnter || isActivated) return;
 
-            if (doDesactivateTriggerOnStart)
-            {
-                BoxCollider _trigger = GetComponent<BoxCollider>();
-                if (_trigger) _trigger.enabled = false;
-            }
+        if (doDesactivateTriggerOnStart && boxCollider)
+        {
+            boxCollider.enabled = false;
         }
+
+        StartEvents();
     }
     #endregion
 
