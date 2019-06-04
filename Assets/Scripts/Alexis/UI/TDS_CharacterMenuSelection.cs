@@ -112,16 +112,16 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
             case PlayerType.Unknown:
                 break;
             case PlayerType.BeardLady:
-                beardLadyButton.interactable = true;
+                beardLadyButton.interactable = false;
                 break;
             case PlayerType.FatLady:
-                fatLadyButton.interactable = true;
+                fatLadyButton.interactable = false;
                 break;
             case PlayerType.FireEater:
-                fireEaterButton.interactable = true;
+                fireEaterButton.interactable = false;
                 break;
             case PlayerType.Juggler:
-                jugglerButton.interactable = true;
+                jugglerButton.interactable = false;
                 break;
             default:
                 break;

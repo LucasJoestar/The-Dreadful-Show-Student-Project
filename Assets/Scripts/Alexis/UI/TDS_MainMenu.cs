@@ -163,6 +163,7 @@ public class TDS_MainMenu : PunBehaviour
     /// <param name="_displayLaunchButton">LaunchButton</param>
     public void UpdatePlayerCount(int _playerCount, bool _displayLaunchButton, PhotonPlayer[] _players)
     {
+        if (TDS_UIManager.Instance && TDS_UIManager.Instance.UIState != UIState.InMainMenu) return;
         if (playerCountText) playerCountText.text = $"Players : {_playerCount}/4";
         for (int i = 0; i < _playerCount; i++)
         {

@@ -1020,7 +1020,6 @@ public abstract class TDS_Enemy : TDS_Character
         behaviourCoroutine = StartCoroutine(Behaviour()); 
     }
 
-
     /// <summary>
     /// Called when the enemy takes damages
     /// Stop the agent
@@ -1066,6 +1065,10 @@ public abstract class TDS_Enemy : TDS_Character
         if (PhotonNetwork.isMasterClient)
         {
             behaviourCoroutine = StartCoroutine(Behaviour());
+        }
+        else
+        {
+            rigidbody.useGravity = false; 
         }
     }
 

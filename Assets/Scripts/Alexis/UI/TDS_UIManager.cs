@@ -147,6 +147,7 @@ public class TDS_UIManager : PunBehaviour
     #region UIState
     //State of the UI
     [SerializeField] private UIState uiState;
+    public UIState UIState { get { return uiState;  } }
     #endregion
 
     #region Text
