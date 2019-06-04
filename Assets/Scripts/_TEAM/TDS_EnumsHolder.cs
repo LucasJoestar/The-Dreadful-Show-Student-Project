@@ -228,6 +228,16 @@ public enum RoomId
 }
 
 /// <summary>
+/// All triggers activation modes.
+/// </summary>
+public enum TriggerActivationMode
+{
+    Enter,
+    Exit,
+    Other
+}
+
+/// <summary>
 /// All states of the UI during the game
 /// </summary>
 public enum UIState

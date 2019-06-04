@@ -154,11 +154,6 @@ public class TDS_Camera : MonoBehaviour
     }
 
     /// <summary>
-    /// Coroutine used to lerp to bounds.
-    /// </summary>
-    private Coroutine lerpToBoundsCoroutine = null;
-
-    /// <summary>
     /// Coroutine used to look a target.
     /// </summary>
     private Coroutine lookTargetCoroutine = null;
@@ -363,7 +358,7 @@ public class TDS_Camera : MonoBehaviour
     private void FollowTarget()
     {
         // If no target, return
-        if (!target || (lerpToBoundsCoroutine != null) || (lookTargetCoroutine != null)) return;
+        if (!target || (lookTargetCoroutine != null)) return;
 
         // If reaching destination, stop moving
         if ((transform.position - (target.position + Offset)).magnitude < .01f)
@@ -433,52 +428,6 @@ public class TDS_Camera : MonoBehaviour
             // Moves the camera
             transform.position = _destination;
         }
-    }
-
-    /// <summary>
-    /// Lerp the camera position to be between bounds.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator LerpToBounds()
-    {
-        bool _isGoodInX = false;
-
-        yield return null;
-
-        while (true)
-        {
-            yield return new WaitForEndOfFrame();
-
-            // Get movement
-            Vector3 _destination = transform.position;
-
-            // Clamp position
-            if (camera.WorldToViewportPoint(currentBounds.XMaxVector).x < 1.02f)
-            {
-                _destination.x -= 1;
-            }
-            else if (camera.WorldToViewportPoint(currentBounds.XMinVector).x > -.02f)
-            {
-                _destination.x += 1;
-            }
-            else _isGoodInX = true;
-
-            if (camera.WorldToViewportPoint(currentBounds.ZMinVector).y > -.01f)
-            {
-                _destination.y += 1;
-            }
-            else if (camera.WorldToViewportPoint(currentBounds.ZMaxVector).y < .1f)
-            {
-                _destination.y -= 1;
-            }
-            else if (_isGoodInX) break;
-
-            // Moves the camera
-            transform.position = Vector3.Lerp(transform.position, _destination, Time.deltaTime * speedMax * 2);
-        }
-
-        lerpToBoundsCoroutine = null;
-        yield break;
     }
 
     /// <summary>
@@ -764,7 +713,36 @@ public class TDS_Camera : MonoBehaviour
         levelBounds = new TDS_Bounds(leftBound.transform.position, rightBound.transform.position, bottomBound.transform.position, topBound.transform.position);
         currentBounds = levelBounds;
 
-        lerpToBoundsCoroutine = StartCoroutine(LerpToBounds());
+        // Set the camera position between bounds
+        // Get movement
+        Vector3 _destination = transform.position;
+        Vector3 _viewport;
+
+        // Clamp position
+        if ((_viewport = camera.WorldToViewportPoint(currentBounds.XMaxVector)).x < 1.02f)
+        {
+            _destination.x -= camera.ViewportToWorldPoint(new Vector3(1, _viewport.y, _viewport.z)).x - currentBounds.XMax;
+        }
+        else if ((_viewport = camera.WorldToViewportPoint(currentBounds.XMinVector)).x > -.02f)
+        {
+            _destination.x += currentBounds.XMin - camera.ViewportToWorldPoint(new Vector3(0, _viewport.y, _viewport.z)).x;
+        }
+
+        if ((_viewport = camera.WorldToViewportPoint(currentBounds.ZMinVector)).y > -.01f)
+        {
+            _destination.y += currentBounds.ZMin - camera.ViewportToWorldPoint(new Vector3(_viewport.x, 0, Mathf.Abs(transform.position.z + Offset.z))).y;
+            _destination.y += Offset.y;
+        }
+        else if ((_viewport = camera.WorldToViewportPoint(currentBounds.ZMaxVector)).y < .4f)
+        {
+            _destination.y -= camera.ViewportToWorldPoint(new Vector3(_viewport.x, .4f, camera.nearClipPlane)).y - currentBounds.ZMax;
+            _destination.y += Offset.y;
+        }
+
+        // Moves the camera
+        transform.position = _destination;
+        Debug.Log(camera.WorldToViewportPoint(currentBounds.ZMaxVector).y);
+        Debug.Log(camera.WorldToViewportPoint(currentBounds.ZMinVector).y);
     }
 	
 	// Update is called once per frame

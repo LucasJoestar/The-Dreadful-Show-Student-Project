@@ -37,14 +37,9 @@ public class TDS_EventsSystem : PunBehaviour
 
     #region Fields / Properties
     /// <summary>
-    /// Indicates if this trigger should automatically starts when entering object trigger.
-    /// </summary>
-    [SerializeField] private bool doAutoTriggerOnEnter = true;
-
-    /// <summary>
     /// Indicates if this object trigger should be desactivated when starting events.
     /// </summary>
-    [SerializeField] private bool doDesactivateTriggerOnStart = true;
+    [SerializeField] private bool doDesactivateTriggerOnActivation = true;
 
     /// <summary>
     /// Indicates if this object should be destroyed when finished.
@@ -69,7 +64,7 @@ public class TDS_EventsSystem : PunBehaviour
     /// <summary>
     /// BoxCollider of the objecT.
     /// </summary>
-    [SerializeField] private BoxCollider boxCollider = null;
+    [SerializeField] private new BoxCollider collider = null;
 
     /// <summary>
     /// Current event of the system.
@@ -79,7 +74,7 @@ public class TDS_EventsSystem : PunBehaviour
     /// <summary>
     /// Current event processing.
     /// </summary>
-    private TDS_Event currentEvent = null;
+    [SerializeField] private TDS_Event currentEvent = null;
 
     /// <summary>
     /// All events to trigger in this events system.
@@ -90,35 +85,28 @@ public class TDS_EventsSystem : PunBehaviour
     /// Players who are waiting at an event.
     /// </summary>
     private List<TDS_Player> waitingPlayers = new List<TDS_Player>();
+
+    /// <summary>
+    /// Tags detected used to activate this event system.
+    /// </summary>
+    [SerializeField] private Tags detectedTags = new Tags(new Tag[] { new Tag("Player") });
+
+    /// <summary>
+    /// Activation mode used for this event system.
+    /// </summary>
+    [SerializeField] private TriggerActivationMode activationMode = TriggerActivationMode.Enter;
     #endregion
 
     #region Methods
 
     #region Original Methods
     /// <summary>
-    /// Starts this event system !
+    /// Check a trigger activation validation, and start events if succeed.
     /// </summary>
-    public void StartEvents()
+    /// <param name="other"></param>
+    private void CheckTriggerValidation(Collider other)
     {
-        if (isActivated) return;
-
-        isActivated = true;
-        StartCoroutine(EventsSystem());
-    }
-
-    /// <summary>
-    /// Starts this event system !
-    /// </summary>
-    public void StopEvents()
-    {
-        if (!isActivated) return;
-
-        if (currentEventCoroutine != null) StopCoroutine(currentEventCoroutine);
-        StopAllCoroutines();
-
-        isActivated = false;
-
-        if (doDestroyOnFinish) Destroy(this);
+        if (PhotonNetwork.isMasterClient && !isActivated & other.gameObject.HasTag(detectedTags.ObjectTags)) StartEvents();
     }
 
     /// <summary>
@@ -135,7 +123,7 @@ public class TDS_EventsSystem : PunBehaviour
                 isWaitingForOthers = true;
             }
 
-            currentEventCoroutine = StartCoroutine(_i);
+            currentEventCoroutine = StartEventCoroutine(_i);
 
             if ((events[_i].EventType == CustomEventType.CameraMovement) ||
                 (events[_i].EventType == CustomEventType.WaitForAction))
@@ -190,10 +178,41 @@ public class TDS_EventsSystem : PunBehaviour
     /// </summary>
     /// <param name="_id">Index of the event to start.</param>
     /// <returns></returns>
-    public Coroutine StartCoroutine(int _id)
+    public Coroutine StartEventCoroutine(int _id)
     {
         currentEvent = events[_id];
         return StartCoroutine(events[_id].Trigger());
+    }
+
+    /// <summary>
+    /// Starts this event system !
+    /// </summary>
+    public void StartEvents()
+    {
+        if (isActivated) return;
+
+        if (doDesactivateTriggerOnActivation && collider)
+        {
+            collider.enabled = false;
+        }
+
+        isActivated = true;
+        StartCoroutine(EventsSystem());
+    }
+
+    /// <summary>
+    /// Starts this event system !
+    /// </summary>
+    public void StopEvents()
+    {
+        if (!isActivated) return;
+
+        if (currentEventCoroutine != null) StopCoroutine(currentEventCoroutine);
+        StopAllCoroutines();
+
+        isActivated = false;
+
+        if (doDestroyOnFinish) Destroy(this);
     }
 
     /// <summary>
@@ -209,12 +228,12 @@ public class TDS_EventsSystem : PunBehaviour
     // Awake is called when the script instance is being loaded
     private void Awake()
     {
-        if (!boxCollider)
+        if (!collider)
         {
-            boxCollider = GetComponent<BoxCollider>();
-            if (!boxCollider)
+            collider = GetComponent<BoxCollider>();
+            if (!collider)
             {
-                Debug.Log("BoxCollider on Event System \"" + name + "\" is missing !");
+                Debug.LogWarning("BoxCollider on Event System \"" + name + "\" is missing !");
                 return;
             }
         }
@@ -233,14 +252,13 @@ public class TDS_EventsSystem : PunBehaviour
     // OnTriggerEnter is called when the GameObject collides with another GameObject
     private void OnTriggerEnter(Collider other)
     {
-        if (!PhotonNetwork.isMasterClient || !doAutoTriggerOnEnter || isActivated) return;
+        if (activationMode == TriggerActivationMode.Enter) CheckTriggerValidation(other);
+    }
 
-        if (doDesactivateTriggerOnStart && boxCollider)
-        {
-            boxCollider.enabled = false;
-        }
-
-        StartEvents();
+    // OnTriggerExit is called when the Collider other has stopped touching the trigger
+    private void OnTriggerExit(Collider other)
+    {
+        if (activationMode == TriggerActivationMode.Exit) CheckTriggerValidation(other);
     }
     #endregion
 

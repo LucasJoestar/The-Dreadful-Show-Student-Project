@@ -34,11 +34,11 @@ public class TDS_EventSystemEditor : Editor
 	*/
 
     #region Fields / Properties
-    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doAutoTriggerOnEnter"/> of type <see cref="bool"/>.</summary>
-    private SerializedProperty doAutoTriggerOnEnter = null;
+    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.activationMode"/> of type <see cref="TriggerActivationMode"/>.</summary>
+    private SerializedProperty activationMode = null;
 
-    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doDesactivateTriggerOnStart"/> of type <see cref="bool"/>.</summary>
-    private SerializedProperty doDesactivateTriggerOnStart = null;
+    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doDesactivateTriggerOnActivation"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty doDesactivateTriggerOnActivation = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doDestroyOnFinish"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty doDestroyOnFinish = null;
@@ -50,10 +50,16 @@ public class TDS_EventSystemEditor : Editor
     private SerializedProperty isActivated = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.isWaitingOthers"/> of type <see cref="bool"/>.</summary>
-    private SerializedProperty isWaitingOthers = null;
+    private SerializedProperty isWaitingForOthers = null;
 
-    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.events"/> of type <see cref="bool"/>.</summary>
+    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.currentEvent"/> of type <see cref="TDS_Event"/>.</summary>
+    private SerializedProperty currentEvent = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.events"/> of type <see cref="TDS_Event"/>[].</summary>
     private SerializedProperty events = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.detectedTags"/> of type <see cref="Tags"/>.</summary>
+    private SerializedProperty detectedTags = null;
 
     /// <summary>
     /// Folout booleans for events array.
@@ -86,17 +92,34 @@ public class TDS_EventSystemEditor : Editor
 
         TDS_EditorUtility.RadioToggle("Activated", "Is this event system activated or not", isActivated);
 
-        GUILayout.Space(3);
+        if (isActivated.boolValue)
+        {
+            GUILayout.Space(3);
+
+            EditorGUILayout.LabelField(new GUIContent("Current Event", "Current event processing"), new GUIContent(((CustomEventType)currentEvent.FindPropertyRelative("eventType").enumValueIndex).ToString()));
+        }
+
+        GUILayout.Space(5);
 
         TDS_EditorUtility.Toggle("Looping", "Should this event system loop when reaching the end or not", doLoop);
         TDS_EditorUtility.Toggle("Destroy when Finished", "Should this object be destroyed when event system get finished", doDestroyOnFinish);
+        TDS_EditorUtility.Toggle("Des. collider on activation", "Should this object collider be desactivated when starting events", doDesactivateTriggerOnActivation);
 
         GUILayout.Space(2);
 
-        TDS_EditorUtility.Toggle("Activate on Trigger Enter", "Should this event system automatically be activated when entering this object trigger", doAutoTriggerOnEnter);
-        TDS_EditorUtility.Toggle("Desactivate collider on activated", "Should this object collider be desactivated when starting events", doDesactivateTriggerOnStart);
+        TDS_EditorUtility.PropertyField("Activate on Trigger Enter", "Should this event system automatically be activated when entering this object trigger", activationMode);
 
-        GUILayout.Space(3);
+        if (activationMode.enumValueIndex < 2)
+        {
+            GUILayout.Space(3);
+            GUI.backgroundColor = _originalColor;
+
+            TDS_EditorUtility.PropertyField("Detected Tags", "Tags detected to trigger this event", detectedTags);
+
+            GUI.backgroundColor = TDS_EditorUtility.BoxDarkColor;
+        }
+
+        GUILayout.Space(5);
 
         // Button to add a new event
         GUI.backgroundColor = TDS_EditorUtility.BoxLightColor;
@@ -158,6 +181,8 @@ public class TDS_EventSystemEditor : Editor
             GUI.color = Color.white;
             EditorGUILayout.EndHorizontal();
 
+            CustomEventType _eventTypeValue;
+
             // If unfolded, draws this event
             if (foldouts[_i])
             {
@@ -169,11 +194,16 @@ public class TDS_EventSystemEditor : Editor
                 GUILayout.Space(3);
 
                 TDS_EditorUtility.PropertyField("Event Type", "Type of this event", _eventType);
-                TDS_EditorUtility.Toggle("Require specific Player type", "Should this event require a specific player type to be triggered", _doRequireType);
+                _eventTypeValue = (CustomEventType)_eventType.enumValueIndex;
 
-                if (_doRequireType.boolValue)
+                if ((_eventTypeValue == CustomEventType.Narrator) || (_eventTypeValue == CustomEventType.DisplayInfoBox) || (_eventTypeValue == CustomEventType.DesactiveInfoBox))
                 {
-                    TDS_EditorUtility.PropertyField("Required type of Player", "Required type of player to trigger this event", _event.FindPropertyRelative("playerType"));
+                    TDS_EditorUtility.Toggle("Require specific Player type", "Should this event require a specific player type to be triggered", _doRequireType);
+
+                    if (_doRequireType.boolValue)
+                    {
+                        TDS_EditorUtility.PropertyField("Required type of Player", "Required type of player to trigger this event", _event.FindPropertyRelative("playerType"));
+                    }
                 }
 
                 if (_i > 0)
@@ -209,6 +239,7 @@ public class TDS_EventSystemEditor : Editor
                         break;
 
                     case CustomEventType.WaitForAction:
+                        TDS_EditorUtility.PropertyField("Wait for everyone", "Should this action be performed by every player", _event.FindPropertyRelative("doWaitForAllPlayers"));
                         TDS_EditorUtility.PropertyField("Action to wait", "Action to wait the player to perform", _event.FindPropertyRelative("actionType"));
                         break;
 
@@ -261,13 +292,15 @@ public class TDS_EventSystemEditor : Editor
     // This function is called when the object is loaded
     private void OnEnable()
     {
-        doAutoTriggerOnEnter = serializedObject.FindProperty("doAutoTriggerOnEnter");
-        doDesactivateTriggerOnStart = serializedObject.FindProperty("doDesactivateTriggerOnStart");
+        activationMode = serializedObject.FindProperty("activationMode");
+        doDesactivateTriggerOnActivation = serializedObject.FindProperty("doDesactivateTriggerOnActivation");
         doDestroyOnFinish = serializedObject.FindProperty("doDestroyOnFinish");
         doLoop = serializedObject.FindProperty("doLoop");
         isActivated = serializedObject.FindProperty("isActivated");
-        isWaitingOthers = serializedObject.FindProperty("isWaitingOthers");
+        isWaitingForOthers = serializedObject.FindProperty("isWaitingForOthers");
+        currentEvent = serializedObject.FindProperty("currentEvent");
         events = serializedObject.FindProperty("events");
+        detectedTags = serializedObject.FindProperty("detectedTags");
 
         foldouts = new bool[events.arraySize];
     }

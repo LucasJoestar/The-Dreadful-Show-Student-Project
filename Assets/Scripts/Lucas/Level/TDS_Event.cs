@@ -4,8 +4,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-using Object = UnityEngine.Object;
-
 [Serializable]
 public class TDS_Event 
 {
@@ -130,6 +128,11 @@ public class TDS_Event
 
     #region Methods
     /// <summary>
+    /// Stop to wait for the action.
+    /// </summary>
+    public void StopWaitingAction() => IsActionComplete = true;
+
+    /// <summary>
     /// Triggers this event.
     /// </summary>
     /// <returns></returns>
@@ -141,7 +144,7 @@ public class TDS_Event
             case CustomEventType.Narrator:
 
                 // Activate narrator in other players too
-                if(doNeedSpecificPlayerType && TDS_LevelManager.Instance.AllPlayers.Any(p => p.PlayerType == playerType))
+                if (doNeedSpecificPlayerType && TDS_LevelManager.Instance.AllPlayers.Any(p => p.PlayerType == playerType))
                 {
                     TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", TDS_LevelManager.Instance.AllPlayers.ToList().Where(p => p.PlayerType == playerType).Select(p => p.photonView.owner).First(), TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateNarratorBox")
                       , new object[] { TDS_GameManager.GetDialog(textID).Skip(1).ToArray() });
@@ -277,14 +280,6 @@ public class TDS_Event
         }
         
         yield break;
-    }
-
-    /// <summary>
-    /// Stop to wait for the action.
-    /// </summary>
-    public void StopWaitingAction()
-    {
-        IsActionComplete = true;
     }
 	#endregion
 }

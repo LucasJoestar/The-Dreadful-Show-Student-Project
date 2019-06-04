@@ -12,7 +12,7 @@ public class TDS_Destructible : TDS_Damageable
 	 *	###### PURPOSE ######
 	 *	#####################
 	 *
-	 *	    Class for all destructibles elements of the game, like crate, barrels and more.
+	 *	    Class for all destructibles elements of the game, like crates, barrels and more.
 	 *
 	 *	#####################
 	 *	### MODIFICATIONS ###

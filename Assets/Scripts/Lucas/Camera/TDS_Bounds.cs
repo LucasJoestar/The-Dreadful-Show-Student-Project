@@ -62,7 +62,7 @@ public class TDS_Bounds
     /// <summary>
     /// Z maximum value of the bounds.
     /// </summary>
-    public float ZMax { get { return ZMinVector.z; } }
+    public float ZMax { get { return ZMaxVector.z; } }
 
     /// <summary>
     /// Vector for Z minimum value of the bounds.
@@ -72,7 +72,7 @@ public class TDS_Bounds
     /// <summary>
     /// Z minimum value of the bounds.
     /// </summary>
-    public float ZMin { get { return ZMaxVector.z; } }
+    public float ZMin { get { return ZMinVector.z; } }
 
     /// <summary>
     /// Vector for Z maximum value of the bounds.
