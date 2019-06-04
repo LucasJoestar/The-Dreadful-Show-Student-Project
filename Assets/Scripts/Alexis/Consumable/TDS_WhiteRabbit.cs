@@ -63,20 +63,12 @@ public class TDS_WhiteRabbit : TDS_Consumable
     #region Methods
 
     #region Original Methods
-    private void Destroy(bool _instantiateFX)
-    {
-        if(_instantiateFX) PhotonNetwork.Instantiate(particlesName, transform.position + Vector3.up, Quaternion.identity, 0);
-        if (!PhotonNetwork.isMasterClient) return;
-        PhotonNetwork.Destroy(gameObject);
-    }
-
     /// <summary>
     /// Rotate the rabbit (Local and online)
     /// </summary>
     protected void Flip()
     {
         transform.Rotate(Vector3.up, 180);
-        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
     }
 
     /// <summary>
@@ -86,15 +78,11 @@ public class TDS_WhiteRabbit : TDS_Consumable
     /// </summary>
     private void IncreasePassingCount()
     {
+        if (!PhotonNetwork.isMasterClient) return; 
         passingCountCurrent++;
         if (passingCountCurrent > passingCountMax && !isLooping)
         {
-            if (!PhotonNetwork.isMasterClient)
-            {
-                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Destroy"), new object[] { false });
-            }
-            else
-                Destroy(false); 
+            PhotonNetwork.Destroy(gameObject);
             OnLoseRabbit?.Invoke();
             return; 
         }
@@ -108,18 +96,29 @@ public class TDS_WhiteRabbit : TDS_Consumable
     /// <param name="_player"></param>
     public override void Use(TDS_Player _player)
     {
+        if(!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UseOnline"), new object[] { _player.photonView.viewID });
+            return; 
+        }
         int _healingValue = UnityEngine.Random.Range(healingValueMin, healingValueMax);
         _player.Heal(_healingValue);
 
         OnUseRabbit?.Invoke();
+        PhotonNetwork.Instantiate(particlesName, transform.position + Vector3.up, Quaternion.identity, 0);
+        PhotonNetwork.Destroy(gameObject);
+    }
 
-        if (!PhotonNetwork.isMasterClient)
-        {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Destroy"), new object[] { true }); 
-            return;
-        }
-
-        Destroy(true );
+    /// <summary>
+    /// Called from a non-master client
+    /// Call the method use in the master
+    /// </summary>
+    /// <param name="_playerId"></param>
+    private void UseOnline(int _playerId)
+    {
+        if (!PhotonNetwork.isMasterClient) return; 
+        TDS_Player _player = PhotonView.Find(_playerId).GetComponent<TDS_Player>();
+        Use(_player); 
     }
 
     /// <summary>
@@ -128,11 +127,12 @@ public class TDS_WhiteRabbit : TDS_Consumable
     /// </summary>
     private void Run()
     {
+        if (!PhotonNetwork.isMasterClient) return; 
         float _x = goRight ? boundRight : boundLeft; 
         Vector3 _targetPosition = new Vector3(_x, transform.position.y, transform.position.z);
         goRight = !goRight; 
         agent.SetDestination(_targetPosition);
-        Flip(); 
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
     }
 
     #endregion
@@ -145,6 +145,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
     // Use this for initialization
     private void Start()
     {
+        if (!PhotonNetwork.isMasterClient) return; 
         agent = GetComponent<CustomNavMeshAgent>();
         if (!agent) return;
         agent.Speed = speed;

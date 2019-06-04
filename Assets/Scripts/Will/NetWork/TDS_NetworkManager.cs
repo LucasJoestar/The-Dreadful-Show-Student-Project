@@ -200,6 +200,7 @@ public class TDS_NetworkManager : PunBehaviour
     }
     private void OnGUI()
     {
+        GUILayout.Box(PhotonNetwork.GetPing().ToString()); 
         GUILayout.Box(PhotonNetwork.connectionStateDetailed.ToString());
         GUILayout.Box(PhotonNetwork.isMasterClient.ToString());
         GUILayout.Box(TDS_GameManager.LocalPlayer.ToString()); 
