@@ -271,6 +271,8 @@ public class TDS_Player : TDS_Character
     /// Virtual box used to detect if the player is grounded or not.
     /// </summary>
     [SerializeField] protected TDS_VirtualBox groundDetectionBox = new TDS_VirtualBox();
+
+    [SerializeField] protected TDS_PlayerSpriteHolder spriteHolder; 
     #endregion
 
     #region Inputs
@@ -1606,6 +1608,15 @@ public class TDS_Player : TDS_Character
             if (!interactionDetector) Debug.LogWarning("The Interaction Detector of \"" + name + "\" for script TDS_Player is missing !");
         }
 
+        if(!spriteHolder)
+        {
+            spriteHolder = GetComponentInChildren<TDS_PlayerSpriteHolder>();
+            if (!spriteHolder) Debug.LogWarning("The Sprite Holder of \"" + name + "\" for script TDS_Player is missing !");
+        }
+        if(spriteHolder)
+        {
+            spriteHolder.Owner = this; 
+        }
         // Set animation on revive
         OnRevive += () => animator.SetTrigger("REVIVE");
     }
@@ -1692,7 +1703,13 @@ public class TDS_Player : TDS_Character
         CheckMovementsInputs();
         CheckActionsInputs();
 	}
-	#endregion
 
-	#endregion
+    private void OnDestroy()
+    {
+        //When the player is destroyed, desactivate its lifeBar
+        HealthBar.gameObject.SetActive(false); 
+    }
+    #endregion
+
+    #endregion
 }

@@ -153,7 +153,20 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private GameObject narratorBoxParent;
     #endregion
 
+    #region Hidden Players Images
+    [Header("Parents of the Hidden Player's Images")]
+    [SerializeField] private Transform hiddenPlayerParentLeft;
+    [SerializeField] private Transform hiddenPlayerParentRight;
+
+    [Header("Hidden Player's Images")]
+    [SerializeField] private Image hiddenBeardLadyImage;
+    [SerializeField] private Image hiddenFatLadyImage;
+    [SerializeField] private Image hiddenJugglerImage;
+    [SerializeField] private Image hiddenFireEaterImage; 
+    #endregion 
+
     #region UIState
+    [Header("UI State")]
     //State of the UI
     [SerializeField] private UIState uiState;
     public UIState UIState { get { return uiState;  } }
@@ -484,6 +497,43 @@ public class TDS_UIManager : PunBehaviour
             default:
                 break;
         }
+    }
+
+    public void DisplayHiddenPlayerPosition(TDS_Player _player, bool _isInvisible)
+    {
+        if (!_player) return; 
+        Image _image = null; 
+        switch (_player.PlayerType)
+        {
+            case PlayerType.Unknown:
+                break;
+            case PlayerType.BeardLady:
+                _image = hiddenBeardLadyImage; 
+                break;
+            case PlayerType.FatLady:
+                _image = hiddenFatLadyImage; 
+                break;
+            case PlayerType.FireEater:
+                _image = hiddenFireEaterImage; 
+                break;
+            case PlayerType.Juggler:
+                _image = hiddenJugglerImage; 
+                break;
+            default:
+                break;
+        }
+        if(_isInvisible)
+        {
+            if(_player.transform.position.x > Camera.main.transform.position.x)
+            {
+                _image.transform.SetParent(hiddenPlayerParentRight); 
+            }
+            else
+            {
+                _image.transform.SetParent(hiddenPlayerParentLeft); 
+            }
+        }
+        _image.gameObject.SetActive(_isInvisible); 
     }
     #endregion
 
