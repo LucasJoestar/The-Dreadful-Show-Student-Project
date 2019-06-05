@@ -379,7 +379,7 @@ public class TDS_UIManager : PunBehaviour
     public void SetPlayerLifeBar(TDS_Player _player)
     {
         TDS_LifeBar _playerLifeBar = null;
-        if (photonView.isMine)
+        if (_player == TDS_LevelManager.Instance.LocalPlayer && _player.photonView.isMine)
         {
             _playerLifeBar = playerHealthBar; 
         }
@@ -396,10 +396,10 @@ public class TDS_UIManager : PunBehaviour
                     _playerLifeBar = onlineFatLadyLifeBar;
                     break;
                 case PlayerType.FireEater:
-                    _playerLifeBar = onlineJugglerLifeBar;
+                    _playerLifeBar = onlineFireEaterLifeBar;
                     break;
                 case PlayerType.Juggler:
-                    _playerLifeBar = onlineFireEaterLifeBar;
+                    _playerLifeBar = onlineJugglerLifeBar;
                     break;
                 default:
                     break;

@@ -1661,7 +1661,8 @@ public class TDS_Player : TDS_Character
 
         if(!photonView.isMine)
         {
-            rigidbody.useGravity = false; 
+            rigidbody.useGravity = false;
+            TDS_LevelManager.Instance?.InitOnlinePlayer(this); 
         }
 
         // Since all players except the Juggler cannot change their throw angle & the point they are aiming,
