@@ -828,7 +828,7 @@ public abstract class TDS_Enemy : TDS_Character
     {
         Vector3 _offset = Vector3.zero;
         int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;  
-        _offset.z = Random.Range(-.2f, .2f); 
+        _offset.z = Random.Range(-agent.Radius, agent.Radius); 
         if (throwable)
         {
             //Check if the agent is near enough to throw immediatly, or if he is to far away to throw
@@ -837,7 +837,7 @@ public abstract class TDS_Enemy : TDS_Character
         }
         else
         {
-            _offset.x = .25f; 
+            _offset.x = agent.Radius/2; 
         }
         _offset.x *= _coeff; 
         return playerTarget.transform.position + _offset; 

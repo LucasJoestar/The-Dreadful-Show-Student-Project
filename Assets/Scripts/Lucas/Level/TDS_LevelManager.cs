@@ -115,7 +115,7 @@ public class TDS_LevelManager : PunBehaviour
             else localPlayer = (Instantiate(Resources.Load(_playerType.ToString()), StartSpawnPoints[0], Quaternion.identity) as GameObject).GetComponent<TDS_Player>();
         }
         TDS_Camera.Instance.Target = localPlayer.transform;
-        TDS_UIManager.Instance?.SetPlayerLifeBar(localPlayer);
+
     }
 
     /// <summary>
@@ -128,7 +128,6 @@ public class TDS_LevelManager : PunBehaviour
             localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponentInChildren<TDS_Player>();
         else localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponent<TDS_Player>();
         TDS_Camera.Instance.Target = localPlayer.transform;
-        TDS_UIManager.Instance?.SetPlayerLifeBar(localPlayer);
     }
 
     /// <summary>
@@ -171,6 +170,28 @@ public class TDS_LevelManager : PunBehaviour
         // Make dead players respawn
         Respawn();
     }
+
+    /// <summary>
+    /// Add the player in the list of online players
+    /// </summary>
+    /// <param name="_onlinePlayer">Player to add to the onlinePlayer List</param>
+    public void InitOnlinePlayer(TDS_Player _onlinePlayer)
+    {
+        onlinePlayers.Add(_onlinePlayer);
+    }
+
+    /// <summary>
+    /// Remove the player with the selected id from the onlinePlayers list
+    /// </summary>
+    /// <param name="_playerId">Id of the removed player</param>
+    public void RemonveOnlinePlayer(int _playerId)
+    {
+        TDS_Player _player = PhotonView.Find(_playerId).GetComponent<TDS_Player>();
+        if (!_player) return;
+        _player.HealthBar.gameObject.SetActive(false); 
+        if (onlinePlayers.Contains(_player)) onlinePlayers.Remove(_player);
+        TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(_player, false); 
+    }
     #endregion
 
     #region Unity Methods
@@ -184,13 +205,6 @@ public class TDS_LevelManager : PunBehaviour
             Destroy(this);
             return;
         }
-    }
-
-    // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
-    private void OnDestroy()
-    {
-        // Nullify the singleton instance if needed
-        if (Instance == this) Instance = null;
     }
 
     // Use this for initialization

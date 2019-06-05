@@ -271,6 +271,8 @@ public class TDS_Player : TDS_Character
     /// Virtual box used to detect if the player is grounded or not.
     /// </summary>
     [SerializeField] protected TDS_VirtualBox groundDetectionBox = new TDS_VirtualBox();
+
+    [SerializeField] protected TDS_PlayerSpriteHolder spriteHolder; 
     #endregion
 
     #region Inputs
@@ -1606,6 +1608,15 @@ public class TDS_Player : TDS_Character
             if (!interactionDetector) Debug.LogWarning("The Interaction Detector of \"" + name + "\" for script TDS_Player is missing !");
         }
 
+        if(!spriteHolder)
+        {
+            spriteHolder = GetComponentInChildren<TDS_PlayerSpriteHolder>();
+            if (!spriteHolder) Debug.LogWarning("The Sprite Holder of \"" + name + "\" for script TDS_Player is missing !");
+        }
+        if(spriteHolder)
+        {
+            spriteHolder.Owner = this; 
+        }
         // Set animation on revive
         OnRevive += () => animator.SetTrigger("REVIVE");
     }
@@ -1661,7 +1672,8 @@ public class TDS_Player : TDS_Character
 
         if(!photonView.isMine)
         {
-            rigidbody.useGravity = false; 
+            rigidbody.useGravity = false;
+            TDS_LevelManager.Instance?.InitOnlinePlayer(this); 
         }
 
         // Since all players except the Juggler cannot change their throw angle & the point they are aiming,
@@ -1671,10 +1683,13 @@ public class TDS_Player : TDS_Character
         // Initializes ground detection box X & Z size based on collider size
         groundDetectionBox.Size.x = collider.size.x - .001f;
         groundDetectionBox.Size.z = collider.size.z - .001f;
+
+        //Initialize the player LifeBar
+        TDS_UIManager.Instance?.SetPlayerLifeBar(this);
     }
-	
-	// Update is called once per frame
-	protected override void Update ()
+
+    // Update is called once per frame
+    protected override void Update ()
     {
         // If dead, return
         if (isDead) return;
@@ -1688,7 +1703,13 @@ public class TDS_Player : TDS_Character
         CheckMovementsInputs();
         CheckActionsInputs();
 	}
-	#endregion
 
-	#endregion
+    private void OnDestroy()
+    {
+        //When the player is destroyed, desactivate its lifeBar
+        HealthBar.gameObject.SetActive(false); 
+    }
+    #endregion
+
+    #endregion
 }
