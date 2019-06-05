@@ -76,6 +76,17 @@ public class TDS_Camera : MonoBehaviour
 	*/
 
     #region Fields / Properties
+    /// <summary>
+    /// Coefficient used in viewport calculs due to camera rotation ; work for a 17 angle.
+    /// </summary>
+    public const float VIEWPORT_CALCL_Y_COEF = 1.04569165f;
+
+    /// <summary>
+    /// Maximum value of the max bound on z on viewport to be allowed.
+    /// </summary>
+    public const float VIEWPORT_Y_MAX_BOUND_VALUE = .4f;
+
+
     /// <summary>Backing field for <see cref="IsMoving"/></summary>
     [SerializeField] private bool isMoving = false;
 
@@ -306,7 +317,7 @@ public class TDS_Camera : MonoBehaviour
     }
 
     /// <summary>
-    /// Property to set the meft bound position.
+    /// Property to set the left bound position.
     /// </summary>
     private Vector3 leftBoundVector
     {
@@ -352,6 +363,39 @@ public class TDS_Camera : MonoBehaviour
     #region Methods
 
     #region Original Methods
+    /// <summary>
+    /// Clamps the camera position between the bounds
+    /// </summary>
+    public void ClampInBounds()
+    {
+        // Set the camera position between bounds
+        // Get movement
+        Vector3 _destination = transform.position;
+        Vector3 _viewport;
+
+        // Clamp position
+        if ((_viewport = camera.WorldToViewportPoint(currentBounds.XMaxVector)).x < 1f)
+        {
+            _destination.x -= camera.orthographicSize * ((float)Screen.width / Screen.height) * 2 * (1 - _viewport.x);
+        }
+        else if ((_viewport = camera.WorldToViewportPoint(currentBounds.XMinVector)).x > 0f)
+        {
+            _destination.x += camera.orthographicSize * ((float)Screen.width / Screen.height) * 2 * _viewport.x;
+        }
+
+        if ((_viewport = camera.WorldToViewportPoint(currentBounds.ZMinVector)).y > 0f)
+        {
+            _destination.y += camera.orthographicSize * 2 * _viewport.y * VIEWPORT_CALCL_Y_COEF;
+        }
+        else if ((_viewport = camera.WorldToViewportPoint(currentBounds.ZMaxVector)).y < .4f)
+        {
+            _destination.y -= camera.orthographicSize * 2 * (.4f - _viewport.y) * VIEWPORT_CALCL_Y_COEF;
+        }
+
+        // Moves the camera
+        transform.position = _destination;
+    }
+
     /// <summary>
     /// Makes this camera follow its target.
     /// </summary>
@@ -442,6 +486,7 @@ public class TDS_Camera : MonoBehaviour
     public Coroutine LookTarget(float _x, float _y, float _z, float _duration, float _speedCoef)
     {
         if (lookTargetCoroutine != null) StopCoroutine(lookTargetCoroutine);
+
         return lookTargetCoroutine = StartCoroutine(LookTargetCoroutine(new Vector3(_x, _y, _z), _duration, _speedCoef));
     }
 
@@ -518,36 +563,7 @@ public class TDS_Camera : MonoBehaviour
         if (currentBounds == _bounds) return;
 
         if (waitToSetBoundsCoroutine != null) StopCoroutine(waitToSetBoundsCoroutine);
-        waitToSetBoundsCoroutine = StartCoroutine(WaitToSetBounds(_bounds));
-    }
-
-    /// <summary>
-    /// Make a screen shake of a specified force.
-    /// </summary>
-    /// <param name="_force">Screen shake force.</param>
-    public void ScreenShake(float _force)
-    {
-        Vector3 _force3 = ((Vector3)Random.insideUnitCircle.normalized) * _force;
-        transform.position += _force3;
-    }
-
-    /// <summary>
-    /// Make a screen shake of a specified force.
-    /// </summary>
-    /// <param name="_force">Screen shake force.</param>
-    /// <param name="_time">Total duration of the screen shake.</param>
-    public IEnumerator ScreenShake(float _force, float _time)
-    {
-        float _timer = _time;
-
-        while (_timer > 0)
-        {
-            Vector3 _force3 = ((Vector3)Random.insideUnitCircle.normalized) * _force;
-            transform.position += _force3;
-
-            yield return null;
-            _timer -= Time.deltaTime;
-        }
+        waitToSetBoundsCoroutine = StartCoroutine(SetBoundsInTime(_bounds));
     }
 
     /// <summary>
@@ -555,34 +571,37 @@ public class TDS_Camera : MonoBehaviour
     /// </summary>
     /// <param name="_bounds">Bounds to set.</param>
     /// <returns></returns>
-    private IEnumerator WaitToSetBounds(TDS_Bounds _bounds)
+    private IEnumerator SetBoundsInTime(TDS_Bounds _bounds)
     {
         // Get the movement direction of the bounds
         int[] _boundsMovement = new int[4];
 
-        if ((_bounds.XMin <= currentBounds.XMin) ||
-            ((_bounds.XMin <= camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.x > (_bounds.XMin + 1))))
+        if ((TDS_LevelManager.Instance.LocalPlayer.transform.position.x > (_bounds.XMin + 1)) &&
+            (camera.WorldToViewportPoint(_bounds.XMinVector).x < .0001f))
         {
             leftBoundVector = _bounds.XMinVector;
             _boundsMovement[0] = 0;
         }
         else _boundsMovement[0] = _bounds.XMin > currentBounds.XMin ? 1 : -1;
 
-        if ((_bounds.XMax >= currentBounds.XMax) || ((_bounds.XMax >= camera.ViewportToWorldPoint(new Vector3(1.01f, 0, 0)).x) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.x < (_bounds.XMax - 1))))
+        if ((TDS_LevelManager.Instance.LocalPlayer.transform.position.x < (_bounds.XMax - 1)) &&
+            (camera.WorldToViewportPoint(_bounds.XMaxVector).x > .9999f))
         {
             rightBoundVector = _bounds.XMaxVector;
             _boundsMovement[1] = 0;
         }
         else _boundsMovement[1] = _bounds.XMax > currentBounds.XMax ? 1 : -1;
 
-        if ((_bounds.ZMin <= currentBounds.ZMin) || ((_bounds.ZMin <= camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).z) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.z > (_bounds.ZMin + 1))))
+        if ((TDS_LevelManager.Instance.LocalPlayer.transform.position.z > (_bounds.ZMin + 1)) &&
+            (camera.WorldToViewportPoint(_bounds.ZMinVector).y < .0001f))
         {
             bottomBoundVector = _bounds.ZMinVector;
             _boundsMovement[2] = 0;
         }
         else _boundsMovement[2] = _bounds.ZMin > currentBounds.ZMin ? 1 : -1;
 
-        if ((_bounds.ZMax >= currentBounds.ZMax) || ((_bounds.ZMax >= camera.ViewportToWorldPoint(new Vector3(.3f, 0, 0)).z) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.z < (_bounds.ZMax - 1))))
+        if ((TDS_LevelManager.Instance.LocalPlayer.transform.position.z < (_bounds.ZMax - 1)) &&
+            (camera.WorldToViewportPoint(_bounds.ZMaxVector).z > (VIEWPORT_Y_MAX_BOUND_VALUE - .0001f)))
         {
             topBoundVector = _bounds.ZMaxVector;
             _boundsMovement[3] = 0;
@@ -595,7 +614,7 @@ public class TDS_Camera : MonoBehaviour
             // Left bound move
             if (_boundsMovement[0] != 0)
             {
-                float _xMin = camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x;
+                float _xMin = camera.ViewportToWorldPoint(new Vector3(0, 0, 0)).x;
                 int _movement = _xMin == currentBounds.XMin ? 0 : _xMin > currentBounds.XMin ? 1 : -1;
 
                 if ((_boundsMovement[0] == _movement) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.x > (_xMin + 1)))
@@ -678,6 +697,35 @@ public class TDS_Camera : MonoBehaviour
 
         waitToSetBoundsCoroutine = null;
     }
+
+    /// <summary>
+    /// Make a screen shake of a specified force.
+    /// </summary>
+    /// <param name="_force">Screen shake force.</param>
+    public void ScreenShake(float _force)
+    {
+        Vector3 _force3 = ((Vector3)Random.insideUnitCircle.normalized) * _force;
+        transform.position += _force3;
+    }
+
+    /// <summary>
+    /// Make a screen shake of a specified force.
+    /// </summary>
+    /// <param name="_force">Screen shake force.</param>
+    /// <param name="_time">Total duration of the screen shake.</param>
+    public IEnumerator ScreenShake(float _force, float _time)
+    {
+        float _timer = _time;
+
+        while (_timer > 0)
+        {
+            Vector3 _force3 = ((Vector3)Random.insideUnitCircle.normalized) * _force;
+            transform.position += _force3;
+
+            yield return null;
+            _timer -= Time.deltaTime;
+        }
+    }
     #endregion
 
     #region Unity Methods
@@ -714,35 +762,7 @@ public class TDS_Camera : MonoBehaviour
         currentBounds = levelBounds;
 
         // Set the camera position between bounds
-        // Get movement
-        Vector3 _destination = transform.position;
-        Vector3 _viewport;
-
-        // Clamp position
-        if ((_viewport = camera.WorldToViewportPoint(currentBounds.XMaxVector)).x < 1.02f)
-        {
-            _destination.x -= camera.ViewportToWorldPoint(new Vector3(1, _viewport.y, _viewport.z)).x - currentBounds.XMax;
-        }
-        else if ((_viewport = camera.WorldToViewportPoint(currentBounds.XMinVector)).x > -.02f)
-        {
-            _destination.x += currentBounds.XMin - camera.ViewportToWorldPoint(new Vector3(0, _viewport.y, _viewport.z)).x;
-        }
-
-        if ((_viewport = camera.WorldToViewportPoint(currentBounds.ZMinVector)).y > -.01f)
-        {
-            _destination.y += currentBounds.ZMin - camera.ViewportToWorldPoint(new Vector3(_viewport.x, 0, Mathf.Abs(transform.position.z + Offset.z))).y;
-            _destination.y += Offset.y;
-        }
-        else if ((_viewport = camera.WorldToViewportPoint(currentBounds.ZMaxVector)).y < .4f)
-        {
-            _destination.y -= camera.ViewportToWorldPoint(new Vector3(_viewport.x, .4f, camera.nearClipPlane)).y - currentBounds.ZMax;
-            _destination.y += Offset.y;
-        }
-
-        // Moves the camera
-        transform.position = _destination;
-        Debug.Log(camera.WorldToViewportPoint(currentBounds.ZMaxVector).y);
-        Debug.Log(camera.WorldToViewportPoint(currentBounds.ZMinVector).y);
+        ClampInBounds();
     }
 	
 	// Update is called once per frame
