@@ -89,7 +89,7 @@ public abstract class TDS_Boss : TDS_Enemy
     /// <returns></returns>
     protected override bool AttackCanBeCasted()
     {
-        if (castedAttack == null) return false;
+        if (!PhotonNetwork.isMasterClient || castedAttack == null) return false;
         if (castedAttack.GetType() == typeof(TDS_SpinningAttackBehaviour)) return true; 
         if (Mathf.Abs(transform.position.z - playerTarget.transform.position.z) >= .6f)
         {
@@ -279,6 +279,7 @@ public abstract class TDS_Boss : TDS_Enemy
     /// <param name="_position">Position of the attacker</param>
     protected override void ApplyDamagesBehaviour(int _damage, Vector3 _position)
     {
+        if (!PhotonNetwork.isMasterClient) return; 
         if (!isDead && _damage >= damagesThreshold)
         {
             SetAnimationState((int)EnemyAnimationState.Hit);
@@ -300,7 +301,7 @@ public abstract class TDS_Boss : TDS_Enemy
     /// </summary>
     protected override void ComputePath()
     {
-        if (isDead) return;
+        if (!PhotonNetwork.isMasterClient || isDead) return;
         if (IsParalyzed)
         {
             enemyState = EnemyState.MakingDecision;
@@ -342,6 +343,7 @@ public abstract class TDS_Boss : TDS_Enemy
     /// </summary>
     protected override void TakeDecision()
     {
+        if (!PhotonNetwork.isMasterClient) return; 
         if(!castedAttack) castedAttack = GetAttack();
         base.TakeDecision(); 
     }
@@ -377,8 +379,6 @@ public abstract class TDS_Boss : TDS_Enemy
         //Debug.Log(_attackingPosition); 
         return _attackingPosition;
     }
-
-
     #endregion
 
     #endregion

@@ -115,7 +115,7 @@ public class TDS_LevelManager : PunBehaviour
             else localPlayer = (Instantiate(Resources.Load(_playerType.ToString()), StartSpawnPoints[0], Quaternion.identity) as GameObject).GetComponent<TDS_Player>();
         }
         TDS_Camera.Instance.Target = localPlayer.transform;
-        TDS_UIManager.Instance?.SetPlayerLifeBar(localPlayer);
+        //TDS_UIManager.Instance?.SetPlayerLifeBar(localPlayer);
     }
 
     /// <summary>
@@ -128,7 +128,7 @@ public class TDS_LevelManager : PunBehaviour
             localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponentInChildren<TDS_Player>();
         else localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponent<TDS_Player>();
         TDS_Camera.Instance.Target = localPlayer.transform;
-        TDS_UIManager.Instance?.SetPlayerLifeBar(localPlayer);
+        //TDS_UIManager.Instance?.SetPlayerLifeBar(localPlayer);
     }
 
     /// <summary>

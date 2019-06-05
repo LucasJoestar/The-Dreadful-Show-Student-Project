@@ -1671,10 +1671,13 @@ public class TDS_Player : TDS_Character
         // Initializes ground detection box X & Z size based on collider size
         groundDetectionBox.Size.x = collider.size.x - .001f;
         groundDetectionBox.Size.z = collider.size.z - .001f;
+
+        //Initialize the player LifeBar
+        TDS_UIManager.Instance?.SetPlayerLifeBar(this);
     }
-	
-	// Update is called once per frame
-	protected override void Update ()
+
+    // Update is called once per frame
+    protected override void Update ()
     {
         // If dead, return
         if (isDead) return;

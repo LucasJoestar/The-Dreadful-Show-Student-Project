@@ -128,6 +128,15 @@ public class TDS_UIManager : PunBehaviour
     [Header("Health Bars")]
     [SerializeField] private TDS_LifeBar playerHealthBar;
     [SerializeField] private TDS_LifeBar bossHealthBar;
+
+    #endregion
+
+    #region OnlineLifeBarParent
+    [Header("Online lifebars")]
+    [SerializeField] private TDS_LifeBar onlineBeardLadyLifeBar;
+    [SerializeField] private TDS_LifeBar onlineFatLadyLifeBar;
+    [SerializeField] private TDS_LifeBar onlineJugglerLifeBar;
+    [SerializeField] private TDS_LifeBar onlineFireEaterLifeBar;
     #endregion
 
     #region MenuParents
@@ -369,13 +378,39 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_player"></param>
     public void SetPlayerLifeBar(TDS_Player _player)
     {
-        if(photonView.isMine)
+        TDS_LifeBar _playerLifeBar = null;
+        if (photonView.isMine)
         {
-            playerHealthBar.SetOwner(_player);
-            _player.HealthBar = playerHealthBar;
-            _player.OnTakeDamage += _player.UpdateLifeBar; 
+            _playerLifeBar = playerHealthBar; 
         }
-
+        else
+        {
+            switch (_player.PlayerType)
+            {
+                case PlayerType.Unknown:
+                    break;
+                case PlayerType.BeardLady:
+                    _playerLifeBar = onlineBeardLadyLifeBar; 
+                    break;
+                case PlayerType.FatLady:
+                    _playerLifeBar = onlineFatLadyLifeBar;
+                    break;
+                case PlayerType.FireEater:
+                    _playerLifeBar = onlineJugglerLifeBar;
+                    break;
+                case PlayerType.Juggler:
+                    _playerLifeBar = onlineFireEaterLifeBar;
+                    break;
+                default:
+                    break;
+            }
+            if (!_playerLifeBar) return; 
+            
+        }
+        _playerLifeBar.gameObject.SetActive(true);
+        _playerLifeBar.SetOwner(_player);
+        _player.HealthBar = _playerLifeBar;
+        _player.OnTakeDamage += _player.UpdateLifeBar;
     }
 
     /// <summary>
