@@ -369,15 +369,15 @@ public class TDS_FireEater : TDS_Player
     protected override void Awake()
     {
         base.Awake();
+
+        // Set player type, just in case
+        PlayerType = PlayerType.FireEater;
     }
 
     // Use this for initialization
     protected override void Start()
     {
         base.Start();
-
-        // Set player type, just in case
-        PlayerType = PlayerType.FireEater;
     }
 
     // Update is called once per frame

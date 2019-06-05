@@ -1036,6 +1036,9 @@ public class TDS_Juggler : TDS_Player
         {
             Debug.LogWarning("The Projectile Preview End Zone of \"" + name + "\" for script TDS_Juggler is missing !");
         }
+
+        // Set player type, just in case
+        PlayerType = PlayerType.Juggler;
     }
 
     // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations
@@ -1063,9 +1066,6 @@ public class TDS_Juggler : TDS_Player
     protected override void Start()
     {
         base.Start();
-
-        // Set player type, just in case
-        PlayerType = PlayerType.Juggler;
 
         // Set the juggle transform ideal position
         juggleTransformIdealLocalPosition = new Vector3(.3f, .85f, 0);

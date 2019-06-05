@@ -46,15 +46,15 @@ public class TDS_FatLady : TDS_Player
     protected override void Awake()
     {
         base.Awake();
+
+        // Set player type, just in case
+        PlayerType = PlayerType.FatLady;
     }
 
     // Use this for initialization
     protected override void Start()
     {
         base.Start();
-
-        // Set player type, just in case
-        PlayerType = PlayerType.FatLady;
     }
 
     // Update is called once per frame
