@@ -119,7 +119,12 @@ public class TDS_RPCManager : MonoBehaviour
     #region Unity Methods
     void Awake()
     {      
-        if (!Instance) Instance = this;        
+        if (!Instance) Instance = this;
+        else
+        {
+            Destroy(this);
+            return; 
+        }
     }
     void Start()
     {

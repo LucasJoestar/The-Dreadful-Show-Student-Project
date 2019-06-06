@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; 
 using Photon;
 using TMPro; 
 
@@ -175,6 +174,8 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private GameObject dialogBoxParent;
     // Parent of the NarratorBox
     [SerializeField] private GameObject narratorBoxParent;
+    // Parent of the loading screen
+    [SerializeField] private GameObject loadingScreenParent; 
     #endregion
 
     #region Hidden Players Images
@@ -582,7 +583,7 @@ public class TDS_UIManager : PunBehaviour
     {
         if (PhotonNetwork.isMasterClient)
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
-        SceneManager.LoadScene(1);
+        TDS_SceneManager.Instance?.PrepareSceneLoading(1);
         ActivateMenu(UIState.InGame); 
     }
 
@@ -631,8 +632,17 @@ public class TDS_UIManager : PunBehaviour
         characterSelectionMenu.UpdateLocalSelection();
     }
 
-    public void QuitGame() => Application.Quit(); 
+    public void QuitGame() => Application.Quit();
     //---------------------------------------------------------//
+
+   /// <summary>
+   /// Display the loading screen during the load of a scene
+   /// </summary>
+   /// <param name="_isLoading">Does the scene is loading or not</param>
+    public void DisplayLoadingScreen(bool _isLoading)
+    {
+        if (loadingScreenParent) loadingScreenParent.SetActive(_isLoading);
+    } 
 
     #endregion
 

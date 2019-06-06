@@ -216,7 +216,12 @@ public class TDS_NetworkManager : PunBehaviour
     #region Unity Methods    
     private void Awake()
     {
-        if (!Instance) Instance = this;        
+        if (!Instance) Instance = this;
+        else
+        {
+            Destroy(this);
+            return; 
+        }
     }
     private void OnGUI()
     {
