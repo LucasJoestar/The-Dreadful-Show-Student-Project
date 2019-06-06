@@ -1619,6 +1619,7 @@ public class TDS_Player : TDS_Character
         }
         // Set animation on revive
         OnRevive += () => animator.SetTrigger("REVIVE");
+        OnDie += TDS_LevelManager.Instance.CheckLivingPlayers; 
     }
 
     // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations

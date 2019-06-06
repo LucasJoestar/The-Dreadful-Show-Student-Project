@@ -24,12 +24,12 @@ public class TDS_SceneManager : MonoBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
-	 *	Date :			[DATE]
-	 *	Author :		[NAME]
+	 *	Date :			[06/06/2019]
+	 *	Author :		[THIEBAUT Alexis]
 	 *
 	 *	Changes :
 	 *
-	 *	[CHANGES]
+	 *	[Initialise the TDS_SceneManager class]
 	 *
 	 *	-----------------------------------
 	*/
@@ -67,6 +67,7 @@ public class TDS_SceneManager : MonoBehaviour
         {
             yield return null; 
         }
+        TDS_GameManager.CurrentSceneIndex = _sceneIndex ; 
         yield return new WaitForSeconds(1); 
         TDS_UIManager.Instance?.DisplayLoadingScreen(false);
     }
