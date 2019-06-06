@@ -1703,12 +1703,6 @@ public class TDS_Player : TDS_Character
         CheckMovementsInputs();
         CheckActionsInputs();
 	}
-
-    private void OnDestroy()
-    {
-        //When the player is destroyed, desactivate its lifeBar
-        HealthBar.gameObject.SetActive(false); 
-    }
     #endregion
 
     #endregion

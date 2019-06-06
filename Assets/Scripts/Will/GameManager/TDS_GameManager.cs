@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement; 
 
 public static class TDS_GameManager
 {
@@ -78,6 +79,7 @@ public static class TDS_GameManager
     {
         get { return PhotonNetwork.room.PlayerCount;  }
     }
+
     #endregion
 
     #region Methods

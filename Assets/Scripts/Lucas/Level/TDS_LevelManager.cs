@@ -214,7 +214,7 @@ public class TDS_LevelManager : PunBehaviour
         {
             #region Test
             string _idTest = "475";
-            TDS_NetworkManager.Instance.DemoTest(_idTest);
+            //TDS_NetworkManager.Instance.DemoTest(_idTest);
             #endregion
         }
 

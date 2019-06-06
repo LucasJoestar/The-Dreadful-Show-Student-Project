@@ -12,6 +12,8 @@ public class TDS_PlayerSpriteHolder : MonoBehaviour
 	 *	#####################
 	 *
 	 *	[PURPOSE]
+     *	
+     *	Script used on a player's sprite to send events when the sprite stop rendering. 
 	 *
 	 *	#####################
 	 *	####### TO DO #######
@@ -23,29 +25,23 @@ public class TDS_PlayerSpriteHolder : MonoBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
-	 *	Date :			[DATE]
-	 *	Author :		[NAME]
+	 *	Date :			[05/06/2019]
+	 *	Author :		[THIEBAUT Alexis]
 	 *
 	 *	Changes :
 	 *
-	 *	[CHANGES]
-	 *
+	 *	[Initialisation of the PlayerSpriteHolder class]
+	 *  - Implementing the variable Owner
+     *  - Implementing the Methods OnBecameInvisible and OnBecameVisible
+     *  
 	 *	-----------------------------------
 	*/
-
-    #region Events
-
-    #endregion
 
     #region Fields / Properties
     public TDS_Player Owner { get; set; }
     #endregion
 
     #region Methods
-
-    #region Original Methods
-
-    #endregion
 
     #region Unity Methods
     private void OnBecameInvisible()

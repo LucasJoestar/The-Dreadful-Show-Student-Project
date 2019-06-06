@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Photon; 
+using UnityEngine.SceneManagement; 
+using Photon;
+using TMPro; 
 
 public class TDS_UIManager : PunBehaviour 
 {
@@ -72,26 +74,44 @@ public class TDS_UIManager : PunBehaviour
     public static TDS_UIManager Instance;
 
     #region GameObject
-    [SerializeField] private GameObject uiGameObject; 
+    [SerializeField] private GameObject uiGameObject;
     #endregion
 
     #region Buttons
 
-    #region Character Selection
+    /*
     [Header("Character Selection")]
     //Button to select the BeardLady
-    [SerializeField] private Button ButtonSelectionBeardLady;
+    [SerializeField] private Button buttonSelectionBeardLady;
     //Button to select the Juggler
-    [SerializeField] private Button ButtonSelectionJuggler;
+    [SerializeField] private Button buttonSelectionJuggler;
     //Button to select the FatLady
-    [SerializeField] private Button ButtonSelectionFatLady;
+    [SerializeField] private Button buttonSelectionFatLady;
     //Button to select the FireEater 
-    [SerializeField] private Button ButtonSelectionFireEater;
+    [SerializeField] private Button buttonSelectionFireEater;
+    */
+    #region CharacterSelectionMenus
+    [Header("Character Selection Menu")]
+    [SerializeField] private TDS_CharacterMenuSelection characterSelectionMenu;
+    [SerializeField] private TMP_Text[] playersName;
     #endregion
 
-    #region PauseButton
-    [SerializeField] private Button ButtonQuitPause;
-    [SerializeField] private Button ButtonQuitGame; 
+    #region TextField
+    [Header("Player Name")]
+    [SerializeField] private TMP_Text playerNameField;
+    public TMP_Text PlayerNameField
+    {
+        get { return playerNameField; }
+    }
+    [Header("Player counter")]
+    [SerializeField] private TMP_Text playerCountText;
+    #endregion
+
+    #region Buttons
+    [Header("Buttons")]
+    [SerializeField] private Button launchGameButton;
+    [SerializeField] private Button buttonQuitPause;
+    [SerializeField] private Button buttonQuitGame; 
     #endregion
 
     #endregion
@@ -125,7 +145,7 @@ public class TDS_UIManager : PunBehaviour
     #endregion
 
     #region LifeBar
-    [Header("Health Bars")]
+    [Header("LifeBars")]
     [SerializeField] private TDS_LifeBar playerHealthBar;
     [SerializeField] private TDS_LifeBar bossHealthBar;
 
@@ -143,6 +163,10 @@ public class TDS_UIManager : PunBehaviour
     [Header("Menu parent")]
     //Parent of the main menu UI
     [SerializeField] private GameObject mainMenuParent;
+    //Parent of the room selection menu
+    [SerializeField] private GameObject roomSelectionMenuParent;
+    //Parent of the character selection menu
+    [SerializeField] private GameObject characterSelectionMenuParent; 
     //Parent of the InGame UI
     [SerializeField] private GameObject inGameMenuParent;
     //Parent of the pause menu UI
@@ -245,6 +269,15 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Call the method Activate Menu from Unity Event
+    /// </summary>
+    /// <param name="_uiState">UI State</param>
+    public void ActivateMenu(int _uiState)
+    {
+        ActivateMenu((UIState)_uiState); 
+    }
+
+    /// <summary>
     /// Activate or desactivate Menu depending of the uistate
     /// </summary>
     /// <param name="_state">State</param>
@@ -255,16 +288,36 @@ public class TDS_UIManager : PunBehaviour
         {
             case UIState.InMainMenu:
                 mainMenuParent.SetActive(true);
+                roomSelectionMenuParent.SetActive(false);
+                characterSelectionMenuParent.SetActive(false);
                 inGameMenuParent.SetActive(false);
-                pauseMenuParent.SetActive(false); 
+                pauseMenuParent.SetActive(false);
+                break;
+            case UIState.InRoomSelection:
+                mainMenuParent.SetActive(false);
+                roomSelectionMenuParent.SetActive(true);
+                characterSelectionMenuParent.SetActive(false);
+                inGameMenuParent.SetActive(false);
+                pauseMenuParent.SetActive(false);
+                break;
+            case UIState.InCharacterSelection:
+                mainMenuParent.SetActive(false);
+                roomSelectionMenuParent.SetActive(false);
+                characterSelectionMenuParent.SetActive(true);
+                inGameMenuParent.SetActive(false);
+                pauseMenuParent.SetActive(false);
                 break;
             case UIState.InGame:
                 mainMenuParent.SetActive(false);
+                roomSelectionMenuParent.SetActive(false);
+                characterSelectionMenuParent.SetActive(false);
                 inGameMenuParent.SetActive(true);
                 pauseMenuParent.SetActive(false);
                 break;
             case UIState.InPause:
                 mainMenuParent.SetActive(false);
+                roomSelectionMenuParent.SetActive(false);
+                characterSelectionMenuParent.SetActive(false);
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(true);
                 break;
@@ -307,6 +360,48 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Activate or desactivate an image on the left or the right of the screen to show where is a player when he's not rendered
+    /// </summary>
+    /// <param name="_player">Visible or invisible player</param>
+    /// <param name="_isInvisible">is the player invisible?</param>
+    public void DisplayHiddenPlayerPosition(TDS_Player _player, bool _isInvisible)
+    {
+        if (!_player) return;
+        Image _image = null;
+        switch (_player.PlayerType)
+        {
+            case PlayerType.Unknown:
+                break;
+            case PlayerType.BeardLady:
+                _image = hiddenBeardLadyImage;
+                break;
+            case PlayerType.FatLady:
+                _image = hiddenFatLadyImage;
+                break;
+            case PlayerType.FireEater:
+                _image = hiddenFireEaterImage;
+                break;
+            case PlayerType.Juggler:
+                _image = hiddenJugglerImage;
+                break;
+            default:
+                break;
+        }
+        if (_isInvisible && Camera.main != null && _player != null)
+        {
+            if (_player.transform.position.x > Camera.main.transform.position.x)
+            {
+                _image.transform.SetParent(hiddenPlayerParentRight);
+            }
+            else
+            {
+                _image.transform.SetParent(hiddenPlayerParentLeft);
+            }
+        }
+        _image.gameObject.SetActive(_isInvisible);
+    }
+
+    /// <summary>
     /// Check if the image is already being filled
     /// If so, stop the coroutine and remove it from the dictionary 
     /// Then start the coroutine and stock it with the filledImage as a key in the dictionary
@@ -320,33 +415,45 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
-    /// Set the events linked to the various Buttons of the UI
-    /// Character Selection Button -> Spawn a character and hide the menu
-    /// Button Quit Pause -> Hide the pause menu
+    /// Set a button as interractable
+    /// Call the method online to set the button interractability on each player
     /// </summary>
-    private void SetButtons()
+    /// <param name="_b">Button to set</param>
+    /// <param name="_type">PlayerType to instanciate</param>
+    /// <param name="_isInteractable">Interractability of the button</param>
+    private void SetButtonInteractable(Button _b, PlayerType _type, bool _isInteractable)
     {
-        if(!PhotonNetwork.connected)
+        _b.interactable = _isInteractable;
+        if (PhotonNetwork.connected) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetButtonInteractable"), new object[] { (int)_type, _isInteractable });
+    }
+
+    /// <summary>
+    /// Set a selection button interractable 
+    /// Called online
+    /// </summary>
+    /// <param name="_buttonType">Type of player</param>
+    /// <param name="_isInteractable">Interractability</param>
+    private void SetButtonInteractable(int _buttonType, bool _isInteractable)
+    {
+        switch ((PlayerType)_buttonType)
         {
-            //if (!photonView.isMine) return; 
-            ButtonSelectionBeardLady.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.BeardLady));
-            ButtonSelectionJuggler.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.Juggler));
-            //ButtonSelectionFatLady.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.FatLady));
-            ButtonSelectionFireEater.onClick.AddListener(() => TDS_LevelManager.Instance?.Spawn(PlayerType.FireEater));
-
-            ButtonSelectionBeardLady.onClick.AddListener(() => ActivateMenu(UIState.InGame));
-            ButtonSelectionJuggler.onClick.AddListener(() => ActivateMenu(UIState.InGame));
-            //ButtonSelectionFatLady.onClick.AddListener(() => ActivateMenu(UIState.InGame));
-            ButtonSelectionFireEater.onClick.AddListener(() => ActivateMenu(UIState.InGame));
-
-            ButtonSelectionBeardLady.onClick.AddListener(() => SetButtonInteractable(ButtonSelectionBeardLady, PlayerType.BeardLady, false));
-            ButtonSelectionJuggler.onClick.AddListener(() => SetButtonInteractable(ButtonSelectionJuggler, PlayerType.Juggler, false));
-            //ButtonSelectionFatLady.onClick.AddListener(() => SetButtonInteractable(ButtonSelectionFatLady,  PlayerType.FatLady)); 
-            ButtonSelectionFireEater.onClick.AddListener(() => SetButtonInteractable(ButtonSelectionFireEater, PlayerType.FireEater, false));
+            case PlayerType.Unknown:
+                break;
+            case PlayerType.BeardLady:
+                characterSelectionMenu.BeardLadyButton.interactable = _isInteractable;
+                break;
+            case PlayerType.FatLady:
+                characterSelectionMenu.FatLadyButton.interactable = _isInteractable;
+                break;
+            case PlayerType.FireEater:
+                characterSelectionMenu.FireEaterButton.interactable = _isInteractable;
+                break;
+            case PlayerType.Juggler:
+                characterSelectionMenu.JugglerButton.interactable = _isInteractable;
+                break;
+            default:
+                break;
         }
-
-        ButtonQuitGame.onClick.AddListener(() => Application.Quit()); 
-        ButtonQuitPause.onClick.AddListener(() => ActivateMenu(UIState.InGame));
     }
 
     /// <summary>
@@ -427,6 +534,15 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Set the new name of the player (Used in Unity Event)
+    /// </summary>
+    public void SetNewName()
+    {
+        if (playerNameField)
+            TDS_NetworkManager.Instance.PlayerNamePrefKey = playerNameField.text;
+    }
+
+    /// <summary>
     /// Stop the coroutine that fill the image
     /// </summary>
     /// <param name="_lifeBar"></param>
@@ -457,84 +573,67 @@ public class TDS_UIManager : PunBehaviour
         curtainsAnimator.SetTrigger("Switch"); 
     }
 
+    //-------------------MAIN MENU MIGRATION-------------------//
     /// <summary>
-    /// Set a button as interractable
-    /// Call the method online to set the button interractability on each player
+    /// Load the next level 
+    /// If Master client, send the information to the other players
     /// </summary>
-    /// <param name="_b">Button to set</param>
-    /// <param name="_type">PlayerType to instanciate</param>
-    /// <param name="_isInteractable">Interractability of the button</param>
-    private void SetButtonInteractable(Button _b, PlayerType _type, bool _isInteractable)
+    public void LoadLevel()
     {
-        _b.interactable = _isInteractable;
-        if(PhotonNetwork.connected) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetButtonInteractable"), new object[] { (int)_type, _isInteractable });
+        if (PhotonNetwork.isMasterClient)
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
+        SceneManager.LoadScene(1);
+        ActivateMenu(UIState.InGame); 
     }
 
     /// <summary>
-    /// Set a selection button interractable 
-    /// Called online
+    /// Display the number of players in the room and their names
+    /// If the player is the master client, also display the launch button
     /// </summary>
-    /// <param name="_buttonType">Type of player</param>
-    /// <param name="_isInteractable">Interractability</param>
-    private void SetButtonInteractable(int _buttonType, bool _isInteractable)
+    /// <param name="_playerCount">Number of players</param>
+    /// <param name="_displayLaunchButton">LaunchButton</param>
+    public void UpdatePlayerCount(int _playerCount, bool _displayLaunchButton, PhotonPlayer[] _players)
     {
-        switch ((PlayerType)_buttonType)
+        if (uiState != UIState.InCharacterSelection) return;
+        if (playerCountText) playerCountText.text = $"Players : {_playerCount}/4";
+        for (int i = 0; i < _playerCount; i++)
         {
-            case PlayerType.Unknown:
-                break;
-            case PlayerType.BeardLady:
-                ButtonSelectionBeardLady.interactable = _isInteractable; 
-                break;
-            case PlayerType.FatLady:
-                ButtonSelectionFatLady.interactable = _isInteractable;
-                break;
-            case PlayerType.FireEater:
-                ButtonSelectionFireEater.interactable = _isInteractable;
-                break;
-            case PlayerType.Juggler:
-                ButtonSelectionJuggler.interactable = _isInteractable;
-                break;
-            default:
-                break;
+            playersName[i].text = _players[i].NickName;
+            playersName[i].gameObject.SetActive(true);
         }
+        for (int i = _playerCount; i < playersName.Length; i++)
+        {
+            playersName[i].gameObject.SetActive(false);
+        }
+
+        if (launchGameButton) launchGameButton.gameObject.SetActive(_displayLaunchButton);
     }
 
-    public void DisplayHiddenPlayerPosition(TDS_Player _player, bool _isInvisible)
+    /// <summary>
+    /// Update the player selection informations 
+    /// Updated each time a player select a character
+    /// </summary>
+    /// <param name="_previousPlayerType"></param>
+    /// <param name="_nextPlayerType"></param>
+    public void UpdatePlayerSelectionInfo(int _previousPlayerType, int _nextPlayerType)
     {
-        if (!_player) return; 
-        Image _image = null; 
-        switch (_player.PlayerType)
-        {
-            case PlayerType.Unknown:
-                break;
-            case PlayerType.BeardLady:
-                _image = hiddenBeardLadyImage; 
-                break;
-            case PlayerType.FatLady:
-                _image = hiddenFatLadyImage; 
-                break;
-            case PlayerType.FireEater:
-                _image = hiddenFireEaterImage; 
-                break;
-            case PlayerType.Juggler:
-                _image = hiddenJugglerImage; 
-                break;
-            default:
-                break;
-        }
-        if(_isInvisible)
-        {
-            if(_player.transform.position.x > Camera.main.transform.position.x)
-            {
-                _image.transform.SetParent(hiddenPlayerParentRight); 
-            }
-            else
-            {
-                _image.transform.SetParent(hiddenPlayerParentLeft); 
-            }
-        }
-        _image.gameObject.SetActive(_isInvisible); 
+        characterSelectionMenu.UpdateMenuOnline((PlayerType)_previousPlayerType, (PlayerType)_nextPlayerType);
     }
+
+    /// <summary>
+    /// Select a new character (used in UnityEvent)
+    /// </summary>
+    /// <param name="_newPlayerType">Index of the enum PlayerType</param>
+    public void SelectCharacter(int _newPlayerType)
+    {
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdatePlayerSelectionInfo"), new object[] { (int)TDS_GameManager.LocalPlayer, _newPlayerType });
+        TDS_GameManager.LocalPlayer = (PlayerType)_newPlayerType == TDS_GameManager.LocalPlayer ? PlayerType.Unknown : (PlayerType)_newPlayerType;
+        characterSelectionMenu.UpdateLocalSelection();
+    }
+
+    public void QuitGame() => Application.Quit(); 
+    //---------------------------------------------------------//
+
     #endregion
 
     #endregion
@@ -552,19 +651,20 @@ public class TDS_UIManager : PunBehaviour
             Destroy(this);
             return; 
         }
+        DontDestroyOnLoad(transform.parent.gameObject);
     }
 
-	// Use this for initialization
+    // Use this for initialization
     private void Start()
     {
         if (uiGameObject)
-            uiGameObject.SetActive(true); 
-        if(PhotonNetwork.connected)
+            uiGameObject.SetActive(true);       
+        if (playerNameField)
         {
-            ActivateMenu(UIState.InGame); 
-            return; 
+            playerNameField.text = "New Player";
+            playerNameField.GetComponentInChildren<TMP_Text>().text = "NewPlayer";
+            SetNewName();
         }
-        SetButtons();
     }
 	#endregion
 

@@ -96,7 +96,7 @@ public class TDS_NetworkManager : PunBehaviour
         if (PlayerPrefs.HasKey(PlayerNamePrefKey))
         {
             PlayerNamePrefKey = PlayerPrefs.GetString(PlayerNamePrefKey);
-            TDS_MainMenu.Instance.PlayerNameField.text = playerNamePrefKey; 
+            TDS_UIManager.Instance.PlayerNameField.text = playerNamePrefKey; 
         }
         #endregion
     }
@@ -111,7 +111,7 @@ public class TDS_NetworkManager : PunBehaviour
     void PlayerCount()
     {
         bool _canLaunch = PhotonNetwork.room.PlayerCount >= minimumPlayerToLaunch && PhotonNetwork.isMasterClient ? true : false;
-        TDS_MainMenu.Instance?.UpdatePlayerCount(PhotonNetwork.room.PlayerCount, _canLaunch, PhotonNetwork.playerList); 
+        TDS_UIManager.Instance?.UpdatePlayerCount(PhotonNetwork.room.PlayerCount, _canLaunch, PhotonNetwork.playerList); 
     }
 
     public void SelectRoom(Button _btn)
