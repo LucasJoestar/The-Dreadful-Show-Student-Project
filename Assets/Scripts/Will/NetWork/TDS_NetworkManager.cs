@@ -58,14 +58,14 @@ public class TDS_NetworkManager : PunBehaviour
     #region Player     
     bool isHost = false;
     public bool IsHost { get { return isHost; } }
-    private string playerNamePrefKey = "Local Player"; 
+    private string playerNamePrefKey = "Local Player";
     public string PlayerNamePrefKey
     {
         get { return playerNamePrefKey; }
         set
         {
             playerNamePrefKey = value;
-            PhotonNetwork.playerName = value; 
+            PhotonNetwork.playerName = value;
             PlayerPrefs.SetString(PlayerNamePrefKey, value);
         }
     }
@@ -74,20 +74,32 @@ public class TDS_NetworkManager : PunBehaviour
     #endregion
 
     #region Methods
+    #region Original Methods    
+    #region Loutre
     public void DemoTest(string _iD)
     {
         PhotonNetwork.ConnectUsingSettings(_iD);
     }
 
-    #region Original Methods
-
+    [RuntimeInitializeOnLoadMethod]
+    void MyPersonalStart()
+    {
+        Application.wantsToQuit += LeaveGame;
+    }
+    #endregion
 
     #region Lobby Methods   
     void CreateRoom()
     {
-        if (roomName == string.Empty) roomName = "RoomTest"; 
+        if (roomName == string.Empty) roomName = "RoomTest";
         PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
         Debug.Log("room name : " + roomName);
+    }
+
+    void InitDisconect()
+    {
+        InitMulti();
+        Application.wantsToQuit -= LeaveGame;
     }
 
     void InitMulti()
@@ -96,23 +108,33 @@ public class TDS_NetworkManager : PunBehaviour
         if (PlayerPrefs.HasKey(PlayerNamePrefKey))
         {
             PlayerNamePrefKey = PlayerPrefs.GetString(PlayerNamePrefKey);
-            TDS_MainMenu.Instance.PlayerNameField.text = playerNamePrefKey; 
+            TDS_MainMenu.Instance.PlayerNameField.text = playerNamePrefKey;
         }
         #endregion
     }
 
+    bool LeaveGame()
+    {
+        LeaveRoom();
+        return true;        
+    }
+
     public void LeaveRoom()
     {
-        //PhotonNetwork.LeaveRoom();
-        //PhotonNetwork.LeaveLobby();
+        if (PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LeaveRoom"), new object[] { });
+        }
+        int _playerIndex = photonView.ownerId;
+        //call methode levelmanager removeonlineplayer(_playerId)
         PhotonNetwork.Disconnect();
     }
 
     void PlayerCount()
     {
         bool _canLaunch = PhotonNetwork.room.PlayerCount >= minimumPlayerToLaunch && PhotonNetwork.isMasterClient ? true : false;
-        TDS_MainMenu.Instance?.UpdatePlayerCount(PhotonNetwork.room.PlayerCount, _canLaunch, PhotonNetwork.playerList); 
-    }
+        TDS_MainMenu.Instance?.UpdatePlayerCount(PhotonNetwork.room.PlayerCount, _canLaunch, PhotonNetwork.playerList);
+    }    
 
     public void SelectRoom(Button _btn)
     {
@@ -149,10 +171,9 @@ public class TDS_NetworkManager : PunBehaviour
     public void SetPlayerName(string _nickname)
     {
         PhotonNetwork.playerName = _nickname + " ";
-        PlayerPrefs.SetString(PlayerNamePrefKey,_nickname);
+        PlayerPrefs.SetString(PlayerNamePrefKey, _nickname);
     }
     #endregion
-
     #endregion
 
     #region PhotonMethods
@@ -175,12 +196,11 @@ public class TDS_NetworkManager : PunBehaviour
     }
     public override void OnDisconnectedFromPhoton()
     {
-        InitMulti();
+        InitDisconect();
     }
     public override void OnJoinedRoom()
     {
         Debug.Log("connected to Room there is : " + PhotonNetwork.room.PlayerCount + " player here !!");
-        //leaveButton.SetActive(true);
         PlayerCount();
     }
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
@@ -193,10 +213,10 @@ public class TDS_NetworkManager : PunBehaviour
     }
     #endregion
 
-    #region Unity Methods
+    #region Unity Methods    
     private void Awake()
     {
-        if (!Instance) Instance = this;
+        if (!Instance) Instance = this;        
     }
     private void OnGUI()
     {
