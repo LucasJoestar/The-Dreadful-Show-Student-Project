@@ -188,7 +188,9 @@ public class TDS_LevelManager : PunBehaviour
     {
         TDS_Player _player = PhotonView.Find(_playerId).GetComponent<TDS_Player>();
         if (!_player) return;
-        if (onlinePlayers.Contains(_player)) onlinePlayers.Remove(_player); 
+        _player.HealthBar.gameObject.SetActive(false); 
+        if (onlinePlayers.Contains(_player)) onlinePlayers.Remove(_player);
+        TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(_player, false); 
     }
     #endregion
 
@@ -203,13 +205,6 @@ public class TDS_LevelManager : PunBehaviour
             Destroy(this);
             return;
         }
-    }
-
-    // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
-    private void OnDestroy()
-    {
-        // Nullify the singleton instance if needed
-        if (Instance == this) Instance = null;
     }
 
     // Use this for initialization

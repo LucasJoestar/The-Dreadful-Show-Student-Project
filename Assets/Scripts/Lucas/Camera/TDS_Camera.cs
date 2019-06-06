@@ -387,9 +387,9 @@ public class TDS_Camera : MonoBehaviour
         {
             _destination.y += camera.orthographicSize * 2 * _viewport.y * VIEWPORT_CALCL_Y_COEF;
         }
-        else if ((_viewport = camera.WorldToViewportPoint(currentBounds.ZMaxVector)).y < .4f)
+        else if ((_viewport = camera.WorldToViewportPoint(currentBounds.ZMaxVector)).y < VIEWPORT_Y_MAX_BOUND_VALUE)
         {
-            _destination.y -= camera.orthographicSize * 2 * (.4f - _viewport.y) * VIEWPORT_CALCL_Y_COEF;
+            _destination.y -= camera.orthographicSize * 2 * (VIEWPORT_Y_MAX_BOUND_VALUE - _viewport.y) * VIEWPORT_CALCL_Y_COEF;
         }
 
         // Moves the camera
@@ -424,53 +424,93 @@ public class TDS_Camera : MonoBehaviour
                 isMoving = true;
             }
             // If not, increase speed if needed
-            else if (speedCurrent != speedMax)
+            else if (speedCurrent < speedMax)
             {
                 SpeedCurrent += Time.deltaTime * ((speedMax - speedInitial) / speedAccelerationTime);
             }
 
             // Get movement
             Vector3 _destination = Vector3.Lerp(transform.position, target.transform.position + Offset, Time.deltaTime * speedCurrent * speedCoef);
+
+            _destination.y = transform.position.y + (_destination.z - transform.position.z);
+            _destination.z = transform.position.z;
+
             Vector3 _movement = _destination - transform.position;
 
-            if (_movement.y < .01f)
-            {
-                _destination.y = transform.position.y;
-                _movement.y = 0;
-            }
-
             // Clamp position
+            float _newBound;
 
             // X movement
             if (_movement.x != 0)
             {
-                if (_movement.x > 0)
+                if (_movement.x < 0)
                 {
-                    if (camera.WorldToViewportPoint(currentBounds.XMaxVector).x < 1.01f)
+                    _newBound = _destination.x - (camera.orthographicSize * ((float)Screen.width / Screen.height));
+
+                    if (_newBound < currentBounds.XMin)
                     {
-                        _destination.x = transform.position.x;
+                        _destination.x += camera.orthographicSize * ((float)Screen.width / Screen.height) * 2 * camera.WorldToViewportPoint(currentBounds.XMinVector).x;
+
+                        // Cancel movement if needed
+                        if ((_destination.x - transform.position.x) < .0001f) _destination.x = transform.position.x;
                     }
                 }
-                else if (camera.WorldToViewportPoint(currentBounds.XMinVector).x > -.01f)
+                else
                 {
-                    _destination.x = transform.position.x;
+                    _newBound = _destination.x + (camera.orthographicSize * ((float)Screen.width / Screen.height));
+
+                    if (_newBound > currentBounds.XMax)
+                    {
+                        _destination.x -= camera.orthographicSize * ((float)Screen.width / Screen.height) * 2 * (1 - camera.WorldToViewportPoint(currentBounds.XMaxVector).x);
+
+                        // Cancel movement if needed
+                        if ((transform.position.x - _destination.x) < .0001f) _destination.x = transform.position.x;
+                    }
+                }
+            }
+            // Y movement
+            if (_movement.y != 0)
+            {
+                if (_movement.y < 0)
+                {
+                    _newBound = camera.WorldToViewportPoint(currentBounds.ZMinVector - _movement).y;
+
+                    if (_newBound > 0)
+                    {
+                        _destination.y += camera.orthographicSize * 2 * VIEWPORT_CALCL_Y_COEF * camera.WorldToViewportPoint(currentBounds.ZMinVector).y;
+
+                        // Cancel movement if needed
+                        if ((_destination.y - transform.position.y) < .0001f) _destination.y = transform.position.y;
+                    }
+                }
+                else
+                {
+                    // OFFSET PROBLEM
+                    _newBound = camera.WorldToViewportPoint(currentBounds.ZMaxVector - _movement).y;
+
+                    if (_newBound < VIEWPORT_Y_MAX_BOUND_VALUE)
+                    {
+                        _destination.y -= camera.orthographicSize * 2 * VIEWPORT_CALCL_Y_COEF * (VIEWPORT_Y_MAX_BOUND_VALUE - camera.WorldToViewportPoint(currentBounds.ZMaxVector).y);
+
+                        // Cancel movement if needed
+                        if ((transform.position.y - _destination.y) < .0001f) _destination.y = transform.position.y;
+                    }
                 }
             }
 
-            // Y & Z movement
-            if (camera.WorldToViewportPoint(currentBounds.ZMinVector).y > -.01f)
+            // Moves the camera if needed, or stop moving
+            if (transform.position == _destination)
             {
-                if (_movement.y < 0) _destination.y = transform.position.y;
-                if (_movement.z < 0) _destination.z = transform.position.z;
+                if (isMoving)
+                {
+                    isMoving = false;
+                    SpeedCurrent = 0;
+                }
             }
-            if (camera.WorldToViewportPoint(currentBounds.ZMaxVector).y < .4f)
+            else
             {
-                if (_movement.y > 0) _destination.y = transform.position.y;
-                if (_movement.z > 0) _destination.z = transform.position.z;
+                transform.position = _destination;
             }
-
-            // Moves the camera
-            transform.position = _destination;
         }
     }
 
@@ -576,125 +616,98 @@ public class TDS_Camera : MonoBehaviour
         // Get the movement direction of the bounds
         int[] _boundsMovement = new int[4];
 
-        if ((TDS_LevelManager.Instance.LocalPlayer.transform.position.x > (_bounds.XMin + 1)) &&
-            (camera.WorldToViewportPoint(_bounds.XMinVector).x < .0001f))
-        {
-            leftBoundVector = _bounds.XMinVector;
-            _boundsMovement[0] = 0;
-        }
-        else _boundsMovement[0] = _bounds.XMin > currentBounds.XMin ? 1 : -1;
+        _boundsMovement[0] = _bounds.XMin > currentBounds.XMin ? 1 : _bounds.XMin < currentBounds.XMin ? - 1 : 0;
 
-        if ((TDS_LevelManager.Instance.LocalPlayer.transform.position.x < (_bounds.XMax - 1)) &&
-            (camera.WorldToViewportPoint(_bounds.XMaxVector).x > .9999f))
-        {
-            rightBoundVector = _bounds.XMaxVector;
-            _boundsMovement[1] = 0;
-        }
-        else _boundsMovement[1] = _bounds.XMax > currentBounds.XMax ? 1 : -1;
+        _boundsMovement[1] = _bounds.XMax > currentBounds.XMax ? 1 : _bounds.XMax < currentBounds.XMax ? - 1 : 0;
 
-        if ((TDS_LevelManager.Instance.LocalPlayer.transform.position.z > (_bounds.ZMin + 1)) &&
-            (camera.WorldToViewportPoint(_bounds.ZMinVector).y < .0001f))
-        {
-            bottomBoundVector = _bounds.ZMinVector;
-            _boundsMovement[2] = 0;
-        }
-        else _boundsMovement[2] = _bounds.ZMin > currentBounds.ZMin ? 1 : -1;
+        _boundsMovement[2] = _bounds.ZMin > currentBounds.ZMin ? 1 : _bounds.ZMin < currentBounds.ZMin ? - 1 : 0;
 
-        if ((TDS_LevelManager.Instance.LocalPlayer.transform.position.z < (_bounds.ZMax - 1)) &&
-            (camera.WorldToViewportPoint(_bounds.ZMaxVector).z > (VIEWPORT_Y_MAX_BOUND_VALUE - .0001f)))
-        {
-            topBoundVector = _bounds.ZMaxVector;
-            _boundsMovement[3] = 0;
-        }
-        else _boundsMovement[3] = _bounds.ZMax > currentBounds.ZMax ? 1 : -1;
-
-
+        _boundsMovement[3] = _bounds.ZMax > currentBounds.ZMax ? 1 : _bounds.ZMax < currentBounds.ZMax ? - 1 : 0;
+        Debug.Log("Start => Set Bounds");
+        // While all the bounds are not in the right place, set their position
         while (_boundsMovement.Any(m => m != 0))
         {
             // Left bound move
             if (_boundsMovement[0] != 0)
             {
-                float _xMin = camera.ViewportToWorldPoint(new Vector3(0, 0, 0)).x;
-                int _movement = _xMin == currentBounds.XMin ? 0 : _xMin > currentBounds.XMin ? 1 : -1;
-
-                if ((_boundsMovement[0] == _movement) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.x > (_xMin + 1)))
+                float _xMin = camera.WorldToViewportPoint(_bounds.XMinVector).x;
+                if (_xMin < .0001f)
                 {
-                    if (((_movement == 1) && (_xMin >= _bounds.XMin)) || ((_movement == -1) && (_xMin <= _bounds.XMin)))
-                    {
-                        leftBoundVector = _bounds.XMinVector;
-                        _boundsMovement[0] = 0;
-                    }
-                    else
-                    {
-                        leftBoundVector = new Vector3(_xMin, _bounds.XMinVector.y, _bounds.XMinVector.z);
-                        if (camera.ViewportToWorldPoint(new Vector3(1.01f, 0, 0)).x >= currentBounds.XMax) _boundsMovement[0] = 0;
-                    }
+                    leftBoundVector = _bounds.XMinVector;
+                    _boundsMovement[0] = 0;
+
+                    Debug.Log("Left Bound => Good");
+                }
+                else
+                {
+                    leftBoundVector = new Vector3(transform.position.x - (camera.orthographicSize *                   ((float)Screen.width / Screen.height)),
+                                      leftBound.transform.position.y,
+                                      leftBound.transform.position.z);
+                    Debug.Log("Left Bound => Continue");
                 }
             }
             // Right bound move
             if (_boundsMovement[1] != 0)
             {
-                float _xMax = camera.ViewportToWorldPoint(new Vector3(1.01f, 0, 0)).x;
-                int _movement = _xMax == currentBounds.XMax ? 0 : _xMax > currentBounds.XMax ? 1 : -1;
-
-                if ((_boundsMovement[1] == _movement) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.x < (_xMax - 1)))
+                float _xMax = camera.WorldToViewportPoint(_bounds.XMaxVector).x;
+                if (_xMax > .9999f)
                 {
-                    if (((_movement == 1) && (_xMax >= _bounds.XMax)) || ((_movement == -1) && (_xMax <= _bounds.XMax)))
-                    {
-                        rightBoundVector = _bounds.XMaxVector;
-                        _boundsMovement[1] = 0;
-                    }
-                    else
-                    {
-                        rightBoundVector = new Vector3(_xMax, _bounds.XMaxVector.y, _bounds.XMaxVector.z);
-                        if (camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).x <= currentBounds.XMin) _boundsMovement[1] = 0;
-                    }
+                    rightBoundVector = _bounds.XMaxVector;
+                    _boundsMovement[1] = 0;
+                    Debug.Log("Right Bound => Good");
+                }
+                else
+                {
+                    rightBoundVector = new Vector3(transform.position.x + (camera.orthographicSize *                   ((float)Screen.width / Screen.height)),
+                                       rightBound.transform.position.y,
+                                       rightBound.transform.position.z);
+                    Debug.Log("Right Bound => Continue");
                 }
             }
             // Bottom bound move
             if (_boundsMovement[2] != 0)
             {
-                float _zMin = camera.ViewportToWorldPoint(new Vector3(0, -.01f, 0)).x;
-                int _movement = _zMin == currentBounds.ZMin ? 0 : _zMin > currentBounds.ZMin ? 1 : -1;
-
-                if ((_boundsMovement[2] == _movement) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.z > (_zMin + 1)))
+                float _zMin = camera.WorldToViewportPoint(_bounds.ZMinVector).y;
+                if (_zMin < .0001f)
                 {
-                    if (((_movement == 1) && (_zMin >= _bounds.ZMin)) || ((_movement == -1) && (_zMin <= _bounds.ZMin)))
-                    {
-                        bottomBoundVector = _bounds.ZMinVector;
-                        _boundsMovement[2] = 0;
-                    }
-                    else
-                    {
-                        bottomBoundVector = new Vector3(_bounds.ZMinVector.x, _bounds.ZMinVector.y, _zMin);
-                        if (camera.ViewportToWorldPoint(new Vector3(.3f, 0, 0)).z >= currentBounds.ZMax) _boundsMovement[2] = 0;
-                    }
+                    bottomBoundVector = _bounds.ZMinVector;
+                    _boundsMovement[2] = 0;
+                    Debug.Log("Bottom Bound => Good");
+                }
+                else
+                {
+                    _zMin = camera.WorldToViewportPoint(currentBounds.ZMinVector).y;
+
+                    bottomBoundVector = new Vector3(bottomBound.transform.position.x,
+                                        bottomBound.transform.position.y,
+                                        bottomBound.transform.position.z - (camera.orthographicSize *               2 * _zMin * VIEWPORT_CALCL_Y_COEF));
+                    Debug.Log("Bottom Bound => Continue");
                 }
             }
             // Top bound move
             if (_boundsMovement[3] != 0)
             {
-                float _zMax = camera.ViewportToWorldPoint(new Vector3(0, .3f, 0)).x;
-                int _movement = _zMax == currentBounds.ZMax ? 0 : _zMax > currentBounds.ZMax ? 1 : -1;
-
-                if ((_boundsMovement[3] == _movement) && (TDS_LevelManager.Instance.LocalPlayer.transform.position.z < (_zMax - 1)))
+                float _zMax = camera.WorldToViewportPoint(_bounds.ZMaxVector).y;
+                if (_zMax > (VIEWPORT_Y_MAX_BOUND_VALUE - .0001f))
                 {
-                    if (((_movement == 1) && (_zMax >= _bounds.ZMax)) || ((_movement == -1) && (_zMax <= _bounds.ZMax)))
-                    {
-                        topBoundVector = _bounds.ZMaxVector;
-                        _boundsMovement[3] = 0;
-                    }
-                    else
-                    {
-                        topBoundVector = new Vector3(_bounds.ZMaxVector.x, _bounds.ZMaxVector.y, _zMax);
-                        if (camera.ViewportToWorldPoint(new Vector3(-.01f, 0, 0)).z <= currentBounds.ZMin) _boundsMovement[3] = 0;
-                    }
+                    topBoundVector = _bounds.ZMaxVector;
+                    _boundsMovement[3] = 0;
+                    Debug.Log("Top Bound => Good");
+                }
+                else
+                {
+                    _zMax = camera.WorldToViewportPoint(currentBounds.ZMaxVector).y;
+
+                    topBoundVector = new Vector3(topBound.transform.position.x,
+                                     topBound.transform.position.y,
+                                     topBound.transform.position.z + (camera.orthographicSize * 2 *              (VIEWPORT_Y_MAX_BOUND_VALUE - _zMax) * VIEWPORT_CALCL_Y_COEF));
+                    Debug.Log("Top Bound => Continue");
                 }
             }
 
             yield return null;
         }
-
+        Debug.Log("End => Set Bounds");
         waitToSetBoundsCoroutine = null;
     }
 

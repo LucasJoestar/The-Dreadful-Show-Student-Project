@@ -124,7 +124,7 @@ public abstract class TDS_Character : TDS_Damageable
     [SerializeField] private TDS_LifeBar healthBar;
 
     /// <summary>
-    /// Image used to display this character current health status.
+    /// LifeBar of this character to display its current health status.
     /// </summary>
     public TDS_LifeBar HealthBar
     {
