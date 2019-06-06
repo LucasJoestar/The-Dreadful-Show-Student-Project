@@ -78,6 +78,8 @@ public static class TDS_GameManager
     {
         get { return PhotonNetwork.room.PlayerCount;  }
     }
+
+    public static int CurrentSceneIndex = 0; 
     #endregion
 
     #region Methods

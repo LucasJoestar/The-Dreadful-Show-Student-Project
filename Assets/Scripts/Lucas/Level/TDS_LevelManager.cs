@@ -121,7 +121,7 @@ public class TDS_LevelManager : PunBehaviour
     /// <summary>
     /// Make the player with the type contained in the GameManager spawn
     /// </summary>
-    private void Spawn()
+    public void Spawn()
     {
         if (!PhotonNetwork.connected) return; 
         if (TDS_GameManager.LocalPlayer == PlayerType.Juggler)
@@ -192,6 +192,15 @@ public class TDS_LevelManager : PunBehaviour
         if (onlinePlayers.Contains(_player)) onlinePlayers.Remove(_player);
         TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(_player, false); 
     }
+
+    /// <summary>
+    /// Check the count of living players, if there is no player alive, reload the scene
+    /// </summary>
+    public void CheckLivingPlayers()
+    {
+        if (localPlayer.IsDead && !OnlinePlayers.Any(p => !p.IsDead))
+            TDS_SceneManager.Instance?.PrepareSceneLoading(TDS_GameManager.CurrentSceneIndex); 
+    }
     #endregion
 
     #region Unity Methods
@@ -206,24 +215,7 @@ public class TDS_LevelManager : PunBehaviour
             return;
         }
     }
-
-    // Use this for initialization
-    void Start()
-    {
-        if(!PhotonNetwork.connected)
-        {
-            #region Test
-            string _idTest = "475";
-            TDS_NetworkManager.Instance.DemoTest(_idTest);
-            #endregion
-        }
-
-        // Spawn local player.
-        if (PhotonNetwork.connected)
-        {
-            Spawn();
-        }
-    }
+ 
     #endregion
 
     #endregion

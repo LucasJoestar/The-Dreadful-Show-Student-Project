@@ -42,10 +42,13 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     #region Fields / Properties
     [Header("Selection Buttons ")]
     [SerializeField] private Button beardLadyButton;
+    public Button BeardLadyButton { get { return beardLadyButton; } }
     [SerializeField] private Button fatLadyButton;
+    public Button FatLadyButton { get { return fatLadyButton; } }
     [SerializeField] private Button jugglerButton;
+    public Button JugglerButton { get { return jugglerButton; } }
     [SerializeField] private Button fireEaterButton;
-    [SerializeField] private Button resetButton;
+    public Button FireEaterButton { get { return fireEaterButton; } }
     [Space(5)]
     [Header("Selection Images ")]
     [SerializeField] private Image beardLadySelectionImage;
