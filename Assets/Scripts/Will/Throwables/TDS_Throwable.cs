@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections.Generic; 
+using System.Collections.Generic;
+using Photon; 
 
 #pragma warning disable 0414
 [RequireComponent(typeof(Rigidbody))]
-public class TDS_Throwable : MonoBehaviour 
+public class TDS_Throwable : PunBehaviour 
 {
     /* TDS_Throwable :
 	 *
@@ -76,6 +77,7 @@ public class TDS_Throwable : MonoBehaviour
     /// </summary>
     protected void BounceObject()
     {
+        if (!PhotonNetwork.isMasterClient) return; 
         rigidbody.velocity *= bouncePower*-1;
     }
     /// <summary>
@@ -83,7 +85,8 @@ public class TDS_Throwable : MonoBehaviour
     /// </summary>
     protected virtual void DestroyThrowableObject()
     {
-        Destroy(gameObject);
+        if (!PhotonNetwork.isMasterClient) return; 
+        PhotonNetwork.Destroy(gameObject);
     }
     /// <summary>
     /// Unparent the object from the character who was carring it. 
@@ -101,6 +104,7 @@ public class TDS_Throwable : MonoBehaviour
     /// <param name="_valueToWithdraw"></param> 
     protected virtual void LoseDurability()
     {
+        if (!PhotonNetwork.isMasterClient) return;  
         objectDurability -= durabilityToWithdraw;
         if (!(objectDurability <= 0)) return;
         DestroyThrowableObject();
@@ -184,6 +188,10 @@ public class TDS_Throwable : MonoBehaviour
 
     protected virtual void Start ()
     {
+        if(!PhotonNetwork.isMasterClient)
+        {
+            rigidbody.useGravity = false; 
+        }
     }
     
 
