@@ -231,21 +231,19 @@ public class TDS_FireEater : TDS_Player
                 break;
 
             default:
-                IsInMiniGame = false;
-
-                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetIsInMiniGame"), new object[] { false });
+                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, GetType(), "ExitMiniGame"), new object[] { });
 
                 break;
         }
     }
 
     /// <summary>
-    /// Set <see cref="IsInMiniGame"/> value.
+    /// Exit the mini game.
     /// </summary>
-    /// <param name="_value">New value.</param>
-    public void SetIsInMiniGame(bool _value)
+    public void ExitMiniGame()
     {
-        IsInMiniGame = _value;
+        IsInMiniGame = false;
+        animator.SetInteger("FireID", -999999);
     }
     #endregion
 

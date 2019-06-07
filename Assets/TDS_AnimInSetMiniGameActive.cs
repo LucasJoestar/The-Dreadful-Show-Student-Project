@@ -18,7 +18,7 @@ public class TDS_AnimInSetMiniGameActive : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (!fireEater) fireEater = animator.GetComponent<TDS_FireEater>();
-        fireEater.IsInMiniGame = isInMiniGameActive;
+        if (fireEater.photonView.isMine) fireEater.IsInMiniGame = isInMiniGameActive;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
