@@ -64,9 +64,12 @@ public class TDS_NetworkManager : PunBehaviour
         get { return playerNamePrefKey; }
         set
         {
-            playerNamePrefKey = value;
-            PhotonNetwork.playerName = value;
-            PlayerPrefs.SetString(PlayerNamePrefKey, value);
+            if(value != string.Empty)
+            {
+                playerNamePrefKey = value;
+                PhotonNetwork.playerName = value;
+                PlayerPrefs.SetString(PlayerNamePrefKey, value);
+            }
         }
     }
     #endregion
@@ -125,8 +128,11 @@ public class TDS_NetworkManager : PunBehaviour
         {
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LeaveRoom"), new object[] { });
         }
-        int _playerIndex = photonView.ownerId;
+        TDS_UIManager.Instance?.SetButtonsInterractables(false);
+        TDS_UIManager.Instance?.ActivateMenu(UIState.InRoomSelection);
+        //int _playerIndex = photonView.ownerId;
         //call methode levelmanager removeonlineplayer(_playerId)
+        TDS_UIManager.Instance?.SelectCharacter((int)PlayerType.Unknown); 
         PhotonNetwork.Disconnect();
     }
 
@@ -201,16 +207,21 @@ public class TDS_NetworkManager : PunBehaviour
     public override void OnJoinedRoom()
     {
         Debug.Log("connected to Room there is : " + PhotonNetwork.room.PlayerCount + " player here !!");
+
+        TDS_UIManager.Instance?.SetButtonsInterractables(true);
+
         PlayerCount();
     }
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", newPlayer, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "UpdateSelectionButtons"), new object[] { (int)TDS_GameManager.LocalPlayer });
         PlayerCount();
     }
     public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
     {
         PlayerCount();
     }
+
     #endregion
 
     #region Unity Methods    
