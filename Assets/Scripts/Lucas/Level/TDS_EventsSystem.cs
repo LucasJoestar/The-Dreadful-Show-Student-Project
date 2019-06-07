@@ -237,7 +237,6 @@ public class TDS_EventsSystem : PunBehaviour
                 return;
             }
         }
-        if (!collider.isTrigger) collider.isTrigger = true;
     }
 
     // Use this for initialization
