@@ -388,6 +388,7 @@ public class TDS_UIManager : PunBehaviour
             default:
                 break;
         }
+        if (!_image) return; 
         if (_isInvisible && Camera.main != null && _player != null)
         {
             if (_player.transform.position.x > Camera.main.transform.position.x)
@@ -638,6 +639,42 @@ public class TDS_UIManager : PunBehaviour
     }
 
     public void QuitGame() => Application.Quit();
+
+    public void SetButtonsInterractables(bool _isConnected)
+    {
+        if(characterSelectionMenu)
+        {
+            characterSelectionMenu.BeardLadyButton.interactable = _isConnected;
+            characterSelectionMenu.FatLadyButton.interactable = _isConnected;
+            characterSelectionMenu.JugglerButton.interactable = _isConnected;
+            characterSelectionMenu.FireEaterButton.interactable = _isConnected;
+        }
+    }
+
+    public void UpdateSelectionButtons(int _playerType)
+    {
+        if (!characterSelectionMenu) return;
+        PlayerType _type = (PlayerType)_playerType;
+        switch (_type)
+        {
+            case PlayerType.Unknown:
+                break;
+            case PlayerType.BeardLady:
+                characterSelectionMenu.BeardLadyButton.interactable = false;
+                break;
+            case PlayerType.FatLady:
+                characterSelectionMenu.FatLadyButton.interactable = false;
+                break;
+            case PlayerType.FireEater:
+                characterSelectionMenu.FireEaterButton.interactable = false;
+                break;
+            case PlayerType.Juggler:
+                characterSelectionMenu.JugglerButton.interactable = false;
+                break;
+            default:
+                break;
+        }
+    }
     //---------------------------------------------------------//
 
    /// <summary>
@@ -651,9 +688,9 @@ public class TDS_UIManager : PunBehaviour
 
 #endregion
 
-#endregion
-
-#region Unity Methods
+    #endregion
+    
+    #region Unity Methods
     // Awake is called when the script instance is being loaded
     private void Awake()
     {
@@ -676,12 +713,12 @@ public class TDS_UIManager : PunBehaviour
             uiGameObject.SetActive(true);       
         if (playerNameField)
         {
-            playerNameField.text = "New Player";
-            playerNameField.GetComponentInChildren<TMP_Text>().text = "NewPlayer";
+            string _name = $"Guest {(int)UnityEngine.Random.Range(0,999)}"; 
+            playerNameField.text = _name;
             SetNewName();
         }
     }
-#endregion
-
-#endregion
+    #endregion
+    
+    #endregion
 }
