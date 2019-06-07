@@ -259,7 +259,8 @@ public class TDS_UIManager : PunBehaviour
         while (_followedPlayer && _followingImage)
         {
             Debug.Log(Camera.main.WorldToViewportPoint(_followedPlayer.transform.position));
-            _followingImage.transform.position = Camera.main.WorldToViewportPoint(_followedPlayer.transform.position); 
+            //_followingImage.transform.position = Camera.main.WorldToViewportPoint(_followedPlayer.transform.position);
+            yield return new WaitForEndOfFrame(); 
         }
         yield return null; 
     }
@@ -399,7 +400,6 @@ public class TDS_UIManager : PunBehaviour
         }
         if (!_image) return;
         Debug.LogError("Follow"); 
-        return; 
         if (_isInvisible)
         {
             if(!followHiddenPlayerCouroutines.ContainsKey(_player.PlayerType))
