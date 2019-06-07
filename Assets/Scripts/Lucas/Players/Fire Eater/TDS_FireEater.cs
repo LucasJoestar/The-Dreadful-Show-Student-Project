@@ -69,7 +69,7 @@ public class TDS_FireEater : TDS_Player
         set
         {
             isInMiniGame = value;
-            animator.SetBool("IsInMiniGame", value);
+            if (photonView.isMine) animator.SetBool("IsInMiniGame", value);
         }
     }
 
@@ -213,6 +213,8 @@ public class TDS_FireEater : TDS_Player
     /// <param name="_state"></param>
     public void SetMiniGameState(int _state)
     {
+        if (!photonView.isMine) return;
+
         switch (_state)
         {
             case 0:
@@ -230,8 +232,20 @@ public class TDS_FireEater : TDS_Player
 
             default:
                 IsInMiniGame = false;
+
+                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetIsInMiniGame"), new object[] { false });
+
                 break;
         }
+    }
+
+    /// <summary>
+    /// Set <see cref="IsInMiniGame"/> value.
+    /// </summary>
+    /// <param name="_value">New value.</param>
+    public void SetIsInMiniGame(bool _value)
+    {
+        IsInMiniGame = _value;
     }
     #endregion
 
