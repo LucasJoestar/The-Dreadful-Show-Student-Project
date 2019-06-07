@@ -139,7 +139,9 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     private Dictionary<TDS_LifeBar, Coroutine> filledImages = new Dictionary<TDS_LifeBar, Coroutine>();
 
-    private Coroutine narratorCoroutine; 
+    private Coroutine narratorCoroutine;
+
+    private Dictionary<PlayerType, Coroutine> followHiddenPlayerCouroutines = new Dictionary<PlayerType, Coroutine>(); 
     
     #endregion
 
@@ -179,10 +181,6 @@ public class TDS_UIManager : PunBehaviour
     #endregion
 
     #region Hidden Players Images
-    [Header("Parents of the Hidden Player's Images")]
-    [SerializeField] private Transform hiddenPlayerParentLeft;
-    [SerializeField] private Transform hiddenPlayerParentRight;
-
     [Header("Hidden Player's Images")]
     [SerializeField] private Image hiddenBeardLadyImage;
     [SerializeField] private Image hiddenFatLadyImage;
@@ -253,6 +251,17 @@ public class TDS_UIManager : PunBehaviour
         narratorBoxParent.SetActive(false);
         OnNarratorDialogEnded?.Invoke();
         narratorCoroutine = null; 
+    }
+
+    private IEnumerator FollowHiddenPlayer(TDS_Player _followedPlayer, Image _followingImage)
+    {
+        _followingImage.gameObject.SetActive(true);
+        while (_followedPlayer && _followingImage)
+        {
+            Debug.Log(Camera.main.WorldToViewportPoint(_followedPlayer.transform.position));
+            _followingImage.transform.position = Camera.main.WorldToViewportPoint(_followedPlayer.transform.position); 
+        }
+        yield return null; 
     }
     #endregion
 
@@ -388,19 +397,26 @@ public class TDS_UIManager : PunBehaviour
             default:
                 break;
         }
-        if (!_image) return; 
-        if (_isInvisible && Camera.main != null && _player != null)
+        if (!_image) return;
+        Debug.LogError("Follow"); 
+        return; 
+        if (_isInvisible)
         {
-            if (_player.transform.position.x > Camera.main.transform.position.x)
+            if(!followHiddenPlayerCouroutines.ContainsKey(_player.PlayerType))
             {
-                _image.transform.SetParent(hiddenPlayerParentRight);
-            }
-            else
-            {
-                _image.transform.SetParent(hiddenPlayerParentLeft);
+                Coroutine _c = StartCoroutine(FollowHiddenPlayer(_player, _image));
+                followHiddenPlayerCouroutines.Add(_player.PlayerType, _c);
             }
         }
-        _image.gameObject.SetActive(_isInvisible);
+        else
+        {
+            if(followHiddenPlayerCouroutines.ContainsKey(_player.PlayerType))
+            {
+                StopCoroutine(followHiddenPlayerCouroutines[_player.PlayerType]);
+                followHiddenPlayerCouroutines.Remove(_player.PlayerType); 
+            }
+            _image.gameObject.SetActive(false); 
+        }
     }
 
     /// <summary>
@@ -583,14 +599,15 @@ public class TDS_UIManager : PunBehaviour
     public void LoadLevel()
     {
 #if UNITY_EDITOR
-        ActivateMenu(UIState.InGame); 
-        TDS_LevelManager.Instance.Spawn(); 
+        if (PhotonNetwork.isMasterClient)
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
+        TDS_LevelManager.Instance.Spawn();
 #else
         if (PhotonNetwork.isMasterClient)
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
         TDS_SceneManager.Instance?.PrepareSceneLoading(1);
-        ActivateMenu(UIState.InGame);
 #endif
+        ActivateMenu(UIState.InGame);
     }
 
     /// <summary>
