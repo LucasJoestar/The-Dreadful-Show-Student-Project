@@ -581,10 +581,15 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void LoadLevel()
     {
+#if UNITY_EDITOR
+        ActivateMenu(UIState.InGame); 
+        TDS_LevelManager.Instance.Spawn(); 
+#else
         if (PhotonNetwork.isMasterClient)
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
         TDS_SceneManager.Instance?.PrepareSceneLoading(1);
-        ActivateMenu(UIState.InGame); 
+        ActivateMenu(UIState.InGame);
+#endif
     }
 
     /// <summary>
@@ -644,11 +649,11 @@ public class TDS_UIManager : PunBehaviour
         if (loadingScreenParent) loadingScreenParent.SetActive(_isLoading);
     } 
 
-    #endregion
+#endregion
 
-    #endregion
+#endregion
 
-    #region Unity Methods
+#region Unity Methods
     // Awake is called when the script instance is being loaded
     private void Awake()
     {
@@ -676,7 +681,7 @@ public class TDS_UIManager : PunBehaviour
             SetNewName();
         }
     }
-	#endregion
+#endregion
 
-	#endregion
+#endregion
 }
