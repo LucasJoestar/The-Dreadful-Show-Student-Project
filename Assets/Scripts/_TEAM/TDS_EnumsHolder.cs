@@ -174,7 +174,10 @@ public enum EnemyState
 public enum FireEaterAnimState
 {
     Sober,
-    Drunk
+    Drunk,
+    ReadyForSpit,
+    ReadyForDrunk,
+    Fire
 }
 
 /// <summary>

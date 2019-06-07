@@ -57,10 +57,21 @@ public class TDS_FireEater : TDS_Player
         }
     }
 
+    /// <summary>Backing field for <see cref="IsInMiniGame"/>.</summary>
+    [SerializeField] private bool isInMiniGame = false;
+
     /// <summary>
     /// Indicates if the Fire Eater is currently in the mini game.
     /// </summary>
-    [SerializeField] private bool isInMiniGame = false;
+    public bool IsInMiniGame
+    {
+        get { return isInMiniGame; }
+        set
+        {
+            isInMiniGame = value;
+            animator.SetBool("IsInMiniGame", value);
+        }
+    }
 
     /// <summary>Backing field for <see cref="DrunkSpeedCoef"/>.</summary>
     [SerializeField] private float drunkSpeedCoef = .8f;
@@ -179,10 +190,9 @@ public class TDS_FireEater : TDS_Player
     /// <returns></returns>
     private IEnumerator MiniGame()
     {
-        OnTriggerMiniGame = () => animator.SetInteger("FireID", 0);
+        OnTriggerMiniGame = () => SetFireEaterAnim(FireEaterAnimState.ReadyForSpit);
 
         animator.SetFloat("MiniGameSpeed", Random.Range(.35f, 1f));
-        isInMiniGame = true;
 
         while (isInMiniGame)
         {
@@ -191,7 +201,7 @@ public class TDS_FireEater : TDS_Player
             if (Input.GetButtonDown(LightAttackButton) || Input.GetButtonDown(HeavyAttackButton))
             {
                 OnTriggerMiniGame?.Invoke();
-                animator.SetTrigger("Fire");
+                SetFireEaterAnim(FireEaterAnimState.Fire);
                 break;
             }   
         }
@@ -214,12 +224,12 @@ public class TDS_FireEater : TDS_Player
                 break;
 
             case 2:
-                OnTriggerMiniGame = () => animator.SetInteger("FireID", 999999);
+                OnTriggerMiniGame = () => SetFireEaterAnim(FireEaterAnimState.ReadyForDrunk);
                 OnTriggerMiniGame += GetDrunk;
                 break;
 
             default:
-                isInMiniGame = false;
+                IsInMiniGame = false;
                 break;
         }
     }
@@ -241,8 +251,7 @@ public class TDS_FireEater : TDS_Player
     /// </summary>
     public override void StartDodge()
     {
-        if (isDrunk && !isGrounded) return;
-
+        if (isDrunk && (!isGrounded || isJumping)) return;
         base.StartDodge();
     }
     #endregion
@@ -313,6 +322,8 @@ public class TDS_FireEater : TDS_Player
     {
         if (isDrunk)
         {
+            if (isDodging) return;
+
             // Adds a different force when drunk
             rigidbody.AddForce(Vector3.up * drunkJumpForce);
             return;
@@ -329,6 +340,11 @@ public class TDS_FireEater : TDS_Player
     /// <param name="_state">State to set in animation.</param>
     public void SetFireEaterAnim(FireEaterAnimState _state)
     {
+        if (photonView.isMine)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetFireEaterAnim"), new object[] { (int)_state });
+        }
+
         switch (_state)
         {
             case FireEaterAnimState.Sober:
@@ -339,9 +355,30 @@ public class TDS_FireEater : TDS_Player
                 animator.SetBool("IsDrunk", true);
                 break;
 
+            case FireEaterAnimState.ReadyForSpit:
+                animator.SetInteger("FireID", 0);
+                break;
+
+            case FireEaterAnimState.ReadyForDrunk:
+                animator.SetInteger("FireID", 999999);
+                break;
+
+            case FireEaterAnimState.Fire:
+                animator.SetTrigger("Fire");
+                break;
+
             default:
                 break;
         }
+    }
+
+    /// <summary>
+    /// Set an animation state of the Fire Eater, used in the animator.
+    /// </summary>
+    /// <param name="_state">State to set in animation.</param>
+    public void SetFireEaterAnim(int _state)
+    {
+        SetFireEaterAnim((FireEaterAnimState)_state);
     }
     #endregion
 
@@ -378,6 +415,9 @@ public class TDS_FireEater : TDS_Player
     protected override void Start()
     {
         base.Start();
+
+        // Freeze the Fire Eater when drunk & touching the ground while not dodging
+        OnGetOnGround += () => { if (isDrunk && !isDodging) FreezePlayer(); };
     }
 
     // Update is called once per frame

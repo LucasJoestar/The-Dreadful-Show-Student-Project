@@ -1230,7 +1230,7 @@ public class TDS_Player : TDS_Character
         // Creates a float to use as timer
         float _timer = 0;
 
-        isJumping = true;
+        IsJumping = true;
 
         // Call one shot event
         OnJump?.Invoke();
@@ -1246,7 +1246,7 @@ public class TDS_Player : TDS_Character
             _timer += Time.fixedDeltaTime;
         }
 
-        isJumping = false;
+        IsJumping = false;
     }
 
     /// <summary>
@@ -1519,7 +1519,7 @@ public class TDS_Player : TDS_Character
         // Check non-agressive actions
         if (Input.GetButtonDown(InteractButton)) Interact();
 
-        else if (Input.GetButtonDown(DodgeButton)) StartDodge();
+        else if (Input.GetButtonDown(DodgeButton) && !IsParalyzed) StartDodge();
 
         else if ((Input.GetButtonDown(ParryButton) || TDS_Input.GetAxisDown(ParryButton)) && isGrounded) StartCoroutine(Parry());
 

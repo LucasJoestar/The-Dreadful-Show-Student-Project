@@ -107,7 +107,7 @@ public class TDS_EventSystemEditor : Editor
 
         GUILayout.Space(2);
 
-        TDS_EditorUtility.PropertyField("Activate on Trigger Enter", "Should this event system automatically be activated when entering this object trigger", activationMode);
+        TDS_EditorUtility.PropertyField("Activation mode", "Activation mode used to trigger these events", activationMode);
 
         if (activationMode.enumValueIndex < 2)
         {

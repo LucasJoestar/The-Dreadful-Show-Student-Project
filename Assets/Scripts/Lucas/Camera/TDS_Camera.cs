@@ -26,6 +26,15 @@ public class TDS_Camera : MonoBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
 	 *
+     *	Date :			[07 / 06 / 2019]
+	 *	Author :		[Guibert Lucas]
+	 *
+	 *	Changes :
+	 *
+	 *	    The camera with bounds now works PERFECTLY good, what a great news. Yeah.
+	 *
+	 *	-----------------------------------
+     * 
      *	Date :			[11 / 04 / 2019]
 	 *	Author :		[Guibert Lucas]
 	 *
@@ -172,7 +181,7 @@ public class TDS_Camera : MonoBehaviour
     /// <summary>
     /// Coroutine used to wait before setting bounds when needed.
     /// </summary>
-    private Coroutine waitToSetBoundsCoroutine = null;
+    private Coroutine setBoundsCoroutine = null;
 
     /// <summary>Backing field for <see cref="Rotation"/></summary>
     [SerializeField] private float rotation = 0;
@@ -430,10 +439,14 @@ public class TDS_Camera : MonoBehaviour
             }
 
             // Get movement
-            Vector3 _destination = Vector3.Lerp(transform.position, target.transform.position + Offset, Time.deltaTime * speedCurrent * speedCoef);
+            Vector3 _destination = new Vector3();
 
-            _destination.y = transform.position.y + (_destination.z - transform.position.z);
-            _destination.z = transform.position.z;
+            _destination.z = Offset.z;
+            _destination.x = Mathf.Lerp(transform.position.x, target.transform.position.x + Offset.x, Time.deltaTime * speedCurrent * speedCoef);
+
+            float _yIdealPos = transform.position.y + (-(.5f - camera.WorldToViewportPoint(target.transform.position).y) * camera.orthographicSize * 2 * VIEWPORT_CALCL_Y_COEF) + Offset.y;
+
+            _destination.y = Mathf.Lerp(transform.position.y, _yIdealPos, Time.deltaTime * speedCurrent * speedCoef);
 
             Vector3 _movement = _destination - transform.position;
 
@@ -485,7 +498,6 @@ public class TDS_Camera : MonoBehaviour
                 }
                 else
                 {
-                    // OFFSET PROBLEM
                     _newBound = camera.WorldToViewportPoint(currentBounds.ZMaxVector - _movement).y;
 
                     if (_newBound < VIEWPORT_Y_MAX_BOUND_VALUE)
@@ -602,8 +614,8 @@ public class TDS_Camera : MonoBehaviour
 
         if (currentBounds == _bounds) return;
 
-        if (waitToSetBoundsCoroutine != null) StopCoroutine(waitToSetBoundsCoroutine);
-        waitToSetBoundsCoroutine = StartCoroutine(SetBoundsInTime(_bounds));
+        if (setBoundsCoroutine != null) StopCoroutine(setBoundsCoroutine);
+        setBoundsCoroutine = StartCoroutine(SetBoundsInTime(_bounds));
     }
 
     /// <summary>
@@ -623,7 +635,7 @@ public class TDS_Camera : MonoBehaviour
         _boundsMovement[2] = _bounds.ZMin > currentBounds.ZMin ? 1 : _bounds.ZMin < currentBounds.ZMin ? - 1 : 0;
 
         _boundsMovement[3] = _bounds.ZMax > currentBounds.ZMax ? 1 : _bounds.ZMax < currentBounds.ZMax ? - 1 : 0;
-        Debug.Log("Start => Set Bounds");
+
         // While all the bounds are not in the right place, set their position
         while (_boundsMovement.Any(m => m != 0))
         {
@@ -635,15 +647,12 @@ public class TDS_Camera : MonoBehaviour
                 {
                     leftBoundVector = _bounds.XMinVector;
                     _boundsMovement[0] = 0;
-
-                    Debug.Log("Left Bound => Good");
                 }
                 else
                 {
                     leftBoundVector = new Vector3(transform.position.x - (camera.orthographicSize *                   ((float)Screen.width / Screen.height)),
                                       leftBound.transform.position.y,
                                       leftBound.transform.position.z);
-                    Debug.Log("Left Bound => Continue");
                 }
             }
             // Right bound move
@@ -654,14 +663,12 @@ public class TDS_Camera : MonoBehaviour
                 {
                     rightBoundVector = _bounds.XMaxVector;
                     _boundsMovement[1] = 0;
-                    Debug.Log("Right Bound => Good");
                 }
                 else
                 {
                     rightBoundVector = new Vector3(transform.position.x + (camera.orthographicSize *                   ((float)Screen.width / Screen.height)),
                                        rightBound.transform.position.y,
                                        rightBound.transform.position.z);
-                    Debug.Log("Right Bound => Continue");
                 }
             }
             // Bottom bound move
@@ -672,7 +679,6 @@ public class TDS_Camera : MonoBehaviour
                 {
                     bottomBoundVector = _bounds.ZMinVector;
                     _boundsMovement[2] = 0;
-                    Debug.Log("Bottom Bound => Good");
                 }
                 else
                 {
@@ -681,34 +687,34 @@ public class TDS_Camera : MonoBehaviour
                     bottomBoundVector = new Vector3(bottomBound.transform.position.x,
                                         bottomBound.transform.position.y,
                                         bottomBound.transform.position.z - (camera.orthographicSize *               2 * _zMin * VIEWPORT_CALCL_Y_COEF));
-                    Debug.Log("Bottom Bound => Continue");
                 }
             }
             // Top bound move
             if (_boundsMovement[3] != 0)
             {
                 float _zMax = camera.WorldToViewportPoint(_bounds.ZMaxVector).y;
-                if (_zMax > (VIEWPORT_Y_MAX_BOUND_VALUE - .0001f))
+                if ((_zMax > (VIEWPORT_Y_MAX_BOUND_VALUE - .0001f)) && (target.transform.position.z + 1 < _bounds.ZMax))
                 {
                     topBoundVector = _bounds.ZMaxVector;
                     _boundsMovement[3] = 0;
-                    Debug.Log("Top Bound => Good");
                 }
                 else
                 {
                     _zMax = camera.WorldToViewportPoint(currentBounds.ZMaxVector).y;
+                    float _zPos = topBound.transform.position.z + (camera.orthographicSize * 2 * (VIEWPORT_Y_MAX_BOUND_VALUE - _zMax) * VIEWPORT_CALCL_Y_COEF);
 
-                    topBoundVector = new Vector3(topBound.transform.position.x,
-                                     topBound.transform.position.y,
-                                     topBound.transform.position.z + (camera.orthographicSize * 2 *              (VIEWPORT_Y_MAX_BOUND_VALUE - _zMax) * VIEWPORT_CALCL_Y_COEF));
-                    Debug.Log("Top Bound => Continue");
+                    if (target.transform.position.z + 1 < _zPos)
+                    {
+                        topBoundVector = new Vector3(topBound.transform.position.x,
+                                     topBound.transform.position.y, _zPos);
+                    }
                 }
             }
 
             yield return null;
         }
-        Debug.Log("End => Set Bounds");
-        waitToSetBoundsCoroutine = null;
+
+        setBoundsCoroutine = null;
     }
 
     /// <summary>

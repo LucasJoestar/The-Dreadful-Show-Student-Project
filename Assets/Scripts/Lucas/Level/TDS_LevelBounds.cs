@@ -38,6 +38,11 @@ public class TDS_LevelBounds : MonoBehaviour
     /// </summary>
     [SerializeField] private bool doDestroyOnActivate = true;
 
+    /// <summary>
+    /// Should this object be desactivated after being activated ?
+    /// </summary>
+    [SerializeField] private bool doDisableOnActivate = false;
+
 
     /// <summary>
     /// Bottom bound position.
@@ -71,10 +76,16 @@ public class TDS_LevelBounds : MonoBehaviour
     /// <summary>Public accessor for <see cref="topBound"/>.</summary>
     public Vector3 TopBound { get { return topBound; } }
 
+
     /// <summary>
     /// Tags detected by the trigger to enable.
     /// </summary>
-    [SerializeField] private Tags detectedTags = new Tags();
+    [SerializeField] private Tags detectedTags = new Tags(new Tag[] { new Tag("Player") });
+
+    /// <summary>
+    /// Activation mode used to trigger these bounds.
+    /// </summary>
+    [SerializeField] private TriggerActivationMode activationMode = TriggerActivationMode.Enter;
     #endregion
 
     #region Methods
@@ -87,7 +98,7 @@ public class TDS_LevelBounds : MonoBehaviour
     {
         TDS_Camera.Instance.SetBounds(this);
         if (doDestroyOnActivate) Destroy(this);
-        else enabled = false;
+        else if (doDisableOnActivate) enabled = false;
     }
     #endregion
 
@@ -95,9 +106,15 @@ public class TDS_LevelBounds : MonoBehaviour
     // OnTriggerEnter is called when the GameObject collides with another GameObject
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.HasTag(detectedTags.ObjectTags)) Activate();
+        if ((activationMode == TriggerActivationMode.Enter) && (other.gameObject.HasTag(detectedTags.ObjectTags))) Activate();
     }
-	#endregion
 
-	#endregion
+    // OnTriggerExit is called when the Collider other has stopped touching the trigger
+    private void OnTriggerExit(Collider other)
+    {
+        if ((activationMode == TriggerActivationMode.Exit) && (other.gameObject.HasTag(detectedTags.ObjectTags))) Activate();
+    }
+    #endregion
+
+    #endregion
 }
