@@ -253,14 +253,28 @@ public class TDS_UIManager : PunBehaviour
         narratorCoroutine = null; 
     }
 
+    /// <summary>
+    /// Display an image that follow the hidden player
+    /// Convert the player position into a screen position for the image
+    /// </summary>
+    /// <param name="_followedPlayer">Hidden and followed player </param>
+    /// <param name="_followingImage">The image that follows the player</param>
+    /// <returns></returns>
     private IEnumerator FollowHiddenPlayer(TDS_Player _followedPlayer, Image _followingImage)
     {
         _followingImage.gameObject.SetActive(true);
+        Vector2 _screenPos = Camera.main.WorldToScreenPoint(_followedPlayer.transform.position);
+        _screenPos.x = Mathf.Clamp(_screenPos.x, _followingImage.rectTransform.rect.width / 2, Screen.width - (_followingImage.rectTransform.rect.width / 2));
+        _screenPos.y = Mathf.Clamp(_screenPos.y, _followingImage.rectTransform.rect.height / 2, Screen.width - (_followingImage.rectTransform.rect.height / 2));
+        _followingImage.transform.position = _screenPos; 
         while (_followedPlayer && _followingImage)
         {
-            Debug.Log(Camera.main.WorldToViewportPoint(_followedPlayer.transform.position));
-            //_followingImage.transform.position = Camera.main.WorldToViewportPoint(_followedPlayer.transform.position);
-            yield return new WaitForEndOfFrame(); 
+            //Debug.LogError(Camera.main.WorldToScreenPoint(_followedPlayer.transform.position));
+            _screenPos = Camera.main.WorldToScreenPoint(_followedPlayer.transform.position);
+            _screenPos.x = Mathf.Clamp(_screenPos.x, _followingImage.rectTransform.rect.width / 2, Screen.width - (_followingImage.rectTransform.rect.width / 2)); 
+            _screenPos.y = Mathf.Clamp(_screenPos.y, _followingImage.rectTransform.rect.height / 2, Screen.height - (_followingImage.rectTransform.rect.height / 2));
+            _followingImage.transform.position = Vector3.MoveTowards(_followingImage.transform.position, _screenPos, Time.deltaTime * 3600);
+            yield return null; 
         }
         yield return null; 
     }
@@ -399,7 +413,6 @@ public class TDS_UIManager : PunBehaviour
                 break;
         }
         if (!_image) return;
-        Debug.LogError("Follow"); 
         if (_isInvisible)
         {
             if(!followHiddenPlayerCouroutines.ContainsKey(_player.PlayerType))
