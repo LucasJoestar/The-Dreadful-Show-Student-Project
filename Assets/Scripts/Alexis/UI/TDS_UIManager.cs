@@ -74,21 +74,10 @@ public class TDS_UIManager : PunBehaviour
 
     #region GameObject
     [SerializeField] private GameObject uiGameObject;
+    [SerializeField] private bool isloadingNextScene = false; 
     #endregion
 
     #region Buttons
-
-    /*
-    [Header("Character Selection")]
-    //Button to select the BeardLady
-    [SerializeField] private Button buttonSelectionBeardLady;
-    //Button to select the Juggler
-    [SerializeField] private Button buttonSelectionJuggler;
-    //Button to select the FatLady
-    [SerializeField] private Button buttonSelectionFatLady;
-    //Button to select the FireEater 
-    [SerializeField] private Button buttonSelectionFireEater;
-    */
     #region CharacterSelectionMenus
     [Header("Character Selection Menu")]
     [SerializeField] private TDS_CharacterMenuSelection characterSelectionMenu;
@@ -611,15 +600,18 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void LoadLevel()
     {
-#if UNITY_EDITOR
-        if (PhotonNetwork.isMasterClient)
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
-        TDS_LevelManager.Instance.Spawn();
-#else
-        if (PhotonNetwork.isMasterClient)
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
-        TDS_SceneManager.Instance?.PrepareSceneLoading(1);
-#endif
+        if(isloadingNextScene)
+        {
+            if (PhotonNetwork.isMasterClient)
+                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
+            TDS_SceneManager.Instance?.PrepareSceneLoading(1);
+        }
+        else
+        {
+            if (PhotonNetwork.isMasterClient)
+                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
+            TDS_LevelManager.Instance.Spawn();
+        }
         ActivateMenu(UIState.InGame);
     }
 
