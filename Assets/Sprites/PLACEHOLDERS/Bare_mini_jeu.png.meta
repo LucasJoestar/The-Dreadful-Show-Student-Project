@@ -5,6 +5,7 @@ TextureImporter:
     21300000: PLACEHOLDER_MiniGameWheel
     21300002: PLACEHOLDER_MiniGameCursor
     21300004: PLACEHOLDER_Paf
+    21300006: Health Bar
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -139,7 +140,7 @@ TextureImporter:
         width: 378
         height: 378
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -159,7 +160,7 @@ TextureImporter:
         width: 130
         height: 193
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -179,13 +180,33 @@ TextureImporter:
         width: 316
         height: 327
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: a5d85f1e7c92d4f4fbfe65fecd16924e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health Bar
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 551
+        width: 701
+        height: 404
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba270e34a18f3e746bf4fd58750214cf
       vertices: []
       indices: 
       edges: []

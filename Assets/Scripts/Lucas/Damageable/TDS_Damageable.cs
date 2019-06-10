@@ -351,8 +351,8 @@ public abstract class TDS_Damageable : PunBehaviour
         if (PhotonNetwork.isMasterClient)
         {
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "TakeDamage"), new object[] { _damage });
-            TDS_FloatingText _floatingText = PhotonNetwork.Instantiate("HitFX", transform.position, Quaternion.identity, 0).GetComponent<TDS_FloatingText>();
-            _floatingText.Init(_damage); 
+            //TDS_FloatingText _floatingText = PhotonNetwork.Instantiate("HitFX", transform.position, Quaternion.identity, 0).GetComponent<TDS_FloatingText>();
+            //_floatingText.Init(_damage); 
         }
         
         // Local
