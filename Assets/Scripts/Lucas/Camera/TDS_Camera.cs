@@ -753,6 +753,7 @@ public class TDS_Camera : MonoBehaviour
     {
         // Set the singleton instance if null
         if (!Instance) Instance = this;
+        else Destroy(this);
 
         // Debug warning is missing bound(s)
         if (!topBound || !leftBound || !rightBound || !bottomBound)
