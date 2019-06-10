@@ -587,10 +587,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9070335861518395867}
   - component: {fileID: 9070335861518395866}
-  - component: {fileID: 9070335861518395864}
-  - component: {fileID: 9070335861518395871}
   - component: {fileID: 9070335861518395868}
-  - component: {fileID: 7714212797487082151}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -629,33 +626,6 @@ MonoBehaviour:
   onlinePlayers: []
   StartSpawnPoints:
   - {x: 0, y: 0, z: 0}
---- !u!114 &9070335861518395864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9070335861518395870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51f2b185721e7054cba63b6eed071020, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RPCPhotonView: {fileID: 9070335861518395868}
---- !u!114 &9070335861518395871
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9070335861518395870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b39060268534184d998ac07ef7bceba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minimumPlayerToLaunch: 1
-  photonView: {fileID: 9070335861518395868}
 --- !u!114 &9070335861518395868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -683,18 +653,6 @@ MonoBehaviour:
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!114 &7714212797487082151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9070335861518395870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edee17627eb7ec347923f608773bbfe5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &9070335860514700667
 PrefabInstance:
   m_ObjectHideFlags: 0
