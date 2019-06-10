@@ -217,8 +217,9 @@ public class TDS_UIManager : PunBehaviour
         if(_lifebar.ForegroundFilledImage) _lifebar.ForegroundFilledImage.fillAmount = _fillingValue; 
         while (_lifebar.FilledImage.fillAmount != _fillingValue &&  _lifebar.FilledImage != null)
         {
-            _lifebar.FilledImage.fillAmount = Mathf.MoveTowards(_lifebar.FilledImage.fillAmount, _fillingValue, Time.deltaTime/2 );
-            yield return null;
+            _lifebar.FilledImage.fillAmount = Mathf.MoveTowards(_lifebar.FilledImage.fillAmount, _fillingValue, Time.deltaTime/10 );
+            Debug.Log(_lifebar.FilledImage.fillAmount); 
+            yield return new WaitForEndOfFrame();
         }
         filledImages.Remove(_lifebar);
     }
@@ -501,8 +502,8 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_enemy"></param>
     public void SetEnemyLifebar(TDS_Enemy _enemy)
     {
-        if (lifeBarPrefab == null || !canvasWorld) return; 
-        Vector3 _offset =  Vector3.up * _enemy.transform.localScale.y * 3; 
+        if (lifeBarPrefab == null || !canvasWorld) return;
+        Vector3 _offset = Vector3.up * .1f + Vector3.forward * -.5f; 
         TDS_LifeBar _healthBar = UnityEngine.Object.Instantiate(lifeBarPrefab, _enemy.transform.position + _offset, Quaternion.identity, canvasWorld.transform).GetComponent<TDS_LifeBar>();
 
         _healthBar.SetOwner(_enemy, _offset, true);
