@@ -95,6 +95,11 @@ public class TDS_SpawnerAreaEditor : Editor
     #endregion
 
     #region Variables
+    /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.isReady"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isReady = null;
+    /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.isActivated"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isActivated = null;
+
     /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.isLooping"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isLooping = null;
     /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.isActivatedByEvent"/> of type <see cref="bool"/>.</summary>
@@ -141,6 +146,15 @@ public class TDS_SpawnerAreaEditor : Editor
         Color _originalColor = GUI.backgroundColor;
 
         GUI.backgroundColor = TDS_EditorUtility.BoxDarkColor;
+
+        EditorGUILayout.BeginVertical("HelpBox");
+        
+        TDS_EditorUtility.RadioToggle("Is Ready", "", isReady);
+        TDS_EditorUtility.RadioToggle("Is Activated", "", isActivated);
+
+        EditorGUILayout.EndVertical(); 
+
+
         /*
         EditorGUILayout.BeginVertical("HelpBox");
 
@@ -256,6 +270,8 @@ public class TDS_SpawnerAreaEditor : Editor
     {
         //Get the serialized properties from the serializedObject
 
+        isReady = serializedObject.FindProperty("isReady");
+        isActivated = serializedObject.FindProperty("isActivated");
         isLooping = serializedObject.FindProperty("isLooping");
         isActivatedByEvent = serializedObject.FindProperty("isActivatedByEvent"); 
         waves = serializedObject.FindProperty("waves");
