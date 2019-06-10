@@ -573,7 +573,6 @@ Transform:
   m_Children:
   - {fileID: 9075059127715102777}
   - {fileID: 46190908}
-  - {fileID: 9075247729501114592}
   - {fileID: 9070335861518395867}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -588,7 +587,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9070335861518395867}
   - component: {fileID: 9070335861518395866}
-  - component: {fileID: 9070335861518395869}
   - component: {fileID: 9070335861518395864}
   - component: {fileID: 9070335861518395871}
   - component: {fileID: 9070335861518395868}
@@ -612,7 +610,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9070335861391643314}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9070335861518395866
 MonoBehaviour:
@@ -631,6 +629,7 @@ MonoBehaviour:
   onlinePlayers: []
   StartSpawnPoints:
   - {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 --- !u!114 &9070335861518395869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -682,6 +681,8 @@ MonoBehaviour:
   narratorBoxText: {fileID: 8968198381073710680}
   lifeBarPrefab: {fileID: 1447132950476282, guid: 21b16712bcdb7cd43805f8e61c69824f,
     type: 3}
+=======
+>>>>>>> master
 --- !u!114 &9070335861518395864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -748,6 +749,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edee17627eb7ec347923f608773bbfe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
 --- !u!1001 &9070335860414872968
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1616,6 +1618,8 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 9070335860414872968}
   m_PrefabAsset: {fileID: 0}
+=======
+>>>>>>> master
 --- !u!1001 &9070335860514700667
 PrefabInstance:
   m_ObjectHideFlags: 0
