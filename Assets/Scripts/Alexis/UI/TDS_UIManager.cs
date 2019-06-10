@@ -73,7 +73,7 @@ public class TDS_UIManager : PunBehaviour
     public static TDS_UIManager Instance;
 
     #region GameObject
-    [SerializeField] private GameObject uiGameObject;
+    private GameObject uiGameObject;
     [SerializeField] private bool isloadingNextScene = false; 
     #endregion
 
@@ -708,7 +708,7 @@ public class TDS_UIManager : PunBehaviour
         if (loadingScreenParent) loadingScreenParent.SetActive(_isLoading);
     } 
 
-#endregion
+    #endregion
 
     #endregion
     
@@ -722,9 +722,10 @@ public class TDS_UIManager : PunBehaviour
         }
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
             return; 
         }
+        uiGameObject = this.gameObject; 
         DontDestroyOnLoad(transform.parent.gameObject);
     }
 
