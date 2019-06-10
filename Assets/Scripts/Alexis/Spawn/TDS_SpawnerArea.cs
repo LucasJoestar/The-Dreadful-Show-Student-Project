@@ -276,7 +276,7 @@ public class TDS_SpawnerArea : PunBehaviour
     /// Called when the area is not ready yet
     /// </summary>
     /// <param name="newPlayer"></param>
-    public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
+    public override void OnJoinedRoom()
     {
         if (isReady || !PhotonNetwork.isMasterClient) return;
         OnNextWave.AddListener(ActivateSpawn);
