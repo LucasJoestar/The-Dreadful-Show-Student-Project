@@ -726,7 +726,7 @@ public class TDS_UIManager : PunBehaviour
             return; 
         }
         uiGameObject = this.gameObject; 
-        DontDestroyOnLoad(transform.parent.gameObject);
+        DontDestroyOnLoad(gameObject);
     }
 
     // Use this for initialization

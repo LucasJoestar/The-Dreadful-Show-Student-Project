@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2583,9 +2583,19 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1211078769374454, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
+    - target: {fileID: 2075652433212547262, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1802072100452778541, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1211078769374454, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5934187636922156191, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
@@ -7332,44 +7342,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9369aafd20642e947b4bc83641e97566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doDestroyAfterTriggerEnter: 1
-  doDestroyAfterTriggerExit: 1
-  detectedTags:
-    ObjectTags:
-    - Name: Player
-      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
-  OnTriggerEnterE:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 992325931}
-        m_MethodName: StartEvents
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 992325930}
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  OnTriggerExitE:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!1 &992655718
 GameObject:
   m_ObjectHideFlags: 0
@@ -10824,25 +10796,20 @@ MonoBehaviour:
   isReady: 0
   isActivated: 0
   isActivatedByEvent: 0
-  isLooping: 1
+  isLooping: 0
   waves:
   - isWaveFoldOut: 1
     debugColor: {r: 1, g: 0, b: 0, a: 1}
     spawnPoints:
-    - spawnRange: 0
-      spawnPosition: {x: 0, y: 0, z: 0}
+    - spawnRange: 5
+      spawnPosition: {x: 0, y: 0, z: -1.3909197}
       waveElement:
         minRandomSpawn: 0
         maxRandomSpawn: 0
         spawningInformations:
         - enemyResourceName: Punk
           enemyCount: 0300000005000000070000000a000000
-        - enemyResourceName: Siamese
-          enemyCount: 0300000005000000070000000a000000
-        randomSpawningInformations:
-        - enemyResourceName: Punk
-          enemyCount: 00000000000000000000000000000000
-          spawnChance: 0
+        randomSpawningInformations: []
     isActivatedByEvent: 0
 --- !u!114 &1331645433
 MonoBehaviour:
@@ -13867,44 +13834,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9369aafd20642e947b4bc83641e97566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doDestroyAfterTriggerEnter: 1
-  doDestroyAfterTriggerExit: 1
-  detectedTags:
-    ObjectTags:
-    - Name: Player
-      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
-  OnTriggerEnterE:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 903010318}
-        m_MethodName: ActivateEnemies
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1655528363}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  OnTriggerExitE:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!1 &1672778182
 GameObject:
   m_ObjectHideFlags: 0
