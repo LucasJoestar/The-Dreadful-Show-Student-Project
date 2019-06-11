@@ -57,7 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18dda57ee8a7f354ba608a59dfff9996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collider: {fileID: 0}
+  collider: {fileID: 65963255635705434}
   Owner: {fileID: 0}
   HittableTags:
     ObjectTags: []
@@ -169,8 +169,8 @@ MonoBehaviour:
   weight: 2
   rigidbody: {fileID: 0}
   owner: {fileID: 0}
-  hitBox: {fileID: 0}
-  attack: {fileID: 0}
+  hitBox: {fileID: 114053863625267166}
+  attack: {fileID: 11400000, guid: 5b783ed432e74f242be4c42874729f99, type: 2}
   whatDesactivate:
     serializedVersion: 2
     m_Bits: 4096

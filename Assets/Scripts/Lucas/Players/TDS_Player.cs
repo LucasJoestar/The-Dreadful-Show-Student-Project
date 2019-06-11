@@ -636,7 +636,7 @@ public class TDS_Player : TDS_Character
 
         // Triggers one shot event
         OnThrow?.Invoke();
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "GrabObjectCallBackOnline"), new object[] { });
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObjectCallBackOnline"), new object[] { });
     }
 
     /// <summary>
@@ -659,7 +659,7 @@ public class TDS_Player : TDS_Character
 
         // Triggers one shot event
         OnThrow?.Invoke();
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "GrabObjectCallBackOnline"), new object[] { });
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObjectCallBackOnline"), new object[] { });
     }
 
     #region OnlineMethods
