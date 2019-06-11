@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 33021398234206448}
   - component: {fileID: 23061823214432886}
   m_Layer: 0
-  m_Name: Shadows
+  m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -742,6 +742,7 @@ MonoBehaviour:
   rigidbody: {fileID: 54280045138941680}
   throwable: {fileID: 0}
   handsTransform: {fileID: 4195684342130554}
+  shadowTransform: {fileID: 4671675747051520}
   isAttacking: 0
   IsDown: 0
   isFacingRight: 1

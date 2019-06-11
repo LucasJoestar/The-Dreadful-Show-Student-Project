@@ -89,6 +89,9 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 
     /// <summary>SerializedProperty for <see cref="TDS_Character.handsTransform"/> of type <see cref="Transform"/>.</summary>
     private SerializedProperty handsTransform = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Character.shadowTransform"/> of type <see cref="Transform"/>.</summary>
+    private SerializedProperty shadowTransform = null;
     #endregion
 
     #region Variables
@@ -328,6 +331,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
         TDS_EditorUtility.ObjectField("Hit Box", "HitBox of this character, used to detect what they touch when attacking", hitBox, typeof(TDS_HitBox));
         TDS_EditorUtility.ObjectField("Rigidbody", "Rigidbody of this character, used for physic simulation", rigidbody, typeof(Rigidbody));
         TDS_EditorUtility.ObjectField("Hands Transform", "Transform at the position of the character hands ; mainly used as root for carrying throwable", handsTransform, typeof(Transform));
+        TDS_EditorUtility.ObjectField("Shadow Transform", "Transform of the character's shadow", shadowTransform, typeof(Transform));
 
         GUILayout.Space(3);
     }
@@ -461,6 +465,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
         rigidbody = serializedObject.FindProperty("rigidbody");
         throwable = serializedObject.FindProperty("throwable");
         handsTransform = serializedObject.FindProperty("handsTransform");
+        shadowTransform = serializedObject.FindProperty("shadowTransform");
 
         isAttacking = serializedObject.FindProperty("isAttacking");
         isFacingRight = serializedObject.FindProperty("isFacingRight");
