@@ -87,6 +87,16 @@ public class TDS_SpawnerArea : PunBehaviour
 
     #region Variables
     /// <summary>
+    /// Is the area ready to spawn the enemies
+    /// </summary>
+    [SerializeField] private bool isReady = false;
+
+    /// <summary>
+    /// Is the area activated or not
+    /// </summary>
+    [SerializeField] private bool isActivated = false; 
+
+    /// <summary>
     /// Does the area has to be called by event or by its trigger
     /// </summary>
     [SerializeField] protected bool isActivatedByEvent = false; 
@@ -217,28 +227,27 @@ public class TDS_SpawnerArea : PunBehaviour
         if (!PhotonNetwork.isMasterClient) return;
         OnNextWave.AddListener(ActivateSpawn);
         OnAreaActivated.AddListener(ActivateSpawn);
+        isReady = true; 
     }
 
     private void Start()
     {
+        OnAreaActivated.AddListener(() => isActivated = true); 
         if (TDS_UIManager.Instance)
         {
             OnAreaActivated.AddListener(TDS_UIManager.Instance.SwitchCurtains);
             OnAreaDesactivated.AddListener(TDS_UIManager.Instance.SwitchCurtains);
         }
-        if(!PhotonNetwork.isMasterClient || isActivatedByEvent)
-        {
-            GetComponent<BoxCollider>().enabled = false; 
-        }
+
     }
 
     private void OnTriggerEnter(Collider _coll)
     {
+        if (isActivatedByEvent || isActivated || !isReady) return; 
         // If a player enter in the collider
         // Start the waves and disable the collider
         if(_coll.GetComponent<TDS_Player>())
         {
-            GetComponent<BoxCollider>().enabled = false;
             if (PhotonNetwork.isMasterClient)
             {
                 OnAreaActivated?.Invoke();
@@ -261,6 +270,18 @@ public class TDS_SpawnerArea : PunBehaviour
             }
 
         }
+    }
+
+    /// <summary>
+    /// Called when the area is not ready yet
+    /// </summary>
+    /// <param name="newPlayer"></param>
+    public override void OnJoinedRoom()
+    {
+        if (isReady || !PhotonNetwork.isMasterClient) return;
+        OnNextWave.AddListener(ActivateSpawn);
+        OnAreaActivated.AddListener(ActivateSpawn);
+        isReady = true;
     }
     #endregion
 

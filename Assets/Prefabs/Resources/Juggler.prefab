@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 33021398234206448}
   - component: {fileID: 23061823214432886}
   m_Layer: 0
-  m_Name: Shadows
+  m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -274,8 +274,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1517258360597064}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.17200005, y: 0.225, z: 0}
-  m_LocalScale: {x: 1.2031, y: 0.01, z: 0.83411}
+  m_LocalPosition: {x: -0.11, y: 0.225, z: 0.19}
+  m_LocalScale: {x: 1.5259507, y: 0.01, z: 1.3242851}
   m_Children: []
   m_Father: {fileID: 4501929110005980}
   m_RootOrder: 2
@@ -707,7 +707,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1942066217794072}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalPosition: {x: -6.67, y: 0, z: -3.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4311397187767890}
@@ -742,6 +742,7 @@ MonoBehaviour:
   rigidbody: {fileID: 54280045138941680}
   throwable: {fileID: 0}
   handsTransform: {fileID: 4195684342130554}
+  shadowTransform: {fileID: 4671675747051520}
   isAttacking: 0
   IsDown: 0
   isFacingRight: 1

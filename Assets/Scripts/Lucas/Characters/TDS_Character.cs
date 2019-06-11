@@ -157,6 +157,11 @@ public abstract class TDS_Character : TDS_Damageable
     /// Transform set at the hands position of the character.
     /// </summary>
     [SerializeField] protected Transform handsTransform = null;
+
+    /// <summary>
+    /// Transform of the character's shadow.
+    /// </summary>
+    [SerializeField] protected Transform shadowTransform = null;
     #endregion
 
     #region Variables
@@ -368,6 +373,7 @@ public abstract class TDS_Character : TDS_Damageable
     {
         isFacingRight = !isFacingRight;
         transform.Rotate(Vector3.up, 180);
+        shadowTransform.localPosition = new Vector3(shadowTransform.localPosition.x, shadowTransform.localPosition.y, shadowTransform.localPosition.z * -1);
         // if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
         OnFlip?.Invoke();
     }
@@ -510,6 +516,14 @@ public abstract class TDS_Character : TDS_Damageable
         {
             rigidbody = GetComponent<Rigidbody>();
             if (!rigidbody) Debug.LogWarning("The Rigidbody of \"" + name + "\" for script TDS_Character is missing !");
+        }
+        if (!handsTransform)
+        {
+            Debug.LogWarning("The Hands Transform of \"" + name + "\" for script TDS_Character is missing !");
+        }
+        if (!shadowTransform)
+        {
+            Debug.LogWarning("The Shadow Transform of \"" + name + "\" for script TDS_Character is missing !");
         }
         if (!photonView.isMine) rigidbody.isKinematic = true; 
     }

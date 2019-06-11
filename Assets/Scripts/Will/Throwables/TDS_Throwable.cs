@@ -193,8 +193,14 @@ public class TDS_Throwable : PunBehaviour
             rigidbody.useGravity = false; 
         }
     }
-    
 
-	#endregion
-	#endregion
+    public override void OnJoinedRoom()
+    {
+        if(PhotonNetwork.isMasterClient)
+        {
+            rigidbody.useGravity = true; 
+        }
+    }
+    #endregion
+    #endregion
 }
