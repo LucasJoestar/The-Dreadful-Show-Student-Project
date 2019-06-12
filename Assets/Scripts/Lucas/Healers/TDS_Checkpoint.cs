@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using Photon;
+using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
-public class TDS_Checkpoint : MonoBehaviour 
+[RequireComponent(typeof(BoxCollider), typeof(PhotonView))]
+public class TDS_Checkpoint : PunBehaviour 
 {
     /* TDS_Checkpoint :
 	 *
@@ -54,6 +56,18 @@ public class TDS_Checkpoint : MonoBehaviour
 	 *	-----------------------------------
 	*/
 
+    #region Events
+    /// <summary>
+    /// Event called when activating any checkpoint.
+    /// </summary>
+    public static event Action OnCheckpointActivated = null;
+
+    /// <summary>
+    /// Called when making a player respawn, with that player photon ID as parameter.
+    /// </summary>
+    public static event Action<int> OnRespawnPlayer = null;
+    #endregion
+
     #region Fields / Properties
     /// <summary>
     /// Animator of the Checkpoint object.
@@ -103,6 +117,8 @@ public class TDS_Checkpoint : MonoBehaviour
 
         // Resurrect dead players
         Respawn();
+
+        OnCheckpointActivated?.Invoke();
     }
 
     /// <summary>
@@ -127,6 +143,8 @@ public class TDS_Checkpoint : MonoBehaviour
         for (int _i = 0; _i < _deadPlayers.Length; _i++)
         {
             _player = _deadPlayers[_i];
+
+            OnRespawnPlayer.Invoke(_player.PhotonID);
 
             // Make player disappear in smoke
 
@@ -156,6 +174,11 @@ public class TDS_Checkpoint : MonoBehaviour
     /// <param name="_state"></param>
     public void SetAnimState(CheckpointAnimState _state)
     {
+        if (photonView.isMine)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetAnimState"), new object[] { (int)_state });
+        }
+
         switch (_state)
         {
             case CheckpointAnimState.Desactivated:
@@ -173,6 +196,15 @@ public class TDS_Checkpoint : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    /// <summary>
+    /// Set this checkpoint animation state
+    /// </summary>
+    /// <param name="_state"></param>
+    public void SetAnimState(int _state)
+    {
+        SetAnimState((CheckpointAnimState)_state);
     }
     #endregion
 

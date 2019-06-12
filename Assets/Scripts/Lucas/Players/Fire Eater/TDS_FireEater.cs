@@ -50,6 +50,8 @@ public class TDS_FireEater : TDS_Player
         get { return isDrunk; }
         set
         {
+            if (isDrunk) soberUpTimer = 0;
+
             if (value) SetFireEaterAnim(FireEaterAnimState.Drunk);
             else SetFireEaterAnim(FireEaterAnimState.Sober);
 
@@ -313,6 +315,20 @@ public class TDS_FireEater : TDS_Player
         if (isDrunk) return;
 
         base.SuperAttack();
+    }
+    #endregion
+
+    #region Health
+    /// <summary>
+    /// Method called when the object dies.
+    /// Override this to implement code for a specific object.
+    /// </summary>
+    protected override void Die()
+    {
+        base.Die();
+
+        // Stop being drunk man, you're dead
+        if (isDrunk) IsDrunk = false;
     }
     #endregion
 

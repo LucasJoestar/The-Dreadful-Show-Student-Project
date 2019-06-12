@@ -169,6 +169,15 @@ public enum EnemyState
 }
 
 /// <summary>
+/// All animations states related to the Fat Lady.
+/// </summary>
+public enum FatLadyAnimState
+{
+    Berserk,
+    Pacific
+}
+
+/// <summary>
 /// All animation states specific to the Fire Eater.
 /// </summary>
 public enum FireEaterAnimState
