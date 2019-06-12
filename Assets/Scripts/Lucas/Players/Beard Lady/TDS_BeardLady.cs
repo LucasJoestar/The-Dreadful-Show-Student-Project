@@ -65,8 +65,9 @@ public class TDS_BeardLady : TDS_Player
 
             currentBeardState = value;
 
-            if (value != BeardState.VeryVeryLongDude)
+            if (value < BeardState.VeryVeryLongDude)
             {
+                Debug.Log("Beard State => " + value);
                 InvokeGrowBeard();
             }
 
@@ -224,6 +225,8 @@ public class TDS_BeardLady : TDS_Player
     /// </summary>
     public void ResetBeardGrow()
     {
+        if ((growBeardCoroutine == null) || (currentBeardState >= BeardState.VeryVeryLongDude)) return;
+
         CancelInvokeGrowBeard();
         InvokeGrowBeard();
     }

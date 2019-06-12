@@ -146,7 +146,7 @@ public class TDS_LevelBoundsEditor : Editor
             {
                 Undo.RecordObjects(serializedObject.targetObjects, "set bottom bound position");
 
-                leftBound.vector3Value = new Vector3(rightBound.vector3Value.x - (Camera.main.orthographicSize * 2 * ((float)Screen.width / Screen.height)), leftBound.vector3Value.y, leftBound.vector3Value.z);
+                leftBound.vector3Value = new Vector3(rightBound.vector3Value.x - (Camera.main.orthographicSize * 2 * ((float)Screen.currentResolution.width / Screen.currentResolution.height)), leftBound.vector3Value.y, leftBound.vector3Value.z);
             }
         }
 
