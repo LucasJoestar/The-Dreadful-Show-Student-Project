@@ -234,6 +234,8 @@ public class TDS_NetworkManager : PunBehaviour
             return; 
         }
     }
+
+    #if UNITYEDITOR
     private void OnGUI()
     {
         GUILayout.Box(PhotonNetwork.GetPing().ToString()); 
@@ -241,6 +243,8 @@ public class TDS_NetworkManager : PunBehaviour
         GUILayout.Box(PhotonNetwork.isMasterClient.ToString());
         GUILayout.Box(TDS_GameManager.LocalPlayer.ToString()); 
     }
+    #endif
+
     void Start ()
     {
         if(!photonView) photonView = GetComponent<PhotonView>();
