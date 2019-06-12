@@ -72,43 +72,18 @@ public class TDS_UIManager : PunBehaviour
     /// <summary> Singleton of the class TDS_UIManager </summary>
     public static TDS_UIManager Instance;
 
-    #region GameObject
+    #region UIState
+    [Header("UI State")]
+    //State of the UI
+    [SerializeField] private UIState uiState;
+    public UIState UIState { get { return uiState; } }
+    #endregion
+
+    #region General Settings
     private GameObject uiGameObject;
-    [SerializeField] private bool isloadingNextScene = false; 
+    [Header("Loading Settings")]
+    [SerializeField] private bool isloadingNextScene = false;
     #endregion
-
-    #region Buttons
-    #region CharacterSelectionMenus
-    [Header("Character Selection Menu")]
-    [SerializeField] private TDS_CharacterMenuSelection characterSelectionMenu;
-    [SerializeField] private TMP_Text[] playersName;
-    #endregion
-
-    #region TextField
-    [Header("Player Name")]
-    [SerializeField] private TMP_Text playerNameField;
-    public TMP_Text PlayerNameField
-    {
-        get { return playerNameField; }
-    }
-    [Header("Player counter")]
-    [SerializeField] private TMP_Text playerCountText;
-    #endregion
-
-    #region Buttons
-    [Header("Buttons")]
-    [SerializeField] private Button launchGameButton;
-    [SerializeField] private Button buttonQuitPause;
-    [SerializeField] private Button buttonQuitGame; 
-    #endregion
-
-    #endregion
-
-    #region Animator
-    [Header("Animator")]
-    [SerializeField] private Animator curtainsAnimator;
-    [SerializeField] private Animator arrowAnimator; 
-    #endregion 
 
     #region Canvas 
     [Header("Canvas")]
@@ -122,33 +97,6 @@ public class TDS_UIManager : PunBehaviour
     public Canvas CanvasWorld { get { return canvasWorld; } }
     #endregion
 
-    #region Coroutines
-    /// <summary>
-    /// Dictionary to stock every filling coroutine started
-    /// </summary>
-    private Dictionary<TDS_LifeBar, Coroutine> filledImages = new Dictionary<TDS_LifeBar, Coroutine>();
-
-    private Coroutine narratorCoroutine;
-
-    private Dictionary<PlayerType, Coroutine> followHiddenPlayerCouroutines = new Dictionary<PlayerType, Coroutine>(); 
-    
-    #endregion
-
-    #region LifeBar
-    [Header("LifeBars")]
-    [SerializeField] private TDS_LifeBar playerHealthBar;
-    [SerializeField] private TDS_LifeBar bossHealthBar;
-
-    #endregion
-
-    #region OnlineLifeBarParent
-    [Header("Online lifebars")]
-    [SerializeField] private TDS_LifeBar onlineBeardLadyLifeBar;
-    [SerializeField] private TDS_LifeBar onlineFatLadyLifeBar;
-    [SerializeField] private TDS_LifeBar onlineJugglerLifeBar;
-    [SerializeField] private TDS_LifeBar onlineFireEaterLifeBar;
-    #endregion
-
     #region MenuParents
     [Header("Menu parent")]
     //Parent of the main menu UI
@@ -156,7 +104,7 @@ public class TDS_UIManager : PunBehaviour
     //Parent of the room selection menu
     [SerializeField] private GameObject roomSelectionMenuParent;
     //Parent of the character selection menu
-    [SerializeField] private GameObject characterSelectionMenuParent; 
+    [SerializeField] private GameObject characterSelectionMenuParent;
     //Parent of the InGame UI
     [SerializeField] private GameObject inGameMenuParent;
     //Parent of the pause menu UI
@@ -166,35 +114,92 @@ public class TDS_UIManager : PunBehaviour
     // Parent of the NarratorBox
     [SerializeField] private GameObject narratorBoxParent;
     // Parent of the loading screen
-    [SerializeField] private GameObject loadingScreenParent; 
+    [SerializeField] private GameObject loadingScreenParent;
     #endregion
+
+    #region Local 
+    [Header("Local life bar")]
+    [SerializeField] private TDS_LifeBar playerHealthBar;
+    [SerializeField] private Image portraitBL;
+    [SerializeField] private Image portraitFL;
+    [SerializeField] private Image portraitFE;
+    [SerializeField] private Image portraitJUG;
+    #endregion
+
+    #region Online
+    [Header("Online lifebars")]
+    [SerializeField] private TDS_LifeBar onlineBeardLadyLifeBar;
+    [SerializeField] private TDS_LifeBar onlineFatLadyLifeBar;
+    [SerializeField] private TDS_LifeBar onlineJugglerLifeBar;
+    [SerializeField] private TDS_LifeBar onlineFireEaterLifeBar;
 
     #region Hidden Players Images
     [Header("Hidden Player's Images")]
     [SerializeField] private Image hiddenBeardLadyImage;
     [SerializeField] private Image hiddenFatLadyImage;
     [SerializeField] private Image hiddenJugglerImage;
-    [SerializeField] private Image hiddenFireEaterImage; 
-    #endregion 
+    [SerializeField] private Image hiddenFireEaterImage;
+    #endregion
+    #endregion
 
-    #region UIState
-    [Header("UI State")]
-    //State of the UI
-    [SerializeField] private UIState uiState;
-    public UIState UIState { get { return uiState;  } }
+    #region CharacterSelectionMenus
+    [Header("Character Selection Menu")]
+    [SerializeField] private TDS_CharacterMenuSelection characterSelectionMenu;
+    [SerializeField] private TMP_Text[] playersName;
+    #region TextField
+    [SerializeField] private TMP_Text playerNameField;
+    public TMP_Text PlayerNameField
+    {
+        get { return playerNameField; }
+    }
+    [SerializeField] private TMP_Text playerCountText;
+    #endregion
+    #endregion
+
+    #region Buttons
+    [Header("Buttons")]
+    [SerializeField] private Button launchGameButton;
+    [SerializeField] private Button buttonQuitPause;
+    [SerializeField] private Button buttonQuitGame; 
+    #endregion
+
+    #region Animator
+    [Header("Animator")]
+    [SerializeField] private Animator curtainsAnimator;
+    [SerializeField] private Animator arrowAnimator;
     #endregion
 
     #region Text
     [Header("Dialog/Narrator Box")]
     //Text of the dialog Box
-    [SerializeField] private TMPro.TMP_Text dialogBoxText ;
+    [SerializeField] private TMPro.TMP_Text dialogBoxText;
     //Text of the narrator Box
     [SerializeField] private TMPro.TMP_Text narratorBoxText;
     #endregion
 
     #region Resources
-    [Header("LifeBar")]
+    [Header("Enemies")]
     [SerializeField] GameObject lifeBarPrefab = null;
+    [SerializeField] private TDS_LifeBar bossHealthBar;
+    #endregion
+
+    #region Coroutines
+    /// <summary>
+    /// Dictionary to stock every filling coroutine started
+    /// </summary>
+    private Dictionary<TDS_LifeBar, Coroutine> filledImages = new Dictionary<TDS_LifeBar, Coroutine>();
+
+    private Coroutine narratorCoroutine;
+
+    private Dictionary<PlayerType, Coroutine> followHiddenPlayerCouroutines = new Dictionary<PlayerType, Coroutine>();
+
+    #endregion
+
+
+    #region WorkInProgress
+    [Header("WorkInProgress")]
+    [SerializeField] private TDS_ComboManager comboManager; 
+    public TDS_ComboManager ComboManager { get { return comboManager;  } }
     #endregion
 
     #endregion
@@ -521,7 +526,26 @@ public class TDS_UIManager : PunBehaviour
         TDS_LifeBar _playerLifeBar = null;
         if (_player == TDS_LevelManager.Instance.LocalPlayer && _player.photonView.isMine)
         {
-            _playerLifeBar = playerHealthBar; 
+            _playerLifeBar = playerHealthBar;
+            switch (_player.PlayerType)
+            {
+                case PlayerType.Unknown:
+                    break;
+                case PlayerType.BeardLady:
+                    if (portraitBL) portraitBL.gameObject.SetActive(true); 
+                    break;
+                case PlayerType.FatLady:
+                    if(portraitFL) portraitFL.gameObject.SetActive(true); 
+                    break;
+                case PlayerType.FireEater:
+                    if(portraitFE) portraitFE.gameObject.SetActive(true);
+                    break;
+                case PlayerType.Juggler:
+                    if(portraitJUG) portraitJUG.gameObject.SetActive(true);
+                    break;
+                default:
+                    break;
+            }
         }
         else
         {
@@ -545,7 +569,6 @@ public class TDS_UIManager : PunBehaviour
                     break;
             }
             if (!_playerLifeBar) return; 
-            
         }
         _playerLifeBar.gameObject.SetActive(true);
         _playerLifeBar.SetOwner(_player);
@@ -733,7 +756,8 @@ public class TDS_UIManager : PunBehaviour
     private void Start()
     {
         if (uiGameObject)
-            uiGameObject.SetActive(true);       
+            uiGameObject.SetActive(true);
+        ActivateMenu(uiState); 
         if (playerNameField)
         {
             string _name = $"Guest {(int)UnityEngine.Random.Range(0,999)}"; 

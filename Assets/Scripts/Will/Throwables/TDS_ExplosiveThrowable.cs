@@ -42,7 +42,9 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
     [Header("Explosion Settings")]
     [SerializeField, Range(1,60)] private float explodingDelay = 5;
 
-    [SerializeField] private ParticleSystem explosionParticles = null; 
+    [SerializeField] private ParticleSystem explosionParticles = null;
+
+    private Coroutine explosionCoroutine = null; 
 	#endregion
 
 	#region Methods
@@ -57,7 +59,7 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
     private IEnumerator SetupExplosion()
     {
         yield return new WaitForSeconds(explodingDelay);
-        if (isHeld) owner.DropObject();  
+        //if (isHeld) owner.DropObject();  
         if (explosionParticles) explosionParticles.Play();
         hitBox.Activate(attack);
         if (explosionParticles)
@@ -73,7 +75,8 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
     /// </summary>
     protected override void DestroyThrowableObject()
     {
-        hitBox.Desactivate(); 
+        hitBox.Desactivate();
+        if (isHeld) owner.DropObject(); 
         base.DestroyThrowableObject();
     }
 
@@ -109,7 +112,10 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
             _hitableTags.AddTag("Enemy");
         }
         isHeld = false;
-        StartCoroutine(SetupExplosion());
+        if(explosionCoroutine == null)
+        {
+            explosionCoroutine = StartCoroutine(SetupExplosion());
+        }
     }
     #endregion
 
