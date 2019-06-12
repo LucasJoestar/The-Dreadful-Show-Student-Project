@@ -65,16 +65,23 @@ public class TDS_SpinningAttackBehaviour : TDS_EnemyAttack
 
     public override void ApplyAttackBehaviour(TDS_Enemy _caster)
     {
-        TDS_Bounds _bounds = TDS_Camera.Instance.CurrentBounds;
-        spinningPositions = new Vector3[5] {new Vector3(_bounds.XMin + 3, 0, _bounds.ZMax + 3 ),
-                                        new Vector3(_bounds.XMin + 3, 0, _bounds.ZMin - 3 ),
-                                        new Vector3(_bounds.XMax - 3, 0, _bounds.ZMax + 3 ),
-                                        new Vector3(_bounds.XMax - 3, 0, _bounds.ZMin - 3 ),
-                                        new Vector3((_bounds.XMin + _bounds.XMax) / 2, 0, (_bounds.ZMin + _bounds.ZMax) / 2)};
         caster = _caster;
         caster.Agent.Speed = spinningSpeed;
         casterInitialRadius = caster.Agent.Radius;
-        caster.Agent.Radius = spinningRadius; 
+        caster.Agent.Radius = spinningRadius;
+        TDS_Bounds _bounds = TDS_Camera.Instance.CurrentBounds;
+        spinningPositions = new Vector3[5] {new Vector3(_bounds.XMin, 0, _bounds.ZMax ),
+                                            new Vector3(_bounds.XMin, 0, _bounds.ZMin ),
+                                            new Vector3(_bounds.XMax, 0, _bounds.ZMax ),
+                                            new Vector3(_bounds.XMax, 0, _bounds.ZMin ),
+                                            new Vector3((_bounds.XMin + _bounds.XMax) / 2, 0, (_bounds.ZMin + _bounds.ZMax) / 2)};
+        /*
+        spinningPositions = new Vector3[5] {new Vector3(UnityEngine.Random.Range(_bounds.XMin, _bounds.XMax), 0, _bounds.ZMax ),
+                                            new Vector3(UnityEngine.Random.Range(_bounds.XMin, _bounds.XMax), 0, _bounds.ZMin ),
+                                            new Vector3(UnityEngine.Random.Range(_bounds.XMin, _bounds.XMax), 0, _bounds.ZMax ),
+                                            new Vector3(UnityEngine.Random.Range(_bounds.XMin, _bounds.XMax), 0, _bounds.ZMin ),
+                                            new Vector3((_bounds.XMin + _bounds.XMax) / 2, 0, (_bounds.ZMin + _bounds.ZMax) / 2)};
+        */
         caster.Agent.OnDestinationReached += GoNextSpinningPosition;
         GoNextSpinningPosition();
     }

@@ -39,20 +39,26 @@ public class TDS_PlayerSpriteHolder : MonoBehaviour
 
     #region Fields / Properties
     public TDS_Player Owner { get; set; }
+    private SpriteRenderer playerSprite = null;
     #endregion
 
     #region Methods
 
     #region Unity Methods
+    private void Start()
+    {
+        playerSprite = GetComponentInChildren<SpriteRenderer>(); 
+    }
+
     private void OnBecameInvisible()
     {
-        if (!Owner) return; 
+        if (!Owner || !playerSprite.enabled ) return; 
         TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(Owner, true);
     }
 
     private void OnBecameVisible()
     {
-        if (!Owner) return;
+        if (!Owner || !playerSprite.enabled) return;
         TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(Owner, false);
     }
     #endregion
