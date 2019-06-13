@@ -41,13 +41,13 @@ public class TDS_Attack : ScriptableObject
 	*/
 
     #region Fields / Properties
-    /// <summary>Backing field for <see cref="Name"/>.</summary>
-    [SerializeField] protected string name = "New Attack"; 
+    /// <summary>Backing field for <see cref="AttackName"/>.</summary>
+    [SerializeField] protected string attackName = "New Attack"; 
 
     /// <summary>
     /// Name of this attack, used to reference it.
     /// </summary>
-    public string Name { get { return name; } }
+    public string AttackName { get { return attackName; } }
 
 
     /// <summary>

@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
+#pragma warning disable 0414
 [CustomEditor(typeof(TDS_Damageable), false), CanEditMultipleObjects]
 public class TDS_DamageableEditor : Editor
 {

@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 
+#pragma warning disable 0414
 [CustomEditor(typeof(TDS_FireEater), true), CanEditMultipleObjects]
 public class TDS_FireEaterEditor : TDS_PlayerEditor
 {
@@ -277,11 +278,13 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
         if (TDS_EditorUtility.FloatField("Sober Up Time", "Time it takes to the Fire Eater to sober up (in seconds)", soberUpTime))
         {
             fireEaters.ForEach(f => f.SoberUpTime = soberUpTime.floatValue);
+            serializedObject.Update();
         }
 
         if (TDS_EditorUtility.FloatField("Drunk Speed Coef", "Coefficient applied to speed when drunk", drunkSpeedCoef))
         {
             fireEaters.ForEach(f => f.DrunkSpeedCoef = drunkSpeedCoef.floatValue);
+            serializedObject.Update();
         }
 
         TDS_EditorUtility.FloatField("X Mov. after Drunken Dodge", "Distance to move the Fire Eater before getting up after a drunken dodge", xMovementAfterDrunkenDodge);
@@ -289,6 +292,7 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
         if (TDS_EditorUtility.IntField("Drunk Jump Force", "Force applied when performing a jump when drunk", drunkJumpForce))
         {
             fireEaters.ForEach(f => f.DrunkJumpForce = drunkJumpForce.intValue);
+            serializedObject.Update();
         }
 
         GUILayout.Space(3);

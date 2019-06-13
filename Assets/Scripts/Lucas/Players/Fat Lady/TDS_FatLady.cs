@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TDS_FatLady : TDS_Player 
 {
@@ -26,10 +23,6 @@ public class TDS_FatLady : TDS_Player
 	 *
 	 *	-----------------------------------
 	*/
-
-    #region Events
-
-    #endregion
 
     #region Fields / Properties
     /// <summary>Backing field for <see cref="IsBerserk"/>.</summary>
@@ -67,6 +60,22 @@ public class TDS_FatLady : TDS_Player
     }
 
 
+    /// <summary>Backing field for <see cref="FoodCurrent"/>.</summary>
+    [SerializeField] private int foodCurrent = 0;
+
+    /// <summary>
+    /// Current amount of food the Fat Lady has.
+    /// </summary>
+    public int FoodCurrent
+    {
+        get { return foodCurrent; }
+        set
+        {
+            value = Mathf.Clamp(value, 0, foodMax);
+            foodCurrent = value;
+        }
+    }
+
     /// <summary>Backing field for <see cref="FoodMax"/>.</summary>
     [SerializeField] private int foodMax = 3;
 
@@ -98,22 +107,6 @@ public class TDS_FatLady : TDS_Player
             foodHealValue = value;
         }
     }
-
-    /// <summary>Backing field for <see cref="FoodCurrent"/>.</summary>
-    [SerializeField] private int foodCurrent = 0;
-
-    /// <summary>
-    /// Current amount of food the Fat Lady has.
-    /// </summary>
-    public int FoodCurrent
-    {
-        get { return foodCurrent; }
-        set
-        {
-            value = Mathf.Clamp(value, 0, foodMax);
-            foodCurrent = value;
-        }
-    }
     #endregion
 
     #region Methods
@@ -135,10 +128,23 @@ public class TDS_FatLady : TDS_Player
     }
 
     /// <summary>
-    /// Eat some food if having in stock.
+    /// Starts the animation to eat some food if having in stock.
     /// </summary>
-    /// <returns>Returns false if having nothing to eat, true otherwise.</returns>
+    /// <returns>Returns false if having nothing to eat or being at maximum health value, true otherwise.</returns>
     public bool Eat()
+    {
+        if ((foodCurrent == 0) || (healthCurrent == healthMax)) return false;
+
+        SetFatLadyAnim(FatLadyAnimState.Eat);
+
+        return true;
+    }
+
+    /// <summary>
+    /// Heal the Fat Lady be eating food if having some.
+    /// </summary>
+    /// <returns>Returns true if having some food to eat, false otherwise.</returns>
+    public bool FoodHeal()
     {
         if (foodCurrent == 0) return false;
 

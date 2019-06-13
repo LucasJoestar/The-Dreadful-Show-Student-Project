@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
+#pragma warning disable 0649
 [Serializable]
 public class TDS_Event 
 {
