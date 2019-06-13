@@ -182,13 +182,14 @@ MonoBehaviour:
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 99
-  healthMax: 99
+  healthCurrent: 100
+  healthMax: 100
   hitBox: {fileID: 114177014032919358}
   healthBar: {fileID: 0}
   rigidbody: {fileID: 54157275823838922}
   throwable: {fileID: 0}
   handsTransform: {fileID: 4790306354836658}
+  shadowTransform: {fileID: 0}
   isAttacking: 0
   IsDown: 0
   isFacingRight: 1
@@ -245,6 +246,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 24576
   playerType: 1
+  isBerserk: 0
+  berserkHealthStep: 33
+  foodCurrent: 3
+  foodMax: 3
+  foodHealValue: 50
 --- !u!95 &95173227102487408
 Animator:
   serializedVersion: 3
@@ -611,15 +617,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300034, guid: 6eedfc74195a44648b72bcf755811a88, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 99e3e2070e3dd934e91dab70a63de183, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.0923077, y: 1.3692307}
+  m_Size: {x: 24.8, y: 35.08}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
 --- !u!114 &7192217007710613196
@@ -659,7 +665,7 @@ Transform:
   m_GameObject: {fileID: 1983350042955884}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_Children:
   - {fileID: 4218119237571884}
   m_Father: {fileID: 4975510893959776}

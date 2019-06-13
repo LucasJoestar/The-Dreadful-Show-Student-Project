@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 
+#pragma warning disable 0414
 [CustomEditor(typeof(TDS_FatLady), true), CanEditMultipleObjects]
 public class TDS_FatLadyEditor : TDS_PlayerEditor
 {
@@ -34,7 +35,20 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
     #region Fields / Properties
 
     #region SerializedProperties
+    /// <summary>SerializedProperties for <see cref="TDS_FatLady.isBerserk"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isBerserk = null;
 
+    /// <summary>SerializedProperties for <see cref="TDS_FatLady.berserkHealthStep"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty berserkHealthStep = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_FatLady.foodCurrent"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty foodCurrent = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_FatLady.foodHealValue"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty foodHealValue = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_FatLady.foodMax"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty foodMax = null;
     #endregion
 
     #region Foldouts
@@ -182,7 +196,42 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
     /// </summary>
     private void DrawSettings()
     {
+        if (Application.isPlaying)
+        {
+            if (TDS_EditorUtility.Toggle("Berserk", "Indicates if the Fat Lady is in Berserk or in \"Pacific\" mode", isBerserk))
+            {
+                fatLadies.ForEach(f => f.IsBerserk = isBerserk.boolValue);
+                serializedObject.Update();
+            }
 
+            GUILayout.Space(5);
+        }
+
+        if (TDS_EditorUtility.IntField("Berserk Health Step", "Health value separating the Berserk mode and the Pacific one", berserkHealthStep))
+        {
+            fatLadies.ForEach(f => f.BerserkHealthStep = berserkHealthStep.intValue);
+            serializedObject.Update();
+        }
+        if (TDS_EditorUtility.IntSlider("Current Food", "Amount of food the Fat Lady is currently carrying on", foodCurrent, 0, foodMax.intValue))
+        {
+            fatLadies.ForEach(f => f.FoodCurrent = foodCurrent.intValue);
+            serializedObject.Update();
+        }
+
+        GUILayout.Space(3);
+        TDS_EditorUtility.ProgressBar(25, (float)foodCurrent.intValue / foodMax.intValue, "Food");
+        GUILayout.Space(3);
+
+        if (TDS_EditorUtility.IntField("Max Food", "Maximum amount of food the Fat Lady can carry", foodMax))
+        {
+            fatLadies.ForEach(f => f.FoodMax = foodMax.intValue);
+            serializedObject.Update();
+        }
+        if (TDS_EditorUtility.IntField("Food Heal Value", "Heal value when eating some food", foodHealValue))
+        {
+            fatLadies.ForEach(f => f.FoodHealValue = foodHealValue.intValue);
+            serializedObject.Update();
+        }
     }
     #endregion
 
@@ -198,7 +247,11 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
         else isFatLadyMultiEditing = true;
 
         // Get the serializedProperties from the serializedObject
-
+        isBerserk = serializedObject.FindProperty("isBerserk");
+        berserkHealthStep = serializedObject.FindProperty("berserkHealthStep");
+        foodCurrent = serializedObject.FindProperty("foodCurrent");
+        foodHealValue = serializedObject.FindProperty("foodHealValue");
+        foodMax = serializedObject.FindProperty("foodMax");
 
         // Loads the editor folded & unfolded values of this script
         isFatLadyUnfolded = EditorPrefs.GetBool("isFatLadyUnfolded", isFatLadyUnfolded);

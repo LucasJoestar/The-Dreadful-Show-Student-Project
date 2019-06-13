@@ -174,7 +174,8 @@ public enum EnemyState
 public enum FatLadyAnimState
 {
     Berserk,
-    Pacific
+    Pacific,
+    Eat
 }
 
 /// <summary>
