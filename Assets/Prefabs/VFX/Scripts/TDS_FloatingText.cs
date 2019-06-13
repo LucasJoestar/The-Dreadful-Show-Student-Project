@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Photon; 
+﻿using Photon;
+using System.Collections;
 using TMPro;
+using UnityEngine;
 
+#pragma warning disable 0649
 public class TDS_FloatingText : PunBehaviour
 {
     #region Fields / Properties
