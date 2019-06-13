@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+#pragma warning disable 0649
+
 [AddComponentMenu("Effects/Sprite Glow")]
 [RequireComponent(typeof(SpriteRenderer)), DisallowMultipleComponent, ExecuteInEditMode]
 public class GlowEffect : MonoBehaviour

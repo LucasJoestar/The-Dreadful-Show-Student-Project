@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using Photon;
 using TMPro;
-using System;
+using UnityEngine;
+using UnityEngine.UI;
 
+#pragma warning disable 0649
 public class TDS_LobbyManager : PunBehaviour
 {
     /* TDS_RPCManager :
