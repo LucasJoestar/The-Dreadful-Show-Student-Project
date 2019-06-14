@@ -93,7 +93,7 @@ public class CustomNavMeshAgent : MonoBehaviour
     #region Inspector
 
     #region Vector3
-    [SerializeField] private Vector3 positionOffset;
+    [SerializeField] private Vector3 positionOffset = Vector3.zero;
     #endregion
 
     #region float
@@ -236,7 +236,7 @@ public class CustomNavMeshAgent : MonoBehaviour
         if (CustomNavMeshManager.Triangles == null || CustomNavMeshManager.Triangles.Count == 0)
         {
             Debug.LogWarning("Triangles Not found. Must build the navmesh for the scene");
-            Destroy(this);
+            //Destroy(this);
             return false;
         }
         if (isMoving)
@@ -353,7 +353,7 @@ public class CustomNavMeshAgent : MonoBehaviour
                 _obstaclesPos.ForEach(p => _v += p);
                 Avoid(_v);
                 _obstaclesPos = new List<Vector3>();
-                yield return null;
+                yield return new WaitForEndOfFrame();
                 continue;
             }
 
@@ -383,7 +383,7 @@ public class CustomNavMeshAgent : MonoBehaviour
             {
                 Seek(_targetPosition);
             }
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
         StopAgent();
         OnDestinationReached?.Invoke();
@@ -429,7 +429,7 @@ public class CustomNavMeshAgent : MonoBehaviour
         if (CustomNavMeshManager.Triangles == null || CustomNavMeshManager.Triangles.Count == 0)
         {
             Debug.LogWarning("Triangles Not found. Must build the navmesh for the scene");
-            Destroy(this);
+            //Destroy(this);
             return;
         }
         if (isMoving)
@@ -479,7 +479,6 @@ public class CustomNavMeshAgent : MonoBehaviour
         {
             Gizmos.DrawLine(currentPath.PathPoints[i], currentPath.PathPoints[i + 1]);
         }
-
     }
     private void Awake()
     {
