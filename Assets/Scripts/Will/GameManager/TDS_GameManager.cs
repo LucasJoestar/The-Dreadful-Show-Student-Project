@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using UnityEngine;
 
+#pragma warning disable 0414
 public static class TDS_GameManager
 {
     /* TDS_GameManager :

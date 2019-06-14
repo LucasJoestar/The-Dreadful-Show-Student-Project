@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 
+#pragma warning disable 0114, 0414
 [CustomEditor(typeof(TDS_BeardLady), true), CanEditMultipleObjects]
 public class TDS_BeardLadyEditor : TDS_PlayerEditor
 {
@@ -268,6 +269,7 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
         {
             beardLadies.ForEach(b => b.CancelInvokeGrowBeard());
             beardLadies.ForEach(b => b.CurrentBeardState = (BeardState)currentBeardState.enumValueIndex);
+            serializedObject.Update();
         }
 
         GUILayout.Space(3);
@@ -277,11 +279,13 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
         if (TDS_EditorUtility.FloatField("Beard Grow Interval", "Interval between two beard grow up", beardGrowInterval))
         {
             beardLadies.ForEach(b => b.BeardGrowInterval = beardGrowInterval.floatValue);
+            serializedObject.Update();
         }
 
         if (TDS_EditorUtility.IntSlider("Beard Life", "Current beard life", beardCurrentLife, 0, beardMaxLife.intValue) && Application.isPlaying)
         {
             beardLadies.ForEach(b => b.BeardCurrentLife = beardCurrentLife.intValue);
+            serializedObject.Update();
         }
 
         GUILayout.Space(3);
@@ -291,10 +295,12 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
         if (TDS_EditorUtility.IntField("Beard Max Life", "Maximum beard life value", beardMaxLife))
         {
             beardLadies.ForEach(b => b.BeardMaxLife = beardMaxLife.intValue);
+            serializedObject.Update();
         }
         if (TDS_EditorUtility.FloatField("Beard Heal Interval", "Interval between two beard heal", beardHealInterval))
         {
             beardLadies.ForEach(b => b.BeardHealInterval = beardHealInterval.floatValue);
+            serializedObject.Update();
         }
     }
     #endregion

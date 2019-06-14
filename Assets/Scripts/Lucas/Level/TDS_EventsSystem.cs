@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(PhotonView))]
 public class TDS_EventsSystem : PunBehaviour
 {
     /* TDS_EventsSystem :

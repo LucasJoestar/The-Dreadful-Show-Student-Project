@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
+
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Camera))]
 public class TDS_Camera : MonoBehaviour 
@@ -83,6 +86,13 @@ public class TDS_Camera : MonoBehaviour
 	 *
 	 *	-----------------------------------
 	*/
+
+    #region Events
+    /// <summary>
+    /// Event called when the camera moves on X with the movement value as parameter.
+    /// </summary>
+    public event Action<float> OnMoveX = null;
+    #endregion
 
     #region Fields / Properties
     /// <summary>
@@ -360,6 +370,12 @@ public class TDS_Camera : MonoBehaviour
             topBound.transform.position = value;
         }
     }
+
+
+    /// <summary>
+    /// Position of the camera on the previous frame.
+    /// </summary>
+    private Vector3 previousPosition = new Vector3();
     #endregion
 
     #region Singleton
@@ -762,6 +778,17 @@ public class TDS_Camera : MonoBehaviour
         }
     }
 
+    // LateUpdate is called every frame, if the Behaviour is enabled
+    private void LateUpdate()
+    {
+        // If camera moved on X axis, call related event
+        float _xMovement = transform.position.x - previousPosition.x;
+        if (_xMovement != 0) OnMoveX?.Invoke(_xMovement);
+
+        // Set position as previous one
+        previousPosition = transform.position;
+    }
+
     // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
     private void OnDestroy()
     {
@@ -780,6 +807,9 @@ public class TDS_Camera : MonoBehaviour
         // Set default level bounds
         levelBounds = new TDS_Bounds(leftBound.transform.position, rightBound.transform.position, bottomBound.transform.position, topBound.transform.position);
         currentBounds = levelBounds;
+
+        // Set previous position as current one
+        previousPosition = transform.position;
 
         // Set the camera position between bounds
         ClampInBounds();

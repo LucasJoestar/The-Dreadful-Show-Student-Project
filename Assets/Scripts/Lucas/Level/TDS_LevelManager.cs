@@ -38,7 +38,7 @@ public class TDS_LevelManager : PunBehaviour
     /// <summary>
     /// Event called when a new checkpoint is set.
     /// </summary>
-    public Action<TDS_Checkpoint> OnCheckpointActivated = null;
+    public static Action<TDS_Checkpoint> OnCheckpointActivated = null;
     #endregion
 
     #region Fields / Properties
