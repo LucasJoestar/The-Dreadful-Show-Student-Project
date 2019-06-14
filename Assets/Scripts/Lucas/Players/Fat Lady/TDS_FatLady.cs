@@ -153,6 +153,11 @@ public class TDS_FatLady : TDS_Player
 
         return true;
     }
+
+    /// <summary>
+    /// Set the amount of food of the Fat Lady to its maximum.
+    /// </summary>
+    public void SetFoodToMax() => FoodCurrent = foodMax;
     #endregion
 
     #region Animations
@@ -207,7 +212,13 @@ public class TDS_FatLady : TDS_Player
         OnHealthChanged += CheckHealthStatus;
 
         // Set food to maximum when hitting a checkpoint
-        TDS_Checkpoint.OnCheckpointActivated += () => FoodCurrent = foodMax;
+        TDS_Checkpoint.OnCheckpointActivated += SetFoodToMax;
+    }
+
+    // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
+    private void OnDestroy()
+    {
+        TDS_Checkpoint.OnCheckpointActivated -= SetFoodToMax;
     }
 
     // Use this for initialization

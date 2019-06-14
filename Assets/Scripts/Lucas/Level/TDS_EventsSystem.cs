@@ -57,6 +57,11 @@ public class TDS_EventsSystem : PunBehaviour
     [SerializeField] private bool isActivated = false;
 
     /// <summary>
+    /// Is this event system local based or not ?
+    /// </summary>
+    [SerializeField] private bool isLocal = false;
+
+    /// <summary>
     /// Boolean used when waiting for other players.
     /// </summary>
     [SerializeField] private bool isWaitingForOthers = false;
@@ -106,7 +111,7 @@ public class TDS_EventsSystem : PunBehaviour
     /// <param name="other"></param>
     private void CheckTriggerValidation(Collider other)
     {
-        if (PhotonNetwork.isMasterClient && !isActivated & other.gameObject.HasTag(detectedTags.ObjectTags)) StartEvents();
+        if ((isLocal || PhotonNetwork.isMasterClient) && !isActivated && other.gameObject.HasTag(detectedTags.ObjectTags)) StartEvents();
     }
 
     /// <summary>
@@ -125,7 +130,7 @@ public class TDS_EventsSystem : PunBehaviour
 
             currentEventCoroutine = StartEventCoroutine(_i);
 
-            if ((events[_i].EventType == CustomEventType.CameraMovement) ||
+            if (((events[_i].EventType == CustomEventType.CameraMovement) && !isLocal) ||
                 (events[_i].EventType == CustomEventType.WaitForAction))
             {
                 TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "StartCoroutine"), new object[] { _i });

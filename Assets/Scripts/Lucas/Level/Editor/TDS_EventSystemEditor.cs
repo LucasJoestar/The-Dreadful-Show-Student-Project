@@ -49,6 +49,9 @@ public class TDS_EventSystemEditor : Editor
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.isActivated"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isActivated = null;
 
+    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.isLocal"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isLocal = null;
+
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.isWaitingOthers"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isWaitingForOthers = null;
 
@@ -100,6 +103,9 @@ public class TDS_EventSystemEditor : Editor
         }
 
         GUILayout.Space(5);
+
+        TDS_EditorUtility.Toggle("Local", "Is this event system local-based or online ?", isLocal);
+        GUILayout.Space(2);
 
         TDS_EditorUtility.Toggle("Looping", "Should this event system loop when reaching the end or not", doLoop);
         TDS_EditorUtility.Toggle("Destroy when Finished", "Should this object be destroyed when event system get finished", doDestroyOnFinish);
@@ -297,6 +303,7 @@ public class TDS_EventSystemEditor : Editor
         doDestroyOnFinish = serializedObject.FindProperty("doDestroyOnFinish");
         doLoop = serializedObject.FindProperty("doLoop");
         isActivated = serializedObject.FindProperty("isActivated");
+        isLocal = serializedObject.FindProperty("isLocal");
         isWaitingForOthers = serializedObject.FindProperty("isWaitingForOthers");
         currentEvent = serializedObject.FindProperty("currentEvent");
         events = serializedObject.FindProperty("events");
