@@ -1,4 +1,4 @@
-﻿using System; 
+using System; 
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -48,9 +48,8 @@ public static class CustomNavMeshManager
     {
         SceneManager.sceneLoaded += LoadDatas;
 #if UNITY_EDITOR
-        LoadDatas(SceneManager.GetActiveScene(), LoadSceneMode.Additive); 
+        LoadDatas(SceneManager.GetActiveScene(), LoadSceneMode.Additive);
 #endif
-
     }
 
     public static void LoadDatas(Scene scene, LoadSceneMode _mode)
