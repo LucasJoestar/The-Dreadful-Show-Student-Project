@@ -32,26 +32,55 @@ public class TDS_ParallaxScrolling : MonoBehaviour
 
     #region Fields / Properties
     /// <summary>
+    /// Indicates if the parallax scrolling is active or not.
+    /// </summary>
+    [SerializeField] private bool isActive = true;
+
+    /// <summary>
     /// Scrolling coefficient related to the camera movement used to move the GameObject.
     /// </summary>
     [SerializeField] private float scrollingCoef = 1;
-	#endregion
+    #endregion
 
-	#region Methods
+    #region Methods
 
-	#region Original Methods
+    #region Original Methods
+    /// <summary>
+    /// Activate this parallax scrolling.
+    /// </summary>
+    public void Activate() => isActive = true;
+
+    /// <summary>
+    /// Change the activation of the parallax scrolling.
+    /// </summary>
+    public void ChangeActivation() => isActive = !isActive;
+
+    /// <summary>
+    /// Desactivate this parallax scrolling.
+    /// </summary>
+    public void Desactivate() => isActive = false;
+
+
     /// <summary>
     /// Makes the GameObject scroll along the camera X movement.
     /// </summary>
     /// <param name="_cameraMovement">Movement of the camera on the X axis.</param>
     public void Scroll(float _cameraMovement)
     {
+        if (!isActive) return;
+
         transform.position = new Vector3(transform.position.x + (_cameraMovement * scrollingCoef), transform.position.y, transform.position.z);
     }
-	#endregion
+    #endregion
 
-	#region Unity Methods
-	// Use this for initialization
+    #region Unity Methods
+    // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
+    private void OnDestroy()
+    {
+        if (TDS_Camera.Instance) TDS_Camera.Instance.OnMoveX -= Scroll;
+    }
+
+    // Use this for initialization
     private void Start()
     {
         TDS_Camera.Instance.OnMoveX += Scroll;
