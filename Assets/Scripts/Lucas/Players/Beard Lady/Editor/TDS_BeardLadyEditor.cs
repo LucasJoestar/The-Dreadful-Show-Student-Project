@@ -37,8 +37,11 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
     #region SerializedProperties
 
     #region Components & References
-    /// <summary>SerializedProperties for <see cref="TDS_Player.beardMagicFX"/> of type <see cref="GameObject"/>.</summary>
-    private SerializedProperty beardMagicFX = null;
+    /// <summary>SerializedProperties for <see cref="TDS_Player.beardGrowMagicFX"/> of type <see cref="GameObject"/>.</summary>
+    private SerializedProperty beardGrowMagicFX = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.beardBreakMagicFX"/> of type <see cref="GameObject"/>.</summary>
+    private SerializedProperty beardBreakMagicFX = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.beardFXTransform"/> of type <see cref="Transform"/>.</summary>
     private SerializedProperty beardFXTransform = null;
@@ -165,7 +168,8 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
     /// </summary>
     private void DrawComponentsAndReferences()
     {
-        EditorGUILayout.ObjectField(beardMagicFX, new GUIContent("Beard State", "Current state of the Beard Lady's beard"));
+        EditorGUILayout.ObjectField(beardGrowMagicFX, new GUIContent("Beard Grow FX", "FX instantiated when the Beard Lady's beard grows up"));
+        EditorGUILayout.ObjectField(beardBreakMagicFX, new GUIContent("Beard Break FX", "FX instantiated when the Beard Lady's beard breaks down"));
 
         EditorGUILayout.ObjectField(beardFXTransform, new GUIContent("Beard FXs Transform", "Transform used to instantiate beard-related FXs"));
     }
@@ -317,7 +321,8 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
         else isBeardLadyMultiEditing = true;
 
         // Get the serializedProperties from the serializedObject
-        beardMagicFX = serializedObject.FindProperty("beardMagicFX");
+        beardGrowMagicFX = serializedObject.FindProperty("beardGrowMagicFX");
+        beardBreakMagicFX = serializedObject.FindProperty("beardBreakMagicFX");
         beardFXTransform = serializedObject.FindProperty("beardFXTransform");
 
         currentBeardState = serializedObject.FindProperty("currentBeardState");

@@ -33,7 +33,12 @@ public class TDS_BeardLady : TDS_Player
     /// <summary>
     /// FX instantiated when the beard grows up.
     /// </summary>
-    [SerializeField] private GameObject beardMagicFX = null;
+    [SerializeField] private GameObject beardGrowMagicFX = null;
+
+    /// <summary>
+    /// FX instantiated when the beard breaks down.
+    /// </summary>
+    [SerializeField] private GameObject beardBreakMagicFX = null;
 
     /// <summary>
     /// Transform used to instantiate the beard FX.
@@ -54,12 +59,19 @@ public class TDS_BeardLady : TDS_Player
         get { return currentBeardState; }
         set
         {
+            if (value < 0) value = 0;
+
             if (value > currentBeardState)
             {
-                Instantiate(beardMagicFX, beardFXTransform, false);
+                Instantiate(beardGrowMagicFX, beardFXTransform, false);
             }
             else
             {
+                if (value < currentBeardState)
+                {
+                    Instantiate(beardBreakMagicFX, beardFXTransform, false);
+                }
+
                 CancelInvokeGrowBeard();
             }
 
@@ -108,7 +120,7 @@ public class TDS_BeardLady : TDS_Player
         set
         {
             if (value < 0) value = 0;
-            beardGrowInterval = value;
+            beardHealInterval = value;
         }
     }
 
