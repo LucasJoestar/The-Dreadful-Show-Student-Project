@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1662,38 +1662,38 @@ ParticleSystem:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 2.688079
-          outSlope: 2.688079
+          inSlope: 4.894589
+          outSlope: 4.894589
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
-          outWeight: 0.41071284
+          outWeight: 0.16572233
         - serializedVersion: 3
-          time: 0.50015354
-          value: 1
-          inSlope: 0.95847386
-          outSlope: 0.95847386
+          time: 0.31834507
+          value: 0.985075
+          inSlope: -0.04578363
+          outSlope: -0.04578363
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.49253884
+          inWeight: 0.6685554
           outWeight: 0.30630568
         - serializedVersion: 3
-          time: 0.63502824
-          value: 0.22658323
-          inSlope: -1.3795817
-          outSlope: -1.3795817
+          time: 0.44974706
+          value: 0.86964184
+          inSlope: -2.368584
+          outSlope: -2.368584
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.33333334
+          inWeight: 0.70656997
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 1
+          time: 0.58923006
           value: 0
-          inSlope: -0.009915487
-          outSlope: -0.009915487
+          inSlope: 0.02273052
+          outSlope: 0.02273052
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.6196559
+          inWeight: 0.8816468
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -5378,8 +5378,8 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e31666c7ef3e7f8419f2223f97672282, type: 2}
-  - {fileID: 2100000, guid: e31666c7ef3e7f8419f2223f97672282, type: 2}
+  - {fileID: 2100000, guid: d8d954842af05194e9cf0e2634ee1fc7, type: 2}
+  - {fileID: 2100000, guid: d8d954842af05194e9cf0e2634ee1fc7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
