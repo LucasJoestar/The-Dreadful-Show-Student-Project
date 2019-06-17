@@ -131,6 +131,18 @@ public class TDS_SpawnerArea : PunBehaviour
 
     #region Original Methods
     /// <summary>
+    /// Wait some time and activate the enemy
+    /// </summary>
+    /// <param name="_activatedEnemy">Enemy to activate</param>
+    /// <param name="_hasToTaunt">Does the enemy has to taunt</param>
+    /// <returns></returns>
+    private IEnumerator WaitAndActivate(TDS_Enemy _activatedEnemy, bool _hasToTaunt)
+    {
+        yield return new WaitForSeconds(UnityEngine.Random.value);
+        _activatedEnemy.ActivateEnemy(_hasToTaunt); 
+    }
+
+    /// <summary>
     /// Get the count of targeted players of a certain player type within the spanwed enemies
     /// </summary>
     /// <param name="_type"></param>
@@ -158,7 +170,7 @@ public class TDS_SpawnerArea : PunBehaviour
             waveIndex = 0;
         }
         spawnedEnemies.AddRange(waves[waveIndex].GetWaveEnemies(this));
-        if(waves[waveIndex].IsActivatedByEvent)
+        if (waves[waveIndex].IsActivatedByEvent)
         {
             foreach (TDS_Enemy e in spawnedEnemies)
             {
@@ -166,6 +178,7 @@ public class TDS_SpawnerArea : PunBehaviour
                 e.IsParalyzed = true;
             }
         }
+        else ActivateEnemies(); 
         //If the wave is empty, start the next wave
         if (spawnedEnemies.Count == 0)
         {
@@ -189,7 +202,14 @@ public class TDS_SpawnerArea : PunBehaviour
         }
     }
 
-    public void ActivateEnemies() => spawnedEnemies.ForEach(e => e.ActivateEnemy());
+    /// <summary>
+    /// For each enemy call the method WaitAndActivate
+    /// If the wave is activated by event, activate them with the taunt
+    /// </summary>
+    public void ActivateEnemies()
+    {
+        spawnedEnemies.ForEach(e => StartCoroutine(WaitAndActivate(e, waves[waveIndex].IsActivatedByEvent)));
+    }
 
     /// <summary>
     /// Destroy all dead enemies
@@ -203,7 +223,6 @@ public class TDS_SpawnerArea : PunBehaviour
         }
         deadEnemies.Clear();
     }
-
 
     /// <summary>
     /// Remove the enemy from the spawnedEnemies list and add it to the dead enemies list
@@ -222,7 +241,6 @@ public class TDS_SpawnerArea : PunBehaviour
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "CallOnNextWaveEvent"), new object[] { });
         }
     }
-
 
     /// <summary>
     /// Call the events OnAreaActivated, OnAreaDesactivated and OnNextWave 
