@@ -863,12 +863,20 @@ public abstract class TDS_Enemy : TDS_Character
     /// <summary>
     /// This Method is called when the enemy has to be activated by an event
     /// </summary>
-    public virtual void ActivateEnemy()
+    public virtual void ActivateEnemy(bool _hasToTaunt = false)
     {
         if (!PhotonNetwork.isMasterClient) return;
         IsPacific = false;
         IsParalyzed = false;
         behaviourCoroutine = StartCoroutine(Behaviour());
+    }
+
+    /// <summary>
+    /// Call this method after the taunt animation
+    /// </summary>
+    public void ActivateEnemyAfterTaunt()
+    {
+        ActivateEnemy(); 
     }
 
     /// <summary>
@@ -1010,17 +1018,6 @@ public abstract class TDS_Enemy : TDS_Character
     }
 
     /// <summary>
-    /// Set IsPacific and IsParalyzed to false 
-    /// And start the Behaviour Method
-    /// </summary>
-    protected void ResetBehaviour()
-    {
-        IsPacific = false;
-        IsParalyzed = false;
-        behaviourCoroutine = StartCoroutine(Behaviour()); 
-    }
-
-    /// <summary>
     /// Called when the enemy takes damages
     /// Stop the agent
     /// Stop all the current Coroutines
@@ -1064,7 +1061,7 @@ public abstract class TDS_Enemy : TDS_Character
         base.Start();
         if (PhotonNetwork.isMasterClient)
         {
-            behaviourCoroutine = StartCoroutine(Behaviour());
+            // behaviourCoroutine = StartCoroutine(Behaviour());
         }
         else
         {

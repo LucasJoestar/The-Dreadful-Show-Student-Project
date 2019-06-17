@@ -63,9 +63,11 @@ public class TDS_Punk : TDS_Minion
     /// <summary>
     /// Set its animation state to its taunt -> It will call the behaviour method
     /// </summary>
-    public override void ActivateEnemy()
+    public override void ActivateEnemy(bool _hasToTaunt)
     {
-        SetAnimationState((int)EnemyAnimationState.Taunt);
+        if (_hasToTaunt)
+            SetAnimationState((int)EnemyAnimationState.Taunt);
+        else base.ActivateEnemy(); 
     }
     #endregion
 
