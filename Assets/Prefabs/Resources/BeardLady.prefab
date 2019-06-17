@@ -259,14 +259,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 24576
   playerType: 0
-  beardMagicFX: {fileID: 1548626687783702, guid: 07aec73cd6dacd740b40eb5ff76f0fe0,
+  beardGrowMagicFX: {fileID: 1548626687783702, guid: 33f6b9218ca4bf0408573a980271a013,
+    type: 3}
+  beardBreakMagicFX: {fileID: 1548626687783702, guid: ddf429217dbedd241a714e210db0d1a4,
     type: 3}
   beardFXTransform: {fileID: 2984869754189752940}
   currentBeardState: 0
   beardGrowInterval: 5
-  beardHealInterval: 1
-  beardCurrentLife: 2
-  beardMaxLife: 5
+  beardHealInterval: 5
+  beardCurrentLife: 3
+  beardMaxLife: 3
   growBeardTimer: 0
   healBeardTimer: 0
 --- !u!95 &7132007744230118298
