@@ -1,4 +1,5 @@
-﻿using System.Linq; 
+﻿using System.Linq;
+using System.Collections.Generic; 
 using UnityEngine;
 using UnityEngine.UI;
 using Photon;
@@ -36,7 +37,7 @@ public class TDS_NetworkManager : PunBehaviour
 
     #region Fields / Properties
     #region Lobby
-    bool canLeave = false;
+    bool canLeave = true;
     [Space]
     [SerializeField, Range(1, 4)]
     int minimumPlayerToLaunch = 1;
@@ -45,12 +46,6 @@ public class TDS_NetworkManager : PunBehaviour
     [Space]
     [SerializeField]
     new PhotonView photonView;
-
-    /*
-    [Space]
-    [SerializeField]
-    TMP_Text textPlayerCounter;
-    */
 
     #endregion
     public static TDS_NetworkManager Instance;
@@ -84,10 +79,10 @@ public class TDS_NetworkManager : PunBehaviour
         PhotonNetwork.ConnectUsingSettings(_iD);
     }
 
-    [RuntimeInitializeOnLoadMethod]
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     void MyPersonalStart()
     {
-        Application.wantsToQuit += LeaveGame;
+        //Application.wantsToQuit += LeaveGame;
     }
     #endregion
 
@@ -118,22 +113,31 @@ public class TDS_NetworkManager : PunBehaviour
 
     bool LeaveGame()
     {
-        LeaveRoom();
-        return true;        
+        if (canLeave)
+            return true;
+        PhotonNetwork.Destroy(TDS_UIManager.Instance.gameObject);
+        TDS_SceneManager.Instance.PrepareSceneLoading(0);
+        canLeave = true; 
+        return false;        
     }
 
+    /// <summary>
+    /// Called when the player leave the room in the Main Menu
+    /// </summary>
     public void LeaveRoom()
     {
+        
         if (PhotonNetwork.isMasterClient)
         {
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LeaveRoom"), new object[] { });
         }
+
         TDS_UIManager.Instance?.SetButtonsInterractables(false);
-        TDS_UIManager.Instance?.ActivateMenu(UIState.InRoomSelection);
-        //int _playerIndex = photonView.ownerId;
-        //call methode levelmanager removeonlineplayer(_playerId)
-        TDS_UIManager.Instance?.SelectCharacter((int)PlayerType.Unknown); 
+        TDS_UIManager.Instance.LocalIsReady = false;
+        TDS_GameManager.LocalPlayer = PlayerType.Unknown;
+        TDS_UIManager.Instance?.SelectCharacter((int)PlayerType.Unknown);
         PhotonNetwork.Disconnect();
+        canLeave = true; 
     }
 
     void PlayerCount()
@@ -211,17 +215,26 @@ public class TDS_NetworkManager : PunBehaviour
         TDS_UIManager.Instance?.SetButtonsInterractables(true);
 
         PlayerCount();
+
+        canLeave = false; 
     }
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
         TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", newPlayer, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "UpdateSelectionButtons"), new object[] { (int)TDS_GameManager.LocalPlayer });
+        if(PhotonNetwork.isMasterClient && TDS_UIManager.Instance && !TDS_UIManager.Instance.PlayerListReady.ContainsKey(newPlayer))
+        {
+            TDS_UIManager.Instance.PlayerListReady.Add(newPlayer, false); 
+        }
         PlayerCount();
     }
     public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
     {
+        if (PhotonNetwork.isMasterClient && TDS_UIManager.Instance && TDS_UIManager.Instance.PlayerListReady.ContainsKey(otherPlayer))
+        {
+            TDS_UIManager.Instance.PlayerListReady.Remove(otherPlayer);
+        }
         PlayerCount();
-    }
-
+    }        
     #endregion
 
     #region Unity Methods    
@@ -233,9 +246,9 @@ public class TDS_NetworkManager : PunBehaviour
             Destroy(this);
             return; 
         }
+        Application.wantsToQuit += LeaveGame;
     }
-
-    #if UNITYEDITOR
+    #if UNITY_EDITOR
     private void OnGUI()
     {
         GUILayout.Box(PhotonNetwork.GetPing().ToString()); 

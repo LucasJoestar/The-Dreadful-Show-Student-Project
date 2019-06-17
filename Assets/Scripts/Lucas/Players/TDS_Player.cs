@@ -1679,7 +1679,7 @@ public class TDS_Player : TDS_Character
     protected virtual void FixedUpdate()
     {
         // If dead, return
-        if (isDead) return;
+        if (isDead || !PhotonNetwork.connected) return;
 
         // Checks if the player is grounded or not, and all related elements
         CheckGrounded();
@@ -1689,7 +1689,7 @@ public class TDS_Player : TDS_Character
     private void LateUpdate()
     {
         // If dead, return
-        if (isDead) return;
+        if (isDead || !PhotonNetwork.connected) return;
 
         // At the end of the frame, set the previous position as this one
         previousPosition = transform.position;
@@ -1762,6 +1762,15 @@ public class TDS_Player : TDS_Character
         CheckMovementsInputs();
         CheckActionsInputs();
 	}
+
+    protected void OnDestroy()
+    {
+        if(!photonView.isMine)
+        {
+            TDS_UIManager.Instance?.ClearUIRelatives(playerType);
+            TDS_LevelManager.Instance?.RemoveOnlinePlayer(this); 
+        }
+    }
     #endregion
 
     #endregion

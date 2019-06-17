@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq; 
 using UnityEngine;
 using UnityEngine.UI;
 using Photon;
-using TMPro; 
+using TMPro;
+
+#pragma warning disable 0649
 
 public class TDS_UIManager : PunBehaviour 
 {
@@ -195,11 +198,22 @@ public class TDS_UIManager : PunBehaviour
 
     #endregion
 
+    #region ComboManager
+    [Header("Combo Manager")]
+    [SerializeField] private TDS_ComboManager comboManager;
+    public TDS_ComboManager ComboManager { get { return comboManager; } }
+    #endregion
 
     #region WorkInProgress
-    [Header("WorkInProgress")]
-    [SerializeField] private TDS_ComboManager comboManager; 
-    public TDS_ComboManager ComboManager { get { return comboManager;  } }
+    [Header("Work in Progress")]
+    [SerializeField] private Toggle isReadyToggle;
+    private Dictionary<PhotonPlayer, bool> playerListReady = new Dictionary<PhotonPlayer, bool>();
+    public Dictionary<PhotonPlayer, bool> PlayerListReady
+    {
+        get { return playerListReady; }
+    }
+    private bool localIsReady = false;
+    public bool LocalIsReady { get { return localIsReady; } set { localIsReady = value; } } 
     #endregion
 
     #endregion
@@ -269,6 +283,10 @@ public class TDS_UIManager : PunBehaviour
             _screenPos.y = Mathf.Clamp(_screenPos.y, _followingImage.rectTransform.rect.height / 2, Screen.height - (_followingImage.rectTransform.rect.height / 2));
             _followingImage.transform.position = Vector3.MoveTowards(_followingImage.transform.position, _screenPos, Time.deltaTime * 3600);
             yield return null; 
+        }
+        if(!_followedPlayer)
+        {
+            _followingImage.gameObject.SetActive(false); 
         }
         yield return null; 
     }
@@ -657,7 +675,6 @@ public class TDS_UIManager : PunBehaviour
         {
             playersName[i].gameObject.SetActive(false);
         }
-
         if (launchGameButton) launchGameButton.gameObject.SetActive(_displayLaunchButton);
     }
 
@@ -678,7 +695,9 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_newPlayerType">Index of the enum PlayerType</param>
     public void SelectCharacter(int _newPlayerType)
     {
+        if (localIsReady) return; 
         TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdatePlayerSelectionInfo"), new object[] { (int)TDS_GameManager.LocalPlayer, _newPlayerType });
+
         TDS_GameManager.LocalPlayer = (PlayerType)_newPlayerType == TDS_GameManager.LocalPlayer ? PlayerType.Unknown : (PlayerType)_newPlayerType;
         characterSelectionMenu.UpdateLocalSelection();
     }
@@ -720,12 +739,89 @@ public class TDS_UIManager : PunBehaviour
                 break;
         }
     }
+
+
     //---------------------------------------------------------//
 
-   /// <summary>
-   /// Display the loading screen during the load of a scene
-   /// </summary>
-   /// <param name="_isLoading">Does the scene is loading or not</param>
+    /// <summary>
+    /// Called when the toggle is pressed
+    /// Update the ready settings
+    /// If the player has an Unknown PlayerType, the game cannot start
+    /// </summary>
+    public void OnReadyTogglePressed()
+    {
+        if(isReadyToggle.isOn == false)
+        {
+            isReadyToggle.targetGraphic.color = Color.red;
+            localIsReady = false;
+        }
+        else if (TDS_GameManager.LocalPlayer == PlayerType.Unknown && isReadyToggle.isOn == true)
+        {
+            isReadyToggle.isOn = false;
+            //localIsReady = false;
+            isReadyToggle.targetGraphic.color = Color.red;
+        }
+        else if(isReadyToggle.isOn == true)
+        {
+            isReadyToggle.targetGraphic.color = Color.green;
+            localIsReady = true; 
+        }
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, localIsReady });
+    }
+
+    /// <summary>
+    /// Update the ready settings
+    /// If everyone is ready, set the launch button as interactable
+    /// </summary>
+    /// <param name="_playerId"></param>
+    /// <param name="_isReady"></param>
+    public void UpdateReadySettings(int _playerId, bool _isReady)
+    {
+        PhotonPlayer _player = PhotonPlayer.Find(_playerId); 
+        if(playerListReady.ContainsKey(_player))
+        {
+            playerListReady[_player] = _isReady; 
+        }
+        if(launchGameButton) launchGameButton.interactable = !playerListReady.Any(p => p.Value == false) && localIsReady; ;
+    }
+
+    /// <summary>
+    /// Clear the legacy UI from the online player when this one is disconnected
+    /// </summary>
+    /// <param name="_playerTypeID">ID of the player type of the disconnected player</param>
+    public void ClearUIRelatives(PlayerType _playerType)
+    {
+        switch (_playerType)
+        {
+            case PlayerType.Unknown:
+                break;
+            case PlayerType.BeardLady:
+                onlineBeardLadyLifeBar.gameObject.SetActive(false);
+                hiddenBeardLadyImage.gameObject.SetActive(false);
+                break;
+            case PlayerType.FatLady:
+                onlineFatLadyLifeBar.gameObject.SetActive(false);
+                hiddenFatLadyImage.gameObject.SetActive(false);
+                break;
+            case PlayerType.FireEater:
+                onlineFireEaterLifeBar.gameObject.SetActive(false);
+                hiddenFireEaterImage.gameObject.SetActive(false);
+                break;
+            case PlayerType.Juggler:
+                onlineJugglerLifeBar.gameObject.SetActive(false);
+                hiddenJugglerImage.gameObject.SetActive(false);
+                break;
+            default:
+                break;
+        }
+    }
+
+    //------------------------------------------------------// 
+
+    /// <summary>
+    /// Display the loading screen during the load of a scene
+    /// </summary>
+    /// <param name="_isLoading">Does the scene is loading or not</param>
     public void DisplayLoadingScreen(bool _isLoading)
     {
         if (loadingScreenParent) loadingScreenParent.SetActive(_isLoading);
@@ -742,14 +838,14 @@ public class TDS_UIManager : PunBehaviour
         if (!Instance)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
             return; 
         }
-        uiGameObject = transform.GetChild(0).gameObject; 
-        DontDestroyOnLoad(gameObject);
+        uiGameObject = transform.GetChild(0).gameObject;
     }
 
     // Use this for initialization

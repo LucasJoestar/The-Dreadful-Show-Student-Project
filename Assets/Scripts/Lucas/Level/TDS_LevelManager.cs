@@ -184,13 +184,15 @@ public class TDS_LevelManager : PunBehaviour
     /// Remove the player with the selected id from the onlinePlayers list
     /// </summary>
     /// <param name="_playerId">Id of the removed player</param>
-    public void RemonveOnlinePlayer(int _playerId)
+    public void RemoveOnlinePlayer(TDS_Player _player)
     {
-        TDS_Player _player = PhotonView.Find(_playerId).GetComponent<TDS_Player>();
-        if (!_player) return;
-        _player.HealthBar.gameObject.SetActive(false); 
+        if (!_player)
+        {
+            Debug.LogError("Player Not Found"); 
+            return;
+        }
+        TDS_UIManager.Instance.ClearUIRelatives(_player.PlayerType);
         if (onlinePlayers.Contains(_player)) onlinePlayers.Remove(_player);
-        TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(_player, false); 
     }
 
     /// <summary>

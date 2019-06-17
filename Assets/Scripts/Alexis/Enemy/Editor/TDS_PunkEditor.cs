@@ -5,6 +5,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 
+#pragma warning disable 0414
+
 [CustomEditor(typeof(TDS_Punk))]
 public class TDS_PunkEditor : TDS_EnemyEditor 
 {
