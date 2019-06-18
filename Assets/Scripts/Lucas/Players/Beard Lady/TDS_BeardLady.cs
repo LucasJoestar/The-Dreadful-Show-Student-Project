@@ -79,7 +79,6 @@ public class TDS_BeardLady : TDS_Player
 
             if (value < BeardState.VeryVeryLongDude)
             {
-                Debug.Log("Beard State => " + value);
                 InvokeGrowBeard();
             }
 
