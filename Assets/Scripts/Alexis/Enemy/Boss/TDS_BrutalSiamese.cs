@@ -61,11 +61,12 @@ public class TDS_BrutalSiamese : TDS_Enemy
     protected override void Start()
     {
         base.Start();
-        canThrow = false; 
+        canThrow = false;
+        StartCoroutine(Behaviour());
     }
-	
-	// Update is called once per frame
-	protected override void Update()
+
+    // Update is called once per frame
+    protected override void Update()
     {
         base.Update(); 
 	}

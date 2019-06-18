@@ -23,6 +23,16 @@ public class TDS_UIManager : PunBehaviour
 	 *	### MODIFICATIONS ###
 	 *	#####################
      *	
+     *	Date :			[17/06/2019]
+	 *	Author :		[THIEBAUT Alexis]
+	 *
+	 *	Changes :
+	 *
+	 *	[Update the UI]
+     *	    - Clear the UI when a player disconnect
+     *	    - Set a toggle to wait every player in the room before launching the game
+	 *
+	 *	-----------------------------------
      *	
      *	Date :			[28/05/2019]
 	 *	Author :		[THIEBAUT Alexis]
@@ -32,6 +42,7 @@ public class TDS_UIManager : PunBehaviour
 	 *	[Set the lifebars managed in local]
      *	    - Set a new SerializeField for the prefab of the lifebars
      *	    - Modify methods to manage the lifebat in local
+     *	    - Adding a Combo counter
 	 *
 	 *	-----------------------------------
      *	
@@ -156,6 +167,14 @@ public class TDS_UIManager : PunBehaviour
         get { return playerNameField; }
     }
     [SerializeField] private TMP_Text playerCountText;
+    [SerializeField] private Toggle isReadyToggle;
+    private Dictionary<PhotonPlayer, bool> playerListReady = new Dictionary<PhotonPlayer, bool>();
+    public Dictionary<PhotonPlayer, bool> PlayerListReady
+    {
+        get { return playerListReady; }
+    }
+    private bool localIsReady = false;
+    public bool LocalIsReady { get { return localIsReady; } set { localIsReady = value; } }
     #endregion
     #endregion
 
@@ -205,15 +224,7 @@ public class TDS_UIManager : PunBehaviour
     #endregion
 
     #region WorkInProgress
-    [Header("Work in Progress")]
-    [SerializeField] private Toggle isReadyToggle;
-    private Dictionary<PhotonPlayer, bool> playerListReady = new Dictionary<PhotonPlayer, bool>();
-    public Dictionary<PhotonPlayer, bool> PlayerListReady
-    {
-        get { return playerListReady; }
-    }
-    private bool localIsReady = false;
-    public bool LocalIsReady { get { return localIsReady; } set { localIsReady = value; } } 
+    //[Header("Work in Progress")]
     #endregion
 
     #endregion
@@ -380,6 +391,37 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Clear the legacy UI from the online player when this one is disconnected
+    /// </summary>
+    /// <param name="_playerTypeID">ID of the player type of the disconnected player</param>
+    public void ClearUIRelatives(PlayerType _playerType)
+    {
+        switch (_playerType)
+        {
+            case PlayerType.Unknown:
+                break;
+            case PlayerType.BeardLady:
+                if (onlineBeardLadyLifeBar) onlineBeardLadyLifeBar.gameObject.SetActive(false);
+                if (hiddenBeardLadyImage) hiddenBeardLadyImage.gameObject.SetActive(false);
+                break;
+            case PlayerType.FatLady:
+                if (onlineFatLadyLifeBar) onlineFatLadyLifeBar.gameObject.SetActive(false);
+                if (hiddenFatLadyImage) hiddenFatLadyImage.gameObject.SetActive(false);
+                break;
+            case PlayerType.FireEater:
+                if (onlineFireEaterLifeBar) onlineFireEaterLifeBar.gameObject.SetActive(false);
+                if (hiddenFireEaterImage) hiddenFireEaterImage.gameObject.SetActive(false);
+                break;
+            case PlayerType.Juggler:
+                if (onlineJugglerLifeBar) onlineJugglerLifeBar.gameObject.SetActive(false);
+                if (hiddenJugglerImage) hiddenJugglerImage.gameObject.SetActive(false);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
     /// Set the dialogbox parent as inactive
     /// </summary>
     public void DesactivateDialogBox()
@@ -446,6 +488,15 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Display the loading screen during the load of a scene
+    /// </summary>
+    /// <param name="_isLoading">Does the scene is loading or not</param>
+    public void DisplayLoadingScreen(bool _isLoading)
+    {
+        if (loadingScreenParent) loadingScreenParent.SetActive(_isLoading);
+    }
+
+    /// <summary>
     /// Check if the image is already being filled
     /// If so, stop the coroutine and remove it from the dictionary 
     /// Then start the coroutine and stock it with the filledImage as a key in the dictionary
@@ -456,6 +507,68 @@ public class TDS_UIManager : PunBehaviour
     {
         StopFilling(_lifebar); 
         filledImages.Add(_lifebar, StartCoroutine(UpdateFilledImage(_lifebar, _fillingValue))); 
+    }
+
+    /// <summary>
+    /// Load the next level 
+    /// If Master client, send the information to the other players
+    /// </summary>
+    public void LoadLevel()
+    {
+        if (isloadingNextScene)
+        {
+            if (PhotonNetwork.isMasterClient)
+                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
+            TDS_SceneManager.Instance?.PrepareSceneLoading(1);
+        }
+        else
+        {
+            if (PhotonNetwork.isMasterClient)
+                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
+            TDS_LevelManager.Instance.Spawn();
+        }
+        ActivateMenu(UIState.InGame);
+    }
+
+    /// <summary>
+    /// Called when the toggle is pressed
+    /// Update the ready settings
+    /// If the player has an Unknown PlayerType, the game cannot start
+    /// </summary>
+    public void OnReadyTogglePressed()
+    {
+        if (isReadyToggle.isOn == false)
+        {
+            isReadyToggle.targetGraphic.color = Color.red;
+            localIsReady = false;
+        }
+        else if (TDS_GameManager.LocalPlayer == PlayerType.Unknown && isReadyToggle.isOn == true)
+        {
+            isReadyToggle.isOn = false;
+            //localIsReady = false;
+            isReadyToggle.targetGraphic.color = Color.red;
+        }
+        else if (isReadyToggle.isOn == true)
+        {
+            isReadyToggle.targetGraphic.color = Color.green;
+            localIsReady = true;
+        }
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, localIsReady });
+    }
+
+    public void QuitGame() => Application.Quit();
+
+    /// <summary>
+    /// Select a new character (used in UnityEvent)
+    /// </summary>
+    /// <param name="_newPlayerType">Index of the enum PlayerType</param>
+    public void SelectCharacter(int _newPlayerType)
+    {
+        if (localIsReady) return;
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdatePlayerSelectionInfo"), new object[] { (int)TDS_GameManager.LocalPlayer, _newPlayerType });
+
+        TDS_GameManager.LocalPlayer = (PlayerType)_newPlayerType == TDS_GameManager.LocalPlayer ? PlayerType.Unknown : (PlayerType)_newPlayerType;
+        characterSelectionMenu.UpdateLocalSelection();
     }
 
     /// <summary>
@@ -501,6 +614,21 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Set the character selection buttons as interactable or not
+    /// </summary>
+    /// <param name="_isConnected">Does the player is connected, also the interractability of the buttons</param>
+    public void SetButtonsInterractables(bool _isConnected)
+    {
+        if (characterSelectionMenu)
+        {
+            characterSelectionMenu.BeardLadyButton.interactable = _isConnected;
+            characterSelectionMenu.FatLadyButton.interactable = _isConnected;
+            characterSelectionMenu.JugglerButton.interactable = _isConnected;
+            characterSelectionMenu.FireEaterButton.interactable = _isConnected;
+        }
+    }
+
+    /// <summary>
     /// Set the BossLifeBar's owner and set the game object active
     /// Add the updating method when the boss take damage
     /// When the boss dies, set the life to inactive
@@ -533,6 +661,20 @@ public class TDS_UIManager : PunBehaviour
         _enemy.HealthBar = _healthBar;
 
         _enemy.OnTakeDamage += _enemy.UpdateLifeBar; 
+    }
+
+    /// <summary>
+    /// Set the game in pause menu
+    /// If the player is alone, freeze the time
+    /// </summary>
+    /// <param name="_isPaused"></param>
+    public void SetPause(bool _isPaused)
+    {
+        if (TDS_LevelManager.Instance && TDS_LevelManager.Instance.OnlinePlayers.Count == 0)
+        {
+            Time.timeScale = _isPaused ? 0 : 1;
+        }
+        ActivateMenu(_isPaused ? UIState.InPause : UIState.InGame);
     }
 
     /// <summary>
@@ -635,28 +777,6 @@ public class TDS_UIManager : PunBehaviour
         curtainsAnimator.SetTrigger("Switch"); 
     }
 
-    //-------------------MAIN MENU MIGRATION-------------------//
-    /// <summary>
-    /// Load the next level 
-    /// If Master client, send the information to the other players
-    /// </summary>
-    public void LoadLevel()
-    {
-        if(isloadingNextScene)
-        {
-            if (PhotonNetwork.isMasterClient)
-                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
-            TDS_SceneManager.Instance?.PrepareSceneLoading(1);
-        }
-        else
-        {
-            if (PhotonNetwork.isMasterClient)
-                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
-            TDS_LevelManager.Instance.Spawn();
-        }
-        ActivateMenu(UIState.InGame);
-    }
-
     /// <summary>
     /// Display the number of players in the room and their names
     /// If the player is the master client, also display the launch button
@@ -691,31 +811,25 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
-    /// Select a new character (used in UnityEvent)
+    /// Update the ready settings
+    /// If everyone is ready, set the launch button as interactable
     /// </summary>
-    /// <param name="_newPlayerType">Index of the enum PlayerType</param>
-    public void SelectCharacter(int _newPlayerType)
+    /// <param name="_playerId"></param>
+    /// <param name="_isReady"></param>
+    public void UpdateReadySettings(int _playerId, bool _isReady)
     {
-        if (localIsReady) return; 
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdatePlayerSelectionInfo"), new object[] { (int)TDS_GameManager.LocalPlayer, _newPlayerType });
-
-        TDS_GameManager.LocalPlayer = (PlayerType)_newPlayerType == TDS_GameManager.LocalPlayer ? PlayerType.Unknown : (PlayerType)_newPlayerType;
-        characterSelectionMenu.UpdateLocalSelection();
-    }
-
-    public void QuitGame() => Application.Quit();
-
-    public void SetButtonsInterractables(bool _isConnected)
-    {
-        if(characterSelectionMenu)
+        PhotonPlayer _player = PhotonPlayer.Find(_playerId);
+        if (playerListReady.ContainsKey(_player))
         {
-            characterSelectionMenu.BeardLadyButton.interactable = _isConnected;
-            characterSelectionMenu.FatLadyButton.interactable = _isConnected;
-            characterSelectionMenu.JugglerButton.interactable = _isConnected;
-            characterSelectionMenu.FireEaterButton.interactable = _isConnected;
+            playerListReady[_player] = _isReady;
         }
+        if (launchGameButton) launchGameButton.interactable = !playerListReady.Any(p => p.Value == false) && localIsReady; ;
     }
 
+    /// <summary>
+    /// Update the interractability of a character selection button
+    /// </summary>
+    /// <param name="_playerType"></param>
     public void UpdateSelectionButtons(int _playerType)
     {
         if (!characterSelectionMenu) return;
@@ -740,108 +854,6 @@ public class TDS_UIManager : PunBehaviour
                 break;
         }
     }
-
-
-    //---------------------------------------------------------//
-
-    /// <summary>
-    /// Called when the toggle is pressed
-    /// Update the ready settings
-    /// If the player has an Unknown PlayerType, the game cannot start
-    /// </summary>
-    public void OnReadyTogglePressed()
-    {
-        if(isReadyToggle.isOn == false)
-        {
-            isReadyToggle.targetGraphic.color = Color.red;
-            localIsReady = false;
-        }
-        else if (TDS_GameManager.LocalPlayer == PlayerType.Unknown && isReadyToggle.isOn == true)
-        {
-            isReadyToggle.isOn = false;
-            //localIsReady = false;
-            isReadyToggle.targetGraphic.color = Color.red;
-        }
-        else if(isReadyToggle.isOn == true)
-        {
-            isReadyToggle.targetGraphic.color = Color.green;
-            localIsReady = true; 
-        }
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, localIsReady });
-    }
-
-    /// <summary>
-    /// Update the ready settings
-    /// If everyone is ready, set the launch button as interactable
-    /// </summary>
-    /// <param name="_playerId"></param>
-    /// <param name="_isReady"></param>
-    public void UpdateReadySettings(int _playerId, bool _isReady)
-    {
-        PhotonPlayer _player = PhotonPlayer.Find(_playerId); 
-        if(playerListReady.ContainsKey(_player))
-        {
-            playerListReady[_player] = _isReady; 
-        }
-        if(launchGameButton) launchGameButton.interactable = !playerListReady.Any(p => p.Value == false) && localIsReady; ;
-    }
-
-    /// <summary>
-    /// Clear the legacy UI from the online player when this one is disconnected
-    /// </summary>
-    /// <param name="_playerTypeID">ID of the player type of the disconnected player</param>
-    public void ClearUIRelatives(PlayerType _playerType)
-    {
-        switch (_playerType)
-        {
-            case PlayerType.Unknown:
-                break;
-            case PlayerType.BeardLady:
-                if(onlineBeardLadyLifeBar) onlineBeardLadyLifeBar.gameObject.SetActive(false);
-                if(hiddenBeardLadyImage) hiddenBeardLadyImage.gameObject.SetActive(false);
-                break;
-            case PlayerType.FatLady:
-                if(onlineFatLadyLifeBar) onlineFatLadyLifeBar.gameObject.SetActive(false);
-                if(hiddenFatLadyImage) hiddenFatLadyImage.gameObject.SetActive(false);
-                break;
-            case PlayerType.FireEater:
-                if(onlineFireEaterLifeBar) onlineFireEaterLifeBar.gameObject.SetActive(false);
-                if(hiddenFireEaterImage) hiddenFireEaterImage.gameObject.SetActive(false);
-                break;
-            case PlayerType.Juggler:
-                if(onlineJugglerLifeBar) onlineJugglerLifeBar.gameObject.SetActive(false);
-                if(hiddenJugglerImage) hiddenJugglerImage.gameObject.SetActive(false);
-                break;
-            default:
-                break;
-        }
-    }
-
-    /// <summary>
-    /// Set the game in pause menu
-    /// If the player is alone, freeze the time
-    /// </summary>
-    /// <param name="_isPaused"></param>
-    public void SetPause(bool _isPaused)
-    {
-        if (TDS_LevelManager.Instance && TDS_LevelManager.Instance.OnlinePlayers.Count == 0)
-        {
-            Time.timeScale = _isPaused ? 0 : 1;
-        }
-        ActivateMenu(_isPaused ? UIState.InPause : UIState.InGame); 
-    }
-
-    //------------------------------------------------------// 
-
-    /// <summary>
-    /// Display the loading screen during the load of a scene
-    /// </summary>
-    /// <param name="_isLoading">Does the scene is loading or not</param>
-    public void DisplayLoadingScreen(bool _isLoading)
-    {
-        if (loadingScreenParent) loadingScreenParent.SetActive(_isLoading);
-    } 
-
     #endregion
 
     #endregion

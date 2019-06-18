@@ -125,6 +125,7 @@ public class TDS_UnicycleSiamese : TDS_Enemy
         bounds = TDS_Camera.Instance?.CurrentBounds;
         hasReachedRightBound = Mathf.Abs(transform.position.x - bounds.XMin) >= Mathf.Abs(transform.position.x - bounds.XMax) ? true : false; 
         base.Start();
+        StartCoroutine(Behaviour()); 
     }
 
     // Update is called once per frame

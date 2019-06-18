@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 419458094}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0.92}
-  m_LocalScale: {x: 4.15, y: 0.05, z: 4}
+  m_LocalScale: {x: 2.5, y: 0.05, z: 4}
   m_Children: []
   m_Father: {fileID: 2085316961524171250}
   m_RootOrder: 3
@@ -235,8 +235,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.5434313, y: 5.0834017, z: 1}
-  m_Center: {x: 0.014129162, y: 2.5417008, z: 0}
+  m_Size: {x: 3, y: 3.25, z: 1}
+  m_Center: {x: 0, y: 1.65, z: 0}
 --- !u!95 &2085316961524171262
 Animator:
   serializedVersion: 3
@@ -417,13 +417,13 @@ MonoBehaviour:
   agent: {fileID: 2085316961524171261}
   damagesThreshold: 25
   splitingEnemiesNames:
-  - Punk
-  - Punk
-  - Punk
+  - SiameseMDistant
+  - SiameseMContact
+  - SiameseBrutal
   splitingPosition:
-  - {x: 7.5199823, y: 0, z: 3.6054945}
-  - {x: -4.61065, y: 0.0150613785, z: 4.77374}
-  - {x: 1.3702841, y: 0, z: 6.0848923}
+  - {x: -1.2322462, y: 0, z: -0.0033926964}
+  - {x: 1.3651762, y: 0, z: -0.009152412}
+  - {x: 0, y: 0, z: 0.010109901}
 --- !u!1 &2085316961818940415
 GameObject:
   m_ObjectHideFlags: 0
@@ -492,12 +492,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300032, guid: f47060d40f8996948b106647eb878d31, type: 3}
+  m_Sprite: {fileID: 21300188, guid: f47060d40f8996948b106647eb878d31, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.64, y: 0.64}
+  m_Size: {x: 2.47, y: 3.6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

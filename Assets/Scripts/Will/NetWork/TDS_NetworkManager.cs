@@ -105,14 +105,6 @@ public class TDS_NetworkManager : PunBehaviour
         #endregion
     }
 
-    public void LeaveGame()
-    {
-        TDS_GameManager.LocalPlayer = PlayerType.Unknown;
-        PhotonNetwork.Disconnect();
-        Destroy(TDS_UIManager.Instance.gameObject);
-        TDS_SceneManager.Instance.PrepareSceneLoading(0); 
-    }
-
     /// <summary>
     /// Called when the player leave the room in the Main Menu
     /// </summary>
@@ -166,6 +158,22 @@ public class TDS_NetworkManager : PunBehaviour
         }
     }
     #endregion
+
+    /// <summary>
+    /// Called in UI, when the player wants to leave the game
+    /// Disconnect him a get him to the main menu
+    /// </summary>
+    public void LeaveGame()
+    {
+        if (PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LeaveGame"), new object[] { });
+        }
+        TDS_GameManager.LocalPlayer = PlayerType.Unknown;
+        PhotonNetwork.Disconnect();
+
+        TDS_SceneManager.Instance.PrepareSceneLoading(0);
+    }
 
     #region Player   
     public void SetPlayerName(string _nickname)
@@ -234,7 +242,6 @@ public class TDS_NetworkManager : PunBehaviour
             Destroy(this);
             return; 
         }
-        //Application.wantsToQuit += LeaveGame;
     }
     #if UNITY_EDITOR
     private void OnGUI()

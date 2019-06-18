@@ -120,6 +120,7 @@ public class TDS_SiameseEditor : TDS_BossEditor
                     EditorGUILayout.LabelField(splitingEnemiesNames.GetArrayElementAtIndex(i).stringValue, TDS_EditorUtility.HeaderStyle);
                     GUITools.ActionButton("X", RemoveSettingsAtIndex, i, Color.white, Color.black, "Remove this spliting enemy");
                     Repaint();
+                    serializedObject.ApplyModifiedProperties(); 
                     EditorGUILayout.EndHorizontal();
                 }
                 EditorGUILayout.Space();
@@ -132,6 +133,8 @@ public class TDS_SiameseEditor : TDS_BossEditor
                     splitingEnemiesNames.GetArrayElementAtIndex(0).stringValue = _e.EnemyName;
                     splitingPosition.InsertArrayElementAtIndex(0);
                     splitingPosition.GetArrayElementAtIndex(0).vector3Value = Vector3.forward;
+                    Repaint();
+                    serializedObject.ApplyModifiedProperties();
                 }
             }
             EditorGUILayout.EndVertical();

@@ -23,10 +23,96 @@ TextureImporter:
     21300036: Siamese_Tornado_1
     21300038: Siamese_Tornado_2
     21300040: Siamese_Tornado_3
-    21300042: Siamese_SpriteSheet_24
+    21300042: SiameseBrutal_Attack01
     21300044: Siamese_Tornado_4
     21300046: Siamese_Tornado_5
     21300048: Siamese_Tornado_6
+    21300050: SiameseBrutal_Start01
+    21300052: SiameseBrutal_Start02
+    21300054: SiameseBrutal_Start04
+    21300056: SiameseBrutal_Start06
+    21300058: SiameseBrutal_Start07
+    21300060: SiameseBrutal_Start08
+    21300062: SiameseBrutal_Idle02
+    21300064: SiameseBrutal_Run01
+    21300066: SiameseBrutal_Run02
+    21300068: SiameseBrutal_Hit
+    21300070: SiameseBrutal_Death01
+    21300072: SiameseBrutal_Start03
+    21300074: SiameseBrutal_Start05
+    21300076: SiameseBrutal_Idle01
+    21300078: SiameseBrutal_Run03
+    21300080: SiameseBrutal_Run04
+    21300082: SiameseBrutal_Death02
+    21300084: Siamese_SpriteSheet_19
+    21300086: SiameseBrutal_Death04
+    21300088: Siamese_SpriteSheet_21
+    21300090: SiameseBrutal_Death03
+    21300092: SiameseBrutal_Death05
+    21300094: SiameseMDistant_Attack01
+    21300096: SiameseMDistant_Attack02
+    21300098: SiameseMDistant_Attack03
+    21300100: SiameseMDistant_Run01
+    21300102: SiameseMDistant_Run02
+    21300104: SiameseMDistant_Run03
+    21300106: SiameseMDistant_Run04
+    21300108: SiameseMDistant_Run05
+    21300110: SiameseMDistant_Death01
+    21300112: SiameseMDistant_Hit
+    21300114: SiameseBrutal_Attack02
+    21300116: SiameseMDistant_Death02
+    21300118: Siamese_SpriteSheet_41
+    21300120: SiameseMDistant_Death04
+    21300122: SiameseMDistant_Death03
+    21300124: SiameseMDistant_Death05
+    21300126: SiameseMContact_Run01
+    21300128: SiameseMContact_Run02
+    21300130: SiameseMContact_Run03
+    21300132: SiameseMContact_Run04
+    21300134: SiameseMContact_Attack01
+    21300136: SiameseMContact_Attack02
+    21300138: SiameseMContact_Death01
+    21300140: SiameseMContact_Hit
+    21300142: SiameseMContact_Death02
+    21300144: SiameseMContact_Death03
+    21300146: SiameseMContact_Death04
+    21300148: SiameseMContact_Death05
+    21300150: Siamese_ThrowingAttack03
+    21300152: Siamese_ThrowingAttack04
+    21300154: Siamese_Hit
+    21300156: Siamese_ThrowingAttack01
+    21300158: Siamese_ThrowingAttack02
+    21300160: Siamese_SpriteSheet_69
+    21300162: Siamese_ThrowingAttack05
+    21300164: ExplosiveGift
+    21300166: Ball
+    21300168: Siamese_LowAttack01
+    21300170: Siamese_LowAttack02
+    21300172: Siamese_LowAttack03
+    21300174: Siamese_Run01
+    21300176: Siamese_Run02
+    21300178: Siamese_Run03
+    21300180: Siamese_Run04
+    21300182: Siamese_SlapAttack01
+    21300184: Siamese_SlapAttack02
+    21300186: Siamese_SlapAttack03
+    21300188: Siamese_Idle01
+    21300190: Siamese_Idle02
+    21300192: Siamese_SpinningAttack01
+    21300194: Siamese_SpinningAttack02
+    21300196: Siamese_SpinningAttack03
+    21300198: Siamese_SpriteSheet_88
+    21300200: Siamese_SpinningAttack04
+    21300202: Siamese_SpinningAttack05
+    21300204: Siamese_SpinningAttack06
+    21300206: Siamese_Death01
+    21300208: Siamese_Death02
+    21300210: Siamese_Death03
+    21300212: Siamese_Death04
+    21300214: Siamese_Death05
+    21300216: Siamese_Death08
+    21300218: Siamese_Death06
+    21300220: Siamese_Death07
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -153,33 +239,73 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Siamese_ThrowingGift_3
+      name: SiameseBrutal_Start01
       rect:
         serializedVersion: 2
-        x: 1183
-        y: 3387
-        width: 441
-        height: 654
+        x: 24
+        y: 3767
+        width: 148
+        height: 297
       alignment: 9
-      pivot: {x: 0.45, y: 0}
+      pivot: {x: 0.55, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bf64fd9f1a8f68942ba21715a53ba7d4
+      spriteID: 7363adbe3a9956b47bf367d9cbd86ee6
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Siamese_ThrowingGift_4
+      name: SiameseBrutal_Start02
       rect:
         serializedVersion: 2
-        x: 1803
-        y: 3383
-        width: 457
-        height: 615
+        x: 201
+        y: 3771
+        width: 176
+        height: 271
+      alignment: 9
+      pivot: {x: 0.9, y: 0.03}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53bb12c468fb417488a31ed0e828ffe9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Start04
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 3767
+        width: 226
+        height: 225
+      alignment: 9
+      pivot: {x: 0.8, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14ef8c5726136c8408bbf25e41cfa58d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Start06
+      rect:
+        serializedVersion: 2
+        x: 1276
+        y: 3767
+        width: 165
+        height: 194
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -187,7 +313,927 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 01789e71d177fad4eb2cb9167f613f5c
+      spriteID: 21ace70948062ec47ae1814de2a351d5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Start07
+      rect:
+        serializedVersion: 2
+        x: 1464
+        y: 3767
+        width: 123
+        height: 202
+      alignment: 9
+      pivot: {x: 0.62, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5de574bc4df8ee04e83087a8467b0c98
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Start08
+      rect:
+        serializedVersion: 2
+        x: 1655
+        y: 3767
+        width: 96
+        height: 234
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4bb56dcf4c91174e83bcf2320f764ad
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Idle02
+      rect:
+        serializedVersion: 2
+        x: 2007
+        y: 3769
+        width: 156
+        height: 203
+      alignment: 9
+      pivot: {x: 0.5, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8bafbb699e756fc41a04e598b263802f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Run01
+      rect:
+        serializedVersion: 2
+        x: 2200
+        y: 3768
+        width: 134
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad8ea4bf27fb29b4daf6f16bffd54b83
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Run02
+      rect:
+        serializedVersion: 2
+        x: 2364
+        y: 3767
+        width: 110
+        height: 193
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87381358bdda0e84e93797aeb454e4de
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Hit
+      rect:
+        serializedVersion: 2
+        x: 2827
+        y: 3784
+        width: 127
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba179ad4fa929a4468282c20d04dd69b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Death01
+      rect:
+        serializedVersion: 2
+        x: 2996
+        y: 3775
+        width: 170
+        height: 213
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 44ac772421cd5524980038327b1328e8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Start03
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 3748
+        width: 295
+        height: 163
+      alignment: 9
+      pivot: {x: 0.95, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54b0cbc26c1c9bc4895f0ae5734175d0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Start05
+      rect:
+        serializedVersion: 2
+        x: 991
+        y: 3767
+        width: 233
+        height: 116
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3886cc2e4baca94298380406c890ea8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Idle01
+      rect:
+        serializedVersion: 2
+        x: 1792
+        y: 3768
+        width: 150
+        height: 227
+      alignment: 9
+      pivot: {x: 0.5, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a42e641caba26c4ca0853302186abd8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Run03
+      rect:
+        serializedVersion: 2
+        x: 2504
+        y: 3768
+        width: 132
+        height: 184
+      alignment: 9
+      pivot: {x: 0.5, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c1e2b7cc2e7fbe4fb06f97fccfd0f6d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Run04
+      rect:
+        serializedVersion: 2
+        x: 2667
+        y: 3764
+        width: 102
+        height: 196
+      alignment: 9
+      pivot: {x: 0.5, y: 0.025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a78e56e147778264db1b1df96d5b29e7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Death02
+      rect:
+        serializedVersion: 2
+        x: 3202
+        y: 3779
+        width: 194
+        height: 165
+      alignment: 9
+      pivot: {x: 0.42, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb663ff68ae490c4298b9e4b0f3d1b7f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Death04
+      rect:
+        serializedVersion: 2
+        x: 3668
+        y: 3808
+        width: 176
+        height: 123
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b37a6d73c0c02f04982c0e522bb0a419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Death03
+      rect:
+        serializedVersion: 2
+        x: 3439
+        y: 3769
+        width: 202
+        height: 147
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a2849978696e834ea88aa3a87461eb2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Death05
+      rect:
+        serializedVersion: 2
+        x: 3873
+        y: 3769
+        width: 207
+        height: 83
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 853ed97fbee8ae24b9b91d0610be1852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Attack01
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 3389
+        width: 175
+        height: 331
+      alignment: 9
+      pivot: {x: 0.5, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce9b772f0d8b49c4e81b5da1de7d0001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMDistant_Attack01
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 3387
+        width: 160
+        height: 282
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fe77e617575f4e4dbed8804d47574e3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMDistant_Attack02
+      rect:
+        serializedVersion: 2
+        x: 712
+        y: 3384
+        width: 149
+        height: 301
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4df2c08423b1ccc40848b29328ad10da
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMDistant_Attack03
+      rect:
+        serializedVersion: 2
+        x: 934
+        y: 3384
+        width: 204
+        height: 290
+      alignment: 9
+      pivot: {x: 0.275, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15e32a990253f7a438183b17c99407d7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMDistant_Run01
+      rect:
+        serializedVersion: 2
+        x: 1174
+        y: 3384
+        width: 158
+        height: 264
+      alignment: 9
+      pivot: {x: 0.7, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1667cd1698286634a981ab02026cd8f5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMDistant_Run02
+      rect:
+        serializedVersion: 2
+        x: 1372
+        y: 3384
+        width: 147
+        height: 279
+      alignment: 9
+      pivot: {x: 0.6, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ef7072cbe08d06469512158ae137345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMDistant_Run03
+      rect:
+        serializedVersion: 2
+        x: 1568
+        y: 3384
+        width: 132
+        height: 269
+      alignment: 9
+      pivot: {x: 0.55, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69ab48f974df2974f91d9fe37630b894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMDistant_Run04
+      rect:
+        serializedVersion: 2
+        x: 1734
+        y: 3385
+        width: 133
+        height: 277
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82b08989f4f4fdb488203f742c50f27f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMDistant_Run05
+      rect:
+        serializedVersion: 2
+        x: 1905
+        y: 3384
+        width: 136
+        height: 271
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a633cd8f9403d864b943860e4c53be5f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMDistant_Death01
+      rect:
+        serializedVersion: 2
+        x: 2311
+        y: 3385
+        width: 205
+        height: 261
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72f479521a56809439ae2a80e294c55a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMDistant_Hit
+      rect:
+        serializedVersion: 2
+        x: 2090
+        y: 3385
+        width: 180
+        height: 285
+      alignment: 9
+      pivot: {x: 0.63, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ccfde998d6dea745a9af990b1530f35
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseBrutal_Attack02
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 3387
+        width: 204
+        height: 166
+      alignment: 9
+      pivot: {x: 0.14, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: efd3be73e1abc9e4ba4a05154c8e3053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMDistant_Death02
+      rect:
+        serializedVersion: 2
+        x: 2556
+        y: 3365
+        width: 283
+        height: 265
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1e6c8368604c04488bd9e702fd0dedb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMDistant_Death04
+      rect:
+        serializedVersion: 2
+        x: 3192
+        y: 3399
+        width: 263
+        height: 135
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ad8ee5e717770248840071085232e1c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMDistant_Death03
+      rect:
+        serializedVersion: 2
+        x: 2886
+        y: 3387
+        width: 270
+        height: 196
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84bda807bc08d6f48a680416737cb5b6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMDistant_Death05
+      rect:
+        serializedVersion: 2
+        x: 3492
+        y: 3385
+        width: 269
+        height: 79
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5afe0f62bc89e4e4e9426aeb447dc44e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMContact_Run01
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 3043
+        width: 127
+        height: 269
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9b5cd437449e274cb96489feb0a8cff
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMContact_Run02
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 3043
+        width: 125
+        height: 261
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b02878ccb927d841bad6c30190a79e5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMContact_Run03
+      rect:
+        serializedVersion: 2
+        x: 427
+        y: 3043
+        width: 129
+        height: 269
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad85c6b2c7f517347acb901838c2af94
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMContact_Run04
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 3044
+        width: 126
+        height: 263
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e4148ffb42d18347b48a445f583622d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMContact_Attack01
+      rect:
+        serializedVersion: 2
+        x: 760
+        y: 3040
+        width: 124
+        height: 335
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfd042f1ea267324482a7064efc93a00
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMContact_Attack02
+      rect:
+        serializedVersion: 2
+        x: 946
+        y: 3041
+        width: 227
+        height: 255
+      alignment: 9
+      pivot: {x: 0.1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6828134688e365144be044c79195ce6e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMContact_Death01
+      rect:
+        serializedVersion: 2
+        x: 1437
+        y: 3044
+        width: 207
+        height: 264
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dda16284bee6e5641b98a0e7df03d930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMContact_Hit
+      rect:
+        serializedVersion: 2
+        x: 1219
+        y: 3043
+        width: 182
+        height: 287
+      alignment: 9
+      pivot: {x: 0.65, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0b08fbc192baf742901055dc5725930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMContact_Death02
+      rect:
+        serializedVersion: 2
+        x: 1724
+        y: 3042
+        width: 288
+        height: 263
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bdbcbff5b64850543a7cb8dd36b4c82d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMContact_Death03
+      rect:
+        serializedVersion: 2
+        x: 2099
+        y: 3040
+        width: 300
+        height: 219
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2f75ce4147289543a36a9117cfe25e7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMContact_Death04
+      rect:
+        serializedVersion: 2
+        x: 2459
+        y: 3044
+        width: 293
+        height: 131
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5381d620671cd8f46b9cd4044dbe7663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SiameseMContact_Death05
+      rect:
+        serializedVersion: 2
+        x: 2812
+        y: 3036
+        width: 301
+        height: 92
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cbe6c906cc0cc8243b4ffae9c3018adb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_ThrowingAttack03
+      rect:
+        serializedVersion: 2
+        x: 835
+        y: 2526
+        width: 305
+        height: 445
+      alignment: 9
+      pivot: {x: 0.45, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a750045278338240a6349d03f3110d5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_ThrowingAttack04
+      rect:
+        serializedVersion: 2
+        x: 1265
+        y: 2524
+        width: 319
+        height: 420
+      alignment: 9
+      pivot: {x: 0.45, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b701bea275383641865cf85b6e5b535
       vertices: []
       indices: 
       edges: []
@@ -196,10 +1242,10 @@ TextureImporter:
       name: Siamese_Hit
       rect:
         serializedVersion: 2
-        x: 3476
-        y: 3420
-        width: 447
-        height: 571
+        x: 2427
+        y: 2564
+        width: 307
+        height: 385
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -207,19 +1253,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dad0911ccf4a3e542b6383a9bffc6d50
+      spriteID: 34e3ce172c090ca4ebc980b6b1b98bce
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Siamese_ThrowingGift_1
+      name: Siamese_ThrowingAttack01
       rect:
         serializedVersion: 2
-        x: 116
-        y: 3383
-        width: 360
-        height: 514
+        x: 96
+        y: 2523
+        width: 247
+        height: 350
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -227,59 +1273,39 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f1bbae276f35d57408eee635e548e83d
+      spriteID: f8435f217637f9940a4e99fab10f520a
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Siamese_ThrowingGift_2
+      name: Siamese_ThrowingAttack02
       rect:
         serializedVersion: 2
-        x: 615
-        y: 3387
-        width: 471
-        height: 514
+        x: 440
+        y: 2526
+        width: 328
+        height: 350
       alignment: 9
-      pivot: {x: 0.38, y: 0}
+      pivot: {x: 0.39, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5ea2075177399f247a79fa4ce9784ea8
+      spriteID: 503e2075a8c485943a4bf55972b191d5
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Siamese_ThrowingGift_5
+      name: Siamese_SpriteSheet_69
       rect:
         serializedVersion: 2
-        x: 2364
-        y: 3383
-        width: 617
-        height: 476
-      alignment: 9
-      pivot: {x: 0.38, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f97a34142f41a704983780f21849057f
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Siamese_LowAttack_1
-      rect:
-        serializedVersion: 2
-        x: 116
-        y: 2615
-        width: 355
-        height: 514
+        x: 811
+        y: 2798
+        width: 25
+        height: 21
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -287,299 +1313,39 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1b0b0ed1d0d36734fb273691e599632f
+      spriteID: 8ce78d1ae76eda74e87a156a5f7444e1
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Siamese_LowAttack_2
+      name: Siamese_ThrowingAttack05
       rect:
         serializedVersion: 2
-        x: 616
-        y: 2616
-        width: 389
-        height: 488
+        x: 1656
+        y: 2524
+        width: 428
+        height: 323
       alignment: 9
-      pivot: {x: 0.43, y: 0}
+      pivot: {x: 0.38, y: 0.02}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d81bf9894c9f6294fa77437bf9aeae05
+      spriteID: dac194df7cf21944a97cd85bd4f2272a
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Siamese_LowAttack_3
+      name: ExplosiveGift
       rect:
         serializedVersion: 2
-        x: 1152
-        y: 2616
-        width: 372
-        height: 489
-      alignment: 9
-      pivot: {x: 0.45, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a4482b71d4aa2cd45b540bd03c97bb70
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Siamese_Run_1
-      rect:
-        serializedVersion: 2
-        x: 1696
-        y: 2616
-        width: 414
-        height: 516
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 390481a07a4b7484299819acf9104b37
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Siamese_Run_2
-      rect:
-        serializedVersion: 2
-        x: 2320
-        y: 2616
-        width: 416
-        height: 537
-      alignment: 9
-      pivot: {x: 0.4, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a8cfa2e18e5575146b9aeb2986628624
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Siamese_Run_3
-      rect:
-        serializedVersion: 2
-        x: 2884
-        y: 2617
-        width: 423
-        height: 555
-      alignment: 9
-      pivot: {x: 0.4, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 068dbd3aa33379245b998a40423e81d1
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Siamese_Run_4
-      rect:
-        serializedVersion: 2
-        x: 3518
-        y: 2616
-        width: 393
-        height: 528
-      alignment: 9
-      pivot: {x: 0.4, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: dc09a572bf3a5654f9adf5f797e101b8
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Siamese_Slap_1
-      rect:
-        serializedVersion: 2
-        x: 71
-        y: 2055
-        width: 533
-        height: 514
-      alignment: 9
-      pivot: {x: 0.54, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5a31b293a336f104580c730b8787cf08
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Siamese_Slap_2
-      rect:
-        serializedVersion: 2
-        x: 698
-        y: 2045
-        width: 586
-        height: 515
-      alignment: 9
-      pivot: {x: 0.6, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 79ab756c48633614a922f0804068ea8b
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Siamese_Slap_3
-      rect:
-        serializedVersion: 2
-        x: 1480
-        y: 2052
-        width: 538
-        height: 505
-      alignment: 9
-      pivot: {x: 0.26, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 066e7f47420fd7640b8113c10abafb57
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Siamese_Idle_1
-      rect:
-        serializedVersion: 2
-        x: 2172
-        y: 2048
-        width: 354
-        height: 514
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: be86bb2784f414a42a11b4efdaca71c8
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Siamese_Idle_2
-      rect:
-        serializedVersion: 2
-        x: 2620
-        y: 2048
-        width: 439
-        height: 512
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: afc6649e2ef60d04da917a91fc68382b
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Siamese_Tornado_1
-      rect:
-        serializedVersion: 2
-        x: 84
-        y: 1288
-        width: 383
-        height: 514
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3572759c9093444439a656a9d52d13c7
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Siamese_Tornado_2
-      rect:
-        serializedVersion: 2
-        x: 596
-        y: 1288
-        width: 360
-        height: 529
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 64736a06ac58ed14bb2984b5adacc1aa
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Siamese_Tornado_3
-      rect:
-        serializedVersion: 2
-        x: 1083
-        y: 1288
-        width: 699
-        height: 578
-      alignment: 9
-      pivot: {x: 0.75, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e217ee0f0cc87a444ba98637d027714c
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Siamese_SpriteSheet_24
-      rect:
-        serializedVersion: 2
-        x: 1784
-        y: 1685
-        width: 23
-        height: 19
+        x: 3235
+        y: 2604
+        width: 65
+        height: 81
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -587,59 +1353,39 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2386cb5e2969acf42b6628dc95712b13
+      spriteID: 11d864b559c65b842a32e2bf482b1587
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Siamese_Tornado_4
+      name: Ball
       rect:
         serializedVersion: 2
-        x: 1952
-        y: 1296
-        width: 621
-        height: 671
-      alignment: 9
-      pivot: {x: 0.78, y: 0}
+        x: 3364
+        y: 2615
+        width: 44
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0ca16ee597788b945870ab6cdfca1232
+      spriteID: e9a1208367f21ca4492f3f8b2bb75fce
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Siamese_Tornado_5
+      name: Siamese_LowAttack01
       rect:
         serializedVersion: 2
-        x: 2828
-        y: 1288
-        width: 609
-        height: 686
-      alignment: 9
-      pivot: {x: 0.7, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 50b23aa544918ea45b151503fdf07ec2
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Siamese_Tornado_6
-      rect:
-        serializedVersion: 2
-        x: 3528
-        y: 1288
-        width: 465
-        height: 511
+        x: 96
+        y: 2115
+        width: 246
+        height: 350
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -647,7 +1393,527 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 26adb84de8625854e93de7d9dc28831f
+      spriteID: 14511e425d6b8d14eb5d4307f8ad3c8f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_LowAttack02
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 2116
+        width: 269
+        height: 332
+      alignment: 9
+      pivot: {x: 0.45, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee0e43f9677d36146bf3e879ea1101f3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_LowAttack03
+      rect:
+        serializedVersion: 2
+        x: 813
+        y: 2116
+        width: 257
+        height: 332
+      alignment: 9
+      pivot: {x: 0.46, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e6ea0fa9444323438ab6d7c58115731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_Run01
+      rect:
+        serializedVersion: 2
+        x: 1192
+        y: 2116
+        width: 288
+        height: 350
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32faba947524ffc43ac38b041bdc21f8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_Run02
+      rect:
+        serializedVersion: 2
+        x: 1624
+        y: 2116
+        width: 288
+        height: 365
+      alignment: 9
+      pivot: {x: 0.29, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09e4237ea17ab11418b0661795515b2e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_Run03
+      rect:
+        serializedVersion: 2
+        x: 2015
+        y: 2117
+        width: 293
+        height: 377
+      alignment: 9
+      pivot: {x: 0.35, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13a7c293121fecb488762809b48c0507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_Run04
+      rect:
+        serializedVersion: 2
+        x: 2452
+        y: 2116
+        width: 276
+        height: 359
+      alignment: 9
+      pivot: {x: 0.4, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7745d0839d1ac34c8f3a11bd30a9943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_SlapAttack01
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 1709
+        width: 370
+        height: 350
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8421a6ea5b25c3d44a6d812998c92995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_SlapAttack02
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 1707
+        width: 406
+        height: 350
+      alignment: 9
+      pivot: {x: 0.57, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf5a0aa17ca218540a9698a9b1bfe25b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_SlapAttack03
+      rect:
+        serializedVersion: 2
+        x: 1040
+        y: 1708
+        width: 373
+        height: 344
+      alignment: 9
+      pivot: {x: 0.35, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a90f637c3e0d734280d288b29ae1dff
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_Idle01
+      rect:
+        serializedVersion: 2
+        x: 1521
+        y: 1705
+        width: 247
+        height: 350
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e56e7fc5e6a7e974dbd6fccc465bbbb6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_Idle02
+      rect:
+        serializedVersion: 2
+        x: 1832
+        y: 1704
+        width: 305
+        height: 349
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3ff1dad95e6ff140afe6bd0e7699e2c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_SpinningAttack01
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 1180
+        width: 268
+        height: 350
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b0fd45a10722754d9b4b5767ceadbbb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_SpinningAttack02
+      rect:
+        serializedVersion: 2
+        x: 427
+        y: 1180
+        width: 250
+        height: 360
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cebe0718738e7d44f88e86aad459e762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_SpinningAttack03
+      rect:
+        serializedVersion: 2
+        x: 765
+        y: 1181
+        width: 486
+        height: 395
+      alignment: 9
+      pivot: {x: 0.75, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f917cb1862cdf034fada51e1778cd8ab
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_SpriteSheet_88
+      rect:
+        serializedVersion: 2
+        x: 1252
+        y: 1451
+        width: 16
+        height: 11
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 053de2b977e71db489a5cf22c9005b5f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_SpinningAttack04
+      rect:
+        serializedVersion: 2
+        x: 1368
+        y: 1187
+        width: 431
+        height: 455
+      alignment: 9
+      pivot: {x: 0.78, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 858afbce69ffe51418f7a867c15334a6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_SpinningAttack05
+      rect:
+        serializedVersion: 2
+        x: 1976
+        y: 1181
+        width: 423
+        height: 467
+      alignment: 9
+      pivot: {x: 0.7, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef5f63b467f827a478741818a1d4b4cf
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_SpinningAttack06
+      rect:
+        serializedVersion: 2
+        x: 2460
+        y: 1180
+        width: 324
+        height: 348
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41620c0fdbd8d924f8cbc05f1a19c565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_Death01
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 716
+        width: 304
+        height: 354
+      alignment: 9
+      pivot: {x: 0.47, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3138ca0202a1eee49b6da3c05cb68d0f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_Death02
+      rect:
+        serializedVersion: 2
+        x: 424
+        y: 720
+        width: 452
+        height: 362
+      alignment: 9
+      pivot: {x: 0.51, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0600c1f32a49b7646b52004e5b26348c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_Death03
+      rect:
+        serializedVersion: 2
+        x: 939
+        y: 715
+        width: 456
+        height: 371
+      alignment: 9
+      pivot: {x: 0.55, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cdd03407572d5a44d8a41e6c2060eb3a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_Death04
+      rect:
+        serializedVersion: 2
+        x: 1484
+        y: 707
+        width: 553
+        height: 379
+      alignment: 9
+      pivot: {x: 0.53, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e8c735cf8cab7347a69507aa7db10ff
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_Death05
+      rect:
+        serializedVersion: 2
+        x: 2133
+        y: 693
+        width: 643
+        height: 415
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b0544053d973c04e8fd598f59e8439e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_Death08
+      rect:
+        serializedVersion: 2
+        x: 1349
+        y: 239
+        width: 384
+        height: 336
+      alignment: 9
+      pivot: {x: 0.52, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 028f40895a57dcb4d97f7da778e37245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_Death06
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 244
+        width: 649
+        height: 378
+      alignment: 9
+      pivot: {x: 0.46, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0bb1a22fcd7dc741b7ff887d21d627a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Siamese_Death07
+      rect:
+        serializedVersion: 2
+        x: 849
+        y: 243
+        width: 380
+        height: 305
+      alignment: 9
+      pivot: {x: 0.53, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f34b3188c23cbd419ce11dbe77ef1b6
       vertices: []
       indices: 
       edges: []
