@@ -41,8 +41,8 @@ public class TDS_ComboManager : MonoBehaviour
     #region Fields / Properties
     [SerializeField, Range(.1f, 5)] private float resetTimer = 2;
     [SerializeField, Range(0, 45)] private float limitRotation = 30; 
-    [SerializeField] private TMP_Text comboText;
-    [SerializeField] private Animator comboManagerAnimator; 
+    [SerializeField] private TMP_Text comboText = null;
+    [SerializeField] private Animator comboManagerAnimator = null; 
 
     private int combocounter = 0;
     private Coroutine resetComboCoroutine = null; 

@@ -5,6 +5,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 
+#pragma warning disable 0414
+
+
 [CustomEditor(typeof(TDS_Enemy)), CanEditMultipleObjects]
 public class TDS_EnemyEditor : TDS_CharacterEditor 
 {

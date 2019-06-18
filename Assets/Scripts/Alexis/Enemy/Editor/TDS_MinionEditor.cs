@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
-using UnityEditor; 
+using UnityEditor;
+
+#pragma warning disable 0414
 
 [CustomEditor(typeof(TDS_Minion))]
 public class TDS_MinionEditor : TDS_EnemyEditor 
@@ -75,7 +77,7 @@ public class TDS_MinionEditor : TDS_EnemyEditor
     #endregion
 
     #region Methods
-    private void DrawSettings()
+    protected override void DrawSettings()
     {
         GUILayout.Space(10);
         Color _originalColor = GUI.backgroundColor;

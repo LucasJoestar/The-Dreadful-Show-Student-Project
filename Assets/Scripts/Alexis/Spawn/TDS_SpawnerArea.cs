@@ -69,15 +69,15 @@ public class TDS_SpawnerArea : PunBehaviour
     /// <summary>
     /// This UnityEvent is called when the area is activated
     /// </summary>
-    [SerializeField] private UnityEvent OnAreaActivated;
+    [SerializeField] private UnityEvent OnAreaActivated = null;
     /// <summary>
     /// This UnityEvent is called when the area is desactivated
     /// </summary>
-    [SerializeField] private UnityEvent OnAreaDesactivated;
+    [SerializeField] private UnityEvent OnAreaDesactivated = null;
     /// <summary>
     /// This UnityEvent is called when a wave has to be started
     /// </summary>
-    [SerializeField] private UnityEvent OnNextWave;
+    [SerializeField] private UnityEvent OnNextWave = null;
     #endregion
 
     #region Fields / Properties

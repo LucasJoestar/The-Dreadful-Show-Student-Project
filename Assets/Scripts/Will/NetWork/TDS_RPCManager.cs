@@ -61,7 +61,7 @@ public class TDS_RPCManager : MonoBehaviour
     /// <summary>
     /// Call a method with a selected Name on a targeted Script 
     /// /// </summary>
-    /// <param name="_info"> Info: PhtonViewID#Type#MethodName</param>
+    /// <param name="_info"> Info: PhotonViewID#Type#MethodName</param>
     [PunRPC]
     public void CallMethodOnline(string _info, params object[] args)
     {
@@ -90,6 +90,12 @@ public class TDS_RPCManager : MonoBehaviour
         try
         {
             _t.InvokeMember(_infoArray[2].ToString(), BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy , null, _target, args);
+        }
+        catch (TargetException _targetException)
+        {
+            // If the method can't be found, catch the exception
+            Debug.LogError($"Couldn't find the target. The {_infoArray[1]} with the ID {_infoArray[0]} does not exists\n{_targetException.Message}");
+            return;
         }
         catch (MissingMethodException _e)
         {

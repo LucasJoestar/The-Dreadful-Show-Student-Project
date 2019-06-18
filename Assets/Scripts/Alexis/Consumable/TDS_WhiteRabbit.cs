@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#pragma warning disable 0649
+
 [RequireComponent(typeof(BoxCollider), typeof(CustomNavMeshAgent), typeof(PhotonView))]
 public class TDS_WhiteRabbit : TDS_Consumable 
 {

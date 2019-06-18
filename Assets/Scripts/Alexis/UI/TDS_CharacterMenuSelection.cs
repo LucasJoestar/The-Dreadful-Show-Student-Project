@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using TMPro; 
 using UnityEngine;
 
+#pragma warning disable 0649
+
 public class TDS_CharacterMenuSelection : MonoBehaviour 
 {
     /* TDS_CharacterMenuSelection :

@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon;
 
+#pragma warning disable 0649
+
 public class TDS_LifeBar : UnityEngine.MonoBehaviour
 {
     /* TDS_LifeBar :
@@ -50,9 +52,9 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
     #region Fields and properties
     private bool hasToFollowOwner = false;
 
-    [SerializeField] private Image foregroundFilledImage; 
+    [SerializeField] private Image foregroundFilledImage = null; 
     public Image ForegroundFilledImage { get { return foregroundFilledImage; }}
-    [SerializeField] private Image filledImage;
+    [SerializeField] private Image filledImage = null;
     public Image FilledImage { get { return filledImage; } }
 
     private TDS_Character owner = null;
