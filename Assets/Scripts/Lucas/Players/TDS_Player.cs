@@ -1765,12 +1765,9 @@ public class TDS_Player : TDS_Character
 
     protected void OnDestroy()
     {
-        if(!photonView.isMine)
-        {
-            TDS_UIManager.Instance?.ClearUIRelatives(playerType);
-            TDS_LevelManager.Instance?.RemoveOnlinePlayer(this); 
-        }
+        TDS_LevelManager.Instance?.RemoveOnlinePlayer(this); 
     }
+
     #endregion
 
     #endregion

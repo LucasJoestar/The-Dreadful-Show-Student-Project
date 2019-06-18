@@ -270,6 +270,7 @@ public class TDS_UIManager : PunBehaviour
     /// <returns></returns>
     private IEnumerator FollowHiddenPlayer(TDS_Player _followedPlayer, Image _followingImage)
     {
+        if (!_followedPlayer) yield break; 
         _followingImage.gameObject.SetActive(true);
         Vector2 _screenPos = Camera.main.WorldToScreenPoint(_followedPlayer.transform.position);
         _screenPos.x = Mathf.Clamp(_screenPos.x, _followingImage.rectTransform.rect.width / 2, Screen.width - (_followingImage.rectTransform.rect.width / 2));
@@ -796,24 +797,38 @@ public class TDS_UIManager : PunBehaviour
             case PlayerType.Unknown:
                 break;
             case PlayerType.BeardLady:
-                onlineBeardLadyLifeBar.gameObject.SetActive(false);
-                hiddenBeardLadyImage.gameObject.SetActive(false);
+                if(onlineBeardLadyLifeBar) onlineBeardLadyLifeBar.gameObject.SetActive(false);
+                if(hiddenBeardLadyImage) hiddenBeardLadyImage.gameObject.SetActive(false);
                 break;
             case PlayerType.FatLady:
-                onlineFatLadyLifeBar.gameObject.SetActive(false);
-                hiddenFatLadyImage.gameObject.SetActive(false);
+                if(onlineFatLadyLifeBar) onlineFatLadyLifeBar.gameObject.SetActive(false);
+                if(hiddenFatLadyImage) hiddenFatLadyImage.gameObject.SetActive(false);
                 break;
             case PlayerType.FireEater:
-                onlineFireEaterLifeBar.gameObject.SetActive(false);
-                hiddenFireEaterImage.gameObject.SetActive(false);
+                if(onlineFireEaterLifeBar) onlineFireEaterLifeBar.gameObject.SetActive(false);
+                if(hiddenFireEaterImage) hiddenFireEaterImage.gameObject.SetActive(false);
                 break;
             case PlayerType.Juggler:
-                onlineJugglerLifeBar.gameObject.SetActive(false);
-                hiddenJugglerImage.gameObject.SetActive(false);
+                if(onlineJugglerLifeBar) onlineJugglerLifeBar.gameObject.SetActive(false);
+                if(hiddenJugglerImage) hiddenJugglerImage.gameObject.SetActive(false);
                 break;
             default:
                 break;
         }
+    }
+
+    /// <summary>
+    /// Set the game in pause menu
+    /// If the player is alone, freeze the time
+    /// </summary>
+    /// <param name="_isPaused"></param>
+    public void SetPause(bool _isPaused)
+    {
+        if (TDS_LevelManager.Instance && TDS_LevelManager.Instance.OnlinePlayers.Count == 0)
+        {
+            Time.timeScale = _isPaused ? 0 : 1;
+        }
+        ActivateMenu(_isPaused ? UIState.InPause : UIState.InGame); 
     }
 
     //------------------------------------------------------// 
@@ -862,6 +877,6 @@ public class TDS_UIManager : PunBehaviour
         }
     }
     #endregion
-    
+
     #endregion
 }
