@@ -77,7 +77,7 @@ GameObject:
   - component: {fileID: 328565752609655549}
   - component: {fileID: 328565752609655550}
   - component: {fileID: 328565752609655551}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SiameseBrutal
   m_TagString: Boss|Enemy
   m_Icon: {fileID: 0}
@@ -176,7 +176,8 @@ MonoBehaviour:
   recoilDistanceDeath: 0.1
   recoilTimeDeath: 0.1
   throwRange: 1
-  attacks: []
+  attacks:
+  - {fileID: 11400000, guid: ec98016ff222938489fa8235f18f7644, type: 2}
   agent: {fileID: 328565752609655537}
 --- !u!54 &328565752609655539
 Rigidbody:

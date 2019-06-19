@@ -46,9 +46,9 @@ GameObject:
   - component: {fileID: 9130136411102570084}
   - component: {fileID: 9130136411102570083}
   - component: {fileID: 9130136411102570082}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SiameseMDistant
-  m_TagString: Untagged
+  m_TagString: Boss|Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -279,7 +279,7 @@ MonoBehaviour:
   shadowTransform: {fileID: 9130136412106016834}
   isAttacking: 0
   IsDown: 0
-  isFacingRight: 1
+  isFacingRight: 0
   IsPacific: 0
   IsParalyzed: 0
   aimAngle: 45
@@ -299,7 +299,8 @@ MonoBehaviour:
   recoilDistanceDeath: 0.1
   recoilTimeDeath: 0.1
   throwRange: 1
-  attacks: []
+  attacks:
+  - {fileID: 11400000, guid: 72b406747f835164680c2866eaa439b9, type: 2}
   agent: {fileID: 9130136411102570104}
 --- !u!1 &9130136411807208500
 GameObject:
@@ -432,7 +433,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300100, guid: f47060d40f8996948b106647eb878d31, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1.32, y: 2.69}

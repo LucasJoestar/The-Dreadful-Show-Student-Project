@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 1337013229762858617}
   - component: {fileID: 1337013229762858616}
   - component: {fileID: 1337013229762858623}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SiameseMContact
   m_TagString: Boss|Enemy
   m_Icon: {fileID: 0}
@@ -424,7 +424,8 @@ MonoBehaviour:
   recoilDistanceDeath: 0.1
   recoilTimeDeath: 0.1
   throwRange: 1
-  attacks: []
+  attacks:
+  - {fileID: 11400000, guid: f7ba4228a86d60c45bc04e5828ee2e18, type: 2}
   agent: {fileID: 1337013229762858613}
 --- !u!1 &1337013230161517863
 GameObject:
