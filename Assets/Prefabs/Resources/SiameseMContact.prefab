@@ -70,7 +70,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300126, guid: f47060d40f8996948b106647eb878d31, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1.24, y: 3.35}
@@ -187,7 +187,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1337013229762858621}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.968, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1337013228292665678}
@@ -208,21 +208,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53bdbd26138585f4aa59027c60557c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionOffset: {x: 0, y: 0, z: 0}
-  avoidanceForce: 2
+  positionOffset: {x: 0, y: 1.25, z: 0}
+  avoidanceForce: 8
   baseOffset: 0
   detectionRange: 2
-  height: 1
-  radius: 1
-  pathRadius: 1
+  height: 2.5
+  radius: 1.3
+  pathRadius: 0.25
   speed: 1
-  steerForce: 0.1
+  steerForce: 10
   agentPriority: 1
   detectionAccuracy: 3
   detectionFieldOfView: 90
   avoidanceLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
 --- !u!54 &1337013229762858612
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -237,7 +237,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &1337013229762858619
 BoxCollider:
@@ -409,17 +409,17 @@ MonoBehaviour:
   IsParalyzed: 0
   aimAngle: 45
   speedAccelerationTime: 0.5
-  speedCoef: 1
+  speedCoef: 2
   speedCurrent: 0
-  speedInitial: 1
-  speedMax: 2
+  speedInitial: 2.5
+  speedMax: 5
   throwBonusDamagesMax: 45
   throwBonusDamagesMin: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
   canBeDown: 0
   canThrow: 0
   enemyState: 0
-  detectionRange: 5
+  detectionRange: 15
   recoilDistance: 0.1
   recoilDistanceDeath: 0.1
   recoilTimeDeath: 0.1
@@ -487,4 +487,6 @@ MonoBehaviour:
   collider: {fileID: 1337013230161517858}
   Owner: {fileID: 1337013229762858623}
   HittableTags:
-    ObjectTags: []
+    ObjectTags:
+    - Name: Player
+      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}

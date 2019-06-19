@@ -261,6 +261,16 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns>does the attack can be cast</returns>
     protected virtual bool AttackCanBeCasted()
     {
+        if(playerTarget == null)
+        {
+            Debug.Log("No target");
+            return false; 
+        }
+        if(attacks.Length == 0)
+        {
+            Debug.Log("No Attack");
+            return false; 
+        }
         return Mathf.Abs(transform.position.x - playerTarget.transform.position.x) <= attacks.Min(a => a.MaxRange);
     }
 
@@ -268,7 +278,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// Check if the enemy is in the right orientation to face the target
     /// </summary>
     /// <returns>true if the enemy has to flip to face the target</returns>
-    protected bool CheckOrientation()
+    protected virtual bool CheckOrientation()
     {
         if (!playerTarget) return false;
         Vector3 _dir = playerTarget.transform.position - transform.position;
@@ -464,7 +474,7 @@ public abstract class TDS_Enemy : TDS_Character
         SetAnimationState((int)EnemyAnimationState.Idle);
         //Orientate the agent
         if (CheckOrientation()) Flip();
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.1f);
         //Cast Attack
         float _cooldown = StartAttack();
         while (IsAttacking)
@@ -996,7 +1006,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected virtual void TakeDecision()
     {
         //Take decisions
-        if (isDead) return;
+        if (isDead || !PhotonNetwork.isMasterClient) return;
         if (isAttacking || hitBox.IsActive) StopAttack();
         if (agent.IsMoving) agent.StopAgent(); 
         // If the target can't be targeted, search for another target
@@ -1073,6 +1083,17 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Update()
     {
         base.Update();
+    }
+
+    protected override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos();
+
+        Gizmos.color = Color.red; 
+        if(playerTarget != null)
+        {
+            Gizmos.DrawLine(transform.position, playerTarget.transform.position); 
+        }
     }
     #endregion
 

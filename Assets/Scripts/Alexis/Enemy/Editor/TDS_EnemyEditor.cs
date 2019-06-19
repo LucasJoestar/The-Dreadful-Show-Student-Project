@@ -197,6 +197,11 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
             // Updates the SerializedProperties to get the latest values
             serializedObject.Update();
 
+            if (EditorApplication.isPlaying)
+            {
+                GUILayout.Box($"ENEMY STATE: {(EnemyState)enemyState.enumValueIndex}", TDS_EditorUtility.HeaderStyle);
+            }
+
             GUI.backgroundColor = TDS_EditorUtility.BoxLightColor;
             EditorGUILayout.BeginVertical("Box");
 
@@ -247,11 +252,6 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     /// </summary>
     protected virtual void DrawSettings()
     {
-        if(EditorApplication.isPlaying)
-        {
-            GUILayout.Box($"ENEMY STATE: {(EnemyState)enemyState.enumValueIndex}", TDS_EditorUtility.HeaderStyle);
-        }
-
         // Draw a header for the enemy detection settings 
         EditorGUILayout.LabelField("Recoil", TDS_EditorUtility.HeaderStyle);
         TDS_EditorUtility.FloatSlider("Recoil Distance", "The distance the enemy has to be pushed when they're hit", recoilDistance, .1f, 1);

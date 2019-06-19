@@ -48,7 +48,8 @@ public class TDS_ThrowingAttackBehaviour : TDS_EnemyAttack
     #region Original Methods
     public override void ApplyAttackBehaviour(TDS_Enemy _caster)
     {
-        TDS_Throwable _throwable = PhotonNetwork.Instantiate("ExplosiveGift", _caster.HandsTransform.position, Quaternion.identity, 0).GetComponent<TDS_Throwable>();
+        if (thrownObjectName == string.Empty) return; 
+        TDS_Throwable _throwable = PhotonNetwork.Instantiate(thrownObjectName, _caster.HandsTransform.position, Quaternion.identity, 0).GetComponent<TDS_Throwable>();
         //_throwable.PickUp(_caster, _caster.HandsTransform);
         _caster.GrabObject(_throwable); 
         _caster.ThrowObject(_caster.PlayerTarget.transform.position);

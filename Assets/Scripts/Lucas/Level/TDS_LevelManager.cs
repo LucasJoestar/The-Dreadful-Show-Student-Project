@@ -201,7 +201,10 @@ public class TDS_LevelManager : PunBehaviour
     public void CheckLivingPlayers()
     {
         if (localPlayer.IsDead && !OnlinePlayers.Any(p => !p.IsDead))
-            TDS_SceneManager.Instance?.PrepareSceneLoading(TDS_GameManager.CurrentSceneIndex); 
+        {
+            TDS_UIManager.Instance.ResetUIManager();
+            TDS_SceneManager.Instance?.PrepareSceneLoading(TDS_GameManager.CurrentSceneIndex);
+        }
     }
     #endregion
 

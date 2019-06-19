@@ -60,7 +60,9 @@ MonoBehaviour:
   collider: {fileID: 328565752205115133}
   Owner: {fileID: 328565752609655538}
   HittableTags:
-    ObjectTags: []
+    ObjectTags:
+    - Name: Player
+      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
 --- !u!1 &328565752609655544
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,21 +115,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53bdbd26138585f4aa59027c60557c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionOffset: {x: 0, y: 0, z: 0}
-  avoidanceForce: 2
+  positionOffset: {x: 0, y: 0.9, z: 0}
+  avoidanceForce: 5
   baseOffset: 0
   detectionRange: 2
-  height: 1
-  radius: 1
-  pathRadius: 1
+  height: 1.75
+  radius: 0.97
+  pathRadius: 0.5
   speed: 1
-  steerForce: 0.1
+  steerForce: 10
   agentPriority: 1
   detectionAccuracy: 3
   detectionFieldOfView: 90
   avoidanceLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 11264
 --- !u!114 &328565752609655538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,15 +165,15 @@ MonoBehaviour:
   speedAccelerationTime: 0.5
   speedCoef: 1
   speedCurrent: 0
-  speedInitial: 1
-  speedMax: 2
+  speedInitial: 1.5
+  speedMax: 3.5
   throwBonusDamagesMax: 45
   throwBonusDamagesMin: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
   canBeDown: 0
   canThrow: 0
   enemyState: 0
-  detectionRange: 5
+  detectionRange: 15
   recoilDistance: 0.1
   recoilDistanceDeath: 0.1
   recoilTimeDeath: 0.1
@@ -193,7 +195,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &328565752609655548
 BoxCollider:
@@ -402,7 +404,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300076, guid: f47060d40f8996948b106647eb878d31, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1.27, y: 2}
