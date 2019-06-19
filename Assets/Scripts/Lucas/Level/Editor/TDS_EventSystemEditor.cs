@@ -115,7 +115,7 @@ public class TDS_EventSystemEditor : Editor
 
         TDS_EditorUtility.PropertyField("Activation mode", "Activation mode used to trigger these events", activationMode);
 
-        if (activationMode.enumValueIndex < 2)
+        if (activationMode.enumValueIndex < 3)
         {
             GUILayout.Space(3);
             GUI.backgroundColor = _originalColor;

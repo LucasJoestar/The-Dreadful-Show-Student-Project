@@ -247,6 +247,7 @@ public enum TriggerActivationMode
 {
     Enter,
     Exit,
+    Traverse,
     Other
 }
 

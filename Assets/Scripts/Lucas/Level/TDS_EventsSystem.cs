@@ -67,6 +67,11 @@ public class TDS_EventsSystem : PunBehaviour
     [SerializeField] private bool isWaitingForOthers = false;
 
     /// <summary>
+    /// When entering this event, if activation is on traverse, indicates if it was from right or left.
+    /// </summary>
+    [SerializeField] private bool wasActivatedFromRight = false;
+
+    /// <summary>
     /// BoxCollider of the objecT.
     /// </summary>
     [SerializeField] private new BoxCollider collider = null;
@@ -258,12 +263,15 @@ public class TDS_EventsSystem : PunBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (activationMode == TriggerActivationMode.Enter) CheckTriggerValidation(other);
+        else if (activationMode == TriggerActivationMode.Traverse) wasActivatedFromRight = other.bounds.center.x > collider.bounds.center.x;
     }
 
     // OnTriggerExit is called when the Collider other has stopped touching the trigger
     private void OnTriggerExit(Collider other)
     {
-        if (activationMode == TriggerActivationMode.Exit) CheckTriggerValidation(other);
+        if ((activationMode == TriggerActivationMode.Exit) ||
+           ((activationMode == TriggerActivationMode.Traverse) &&
+           ((other.bounds.center.x > collider.bounds.center.x) != wasActivatedFromRight))) CheckTriggerValidation(other);
     }
     #endregion
 
