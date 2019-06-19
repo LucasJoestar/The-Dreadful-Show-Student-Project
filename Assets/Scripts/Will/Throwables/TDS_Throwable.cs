@@ -141,7 +141,6 @@ public class TDS_Throwable : PunBehaviour
     /// <param name="_bonusDamage"></param> 
     public virtual void Throw(Vector3 _finalPosition,float _angle, int _bonusDamage)
     {
-        Debug.Log("Throw"); 
         if (!isHeld) return;
         if(hitBox.IsActive)
         {

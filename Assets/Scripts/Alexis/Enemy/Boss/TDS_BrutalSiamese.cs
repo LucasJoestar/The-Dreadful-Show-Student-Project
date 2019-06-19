@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random; 
 
 public class TDS_BrutalSiamese : TDS_Enemy 
 {
@@ -48,6 +49,15 @@ public class TDS_BrutalSiamese : TDS_Enemy
     #endregion
 
     #region Overriden Methods
+    protected override Vector3 GetAttackingPosition()
+    {
+        Vector3 _offset = Vector3.zero;
+        int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;
+        _offset.z = Random.Range(-agent.Radius, agent.Radius);
+        _offset.x = agent.Radius / 2;
+        _offset.x *= _coeff;
+        return playerTarget.transform.position + _offset;
+    }
     #endregion
 
     #region Unity Methods
@@ -62,7 +72,7 @@ public class TDS_BrutalSiamese : TDS_Enemy
     {
         base.Start();
         canThrow = false;
-        StartCoroutine(Behaviour());
+        //StartCoroutine(Behaviour());
     }
 
     // Update is called once per frame

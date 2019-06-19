@@ -59,7 +59,7 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
     private IEnumerator SetupExplosion()
     {
         yield return new WaitForSeconds(explodingDelay);
-        //if (isHeld) owner.DropObject();  
+        if (isHeld) owner.DropObject();  
         if (explosionParticles) explosionParticles.Play();
         hitBox.Activate(attack);
         if (explosionParticles)

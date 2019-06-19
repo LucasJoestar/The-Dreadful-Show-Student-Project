@@ -480,7 +480,8 @@ public class TDS_UIManager : PunBehaviour
         {
             if(followHiddenPlayerCouroutines.ContainsKey(_player.PlayerType))
             {
-                StopCoroutine(followHiddenPlayerCouroutines[_player.PlayerType]);
+                Coroutine _c = followHiddenPlayerCouroutines[_player.PlayerType]; 
+                if(_c != null) StopCoroutine(_c);
                 followHiddenPlayerCouroutines.Remove(_player.PlayerType); 
             }
             _image.gameObject.SetActive(false); 
@@ -557,6 +558,19 @@ public class TDS_UIManager : PunBehaviour
     }
 
     public void QuitGame() => Application.Quit();
+
+    public void ResetUIManager()
+    {
+        StopAllCoroutines();
+        narratorCoroutine = null;
+        followHiddenPlayerCouroutines.Clear();
+        filledImages.Clear();
+        for (int i = 0; i < canvasWorld.transform.childCount; i++)
+        {
+            Destroy(canvasWorld.transform.GetChild(i).gameObject); 
+        }
+        
+    }
 
     /// <summary>
     /// Select a new character (used in UnityEvent)
@@ -866,6 +880,7 @@ public class TDS_UIManager : PunBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            photonView.viewID = 999; 
         }
         else
         {
