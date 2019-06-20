@@ -195,11 +195,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   positionOffset: {x: 0, y: 1.2, z: 0}
-  avoidanceForce: 5
+  avoidanceForce: 2
   baseOffset: 0
-  detectionRange: 2.5
+  detectionRange: 1.5
   height: 2.4
-  radius: 0.5
+  radius: 1
   pathRadius: 0.25
   speed: 4
   steerForce: 10
@@ -208,7 +208,7 @@ MonoBehaviour:
   detectionFieldOfView: 90
   avoidanceLayer:
     serializedVersion: 2
-    m_Bits: 11264
+    m_Bits: 3072
 --- !u!114 &114861555710338680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,6 +257,7 @@ MonoBehaviour:
   recoilDistanceDeath: 2.2
   recoilTimeDeath: 0.35
   throwRange: 7
+  wanderingRange: 6.5
   attacks:
   - {fileID: 11400000, guid: 58365662fdbb075468cff94d4fb5030c, type: 2}
   - {fileID: 11400000, guid: f71bb1e0e61f69c4aaf9ef79d98d963a, type: 2}
@@ -286,8 +287,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114288389468539316}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 4
+  instantiationId: 4
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114288389468539316

@@ -129,6 +129,8 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     protected SerializedProperty throwRange = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.detectionRange"/> of type <see cref="float"/>.</summary>
     protected SerializedProperty detectionRange = null;
+    /// <summary>SerializedProperty for <see cref="TDS_Enemy.wanderingRange"/> of type <see cref="float"/>.</summary>
+    protected SerializedProperty wanderingRange = null; 
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.recoilDistance"/> of type <see cref="float"/>.</summary>
     private SerializedProperty recoilDistance = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.recoilDistanceDeath"/> of type <see cref="float"/>.</summary>
@@ -263,6 +265,7 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         // Draw a header for the enemy detection settings 
         EditorGUILayout.LabelField("Detection", TDS_EditorUtility.HeaderStyle);
         TDS_EditorUtility.FloatSlider("Detection range", "The maximum distance of the field of view of the enemy", detectionRange, 1, 25);
+        TDS_EditorUtility.FloatSlider("Wandering range", "The wandering distance around the targeted player when other enemies attacking an enemy", wanderingRange, 1, 10);
         GUILayout.Space(3);
 
         //Draw a header for the enemy down settings
@@ -304,6 +307,7 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         canThrow = serializedObject.FindProperty("canThrow");
         throwRange = serializedObject.FindProperty("throwRange"); 
         detectionRange = serializedObject.FindProperty("detectionRange");
+        wanderingRange = serializedObject.FindProperty("wanderingRange"); 
         recoilDistance = serializedObject.FindProperty("recoilDistance");
         recoilDistanceDeath = serializedObject.FindProperty("recoilDistanceDeath");
         recoilTimeDeath = serializedObject.FindProperty("recoilTimeDeath");

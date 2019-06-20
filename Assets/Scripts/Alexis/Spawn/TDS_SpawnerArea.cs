@@ -153,6 +153,17 @@ public class TDS_SpawnerArea : PunBehaviour
     }
 
     /// <summary>
+    /// Get the enemies within a range around a player
+    /// </summary>
+    /// <param name="_player">Player targeted</param>
+    /// <param name="_distance">Range around the player</param>
+    /// <returns></returns>
+    public int GetEnemyContactCount(TDS_Player _player, float _distance)
+    {
+        return spawnedEnemies.Where(e => Vector3.Distance(_player.transform.position, e.transform.position) < _distance).Count(); 
+    }
+
+    /// <summary>
     /// Make spawn all enemies at every point of the wave index
     /// Increase Wave Index
     /// </summary>
