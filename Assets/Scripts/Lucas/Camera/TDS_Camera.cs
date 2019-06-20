@@ -103,7 +103,7 @@ public class TDS_Camera : MonoBehaviour
     /// <summary>
     /// Maximum value of the max bound on z on viewport to be allowed.
     /// </summary>
-    public const float VIEWPORT_Y_MAX_BOUND_VALUE = .4f;
+    public const float VIEWPORT_Y_MAX_BOUND_VALUE = .25f;
 
 
     /// <summary>Backing field for <see cref="IsMoving"/></summary>
