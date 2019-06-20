@@ -165,7 +165,8 @@ public enum EnemyState
     GettingInRange, 
     Attacking, 
     PickingUpObject, 
-    ThrowingObject
+    ThrowingObject, 
+    Wandering
 }
 
 /// <summary>

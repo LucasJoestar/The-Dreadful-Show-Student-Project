@@ -161,6 +161,11 @@ public abstract class TDS_Enemy : TDS_Character
     [SerializeField] protected float throwRange = 1;
 
     /// <summary>
+    /// The wandering range around an enemy
+    /// </summary>
+    [SerializeField, Range(1, 10)] protected float wanderingRange = 6; 
+
+    /// <summary>
     /// Attacks of the enemy
     /// </summary>
     [SerializeField] protected TDS_EnemyAttack[] attacks = new TDS_EnemyAttack[] { }; 
@@ -271,7 +276,7 @@ public abstract class TDS_Enemy : TDS_Character
             Debug.Log("No Attack");
             return false; 
         }
-        return Mathf.Abs(transform.position.x - playerTarget.transform.position.x) <= attacks.Min(a => a.MaxRange);
+        return Mathf.Abs(transform.position.x - playerTarget.transform.position.x) <= attacks.Min(a => a.MaxRange) && Mathf.Abs(transform.position.z - playerTarget.transform.position.z) <=  agent.Radius;
     }
 
     /// <summary>
@@ -401,8 +406,7 @@ public abstract class TDS_Enemy : TDS_Character
                 //ELSE -> Set the state to Search
                 else
                 {
-                    enemyState = EnemyState.Searching;
-                    yield return new WaitForSeconds(1);
+                    enemyState = EnemyState.Wandering;
                     break;
                 }
             #endregion
@@ -439,7 +443,13 @@ public abstract class TDS_Enemy : TDS_Character
             case EnemyState.ThrowingObject:
                 additionalCoroutine = StartCoroutine(CastThrow());
                 yield return additionalCoroutine;
-                break; 
+                break;
+            #endregion
+            #region Wandering
+            case EnemyState.Wandering:
+                additionalCoroutine = StartCoroutine(Wander());
+                yield return additionalCoroutine; 
+                break;
             #endregion
             default:
                 break;
@@ -640,6 +650,32 @@ public abstract class TDS_Enemy : TDS_Character
         }
         enemyState = EnemyState.MakingDecision;
     }
+
+    protected IEnumerator Wander()
+    {
+        SetAnimationState((int)EnemyAnimationState.Run);
+        while (agent.IsMoving)
+        {
+            //Orientate the agent
+            if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
+                Flip();
+
+            //Increase the speed if necessary
+            if (speedCurrent < speedMax)
+            {
+                IncreaseSpeed();
+                yield return null;
+            }
+            else yield return new WaitForSeconds(.1f);
+        }
+        SetAnimationState((int)EnemyAnimationState.Idle);
+        yield return new WaitForSeconds(Random.value); 
+        playerTarget = SearchTarget(); 
+        if (playerTarget)
+            enemyState = EnemyState.ComputingPath;
+        else
+            enemyState = EnemyState.Searching;
+    }
     #endregion
 
     #region TDS_Player
@@ -832,9 +868,10 @@ public abstract class TDS_Enemy : TDS_Character
     #region Vector3
     /// <summary>
     /// Get an attacking position within a certain range to cast attacks
+    /// Also if there is to much enemies close enough the player, go to a wandering position
     /// </summary>
     /// <returns></returns>
-    protected virtual Vector3 GetAttackingPosition()
+    protected virtual Vector3 GetAttackingPosition(out bool _hastoWander)
     {
         Vector3 _offset = Vector3.zero;
         int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;  
@@ -844,13 +881,51 @@ public abstract class TDS_Enemy : TDS_Character
             //Check if the agent is near enough to throw immediatly, or if he is to far away to throw
             float _distance = Mathf.Abs(playerTarget.transform.position.x - transform.position.x); 
             _offset.x = _distance < throwRange / 2 ? _distance : _distance < throwRange ? Random.Range(throwRange /2, _distance) : Random.Range(throwRange / 2, throwRange);
+            _hastoWander = false;
+        }
+        else if(Area && Area.GetEnemyContactCount(playerTarget, GetMaxRange()) < 2)
+        {
+            _offset.x = agent.Radius/2;
+            _hastoWander = false;
         }
         else
         {
-            _offset.x = agent.Radius/2; 
+            _hastoWander = true;
+            if(GetMaxRange() > wanderingRange)
+            {
+                _offset = new Vector3(wanderingRange, 0, Random.Range(-wanderingRange, wanderingRange));
+            }
+            else
+            {
+
+                _offset = new Vector3(Random.Range(GetMaxRange(), wanderingRange), 0, Random.Range(-GetMaxRange(), wanderingRange));
+            }
         }
-        _offset.x *= _coeff; 
+        _offset.x *= _coeff;
         return playerTarget.transform.position + _offset; 
+    }
+
+    /// <summary>
+    /// Get an attacking position within a certain range to cast attacks
+    /// </summary>
+    /// <returns></returns>
+    protected virtual Vector3 GetAttackingPosition()
+    {
+        Vector3 _offset = Vector3.zero;
+        int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;
+        _offset.z = Random.Range(-agent.Radius, agent.Radius);
+        if (throwable)
+        {
+            //Check if the agent is near enough to throw immediatly, or if he is to far away to throw
+            float _distance = Mathf.Abs(playerTarget.transform.position.x - transform.position.x);
+            _offset.x = _distance < throwRange / 2 ? _distance : _distance < throwRange ? Random.Range(throwRange / 2, _distance) : Random.Range(throwRange / 2, throwRange);
+        }
+        else
+        {
+            _offset.x = agent.Radius / 2;
+        }       
+        _offset.x *= _coeff;
+        return playerTarget.transform.position + _offset;
     }
     #endregion
 
@@ -911,20 +986,21 @@ public abstract class TDS_Enemy : TDS_Character
         // Select a position
         bool _pathComputed = false;
         Vector3 _position;
+        bool _hasToWander = false; 
         if (targetedThrowable && canThrow)
         {
             _position = targetedThrowable.transform.position;
         }
         else
         {
-            _position = GetAttackingPosition();
+            _position = GetAttackingPosition(out _hasToWander);
         }
         // Debug.Log(_position); 
         _pathComputed = agent.CheckDestination(_position);
         //If the path is computed, reach the end of the path
         if (_pathComputed)
         {
-            enemyState = EnemyState.GettingInRange;
+            enemyState = _hasToWander ? EnemyState.Wandering : EnemyState.GettingInRange;
         }
         else
         {
