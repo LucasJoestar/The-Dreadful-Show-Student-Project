@@ -654,6 +654,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected IEnumerator Wander()
     {
         SetAnimationState((int)EnemyAnimationState.Run);
+        agent.AddAvoidanceLayer(new string[] { "Player" }); 
         while (agent.IsMoving)
         {
             //Orientate the agent
@@ -668,6 +669,7 @@ public abstract class TDS_Enemy : TDS_Character
             }
             else yield return new WaitForSeconds(.1f);
         }
+        agent.RemoveAvoidanceLayer(new string[] { "Player" });
         SetAnimationState((int)EnemyAnimationState.Idle);
         yield return new WaitForSeconds(Random.value); 
         playerTarget = SearchTarget(); 
@@ -891,14 +893,14 @@ public abstract class TDS_Enemy : TDS_Character
         else
         {
             _hastoWander = true;
-            if(GetMaxRange() > wanderingRange)
+            if(GetMaxRange() >= wanderingRange)
             {
                 _offset = new Vector3(wanderingRange, 0, Random.Range(-wanderingRange, wanderingRange));
             }
             else
             {
-
                 _offset = new Vector3(Random.Range(GetMaxRange(), wanderingRange), 0, Random.Range(-GetMaxRange(), wanderingRange));
+
             }
         }
         _offset.x *= _coeff;
