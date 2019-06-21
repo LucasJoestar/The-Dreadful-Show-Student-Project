@@ -114,6 +114,8 @@ public class TDS_SpawnerAreaEditor : Editor
     private SerializedProperty eventOnAreaDesactivated = null;
     /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.OnNextWave"/> of type <see cref="UnityEvent"/>.</summary>
     private SerializedProperty eventOnNextWave = null;
+    /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.OnStartFight"/> of type <see cref="UnityEvent"/>.</summary>
+    private SerializedProperty eventOnStartFight = null;
     #endregion
 
     #endregion
@@ -132,6 +134,7 @@ public class TDS_SpawnerAreaEditor : Editor
     private void DrawEvents()
     {
         TDS_EditorUtility.PropertyField("On Spawn Area Activated", "Called when a player activate the trigger", eventOnAreaActivated);
+        TDS_EditorUtility.PropertyField("On Fight Start", "Called when the fight is starting", eventOnStartFight);
         TDS_EditorUtility.PropertyField("On Spawn Area Desactivated", "Called when all waves are completed", eventOnAreaDesactivated);
         TDS_EditorUtility.PropertyField("On Next Wave", "Called when a wave is completed", eventOnNextWave);
     }
@@ -278,6 +281,7 @@ public class TDS_SpawnerAreaEditor : Editor
         eventOnAreaActivated = serializedObject.FindProperty("OnAreaActivated");
         eventOnAreaDesactivated = serializedObject.FindProperty("OnAreaDesactivated");
         eventOnNextWave = serializedObject.FindProperty("OnNextWave");
+        eventOnStartFight = serializedObject.FindProperty("OnStartFight"); 
 
 
         //Load the editor folded and unfolded values of this class
