@@ -281,13 +281,13 @@ public class TDS_UIManager : PunBehaviour
     /// <returns></returns>
     private IEnumerator FollowHiddenPlayer(TDS_Player _followedPlayer, Image _followingImage)
     {
-        if (!_followedPlayer) yield break; 
+        if (!_followedPlayer || !Application.isPlaying) yield break; 
         _followingImage.gameObject.SetActive(true);
         Vector2 _screenPos = Camera.main.WorldToScreenPoint(_followedPlayer.transform.position);
         _screenPos.x = Mathf.Clamp(_screenPos.x, _followingImage.rectTransform.rect.width / 2, Screen.width - (_followingImage.rectTransform.rect.width / 2));
         _screenPos.y = Mathf.Clamp(_screenPos.y, _followingImage.rectTransform.rect.height / 2, Screen.width - (_followingImage.rectTransform.rect.height / 2));
         _followingImage.transform.position = _screenPos; 
-        while (_followedPlayer && _followingImage)
+        while (_followedPlayer && _followingImage && Application.isPlaying)
         {
             //Debug.LogError(Camera.main.WorldToScreenPoint(_followedPlayer.transform.position));
             _screenPos = Camera.main.WorldToScreenPoint(_followedPlayer.transform.position);

@@ -78,6 +78,10 @@ public class TDS_SpawnerArea : PunBehaviour
     /// This UnityEvent is called when a wave has to be started
     /// </summary>
     [SerializeField] private UnityEvent OnNextWave = null;
+    /// <summary>
+    /// Called when the fight is starting 
+    /// </summary>
+    [SerializeField] private UnityEvent OnStartFight = null;
     #endregion
 
     #region Fields / Properties
@@ -167,7 +171,7 @@ public class TDS_SpawnerArea : PunBehaviour
     /// Make spawn all enemies at every point of the wave index
     /// Increase Wave Index
     /// </summary>
-    private void ActivateSpawn()
+    private void ActivateWave()
     {
         if (!PhotonNetwork.isMasterClient) return;  
         if (waveIndex == waves.Count && !isLooping)
@@ -189,7 +193,10 @@ public class TDS_SpawnerArea : PunBehaviour
                 e.IsParalyzed = true;
             }
         }
-        else ActivateEnemies(); 
+        else
+        {
+            ActivateEnemies();
+        }
         //If the wave is empty, start the next wave
         if (spawnedEnemies.Count == 0)
         {
@@ -219,6 +226,11 @@ public class TDS_SpawnerArea : PunBehaviour
     /// </summary>
     public void ActivateEnemies()
     {
+        if(waveIndex == 0)
+        {
+            OnStartFight?.Invoke();
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "CallOnFightStartEvent"), new object[] { });
+        }
         spawnedEnemies.ForEach(e => StartCoroutine(WaitAndActivate(e, waves[waveIndex].IsActivatedByEvent)));
     }
 
@@ -259,7 +271,8 @@ public class TDS_SpawnerArea : PunBehaviour
     /// </summary>
     private void CallOnAreaActivatedEvent() => OnAreaActivated?.Invoke();
     private void CallOnAreaDesactivatedEvent() => OnAreaDesactivated?.Invoke();
-    private void CallOnNextWaveEvent() => OnNextWave?.Invoke(); 
+    private void CallOnNextWaveEvent() => OnNextWave?.Invoke();
+    private void CallOnFightStartEvent() => OnStartFight?.Invoke(); 
     #endregion
 
     #region Unity Methods
@@ -268,8 +281,8 @@ public class TDS_SpawnerArea : PunBehaviour
     {
         // Call it when the player is connected
         if (!PhotonNetwork.isMasterClient) return;
-        OnNextWave.AddListener(ActivateSpawn);
-        OnAreaActivated.AddListener(ActivateSpawn);
+        OnNextWave.AddListener(ActivateWave);
+        OnAreaActivated.AddListener(ActivateWave);
         isReady = true; 
     }
 
@@ -278,7 +291,7 @@ public class TDS_SpawnerArea : PunBehaviour
         OnAreaActivated.AddListener(() => isActivated = true); 
         if (TDS_UIManager.Instance)
         {
-            OnAreaActivated.AddListener(TDS_UIManager.Instance.SwitchCurtains);
+            OnStartFight.AddListener(TDS_UIManager.Instance.SwitchCurtains);
             OnAreaDesactivated.AddListener(TDS_UIManager.Instance.SwitchCurtains);
         }
 
@@ -318,8 +331,8 @@ public class TDS_SpawnerArea : PunBehaviour
     public override void OnJoinedRoom()
     {
         if (isReady || !PhotonNetwork.isMasterClient) return;
-        OnNextWave.AddListener(ActivateSpawn);
-        OnAreaActivated.AddListener(ActivateSpawn);
+        OnNextWave.AddListener(ActivateWave);
+        OnAreaActivated.AddListener(ActivateWave);
         isReady = true;
     }
     #endregion
