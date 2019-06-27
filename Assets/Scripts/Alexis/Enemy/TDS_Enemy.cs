@@ -661,6 +661,15 @@ public abstract class TDS_Enemy : TDS_Character
             if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
                 Flip();
 
+            // If the agent can attack, Go to the state to attack
+            if(AttackCanBeCasted())
+            {
+                agent.StopAgent();
+                SetAnimationState((int)EnemyAnimationState.Idle);
+                enemyState = EnemyState.Attacking; 
+                yield break; 
+            }
+
             //Increase the speed if necessary
             if (speedCurrent < speedMax)
             {
