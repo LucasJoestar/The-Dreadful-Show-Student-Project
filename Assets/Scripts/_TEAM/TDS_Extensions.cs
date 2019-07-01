@@ -76,6 +76,19 @@ public static class TDS_Extensions
     }
     #endregion
 
+    #region Int
+    /// <summary>
+    /// Returns this int as a boolean depending on its sign.
+    /// </summary>
+    /// <param name="_value">Value to check.</param>
+    /// <returns>Returns true if the int has a value superior or equal to zero, false if negative.</returns>
+    public static bool ToBool(this int _value)
+    {
+        if (_value < 0) return false;
+        return true;
+    }
+    #endregion
+
     #region Line Renderer
     /// <summary>
     /// Draws a trajectory using an array of positions.

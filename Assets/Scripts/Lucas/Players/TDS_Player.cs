@@ -535,12 +535,33 @@ public class TDS_Player : TDS_Character
         }
     }
 
+    /// <summary>Backing field for <see cref="NextAttack"/>.</summary>
+    [SerializeField] private int nextAttack = 0;
+
+    /// <summary>
+    /// Used as a buffer for the next player attack ; light attack if positive, hevay one if negative, and none if null.
+    /// </summary>
+    public int NextAttack
+    {
+        get { return nextAttack; }
+        set
+        {
+            nextAttack = value;
+            CancelInvoke("ResetNextAttack");
+
+            if (value != 0)
+            {
+                Invoke("ResetNextAttack", .5f);
+            }
+        }
+    }
+
     /// <summary>
     /// LayerMask used to detect what is an obstacle for the player movements.
     /// </summary>
     public LayerMask WhatIsObstacle = new LayerMask();
 
-    /// <summary>Backing field for <see cref="PlayerType"/></summary>
+    /// <summary>Backing field for <see cref="PlayerType"/>.</summary>
     [SerializeField] private PlayerType playerType = PlayerType.Unknown;
 
     /// <summary>
@@ -724,8 +745,17 @@ public class TDS_Player : TDS_Character
     /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
     public virtual void Attack(bool _isLight)
     {
+        // If already attacking, just stock this attack as the next one
+        if (isAttacking)
+        {
+            NextAttack = _isLight.ToSign();
+            return;
+        }
+
         IsAttacking = true;
         OnStartAttack?.Invoke();
+
+        if (nextAttack != 0) NextAttack = 0;
 
         CancelInvoke("ResetCombo");
 
@@ -757,7 +787,8 @@ public class TDS_Player : TDS_Character
         // If haven't yet reached the end of the combo, plan to reset it in X seconds if  not attacking before
         if (comboCurrent.Count < comboMax)
         {
-            Invoke("ResetCombo", comboResetTime);
+            if (nextAttack != 0) Attack(nextAttack.ToBool());
+            else Invoke("ResetCombo", comboResetTime);
         }
         else
         {
@@ -778,6 +809,11 @@ public class TDS_Player : TDS_Character
 
         if (IsAttacking) StopAttack();
     }
+
+    /// <summary>
+    /// Resets the player planned next attack.
+    /// </summary>
+    public void ResetNextAttack() => NextAttack = 0;
 
     /// <summary>
     /// Stops this player's current attack if attacking
@@ -1559,8 +1595,26 @@ public class TDS_Player : TDS_Character
     public virtual void CheckActionsInputs()
     {
         if (!photonView.isMine) return; 
+
         // If dodging, parrying or attacking, do not perform action
-        if (isAttacking || isDodging || isParrying) return;
+        if (isDodging || isParrying) return;
+
+        // Checks potentially agressives actions
+        if (!IsPacific && isGrounded)
+        {
+            if (Input.GetButtonDown(LightAttackButton)) Attack(true);
+
+            else if (Input.GetButtonDown(HeavyAttackButton)) Attack(false);
+
+            if (!isAttacking)
+            {
+                if (Input.GetButtonDown(CatchButton)) Catch();
+
+                else if (Input.GetButtonDown(SuperAttackButton) || (TDS_Input.GetAxisDown(SuperAttackButton) && (Input.GetAxis(SuperAttackButton) == 0))) SuperAttack();
+
+                else if (Input.GetButtonDown(UseObjectButton)) UseObject();
+            }
+        }
 
         // If having a throwable and it's not a player, throw it on interact button pressed
         if (throwable && playerType != PlayerType.Juggler)
@@ -1575,23 +1629,6 @@ public class TDS_Player : TDS_Character
         else if (Input.GetButtonDown(DodgeButton) && !IsParalyzed) StartDodge();
 
         else if ((Input.GetButtonDown(ParryButton) || TDS_Input.GetAxisDown(ParryButton)) && isGrounded) StartCoroutine(Parry());
-
-        // If the character is pacific, forbid him to attack
-        if (IsPacific) return;
-
-        // If not on ground, return
-        if (!isGrounded) return;
-
-        // Checks potentially agressives actions
-        if (Input.GetButtonDown(CatchButton)) Catch();
-
-        else if (Input.GetButtonDown(LightAttackButton)) Attack(true);
-
-        else if (Input.GetButtonDown(HeavyAttackButton)) Attack(false);
-
-        else if (Input.GetButtonDown(SuperAttackButton) || (TDS_Input.GetAxisDown(SuperAttackButton) && (Input.GetAxis(SuperAttackButton) == 0))) SuperAttack();
-
-        else if (Input.GetButtonDown(UseObjectButton)) UseObject();
     }
 
     /// <summary>

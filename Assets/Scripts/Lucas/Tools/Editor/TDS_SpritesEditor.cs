@@ -18,7 +18,7 @@ public class TDS_SpritesEditor : EditorWindow
 	 *	####### TO DO #######
 	 *	#####################
 	 *
-	 *	[TO DO]
+	 *	...
 	 *
 	 *	#####################
 	 *	### MODIFICATIONS ###
@@ -65,6 +65,11 @@ public class TDS_SpritesEditor : EditorWindow
     /// Value used to increment sprites layer.
     /// </summary>
     [SerializeField] private int layerIncrementValue = 0;
+
+    /// <summary>
+    /// The index of the selected color group.
+    /// </summary>
+    [SerializeField] private int selectedGroup = -1;
 
     /// <summary>
     /// Scrollbar of the window.
@@ -171,7 +176,7 @@ public class TDS_SpritesEditor : EditorWindow
         // Get non-assignated color groups and associate them with matching one if found
         for (int _i = 0; _i < colorGroups.Length; _i++)
         {
-            colorGroups[_i].Sprites = colorGroups[_i].Sprites.Where(s => s != null).ToList();
+            colorGroups[_i].Sprites = colorGroups[_i].Sprites.Where(s => (s != null) && s.enabled).ToList();
 
             SpriteRenderer[] _differents = colorGroups[_i].Sprites.Where(s => s.color != colorGroups[_i].Color).ToArray();
 
@@ -242,9 +247,7 @@ public class TDS_SpritesEditor : EditorWindow
         }
 
         // Draw all folders & color groups !!
-        DrawColorGroups(colorGroups);
-        GUILayout.Space(10);
-        DrawColorGroups(colorGroups);
+        DrawColorGroups();
 
         GUILayout.Space(10);
         EditorGUILayout.EndScrollView();
@@ -261,7 +264,7 @@ public class TDS_SpritesEditor : EditorWindow
     /// </summary>
     public void LoadSprites()
     {
-        SpriteRenderer[] _sprites = FindObjectsOfType<SpriteRenderer>();
+        SpriteRenderer[] _sprites = FindObjectsOfType<SpriteRenderer>().Where(s => s.enabled).ToArray();
 
         foreach (SpriteRenderer _sprite in _sprites)
         {
@@ -290,38 +293,61 @@ public class TDS_SpritesEditor : EditorWindow
     /// Draw some color groups.
     /// </summary>
     /// <param name="_colorGroups">Groups to draw.</param>
-    private void DrawColorGroups(IEnumerable<TDS_ColorGroup> _colorGroups)
+    private void DrawColorGroups()
     {
-        foreach (TDS_ColorGroup _colorGroup in _colorGroups)
+        TDS_ColorGroup _colorGroup;
+
+        for (int _i = 0; _i < colorGroups.Length; _i++)
         {
+            _colorGroup = colorGroups[_i];
+
+            if (selectedGroup == _i) GUI.backgroundColor = new Color(.7f, .7f, .7f);
+            else GUI.backgroundColor = Color.white;
+
             GUILayout.Space(3);
-            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.BeginHorizontal(selectedGroup == _i ? "HelpBox" : EditorStyles.inspectorDefaultMargins);
 
             // Draw fusion mode buttons
-            if (isInFusionMode && !_colorGroup.isSelected)
+            if (!_colorGroup.isSelected && (isInFusionMode || (Selection.gameObjects.Length > 0)))
             {
                 Color _original = GUI.color;
-                GUI.color = new Color(0, .75f, 0, 1);
+                GUI.color = isInFusionMode ? new Color(0, .75f, 0, 1) : new Color(.5f, .5f, .8f, 1);
 
                 if (GUILayout.Button("F", GUILayout.Width(20), GUILayout.Height(EditorGUIUtility.singleLineHeight)))
                 {
-                    TDS_ColorGroup[] _groups = colorGroups.Where(g => g.isSelected).ToArray();
-
-                    foreach (TDS_ColorGroup _group in _groups)
+                    if (isInFusionMode)
                     {
-                        Undo.RecordObjects(_group.Sprites.ToArray(), "fusion sprite groups color");
+                        TDS_ColorGroup[] _groups = colorGroups.Where(g => g.isSelected).ToArray();
 
-                        foreach (SpriteRenderer _sprite in _group.Sprites)
+                        foreach (TDS_ColorGroup _group in _groups)
+                        {
+                            Undo.RecordObjects(_group.Sprites.ToArray(), "fusion sprite groups color");
+
+                            foreach (SpriteRenderer _sprite in _group.Sprites)
+                            {
+                                _sprite.color = _colorGroup.Color;
+                            }
+                            _colorGroup.Sprites.AddRange(_group.Sprites);
+                        }
+
+                        colorGroups = colorGroups.Except(_groups).ToArray();
+                        isInFusionMode = false;
+
+                        Repaint();
+                    }
+                    else
+                    {
+                        SpriteRenderer[] _sprites = Selection.gameObjects.ToList().SelectMany(s => s.GetComponentsInChildren<SpriteRenderer>()).ToArray();
+
+                        Undo.RecordObjects(_sprites, "fusion sprite groups color");
+
+                        foreach (SpriteRenderer _sprite in _sprites)
                         {
                             _sprite.color = _colorGroup.Color;
                         }
-                        _colorGroup.Sprites.AddRange(_group.Sprites);
+
+                        _colorGroup.Sprites.AddRange(_sprites);
                     }
-
-                    colorGroups = colorGroups.Except(_groups).ToArray();
-                    isInFusionMode = false;
-
-                    Repaint();
                 }
 
                 GUI.color = _original;
@@ -329,13 +355,25 @@ public class TDS_SpritesEditor : EditorWindow
             else GUILayout.Space(28);
 
             // Draw color group
-            _colorGroup.Name = EditorGUILayout.TextField(_colorGroup.Name);
+            EditorGUI.BeginChangeCheck();
+            _colorGroup.Name = EditorGUILayout.TextField(_colorGroup.Name, GUILayout.Width(250));
+            if (EditorGUI.EndChangeCheck()) selectedGroup = _i;
+
+            if (GUILayout.Button($"({_colorGroup.Sprites.Count})", EditorStyles.label, GUILayout.Width(50)))
+            {
+                foreach (SpriteRenderer _sprite in _colorGroup.Sprites)
+                {
+                    Debug.Log($"CG \"{_colorGroup.Name}\" => {_sprite.name}");
+                }
+            }
 
             GUILayout.FlexibleSpace();
             EditorGUI.BeginChangeCheck();
             _colorGroup.Color = EditorGUILayout.ColorField(_colorGroup.Color);
             if (EditorGUI.EndChangeCheck())
             {
+                selectedGroup = _i;
+
                 Undo.RecordObjects(_colorGroup.Sprites.ToArray(), "change sprites group color");
                 _colorGroup.Sprites.ForEach(s => s.color = _colorGroup.Color);
             }
@@ -414,7 +452,7 @@ public class TDS_ColorGroup
     /// <summary>
     /// Name of this group.
     /// </summary>
-    public string Name = "New Color Group";
+    public string Name = "? New Color Group ?";
 
     /// <summary>
     /// Color associated with the class.
