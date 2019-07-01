@@ -222,7 +222,7 @@ public abstract class TDS_Boss : TDS_Enemy
         while (agent.IsMoving)
         {
             //Orientate the agent
-            if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
+            if (isFacingRight && agent.Velocity.x < 0 || !isFacingRight && agent.Velocity.x > 0)
                 Flip();
 
             //Increase the speed if necessary
@@ -376,7 +376,6 @@ public abstract class TDS_Boss : TDS_Enemy
             _attackingPosition.x = Mathf.Abs(transform.position.x - playerTarget.transform.position.x) < castedAttack.MaxRange ? transform.position.x : playerTarget.transform.position.x + ((castedAttack.MaxRange - agent.Radius) * _coeff);
             _attackingPosition.z = playerTarget.transform.position.z; // + UnityEngine.Random.Range(-.4f, .4f);
         }
-        //Debug.Log(_attackingPosition); 
         return _attackingPosition;
     }
     #endregion

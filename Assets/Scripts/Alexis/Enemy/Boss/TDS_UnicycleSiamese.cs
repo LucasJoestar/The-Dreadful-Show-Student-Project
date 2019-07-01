@@ -180,7 +180,7 @@ public class TDS_UnicycleSiamese : TDS_Enemy
         while (agent.IsMoving)
         {
             //Orientate the agent
-            if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
+            if (isFacingRight && agent.Velocity.x < 0 || !isFacingRight && agent.Velocity.x > 0)
                 Flip();
 
             //Increase the speed if necessary

@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   positionOffset: {x: 0, y: 1.25, z: 0}
-  avoidanceForce: 8
+  avoidanceForce: 45
   baseOffset: 0
   detectionRange: 2
   height: 2.5
@@ -279,7 +279,7 @@ MonoBehaviour:
   shadowTransform: {fileID: 9130136412106016834}
   isAttacking: 0
   IsDown: 0
-  isFacingRight: 1
+  isFacingRight: 0
   IsPacific: 0
   IsParalyzed: 0
   aimAngle: 45
@@ -299,6 +299,7 @@ MonoBehaviour:
   recoilDistanceDeath: 0.1
   recoilTimeDeath: 0.1
   throwRange: 1
+  wanderingRange: 6
   attacks:
   - {fileID: 11400000, guid: 72b406747f835164680c2866eaa439b9, type: 2}
   agent: {fileID: 9130136411102570104}

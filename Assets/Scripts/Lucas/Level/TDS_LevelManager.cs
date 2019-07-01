@@ -203,7 +203,11 @@ public class TDS_LevelManager : PunBehaviour
         if (localPlayer.IsDead && !OnlinePlayers.Any(p => !p.IsDead))
         {
             TDS_UIManager.Instance.ResetUIManager();
+#if UNITY_EDITOR
+            TDS_SceneManager.Instance?.PrepareSceneLoading(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+#else
             TDS_SceneManager.Instance?.PrepareSceneLoading(TDS_GameManager.CurrentSceneIndex);
+#endif
         }
     }
     #endregion
@@ -221,7 +225,7 @@ public class TDS_LevelManager : PunBehaviour
         }
     }
  
-    #endregion
+#endregion
 
-    #endregion
+#endregion
 }

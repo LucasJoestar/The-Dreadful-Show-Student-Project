@@ -73,6 +73,33 @@ public class TDS_SceneManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Call this method to load a scene with the loading screen
+    /// </summary>
+    /// <param name="_sceneIndex"></param>
+    public void PrepareSceneLoading(string _sceneName)
+    {
+        StartCoroutine(LoadScene(_sceneName));
+    }
+
+    /// <summary>
+    /// Load the scene async and display the loading screen during the loading time
+    /// </summary>
+    /// <param name="_sceneIndex">Index of the scene in the build</param>
+    /// <returns></returns>
+    private IEnumerator LoadScene(string _sceneName)
+    {
+        AsyncOperation _async = SceneManager.LoadSceneAsync(_sceneName, LoadSceneMode.Single);
+        TDS_UIManager.Instance?.DisplayLoadingScreen(true);
+        while (!_async.isDone)
+        {
+            yield return null;
+        }
+        TDS_GameManager.CurrentSceneIndex = SceneManager.GetSceneByName(_sceneName).buildIndex;
+        yield return new WaitForSeconds(1);
+        TDS_UIManager.Instance?.DisplayLoadingScreen(false);
+    }
+
+    /// <summary>
     /// Called when the scene is loaded
     /// </summary>
     /// <param name="_scene">Scene loaded</param>
