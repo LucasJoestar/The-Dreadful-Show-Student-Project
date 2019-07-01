@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   positionOffset: {x: 0, y: 1.25, z: 0}
-  avoidanceForce: 8
+  avoidanceForce: 45
   baseOffset: 0
   detectionRange: 2
   height: 2.5
@@ -294,8 +294,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 1337013229762858616}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 4
-  instantiationId: 4
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &1337013229762858616

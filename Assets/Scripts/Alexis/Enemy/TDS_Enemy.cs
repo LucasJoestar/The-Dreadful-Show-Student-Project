@@ -182,9 +182,14 @@ public abstract class TDS_Enemy : TDS_Character
     [SerializeField] protected float throwRange = 1;
 
     /// <summary>
-    /// The wandering range around an enemy
+    /// The minimum value of the wandering range around a player
     /// </summary>
-    [SerializeField, Range(1, 10)] protected float wanderingRange = 6; 
+    [SerializeField] protected float wanderingRangeMin = 5;
+
+    /// <summary>
+    /// The maximum value of the wandering range around a player
+    /// </summary>
+    [SerializeField] protected float wanderingRangeMax = 9; 
 
     /// <summary>
     /// Attacks of the enemy
@@ -922,7 +927,7 @@ public abstract class TDS_Enemy : TDS_Character
             _offset.x = _distance < throwRange / 2 ? _distance : _distance < throwRange ? Random.Range(throwRange /2, _distance) : Random.Range(throwRange / 2, throwRange);
             _hastoWander = false;
         }
-        else if(Area && Area.GetEnemyContactCount(playerTarget, GetMaxRange()) <= 0) //HAS TO SET TO 2
+        else if(Area && Area.GetEnemyContactCount(playerTarget, GetMaxRange()) <= 2) 
         {
             _offset.x = agent.Radius/2;
             _hastoWander = false;
@@ -930,16 +935,8 @@ public abstract class TDS_Enemy : TDS_Character
         else
         {
             _hastoWander = true;
-            _coeff = Random.value > .5f ? 1 : -1; 
-            if(GetMaxRange() >= wanderingRange)
-            {
-                _offset = new Vector3(wanderingRange, 0, Random.Range(0, wanderingRange));
-            }
-            else
-            {
-                _offset = new Vector3(Random.Range(GetMaxRange(), wanderingRange), 0, Random.Range(0, wanderingRange));
-
-            }
+            _coeff = Random.value > .5f ? 1 : -1;
+            _offset = new Vector3(Random.Range(wanderingRangeMin, wanderingRangeMax), 0, Random.Range(wanderingRangeMin, wanderingRangeMax));
         }
         _offset.x *= _coeff;
         return playerTarget.transform.position + _offset; 
@@ -1204,11 +1201,10 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void OnDrawGizmos()
     {
         base.OnDrawGizmos();
-
-        Gizmos.color = Color.red; 
         if(playerTarget != null)
         {
-            Gizmos.DrawLine(transform.position, playerTarget.transform.position); 
+            Gizmos.color = Vector3.Distance(playerTarget.transform.position, transform.position) <= GetMaxRange() ? Color.red : Color.cyan;
+            Gizmos.DrawLine(transform.position, playerTarget.transform.position);
         }
     }
     #endregion
