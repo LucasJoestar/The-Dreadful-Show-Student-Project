@@ -168,6 +168,15 @@ public class TDS_SpawnerArea : PunBehaviour
     }
 
     /// <summary>
+    /// Return the number of enemies holding an object
+    /// </summary>
+    /// <returns></returns>
+    public int GetEnemyThrowingCount()
+    {
+        return spawnedEnemies.Where(e => e.Throwable != null).Count(); 
+    }
+
+    /// <summary>
     /// Make spawn all enemies at every point of the wave index
     /// Increase Wave Index
     /// </summary>

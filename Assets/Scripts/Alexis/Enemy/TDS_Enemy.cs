@@ -22,6 +22,14 @@ public abstract class TDS_Enemy : TDS_Character
 	 *	#####################
 	 *	### MODIFICATIONS ###
 	 *	##################### 
+     *
+     *  Date :          [26/06/2019]
+     *	Author:         [THIEBAUT Alexis]
+     *	
+     *	[Add a new behaviour state]
+     *	    - Add the wandering state, when there is too mush enemies around a player, the enemies has to wander around the player
+     *	    
+     *	-----------------------------------
      *	
      *  Date :          [22/05/2019]
      *	Author:         [THIEBAUT Alexis]
@@ -122,6 +130,19 @@ public abstract class TDS_Enemy : TDS_Character
     /// Bool that allows the enemy to pick up and throw throwable objects
     /// </summary>
     [SerializeField] protected bool canThrow = true;
+
+    /// <summary>
+    /// Bool that allow the enemy to pick up and throw objects according to the number of enemies that holds object.
+    /// </summary>
+    public bool CanThrow
+    {
+        get
+        {
+            if (Area)
+                return canThrow && Area.GetEnemyThrowingCount() <= 2;
+            return canThrow; 
+        }
+    }
 
     /// <summary>
     /// When this bool is set to true, the enemy has to wait until it turn to false again
@@ -510,7 +531,7 @@ public abstract class TDS_Enemy : TDS_Character
         while (agent.IsMoving)
         {
             //Orientate the agent
-            if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
+            if (isFacingRight && agent.Velocity.x < 0 || !isFacingRight && agent.Velocity.x > 0)
                 Flip();
 
             //Increase the speed if necessary
@@ -522,7 +543,7 @@ public abstract class TDS_Enemy : TDS_Character
             else yield return new WaitForSeconds(.1f);
             //Check if the area allow to grab object
             // If the enemy hasn't a throwable, check if he can grab one
-            if (throwable == null && canThrow)
+            if (throwable == null && CanThrow)
             {
                 if (targetedThrowable)
                 {
@@ -554,6 +575,12 @@ public abstract class TDS_Enemy : TDS_Character
                         }
                     }
                 }
+            }
+            // If there is too much enemy in contact with the target, compute path to wander
+            if(Area && Area.GetEnemyContactCount(playerTarget, GetMaxRange()) >= 2)
+            {
+                enemyState = EnemyState.ComputingPath;
+                yield break; 
             }
             // if any attack can be casted 
             if (AttackCanBeCasted())
@@ -599,7 +626,7 @@ public abstract class TDS_Enemy : TDS_Character
         SetAnimationState((int)EnemyAnimationState.Idle);
         yield return null;
         //Grab the object
-        if (canThrow)
+        if (CanThrow)
         {
             //Grab the object 
             isWaiting = GrabObject(_throwable);
@@ -651,6 +678,12 @@ public abstract class TDS_Enemy : TDS_Character
         enemyState = EnemyState.MakingDecision;
     }
 
+    /// <summary>
+    /// Cast the wandering method 
+    /// When too much enemies attack the same player, the enemy has to wander 
+    /// Move until reaching a position then wait between 0 and 1 seconds before searching a new target
+    /// </summary>
+    /// <returns></returns>
     protected IEnumerator Wander()
     {
         SetAnimationState((int)EnemyAnimationState.Run);
@@ -658,17 +691,8 @@ public abstract class TDS_Enemy : TDS_Character
         while (agent.IsMoving)
         {
             //Orientate the agent
-            if (isFacingRight && agent.Velocity.x > 0 || !isFacingRight && agent.Velocity.x < 0)
+            if (isFacingRight && agent.Velocity.x < 0 || !isFacingRight && agent.Velocity.x > 0)
                 Flip();
-
-            // If the agent can attack, Go to the state to attack
-            if(AttackCanBeCasted())
-            {
-                agent.StopAgent();
-                SetAnimationState((int)EnemyAnimationState.Idle);
-                enemyState = EnemyState.Attacking; 
-                yield break; 
-            }
 
             //Increase the speed if necessary
             if (speedCurrent < speedMax)
@@ -679,6 +703,10 @@ public abstract class TDS_Enemy : TDS_Character
             else yield return new WaitForSeconds(.1f);
         }
         agent.RemoveAvoidanceLayer(new string[] { "Player" });
+        if ((isFacingRight && playerTarget.transform.position.x < transform.position.x) || (!isFacingRight && playerTarget.transform.position.x > transform.position.x))
+        {
+            Flip();
+        }
         SetAnimationState((int)EnemyAnimationState.Idle);
         yield return new WaitForSeconds(Random.value); 
         playerTarget = SearchTarget(); 
@@ -894,7 +922,7 @@ public abstract class TDS_Enemy : TDS_Character
             _offset.x = _distance < throwRange / 2 ? _distance : _distance < throwRange ? Random.Range(throwRange /2, _distance) : Random.Range(throwRange / 2, throwRange);
             _hastoWander = false;
         }
-        else if(Area && Area.GetEnemyContactCount(playerTarget, GetMaxRange()) < 2)
+        else if(Area && Area.GetEnemyContactCount(playerTarget, GetMaxRange()) <= 0) //HAS TO SET TO 2
         {
             _offset.x = agent.Radius/2;
             _hastoWander = false;
@@ -902,13 +930,14 @@ public abstract class TDS_Enemy : TDS_Character
         else
         {
             _hastoWander = true;
+            _coeff = Random.value > .5f ? 1 : -1; 
             if(GetMaxRange() >= wanderingRange)
             {
-                _offset = new Vector3(wanderingRange, 0, Random.Range(-wanderingRange, wanderingRange));
+                _offset = new Vector3(wanderingRange, 0, Random.Range(0, wanderingRange));
             }
             else
             {
-                _offset = new Vector3(Random.Range(GetMaxRange(), wanderingRange), 0, Random.Range(-GetMaxRange(), wanderingRange));
+                _offset = new Vector3(Random.Range(GetMaxRange(), wanderingRange), 0, Random.Range(0, wanderingRange));
 
             }
         }

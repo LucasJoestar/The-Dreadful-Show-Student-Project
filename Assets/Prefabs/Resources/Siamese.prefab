@@ -279,8 +279,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 2085316961524171248}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 4
+  instantiationId: 4
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &2085316961524171248
@@ -389,7 +389,7 @@ MonoBehaviour:
   shadowTransform: {fileID: 419458095}
   isAttacking: 0
   IsDown: 0
-  isFacingRight: 1
+  isFacingRight: 0
   IsPacific: 0
   IsParalyzed: 0
   aimAngle: 45
@@ -409,6 +409,7 @@ MonoBehaviour:
   recoilDistanceDeath: 0.1
   recoilTimeDeath: 0.1
   throwRange: 1
+  wanderingRange: 6
   attacks:
   - {fileID: 11400000, guid: aeb98e03cbb86514a9f8eca9c4ea4e9e, type: 2}
   - {fileID: 11400000, guid: 8583033c7de9d8b4192a18e78bf848f6, type: 2}

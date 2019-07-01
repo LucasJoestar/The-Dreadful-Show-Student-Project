@@ -237,7 +237,7 @@ MonoBehaviour:
   shadowTransform: {fileID: 4182407236673158}
   isAttacking: 0
   IsDown: 0
-  isFacingRight: 1
+  isFacingRight: 0
   IsPacific: 0
   IsParalyzed: 0
   aimAngle: 45
@@ -246,8 +246,8 @@ MonoBehaviour:
   speedCurrent: 0
   speedInitial: 1.5
   speedMax: 2.75
-  throwBonusDamagesMax: 45
-  throwBonusDamagesMin: 45
+  throwBonusDamagesMax: 5
+  throwBonusDamagesMin: 2
   throwAimingPoint: {x: 0, y: 0, z: 0}
   canBeDown: 1
   canThrow: 1
@@ -287,8 +287,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114288389468539316}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 4
-  instantiationId: 4
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114288389468539316
