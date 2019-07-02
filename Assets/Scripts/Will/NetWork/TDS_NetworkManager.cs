@@ -82,6 +82,7 @@ public class TDS_NetworkManager : PunBehaviour
             PhotonNetwork.autoJoinLobby = false;
             PhotonNetwork.automaticallySyncScene = true;
             PhotonNetwork.ConnectUsingSettings(_tempID.ToString());
+            PhotonNetwork.JoinLobby();
         }
     }
     #endregion
@@ -137,6 +138,7 @@ public class TDS_NetworkManager : PunBehaviour
 
     public void SelectRoom(Button _btn)
     {
+        if (!PhotonNetwork.connected) return; 
         RoomId _roomId;
 
         _roomId = _btn.name == "FirstRoomButton" ? RoomId.FirstRoom :
@@ -199,7 +201,7 @@ public class TDS_NetworkManager : PunBehaviour
     public override void OnCreatedRoom()
     {
         Debug.Log("room created");
-        PhotonNetwork.JoinLobby();
+        //PhotonNetwork.JoinLobby();
         isHost = true;
     }
     public override void OnDisconnectedFromPhoton()

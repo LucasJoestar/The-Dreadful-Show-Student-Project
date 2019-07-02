@@ -158,6 +158,11 @@ public class TDS_UIManager : PunBehaviour
     #endregion
     #endregion
 
+    #region Room Selection Menu
+    [Header("RoomSelectionMenu")]
+    [SerializeField] private TDS_RoomSelectionElement[] roomSelectionElements = new TDS_RoomSelectionElement[] { }; 
+    #endregion
+
     #region CharacterSelectionMenus
     [Header("Character Selection Menu")]
     [SerializeField] private TDS_CharacterMenuSelection characterSelectionMenu;
@@ -363,6 +368,7 @@ public class TDS_UIManager : PunBehaviour
                 characterSelectionMenuParent.SetActive(false);
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false);
+                StartCoroutine(UpdatePlayerCount());
                 break;
             case UIState.InCharacterSelection:
                 mainMenuParent.SetActive(false);
@@ -586,6 +592,7 @@ public class TDS_UIManager : PunBehaviour
     public void ResetUIManager()
     {
         StopAllCoroutines();
+        playerHealthBar.FilledImage.fillAmount = 1; 
         narratorCoroutine = null;
         followHiddenPlayerCouroutines.Clear();
         filledImages.Clear();
@@ -892,10 +899,48 @@ public class TDS_UIManager : PunBehaviour
                 break;
         }
     }
+
+    /// <summary>
+    /// Update the player count when the player is in the room selection Menu
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator UpdatePlayerCount()
+    {
+        while (!PhotonNetwork.connected)
+        {
+            yield return new WaitForSeconds(1);
+        }
+        if(!PhotonNetwork.insideLobby)
+        {
+            PhotonNetwork.JoinLobby();
+        }
+        RoomInfo[] _infos = new RoomInfo[] { }; 
+        while (uiState == UIState.InRoomSelection)
+        {
+            if (!PhotonNetwork.connected) yield break;
+            _infos = PhotonNetwork.GetRoomList();
+            if(_infos.Length == 0)
+            {
+                roomSelectionElements.ToList().ForEach(e => e.PlayerCount = 0); 
+            }
+            for (int i = 0; i < _infos.Length; i++)
+            {
+                for (int j = 0; j < roomSelectionElements.Length; j++)
+                {
+                    Debug.Log(roomSelectionElements[j].RoomName + "//" + _infos[i].Name); 
+                    if (roomSelectionElements[j].RoomName == _infos[i].Name)
+                    {
+                        roomSelectionElements[j].PlayerCount = _infos[i].PlayerCount; 
+                    }
+                }
+            }
+            yield return new WaitForSeconds(2);
+        }
+    }
     #endregion
 
     #endregion
-    
+
     #region Unity Methods
     // Awake is called when the script instance is being loaded
     private void Awake()
@@ -926,6 +971,21 @@ public class TDS_UIManager : PunBehaviour
             playerNameField.text = _name;
             SetNewName();
         }
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        roomSelectionElements.ToList().ForEach(e => e.RoomSelectionButton.interactable = true); 
+    }
+
+    public override void OnDisconnectedFromPhoton()
+    {
+        roomSelectionElements.ToList().ForEach(e => e.RoomSelectionButton.interactable = false);
+    }
+
+    public override void OnReceivedRoomListUpdate()
+    {
+        base.OnReceivedRoomListUpdate(); 
     }
     #endregion
 
