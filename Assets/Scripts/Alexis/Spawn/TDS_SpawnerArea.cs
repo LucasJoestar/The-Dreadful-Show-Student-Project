@@ -162,9 +162,9 @@ public class TDS_SpawnerArea : PunBehaviour
     /// <param name="_player">Player targeted</param>
     /// <param name="_distance">Range around the player</param>
     /// <returns></returns>
-    public int GetEnemyContactCount(TDS_Player _player, float _distance)
+    public int GetEnemyContactCount(TDS_Player _player, float _distance, TDS_Enemy _askingEnemy)
     {
-        return spawnedEnemies.Where(e => Vector3.Distance(_player.transform.position, e.transform.position) < _distance).Count(); 
+        return spawnedEnemies.Where(e => Vector3.Distance(_player.transform.position, e.transform.position) < _distance && e != _askingEnemy).Count(); 
     }
 
     /// <summary>

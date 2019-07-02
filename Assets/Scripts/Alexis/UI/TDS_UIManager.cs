@@ -125,6 +125,8 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private GameObject pauseMenuParent;
     // Parent of the DialogBox
     [SerializeField] private GameObject dialogBoxParent;
+    //Parent of the Error Box
+    [SerializeField] private GameObject errorBoxParent; 
     // Parent of the NarratorBox
     [SerializeField] private GameObject narratorBoxParent;
     // Parent of the loading screen
@@ -154,6 +156,11 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private Image hiddenJugglerImage;
     [SerializeField] private Image hiddenFireEaterImage;
     #endregion
+    #endregion
+
+    #region Room Selection Menu
+    [Header("RoomSelectionMenu")]
+    [SerializeField] private TDS_RoomSelectionElement[] roomSelectionElements = new TDS_RoomSelectionElement[] { }; 
     #endregion
 
     #region CharacterSelectionMenus
@@ -192,11 +199,13 @@ public class TDS_UIManager : PunBehaviour
     #endregion
 
     #region Text
-    [Header("Dialog/Narrator Box")]
+    [Header("Dialog/Narrator/Error Box")]
     //Text of the dialog Box
-    [SerializeField] private TMPro.TMP_Text dialogBoxText;
+    [SerializeField] private TMP_Text dialogBoxText;
     //Text of the narrator Box
-    [SerializeField] private TMPro.TMP_Text narratorBoxText;
+    [SerializeField] private TMP_Text narratorBoxText;
+    //Text of the Error Box
+    [SerializeField] private TMP_Text errorBoxText; 
     #endregion
 
     #region Resources
@@ -318,6 +327,17 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Fill the text of the errorBox box and display it
+    /// </summary>
+    /// <param name="_text"></param>
+    public void ActivateErrorBox(string _text)
+    {
+        if (errorBoxParent == null || errorBoxText == null) return;
+        errorBoxText.text = _text;
+        errorBoxParent.SetActive(true);
+    }
+
+    /// <summary>
     /// Call the method Activate Menu from Unity Event
     /// </summary>
     /// <param name="_uiState">UI State</param>
@@ -348,6 +368,7 @@ public class TDS_UIManager : PunBehaviour
                 characterSelectionMenuParent.SetActive(false);
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false);
+                StartCoroutine(UpdatePlayerCount());
                 break;
             case UIState.InCharacterSelection:
                 mainMenuParent.SetActive(false);
@@ -428,6 +449,15 @@ public class TDS_UIManager : PunBehaviour
     {
         if (dialogBoxParent == null) return;
         dialogBoxParent.SetActive(false); 
+    }
+
+    /// <summary>
+    /// Set the dialogbox parent as inactive
+    /// </summary>
+    public void DesactivateErrorBox()
+    {
+        if (errorBoxParent == null) return;
+        errorBoxParent.SetActive(false);
     }
 
     /// <summary>
@@ -562,6 +592,7 @@ public class TDS_UIManager : PunBehaviour
     public void ResetUIManager()
     {
         StopAllCoroutines();
+        playerHealthBar.FilledImage.fillAmount = 1; 
         narratorCoroutine = null;
         followHiddenPlayerCouroutines.Clear();
         filledImages.Clear();
@@ -868,10 +899,48 @@ public class TDS_UIManager : PunBehaviour
                 break;
         }
     }
+
+    /// <summary>
+    /// Update the player count when the player is in the room selection Menu
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator UpdatePlayerCount()
+    {
+        while (!PhotonNetwork.connected)
+        {
+            yield return new WaitForSeconds(1);
+        }
+        if(!PhotonNetwork.insideLobby)
+        {
+            PhotonNetwork.JoinLobby();
+        }
+        RoomInfo[] _infos = new RoomInfo[] { }; 
+        while (uiState == UIState.InRoomSelection)
+        {
+            if (!PhotonNetwork.connected) yield break;
+            _infos = PhotonNetwork.GetRoomList();
+            if(_infos.Length == 0)
+            {
+                roomSelectionElements.ToList().ForEach(e => e.PlayerCount = 0); 
+            }
+            for (int i = 0; i < _infos.Length; i++)
+            {
+                for (int j = 0; j < roomSelectionElements.Length; j++)
+                {
+                    Debug.Log(roomSelectionElements[j].RoomName + "//" + _infos[i].Name); 
+                    if (roomSelectionElements[j].RoomName == _infos[i].Name)
+                    {
+                        roomSelectionElements[j].PlayerCount = _infos[i].PlayerCount; 
+                    }
+                }
+            }
+            yield return new WaitForSeconds(2);
+        }
+    }
     #endregion
 
     #endregion
-    
+
     #region Unity Methods
     // Awake is called when the script instance is being loaded
     private void Awake()
@@ -902,6 +971,21 @@ public class TDS_UIManager : PunBehaviour
             playerNameField.text = _name;
             SetNewName();
         }
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        roomSelectionElements.ToList().ForEach(e => e.RoomSelectionButton.interactable = true); 
+    }
+
+    public override void OnDisconnectedFromPhoton()
+    {
+        roomSelectionElements.ToList().ForEach(e => e.RoomSelectionButton.interactable = false);
+    }
+
+    public override void OnReceivedRoomListUpdate()
+    {
+        base.OnReceivedRoomListUpdate(); 
     }
     #endregion
 

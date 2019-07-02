@@ -30,11 +30,7 @@ public class TDS_NetworkManager : PunBehaviour
 	 *
 	 *	-----------------------------------
 	*/
-
-    #region Events
-
-    #endregion
-
+       
     #region Fields / Properties
     #region Lobby
     [Space]
@@ -48,7 +44,6 @@ public class TDS_NetworkManager : PunBehaviour
 
     #endregion
     public static TDS_NetworkManager Instance;
-
     #region Player     
     bool isHost = false;
     public bool IsHost { get { return isHost; } }
@@ -78,15 +73,21 @@ public class TDS_NetworkManager : PunBehaviour
         PhotonNetwork.ConnectUsingSettings(_iD);
     }
 
+    public void ConnectAtLaunch()
+    {
+        int _tempID = 1;//Random.Range(0,9999);
+
+        if (!PhotonNetwork.connected)
+        {
+            PhotonNetwork.autoJoinLobby = false;
+            PhotonNetwork.automaticallySyncScene = true;
+            PhotonNetwork.ConnectUsingSettings(_tempID.ToString());
+            PhotonNetwork.JoinLobby();
+        }
+    }
     #endregion
 
-    #region Lobby Methods   
-    void CreateRoom()
-    {
-        if (roomName == string.Empty) roomName = "RoomTest";
-        PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
-        Debug.Log("room name : " + roomName);
-    }
+    #region Lobby Methods    
 
     void InitDisconect()
     {
@@ -119,7 +120,14 @@ public class TDS_NetworkManager : PunBehaviour
         TDS_UIManager.Instance.LocalIsReady = false;
         TDS_GameManager.LocalPlayer = PlayerType.Unknown;
         TDS_UIManager.Instance?.SelectCharacter((int)PlayerType.Unknown);
-        PhotonNetwork.Disconnect();
+        TDS_UIManager.Instance.ActivateMenu((int)UIState.InRoomSelection); 
+        PhotonNetwork.LeaveRoom();
+       // PhotonNetwork.Disconnect();
+    }
+
+    public void LockRoom()
+    {
+        PhotonNetwork.room.IsOpen = false;
     }
 
     void PlayerCount()
@@ -130,6 +138,7 @@ public class TDS_NetworkManager : PunBehaviour
 
     public void SelectRoom(Button _btn)
     {
+        if (!PhotonNetwork.connected) return; 
         RoomId _roomId;
 
         _roomId = _btn.name == "FirstRoomButton" ? RoomId.FirstRoom :
@@ -141,6 +150,8 @@ public class TDS_NetworkManager : PunBehaviour
 
         roomName = _btn.name;
 
+        if (PhotonNetwork.GetRoomList().Any(r => r.Name == roomName && (!r.IsOpen || r.PlayerCount == r.MaxPlayers))) return;
+
         if (_roomId == RoomId.WaitForIt)
         {
             Debug.LogError("Can't connect to the room");
@@ -149,13 +160,12 @@ public class TDS_NetworkManager : PunBehaviour
 
         int _getIndex = (int)_roomId;
         string _stringID = _getIndex.ToString();
+        //PhotonNetwork.gameVersion = _stringID;
 
-        if (!PhotonNetwork.connected)
-        {
-            PhotonNetwork.autoJoinLobby = false;
-            PhotonNetwork.automaticallySyncScene = true;
-            PhotonNetwork.ConnectUsingSettings(_stringID);
-        }
+        if (roomName == string.Empty) roomName = "RoomTest";
+        PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
+        Debug.Log("room name : " + roomName);
+
     }
     #endregion
 
@@ -186,20 +196,12 @@ public class TDS_NetworkManager : PunBehaviour
 
     #region PhotonMethods
     /// <summary>
-    /// When the player is connected to master, he joins the room
-    /// </summary>
-    public override void OnConnectedToMaster()
-    {
-        Debug.Log("connected to Master");
-        CreateRoom();
-    }
-    /// <summary>
     /// When the player create a room, he's the host of the game
     /// </summary>
     public override void OnCreatedRoom()
     {
         Debug.Log("room created");
-        PhotonNetwork.JoinLobby();
+        //PhotonNetwork.JoinLobby();
         isHost = true;
     }
     public override void OnDisconnectedFromPhoton()
@@ -210,6 +212,7 @@ public class TDS_NetworkManager : PunBehaviour
     {
         Debug.Log("connected to Room there is : " + PhotonNetwork.room.PlayerCount + " player here !!");
 
+        TDS_UIManager.Instance?.ActivateMenu((int)UIState.InCharacterSelection); 
         TDS_UIManager.Instance?.SetButtonsInterractables(true);
 
         PlayerCount();
