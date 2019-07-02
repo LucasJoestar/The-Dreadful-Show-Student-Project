@@ -30,11 +30,7 @@ public class TDS_NetworkManager : PunBehaviour
 	 *
 	 *	-----------------------------------
 	*/
-
-    #region Events
-
-    #endregion
-
+       
     #region Fields / Properties
     #region Lobby
     [Space]
@@ -48,7 +44,6 @@ public class TDS_NetworkManager : PunBehaviour
 
     #endregion
     public static TDS_NetworkManager Instance;
-
     #region Player     
     bool isHost = false;
     public bool IsHost { get { return isHost; } }
@@ -78,15 +73,20 @@ public class TDS_NetworkManager : PunBehaviour
         PhotonNetwork.ConnectUsingSettings(_iD);
     }
 
+    public void ConnectAtLaunch()
+    {
+        int _tempID = 1;//Random.Range(0,9999);
+
+        if (!PhotonNetwork.connected)
+        {
+            PhotonNetwork.autoJoinLobby = false;
+            PhotonNetwork.automaticallySyncScene = true;
+            PhotonNetwork.ConnectUsingSettings(_tempID.ToString());
+        }
+    }
     #endregion
 
-    #region Lobby Methods   
-    void CreateRoom()
-    {
-        if (roomName == string.Empty) roomName = "RoomTest";
-        PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
-        Debug.Log("room name : " + roomName);
-    }
+    #region Lobby Methods    
 
     void InitDisconect()
     {
@@ -119,7 +119,14 @@ public class TDS_NetworkManager : PunBehaviour
         TDS_UIManager.Instance.LocalIsReady = false;
         TDS_GameManager.LocalPlayer = PlayerType.Unknown;
         TDS_UIManager.Instance?.SelectCharacter((int)PlayerType.Unknown);
-        PhotonNetwork.Disconnect();
+        TDS_UIManager.Instance.ActivateMenu((int)UIState.InRoomSelection); 
+        PhotonNetwork.LeaveRoom();
+       // PhotonNetwork.Disconnect();
+    }
+
+    public void LockRoom()
+    {
+        PhotonNetwork.room.IsOpen = false;
     }
 
     void PlayerCount()
@@ -141,6 +148,7 @@ public class TDS_NetworkManager : PunBehaviour
 
         roomName = _btn.name;
 
+        if (PhotonNetwork.GetRoomList().Any(r => r.Name == roomName && (!r.IsOpen || r.PlayerCount == r.MaxPlayers))) return;
 
         if (_roomId == RoomId.WaitForIt)
         {
@@ -150,13 +158,12 @@ public class TDS_NetworkManager : PunBehaviour
 
         int _getIndex = (int)_roomId;
         string _stringID = _getIndex.ToString();
+        //PhotonNetwork.gameVersion = _stringID;
 
-        if (!PhotonNetwork.connected)
-        {
-            PhotonNetwork.autoJoinLobby = false;
-            PhotonNetwork.automaticallySyncScene = true;
-            PhotonNetwork.ConnectUsingSettings(_stringID);
-        }
+        if (roomName == string.Empty) roomName = "RoomTest";
+        PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
+        Debug.Log("room name : " + roomName);
+
     }
     #endregion
 
@@ -176,11 +183,6 @@ public class TDS_NetworkManager : PunBehaviour
         TDS_SceneManager.Instance.PrepareSceneLoading(0);
     }
 
-    public void LockRoom()
-    {
-        PhotonNetwork.room.IsOpen = false;
-    }
-
     #region Player   
     public void SetPlayerName(string _nickname)
     {
@@ -191,14 +193,6 @@ public class TDS_NetworkManager : PunBehaviour
     #endregion
 
     #region PhotonMethods
-    /// <summary>
-    /// When the player is connected to master, he joins the room
-    /// </summary>
-    public override void OnConnectedToMaster()
-    {
-        Debug.Log("connected to Master");
-        CreateRoom();
-    }
     /// <summary>
     /// When the player create a room, he's the host of the game
     /// </summary>
@@ -237,12 +231,6 @@ public class TDS_NetworkManager : PunBehaviour
             TDS_UIManager.Instance.PlayerListReady.Remove(otherPlayer);
         }
         PlayerCount();
-    }
-
-
-    public override void OnPhotonJoinRoomFailed(object[] codeAndMsg)
-    {
-        PhotonNetwork.Disconnect();
     }
     #endregion
 
