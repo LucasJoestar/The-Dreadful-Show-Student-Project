@@ -47,16 +47,6 @@ public class TDS_SpritesEditor : EditorWindow
 
     #region Fields / Properties
     /// <summary>
-    /// All editor modes displayed in the toolbar.
-    /// </summary>
-    [SerializeField] private readonly string[] editorModes = new string[] { "General", "Color" };
-
-    /// <summary>
-    /// Index of the selected mode from <see cref="editorModes"/>.
-    /// </summary>
-    [SerializeField] private int selectedMode = 0;
-
-    /// <summary>
     /// Indicates if editor manipulation should also take selected objects children sprites.
     /// </summary>
     [SerializeField] private bool doUseChildrenSprites = true;
@@ -103,21 +93,15 @@ public class TDS_SpritesEditor : EditorWindow
     /// </summary>
     public void DrawEditor()
     {
-        selectedMode = GUILayout.Toolbar(selectedMode, editorModes, GUILayout.Height(30));
+        DrawToolbar();
 
-        switch (selectedMode)
-        {
-            case 0:
-                DrawGeneralMode();
-                break;
+        DrawGeneralMode();
 
-            case 1:
-                DrawColorMode();
-                break;
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________", EditorStyles.boldLabel);
+        EditorGUILayout.EndHorizontal();
 
-            default:
-                break;
-        }
+        DrawColorMode();
     }
 
     /// <summary>
@@ -125,13 +109,17 @@ public class TDS_SpritesEditor : EditorWindow
     /// </summary>
     public void DrawGeneralMode()
     {
+        GUILayout.Space(15);
+
+        EditorGUILayout.LabelField(new GUIContent("General", "General Sprites Edition Section"), EditorStyles.boldLabel);
+
         if (Selection.gameObjects.Length == 0)
         {
             EditorGUILayout.HelpBox("No sprite actually selected !", MessageType.Info);
             return;
         }
 
-        GUILayout.Space(15);
+        GUILayout.Space(10);
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(15);
 
@@ -203,6 +191,34 @@ public class TDS_SpritesEditor : EditorWindow
             }
         }
 
+        // Draw color groups editor
+        scrollbar = EditorGUILayout.BeginScrollView(scrollbar);
+        GUILayout.Space(5);
+
+        EditorGUILayout.LabelField(new GUIContent("Level Colors", "All colors of the loaded sprites in the level"), EditorStyles.boldLabel);
+
+        if (colorGroups.Length == 0)
+        {
+            GUILayout.Space(5);
+
+            EditorGUILayout.HelpBox(new GUIContent("No sprites loaded !", "Click on the \"Load Sprites\" button to get sprites of the scene, or add some to load them next"));
+
+            EditorGUILayout.EndScrollView();
+            return;
+        }
+
+        // Draw all folders & color groups !!
+        DrawColorGroups();
+
+        GUILayout.Space(10);
+        EditorGUILayout.EndScrollView();
+    }
+
+    /// <summary>
+    /// Draws the toolbar.
+    /// </summary>
+    public void DrawToolbar()
+    {
         // Draw toolbar
         EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
 
@@ -229,28 +245,6 @@ public class TDS_SpritesEditor : EditorWindow
         }
 
         EditorGUILayout.EndHorizontal();
-        GUILayout.Space(5);
-
-        // Draw color groups editor
-        scrollbar = EditorGUILayout.BeginScrollView(scrollbar);
-
-        EditorGUILayout.LabelField(new GUIContent("Level Colors", "All colors of the loaded sprites in the level"), EditorStyles.boldLabel);
-
-        if (colorGroups.Length == 0)
-        {
-            GUILayout.Space(5);
-
-            EditorGUILayout.HelpBox(new GUIContent("No sprites loaded !", "Click on the \"Load Sprites\" button to get sprites of the scene, or add some to load them next"));
-
-            EditorGUILayout.EndScrollView();
-            return;
-        }
-
-        // Draw all folders & color groups !!
-        DrawColorGroups();
-
-        GUILayout.Space(10);
-        EditorGUILayout.EndScrollView();
     }
     #endregion
 
@@ -337,7 +331,7 @@ public class TDS_SpritesEditor : EditorWindow
                     }
                     else
                     {
-                        SpriteRenderer[] _sprites = Selection.gameObjects.ToList().SelectMany(s => s.GetComponentsInChildren<SpriteRenderer>()).ToArray();
+                        SpriteRenderer[] _sprites = Selection.gameObjects.ToList().SelectMany(s => doUseChildrenSprites ? s.GetComponentsInChildren<SpriteRenderer>() : s.GetComponents<SpriteRenderer>()).ToArray();
 
                         Undo.RecordObjects(_sprites, "fusion sprite groups color");
 
