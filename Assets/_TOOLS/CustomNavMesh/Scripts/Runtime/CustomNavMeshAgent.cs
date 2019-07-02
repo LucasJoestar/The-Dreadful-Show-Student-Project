@@ -359,7 +359,6 @@ public class CustomNavMeshAgent : MonoBehaviour
                 Seek(_nextPosition);
                 continue;
             }
-
             // Theta is equal to the angle between the velocity and the forward vector
             _theta = Vector3.SignedAngle(Vector3.forward, velocity, Vector3.up);
 
@@ -417,7 +416,7 @@ public class CustomNavMeshAgent : MonoBehaviour
             */
             _distance = Vector3.Distance(_predictedPosition, _normalPoint);
             _scalarProduct = Vector3.Dot(velocity.normalized, _dir.normalized);
-            if (_distance > pathRadius / 2 || _scalarProduct == -1)
+            if (_distance > pathRadius / 2 || _scalarProduct == -1 || velocity == Vector3.zero)
             {
                 Seek(_targetPosition);
             }
