@@ -201,9 +201,9 @@ MonoBehaviour:
   radius: 2
   pathRadius: 0.2
   speed: 4
-  steerForce: 10
+  steerForce: 45
   agentPriority: 1
-  detectionAccuracy: 3
+  detectionAccuracy: 5
   detectionFieldOfView: 90
   avoidanceLayer:
     serializedVersion: 2
@@ -409,7 +409,8 @@ MonoBehaviour:
   recoilDistanceDeath: 0.1
   recoilTimeDeath: 0.1
   throwRange: 1
-  wanderingRange: 6
+  wanderingRangeMin: 5
+  wanderingRangeMax: 9
   attacks:
   - {fileID: 11400000, guid: aeb98e03cbb86514a9f8eca9c4ea4e9e, type: 2}
   - {fileID: 11400000, guid: 8583033c7de9d8b4192a18e78bf848f6, type: 2}
