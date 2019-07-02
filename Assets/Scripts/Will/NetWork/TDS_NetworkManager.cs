@@ -75,7 +75,7 @@ public class TDS_NetworkManager : PunBehaviour
 
     public void ConnectAtLaunch()
     {
-        int _tempID = Random.Range(0,9999);
+        int _tempID = 1;//Random.Range(0,9999);
 
         if (!PhotonNetwork.connected)
         {
@@ -119,7 +119,9 @@ public class TDS_NetworkManager : PunBehaviour
         TDS_UIManager.Instance.LocalIsReady = false;
         TDS_GameManager.LocalPlayer = PlayerType.Unknown;
         TDS_UIManager.Instance?.SelectCharacter((int)PlayerType.Unknown);
-        PhotonNetwork.Disconnect();
+        TDS_UIManager.Instance.ActivateMenu((int)UIState.InRoomSelection); 
+        PhotonNetwork.LeaveRoom();
+       // PhotonNetwork.Disconnect();
     }
 
     public void LockRoom()
@@ -156,7 +158,7 @@ public class TDS_NetworkManager : PunBehaviour
 
         int _getIndex = (int)_roomId;
         string _stringID = _getIndex.ToString();
-        PhotonNetwork.gameVersion = _stringID;
+        //PhotonNetwork.gameVersion = _stringID;
 
         if (roomName == string.Empty) roomName = "RoomTest";
         PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
