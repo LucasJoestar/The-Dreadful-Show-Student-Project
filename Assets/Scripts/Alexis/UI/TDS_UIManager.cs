@@ -125,6 +125,8 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private GameObject pauseMenuParent;
     // Parent of the DialogBox
     [SerializeField] private GameObject dialogBoxParent;
+    //Parent of the Error Box
+    [SerializeField] private GameObject errorBoxParent; 
     // Parent of the NarratorBox
     [SerializeField] private GameObject narratorBoxParent;
     // Parent of the loading screen
@@ -192,11 +194,13 @@ public class TDS_UIManager : PunBehaviour
     #endregion
 
     #region Text
-    [Header("Dialog/Narrator Box")]
+    [Header("Dialog/Narrator/Error Box")]
     //Text of the dialog Box
-    [SerializeField] private TMPro.TMP_Text dialogBoxText;
+    [SerializeField] private TMP_Text dialogBoxText;
     //Text of the narrator Box
-    [SerializeField] private TMPro.TMP_Text narratorBoxText;
+    [SerializeField] private TMP_Text narratorBoxText;
+    //Text of the Error Box
+    [SerializeField] private TMP_Text errorBoxText; 
     #endregion
 
     #region Resources
@@ -318,6 +322,17 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Fill the text of the errorBox box and display it
+    /// </summary>
+    /// <param name="_text"></param>
+    public void ActivateErrorBox(string _text)
+    {
+        if (errorBoxParent == null || errorBoxText == null) return;
+        errorBoxText.text = _text;
+        errorBoxParent.SetActive(true);
+    }
+
+    /// <summary>
     /// Call the method Activate Menu from Unity Event
     /// </summary>
     /// <param name="_uiState">UI State</param>
@@ -428,6 +443,15 @@ public class TDS_UIManager : PunBehaviour
     {
         if (dialogBoxParent == null) return;
         dialogBoxParent.SetActive(false); 
+    }
+
+    /// <summary>
+    /// Set the dialogbox parent as inactive
+    /// </summary>
+    public void DesactivateErrorBox()
+    {
+        if (errorBoxParent == null) return;
+        errorBoxParent.SetActive(false);
     }
 
     /// <summary>
