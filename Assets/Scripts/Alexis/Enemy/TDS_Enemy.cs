@@ -581,12 +581,6 @@ public abstract class TDS_Enemy : TDS_Character
                     }
                 }
             }
-            // If there is too much enemy in contact with the target, compute path to wander
-            if(Area && Area.GetEnemyContactCount(playerTarget, GetMaxRange()) >= 2)
-            {
-                enemyState = EnemyState.ComputingPath;
-                yield break; 
-            }
             // if any attack can be casted 
             if (AttackCanBeCasted())
             {
@@ -594,7 +588,8 @@ public abstract class TDS_Enemy : TDS_Character
                 yield break; 
             }
             //if the target is too far from the destination, recalculate the path
-            if (Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > GetMaxRange())
+            // OR If there is too much enemy in contact with the target, compute path to wander
+            if ((Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > GetMaxRange()) || (Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) >= 1))
             {
                 yield return new WaitForSeconds(.1f); 
                 enemyState = EnemyState.ComputingPath;
@@ -706,6 +701,8 @@ public abstract class TDS_Enemy : TDS_Character
                 yield return null;
             }
             else yield return new WaitForSeconds(.1f);
+
+
         }
         agent.RemoveAvoidanceLayer(new string[] { "Player" });
         if ((isFacingRight && playerTarget.transform.position.x < transform.position.x) || (!isFacingRight && playerTarget.transform.position.x > transform.position.x))
@@ -927,9 +924,9 @@ public abstract class TDS_Enemy : TDS_Character
             _offset.x = _distance < throwRange / 2 ? _distance : _distance < throwRange ? Random.Range(throwRange /2, _distance) : Random.Range(throwRange / 2, throwRange);
             _hastoWander = false;
         }
-        else if(Area && Area.GetEnemyContactCount(playerTarget, GetMaxRange()) <= 2) 
+        else if(Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) <= 1) 
         {
-            _offset.x = agent.Radius/2;
+            _offset.x = Random.Range(GetMinRange(), GetMaxRange()) - agent.Radius;
             _hastoWander = false;
         }
         else
