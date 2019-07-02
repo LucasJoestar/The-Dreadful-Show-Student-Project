@@ -488,6 +488,7 @@ MonoBehaviour:
   - {fileID: 1009892161048739544}
   playerNameField: {fileID: 7611962512547235861}
   playerCountText: {fileID: 1697447008996913169}
+  isReadyToggle: {fileID: 8447750934038169731}
   launchGameButton: {fileID: 6359411458991124650}
   buttonQuitPause: {fileID: 114857645521942480}
   buttonQuitGame: {fileID: 3402427021173011396}
@@ -499,7 +500,6 @@ MonoBehaviour:
     type: 3}
   bossHealthBar: {fileID: 444376243627912424}
   comboManager: {fileID: 95725385869916016}
-  isReadyToggle: {fileID: 8447750934038169731}
 --- !u!114 &6736605381441817245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9445,6 +9445,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 341976748493323499}
         m_MethodName: LoadLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6731702032764320197}
+        m_MethodName: LockRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

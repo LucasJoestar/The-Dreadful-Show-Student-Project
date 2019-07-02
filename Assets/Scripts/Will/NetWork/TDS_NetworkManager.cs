@@ -141,6 +141,7 @@ public class TDS_NetworkManager : PunBehaviour
 
         roomName = _btn.name;
 
+
         if (_roomId == RoomId.WaitForIt)
         {
             Debug.LogError("Can't connect to the room");
@@ -173,6 +174,11 @@ public class TDS_NetworkManager : PunBehaviour
         PhotonNetwork.Disconnect();
 
         TDS_SceneManager.Instance.PrepareSceneLoading(0);
+    }
+
+    public void LockRoom()
+    {
+        PhotonNetwork.room.IsOpen = false;
     }
 
     #region Player   
@@ -210,6 +216,7 @@ public class TDS_NetworkManager : PunBehaviour
     {
         Debug.Log("connected to Room there is : " + PhotonNetwork.room.PlayerCount + " player here !!");
 
+        TDS_UIManager.Instance?.ActivateMenu((int)UIState.InCharacterSelection); 
         TDS_UIManager.Instance?.SetButtonsInterractables(true);
 
         PlayerCount();
@@ -230,6 +237,12 @@ public class TDS_NetworkManager : PunBehaviour
             TDS_UIManager.Instance.PlayerListReady.Remove(otherPlayer);
         }
         PlayerCount();
+    }
+
+
+    public override void OnPhotonJoinRoomFailed(object[] codeAndMsg)
+    {
+        PhotonNetwork.Disconnect();
     }
     #endregion
 

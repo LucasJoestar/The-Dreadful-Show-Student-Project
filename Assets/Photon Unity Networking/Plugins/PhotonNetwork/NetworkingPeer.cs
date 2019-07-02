@@ -1628,6 +1628,10 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
             {
                 Debug.LogWarning("Operation failed: " + operationResponse.ToStringFull());
             }
+            else if(operationResponse.ReturnCode == 32764)
+            {
+                Debug.LogWarning("Operation failed: " + operationResponse.ToStringFull() + " Server: " + this.Server);
+            }
             else
             {
                 Debug.LogError("Operation failed: " + operationResponse.ToStringFull() + " Server: " + this.Server);
