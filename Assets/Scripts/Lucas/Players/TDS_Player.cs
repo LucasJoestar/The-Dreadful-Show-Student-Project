@@ -367,6 +367,23 @@ public class TDS_Player : TDS_Character
     /// References the current coroutine of the jump method. Null if none is actually running.
     /// </summary>
     protected Coroutine jumpCoroutine = null;
+
+    /// <summary>Backing field for <see cref="PreparingAttackCoroutine"/>.</summary>
+    protected Coroutine preparingAttackCoroutine = null;
+
+    /// <summary>
+    /// Reference of the coroutine used to prepare an attack.
+    /// </summary>
+    protected Coroutine PreparingAttackCoroutine
+    {
+        get { return preparingAttackCoroutine; }
+        set
+        {
+            preparingAttackCoroutine = value;
+
+            isPreparingAttack = value != null;
+        }
+    }
     #endregion
 
     #region Variables
@@ -458,6 +475,16 @@ public class TDS_Player : TDS_Character
             isParrying = value;
         }
     }
+
+    /// <summary>
+    /// Indicates if the character is under the player control or not.
+    /// </summary>
+    public bool IsPlayable = true;
+
+    /// <summary>
+    /// Indicates if the player is preparing an attack.
+    /// </summary>
+    [SerializeField] private bool isPreparingAttack = false;
 
     /// <summary>Backing field for <see cref="ComboCurrent"/>.</summary>
     [SerializeField] protected List<bool> comboCurrent = new List<bool>();
@@ -745,19 +772,10 @@ public class TDS_Player : TDS_Character
     /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
     public virtual void Attack(bool _isLight)
     {
-        // If already attacking, just stock this attack as the next one
-        if (isAttacking)
-        {
-            NextAttack = _isLight.ToSign();
-            return;
-        }
-
         IsAttacking = true;
         OnStartAttack?.Invoke();
 
         if (nextAttack != 0) NextAttack = 0;
-
-        CancelInvoke("ResetCombo");
 
         // Adds the current combo to the list
         ComboCurrent.Add(_isLight);
@@ -772,6 +790,19 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
+    /// Breaks an on going combo, with animation set and stopping attack if attacking.
+    /// </summary>
+    public virtual void BreakCombo()
+    {
+        if (ComboCurrent.Count < comboMax) SetAnim(PlayerAnimState.ComboBreaker);
+
+        ComboCurrent = new List<bool>();
+        CancelInvoke("BreakCombo");
+
+        if (IsAttacking) StopAttack();
+    }
+
+    /// <summary>
     /// Desactivate the hit box of the character.
     /// </summary>
     public virtual void DesactiveHitBox() => hitBox.Desactivate();
@@ -783,31 +814,40 @@ public class TDS_Player : TDS_Character
     {
         IsAttacking = false;
         OnStopAttack?.Invoke();
-
+        
         // If haven't yet reached the end of the combo, plan to reset it in X seconds if  not attacking before
         if (comboCurrent.Count < comboMax)
         {
-            if (nextAttack != 0) Attack(nextAttack.ToBool());
-            else Invoke("ResetCombo", comboResetTime);
+            if (nextAttack != 0) StartPreparingAttack(nextAttack.ToBool());
+            else if (comboCurrent.Count > 0)Invoke("BreakCombo", comboResetTime);
         }
         else
         {
             // Reset the combo when reaching its end
-            ResetCombo();
+            BreakCombo();
         }
     }
 
     /// <summary>
-    /// Resets the current combo.
+    /// Makes the player prepare an attack.
+    /// By default, the player is supposed to just directly attack ; but for certain situations, the attack might not played directly : that's the goal of this method, to be override to rewrite a pre-attack behaviour.
+    /// </summary>
+    /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
+    protected virtual IEnumerator PrepareAttack(bool _isLight)
+    {
+        Attack(_isLight);
+
+        PreparingAttackCoroutine = null;
+        yield break;
+    }
+
+    /// <summary>
+    /// Resets the on going combo.
     /// </summary>
     public virtual void ResetCombo()
     {
-        if (ComboCurrent.Count < comboMax) SetAnim(PlayerAnimState.ComboBreaker);
-
         ComboCurrent = new List<bool>();
-        CancelInvoke("ResetCombo");
-
-        if (IsAttacking) StopAttack();
+        CancelInvoke("BreakCombo");
     }
 
     /// <summary>
@@ -816,7 +856,27 @@ public class TDS_Player : TDS_Character
     public void ResetNextAttack() => NextAttack = 0;
 
     /// <summary>
-    /// Stops this player's current attack if attacking
+    /// Makes the player start preparing an attack. This is the method called just before calling the <see cref="PrepareAttack(bool)"/> coroutine.
+    /// </summary>
+    /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
+    public virtual void StartPreparingAttack(bool _isLight)
+    {
+        if (isPreparingAttack) return;
+
+        // If already attacking, just stock this attack as the next one
+        if (isAttacking)
+        {
+            NextAttack = _isLight.ToSign();
+            return;
+        }
+
+        CancelInvoke("BreakCombo");
+
+        PreparingAttackCoroutine = StartCoroutine(PrepareAttack(_isLight));
+    }
+
+    /// <summary>
+    /// Stops this player's current attack if attacking.
     /// </summary>
     public override void StopAttack()
     {
@@ -824,6 +884,18 @@ public class TDS_Player : TDS_Character
         if (hitBox.IsActive) DesactiveHitBox();
 
         if (isAttacking) Invoke("EndAttack", .1f);
+    }
+
+    /// <summary>
+    /// Stops the player from preparing an attack.
+    /// </summary>
+    /// <returns>Returns true if successfully stopped preparing an attack, false if none was in preparation.</returns>
+    public virtual bool StopPreparingAttack()
+    {
+        if (!isPreparingAttack) return false;
+
+        StopCoroutine(preparingAttackCoroutine);
+        return false;
     }
 
     /// <summary>
@@ -1017,8 +1089,11 @@ public class TDS_Player : TDS_Character
             return false;
         }
 
+        // If preparing an attack, stop it
+        if (isPreparingAttack) StopPreparingAttack();
+
         // And if in combo, reset it
-        if (comboCurrent.Count > 0) ResetCombo();
+        if (comboCurrent.Count > 0) BreakCombo();
 
         // If not dead, be just hit
         if (!isDead)
@@ -1303,9 +1378,9 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
-    /// Freezes the player's movements.
+    /// Freezes the player's movements and actions.
     /// </summary>
-    public void FreezePlayer() => IsParalyzed = true;
+    public void FreezePlayer() => IsPlayable = false;
 
     /// <summary>
     /// Starts a jump.
@@ -1481,9 +1556,9 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
-    /// Unfreezes the player's movements.
+    /// Unfreezes the player's movements and actions.
     /// </summary>
-    public void UnfreezePlayer() => IsParalyzed = false;
+    public void UnfreezePlayer() => IsPlayable = true;
     #endregion
 
     #region Animator
@@ -1493,14 +1568,12 @@ public class TDS_Player : TDS_Character
     /// <param name="_state">State of the player animator to set.</param>
     public void SetAnim(PlayerAnimState _state)
     {
-
         // Online
         if (photonView.isMine)
         {
             // if (!animator) return;
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)_state });
         }
-        
 
         // Local
         switch (_state)
@@ -1582,6 +1655,10 @@ public class TDS_Player : TDS_Character
         }
     }
 
+    /// <summary>
+    /// Set this player animator informations.
+    /// </summary>
+    /// <param name="_animState">State of the player animator to set.</param>
     public void SetAnim(int _animState)
     {
         SetAnim((PlayerAnimState)_animState); 
@@ -1597,14 +1674,14 @@ public class TDS_Player : TDS_Character
         if (!photonView.isMine) return; 
 
         // If dodging, parrying or attacking, do not perform action
-        if (isDodging || isParrying) return;
+        if (isDodging || isParrying || isPreparingAttack) return;
 
         // Checks potentially agressives actions
         if (!IsPacific && isGrounded)
         {
-            if (Input.GetButtonDown(LightAttackButton)) Attack(true);
+            if (Input.GetButtonDown(LightAttackButton)) StartPreparingAttack(true);
 
-            else if (Input.GetButtonDown(HeavyAttackButton)) Attack(false);
+            else if (Input.GetButtonDown(HeavyAttackButton)) StartPreparingAttack(false);
 
             if (!isAttacking)
             {
@@ -1661,7 +1738,7 @@ public class TDS_Player : TDS_Character
         }
 
         // When pressing the jump method, check if on ground ; If it's all good, then let's jump
-        if (Input.GetButtonDown(JumpButton) && IsGrounded)
+        if (Input.GetButtonDown(JumpButton) && IsGrounded && !isPreparingAttack)
         {
             StartJump();
         }
@@ -1787,8 +1864,8 @@ public class TDS_Player : TDS_Character
     // Update is called once per frame
     protected override void Update ()
     {
-        // If dead, return
-        if (isDead) return;
+        // If dead or not playable, return
+        if (isDead || !IsPlayable) return;
 
         base.Update();
 
@@ -1804,7 +1881,6 @@ public class TDS_Player : TDS_Character
     {
         TDS_LevelManager.Instance?.RemoveOnlinePlayer(this); 
     }
-
     #endregion
 
     #endregion

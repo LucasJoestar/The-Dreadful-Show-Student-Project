@@ -114,6 +114,12 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     /// <summary>SerializedProperties for <see cref="TDS_Player.isParrying"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isParrying = null;
 
+    /// <summary>SerializedProperties for <see cref="TDS_Player.IsPlayable"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isPlayable = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.isPreparingAttack"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isPreparingAttack = null;
+
     /// <summary>SerializedProperties for <see cref="TDS_Player.comboCurrent"/> of type <see cref="List{bool}"/>.</summary>
     private SerializedProperty comboCurrent = null;
 
@@ -319,6 +325,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         TDS_EditorUtility.RadioToggle("Moving", "Is this player currently moving or not", isMoving);
         TDS_EditorUtility.RadioToggle("Jumping", "Is this player currently jumping or not", isJumping);
         TDS_EditorUtility.RadioToggle("Dodging", "Is this player currently dodging or not", isDodging);
+        TDS_EditorUtility.RadioToggle("Preparing Attack", "Is this player currently preparing an attack", isPreparingAttack);
         TDS_EditorUtility.RadioToggle("Parrying", "Is this player currently parrying or not", isParrying);
     }
 
@@ -484,6 +491,13 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
             serializedObject.Update();
         }
 
+        // Draws a header for the player special settings
+        EditorGUILayout.LabelField("Special", TDS_EditorUtility.HeaderStyle);
+
+        GUILayout.Space(3);
+
+        TDS_EditorUtility.Toggle("Playable", "Is the player playable or not", isPlayable);
+
         // Draws a header for the player jump settings
         EditorGUILayout.LabelField("Jump", TDS_EditorUtility.HeaderStyle);
 
@@ -509,7 +523,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
                 players.ForEach(p => p.AimAngle = aimAngle.floatValue);
                 serializedObject.Update();
             }
-
         }
     }
     #endregion
@@ -536,6 +549,8 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         isJumping = serializedObject.FindProperty("isJumping");
         isMoving = serializedObject.FindProperty("isMoving");
         isParrying = serializedObject.FindProperty("isParrying");
+        isPlayable = serializedObject.FindProperty("IsPlayable");
+        isPreparingAttack = serializedObject.FindProperty("isPreparingAttack");
         comboCurrent = serializedObject.FindProperty("comboCurrent");
         comboResetTime = serializedObject.FindProperty("comboResetTime");
         jumpForce = serializedObject.FindProperty("JumpForce");

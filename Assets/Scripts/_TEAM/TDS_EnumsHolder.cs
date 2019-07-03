@@ -186,8 +186,8 @@ public enum FireEaterAnimState
 {
     Sober,
     Drunk,
-    ReadyForSpit,
-    ReadyForDrunk,
+    Spit,
+    DoNotSpit,
     Fire
 }
 

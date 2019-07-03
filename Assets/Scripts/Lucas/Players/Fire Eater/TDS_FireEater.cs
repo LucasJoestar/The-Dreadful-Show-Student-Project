@@ -38,6 +38,13 @@ public class TDS_FireEater : TDS_Player
 
     #region Fields / Properties
 
+    #region Constants
+    /// <summary>
+    /// Time used to activate the Fire Eater mini game when pressing the attack button.
+    /// </summary>
+    public const float TIME_TO_ACTIVATE_MINI_GAME = .35f;
+    #endregion
+
     #region Variables
     /// <summary>Backing field for <see cref="IsDrunk"/>.</summary>
     [SerializeField] private bool isDrunk = false;
@@ -48,13 +55,8 @@ public class TDS_FireEater : TDS_Player
     public bool IsDrunk
     {
         get { return isDrunk; }
-        set
+        private set
         {
-            if (isDrunk) soberUpTimer = 0;
-
-            if (value) SetFireEaterAnim(FireEaterAnimState.Drunk);
-            else SetFireEaterAnim(FireEaterAnimState.Sober);
-
             isDrunk = value;
         }
     }
@@ -153,16 +155,17 @@ public class TDS_FireEater : TDS_Player
     /// <summary>
     /// Starts the coroutine to make the Fire Eater get drunk.
     /// </summary>
-    public void GetDrunk() => StartCoroutine(GetDrunkCotourine());
+    public void GetDrunk() => StartCoroutine(GetDrunkCorourine());
 
     /// <summary>
     /// Makes the Fire Eater get drunk, and sober him up after a certain time.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator GetDrunkCotourine()
+    private IEnumerator GetDrunkCorourine()
     {
         IsDrunk = true;
         speedCoef = drunkSpeedCoef;
+        SetFireEaterAnim(FireEaterAnimState.Drunk);
 
         soberUpTimer = soberUpTime;
 
@@ -174,6 +177,7 @@ public class TDS_FireEater : TDS_Player
 
         speedCoef = 1;
         IsDrunk = false;
+        SetFireEaterAnim(FireEaterAnimState.Sober);
     }
 
     /// <summary>
@@ -189,24 +193,44 @@ public class TDS_FireEater : TDS_Player
     /// <summary>
     /// Make the mini game fun !
     /// </summary>
+    /// <param name="_isLight">Name of the button to maintain to keep going on in the mini game.</param>
     /// <returns></returns>
-    private IEnumerator MiniGame()
+    private IEnumerator MiniGame(string _buttonName)
     {
-        OnTriggerMiniGame = () => SetFireEaterAnim(FireEaterAnimState.ReadyForSpit);
+        SetFireEaterAnim(FireEaterAnimState.Spit);
 
-        animator.SetFloat("MiniGameSpeed", Random.Range(.35f, 1f));
+        isInMiniGame = true;
+        OnTriggerMiniGame = () => SetFireEaterAnim(FireEaterAnimState.DoNotSpit);
 
-        while (isInMiniGame)
+        // Timer before showing the mini game
+        float _timer = .1f;
+        while (isInMiniGame && Input.GetButton(_buttonName) && (_timer > 0))
         {
             yield return null;
-
-            if (Input.GetButtonDown(LightAttackButton) || Input.GetButtonDown(HeavyAttackButton))
-            {
-                OnTriggerMiniGame?.Invoke();
-                SetFireEaterAnim(FireEaterAnimState.Fire);
-                break;
-            }   
+            _timer -= Time.deltaTime;
         }
+
+        // While maintaining the attack button and being in mini game (it can be cancelled when hit, or when ending), play it
+        if (isInMiniGame)
+        {
+            animator.SetBool("IsInMiniGame", true);
+            animator.SetFloat("MiniGameSpeed", Random.Range(.45f, .9f));
+
+            while (isInMiniGame)
+            {
+                yield return null;
+
+                if (Input.GetButtonUp(_buttonName))
+                {
+                    IsInMiniGame = false;
+                    break;
+                }
+            }
+        }
+
+        // Triggers associated mini game state action
+        OnTriggerMiniGame?.Invoke();
+        SetFireEaterAnim(FireEaterAnimState.Fire);
     }
 
     /// <summary>
@@ -220,7 +244,7 @@ public class TDS_FireEater : TDS_Player
         switch (_state)
         {
             case 0:
-                StartCoroutine(MiniGame());
+                OnTriggerMiniGame = () => SetFireEaterAnim(FireEaterAnimState.Spit);
                 break;
 
             case 1:
@@ -228,13 +252,11 @@ public class TDS_FireEater : TDS_Player
                 break;
 
             case 2:
-                OnTriggerMiniGame = () => SetFireEaterAnim(FireEaterAnimState.ReadyForDrunk);
+                OnTriggerMiniGame = () => SetFireEaterAnim(FireEaterAnimState.DoNotSpit);
                 OnTriggerMiniGame += GetDrunk;
                 break;
 
             default:
-                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, GetType(), "ExitMiniGame"), new object[] { });
-
                 break;
         }
     }
@@ -244,8 +266,15 @@ public class TDS_FireEater : TDS_Player
     /// </summary>
     public void ExitMiniGame()
     {
+        if (photonView.isMine)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "ExitMiniGame"), new object[] { });
+        }
+
         IsInMiniGame = false;
-        animator.SetInteger("FireID", -999999);
+
+        OnTriggerMiniGame = null;
+        animator.SetInteger("FireID", 0);
     }
     #endregion
 
@@ -272,17 +301,36 @@ public class TDS_FireEater : TDS_Player
 
     #region Attacks
     /// <summary>
-    /// Ends definitively the current attack and enables back the capacity to attack once more.
+    /// Makes the player prepare an attack.
+    /// By default, the player is supposed to just directly attack ; but for certain situations, the attack might not played directly : that's the goal of this method, to be override to rewrite a pre-attack behaviour.
     /// </summary>
-    protected override void EndAttack()
+    /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
+    protected override IEnumerator PrepareAttack(bool _isLight)
     {
-        base.EndAttack();
+        string _buttonName = _isLight ? LightAttackButton : HeavyAttackButton;
+        float _timer = TIME_TO_ACTIVATE_MINI_GAME;
 
-        if (isDrunk)
+        if (!isDrunk)
         {
-            ComboCurrent = new List<bool>();
-            CancelInvoke("ResetCombo");
+            while (Input.GetButton(_buttonName))
+            {
+                if (_timer > 0)
+                {
+                    yield return null;
+                    _timer -= Time.deltaTime;
+                }
+                else
+                {
+                    StartCoroutine(MiniGame(_buttonName));
+                    yield return null;
+                    break;
+                }
+            }
         }
+
+        // Executes the attack
+        preparingAttackCoroutine = StartCoroutine(base.PrepareAttack(_isLight));
+        yield break;
     }
 
     /// <summary>
@@ -328,7 +376,22 @@ public class TDS_FireEater : TDS_Player
         base.Die();
 
         // Stop being drunk man, you're dead
-        if (isDrunk) IsDrunk = false;
+        if (isDrunk) soberUpTimer = 0;
+    }
+
+    /// <summary>
+    /// Makes this object take damage and decrease its health if it is not invulnerable.
+    /// </summary>
+    /// <param name="_damage">Amount of damage this inflect to this object.</param>
+    /// <returns>Returns true if some damages were inflicted, false if none.</returns>
+    public override bool TakeDamage(int _damage)
+    {
+        if (base.TakeDamage(_damage))
+        {
+            if (isInMiniGame) ExitMiniGame();
+            return true;
+        }
+        return false;
     }
     #endregion
 
@@ -383,12 +446,12 @@ public class TDS_FireEater : TDS_Player
                 animator.SetBool("IsDrunk", true);
                 break;
 
-            case FireEaterAnimState.ReadyForSpit:
-                animator.SetInteger("FireID", 0);
+            case FireEaterAnimState.Spit:
+                animator.SetInteger("FireID", 9999999);
                 break;
 
-            case FireEaterAnimState.ReadyForDrunk:
-                animator.SetInteger("FireID", 999999);
+            case FireEaterAnimState.DoNotSpit:
+                animator.SetInteger("FireID", -9999999);
                 break;
 
             case FireEaterAnimState.Fire:
