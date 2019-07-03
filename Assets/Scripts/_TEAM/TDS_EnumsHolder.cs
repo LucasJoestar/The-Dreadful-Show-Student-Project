@@ -261,7 +261,8 @@ public enum UIState
     InRoomSelection,
     InCharacterSelection,
     InGame, 
-    InPause
+    InPause, 
+    InGameOver
 }
 
 /// <summary>

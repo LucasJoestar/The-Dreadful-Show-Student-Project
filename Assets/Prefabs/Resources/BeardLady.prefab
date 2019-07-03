@@ -255,6 +255,7 @@ MonoBehaviour:
   JumpForce: 400
   jumpMaximumTime: 1.5
   comboMax: 3
+  nextAttack: 0
   WhatIsObstacle:
     serializedVersion: 2
     m_Bits: 24576
@@ -342,8 +343,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 7078821753995162720}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 4
+  instantiationId: 4
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &7078821753995162720
@@ -703,7 +704,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

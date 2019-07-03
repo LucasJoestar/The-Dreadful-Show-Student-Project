@@ -131,6 +131,8 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private GameObject narratorBoxParent;
     // Parent of the loading screen
     [SerializeField] private GameObject loadingScreenParent;
+    // Parent of the Game Over Screen
+    [SerializeField] private GameObject gameOverScreenParent; 
     #endregion
 
     #region Local 
@@ -189,7 +191,8 @@ public class TDS_UIManager : PunBehaviour
     [Header("Buttons")]
     [SerializeField] private Button launchGameButton;
     [SerializeField] private Button buttonQuitPause;
-    [SerializeField] private Button buttonQuitGame; 
+    [SerializeField] private Button buttonQuitGame;
+    [SerializeField] private Button buttonRestartGame; 
     #endregion
 
     #region Animator
@@ -361,6 +364,7 @@ public class TDS_UIManager : PunBehaviour
                 characterSelectionMenuParent.SetActive(false);
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false);
+                gameOverScreenParent.SetActive(false);
                 break;
             case UIState.InRoomSelection:
                 mainMenuParent.SetActive(false);
@@ -368,6 +372,7 @@ public class TDS_UIManager : PunBehaviour
                 characterSelectionMenuParent.SetActive(false);
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false);
+                gameOverScreenParent.SetActive(false);
                 StartCoroutine(UpdatePlayerCount());
                 break;
             case UIState.InCharacterSelection:
@@ -376,6 +381,7 @@ public class TDS_UIManager : PunBehaviour
                 characterSelectionMenuParent.SetActive(true);
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false);
+                gameOverScreenParent.SetActive(false);
                 break;
             case UIState.InGame:
                 mainMenuParent.SetActive(false);
@@ -383,6 +389,7 @@ public class TDS_UIManager : PunBehaviour
                 characterSelectionMenuParent.SetActive(false);
                 inGameMenuParent.SetActive(true);
                 pauseMenuParent.SetActive(false);
+                gameOverScreenParent.SetActive(false);
                 break;
             case UIState.InPause:
                 mainMenuParent.SetActive(false);
@@ -390,7 +397,20 @@ public class TDS_UIManager : PunBehaviour
                 characterSelectionMenuParent.SetActive(false);
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(true);
+                gameOverScreenParent.SetActive(false);
                 break;
+            case UIState.InGameOver:
+                mainMenuParent.SetActive(false);
+                roomSelectionMenuParent.SetActive(false);
+                characterSelectionMenuParent.SetActive(false);
+                inGameMenuParent.SetActive(false);
+                pauseMenuParent.SetActive(false);
+                gameOverScreenParent.SetActive(true);
+                if (!PhotonNetwork.isMasterClient)
+                {
+                    TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, false });
+                }
+                break; 
             default:
                 break;
         }
@@ -548,17 +568,17 @@ public class TDS_UIManager : PunBehaviour
     {
         if (isloadingNextScene)
         {
-            if (PhotonNetwork.isMasterClient)
-                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
-            TDS_SceneManager.Instance?.PrepareSceneLoading(1);
+            //if (PhotonNetwork.isMasterClient)
+              //  TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
+            TDS_SceneManager.Instance?.PrepareOnlineSceneLoading(1, (int)UIState.InGame);
         }
         else
         {
             if (PhotonNetwork.isMasterClient)
                 TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
             TDS_LevelManager.Instance.Spawn();
+            ActivateMenu(UIState.InGame);
         }
-        ActivateMenu(UIState.InGame);
     }
 
     /// <summary>
@@ -589,6 +609,9 @@ public class TDS_UIManager : PunBehaviour
 
     public void QuitGame() => Application.Quit();
 
+    /// <summary>
+    /// Stop all coroutines and switch the UI State to InGameOver
+    /// </summary>
     public void ResetUIManager()
     {
         StopAllCoroutines();
@@ -600,7 +623,45 @@ public class TDS_UIManager : PunBehaviour
         {
             Destroy(canvasWorld.transform.GetChild(i).gameObject); 
         }
-        
+        ActivateMenu(UIState.InGameOver);    
+    }
+
+    /// <summary>
+    /// Reload the level
+    /// </summary>
+    public void ResetLevel()
+    {
+        TDS_SceneManager.Instance.PrepareOnlineSceneLoading(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, (int)UIState.InGame);
+        ActivateMenu(UIState.InGame); 
+    }
+
+    /// <summary>
+    /// Call when the Restart Button is pressed 
+    /// If not master client, send a message to say the player is ready 
+    /// If master, send a message to everybody to reset the level
+    /// </summary>
+    public void OnRestartButtonPressed()
+    {
+        if(PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ResetLevel"), new object[] { });
+            ResetLevel();
+        }
+        else
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, true });
+        }
+    }
+
+    /// <summary>
+    /// Remove the player from the player ready list
+    /// </summary>
+    /// <param name="_playerID">Id of the removed player</param>
+    public void RemovePlayer(int _playerID)
+    {
+        PhotonPlayer _player = PhotonPlayer.Find(_playerID);
+        if (!playerListReady.ContainsKey(_player)) return;
+        playerListReady.Remove(_player); 
     }
 
     /// <summary>
@@ -874,7 +935,8 @@ public class TDS_UIManager : PunBehaviour
         {
             playerListReady[_player] = _isReady;
         }
-        if (launchGameButton) launchGameButton.interactable = !playerListReady.Any(p => p.Value == false) && localIsReady; ;
+        if (uiState == UIState.InCharacterSelection && launchGameButton) launchGameButton.interactable = !playerListReady.Any(p => p.Value == false) && localIsReady;
+        if (uiState == UIState.InGameOver && buttonRestartGame) buttonRestartGame.interactable = !playerListReady.Any(p => p.Value == false); 
     }
 
     /// <summary>

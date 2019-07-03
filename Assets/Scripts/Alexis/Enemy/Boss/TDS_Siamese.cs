@@ -55,6 +55,7 @@ public class TDS_Siamese : TDS_Boss
     /// </summary>
     private void SplitSiamese()
     {
+        if (!PhotonNetwork.isMasterClient) return; 
         for (int i = 0; i < splitingEnemiesNames.Length; i++)
         {
             PhotonNetwork.Instantiate(splitingEnemiesNames[i], transform.position + splitingPosition[i], Quaternion.identity, 0); 

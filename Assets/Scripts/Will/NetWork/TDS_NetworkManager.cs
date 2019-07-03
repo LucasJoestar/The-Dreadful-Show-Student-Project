@@ -59,7 +59,8 @@ public class TDS_NetworkManager : PunBehaviour
                 AuthenticationValues _authenticationValues = new AuthenticationValues(value);
                 PhotonNetwork.AuthValues = _authenticationValues;
                 PhotonNetwork.playerName = value;
-                PhotonNetwork.player.UserId = value;
+                PhotonNetwork.player.NickName = value; 
+                //PhotonNetwork.player.UserId = value;
                 PlayerPrefs.SetString(PlayerNamePrefKey, value);
             }
         }
@@ -182,10 +183,12 @@ public class TDS_NetworkManager : PunBehaviour
         {
             TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LeaveGame"), new object[] { });
         }
+        else TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "RemovePlayer"), new object[] { PhotonNetwork.player.ID });
         TDS_GameManager.LocalPlayer = PlayerType.Unknown;
         PhotonNetwork.Disconnect();
 
-        TDS_SceneManager.Instance.PrepareSceneLoading(0);
+        TDS_SceneManager.Instance.PrepareSceneLoading("MainMenu");
+        TDS_UIManager.Instance.ActivateMenu(UIState.InMainMenu); 
     }
 
     #region Player   
