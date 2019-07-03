@@ -1017,6 +1017,12 @@ public class TDS_UIManager : PunBehaviour
             Destroy(gameObject);
             return; 
         }
+        if (playerNameField)
+        {
+            string _name = $"Guest {(int)UnityEngine.Random.Range(0, 999)}";
+            playerNameField.text = _name;
+            SetNewName(_name);
+        }
         uiGameObject = transform.GetChild(0).gameObject;
     }
 
@@ -1026,12 +1032,6 @@ public class TDS_UIManager : PunBehaviour
         if (uiGameObject)
             uiGameObject.SetActive(true);
         ActivateMenu(uiState); 
-        if (playerNameField && playerNameField.text == string.Empty)
-        {
-            string _name = $"Guest {(int)UnityEngine.Random.Range(0,999)}";
-            playerNameField.text = _name;
-            SetNewName();
-        }
     }
 
     public override void OnConnectedToMaster()

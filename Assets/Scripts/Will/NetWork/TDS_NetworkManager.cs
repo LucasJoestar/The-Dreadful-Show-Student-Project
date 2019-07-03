@@ -56,11 +56,11 @@ public class TDS_NetworkManager : PunBehaviour
             if(value != string.Empty)
             {
                 playerNamePrefKey = value;
+
+                PhotonNetwork.playerName = value;
+                PhotonNetwork.player.NickName = value;
                 AuthenticationValues _authenticationValues = new AuthenticationValues(value);
                 PhotonNetwork.AuthValues = _authenticationValues;
-                PhotonNetwork.playerName = value;
-                PhotonNetwork.player.NickName = value; 
-                //PhotonNetwork.player.UserId = value;
                 PlayerPrefs.SetString(PlayerNamePrefKey, value);
             }
         }
@@ -101,11 +101,13 @@ public class TDS_NetworkManager : PunBehaviour
     void InitMulti()
     {
         #region Player
+        /*
         if (PlayerPrefs.HasKey(PlayerNamePrefKey))
         {
             PlayerNamePrefKey = PlayerPrefs.GetString(PlayerNamePrefKey);
             TDS_UIManager.Instance.PlayerNameField.text = playerNamePrefKey; 
         }
+        */
         #endregion
     }
 
@@ -192,11 +194,13 @@ public class TDS_NetworkManager : PunBehaviour
     }
 
     #region Player   
+    /*
     public void SetPlayerName(string _nickname)
     {
         PhotonNetwork.playerName = _nickname + " ";
         PlayerPrefs.SetString(PlayerNamePrefKey, _nickname);
     }
+    */
     #endregion
     #endregion
 
@@ -255,9 +259,7 @@ public class TDS_NetworkManager : PunBehaviour
     {
         GUILayout.Box(PhotonNetwork.GetPing().ToString()); 
         GUILayout.Box(PhotonNetwork.connectionStateDetailed.ToString());
-        GUILayout.Box($"In Lobby: {PhotonNetwork.insideLobby}");
-        GUILayout.Box($"In Room : {PhotonNetwork.inRoom}");
-        GUILayout.Box($"PLAYER USERNAME: {PhotonNetwork.playerName}\nPLAYER USER ID: {PhotonNetwork.player.UserId}\nPLAYER NICKNAME: {PhotonNetwork.player.NickName}\nID: {PhotonNetwork.player.ID}\n{PhotonNetwork.player}");
+        GUILayout.Box($"PLAYER USERNAME: {PhotonNetwork.playerName}\nPLAYER USER ID: {PhotonNetwork.player.UserId}\nID: {PhotonNetwork.player.ID}");
         GUILayout.Box(PhotonNetwork.isMasterClient.ToString());
         GUILayout.Box(TDS_GameManager.LocalPlayer.ToString());
     }
