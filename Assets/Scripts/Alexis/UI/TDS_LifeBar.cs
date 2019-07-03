@@ -88,6 +88,16 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
     }
 
     /// <summary>
+    /// Set all fill amount to 1
+    /// </summary>
+    public void ResetLifeBar()
+    {
+        if(foregroundFilledImage) foregroundFilledImage.fillAmount = 1;
+        if(filledImage) filledImage.fillAmount = 1;
+        gameObject.SetActive(false);
+    }
+
+    /// <summary>
     /// Set the owner of the lifebar 
     /// Link Destroy method on the event OnDie of the owner
     /// </summary>

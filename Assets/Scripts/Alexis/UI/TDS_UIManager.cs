@@ -666,6 +666,11 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void OnRestartButtonPressed()
     {
+        playerHealthBar.ResetLifeBar();
+        onlineBeardLadyLifeBar.ResetLifeBar();
+        onlineFatLadyLifeBar.ResetLifeBar();
+        onlineFireEaterLifeBar.ResetLifeBar();
+        onlineJugglerLifeBar.ResetLifeBar(); 
         if(PhotonNetwork.isMasterClient)
         {
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ResetLevel"), new object[] { });
@@ -818,6 +823,7 @@ public class TDS_UIManager : PunBehaviour
         if (_player == TDS_LevelManager.Instance.LocalPlayer && _player.photonView.isMine)
         {
             _playerLifeBar = playerHealthBar;
+            playerHealthBar.gameObject.SetActive(true); 
             switch (_player.PlayerType)
             {
                 case PlayerType.Unknown:
