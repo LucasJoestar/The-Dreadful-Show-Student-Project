@@ -56,10 +56,10 @@ public class TDS_UnicycleSiamese : TDS_Enemy
     protected override bool AttackCanBeCasted()
     {
         bool _canAttack = base.AttackCanBeCasted();
+        //if (_canAttack)
+        //    _canAttack = Mathf.Abs(transform.position.z - playerTarget.transform.position.z) <= agent.Radius * 2;
         if (_canAttack)
-            _canAttack = Mathf.Abs(transform.position.z - playerTarget.transform.position.z) <= agent.Radius * 2;
-        if (_canAttack)
-            _canAttack = IsFacingRight ? transform.position.x > playerTarget.transform.position.x : transform.position.x < playerTarget.transform.position.x; 
+            _canAttack = IsFacingRight ? transform.position.x < playerTarget.transform.position.x : transform.position.x > playerTarget.transform.position.x; 
         return _canAttack; 
     }
 

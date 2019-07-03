@@ -91,7 +91,7 @@ public abstract class TDS_Boss : TDS_Enemy
     {
         if (!PhotonNetwork.isMasterClient || castedAttack == null) return false;
         if (castedAttack.GetType() == typeof(TDS_SpinningAttackBehaviour)) return true; 
-        if (Mathf.Abs(transform.position.z - playerTarget.transform.position.z) >= .6f)
+        if (Mathf.Abs(transform.position.z - playerTarget.transform.position.z) >= .25f)
         {
             //Debug.Log(Mathf.Abs(transform.position.z - playerTarget.transform.position.z)); 
             return false;
@@ -374,7 +374,7 @@ public abstract class TDS_Boss : TDS_Enemy
         {
             int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;
             _attackingPosition.x = Mathf.Abs(transform.position.x - playerTarget.transform.position.x) < castedAttack.MaxRange ? transform.position.x : playerTarget.transform.position.x + ((castedAttack.MaxRange - agent.Radius) * _coeff);
-            _attackingPosition.z = playerTarget.transform.position.z; // + UnityEngine.Random.Range(-.4f, .4f);
+            _attackingPosition.z = playerTarget.transform.position.z; 
         }
         return _attackingPosition;
     }

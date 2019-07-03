@@ -635,6 +635,30 @@ public class TDS_UIManager : PunBehaviour
         ActivateMenu(UIState.InGame); 
     }
 
+    public void RemovePlayerLifeBar(int _removedPlayer)
+    {
+        PlayerType _type = (PlayerType)_removedPlayer;
+        switch (_type)
+        {
+            case PlayerType.Unknown:
+                break;
+            case PlayerType.BeardLady:
+                onlineBeardLadyLifeBar.gameObject.SetActive(false); 
+                break;
+            case PlayerType.FatLady:
+                onlineFatLadyLifeBar.gameObject.SetActive(false);
+                break;
+            case PlayerType.FireEater:
+                onlineFireEaterLifeBar.gameObject.SetActive(false);
+                break;
+            case PlayerType.Juggler:
+                onlineJugglerLifeBar.gameObject.SetActive(false);
+                break;
+            default:
+                break;
+        }
+    }
+
     /// <summary>
     /// Call when the Restart Button is pressed 
     /// If not master client, send a message to say the player is ready 
@@ -852,6 +876,10 @@ public class TDS_UIManager : PunBehaviour
             TDS_NetworkManager.Instance.PlayerNamePrefKey = playerNameField.text;
     }
 
+    /// <summary>
+    /// Set the new name of the player as a string
+    /// </summary>
+    /// <param name="_newName">the new name</param>
     public void SetNewName(string _newName)
     {
         TDS_NetworkManager.Instance.PlayerNamePrefKey = _newName;
