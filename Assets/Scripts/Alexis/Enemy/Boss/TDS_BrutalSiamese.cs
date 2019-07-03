@@ -49,6 +49,11 @@ public class TDS_BrutalSiamese : TDS_Enemy
     #endregion
 
     #region Overriden Methods
+    protected override Vector3 GetAttackingPosition(out bool _hasToWander)
+    {
+        _hasToWander = false; 
+        return base.GetAttackingPosition();
+    }
     #endregion
 
     #region Unity Methods

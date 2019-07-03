@@ -1088,7 +1088,7 @@ public abstract class TDS_Enemy : TDS_Character
     {
         agent.StopAgent();
         base.StopAttack(); 
-        DropObject();
+        if(throwable) DropObject();
 
         //StopAllCoroutines();
         if (behaviourCoroutine != null)
