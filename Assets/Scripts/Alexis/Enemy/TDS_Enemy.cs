@@ -956,8 +956,8 @@ public abstract class TDS_Enemy : TDS_Character
         }
         else
         {
-            _offset.x = agent.Radius / 2;
-        }       
+            _offset.x = Random.Range(GetMinRange(), GetMaxRange()) - agent.Radius;
+        }
         _offset.x *= _coeff;
         return playerTarget.transform.position + _offset;
     }
