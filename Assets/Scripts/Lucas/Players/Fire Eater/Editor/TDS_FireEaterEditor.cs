@@ -261,11 +261,10 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
             {
                 foreach (TDS_FireEater _fireEater in fireEaters)
                 {
-                    if (_fireEater.ComboCurrent.Count > 0) _fireEater.ResetCombo();
+                    if (_fireEater.ComboCurrent.Count > 0) _fireEater.BreakCombo();
 
                     if (!isDrunk.boolValue) _fireEater.GetDrunk();
                     else soberUpTimer.floatValue = 0;
-
                 }
             }
 

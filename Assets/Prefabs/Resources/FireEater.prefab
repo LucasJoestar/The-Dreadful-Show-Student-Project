@@ -522,11 +522,14 @@ MonoBehaviour:
   isJumping: 0
   isMoving: 0
   isParrying: 0
+  IsPlayable: 1
+  isPreparingAttack: 0
   comboCurrent: 
   comboResetTime: 2
   JumpForce: 400
   jumpMaximumTime: 1.5
   comboMax: 3
+  nextAttack: 0
   WhatIsObstacle:
     serializedVersion: 2
     m_Bits: 24576
