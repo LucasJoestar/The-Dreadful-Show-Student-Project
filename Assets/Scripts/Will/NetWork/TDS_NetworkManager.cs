@@ -56,7 +56,10 @@ public class TDS_NetworkManager : PunBehaviour
             if(value != string.Empty)
             {
                 playerNamePrefKey = value;
+                AuthenticationValues _authenticationValues = new AuthenticationValues(value);
+                PhotonNetwork.AuthValues = _authenticationValues;
                 PhotonNetwork.playerName = value;
+                PhotonNetwork.player.UserId = value;
                 PlayerPrefs.SetString(PlayerNamePrefKey, value);
             }
         }
@@ -79,10 +82,9 @@ public class TDS_NetworkManager : PunBehaviour
 
         if (!PhotonNetwork.connected)
         {
-            PhotonNetwork.autoJoinLobby = false;
+            PhotonNetwork.autoJoinLobby = true;
             PhotonNetwork.automaticallySyncScene = true;
             PhotonNetwork.ConnectUsingSettings(_tempID.ToString());
-            PhotonNetwork.JoinLobby();
         }
     }
     #endregion
@@ -122,7 +124,7 @@ public class TDS_NetworkManager : PunBehaviour
         TDS_UIManager.Instance?.SelectCharacter((int)PlayerType.Unknown);
         TDS_UIManager.Instance.ActivateMenu((int)UIState.InRoomSelection); 
         PhotonNetwork.LeaveRoom();
-       // PhotonNetwork.Disconnect();
+        PhotonNetwork.JoinLobby(); 
     }
 
     public void LockRoom()
@@ -158,12 +160,13 @@ public class TDS_NetworkManager : PunBehaviour
             return;
         }
 
-        int _getIndex = (int)_roomId;
-        string _stringID = _getIndex.ToString();
+        //int _getIndex = (int)_roomId;
+        //string _stringID = _getIndex.ToString();
         //PhotonNetwork.gameVersion = _stringID;
 
         if (roomName == string.Empty) roomName = "RoomTest";
         PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
+        PhotonNetwork.LeaveLobby(); 
         Debug.Log("room name : " + roomName);
 
     }
@@ -201,7 +204,6 @@ public class TDS_NetworkManager : PunBehaviour
     public override void OnCreatedRoom()
     {
         Debug.Log("room created");
-        //PhotonNetwork.JoinLobby();
         isHost = true;
     }
     public override void OnDisconnectedFromPhoton()
@@ -246,15 +248,16 @@ public class TDS_NetworkManager : PunBehaviour
             return; 
         }
     }
-    #if UNITY_EDITOR
     private void OnGUI()
     {
         GUILayout.Box(PhotonNetwork.GetPing().ToString()); 
         GUILayout.Box(PhotonNetwork.connectionStateDetailed.ToString());
+        GUILayout.Box($"In Lobby: {PhotonNetwork.insideLobby}");
+        GUILayout.Box($"In Room : {PhotonNetwork.inRoom}");
+        GUILayout.Box($"PLAYER USERNAME: {PhotonNetwork.playerName}\nPLAYER USER ID: {PhotonNetwork.player.UserId}\nPLAYER NICKNAME: {PhotonNetwork.player.NickName}\nID: {PhotonNetwork.player.ID}\n{PhotonNetwork.player}");
         GUILayout.Box(PhotonNetwork.isMasterClient.ToString());
-        GUILayout.Box(TDS_GameManager.LocalPlayer.ToString()); 
+        GUILayout.Box(TDS_GameManager.LocalPlayer.ToString());
     }
-    #endif
 
     void Start ()
     {

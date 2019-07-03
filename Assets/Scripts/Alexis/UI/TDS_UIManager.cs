@@ -791,6 +791,12 @@ public class TDS_UIManager : PunBehaviour
             TDS_NetworkManager.Instance.PlayerNamePrefKey = playerNameField.text;
     }
 
+    public void SetNewName(string _newName)
+    {
+        TDS_NetworkManager.Instance.PlayerNamePrefKey = _newName;
+        if (playerNameField) playerNameField.text = _newName; 
+    }
+
     /// <summary>
     /// Stop the coroutine that fill the image
     /// </summary>
@@ -908,26 +914,19 @@ public class TDS_UIManager : PunBehaviour
     {
         while (!PhotonNetwork.connected)
         {
+            Debug.Log("Not Connected"); 
             yield return new WaitForSeconds(1);
-        }
-        if(!PhotonNetwork.insideLobby)
-        {
-            PhotonNetwork.JoinLobby();
         }
         RoomInfo[] _infos = new RoomInfo[] { }; 
         while (uiState == UIState.InRoomSelection)
         {
             if (!PhotonNetwork.connected) yield break;
             _infos = PhotonNetwork.GetRoomList();
-            if(_infos.Length == 0)
-            {
-                roomSelectionElements.ToList().ForEach(e => e.PlayerCount = 0); 
-            }
+            roomSelectionElements.ToList().ForEach(e => e.PlayerCount = 0);
             for (int i = 0; i < _infos.Length; i++)
             {
                 for (int j = 0; j < roomSelectionElements.Length; j++)
                 {
-                    Debug.Log(roomSelectionElements[j].RoomName + "//" + _infos[i].Name); 
                     if (roomSelectionElements[j].RoomName == _infos[i].Name)
                     {
                         roomSelectionElements[j].PlayerCount = _infos[i].PlayerCount; 
@@ -965,9 +964,9 @@ public class TDS_UIManager : PunBehaviour
         if (uiGameObject)
             uiGameObject.SetActive(true);
         ActivateMenu(uiState); 
-        if (playerNameField)
+        if (playerNameField && playerNameField.text == string.Empty)
         {
-            string _name = $"Guest {(int)UnityEngine.Random.Range(0,999)}"; 
+            string _name = $"Guest {(int)UnityEngine.Random.Range(0,999)}";
             playerNameField.text = _name;
             SetNewName();
         }

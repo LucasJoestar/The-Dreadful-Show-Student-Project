@@ -1632,6 +1632,12 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
             {
                 Debug.LogWarning("Operation failed: " + operationResponse.ToStringFull() + " Server: " + this.Server);
             }
+            else if(operationResponse.ReturnCode == 32746)
+            {
+                string _name = $"Guest {UnityEngine.Random.Range(0, 9999)}";
+                TDS_UIManager.Instance?.SetNewName(_name);
+                TDS_UIManager.Instance?.ActivateErrorBox("This user id is already used in this room. We gave you a new username to allow you to join this room, but you can change your name in the field below."); 
+            }
             else
             {
                 Debug.LogError("Operation failed: " + operationResponse.ToStringFull() + " Server: " + this.Server);
