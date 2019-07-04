@@ -576,7 +576,17 @@ public class TDS_Juggler : TDS_Player
         // Updates animator informations
         if (CurrentThrowableAmount > 0) SetAnim(PlayerAnimState.HasObject);
 
+        // Triggers one shot event
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "GrabObjectCallBackOnline"), new object[] { _throwable.photonView.viewID });
+
         return true;
+    }
+
+    protected override void GrabObjectCallBackOnline(int _photonViewID)
+    {
+        TDS_Throwable _throwable = PhotonView.Find(_photonViewID).GetComponent<TDS_Throwable>();
+        _throwable.transform.SetParent(handsTransform, true);
+        Throwable = _throwable;
     }
 
     /// <summary>
@@ -821,6 +831,18 @@ public class TDS_Juggler : TDS_Player
         {
             // Updates juggling informations
             UpdateJuggleParameters(false);
+        }
+
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObjectCallBackOnline"), new object[] { });
+    }
+
+    protected override void ThrowObjectCallBackOnline()
+    {
+        throwable.transform.SetParent(null, true);
+        throwable = null;
+        if (CurrentThrowableAmount > 0)
+        {
+            Throwable = Throwables[0];
         }
     }
 
