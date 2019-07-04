@@ -1036,6 +1036,13 @@ public class TDS_Player : TDS_Character
     }
     #endregion
 
+    #region Effects
+    public override void PutOnTheGround()
+    {
+        base.PutOnTheGround();
+    }
+    #endregion
+
     #endregion
 
     #region Health
@@ -1099,7 +1106,7 @@ public class TDS_Player : TDS_Character
         if (!isDead)
         {
             // Triggers associated animation
-            SetAnim(PlayerAnimState.Hit);
+            if (!IsDown) SetAnim(PlayerAnimState.Hit);
 
             StartCoroutine(Invulnerability());
 

@@ -479,6 +479,17 @@ public abstract class TDS_Character : TDS_Damageable
 
     #region Effects
     /// <summary>
+    /// Bring this damageable closer from a certain distance.
+    /// </summary>
+    /// <param name="_distance">Distance to browse.</param>
+    public override void BringCloser(float _distance)
+    {
+        if (IsDown) return;
+
+        base.BringCloser(_distance);
+    }
+
+    /// <summary>
     /// Tells the Character that he's getting up.
     /// </summary>
     public virtual void GetUp()
