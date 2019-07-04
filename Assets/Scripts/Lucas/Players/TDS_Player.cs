@@ -22,8 +22,6 @@ public class TDS_Player : TDS_Character
 	 *	####### TO DO #######
 	 *	#####################
      *	
-     *      • Onlien Animations
-     *          => 1283
      * 
 	 *	#####################
 	 *	### MODIFICATIONS ###
@@ -715,7 +713,7 @@ public class TDS_Player : TDS_Character
     /// When a player try to grab an object, call this method in master client to grab the object
     /// </summary>
     /// <param name="_photonViewID"></param>
-    protected void GrabObjectOnline(int _photonViewID)
+    protected void GrabObject(int _photonViewID)
     {
         TDS_Throwable _throwable = PhotonView.Find(_photonViewID).GetComponent<TDS_Throwable>();
         if (!_throwable) return;
@@ -728,7 +726,7 @@ public class TDS_Player : TDS_Character
     /// <param name="_x">throwing position on the x axis</param>
     /// <param name="_y">throwing position on the y axis</param>
     /// <param name="_z">throwing position on the z axis</param>
-    protected void ThrowObjectOnline(float _x, float _y, float _z)
+    protected void ThrowObject(float _x, float _y, float _z)
     {
         ThrowObject(new Vector3(_x, _y, _z)); 
     }

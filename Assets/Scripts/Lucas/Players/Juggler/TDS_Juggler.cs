@@ -556,6 +556,12 @@ public class TDS_Juggler : TDS_Player
     /// <returns>Returns true if the throwable was successfully grabbed, false either.</returns>
     public override bool GrabObject(TDS_Throwable _throwable)
     {
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "GrabObject"), new object[] { _throwable.photonView.viewID });
+            return false;
+        }
+
         // If currently wearing the maximum amount of throwables he can, return
         if (CurrentThrowableAmount == maxThrowableAmount) return false;
 
@@ -746,6 +752,12 @@ public class TDS_Juggler : TDS_Player
     /// </summary>
     public override void ThrowObject()
     {
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject"), new object[] { });
+            return;
+        }
+
         // If no throwable, return
         if (!throwable) return;
 
@@ -781,6 +793,12 @@ public class TDS_Juggler : TDS_Player
     /// <param name="_targetPosition">Position where the object should land.</param>
     public override void ThrowObject(Vector3 _targetPosition)
     {
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject"), new object[] { _targetPosition.x, _targetPosition.y, _targetPosition.z });
+            return;
+        }
+
         // If no throwable, return
         if (!throwable) return;
 
