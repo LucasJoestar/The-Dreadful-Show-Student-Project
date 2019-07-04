@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -244,6 +245,20 @@ public class TDS_SpritesEditor : EditorWindow
             }
         }
 
+        GUILayout.Space(10);
+
+        if (GUILayout.Button(new GUIContent("Load", "Load saved groups if existing"), EditorStyles.toolbarButton))
+        {
+            if (EditorUtility.DisplayDialog("Confirm color group load", "Are you sure you want to load saved groups ? Your saved groups will be erased. This action cannot be undone.", "Yes, I'm sure !", "I've changed my mind..."))
+            {
+                LoadGroups();
+            }
+        }
+        if (GUILayout.Button(new GUIContent("Save", "Save color groups"), EditorStyles.toolbarButton))
+        {
+            SaveGroups();
+        }
+
         EditorGUILayout.EndHorizontal();
     }
     #endregion
@@ -387,6 +402,45 @@ public class TDS_SpritesEditor : EditorWindow
             EditorGUILayout.EndHorizontal();
         }
     }
+
+    /// <summary>
+    /// Loads saved groups.
+    /// </summary>
+    private void LoadGroups()
+    {
+        Directory.CreateDirectory(Application.dataPath + "/Resources/Editor/");
+        if (!File.Exists(Application.dataPath + "/Resources/Editor/SpriteGroups.txt")) return;
+
+        string[] _groups = File.ReadAllLines(Application.dataPath + "/Resources/Editor/SpriteGroups.txt").Where(s => !string.IsNullOrEmpty(s)).ToArray();
+        string _groupName = string.Empty;
+        string[] _groupColor = new string[] { };
+
+        colorGroups = new TDS_ColorGroup[_groups.Length];
+
+        for (int _i = 0; _i < _groups.Length; _i++)
+        {
+            _groupName = _groups[_i].Split('|')[0];
+            _groupColor = _groups[_i].Split('|')[1].Split('#');
+
+            colorGroups[_i] = new TDS_ColorGroup(new Color(float.Parse(_groupColor[0]), float.Parse(_groupColor[1]), float.Parse(_groupColor[2]), float.Parse(_groupColor[3])), _groupName);
+        }
+
+        LoadSprites();
+    }
+
+    /// <summary>
+    /// Save groups.
+    /// </summary>
+    private void SaveGroups()
+    {
+        string _file = string.Empty;
+        foreach (TDS_ColorGroup _group in colorGroups)
+        {
+            _file += $"{_group.Name}|{_group.Color.r}#{_group.Color.g}#{_group.Color.b}#{_group.Color.a}\n";
+        }
+        Directory.CreateDirectory(Application.dataPath + "/Resources/Editor/");
+        File.WriteAllText(Application.dataPath + "/Resources/Editor/SpriteGroups.txt", _file);
+    }
     #endregion
 
     #endregion
@@ -481,6 +535,18 @@ public class TDS_ColorGroup
     public TDS_ColorGroup(Color _color)
     {
         Color = _color;
+        Sprites = new List<SpriteRenderer>();
+    }
+
+    /// <summary>
+    /// Creates a new Color Group.
+    /// </summary>
+    /// <param name="_color">Color of the group.</param>
+    /// <param name="_name">Name of the group.</param>
+    public TDS_ColorGroup(Color _color, string _name)
+    {
+        Color = _color;
+        Name = _name;
         Sprites = new List<SpriteRenderer>();
     }
 
