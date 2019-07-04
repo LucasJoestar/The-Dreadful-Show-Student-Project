@@ -184,7 +184,7 @@ public class TDS_HitBox : MonoBehaviour
         if (!_target.TakeDamage(_randomDamages, collider.transform.position)) return;
 
         // Apply attack effect
-        CurrentAttack.Effect.ApplyEffect(transform, _target);
+        if (!_target.IsDead) CurrentAttack.Effect.ApplyEffect(transform, _target);
 
         // Create screen shake when player hit
         TDS_Player _player = Owner as TDS_Player;

@@ -77,8 +77,8 @@ MonoBehaviour:
   detectedColliders: []
   DetectedTags:
     ObjectTags:
-    - Name: Object
-      Color: {r: 0.25231397, g: 0.8490566, b: 0.2986929, a: 1}
+    - Name: Throwable
+      Color: {r: 0.8584906, g: 0.17412782, b: 0.78697515, a: 1}
 --- !u!65 &65237134778586120
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -90,7 +90,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3, y: 1.6132901, z: 2}
+  m_Size: {x: 3, y: 1.6132901, z: 5}
   m_Center: {x: 0, y: 0.80664504, z: 0}
 --- !u!1 &1260163616517116
 GameObject:
@@ -237,11 +237,14 @@ MonoBehaviour:
   isJumping: 0
   isMoving: 0
   isParrying: 0
+  IsPlayable: 1
+  isPreparingAttack: 0
   comboCurrent: 
   comboResetTime: 2
   JumpForce: 400
   jumpMaximumTime: 1.5
   comboMax: 3
+  nextAttack: 0
   WhatIsObstacle:
     serializedVersion: 2
     m_Bits: 24576
@@ -528,7 +531,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
