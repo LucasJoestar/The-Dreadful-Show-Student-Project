@@ -126,8 +126,9 @@ public class TDS_AttackEffect
     /// <summary>
     /// Apply this attack effect to a specific target.
     /// </summary>
+    /// <param name="_attacker">Transform of the attacker.</param>
     /// <param name="_target">Target to apply effect on.</param>
-    public void ApplyEffect(TDS_HitBox _attacker, TDS_Damageable _target)
+    public void ApplyEffect(Transform _attacker, TDS_Damageable _target)
     {
         switch (EffectType)
         {
@@ -144,7 +145,7 @@ public class TDS_AttackEffect
                 break;
 
             case AttackEffectType.BringCloser:
-                _target.BringCloser(_target.transform.position.x - _attacker.transform.position.x);
+                _target.BringCloser(_target.transform.position.x - _attacker.position.x);
                 break;
 
             default:
