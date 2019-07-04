@@ -1045,7 +1045,7 @@ public class TDS_Juggler : TDS_Player
     protected override void FixedUpdate()
     {
         // If dead, return
-        if (isDead) return;
+        if (!photonView.isMine || isDead) return;
 
         base.FixedUpdate();
 

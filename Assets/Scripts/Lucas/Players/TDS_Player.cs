@@ -1678,8 +1678,6 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void CheckActionsInputs()
     {
-        if (!photonView.isMine) return; 
-
         // If dodging, parrying or attacking, do not perform action
         if (isDodging || isParrying || isPreparingAttack) return;
 
@@ -1720,7 +1718,6 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void CheckMovementsInputs()
     {
-        if (!photonView.isMine) return; 
         // If the character is paralyzed or attacking, do not move
         if (IsParalyzed || isAttacking || isParrying || isDodging) return;
 
@@ -1872,7 +1869,7 @@ public class TDS_Player : TDS_Character
     protected override void Update ()
     {
         // If dead or not playable, return
-        if (isDead || !IsPlayable) return;
+        if (!photonView.isMine || isDead || !IsPlayable) return;
 
         base.Update();
 
