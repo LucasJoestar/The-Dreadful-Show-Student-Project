@@ -96,7 +96,7 @@ public abstract class TDS_Boss : TDS_Enemy
             //Debug.Log(Mathf.Abs(transform.position.z - playerTarget.transform.position.z)); 
             return false;
         }
-        return castedAttack.MaxRange >= Mathf.Abs(transform.position.x - playerTarget.transform.position.x); 
+        return castedAttack.MaxRange > Mathf.Abs(transform.position.x - playerTarget.transform.position.x); 
     }
 
     /// <summary>
