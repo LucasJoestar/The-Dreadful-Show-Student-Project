@@ -1331,7 +1331,7 @@ public class TDS_Player : TDS_Character
     /// </summary>
     private void CheckGrounded()
     {
-        if (!photonView.isMine || isAttacking) return; 
+        if (isAttacking) return; 
 
         // Set the player as grounded if something is detected in the ground detection box
         bool _isGrounded = groundDetectionBox.Overlap(transform.position).Length > 0;
@@ -1797,7 +1797,7 @@ public class TDS_Player : TDS_Character
     protected virtual void FixedUpdate()
     {
         // If dead, return
-        if (isDead || !PhotonNetwork.connected) return;
+        if (!photonView.isMine || isDead || !PhotonNetwork.connected) return;
 
         // Checks if the player is grounded or not, and all related elements
         CheckGrounded();

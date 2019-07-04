@@ -1041,18 +1041,6 @@ public class TDS_Juggler : TDS_Player
         PlayerType = PlayerType.Juggler;
     }
 
-    // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations
-    protected override void FixedUpdate()
-    {
-        // If dead, return
-        if (!photonView.isMine || isDead) return;
-
-        base.FixedUpdate();
-
-        // 3, 2, 1... Let's Jam !
-        Juggle();
-    }
-
     // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
     protected override void OnDrawGizmos()
     {
@@ -1090,10 +1078,13 @@ public class TDS_Juggler : TDS_Player
     protected override void Update()
     {
         // If dead, return
-        if (isDead) return;
+        if (!photonView.isMine || isDead) return;
 
         base.Update();
-	}
+
+        // 3, 2, 1... Let's Jam !
+        Juggle();
+    }
 	#endregion
 
 	#endregion
