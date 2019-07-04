@@ -44,6 +44,10 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
 
     [SerializeField] private ParticleSystem explosionParticles = null;
 
+    [SerializeField] private Animator animator = null; 
+
+    private int speedStatesCount = 4; 
+
     private Coroutine explosionCoroutine = null; 
 	#endregion
 
@@ -58,7 +62,29 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
     /// <returns></returns>
     private IEnumerator SetupExplosion()
     {
-        yield return new WaitForSeconds(explodingDelay);
+        float _timer = 0;
+        int _speedState = 0;
+        float _animationSpeed = 0;  
+        while (_timer < explodingDelay)
+        {
+            Debug.Log(_animationSpeed); 
+            _timer += Time.deltaTime;
+            if (_speedState == 0)
+            {
+                _speedState++;
+                _animationSpeed = explodingDelay / speedStatesCount * _speedState;
+                if (animator) animator.SetFloat("speedMultiplier", _animationSpeed); 
+                yield return new WaitForEndOfFrame();
+                continue; 
+            }
+            if(_timer > explodingDelay / speedStatesCount * _speedState)
+            {
+                _speedState++;
+                _animationSpeed = explodingDelay / speedStatesCount * _speedState;
+                if (animator) animator.SetFloat("speedMultiplier", _animationSpeed);
+            }
+            yield return new WaitForEndOfFrame();
+        }
         if (isHeld) owner.DropObject();  
         if (explosionParticles) explosionParticles.Play();
         hitBox.Activate(attack);
