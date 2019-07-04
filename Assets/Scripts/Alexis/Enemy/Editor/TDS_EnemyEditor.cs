@@ -368,21 +368,36 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
                 case 8:
                     Handles.color = Color.blue;
                     break;
+                case 9:
+                    Handles.color = Color.magenta; 
+                    break;
                 default:
                     Handles.color = Color.white;
                     break;
             }
             Handles.DrawWireDisc(_pos, Vector3.up, _attack.MaxRange);
+            Handles.Label(_pos + new Vector3(_attack.MaxRange, 0), _attack.AttackName); 
         }
 
         Handles.color = Color.cyan;
         if (canThrow.boolValue)
         {
             Handles.DrawWireDisc((serializedObject.targetObject as TDS_Enemy).transform.position, Vector3.up, throwRange.floatValue);
+            Handles.Label(_pos + new Vector3(throwRange.floatValue, 0),"Throw Range");
         }
 
         Handles.color = Color.yellow;
-        Handles.DrawWireDisc((serializedObject.targetObject as TDS_Enemy).transform.position, Vector3.up, detectionRange.floatValue); 
+        Handles.DrawWireDisc((serializedObject.targetObject as TDS_Enemy).transform.position, Vector3.up, detectionRange.floatValue);
+        Handles.Label(_pos + new Vector3(detectionRange.floatValue, 0), "Detection Range");
+
+        if(Application.isPlaying)
+        {
+            Handles.color = Color.grey;
+            _pos = (serializedObject.targetObject as TDS_Enemy).PlayerTarget ? (serializedObject.targetObject as TDS_Enemy).PlayerTarget.transform.position : Vector3.zero;
+            Handles.DrawWireDisc(_pos, Vector3.up, wanderingRangeMin.floatValue);
+            Handles.DrawWireDisc(_pos, Vector3.up, wanderingRangeMax.floatValue);
+        }
+
     }
 
     #endregion
