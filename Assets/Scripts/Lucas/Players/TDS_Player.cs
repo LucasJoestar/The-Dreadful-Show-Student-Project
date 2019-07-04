@@ -734,12 +734,24 @@ public class TDS_Player : TDS_Character
     /// <summary>
     /// Call the callback event OnGrabObject
     /// </summary>
-    protected void GrabObjectCallBackOnline() => OnGrabObject?.Invoke();
+    /// <param name="_photonViewID"></param>
+    protected void GrabObjectCallBackOnline(int _photonViewID)
+    {
+        TDS_Throwable _throwable = PhotonView.Find(_photonViewID).GetComponent<TDS_Throwable>();
+        _throwable.transform.SetParent(handsTransform, true);
+        Throwable = _throwable;
+        OnGrabObject?.Invoke();
+    }
 
     /// <summary>
     /// Call the callback event OnThrow
     /// </summary>
-    protected void ThrowObjectCallBackOnline() => OnThrow?.Invoke(); 
+    protected void ThrowObjectCallBackOnline()
+    {
+        Throwable.transform.SetParent(null, true);
+        Throwable = null;
+        OnThrow?.Invoke();
+    }
     #endregion
 
     #endregion
