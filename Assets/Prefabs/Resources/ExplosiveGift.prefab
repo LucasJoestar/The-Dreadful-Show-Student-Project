@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1478611772284803223}
   - component: {fileID: 1074697609443874531}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: ExplosiveGift - Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 7593376260666890944}
   - component: {fileID: 7593376260666890814}
   - component: {fileID: 7593376260666890815}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: HitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -225,6 +225,8 @@ MonoBehaviour:
   explodingDelay: 5
   explosionParticles: {fileID: 0}
   animator: {fileID: 2557665236746908573}
+  animationSpeedMin: 0.5
+  animationSpeedMax: 3.5
 --- !u!65 &7593376261498355137
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -261,8 +263,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 9136283519379038369}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 4
+  instantiationId: 4
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &9136283519379038369
@@ -353,7 +355,7 @@ Animator:
   m_GameObject: {fileID: 7593376261498355142}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7a9ece4dd55954e44b3d805956945fab, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
