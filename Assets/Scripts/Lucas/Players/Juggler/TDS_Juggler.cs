@@ -556,6 +556,12 @@ public class TDS_Juggler : TDS_Player
     /// <returns>Returns true if the throwable was successfully grabbed, false either.</returns>
     public override bool GrabObject(TDS_Throwable _throwable)
     {
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "GrabObject"), new object[] { _throwable.photonView.viewID });
+            return false;
+        }
+
         // If currently wearing the maximum amount of throwables he can, return
         if (CurrentThrowableAmount == maxThrowableAmount) return false;
 
@@ -570,7 +576,17 @@ public class TDS_Juggler : TDS_Player
         // Updates animator informations
         if (CurrentThrowableAmount > 0) SetAnim(PlayerAnimState.HasObject);
 
+        // Triggers one shot event
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "GrabObjectCallBackOnline"), new object[] { _throwable.photonView.viewID });
+
         return true;
+    }
+
+    protected override void GrabObjectCallBackOnline(int _photonViewID)
+    {
+        TDS_Throwable _throwable = PhotonView.Find(_photonViewID).GetComponent<TDS_Throwable>();
+        _throwable.transform.SetParent(handsTransform, true);
+        Throwable = _throwable;
     }
 
     /// <summary>
@@ -746,6 +762,12 @@ public class TDS_Juggler : TDS_Player
     /// </summary>
     public override void ThrowObject()
     {
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject"), new object[] { });
+            return;
+        }
+
         // If no throwable, return
         if (!throwable) return;
 
@@ -781,6 +803,12 @@ public class TDS_Juggler : TDS_Player
     /// <param name="_targetPosition">Position where the object should land.</param>
     public override void ThrowObject(Vector3 _targetPosition)
     {
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject"), new object[] { _targetPosition.x, _targetPosition.y, _targetPosition.z });
+            return;
+        }
+
         // If no throwable, return
         if (!throwable) return;
 
@@ -803,6 +831,18 @@ public class TDS_Juggler : TDS_Player
         {
             // Updates juggling informations
             UpdateJuggleParameters(false);
+        }
+
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObjectCallBackOnline"), new object[] { });
+    }
+
+    protected override void ThrowObjectCallBackOnline()
+    {
+        throwable.transform.SetParent(null, true);
+        throwable = null;
+        if (CurrentThrowableAmount > 0)
+        {
+            Throwable = Throwables[0];
         }
     }
 
@@ -1041,18 +1081,6 @@ public class TDS_Juggler : TDS_Player
         PlayerType = PlayerType.Juggler;
     }
 
-    // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations
-    protected override void FixedUpdate()
-    {
-        // If dead, return
-        if (isDead) return;
-
-        base.FixedUpdate();
-
-        // 3, 2, 1... Let's Jam !
-        Juggle();
-    }
-
     // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
     protected override void OnDrawGizmos()
     {
@@ -1090,10 +1118,13 @@ public class TDS_Juggler : TDS_Player
     protected override void Update()
     {
         // If dead, return
-        if (isDead) return;
+        if (!photonView.isMine || isDead) return;
 
         base.Update();
-	}
+
+        // 3, 2, 1... Let's Jam !
+        Juggle();
+    }
 	#endregion
 
 	#endregion

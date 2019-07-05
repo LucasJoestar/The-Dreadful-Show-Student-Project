@@ -71,10 +71,15 @@ public abstract class TDS_Boss : TDS_Enemy
     protected override TDS_EnemyAttack GetAttack(float _distance = 0)
     {
         if (attacks.Length == 0) return null;
+        TDS_EnemyAttack[] _availableAttacks = attacks;
+
+        if (_distance != 0)
+            _availableAttacks = attacks.Where(a => a.MinRange > _distance).ToArray(); 
+
         // Set a random to compare with the probabilities of the attackes
-        float _random = UnityEngine.Random.Range(0, attacks.Max(a => a.Probability));
+        float _random = UnityEngine.Random.Range(0, _availableAttacks.Max(a => a.Probability));
         // If a probability is less than the random, this attack can be selected
-        TDS_EnemyAttack[] _availableAttacks = attacks.Where(a => a.Probability >= _random).ToArray();
+        _availableAttacks = _availableAttacks.Where(a => a.Probability >= _random).ToArray();
         // If there is no attack, return null
         if (_availableAttacks.Length == 0) return null;
         // Get a random Index to cast a random attack
@@ -96,7 +101,8 @@ public abstract class TDS_Boss : TDS_Enemy
             //Debug.Log(Mathf.Abs(transform.position.z - playerTarget.transform.position.z)); 
             return false;
         }
-        return castedAttack.MaxRange >= Mathf.Abs(transform.position.x - playerTarget.transform.position.x); 
+        float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x); 
+        return castedAttack.MaxRange > _distance && _distance > castedAttack.MinRange; 
     }
 
     /// <summary>
@@ -373,7 +379,12 @@ public abstract class TDS_Boss : TDS_Enemy
         if (playerTarget)
         {
             int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;
-            _attackingPosition.x = Mathf.Abs(transform.position.x - playerTarget.transform.position.x) < castedAttack.MaxRange ? transform.position.x : playerTarget.transform.position.x + ((castedAttack.MaxRange - agent.Radius) * _coeff);
+            float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x);
+            if(_distance < castedAttack.MinRange)
+            {
+                castedAttack = GetAttack(); 
+            }
+            _attackingPosition.x = _distance < castedAttack.MaxRange ? transform.position.x : playerTarget.transform.position.x + ((castedAttack.MaxRange - agent.Radius) * _coeff);
             _attackingPosition.z = playerTarget.transform.position.z; 
         }
         return _attackingPosition;

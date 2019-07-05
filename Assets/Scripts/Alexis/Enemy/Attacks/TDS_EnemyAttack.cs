@@ -109,6 +109,9 @@ public class TDS_EnemyAttack : TDS_Attack
         }
     }
 
+    [SerializeField] protected float minRange = 0;
+    public float MinRange { get { return minRange; } }
+
     /// <summary>
     /// Probability to cast this attack over 100.
     /// </summary>

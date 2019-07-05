@@ -44,6 +44,11 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
 
     [SerializeField] private ParticleSystem explosionParticles = null;
 
+    [SerializeField] private Animator animator = null;
+
+    [SerializeField, Range(.5f, 1f)] private float animationSpeedMin = .5f;
+    [SerializeField, Range(1,5)] private float animationSpeedMax = 2;
+
     private Coroutine explosionCoroutine = null; 
 	#endregion
 
@@ -56,15 +61,25 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
     /// Then wait and destroy the Throwable
     /// </summary>
     /// <returns></returns>
-    private IEnumerator SetupExplosion()
+    private IEnumerator SetupExplosion(Tags _hitableTags)
     {
-        yield return new WaitForSeconds(explodingDelay);
+        float _timer = 0.1f;
+
+        float _animationSpeed = animationSpeedMin; 
+
+        while (_timer < explodingDelay)
+        {
+            _timer += Time.deltaTime; 
+            _animationSpeed = Mathf.MoveTowards(_animationSpeed, animationSpeedMax, (Time.deltaTime * _timer));
+            if (animator) animator.SetFloat("speedMultiplier", _animationSpeed); 
+            yield return new WaitForEndOfFrame();
+        }
         if (isHeld) owner.DropObject();  
         if (explosionParticles) explosionParticles.Play();
-        hitBox.Activate(attack);
+        hitBox.Activate(attack, owner, _hitableTags.ObjectTags);
         if (explosionParticles)
             yield return new WaitForSeconds(explosionParticles.main.duration);
-        else yield return new WaitForSeconds(1);
+        else yield return new WaitForSeconds(1); 
         DestroyThrowableObject(); 
     }
     #endregion
@@ -114,7 +129,7 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
         isHeld = false;
         if(explosionCoroutine == null)
         {
-            explosionCoroutine = StartCoroutine(SetupExplosion());
+            explosionCoroutine = StartCoroutine(SetupExplosion(_hitableTags));
         }
     }
     #endregion

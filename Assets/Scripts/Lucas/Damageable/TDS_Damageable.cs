@@ -130,6 +130,13 @@ public abstract class TDS_Damageable : PunBehaviour
 
     #region Fields / Properties
 
+    #region Constants
+    /// <summary>
+    /// Speed movement when bringing closer something or someone.
+    /// </summary>
+    public const float BRING_CLOSER_SPEED = .1f;
+    #endregion
+
     #region Components & References
     /// <summary>
     /// The animator of this object.
@@ -351,8 +358,8 @@ public abstract class TDS_Damageable : PunBehaviour
         if (PhotonNetwork.isMasterClient)
         {
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "TakeDamage"), new object[] { _damage });
-            //TDS_FloatingText _floatingText = PhotonNetwork.Instantiate("HitFX", transform.position, Quaternion.identity, 0).GetComponent<TDS_FloatingText>();
-            //_floatingText.Init(_damage); 
+            TDS_FloatingText _floatingText = PhotonNetwork.Instantiate("HitFX", transform.position, Quaternion.identity, 0).GetComponent<TDS_FloatingText>();
+            _floatingText.Init(_damage); 
         }
         
         // Local
@@ -393,17 +400,17 @@ public abstract class TDS_Damageable : PunBehaviour
     /// <returns>IEnumerator, baby.</returns>
     protected virtual IEnumerator BringingCloser(float _distance)
     {
-        float _movement = Mathf.Sin(_distance) * .5f;
-        while (_distance > 0)
-        {
-            transform.position += Vector3.right * _movement;
-            _distance -= _movement;
+        float _sign = Mathf.Sign(_distance);
+        _distance = Mathf.Abs(_distance);
 
+        while (_distance > .75f)
+        {
+            transform.position += Vector3.left * BRING_CLOSER_SPEED * _sign;
+            _distance -= BRING_CLOSER_SPEED;
             yield return null;
         }
-
+        
         bringingCloserCoroutine = null;
-
         OnStopBringingCloser?.Invoke();
     }
 
@@ -432,7 +439,7 @@ public abstract class TDS_Damageable : PunBehaviour
 
         while (_duration > 0)
         {
-            float _wait = Random.Range(.5f, 2);
+            float _wait = Random.Range(1f, 2.5f);
             yield return new WaitForSeconds(_wait);
 
             int _damages = Random.Range(_damagesMin, _damagesMax);

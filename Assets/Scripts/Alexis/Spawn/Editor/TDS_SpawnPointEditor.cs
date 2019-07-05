@@ -35,11 +35,19 @@ public class TDS_SpawnPointEditor : PropertyDrawer
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         // Label to title the part
-        GUILayout.Label("SPAWN POINT SETTINGS", TDS_EditorUtility.HeaderStyle); 
+        Rect _rect = new Rect(position.position.x, position.position.y, position.width - 25, 20);
+        GUI.Label(_rect , "SPAWN POINT SETTINGS", TDS_EditorUtility.HeaderStyle);
+
         // Float slider to modify the spawnRange property
-        TDS_EditorUtility.FloatSlider("Spawn Range", "", property.FindPropertyRelative("spawnRange"), 0, 15);
+        _rect = new Rect(position.position.x, _rect.position.y + 25, position.width - 25, 20);
+        property.FindPropertyRelative("spawnRange").floatValue = EditorGUI.Slider(_rect, "Spawn Range", property.FindPropertyRelative("spawnRange").floatValue, 0, 15);
         // Vector Field to modify the centerPosition property
-        TDS_EditorUtility.Vector3Field("Center Position", "", property.FindPropertyRelative("spawnPosition"));
+
+        _rect = new Rect(position.position.x, _rect.position.y + 25, position.width - 25, 20);
+        property.FindPropertyRelative("spawnPosition").vector3Value = EditorGUI.Vector3Field(_rect, "Spawn Position", property.FindPropertyRelative("spawnPosition").vector3Value);
+
+        GUILayout.Space(_rect.position.y + 40); 
+        
         // PropertyField to modify the waveElement property
         EditorGUILayout.PropertyField(property.FindPropertyRelative("waveElement"));
     }

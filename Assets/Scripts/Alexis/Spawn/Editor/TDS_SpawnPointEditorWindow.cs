@@ -71,12 +71,14 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
             return;
         }
         //Begin the scroll viex
-        scrollView = EditorGUILayout.BeginScrollView(scrollView, true, true);
+        scrollView = EditorGUILayout.BeginScrollView(scrollView, false, true);
         //Display properties and settings of the spawn point
         EditorGUILayout.PropertyField(property);
         GUILayout.Space(5);
 
-        GUILayout.BeginVertical("Box"); 
+        EditorGUILayout.EndScrollView();
+        GUILayout.Space(10);
+        GUILayout.BeginVertical("Box");
         // Create two ObjectFields to add normal and random spawning informations
         TDS_Enemy _e = null;
         _e = EditorGUILayout.ObjectField("Add Enemy", _e, typeof(TDS_Enemy), false) as TDS_Enemy;
@@ -88,12 +90,12 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
             for (int i = 0; i < _ref.arraySize; i++)
             {
                 if (_ref.GetArrayElementAtIndex(i).FindPropertyRelative("enemyResourceName").stringValue == _e.EnemyName)
-                    return ;
+                    return;
 
             }
             _ref.InsertArrayElementAtIndex(_ref.arraySize);
-            _ref.GetArrayElementAtIndex(_ref.arraySize-1).FindPropertyRelative("enemyResourceName").stringValue = _e.EnemyName;
-            Repaint(); 
+            _ref.GetArrayElementAtIndex(_ref.arraySize - 1).FindPropertyRelative("enemyResourceName").stringValue = _e.EnemyName;
+            Repaint();
         }
         _e = null;
         _e = EditorGUILayout.ObjectField("Add Random Enemy", _e, typeof(TDS_Enemy), false) as TDS_Enemy;
@@ -105,17 +107,15 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
             for (int i = 0; i < _ref.arraySize; i++)
             {
                 if (_ref.GetArrayElementAtIndex(i).FindPropertyRelative("enemyResourceName").stringValue == _e.EnemyName)
-                    return ;
+                    return;
 
             }
             _ref.InsertArrayElementAtIndex(_ref.arraySize);
-            _ref.GetArrayElementAtIndex(_ref.arraySize-1).FindPropertyRelative("enemyResourceName").stringValue = _e.EnemyName;
-            Repaint(); 
+            _ref.GetArrayElementAtIndex(_ref.arraySize - 1).FindPropertyRelative("enemyResourceName").stringValue = _e.EnemyName;
+            Repaint();
         }
         GUILayout.EndVertical();
-
-
-        EditorGUILayout.EndScrollView();
+        GUILayout.Space(10);
         // Aply changes on the SerializedObject
         property.serializedObject.ApplyModifiedProperties();
     }

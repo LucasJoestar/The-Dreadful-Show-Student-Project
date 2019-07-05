@@ -743,7 +743,9 @@ public abstract class TDS_Enemy : TDS_Character
     public override void BringCloser(float _distance)
     {
         StopAll();
-        SetAnimationState((int)EnemyAnimationState.Brought); 
+        SetAnimationState((int)EnemyAnimationState.Brought);
+
+        _distance -= agent.Radius * Mathf.Sign(_distance);
         base.BringCloser(_distance);
     }
 
@@ -779,6 +781,16 @@ public abstract class TDS_Enemy : TDS_Character
     {
         base.Flip();
         if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
+    }
+
+    /// <summary>
+    /// Tells the Character that he's getting up.
+    /// </summary>
+    public override void GetUp()
+    {
+        base.GetUp();
+        SetAnimationState((int)EnemyAnimationState.Idle);
+        ApplyRecoveryTime(.25f);
     }
 
     /// <summary>
@@ -1166,12 +1178,12 @@ public abstract class TDS_Enemy : TDS_Character
     {
         base.Awake();
         if (!agent) agent = GetComponent<CustomNavMeshAgent>();
-        if(PhotonNetwork.isMasterClient)
-        {
+        //if(PhotonNetwork.isMasterClient)
+        //{
             OnDie += () => StopAllCoroutines();
             OnStopBringingCloser += () => SetAnimationState((int)EnemyAnimationState.Idle); 
             OnStopBringingCloser += () => behaviourCoroutine = StartCoroutine(Behaviour());
-        }
+        //}
         InitLifeBar(); 
     }
 

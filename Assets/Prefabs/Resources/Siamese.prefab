@@ -198,7 +198,7 @@ MonoBehaviour:
   baseOffset: 0
   detectionRange: 2.5
   height: 2.4
-  radius: 2
+  radius: 1.43
   pathRadius: 0.2
   speed: 4
   steerForce: 80
@@ -235,7 +235,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3, y: 3.25, z: 1}
+  m_Size: {x: 3, y: 3.25, z: 1.5}
   m_Center: {x: 0, y: 1.65, z: 0}
 --- !u!95 &2085316961524171262
 Animator:
@@ -279,8 +279,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 2085316961524171248}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 4
-  instantiationId: 4
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &2085316961524171248
@@ -404,13 +404,13 @@ MonoBehaviour:
   canBeDown: 0
   canThrow: 0
   enemyState: 0
-  detectionRange: 20
+  detectionRange: 10
   recoilDistance: 0.5
   recoilDistanceDeath: 0.1
   recoilTimeDeath: 0.1
   throwRange: 1
-  wanderingRangeMin: 5
-  wanderingRangeMax: 9
+  wanderingRangeMin: 3
+  wanderingRangeMax: 6
   attacks:
   - {fileID: 11400000, guid: aeb98e03cbb86514a9f8eca9c4ea4e9e, type: 2}
   - {fileID: 11400000, guid: 8583033c7de9d8b4192a18e78bf848f6, type: 2}

@@ -22,8 +22,6 @@ public class TDS_Player : TDS_Character
 	 *	####### TO DO #######
 	 *	#####################
      *	
-     *      • Onlien Animations
-     *          => 1283
      * 
 	 *	#####################
 	 *	### MODIFICATIONS ###
@@ -715,7 +713,7 @@ public class TDS_Player : TDS_Character
     /// When a player try to grab an object, call this method in master client to grab the object
     /// </summary>
     /// <param name="_photonViewID"></param>
-    protected void GrabObjectOnline(int _photonViewID)
+    protected void GrabObject(int _photonViewID)
     {
         TDS_Throwable _throwable = PhotonView.Find(_photonViewID).GetComponent<TDS_Throwable>();
         if (!_throwable) return;
@@ -728,7 +726,7 @@ public class TDS_Player : TDS_Character
     /// <param name="_x">throwing position on the x axis</param>
     /// <param name="_y">throwing position on the y axis</param>
     /// <param name="_z">throwing position on the z axis</param>
-    protected void ThrowObjectOnline(float _x, float _y, float _z)
+    protected void ThrowObject(float _x, float _y, float _z)
     {
         ThrowObject(new Vector3(_x, _y, _z)); 
     }
@@ -736,12 +734,24 @@ public class TDS_Player : TDS_Character
     /// <summary>
     /// Call the callback event OnGrabObject
     /// </summary>
-    protected void GrabObjectCallBackOnline() => OnGrabObject?.Invoke();
+    /// <param name="_photonViewID"></param>
+    protected virtual void GrabObjectCallBackOnline(int _photonViewID)
+    {
+        TDS_Throwable _throwable = PhotonView.Find(_photonViewID).GetComponent<TDS_Throwable>();
+        _throwable.transform.SetParent(handsTransform, true);
+        Throwable = _throwable;
+        OnGrabObject?.Invoke();
+    }
 
     /// <summary>
     /// Call the callback event OnThrow
     /// </summary>
-    protected void ThrowObjectCallBackOnline() => OnThrow?.Invoke(); 
+    protected virtual void ThrowObjectCallBackOnline()
+    {
+        Throwable.transform.SetParent(null, true);
+        Throwable = null;
+        OnThrow?.Invoke();
+    }
     #endregion
 
     #endregion
@@ -1036,6 +1046,13 @@ public class TDS_Player : TDS_Character
     }
     #endregion
 
+    #region Effects
+    public override void PutOnTheGround()
+    {
+        base.PutOnTheGround();
+    }
+    #endregion
+
     #endregion
 
     #region Health
@@ -1099,7 +1116,7 @@ public class TDS_Player : TDS_Character
         if (!isDead)
         {
             // Triggers associated animation
-            SetAnim(PlayerAnimState.Hit);
+            if (!IsDown) SetAnim(PlayerAnimState.Hit);
 
             StartCoroutine(Invulnerability());
 
@@ -1324,7 +1341,7 @@ public class TDS_Player : TDS_Character
     /// </summary>
     private void CheckGrounded()
     {
-        if (!photonView.isMine || isAttacking) return; 
+        if (isAttacking) return; 
 
         // Set the player as grounded if something is detected in the ground detection box
         bool _isGrounded = groundDetectionBox.Overlap(transform.position).Length > 0;
@@ -1671,8 +1688,6 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void CheckActionsInputs()
     {
-        if (!photonView.isMine) return; 
-
         // If dodging, parrying or attacking, do not perform action
         if (isDodging || isParrying || isPreparingAttack) return;
 
@@ -1713,7 +1728,6 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void CheckMovementsInputs()
     {
-        if (!photonView.isMine) return; 
         // If the character is paralyzed or attacking, do not move
         if (IsParalyzed || isAttacking || isParrying || isDodging) return;
 
@@ -1793,7 +1807,7 @@ public class TDS_Player : TDS_Character
     protected virtual void FixedUpdate()
     {
         // If dead, return
-        if (isDead || !PhotonNetwork.connected) return;
+        if (!photonView.isMine || isDead || !PhotonNetwork.connected) return;
 
         // Checks if the player is grounded or not, and all related elements
         CheckGrounded();
@@ -1865,7 +1879,7 @@ public class TDS_Player : TDS_Character
     protected override void Update ()
     {
         // If dead or not playable, return
-        if (isDead || !IsPlayable) return;
+        if (!photonView.isMine || isDead || !IsPlayable) return;
 
         base.Update();
 
