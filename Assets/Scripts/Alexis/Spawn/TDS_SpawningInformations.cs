@@ -53,6 +53,8 @@ public class TDS_SpawningInformations
         }
     }
 
+    [SerializeField] protected bool isFoldOut = true;
+
     /// <summary>
     /// Constructor of the TDS_SpawningInformation  class
     /// Set the enemy resources name as the name of the enemy in argument
