@@ -631,12 +631,14 @@ public class TDS_Player : TDS_Character
     /// <summary>
     /// Drop the weared throwable.
     /// </summary>
-    public override void DropObject()
+    public override bool DropObject()
     {
-        base.DropObject();
+        if (!base.DropObject()) return false;
 
         // Updates the animator informations
         SetAnim(PlayerAnimState.LostObject);
+
+        return true;
     }
 
     /// <summary>
@@ -647,16 +649,10 @@ public class TDS_Player : TDS_Character
     /// <returns>Returns true if the throwable was successfully grabbed, false either.</returns>
     public override bool GrabObject(TDS_Throwable _throwable)
     {
-        if(!PhotonNetwork.isMasterClient)
-        {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "GrabObject"), new object[] { _throwable.photonView.viewID });
-            return false;
-        }
         if (!base.GrabObject(_throwable)) return false;
 
         // Triggers one shot event
         OnGrabObject?.Invoke();
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "GrabObjectCallBackOnline"), new object[] { _throwable.photonView.viewID });
 
         // Updates animator informations
         SetAnim(PlayerAnimState.HasObject);
@@ -666,36 +662,9 @@ public class TDS_Player : TDS_Character
     /// <summary>
     /// Throws the weared throwable.
     /// </summary>
-    public override void ThrowObject()
-    {
-        if(!PhotonNetwork.isMasterClient)
-        {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject"), new object[] { });
-            return; 
-        }
-        base.ThrowObject();
-
-        // Triggers the throw animation ;
-        // Update the animator
-        if (isGrounded) SetAnim(PlayerAnimState.Throw);
-        SetAnim(PlayerAnimState.LostObject);
-
-        // Triggers one shot event
-        OnThrow?.Invoke();
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObjectCallBackOnline"), new object[] { });
-    }
-
-    /// <summary>
-    /// Throws the weared throwable.
-    /// </summary>
     /// <param name="_targetPosition">Position where the object should land.</param>
     public override void ThrowObject(Vector3 _targetPosition)
     {
-        if (!PhotonNetwork.isMasterClient)
-        {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject"), new object[] { _targetPosition.x, _targetPosition.y, _targetPosition.z });
-            return;
-        }
         base.ThrowObject(_targetPosition);
 
         // Triggers the throw animation ;
@@ -705,55 +674,7 @@ public class TDS_Player : TDS_Character
 
         // Triggers one shot event
         OnThrow?.Invoke();
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObjectCallBackOnline"), new object[] { });
     }
-
-    #region OnlineMethods
-    /// <summary>
-    /// When a player try to grab an object, call this method in master client to grab the object
-    /// </summary>
-    /// <param name="_photonViewID"></param>
-    protected void GrabObject(int _photonViewID)
-    {
-        TDS_Throwable _throwable = PhotonView.Find(_photonViewID).GetComponent<TDS_Throwable>();
-        if (!_throwable) return;
-        GrabObject(_throwable);
-    }
-
-    /// <summary>
-    /// When a  player try to throw an object, call this method on master client to throw it at the position (x, y, z)
-    /// </summary>
-    /// <param name="_x">throwing position on the x axis</param>
-    /// <param name="_y">throwing position on the y axis</param>
-    /// <param name="_z">throwing position on the z axis</param>
-    protected void ThrowObject(float _x, float _y, float _z)
-    {
-        ThrowObject(new Vector3(_x, _y, _z)); 
-    }
-
-    /// <summary>
-    /// Call the callback event OnGrabObject
-    /// </summary>
-    /// <param name="_photonViewID"></param>
-    protected virtual void GrabObjectCallBackOnline(int _photonViewID)
-    {
-        TDS_Throwable _throwable = PhotonView.Find(_photonViewID).GetComponent<TDS_Throwable>();
-        _throwable.transform.SetParent(handsTransform, true);
-        Throwable = _throwable;
-        OnGrabObject?.Invoke();
-    }
-
-    /// <summary>
-    /// Call the callback event OnThrow
-    /// </summary>
-    protected virtual void ThrowObjectCallBackOnline()
-    {
-        Throwable.transform.SetParent(null, true);
-        Throwable = null;
-        OnThrow?.Invoke();
-    }
-    #endregion
-
     #endregion
 
     #region Attacks
@@ -1064,7 +985,7 @@ public class TDS_Player : TDS_Character
     {
         base.Die();
 
-        // Drop obejct if needed
+        // Drop object if needed
         if (throwable) DropObject();
 
         // Triggers associated animations
