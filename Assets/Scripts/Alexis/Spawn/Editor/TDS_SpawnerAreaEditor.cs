@@ -92,6 +92,22 @@ public class TDS_SpawnerAreaEditor : Editor
             EditorPrefs.SetBool("areSpawerAreaEventsUnfolded", value);
         }
     }
+
+
+
+    private bool areWavesUnfolded = false; 
+
+    public bool AreWavesUnfolded
+    {
+        get { return areWavesUnfolded; }
+        set
+        {
+            areWavesUnfolded = value;
+
+            // Saves this value
+            EditorPrefs.SetBool("areWavesUnfolded", value);
+        }
+    }
     #endregion
 
     #region Variables
@@ -123,20 +139,17 @@ public class TDS_SpawnerAreaEditor : Editor
     #region Methods
 
     #region Original Methods
-    /// <summary>
-    /// Display components and references
-    /// </summary>
-    void DrawComponentsAndReferences()
-    {
-        GUILayout.Space(3);
-    }
-
     private void DrawEvents()
     {
+        Color _originalColor = GUI.backgroundColor;
+        GUI.backgroundColor = new Color(.8f,.8f,.8f); 
+
         TDS_EditorUtility.PropertyField("On Spawn Area Activated", "Called when a player activate the trigger", eventOnAreaActivated);
         TDS_EditorUtility.PropertyField("On Fight Start", "Called when the fight is starting", eventOnStartFight);
         TDS_EditorUtility.PropertyField("On Spawn Area Desactivated", "Called when all waves are completed", eventOnAreaDesactivated);
         TDS_EditorUtility.PropertyField("On Next Wave", "Called when a wave is completed", eventOnNextWave);
+
+        GUI.backgroundColor = _originalColor;
     }
 
     /// <summary>
@@ -155,25 +168,10 @@ public class TDS_SpawnerAreaEditor : Editor
         TDS_EditorUtility.RadioToggle("Is Ready", "", isReady);
         TDS_EditorUtility.RadioToggle("Is Activated", "", isActivated);
 
-        EditorGUILayout.EndVertical(); 
-
-
-        /*
-        EditorGUILayout.BeginVertical("HelpBox");
-
-        
-        // Button to show or not the Character class components
-        if (TDS_EditorUtility.Button("Components & References", "Wrap / unwrap Components & References settings", TDS_EditorUtility.HeaderStyle)) AreSpawnerAreaComponentsUnfolded = !areSpawnerAreaComponentsUnfolded;
-
-        // If unfolded, draws the custom editor for the Components & References
-        if (areSpawnerAreaComponentsUnfolded)
-        {
-            DrawComponentsAndReferences();
-        }
-
         EditorGUILayout.EndVertical();
-        GUILayout.Space(15);
-        */
+
+        GUILayout.Space(10);
+
         EditorGUILayout.BeginVertical("HelpBox");
 
         // Button to show or not the Character class settings
@@ -220,14 +218,20 @@ public class TDS_SpawnerAreaEditor : Editor
         TDS_EditorUtility.Toggle("is Looping", "Is the area start again when all the waves are cleared.", isLooping);
         TDS_EditorUtility.Toggle("Is Activated by event", "Does the area start by event or by trigger.", isActivatedByEvent);
         GUILayout.Space(10);
-        EditorGUILayout.BeginHorizontal(); 
-        EditorGUILayout.LabelField("WAVES", TDS_EditorUtility.HeaderStyle);
+
+
+        EditorGUILayout.BeginHorizontal();
+        if (TDS_EditorUtility.Button("WAVES", "Wrap / Unwrap Waves", TDS_EditorUtility.HeaderStyle)) AreWavesUnfolded = !areWavesUnfolded;
+
         GUITools.ActionButton("Add Wave", waves.InsertArrayElementAtIndex, waves.arraySize, Color.white, Color.white);
         EditorGUILayout.EndHorizontal();  
-        for (int i = 0; i < waves.arraySize; i++)
+        if(areWavesUnfolded)
         {
-            GUILayout.Space(10);
-            DrawWave(i);
+            for (int i = 0; i < waves.arraySize; i++)
+            {
+                GUILayout.Space(10);
+                DrawWave(i);
+            }
         }
     }
 
@@ -237,6 +241,8 @@ public class TDS_SpawnerAreaEditor : Editor
     /// <param name="_index">indew of the wave in the array</param>
     void DrawWave(int _index)
     {
+        Color _originalColor = GUI.backgroundColor; 
+        GUI.backgroundColor = Color.white;
         //Get the serialized Property 
         SerializedProperty _prop = serializedObject.FindProperty($"{waves.name}").GetArrayElementAtIndex(_index);
         float _size = 50; 
@@ -246,6 +252,7 @@ public class TDS_SpawnerAreaEditor : Editor
         }
         // Get the last rect drawn
         Rect _lastRect = GUILayoutUtility.GetLastRect();
+        EditorGUILayout.BeginVertical("HelpBox");
         // Set a new based on the last rect position
         Rect _r = new Rect(_lastRect.position.x, _lastRect.position.y + 4, _lastRect.width, _size);
         // Reserve the rect
@@ -264,7 +271,10 @@ public class TDS_SpawnerAreaEditor : Editor
         }
         EditorGUILayout.EndHorizontal(); 
         // Draw a button to destroy the wave
-        GUITools.ActionButton("Delete Wave", waves.DeleteArrayElementAtIndex, _index, Color.white, Color.white);
+        GUITools.ActionButton("Delete Wave", waves.DeleteArrayElementAtIndex, _index, Color.red, Color.black);
+        EditorGUILayout.EndVertical();
+        GUI.backgroundColor = _originalColor;
+
     }
     #endregion
 

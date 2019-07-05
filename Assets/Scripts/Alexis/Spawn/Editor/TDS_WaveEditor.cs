@@ -56,7 +56,6 @@ public class TDS_WaveEditor : PropertyDrawer
     {
         //Begin the property drawer
         EditorGUI.BeginProperty(position, label, property);
-
         //Get a rect to draw a label
         Rect _rect = new Rect(position.position.x , position.position.y, position.width / 2, 20);
         EditorGUI.LabelField(_rect, label, TDS_EditorUtility.HeaderStyle);
@@ -72,8 +71,6 @@ public class TDS_WaveEditor : PropertyDrawer
         // Display them if the fold out is true
         if(property.FindPropertyRelative("isWaveFoldOut").boolValue)
         {
-            //Is the wave activated by event
-            TDS_EditorUtility.Toggle("Is Activated by event", "Are the enemies of this wave starting behaviour on event", property.FindPropertyRelative("isActivatedByEvent")); 
             //Get the size of the array 
             int _arraySize = property.FindPropertyRelative("spawnPoints").arraySize;
             GUIContent _label;
@@ -83,16 +80,23 @@ public class TDS_WaveEditor : PropertyDrawer
                 //Get the property
                 _pointProperty = property.FindPropertyRelative($"spawnPoints.Array.data[{i}]");
                 // Get a rect to draw the edition button
-                _rect = new Rect(position.position.x, _rect.position.y + 25, position.width / 2, 20);
+                _rect = new Rect(position.position.x, _rect.position.y + 25, (position.width / 2) - 5, 20);
                 _label = new GUIContent($"Edit Spawn Point n° {i}");
-                //Open the SpawnPointEditorWindow for the spawn point
-                if (GUI.Button(_rect, _label)) InitWindow(_pointProperty, i);
+                //Open the SpawnPointEditorWindow for the spawn point.
+                GUI.color = Color.green;
+                if (GUI.Button(_rect, _label))
+                {
+                    InitWindow(_pointProperty, i);
+                    
+                }
 
                 // Get a rect to draw the delete button
-                _rect = new Rect(position.position.x + position.width / 2, _rect.position.y, position.width / 2, 20);
+                _rect = new Rect(position.position.x + position.width / 2, _rect.position.y, (position.width / 2) - 5, 20);
                 _label = new GUIContent($"Delete Spawn Point n° {i}");
                 // Remove the point when the button is pressed
+                GUI.color = Color.red;
                 if (GUI.Button(_rect, _label)) property.FindPropertyRelative("spawnPoints").DeleteArrayElementAtIndex(i);
+                GUI.color = Color.white; 
             }
             // Draw a rect to display the add spawn point button
             _rect = new Rect(position.position.x, _rect.position.y + 25, position.width, 20);
@@ -102,7 +106,9 @@ public class TDS_WaveEditor : PropertyDrawer
                 // Add a new spawn point
                 property.FindPropertyRelative("spawnPoints").InsertArrayElementAtIndex(0);
             }
-        }      
+        }
+        //Is the wave activated by event
+        TDS_EditorUtility.Toggle("Is Activated by event", "Are the enemies of this wave starting behaviour on event", property.FindPropertyRelative("isActivatedByEvent"));
         EditorGUI.EndProperty(); 
     }
 

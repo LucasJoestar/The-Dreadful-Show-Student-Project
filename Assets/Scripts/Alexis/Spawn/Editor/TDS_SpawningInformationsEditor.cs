@@ -31,28 +31,27 @@ public class TDS_SpawningInformationsEditor : PropertyDrawer
 	*/
 
     #region Fields and properties
-    protected bool isFoldOut = true; 
     #endregion
 
     #region Methods
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        if (!isFoldOut) return 25; 
+        if (!property.FindPropertyRelative("isFoldOut").boolValue) return 25; 
         return 125 ;
     }
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         EditorGUI.DrawRect(position, TDS_EditorUtility.BoxLightColor); 
-        Rect _rect = new Rect(position.position.x, position.position.y, position.width, 25); 
+        Rect _rect = new Rect(position.position.x, position.position.y, position.width, 25);
         //Display the name of the enemy 
-        isFoldOut = EditorGUI.Foldout(_rect, isFoldOut, property.FindPropertyRelative("enemyResourceName").stringValue, true, TDS_EditorUtility.HeaderStyle); 
+        property.FindPropertyRelative("isFoldOut").boolValue = EditorGUI.Foldout(_rect, property.FindPropertyRelative("isFoldOut").boolValue, property.FindPropertyRelative("enemyResourceName").stringValue, true, TDS_EditorUtility.HeaderStyle); 
         // Display the number of enemy to spawn
         if(property.FindPropertyRelative("enemyCount").arraySize == 0)
         {
             property.FindPropertyRelative("enemyCount").arraySize = 4; 
         }
-        if(isFoldOut)
+        if(property.FindPropertyRelative("isFoldOut").boolValue)
         {
             for (int i = 0; i < property.FindPropertyRelative("enemyCount").arraySize; i++)
             {
@@ -94,7 +93,7 @@ public class TDS_RandomSpawningInformationsEditor : TDS_SpawningInformationsEdit
     {
         base.OnGUI(position, property, label);
         // Display the chance of spawn for the random enemies
-        if(isFoldOut) TDS_EditorUtility.IntSlider("Spawn Chance", "", property.FindPropertyRelative("spawnChance"), 1, 100);
+        if(property.FindPropertyRelative("isFoldOut").boolValue) TDS_EditorUtility.IntSlider("Spawn Chance", "", property.FindPropertyRelative("spawnChance"), 1, 100);
 
     }
     #endregion
