@@ -747,13 +747,15 @@ public abstract class TDS_Enemy : TDS_Character
     /// Called when the enemy has to be brought closer
     /// </summary>
     /// <param name="_distance"></param>
-    public override void BringCloser(float _distance)
+    public override bool BringCloser(float _distance)
     {
+        _distance -= agent.Radius * Mathf.Sign(_distance);
+        if (!base.BringCloser(_distance)) return false;
+
         StopAll();
         SetAnimationState((int)EnemyAnimationState.Brought);
 
-        _distance -= agent.Radius * Mathf.Sign(_distance);
-        base.BringCloser(_distance);
+        return true;
     }
 
     /// <summary>
@@ -796,7 +798,7 @@ public abstract class TDS_Enemy : TDS_Character
     public override void GetUp()
     {
         base.GetUp();
-        Debug.Log("IN"); 
+ 
         SetAnimationState((int)EnemyAnimationState.Idle);
         StartCoroutine(ApplyRecoveryTime(.25f));
     }
@@ -826,15 +828,15 @@ public abstract class TDS_Enemy : TDS_Character
     /// <summary>
     /// Put the character on the ground
     /// </summary>
-    public override void PutOnTheGround()
+    public override bool PutOnTheGround()
     {
-        if (!canBeDown || isDead || IsDown || !PhotonNetwork.isMasterClient) return;
-        base.PutOnTheGround();
-        if (IsDown)
-        {
-            StopAll();
-            SetAnimationState((int)EnemyAnimationState.Grounded);
-        }
+        if (!canBeDown || isDead || IsDown || !PhotonNetwork.isMasterClient) return false;
+        if (!base.PutOnTheGround()) return false;
+
+        StopAll();
+        SetAnimationState((int)EnemyAnimationState.Grounded);
+
+        return true;
     }
 
     /// <summary>
@@ -848,6 +850,17 @@ public abstract class TDS_Enemy : TDS_Character
         if (!PhotonNetwork.isMasterClient || isDead ) return; 
         SetAnimationState((int)EnemyAnimationState.Idle);
         base.StopAttack();
+    }
+
+    /// <summary>
+    /// Method called when stopped being bringed closer.
+    /// </summary>
+    protected override void StopBringingCloser()
+    {
+        base.StopBringingCloser();
+
+        SetAnimationState((int)EnemyAnimationState.Idle);
+        behaviourCoroutine = StartCoroutine(Behaviour());
     }
 
     /// <summary>
@@ -1189,8 +1202,6 @@ public abstract class TDS_Enemy : TDS_Character
         //if(PhotonNetwork.isMasterClient)
         //{
             OnDie += () => StopAllCoroutines();
-            OnStopBringingCloser += () => SetAnimationState((int)EnemyAnimationState.Idle); 
-            OnStopBringingCloser += () => behaviourCoroutine = StartCoroutine(Behaviour());
         //}
         InitLifeBar(); 
     }

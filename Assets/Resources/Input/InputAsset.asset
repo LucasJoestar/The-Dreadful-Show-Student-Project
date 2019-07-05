@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e33cb4e82d6f55419ffd8508de58bbb, type: 3}
+  m_Name: InputAsset
+  m_EditorClassIdentifier: 
+  Axis:
+  - axisName: D-Pad X
+    lastState: 3
+  - axisName: D-Pad Y
+    lastState: 3
+  - axisName: Right Stick X
+    lastState: 3
+  - axisName: Right Stick Y
+    lastState: 3
+  - axisName: Horizontal
+    lastState: 3
+  - axisName: Vertical
+    lastState: 3
+  Buttons:
+  - name: Catch
+    keys: 780000004e010000
+  - name: Dodge
+    keys: 630000004f010000
+  - name: Heavy Attack
+    keys: 610000004d010000
+  - name: Interact
+    keys: 660000004b010000
+  - name: Jump
+    keys: 200000004a010000
+  - name: Light Attack
+    keys: 650000004c010000
+  - name: Parry
+    keys: 30010000
+  - name: Super Attack
+    keys: 67000000
+  - name: Throw
+    keys: 32010000
+  - name: Use Object
+    keys: 7400000050010000

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -46,16 +45,15 @@ public class TDS_Button
     /// <summary>
     /// Name of the button, used to reference it.
     /// </summary>
-    public string Name
-    {
-        get { return name; }
-        private set { name = value; }
-    }
+    public string Name { get { return name; } }
+
+    /// <summary>Backing field for <see cref="Keys"/>.</summary>
+    [SerializeField] private KeyCode[] keys = new KeyCode[] { };
 
     /// <summary>
     /// All keys used to detect that button.
     /// </summary>
-    public KeyCode[] Keys = new KeyCode[] { };
+    public KeyCode[] Keys { get { return keys; } }
     #endregion
 
     #region Constructor
@@ -65,7 +63,7 @@ public class TDS_Button
     /// <param name="_name">Name of the newly created button.</param>
     public TDS_Button(string _name)
     {
-        Name = _name;
+        name = _name;
     }
     #endregion
 }

@@ -46,17 +46,10 @@ public class TDS_AxisToInput
     /// <summary>
     /// Name of the axis to convert.
     /// </summary>
-    public string AxisName
-    {
-        get { return axisName; }
-        private set
-        {
-            axisName = value;
-        }
-    }
+    public string AxisName { get { return axisName; } }
 
     /// <summary>Backing field for <see cref="LastState"/>.</summary>
-    [SerializeField] private AxisState lastState = AxisState.None;
+    [SerializeField, HideInInspector] private AxisState lastState = AxisState.None;
 
     /// <summary>
     /// Last registered state of this axis.
