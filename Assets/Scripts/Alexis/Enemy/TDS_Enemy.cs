@@ -316,6 +316,12 @@ public abstract class TDS_Enemy : TDS_Character
         float _angle = Vector3.Angle(_dir, transform.right);
         return (_angle < 90); 
     }
+
+    protected bool IsBetweenEnemyAndTarget(Vector3 _position)
+    {
+        if (!playerTarget) return false; 
+        return _position.x < transform.position.x && _position.x > playerTarget.transform.position.x || _position.x > transform.position.x && _position.x < playerTarget.transform.position.x;
+    }
     #endregion 
 
     #region float 
@@ -398,7 +404,8 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected IEnumerator ApplyRecoveryTime(float _recoveryTime)
     {
-        if (!PhotonNetwork.isMasterClient) yield break; 
+        if (!PhotonNetwork.isMasterClient) yield break;
+        if (behaviourCoroutine != null) StopCoroutine(behaviourCoroutine); 
         yield return new WaitForSeconds(_recoveryTime);
         behaviourCoroutine = StartCoroutine(Behaviour());
         yield break;
@@ -532,7 +539,6 @@ public abstract class TDS_Enemy : TDS_Character
         if (isDead || !PhotonNetwork.isMasterClient) yield break; 
         SetAnimationState((int)EnemyAnimationState.Run);
         Collider[] _colliders;
-        float _distance; 
         while (agent.IsMoving)
         {
             //Orientate the agent
@@ -548,16 +554,16 @@ public abstract class TDS_Enemy : TDS_Character
             else yield return new WaitForSeconds(.1f);
             //Check if the area allow to grab object
             // If the enemy hasn't a throwable, check if he can grab one
-            if (throwable == null && CanThrow)
+            if (throwable == null && canThrow)
             {
                 if (targetedThrowable)
                 {
                     //If the targeted throwable is close enough, grab it
-                    _distance = collider.size.x + targetedThrowable.transform.localScale.x;
-                    if (Vector3.Distance(transform.position, targetedThrowable.transform.position) <= _distance)
+                    if (Vector3.Distance(transform.position, targetedThrowable.transform.position) <= (agent.Radius * 2))
                     {
+                        if (Vector3.Angle(targetedThrowable.transform.position - transform.position, transform.right) < 90) Flip();
                         enemyState = EnemyState.PickingUpObject;
-                        yield break; 
+                        yield break;
                     }
                 }
                 else
@@ -566,7 +572,7 @@ public abstract class TDS_Enemy : TDS_Character
                     _colliders = Physics.OverlapSphere(transform.position, detectionRange);
                     if (_colliders.Length > 0)
                     {
-                        _colliders = _colliders.Where(c => c.GetComponent<TDS_Throwable>()).OrderBy(c => Vector3.Distance(transform.position, c.transform.position)).ToArray();
+                        _colliders = _colliders.Where(c => c.GetComponent<TDS_Throwable>() && IsBetweenEnemyAndTarget(c.transform.position)).OrderBy(c => Vector3.Distance(transform.position, c.transform.position)).ToArray();
                         if (_colliders.Length > 0)
                         {
                             if (Vector3.Distance(transform.position, _colliders.First().transform.position) < Vector3.Distance(transform.position, playerTarget.transform.position))
@@ -671,7 +677,8 @@ public abstract class TDS_Enemy : TDS_Character
             {
                 yield return null;
             }
-            throwable = null; 
+            yield return new WaitForEndOfFrame(); 
+            //throwable = null; 
             canThrow = false;
             SetAnimationState((int)EnemyAnimationState.Idle);
         }
@@ -789,8 +796,9 @@ public abstract class TDS_Enemy : TDS_Character
     public override void GetUp()
     {
         base.GetUp();
+        Debug.Log("IN"); 
         SetAnimationState((int)EnemyAnimationState.Idle);
-        ApplyRecoveryTime(.25f);
+        StartCoroutine(ApplyRecoveryTime(.25f));
     }
 
     /// <summary>
@@ -850,6 +858,7 @@ public abstract class TDS_Enemy : TDS_Character
         if (isDead) return false; 
         float _range = Vector3.Distance(transform.position, playerTarget.transform.position) <  throwRange ? Vector3.Distance(transform.position, playerTarget.transform.position) : throwRange;
         Vector3 _pos = (transform.position - transform.right * _range);
+        StopWaiting(); 
         return ThrowObject(_pos);
     }
 
