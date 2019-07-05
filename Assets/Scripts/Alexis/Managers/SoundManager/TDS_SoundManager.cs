@@ -41,10 +41,12 @@ public class TDS_SoundManager : MonoBehaviour
     #endregion
 
     #region Fields / Properties
+    public static TDS_SoundManager Instance = null; 
+
     /// <summary>
     /// Database of all audioclips stored by names
     /// </summary>
-    private Dictionary<string, AudioClip> audioClipByNames = new Dictionary<string, AudioClip>(); 
+    private Dictionary<string, AudioClip> audioClipsByName = new Dictionary<string, AudioClip>(); 
     #endregion
 
     #region Methods
@@ -65,7 +67,7 @@ public class TDS_SoundManager : MonoBehaviour
         AudioClip[] _audioclips = _soundBundle.LoadAllAssets<AudioClip>();
         for (int i = 0; i < _audioclips.Length; i++)
         {
-            audioClipByNames.Add(_audioclips[i].name, _audioclips[i]); 
+            audioClipsByName.Add(_audioclips[i].name, _audioclips[i]); 
         }
     }
 
@@ -76,8 +78,8 @@ public class TDS_SoundManager : MonoBehaviour
     /// <returns></returns>
     public AudioClip GetAudioClipByName(string _name)
     {
-        if (!audioClipByNames.ContainsKey(_name)) return null;
-        return audioClipByNames[_name]; 
+        if (!audioClipsByName.ContainsKey(_name)) return null;
+        return audioClipsByName[_name]; 
     }
 
     /// <summary>
@@ -98,6 +100,15 @@ public class TDS_SoundManager : MonoBehaviour
     #region Unity Methods
     private void Awake()
     {
+        if(!Instance)
+        {
+            Instance = this; 
+        }
+        else
+        {
+            Destroy(this);
+            return; 
+        }
         LoadAssetBundle(); 
     }
     #endregion
