@@ -404,14 +404,28 @@ public abstract class TDS_Character : TDS_Damageable
     /// <summary>
     /// Drop the weared throwable.
     /// </summary>
-    public virtual void DropObject()
+    /// <returns>Returns true if successfully dropped the object, false if not having an object to drop.</returns>
+    public virtual bool DropObject()
     {
+        // Call this method in master client only
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "DropObject"), new object[] { });
+            return false;
+        }
+
         // If no throwable, return
-        if (!throwable) return;
+        if (!throwable) return false;
 
         // Drooop
         throwable.Drop();
+
+        // Unparent this object for all clients
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ParentThrowable"), new object[] { throwable.photonView.viewID, false });
+
         Throwable = null;
+
+        return true;
     }
 
     /// <summary>
@@ -422,13 +436,85 @@ public abstract class TDS_Character : TDS_Damageable
     /// <returns>Returns true if the throwable was successfully grabbed, false either.</returns>
     public virtual bool GrabObject(TDS_Throwable _throwable)
     {
-        // If already having a throwable, return false
-        if (throwable) return false;
+        // Call this method in master client only
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "GrabObject"), new object[] { _throwable.photonView.viewID });
+            return false;
+        }
 
-        // Take the object
-        bool _canPickUp = _throwable.PickUp(this, handsTransform); 
-        if (!_canPickUp) return false;
+        // Take the object if possible
+        if (throwable || !_throwable.PickUp(this, handsTransform)) return false;
+
+        // Parent this object for all clients
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ParentThrowable"), new object[] { _throwable.photonView.viewID, true });
+
         Throwable = _throwable;
+
+        return true;
+    }
+
+    /// <summary>
+    /// Try to grab a throwable.
+    /// When grabbed, the object follows the character and can be thrown by this one.
+    /// </summary>
+    /// <param name="_throwable">ID of the throwable to try to grab.</param>
+    /// <returns>Returns true if the throwable was successfully grabbed, false either.</returns>
+    public virtual bool GrabObject(int _throwableID)
+    {
+        TDS_Throwable _throwable = PhotonView.Find(_throwableID).GetComponent<TDS_Throwable>();
+        if (!_throwable) return false;
+
+        return GrabObject(_throwable);
+    }
+
+    /// <summary>
+    /// Parent a throwable to this object or to nothing.
+    /// </summary>
+    /// <param name="_throwableID">ID of the throwable to parent.</param>
+    /// <param name="_doParent">Should this throwable be parented to this object or to nothing ?</param>
+    public virtual void ParentThrowable(int _throwableID, bool _doParent)
+    {
+        TDS_Throwable _throwable = PhotonView.Find(_throwableID).GetComponent<TDS_Throwable>();
+        if (!_throwable) return;
+
+        _throwable.transform.SetParent(_doParent ? handsTransform : null, true);
+    }
+
+    /// <summary>
+    /// Throws the weared throwable.
+    /// </summary>
+    public virtual bool ThrowObject()
+    {
+        // Get the destination point in world space
+        Vector3 _destinationPosition = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
+
+        return ThrowObject(_destinationPosition);
+    }
+
+    /// <summary>
+    /// Throws the weared throwable.
+    /// </summary>
+    /// <param name="_targetPosition">Position where the object should land</param>
+    public virtual bool ThrowObject(Vector3 _targetPosition)
+    {
+        // Call this method in master client only
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject"), new object[] { _targetPosition.x, _targetPosition.y, _targetPosition.z });
+            return false;
+        }
+
+        // If no throwable, return
+        if (!throwable) return false;
+
+        // Alright, then throw it !
+        throwable.Throw(_targetPosition, aimAngle, RandomThrowBonusDamages);
+
+        // Unparent this object for all clients
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ParentThrowable"), new object[] { throwable.photonView.viewID, false });
+
+        Throwable = null;
 
         return true;
     }
@@ -436,31 +522,12 @@ public abstract class TDS_Character : TDS_Damageable
     /// <summary>
     /// Throws the weared throwable.
     /// </summary>
-    public virtual void ThrowObject()
+    /// <param name="_x">X position where to throw.</param>
+    /// <param name="_y">Y position where to throw.</param>
+    /// <param name="_z">Z position where to throw.</param>
+    public virtual void ThrowObject(float _x, float _y, float _z)
     {
-        // If no throwable, return
-        if (!throwable) return;
-
-        // Alright, then throw it !
-        // Get the destination point in world space
-        Vector3 _destinationPosition = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
-
-        // Now, throw that object
-        throwable.Throw(_destinationPosition, aimAngle, RandomThrowBonusDamages);
-        Throwable = null;
-    }
-
-    /// <summary>
-    /// Throws the weared throwable.
-    /// </summary>
-    /// <param name="_targetPosition">Position where the object should land</param>
-    public virtual void ThrowObject(Vector3 _targetPosition)
-    {
-        // If no throwable, return
-        if (!throwable) return;
-        // Alright, then throw it !
-        throwable.Throw(_targetPosition, aimAngle, RandomThrowBonusDamages);
-        Throwable = null;
+        ThrowObject(new Vector3(_x, _y, _z));
     }
     #endregion
 
