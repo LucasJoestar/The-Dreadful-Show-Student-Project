@@ -273,88 +273,6 @@ public class TDS_Player : TDS_Character
     [SerializeField] protected TDS_PlayerSpriteHolder spriteHolder; 
     #endregion
 
-    #region Inputs
-    /// <summary>
-    /// Name of the button used to perform a catch.
-    /// </summary>
-    public string CatchButton = "Catch";
-
-    /// <summary>
-    /// Name of the button used to dodge.
-    /// </summary>
-    public string DodgeButton = "Dodge";
-
-    /// <summary>
-    /// Name of the joystick D-Pad X axis.
-    /// </summary>
-    public string DPadXAxis = "D-Pad X";
-
-    /// <summary>
-    /// Name of the joystick D-Pad Y axis.
-    /// </summary>
-    public string DPadYAxis = "D-Pad Y";
-
-    /// <summary>
-    /// Name of the button used to perform a heavy attack.
-    /// </summary>
-    public string HeavyAttackButton = "Heavy Attack";
-
-    /// <summary>
-    /// Name of the axis used to move on the X axis.
-    /// </summary>
-    public string HorizontalAxis = "Horizontal";
-
-    /// <summary>
-    /// Name of the button used to interact with the environment.
-    /// </summary>
-    public string InteractButton = "Interact";
-
-    /// <summary>
-    /// Name of the button used to jump.
-    /// </summary>
-    public string JumpButton = "Jump";
-
-    /// <summary>
-    /// Name of the button used to perform a light attack.
-    /// </summary>
-    public string LightAttackButton = "Light Attack";
-
-    /// <summary>
-    /// Name of the button used to parry.
-    /// </summary>
-    public string ParryButton = "Parry";
-
-    /// <summary>
-    /// Name of the joystick right stick X axis.
-    /// </summary>
-    public string RightStickXAxis = "Right Stick X";
-
-    /// <summary>
-    /// Name of the joystick right stick Y axis.
-    /// </summary>
-    public string RightStickYAxis = "Right Stick Y";
-
-    /// <summary>
-    ///Name of the button used to perform the super attack.
-    /// </summary>
-    public string SuperAttackButton = "Super Attack";
-
-    /// <summary>
-    /// Name of the button used to throw an object.
-    /// </summary>
-    public string ThrowButton = "Throw";
-
-    /// <summary>
-    /// Name of the button used to use the selected object.
-    /// </summary>
-    public string UseObjectButton = "Use Object";
-
-    /// <summary>
-    /// Name of the axis used to move on the Z axis.
-    /// </summary>
-    public string VerticalAxis = "Vertical";
-    #endregion
-
     #region Coroutines
     /// <summary>
     /// Reference of the current coroutine of the dodge method.
@@ -651,7 +569,7 @@ public class TDS_Player : TDS_Character
     {
         if (!base.GrabObject(_throwable)) return false;
 
-        // Triggers one shot event
+        // Triggers event
         OnGrabObject?.Invoke();
 
         // Updates animator informations
@@ -667,13 +585,12 @@ public class TDS_Player : TDS_Character
     {
         if (!base.ThrowObject(_targetPosition)) return false;
 
-        // Triggers the throw animation ;
+        // Triggers event
+        OnThrow?.Invoke();
+
         // Update the animator
         if (isGrounded) SetAnim(PlayerAnimState.Throw);
         SetAnim(PlayerAnimState.LostObject);
-
-        // Triggers one shot event
-        OnThrow?.Invoke();
 
         return true;
     }
@@ -900,7 +817,7 @@ public class TDS_Player : TDS_Character
         OnStartParry?.Invoke();
 
         // While holding the parry button, parry attacks
-        while (Input.GetButton(ParryButton) || TDS_Input.GetAxis(ParryButton))
+        while (TDS_InputManager.GetButton(TDS_InputManager.PARRY_BUTTON))
         {
             yield return null;
         }
@@ -970,9 +887,13 @@ public class TDS_Player : TDS_Character
     #endregion
 
     #region Effects
-    public override void PutOnTheGround()
+    /// <summary>
+    /// Bring this damageable closer from a certain distance.
+    /// </summary>
+    /// <param name="_distance">Distance to browse.</param>
+    public override void BringCloser(float _distance)
     {
-        base.PutOnTheGround();
+        base.BringCloser(_distance);
     }
     #endregion
 
@@ -1083,6 +1004,12 @@ public class TDS_Player : TDS_Character
     public virtual bool Interact()
     {
         // Interact !
+        if (throwable && (playerType != PlayerType.Juggler))
+        {
+            ThrowObject();
+            return true;
+        }
+
         // Get the nearest object in range ; if null, cannot interact, so return false
         GameObject _nearestObject = interactionDetector.NearestObject;
 
@@ -1342,7 +1269,7 @@ public class TDS_Player : TDS_Character
         // Adds a base vertical force to the rigidbody to expels the player in the air
         rigidbody.AddForce(Vector3.up * JumpForce);
 
-        while(Input.GetButton(JumpButton) && _timer < JumpMaximumTime)
+        while(TDS_InputManager.GetButton(TDS_InputManager.JUMP_BUTTON) && _timer < JumpMaximumTime)
         {
             rigidbody.AddForce(Vector3.up * (JumpForce / JumpMaximumTime) * Time.deltaTime);
             yield return new WaitForFixedUpdate();
@@ -1617,33 +1544,26 @@ public class TDS_Player : TDS_Character
         // Checks potentially agressives actions
         if (!IsPacific && isGrounded)
         {
-            if (Input.GetButtonDown(LightAttackButton)) StartPreparingAttack(true);
+            if (TDS_InputManager.GetButtonDown(TDS_InputManager.LIGHT_ATTACK_BUTTON)) StartPreparingAttack(true);
 
-            else if (Input.GetButtonDown(HeavyAttackButton)) StartPreparingAttack(false);
+            else if (TDS_InputManager.GetButtonDown(TDS_InputManager.HEAVY_ATTACK_BUTTON)) StartPreparingAttack(false);
 
             if (!isAttacking)
             {
-                if (Input.GetButtonDown(CatchButton)) Catch();
+                if (TDS_InputManager.GetButtonDown(TDS_InputManager.CATCH_BUTTON)) Catch();
 
-                else if (Input.GetButtonDown(SuperAttackButton) || (TDS_Input.GetAxisDown(SuperAttackButton) && (Input.GetAxis(SuperAttackButton) == 0))) SuperAttack();
+                else if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUPER_ATTACK_BUTTON)) SuperAttack();
 
-                else if (Input.GetButtonDown(UseObjectButton)) UseObject();
+                else if (TDS_InputManager.GetButtonDown(TDS_InputManager.USE_OBJECT_BUTTON)) UseObject();
             }
         }
 
-        // If having a throwable and it's not a player, throw it on interact button pressed
-        if (throwable && playerType != PlayerType.Juggler)
-        {
-            if (Input.GetButtonDown(InteractButton)) ThrowObject();
-            return;
-        }
-
         // Check non-agressive actions
-        if (Input.GetButtonDown(InteractButton)) Interact();
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.INTERACT_BUTTON)) Interact();
 
-        else if (Input.GetButtonDown(DodgeButton) && !IsParalyzed) StartDodge();
+        else if (TDS_InputManager.GetButtonDown(TDS_InputManager.DODGE_BUTTON) && !IsParalyzed) StartDodge();
 
-        else if ((Input.GetButtonDown(ParryButton) || TDS_Input.GetAxisDown(ParryButton)) && isGrounded) StartCoroutine(Parry());
+        else if (TDS_InputManager.GetButtonDown(TDS_InputManager.PARRY_BUTTON) && isGrounded) StartCoroutine(Parry());
     }
 
     /// <summary>
@@ -1655,8 +1575,8 @@ public class TDS_Player : TDS_Character
         if (IsParalyzed || isAttacking || isParrying || isDodging) return;
 
         // Moves the player on the X & Z axis regarding the the axis pressure.
-        float _horizontal = Input.GetAxis(HorizontalAxis);
-        float _vertical = Input.GetAxis(VerticalAxis) * 2f;
+        float _horizontal = Input.GetAxis(TDS_InputManager.HORIZONTAL_AXIS);
+        float _vertical = Input.GetAxis(TDS_InputManager.VERTICAL_AXIS) * 2f;
 
         if (_horizontal != 0 || _vertical != 0)
         {
@@ -1675,7 +1595,7 @@ public class TDS_Player : TDS_Character
         }
 
         // When pressing the jump method, check if on ground ; If it's all good, then let's jump
-        if (Input.GetButtonDown(JumpButton) && IsGrounded && !isPreparingAttack)
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.JUMP_BUTTON) && IsGrounded && !isPreparingAttack)
         {
             StartJump();
         }
@@ -1802,12 +1722,15 @@ public class TDS_Player : TDS_Character
     protected override void Update ()
     {
         // If dead or not playable, return
-        if (!photonView.isMine || isDead || !IsPlayable) return;
+        if (!photonView.isMine || isDead) return;
 
         base.Update();
 
         // Adjust the position of the player for each axis of the rigidbody velocity where a force is exercised
         AdjustPositionOnRigidbody();
+
+        // If not playable or down, return
+        if (!IsPlayable || IsDown) return;
 
         // Check the player inputs
         CheckMovementsInputs();

@@ -306,12 +306,12 @@ public class TDS_FireEater : TDS_Player
     /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
     protected override IEnumerator PrepareAttack(bool _isLight)
     {
-        string _buttonName = _isLight ? LightAttackButton : HeavyAttackButton;
+        string _buttonName = _isLight ? TDS_InputManager.LIGHT_ATTACK_BUTTON : TDS_InputManager.HEAVY_ATTACK_BUTTON;
         float _timer = TIME_TO_ACTIVATE_MINI_GAME;
 
         if (!isDrunk)
         {
-            while (Input.GetButton(_buttonName))
+            while (TDS_InputManager.GetButton(_buttonName))
             {
                 if (_timer > 0)
                 {

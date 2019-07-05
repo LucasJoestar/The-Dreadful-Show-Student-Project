@@ -420,7 +420,7 @@ public abstract class TDS_Character : TDS_Damageable
         // Drooop
         throwable.Drop();
 
-        // Unparent this object for all clients
+        // Set the throwable as null for all clients
         TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ParentThrowable"), new object[] { throwable.photonView.viewID, false });
 
         Throwable = null;
@@ -446,8 +446,8 @@ public abstract class TDS_Character : TDS_Damageable
         // Take the object if possible
         if (throwable || !_throwable.PickUp(this, handsTransform)) return false;
 
-        // Parent this object for all clients
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ParentThrowable"), new object[] { _throwable.photonView.viewID, true });
+        // Set the throwable for all clients
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetThrowable"), new object[] { _throwable.photonView.viewID, true });
 
         Throwable = _throwable;
 
@@ -469,16 +469,19 @@ public abstract class TDS_Character : TDS_Damageable
     }
 
     /// <summary>
-    /// Parent a throwable to this object or to nothing.
+    /// Set this character throwable (Grab or Throw / Drop).
     /// </summary>
-    /// <param name="_throwableID">ID of the throwable to parent.</param>
-    /// <param name="_doParent">Should this throwable be parented to this object or to nothing ?</param>
-    public virtual void ParentThrowable(int _throwableID, bool _doParent)
+    /// <param name="_throwableID">ID of the throwable to set.</param>
+    /// <param name="_doGrab">Indicates if the character grabs the throwable or throw / drop it.</param>
+    public virtual void SetThrowable(int _throwableID, bool _doGrab)
     {
         TDS_Throwable _throwable = PhotonView.Find(_throwableID).GetComponent<TDS_Throwable>();
-        if (!_throwable) return;
-
-        _throwable.transform.SetParent(_doParent ? handsTransform : null, true);
+        if (_throwable)
+        {
+            _throwable.transform.SetParent(_doGrab ? handsTransform : null, true);
+            Throwable = _throwable;
+        }
+        else throwable = null;
     }
 
     /// <summary>
@@ -511,8 +514,8 @@ public abstract class TDS_Character : TDS_Damageable
         // Alright, then throw it !
         throwable.Throw(_targetPosition, aimAngle, RandomThrowBonusDamages);
 
-        // Unparent this object for all clients
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ParentThrowable"), new object[] { throwable.photonView.viewID, false });
+        // Set the throwable as null for all clients
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetThrowable"), new object[] { throwable.photonView.viewID, false });
 
         Throwable = null;
 

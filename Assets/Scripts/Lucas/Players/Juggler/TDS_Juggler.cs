@@ -416,16 +416,15 @@ public class TDS_Juggler : TDS_Player
     protected virtual IEnumerator Aim()
     {
         // While holding the throw button, aim a position
-        while (Input.GetButton(ThrowButton) || TDS_Input.GetAxis(ThrowButton))
+        while (TDS_InputManager.GetButton(TDS_InputManager.THROW_BUTTON))
         {
             // Draws the preview of the projectile trajectory while holding the throw button
             AimMethod();
 
             yield return null;
 
-            if (Input.GetButtonDown(ParryButton) || TDS_Input.GetAxisDown(ParryButton))
+            if (TDS_InputManager.GetButtonDown(TDS_InputManager.PARRY_BUTTON))
             {
-                Debug.Log("Throw !");
                 // Throws the object to the aiming position
                 ThrowObject();
 
@@ -445,8 +444,8 @@ public class TDS_Juggler : TDS_Player
     {
         // Let the player aim the point he wants, 'cause the juggler can do that. Yep
         // Aim with IJKL or the right joystick axis
-        float _xMovement = Input.GetAxis(RightStickXAxis);
-        float _zMovement = Input.GetAxis(RightStickYAxis);
+        float _xMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_X_Axis);
+        float _zMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_Y_AXIS);
 
         if (_xMovement != 0 || _zMovement != 0)
         {
@@ -526,11 +525,20 @@ public class TDS_Juggler : TDS_Player
     /// </summary>
     public override bool DropObject()
     {
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "DropObject"), new object[] { });
+            return false;
+        }
+
         // If no throwable, return
         if (!throwable) return false;
 
         // Drooop
         throwable.Drop();
+
+        // Remove the throwable for all clients
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetThrowable"), new object[] { throwable.photonView.viewID, false });
 
         // Set new throwable
         throwable = null;
@@ -570,6 +578,9 @@ public class TDS_Juggler : TDS_Player
         // Take the object
         if (!_throwable.PickUp(this, handsTransform)) return false;
 
+        // Set the throwable for all clients
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetThrowable"), new object[] { _throwable.photonView.viewID, true });
+
         Throwable = _throwable;
 
         // Updates juggling informations
@@ -578,19 +589,8 @@ public class TDS_Juggler : TDS_Player
         // Updates animator informations
         if (CurrentThrowableAmount > 0) SetAnim(PlayerAnimState.HasObject);
 
-        // Triggers one shot event
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "GrabObjectCallBackOnline"), new object[] { _throwable.photonView.viewID });
-
         return true;
     }
-
-    /*
-    protected override void GrabObjectCallBackOnline(int _photonViewID)
-    {
-        TDS_Throwable _throwable = PhotonView.Find(_photonViewID).GetComponent<TDS_Throwable>();
-        _throwable.transform.SetParent(handsTransform, true);
-        Throwable = _throwable;
-    }*/
 
     /// <summary>
     /// Make the Juggler juggle ! Yeeeaah !
@@ -615,6 +615,9 @@ public class TDS_Juggler : TDS_Player
                 ThrowAimingPoint = throwAimingPoint;
             }
         }
+
+        // If not master client, return
+        if (!PhotonNetwork.isMasterClient) return;
 
         // If not having any throwable, return
         if (CurrentThrowableAmount == 0) return;
@@ -698,6 +701,41 @@ public class TDS_Juggler : TDS_Player
         projectilePreviewEndZone.SetActive(true);
 
         return true;
+    }
+
+    /// <summary>
+    /// Set this character throwable (Grab or Throw / Drop).
+    /// </summary>
+    /// <param name="_throwableID">ID of the throwable to set.</param>
+    /// <param name="_doGrab">Indicates if the character grabs the throwable or throw / drop it.</param>
+    public override void SetThrowable(int _throwableID, bool _doGrab)
+    {
+        TDS_Throwable _throwable = PhotonView.Find(_throwableID).GetComponent<TDS_Throwable>();
+        if (_throwable)
+        {
+            if (_doGrab)
+            {
+                _throwable.transform.SetParent( handsTransform, true);
+                Throwable = _throwable;
+            }
+            else
+            {
+                _throwable.transform.SetParent(null, true);
+                throwable = null;
+                if (CurrentThrowableAmount > 0)
+                {
+                    Throwable = Throwables[0];
+                }
+            }
+        }
+        else
+        {
+            throwable = null;
+            if (CurrentThrowableAmount > 0)
+            {
+                Throwable = Throwables[0];
+            }
+        }
     }
 
     /// <summary>
@@ -790,6 +828,9 @@ public class TDS_Juggler : TDS_Player
         throwable.transform.localPosition = Vector3.zero;
         throwable.Throw(_targetPosition, aimAngle, RandomThrowBonusDamages);
 
+        // Remove the throwable for all clients
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetThrowable"), new object[] { throwable.photonView.viewID, false });
+
         // Set new throwable
         throwable = null;
         if (CurrentThrowableAmount > 0)
@@ -807,21 +848,8 @@ public class TDS_Juggler : TDS_Player
             UpdateJuggleParameters(false);
         }
 
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObjectCallBackOnline"), new object[] { });
-
         return true;
     }
-
-    /*
-    protected override void ThrowObjectCallBackOnline()
-    {
-        throwable.transform.SetParent(null, true);
-        throwable = null;
-        if (CurrentThrowableAmount > 0)
-        {
-            Throwable = Throwables[0];
-        }
-    }*/
 
     /// <summary>
     /// Updates juggle parameters depending on juggling objects amount.
@@ -979,17 +1007,17 @@ public class TDS_Juggler : TDS_Player
         base.CheckActionsInputs();
 
         // Check throw
-        if (Input.GetButtonDown(ThrowButton) || TDS_Input.GetAxisDown(ThrowButton)) PrepareThrow();
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.THROW_BUTTON)) PrepareThrow();
 
         // Check aiming point / angle changes
-        if (TDS_Input.GetAxisDown(DPadXAxis) && (Throwables.Count > 0))
+        if (TDS_InputManager.GetAxisDown(TDS_InputManager.D_PAD_X_Axis) && (Throwables.Count > 0))
         {
-            SwitchThrowable((int)Input.GetAxis(DPadXAxis));
+            SwitchThrowable((int)Input.GetAxis(TDS_InputManager.D_PAD_X_Axis));
         }
 
-        if (TDS_Input.GetAxis(DPadYAxis))
+        if (TDS_InputManager.GetAxis(TDS_InputManager.D_PAD_Y_Axis))
         {
-            AimAngle += Input.GetAxis(DPadYAxis);
+            AimAngle += Input.GetAxis(TDS_InputManager.D_PAD_Y_Axis);
             ThrowAimingPoint = throwAimingPoint;
         }
     }
@@ -1088,19 +1116,16 @@ public class TDS_Juggler : TDS_Player
         defaultAimingPoint = throwAimingPoint;
 
         // Set events
-        SetEvents();
+        if (photonView.isMine) SetEvents();
     }
 
     // Update is called once per frame
     protected override void Update()
     {
-        // If dead, return
-        if (!photonView.isMine || isDead) return;
-
         base.Update();
 
         // 3, 2, 1... Let's Jam !
-        Juggle();
+        if (!isDead ||!PhotonNetwork.isMasterClient || !photonView.isMine) Juggle();
     }
 	#endregion
 
