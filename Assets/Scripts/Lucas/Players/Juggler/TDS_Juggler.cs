@@ -763,28 +763,28 @@ public class TDS_Juggler : TDS_Player
     /// <summary>
     /// Throws the weared throwable.
     /// </summary>
-    public override void ThrowObject()
+    public override bool ThrowObject()
     {
         // Get the destination point in world space
         Vector3 _destinationPosition = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
 
-        ThrowObject(_destinationPosition);
+        return ThrowObject(_destinationPosition);
     }
 
     /// <summary>
     /// Throws the weared throwable.
     /// </summary>
     /// <param name="_targetPosition">Position where the object should land.</param>
-    public override void ThrowObject(Vector3 _targetPosition)
+    public override bool ThrowObject(Vector3 _targetPosition)
     {
         if (!PhotonNetwork.isMasterClient)
         {
             TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject"), new object[] { _targetPosition.x, _targetPosition.y, _targetPosition.z });
-            return;
+            return false;
         }
 
         // If no throwable, return
-        if (!throwable) return;
+        if (!throwable) return false;
 
         // Now, throw that object
         throwable.transform.localPosition = Vector3.zero;
@@ -808,6 +808,8 @@ public class TDS_Juggler : TDS_Player
         }
 
         TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObjectCallBackOnline"), new object[] { });
+
+        return true;
     }
 
     /*

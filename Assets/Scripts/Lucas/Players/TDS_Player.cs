@@ -663,9 +663,9 @@ public class TDS_Player : TDS_Character
     /// Throws the weared throwable.
     /// </summary>
     /// <param name="_targetPosition">Position where the object should land.</param>
-    public override void ThrowObject(Vector3 _targetPosition)
+    public override bool ThrowObject(Vector3 _targetPosition)
     {
-        base.ThrowObject(_targetPosition);
+        if (!base.ThrowObject(_targetPosition)) return false;
 
         // Triggers the throw animation ;
         // Update the animator
@@ -674,6 +674,8 @@ public class TDS_Player : TDS_Character
 
         // Triggers one shot event
         OnThrow?.Invoke();
+
+        return true;
     }
     #endregion
 

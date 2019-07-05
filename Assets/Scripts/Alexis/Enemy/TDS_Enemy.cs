@@ -845,22 +845,21 @@ public abstract class TDS_Enemy : TDS_Character
     /// <summary>
     /// Call this method as an animation event to throw the object
     /// </summary>
-    public override void ThrowObject()
+    public override bool ThrowObject()
     {
-        if (isDead) return; 
+        if (isDead) return false; 
         float _range = Vector3.Distance(transform.position, playerTarget.transform.position) <  throwRange ? Vector3.Distance(transform.position, playerTarget.transform.position) : throwRange;
         Vector3 _pos = (transform.position - transform.right * _range);
-        ThrowObject(_pos);
+        return ThrowObject(_pos);
     }
 
     /// <summary>
     /// Overridden Throw Object Method
-    /// 
     /// </summary>
     /// <param name="_targetPosition"></param>
-    public override void ThrowObject(Vector3 _targetPosition)
+    public override bool ThrowObject(Vector3 _targetPosition)
     {
-        base.ThrowObject(_targetPosition);
+        return base.ThrowObject(_targetPosition);
     }
 
     /// <summary>
