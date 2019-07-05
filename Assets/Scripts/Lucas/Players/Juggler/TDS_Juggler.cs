@@ -946,6 +946,41 @@ public class TDS_Juggler : TDS_Player
     }
     #endregion
 
+    #region Effects
+    /// <summary>
+    /// Bring this damageable closer from a certain distance.
+    /// </summary>
+    /// <param name="_distance">Distance to browse.</param>
+    public override bool BringCloser(float _distance)
+    {
+        if (!base.BringCloser(_distance)) return false;
+
+        // Drop all objects
+        while (throwable)
+        {
+            DropObject();
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Put the character on the ground.
+    /// </summary>
+    public override bool PutOnTheGround()
+    {
+        if (!base.PutOnTheGround()) return false;
+
+        // Drop all objects
+        while (throwable)
+        {
+            DropObject();
+        }
+
+        return true;
+    }
+    #endregion
+
     #endregion
 
     #region Health

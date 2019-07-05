@@ -552,11 +552,14 @@ public abstract class TDS_Character : TDS_Damageable
     /// Bring this damageable closer from a certain distance.
     /// </summary>
     /// <param name="_distance">Distance to browse.</param>
-    public override void BringCloser(float _distance)
+    public override bool BringCloser(float _distance)
     {
-        if (IsDown) return;
+        if (IsDown) return false;
 
-        base.BringCloser(_distance);
+        // Drop object if having one
+        if (throwable) DropObject();
+
+        return base.BringCloser(_distance);
     }
 
     /// <summary>
@@ -570,13 +573,18 @@ public abstract class TDS_Character : TDS_Damageable
     /// <summary>
     /// Put the character on the ground.
     /// </summary>
-    public virtual void PutOnTheGround()
+    public virtual bool PutOnTheGround()
     {
-        if (IsDown) return;
+        if (IsDown) return false;
+
+        // Drop object if having one
+        if (throwable) DropObject();
 
         if (bringingCloserCoroutine != null) StopCoroutine(bringingCloserCoroutine);
 
         IsDown = true;
+
+        return true;
     }
     #endregion
 

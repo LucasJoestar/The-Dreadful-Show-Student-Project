@@ -386,11 +386,13 @@ public abstract class TDS_Damageable : PunBehaviour
     /// Bring this damageable closer from a certain distance.
     /// </summary>
     /// <param name="_distance">Distance to browse.</param>
-    public virtual void BringCloser(float _distance)
+    public virtual bool BringCloser(float _distance)
     {
         if (bringingCloserCoroutine != null) StopCoroutine(bringingCloserCoroutine);
 
         bringingCloserCoroutine = StartCoroutine(BringingCloser(_distance));
+
+        return true;
     }
 
     /// <summary>
@@ -411,9 +413,9 @@ public abstract class TDS_Damageable : PunBehaviour
         }
         
         bringingCloserCoroutine = null;
-        OnStopBringingCloser?.Invoke();
-    }
 
+        StopBringingCloser();
+    }
 
     /// <summary>
     /// Make this damageable burn.
@@ -450,6 +452,14 @@ public abstract class TDS_Damageable : PunBehaviour
         }
 
         burningCoroutine = null;
+    }
+
+    /// <summary>
+    /// Method called when stopped being bringed closer.
+    /// </summary>
+    protected virtual void StopBringingCloser()
+    {
+        OnStopBringingCloser?.Invoke();
     }
     #endregion
 

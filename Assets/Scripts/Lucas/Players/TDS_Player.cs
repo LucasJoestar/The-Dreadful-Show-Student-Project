@@ -891,9 +891,37 @@ public class TDS_Player : TDS_Character
     /// Bring this damageable closer from a certain distance.
     /// </summary>
     /// <param name="_distance">Distance to browse.</param>
-    public override void BringCloser(float _distance)
+    public override bool BringCloser(float _distance)
     {
-        base.BringCloser(_distance);
+        if (!base.BringCloser(_distance)) return false;
+
+        // Set Animation
+        IsPlayable = false;
+
+        return true;
+    }
+
+    /// <summary>
+    /// Put the character on the ground.
+    /// </summary>
+    public override bool PutOnTheGround()
+    {
+        if (!base.PutOnTheGround()) return false;
+
+        // Set animation
+
+        return true;
+    }
+
+    /// <summary>
+    /// Method called when stopped being bringed closer.
+    /// </summary>
+    protected override void StopBringingCloser()
+    {
+        base.StopBringingCloser();
+
+        // Set animation
+        IsPlayable = true;
     }
     #endregion
 
