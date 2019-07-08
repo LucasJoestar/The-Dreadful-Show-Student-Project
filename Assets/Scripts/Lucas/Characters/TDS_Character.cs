@@ -614,7 +614,11 @@ public abstract class TDS_Character : TDS_Damageable
         {
             Debug.LogWarning("The Shadow Transform of \"" + name + "\" for script TDS_Character is missing !");
         }
-        if (!photonView.isMine) rigidbody.isKinematic = true; 
+        if (!photonView.isMine)
+        {
+            rigidbody.isKinematic = true;
+            rigidbody.useGravity = false;
+        }
     }
 
     // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
