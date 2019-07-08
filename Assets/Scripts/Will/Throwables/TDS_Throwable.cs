@@ -84,7 +84,8 @@ public class TDS_Throwable : PunBehaviour
     /// </summary>
     protected virtual void DestroyThrowableObject()
     {
-        if (!PhotonNetwork.isMasterClient) return; 
+        if (!PhotonNetwork.isMasterClient) return;
+        PhotonNetwork.Instantiate("Poof", hitBox.Collider.bounds.center, Quaternion.identity, 0);
         PhotonNetwork.Destroy(gameObject);
     }
     /// <summary>

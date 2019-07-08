@@ -14,9 +14,9 @@ TextureImporter:
     21300018: BeardLady_S_RunObject_4
     21300020: BeardLady_S_IdleObject_1
     21300022: BeardLady_S_IdleObject_2
-    21300024: BeardLady_S_Dead_1
-    21300026: BeardLady_S_Dead_2
-    21300028: BeardLady_S_Dead_3
+    21300024: BeardLady_S_Down_1
+    21300026: BeardLady_S_Down_2
+    21300028: BeardLady_S_Down_3
     21300030: BeardLady_S_Parry
     21300032: BeardLady_S_LightAttack#1_1
     21300034: BeardLady_S_LightAttack#1_2
@@ -113,9 +113,9 @@ TextureImporter:
     21300216: BeardLady_M_RunObject_2
     21300218: BeardLady_M_RunObject_3
     21300220: BeardLady_M_RunObject_4
-    21300222: BeardLady_M_Dead_1
-    21300224: BeardLady_M_Dead_2
-    21300226: BeardLady_M_Dead_3
+    21300222: BeardLady_M_Down_1
+    21300224: BeardLady_M_Down_2
+    21300226: BeardLady_M_Down_3
     21300228: BeardLady_M_Parry
     21300230: BeardLady_M_Throw_1
     21300232: BeardLady_M_Throw_2
@@ -229,9 +229,9 @@ TextureImporter:
     21300448: BeardLady_L_Link_3
     21300450: BeardLady_L_Link_4
     21300452: BeardLady_L_Link_5
-    21300454: BeardLady_L_Dead_1
-    21300456: BeardLady_L_Dead_2
-    21300458: BeardLady_L_Dead_3
+    21300454: BeardLady_L_Down_1
+    21300456: BeardLady_L_Down_2
+    21300458: BeardLady_L_Down_3
     21300460: BeardLady_L_HeavyAttack#2_1
     21300462: BeardLady_L_HeavyAttack#2_2
     21300464: BeardLady_L_HeavyAttack#2_3
@@ -259,8 +259,8 @@ TextureImporter:
     21300508: BeardLady_V_Run_4
     21300510: BeardLady_V_Idle_1
     21300512: BeardLady_V_Idle_2
-    21300514: BeardLady_V_Dead_1
-    21300516: BeardLady_V_Dead_2
+    21300514: BeardLady_V_Down_1
+    21300516: BeardLady_V_Down_2
     21300518: BeardLady_V_Parry
     21300520: Beard Lady - Spritesheet Final_260
     21300522: Beard Lady - Spritesheet Final_261
@@ -279,7 +279,7 @@ TextureImporter:
     21300548: Beard Lady - Spritesheet Final_274
     21300550: Beard Lady - Spritesheet Final_275
     21300552: Beard Lady - Spritesheet Final_276
-    21300554: BeardLady_V_Dead_3
+    21300554: BeardLady_V_Down_3
     21300556: Beard Lady - Spritesheet Final_278
     21300558: Beard Lady - Spritesheet Final_279
     21300560: Beard Lady - Spritesheet Final_280
@@ -699,7 +699,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BeardLady_S_Dead_1
+      name: BeardLady_S_Down_1
       rect:
         serializedVersion: 2
         x: 2400
@@ -719,7 +719,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BeardLady_S_Dead_2
+      name: BeardLady_S_Down_2
       rect:
         serializedVersion: 2
         x: 2637
@@ -739,7 +739,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BeardLady_S_Dead_3
+      name: BeardLady_S_Down_3
       rect:
         serializedVersion: 2
         x: 2868
@@ -2119,7 +2119,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BeardLady_M_Dead_1
+      name: BeardLady_M_Down_1
       rect:
         serializedVersion: 2
         x: 2257
@@ -2139,7 +2139,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BeardLady_M_Dead_2
+      name: BeardLady_M_Down_2
       rect:
         serializedVersion: 2
         x: 2468
@@ -2159,7 +2159,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BeardLady_M_Dead_3
+      name: BeardLady_M_Down_3
       rect:
         serializedVersion: 2
         x: 2705
@@ -3459,7 +3459,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BeardLady_L_Dead_1
+      name: BeardLady_L_Down_1
       rect:
         serializedVersion: 2
         x: 3316
@@ -3479,7 +3479,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BeardLady_L_Dead_2
+      name: BeardLady_L_Down_2
       rect:
         serializedVersion: 2
         x: 3576
@@ -3499,7 +3499,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BeardLady_L_Dead_3
+      name: BeardLady_L_Down_3
       rect:
         serializedVersion: 2
         x: 3796
@@ -3999,7 +3999,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BeardLady_V_Dead_1
+      name: BeardLady_V_Down_1
       rect:
         serializedVersion: 2
         x: 3072
@@ -4019,7 +4019,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BeardLady_V_Dead_2
+      name: BeardLady_V_Down_2
       rect:
         serializedVersion: 2
         x: 3319
@@ -4119,7 +4119,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BeardLady_V_Dead_3
+      name: BeardLady_V_Down_3
       rect:
         serializedVersion: 2
         x: 3550
