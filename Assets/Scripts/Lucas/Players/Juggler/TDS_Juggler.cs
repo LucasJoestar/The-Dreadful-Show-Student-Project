@@ -587,7 +587,10 @@ public class TDS_Juggler : TDS_Player
         UpdateJuggleParameters(true);
 
         // Updates animator informations
-        if (CurrentThrowableAmount > 0) SetAnim(PlayerAnimState.HasObject);
+        if (CurrentThrowableAmount > 0)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.HasObject });
+        }
 
         return true;
     }
