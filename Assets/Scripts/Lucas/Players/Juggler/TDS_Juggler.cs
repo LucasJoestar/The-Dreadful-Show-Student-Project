@@ -1157,6 +1157,9 @@ public class TDS_Juggler : TDS_Player
 
         // Set events
         if (photonView.isMine) SetEvents();
+
+
+        if (photonView.isMine && !PhotonNetwork.isMasterClient) juggleTransform.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.masterClient);
     }
 
     // Update is called once per frame
