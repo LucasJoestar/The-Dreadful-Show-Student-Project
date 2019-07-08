@@ -1152,7 +1152,7 @@ public class TDS_Juggler : TDS_Player
         base.Update();
 
         // 3, 2, 1... Let's Jam !
-        if (PhotonNetwork.isMasterClient && !isDead) Juggle();
+        if (photonView.isMine && !isDead) Juggle();
     }
 	#endregion
 
