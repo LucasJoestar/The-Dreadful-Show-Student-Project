@@ -896,9 +896,22 @@ public class TDS_Player : TDS_Character
         if (!base.BringCloser(_distance)) return false;
 
         // Set Animation
+        SetAnim(PlayerAnimState.Sliding);
+
         IsPlayable = false;
+        IsInvulnerable = true;
 
         return true;
+    }
+
+    /// <summary>
+    /// Tells the Character that he's getting up.
+    /// </summary>
+    public override void GetUp()
+    {
+        base.GetUp();
+
+        IsInvulnerable = false;
     }
 
     /// <summary>
@@ -909,6 +922,9 @@ public class TDS_Player : TDS_Character
         if (!base.PutOnTheGround()) return false;
 
         // Set animation
+        SetAnim(PlayerAnimState.Down);
+
+        IsInvulnerable = true;
 
         return true;
     }
@@ -921,7 +937,10 @@ public class TDS_Player : TDS_Character
         base.StopBringingCloser();
 
         // Set animation
+        SetAnim(PlayerAnimState.NotSliding);
+
         IsPlayable = true;
+        IsInvulnerable = false;
     }
     #endregion
 
@@ -1456,7 +1475,7 @@ public class TDS_Player : TDS_Character
     public void UnfreezePlayer() => IsPlayable = true;
     #endregion
 
-    #region Animator
+    #region Animations
     /// <summary>
     /// Set this player animator informations.
     /// </summary>
@@ -1543,6 +1562,18 @@ public class TDS_Player : TDS_Character
 
             case PlayerAnimState.NotParrying:
                 animator.SetBool("IsParrying", false);
+                break;
+
+            case PlayerAnimState.Sliding:
+                animator.SetBool("IsSliding", true);
+                break;
+
+            case PlayerAnimState.NotSliding:
+                animator.SetBool("IsSliding", false);
+                break;
+
+            case PlayerAnimState.Down:
+                animator.SetTrigger("Down");
                 break;
 
             default:

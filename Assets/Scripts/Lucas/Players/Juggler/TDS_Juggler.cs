@@ -609,15 +609,7 @@ public class TDS_Juggler : TDS_Player
         if (juggleTransform.position != _newPos)
         {
             juggleTransform.position = Vector3.Lerp(juggleTransform.position, _newPos, Time.deltaTime * 7);
-
-            if (isAiming)
-            {
-                ThrowAimingPoint = throwAimingPoint;
-            }
         }
-
-        // If not master client, return
-        if (!PhotonNetwork.isMasterClient) return;
 
         // If not having any throwable, return
         if (CurrentThrowableAmount == 0) return;
@@ -641,12 +633,12 @@ public class TDS_Juggler : TDS_Player
             _throwable.transform.localPosition = Vector3.Lerp(_throwable.transform.localPosition, _newPosition, Time.deltaTime * juggleSpeed * 2.5f);
 
             // Rotates the object
-            _throwable.transform.Rotate(Vector3.forward, Time.deltaTime * (1000f / _throwable.Weight));
+            _throwable.transform.Rotate(Vector3.forward, Time.deltaTime * (_throwable.Weight * 2.5f));
         }
 
         // Increase counter
         jugglerCounter += Time.deltaTime * juggleSpeed;
-        if (jugglerCounter > CurrentThrowableAmount) jugglerCounter = 0;
+        if (jugglerCounter > CurrentThrowableAmount) jugglerCounter = -CurrentThrowableAmount;
     }
 
     /// <summary>
@@ -1160,7 +1152,7 @@ public class TDS_Juggler : TDS_Player
         base.Update();
 
         // 3, 2, 1... Let's Jam !
-        if (!isDead ||!PhotonNetwork.isMasterClient || !photonView.isMine) Juggle();
+        if (PhotonNetwork.isMasterClient && !isDead) Juggle();
     }
 	#endregion
 

@@ -188,8 +188,6 @@ public class TDS_Event
 
             // Instantiate a prefab
             case CustomEventType.Instantiate:
-                // Instantiate for other players too
-                // CHANGE IF LOCAL INSTANTIATIONS NEEDED
                 PhotonNetwork.Instantiate(prefabName, eventTransform.position, eventTransform.rotation, 0);
                 break;
 

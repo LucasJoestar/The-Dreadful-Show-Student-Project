@@ -75,6 +75,9 @@ public class TDS_HitBox : MonoBehaviour
     /// </summary>
     [SerializeField] private new BoxCollider collider = null;
 
+    /// <summary>Readonly property for <see cref="collider"/>.</summary>
+    public BoxCollider Collider { get { return collider; } }
+
     /// <summary>
     /// Character owner of this hit box.
     /// </summary>

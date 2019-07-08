@@ -280,14 +280,14 @@ public abstract class TDS_Damageable : PunBehaviour
 
     #region Coroutines
     /// <summary>
-    /// Coroutine for the burning effect.
-    /// </summary>
-    protected List<Coroutine> burningCoroutine = new List<Coroutine>();
-
-    /// <summary>
     /// Coroutine for the effect-related movement to bring the damageable closer.
     /// </summary>
     protected Coroutine bringingCloserCoroutine = null;
+
+    /// <summary>
+    /// Coroutines for the burning effect.
+    /// </summary>
+    protected Dictionary<int, Coroutine> burningCoroutines = new Dictionary<int, Coroutine>();
     #endregion
 
     #region Photon
@@ -417,7 +417,14 @@ public abstract class TDS_Damageable : PunBehaviour
     /// <param name="_duration">Duration of the burn.</param
     public virtual void Burn(int _damagesMin, int _damagesMax, float _duration)
     {
-        burningCoroutine.Add(StartCoroutine(Burning(_damagesMin, _damagesMax, _duration)));
+        int _id = 0;
+
+        while (burningCoroutines.ContainsKey(_id))
+        {
+            _id = Random.Range(0, 999);
+        }
+
+        burningCoroutines.Add(_id, StartCoroutine(Burning(_damagesMin, _damagesMax, _duration, _id)));
     }
 
     /// <summary>
@@ -427,7 +434,7 @@ public abstract class TDS_Damageable : PunBehaviour
     /// <param name="_damagesMax">Maximum damages of the flames.</param>
     /// <param name="_duration">Duration of the burn.</param
     /// <returns>IEnumerator, baby.</returns>
-    protected virtual IEnumerator Burning(int _damagesMin, int _damagesMax, float _duration)
+    protected virtual IEnumerator Burning(int _damagesMin, int _damagesMax, float _duration, int _id)
     {
         _damagesMax++;
 
@@ -443,7 +450,7 @@ public abstract class TDS_Damageable : PunBehaviour
             OnBurn?.Invoke(_damages);
         }
 
-        burningCoroutine = null;
+        burningCoroutines.Remove(_id);
     }
 
     /// <summary>

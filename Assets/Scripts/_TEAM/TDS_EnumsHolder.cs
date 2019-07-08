@@ -213,7 +213,10 @@ public enum PlayerAnimState
     HasObject,
     LostObject,
     Parrying,
-    NotParrying
+    NotParrying,
+    Sliding,
+    NotSliding,
+    Down
 }
 
 /// <summary>
