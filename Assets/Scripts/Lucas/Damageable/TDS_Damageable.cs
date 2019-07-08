@@ -341,14 +341,6 @@ public abstract class TDS_Damageable : PunBehaviour
     /// <returns>Returns true if some damages were inflicted, false if none.</returns>
     public virtual bool TakeDamage(int _damage)
     {
-        // Online
-        /*
-        if (photonView.isMine)
-        {
-            //if (!animator) return;
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "TakeDamage"),new object[] {(int)_damage });
-        }
-        */
 
         // Local
       

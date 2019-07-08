@@ -188,7 +188,8 @@ public class TDS_Throwable : PunBehaviour
     {
         if(!PhotonNetwork.isMasterClient)
         {
-            rigidbody.useGravity = false; 
+            rigidbody.useGravity = false;
+            rigidbody.isKinematic = true;
         }
     }
 
