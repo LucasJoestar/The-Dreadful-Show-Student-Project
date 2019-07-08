@@ -540,6 +540,9 @@ public class TDS_Juggler : TDS_Player
         // Remove the throwable for all clients
         TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetThrowable"), new object[] { throwable.photonView.viewID, false });
 
+        // Set ownership
+        throwable.photonView.TransferOwnership(PhotonNetwork.masterClient);
+
         // Set new throwable
         throwable = null;
         if (CurrentThrowableAmount > 0)
@@ -595,6 +598,9 @@ public class TDS_Juggler : TDS_Player
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.HasObject });
         }
 
+        // Set ownership
+        _throwable.photonView.TransferOwnership(photonView.owner);
+
         return true;
     }
 
@@ -639,7 +645,7 @@ public class TDS_Juggler : TDS_Player
             _throwable.transform.localPosition = Vector3.Lerp(_throwable.transform.localPosition, _newPosition, Time.deltaTime * juggleSpeed * 2.5f);
 
             // Rotates the object
-            _throwable.transform.Rotate(Vector3.forward, Time.deltaTime * (_throwable.Weight * 2.5f));
+            _throwable.transform.Rotate(Vector3.forward, Time.deltaTime * (_throwable.Weight * 5));
         }
 
         // Increase counter
@@ -829,6 +835,9 @@ public class TDS_Juggler : TDS_Player
 
         // Remove the throwable for all clients
         TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetThrowable"), new object[] { throwable.photonView.viewID, false });
+
+        // Set ownership
+        throwable.photonView.TransferOwnership(PhotonNetwork.masterClient);
 
         // Set new throwable
         throwable = null;
@@ -1157,9 +1166,6 @@ public class TDS_Juggler : TDS_Player
 
         // Set events
         if (photonView.isMine) SetEvents();
-
-
-        if (photonView.isMine && !PhotonNetwork.isMasterClient) juggleTransform.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.masterClient);
     }
 
     // Update is called once per frame
@@ -1168,7 +1174,7 @@ public class TDS_Juggler : TDS_Player
         base.Update();
 
         // 3, 2, 1... Let's Jam !
-        if (PhotonNetwork.isMasterClient && !isDead) Juggle();
+        if (photonView.isMine && !isDead) Juggle();
     }
 	#endregion
 
