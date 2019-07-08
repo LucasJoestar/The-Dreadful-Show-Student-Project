@@ -1725,7 +1725,6 @@ public class TDS_Player : TDS_Character
 
         if(!photonView.isMine)
         {
-            rigidbody.useGravity = false;
             TDS_LevelManager.Instance?.InitOnlinePlayer(this); 
         }
         else

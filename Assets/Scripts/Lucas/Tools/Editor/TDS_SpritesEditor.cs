@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class TDS_SpritesEditor : EditorWindow
@@ -409,9 +410,13 @@ public class TDS_SpritesEditor : EditorWindow
     private void LoadGroups()
     {
         Directory.CreateDirectory(Application.dataPath + "/Resources/Editor/");
-        if (!File.Exists(Application.dataPath + "/Resources/Editor/SpriteGroups.txt")) return;
 
-        string[] _groups = File.ReadAllLines(Application.dataPath + "/Resources/Editor/SpriteGroups.txt").Where(s => !string.IsNullOrEmpty(s)).ToArray();
+        string _path = Application.dataPath + "/Resources/Editor/" + EditorSceneManager.GetActiveScene().name + ".txt";
+
+        // If the file doesn't exist, return
+        if (!File.Exists(_path)) return;
+
+        string[] _groups = File.ReadAllLines(_path).Where(s => !string.IsNullOrEmpty(s)).ToArray();
         string _groupName = string.Empty;
         string[] _groupColor = new string[] { };
 
@@ -439,7 +444,7 @@ public class TDS_SpritesEditor : EditorWindow
             _file += $"{_group.Name}|{_group.Color.r}#{_group.Color.g}#{_group.Color.b}#{_group.Color.a}\n";
         }
         Directory.CreateDirectory(Application.dataPath + "/Resources/Editor/");
-        File.WriteAllText(Application.dataPath + "/Resources/Editor/SpriteGroups.txt", _file);
+        File.WriteAllText(Application.dataPath + "/Resources/Editor/" + EditorSceneManager.GetActiveScene().name + ".txt", _file);
     }
     #endregion
 
