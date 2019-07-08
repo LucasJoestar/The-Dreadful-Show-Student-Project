@@ -554,7 +554,7 @@ public class TDS_Player : TDS_Character
         if (!base.DropObject()) return false;
 
         // Updates the animator informations
-        SetAnim(PlayerAnimState.LostObject);
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.LostObject });
 
         return true;
     }
@@ -573,7 +573,8 @@ public class TDS_Player : TDS_Character
         OnGrabObject?.Invoke();
 
         // Updates animator informations
-        SetAnim(PlayerAnimState.HasObject);
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.HasObject });
+
         return true;
     }
 
@@ -589,8 +590,12 @@ public class TDS_Player : TDS_Character
         OnThrow?.Invoke();
 
         // Update the animator
-        if (isGrounded) SetAnim(PlayerAnimState.Throw);
-        SetAnim(PlayerAnimState.LostObject);
+        if (isGrounded)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.Throw });
+        }
+
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.LostObject });
 
         return true;
     }

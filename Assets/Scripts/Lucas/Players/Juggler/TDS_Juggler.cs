@@ -548,7 +548,10 @@ public class TDS_Juggler : TDS_Player
         }
 
         // Updates the animator informations
-        if (CurrentThrowableAmount == 0) SetAnim(PlayerAnimState.LostObject);
+        if (CurrentThrowableAmount == 0)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.LostObject });
+        }
         else
         {
             // Updates juggling informations
@@ -706,6 +709,7 @@ public class TDS_Juggler : TDS_Player
     public override void SetThrowable(int _throwableID, bool _doGrab)
     {
         TDS_Throwable _throwable = PhotonView.Find(_throwableID).GetComponent<TDS_Throwable>();
+
         if (_throwable)
         {
             if (_doGrab)
@@ -835,8 +839,14 @@ public class TDS_Juggler : TDS_Player
 
         // Triggers the throw animation ;
         // If not having throwable anymore, update the animator
-        if (isGrounded) SetAnim(PlayerAnimState.Throw);
-        if (CurrentThrowableAmount == 0) SetAnim(PlayerAnimState.LostObject);
+        if (isGrounded)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.Throw });
+        }
+        if (CurrentThrowableAmount == 0)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.LostObject });
+        }
         else
         {
             // Updates juggling informations
@@ -1155,7 +1165,7 @@ public class TDS_Juggler : TDS_Player
         base.Update();
 
         // 3, 2, 1... Let's Jam !
-        if (photonView.isMine && !isDead) Juggle();
+        if (PhotonNetwork.isMasterClient && !isDead) Juggle();
     }
 	#endregion
 
