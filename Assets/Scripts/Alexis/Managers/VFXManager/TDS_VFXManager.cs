@@ -56,16 +56,16 @@ public class TDS_VFXManager : MonoBehaviour
     /// </summary>
     private void LoadAssetBundle()
     {
-        AssetBundle _vfxBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "VFXAssetsBundle"));
+        AssetBundle _vfxBundle = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath, "AssetBundles", "vfxassetsbundle"));
         if (!_vfxBundle)
         {
             Debug.Log("Asset Bundle not found");
             return;
         }
-        ParticleSystem[] _particlesSystems = _vfxBundle.LoadAllAssets<ParticleSystem>();
+        GameObject[] _particlesSystems = _vfxBundle.LoadAllAssets<GameObject>();
         for (int i = 0; i < _particlesSystems.Length; i++)
         {
-            particleSystemsByName.Add(_particlesSystems[i].name, _particlesSystems[i]);
+            particleSystemsByName.Add(_particlesSystems[i].name, _particlesSystems[i].GetComponent<ParticleSystem>());
         }
     }
 
@@ -76,9 +76,22 @@ public class TDS_VFXManager : MonoBehaviour
     /// <returns></returns>
     public ParticleSystem GetParticleSystemByName(string _name)
     {
-        if (!particleSystemsByName.ContainsKey(_name)) return null;
+        if (!particleSystemsByName.ContainsKey(_name))
+        {
+            Debug.Log("This gameobject does not exist");
+            return null;
+        }
         return particleSystemsByName[_name]; 
     }
+
+    public void InstanciateRandomHitEffect(Vector3 _position)
+    {
+        string _randomName = particleSystemsByName.Keys.ToList()[(int)UnityEngine.Random.Range(0, particleSystemsByName.Count)];
+        ParticleSystem _system = particleSystemsByName[_randomName];
+        Vector3 _offset = new Vector3(UnityEngine.Random.Range(-.5f, .5f), UnityEngine.Random.Range(.1f, 1.8f), 0);
+        Instantiate(_system.gameObject, _position + _offset, Quaternion.identity); 
+    }
+
     #endregion
 
     #region Unity Methods
@@ -94,6 +107,7 @@ public class TDS_VFXManager : MonoBehaviour
             Destroy(this);
             return; 
         }
+        LoadAssetBundle(); 
     }
 	#endregion
 
