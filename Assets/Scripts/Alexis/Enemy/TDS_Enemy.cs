@@ -419,7 +419,7 @@ public abstract class TDS_Enemy : TDS_Character
     {
         if (!PhotonNetwork.isMasterClient) yield break; 
         // If the enemy is dead or paralyzed, they can't behave
-        if (isDead || IsParalyzed || IsPacific) yield break;
+        if (isDead || (IsParalyzed && IsPacific)) yield break;
         // If there is no target, the agent has to get one
         if (!playerTarget || playerTarget.IsDead)
             enemyState = EnemyState.Searching;
@@ -595,7 +595,10 @@ public abstract class TDS_Enemy : TDS_Character
             }
             //if the target is too far from the destination, recalculate the path
             // OR If there is too much enemy in contact with the target, compute path to wander
-            if ((Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > GetMaxRange()) || (Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) >= 1))
+            // Or if the agent is out of the bounds
+            if ((Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > GetMaxRange()) 
+                || (Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) >= 1)
+                || (TDS_Camera.Instance.CurrentBounds.XMax < transform.position.x || TDS_Camera.Instance.CurrentBounds.XMin > transform.position.x))
             {
                 yield return new WaitForSeconds(.1f); 
                 enemyState = EnemyState.ComputingPath;
@@ -709,6 +712,12 @@ public abstract class TDS_Enemy : TDS_Character
             }
             else yield return new WaitForSeconds(.1f);
 
+            if(TDS_Camera.Instance.CurrentBounds.XMax < transform.position.x || TDS_Camera.Instance.CurrentBounds.XMin > transform.position.x)
+            {
+                yield return new WaitForSeconds(.1f);
+                enemyState = EnemyState.ComputingPath;
+                yield break;
+            }
 
         }
         agent.RemoveAvoidanceLayer(new string[] { "Player" });
@@ -733,7 +742,13 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns>Best player to target</returns>
     protected virtual TDS_Player SearchTarget()
     {
-        TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
+        TDS_Player[] _targets = null; 
+        
+        if(!TDS_LevelManager.Instance)
+            _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
+        else
+            _targets = TDS_LevelManager.Instance.AllPlayers.Where(p => Vector3.Distance(p.transform.position, transform.position) <= detectionRange).ToArray(); 
+        
         if (_targets.Length == 0) return null;
         //Set constraints here (Distance, type, etc...)
         _targets = _targets.Where(t => !t.IsDead).OrderBy(p => Vector3.Distance(transform.position, p.transform.position)).ToArray();

@@ -360,8 +360,11 @@ public abstract class TDS_Boss : TDS_Enemy
     /// <returns>Return a random player within the detection Range</returns>
     protected override TDS_Player SearchTarget()
     {
-        TDS_Player[] _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
-        if (_targets.Length == 0) return null;
+        TDS_Player[] _targets = null;
+        if (!TDS_LevelManager.Instance)
+            _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
+        else
+            _targets = TDS_LevelManager.Instance.AllPlayers.Where(p => Vector3.Distance(p.transform.position, transform.position) <= detectionRange).ToArray(); if (_targets.Length == 0) return null;
         _targets = _targets.Where(t => !t.IsDead).ToArray();
         if (_targets.Length == 0) return null;
         int _randomIndex = UnityEngine.Random.Range(0, _targets.Length - 1);

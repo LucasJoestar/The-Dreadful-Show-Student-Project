@@ -1001,9 +1001,11 @@ public class TDS_UIManager : PunBehaviour
         ActivateMenu(uiState); 
     }
 
-    public override void OnConnectedToMaster()
+    public override void OnJoinedLobby()
     {
-        SetRoomInterractable(true); 
+        base.OnJoinedLobby();
+        SetRoomInterractable(true);
+
     }
 
     public override void OnDisconnectedFromPhoton()
