@@ -121,10 +121,10 @@ public class TDS_NetworkManager : PunBehaviour
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LeaveRoom"), new object[] { });
         }
 
-        TDS_UIManager.Instance?.SetButtonsInterractables(false);
         TDS_UIManager.Instance.LocalIsReady = false;
         TDS_GameManager.LocalPlayer = PlayerType.Unknown;
         TDS_UIManager.Instance?.SelectCharacter((int)PlayerType.Unknown);
+        TDS_UIManager.Instance?.ClearCharacterSelectionMenu();
         TDS_UIManager.Instance.ActivateMenu((int)UIState.InRoomSelection); 
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.JoinLobby(); 
@@ -226,13 +226,11 @@ public class TDS_NetworkManager : PunBehaviour
         Debug.Log("connected to Room there is : " + PhotonNetwork.room.PlayerCount + " player here !!");
 
         TDS_UIManager.Instance?.ActivateMenu((int)UIState.InCharacterSelection); 
-        TDS_UIManager.Instance?.SetButtonsInterractables(true);
 
         PlayerCount();
     }
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", newPlayer, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "UpdateSelectionButtons"), new object[] { (int)TDS_GameManager.LocalPlayer });
         if(PhotonNetwork.isMasterClient && TDS_UIManager.Instance && !TDS_UIManager.Instance.PlayerListReady.ContainsKey(newPlayer))
         {
             TDS_UIManager.Instance.PlayerListReady.Add(newPlayer, false); 

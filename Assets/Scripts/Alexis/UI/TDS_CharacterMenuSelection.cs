@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq; 
 using UnityEngine.UI;
 using TMPro; 
 using UnityEngine;
 
 #pragma warning disable 0649
 
-public class TDS_CharacterMenuSelection : MonoBehaviour 
+public class TDS_CharacterMenuSelection : MonoBehaviour
 {
     /* TDS_CharacterMenuSelection :
 	 *
@@ -37,131 +38,96 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
 	 *	-----------------------------------
 	*/
 
-    #region Events
-
-    #endregion
-
     #region Fields / Properties
-    [Header("Selection Buttons ")]
-    [SerializeField] private Button beardLadyButton;
-    public Button BeardLadyButton { get { return beardLadyButton; } }
-    [SerializeField] private Button fatLadyButton;
-    public Button FatLadyButton { get { return fatLadyButton; } }
-    [SerializeField] private Button jugglerButton;
-    public Button JugglerButton { get { return jugglerButton; } }
-    [SerializeField] private Button fireEaterButton;
-    public Button FireEaterButton { get { return fireEaterButton; } }
-    [Space(5)]
-    [Header("Selection Images ")]
-    [SerializeField] private Image beardLadySelectionImage;
-    [SerializeField] private Image fatLadySelectionImage;
-    [SerializeField] private Image fireEaterSelectionImage;
-    [SerializeField] private Image jugglerSelectionImage;
-
+    [Header("Character Selection Elements")]
+    [SerializeField] private TDS_CharacterSelectionElement[] characterSelectionElements = new TDS_CharacterSelectionElement[] { };
+    private TDS_CharacterSelectionElement localElement = null; 
     #endregion
-
 
     #region Methods
     /// <summary>
-    /// Make the buttons enabled or not if the online player has selected or deselected them 
+    /// Add a new player within the CharacterSelectionElements
+    /// If the added player is the local player, set the element as the local element
     /// </summary>
-    /// <param name="_previousType">Previous Type of the player</param>
-    /// <param name="_newType">new Type of the player</param>
-    public void UpdateMenuOnline(PlayerType _previousType, PlayerType _newType)
+    /// <param name="_newPlayer">Id of the added player</param>
+    public void AddNewPlayer(PhotonPlayer _newPlayer)
     {
-        if(_previousType == _newType)
-        {
-            switch (_previousType)
-            {
-                case PlayerType.Unknown:
-                    break;
-                case PlayerType.BeardLady:
-                    beardLadyButton.interactable = true;
-                    break;
-                case PlayerType.FatLady:
-                    fatLadyButton.interactable = true;
-                    break;
-                case PlayerType.FireEater:
-                    fireEaterButton.interactable = true;
-                    break;
-                case PlayerType.Juggler:
-                    jugglerButton.interactable = true;
-                    break;
-                default:
-                    break;
-            }
-            return; 
-        }
-        switch (_previousType)
-        {
-            case PlayerType.Unknown:
-                break;
-            case PlayerType.BeardLady:
-                beardLadyButton.interactable = true;
-                break;
-            case PlayerType.FatLady:
-                fatLadyButton.interactable = true;
-                break;
-            case PlayerType.FireEater:
-                fireEaterButton.interactable = true;
-                break;
-            case PlayerType.Juggler:
-                jugglerButton.interactable = true;
-                break;
-            default:
-                break;
-        }
-
-        switch (_newType)
-        {
-            case PlayerType.Unknown:
-                break;
-            case PlayerType.BeardLady:
-                beardLadyButton.interactable = false;
-                break;
-            case PlayerType.FatLady:
-                fatLadyButton.interactable = false;
-                break;
-            case PlayerType.FireEater:
-                fireEaterButton.interactable = false;
-                break;
-            case PlayerType.Juggler:
-                jugglerButton.interactable = false;
-                break;
-            default:
-                break;
-        }
+        characterSelectionElements.Where(e => e.PhotonPlayer == null).First().SetPhotonPlayer(_newPlayer);
+        if (_newPlayer.ID == PhotonNetwork.player.ID)
+            localElement = characterSelectionElements.Where(e => e.PhotonPlayer == _newPlayer).First(); 
     }
 
     /// <summary>
-    /// Display a selection image on the locally selected player
+    /// Remove the player from the character selection Elements
+    /// If the player is'nt connected anymore, clear all the character selection elements
     /// </summary>
-    public void UpdateLocalSelection()
+    /// <param name="_removedPlayer"></param>
+    public void RemovePlayer(PhotonPlayer _removedPlayer)
     {
-        beardLadySelectionImage.gameObject.SetActive(false);
-        fatLadySelectionImage.gameObject.SetActive(false);
-        fireEaterSelectionImage.gameObject.SetActive(false);
-        jugglerSelectionImage.gameObject.SetActive(false);
-
-        switch (TDS_GameManager.LocalPlayer)
+        if (PhotonNetwork.room == null || !PhotonNetwork.connected || PhotonNetwork.player == null)
         {
-            case PlayerType.Unknown:
-                break;
-            case PlayerType.BeardLady:
-                beardLadySelectionImage.gameObject.SetActive(true);
-                break;
-            case PlayerType.FatLady:
-                fatLadySelectionImage.gameObject.SetActive(true);
-                break;
-            case PlayerType.FireEater:
-                fireEaterSelectionImage.gameObject.SetActive(true);
-                break;
-            case PlayerType.Juggler:
-                jugglerSelectionImage.gameObject.SetActive(true);
-                break;
-            default:
-                break;
+            ClearMenu(); 
+            return; 
         }
+        if (_removedPlayer == PhotonNetwork.player) return;
+        TDS_CharacterSelectionElement _cleanedElement = characterSelectionElements.Where(e => e.PhotonPlayer == _removedPlayer).FirstOrDefault();
+        if (_cleanedElement) _cleanedElement.DisconnectPlayer(); 
+    }
+
+    /// <summary>
+    /// Clear all the character Selection elements 
+    /// </summary>
+    public void ClearMenu()
+    {
+        characterSelectionElements.ToList().ForEach(e => e.DisconnectPlayer()); 
+    }
+
+    /// <summary>
+    /// Lock a particulary element 
+    /// </summary>
+    /// <param name="_playerID">Id of the player to lock</param>
+    /// <param name="_playerIsLocked">Does the element has to be locked or unlocked</param>
+    public void LockPlayer(int _playerID, bool _playerIsLocked)
+    {
+        // SET THE TOGGLE
+        characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).First().LockElement(_playerIsLocked);
+    }
+
+    /// <summary>
+    /// Make the elements selectable or not if a player select it
+    /// If the local can't be selected, display the next selectable element
+    /// </summary>
+    /// <param name="_previousType">Previous Type of the player</param>
+    /// <param name="_newType">new Type of the player</param>
+    public void UpdateOnlineSelection(PlayerType _previousType, PlayerType _newType)
+    {
+        characterSelectionElements.ToList().ForEach(e => e.CharacterSelectionImages.Where(i => i.CharacterType == _previousType).ToList().ForEach(i => i.CanBeSelected = true));
+        characterSelectionElements.ToList().ForEach(e => e.CharacterSelectionImages.Where(i => i.CharacterType == _newType).ToList().ForEach(i => i.CanBeSelected = false));
+        if (!TDS_UIManager.Instance.LocalIsReady && !localElement.CurrentSelection.CanBeSelected) localElement.DisplayNextImage(); 
+    }
+
+    /// <summary>
+    /// Update the selection element relative to a player. 
+    /// Used online
+    /// </summary>
+    /// <param name="_player"></param>
+    /// <param name="_newIndex"></param>
+    public void UpdateMenuOnline(int _playerID, int _newIndex)
+    {
+        characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).FirstOrDefault().DisplayImageAtIndex(_newIndex); 
+    }
+
+    private void Update()
+    {
+        if (TDS_UIManager.Instance.UIState != UIState.InCharacterSelection) return;
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+            localElement.DisplayPreviousImage();
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+            localElement.DisplayNextImage();
+        else if (Input.GetKeyDown(KeyCode.Space))
+            localElement.SelectCharacter(); 
+
     }
     #endregion
+
 }
