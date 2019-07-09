@@ -833,6 +833,11 @@ public class TDS_UIManager : PunBehaviour
         if (playerNameField) playerNameField.text = _newName; 
     }
 
+    public void SetRoomInterractable(bool _areInterractable)
+    {
+        roomSelectionElements.ToList().ForEach(e => e.RoomSelectionButton.interactable = _areInterractable);
+    }
+
     /// <summary>
     /// Stop the coroutine that fill the image
     /// </summary>
@@ -998,7 +1003,7 @@ public class TDS_UIManager : PunBehaviour
 
     public override void OnConnectedToMaster()
     {
-        roomSelectionElements.ToList().ForEach(e => e.RoomSelectionButton.interactable = true); 
+        SetRoomInterractable(true); 
     }
 
     public override void OnDisconnectedFromPhoton()

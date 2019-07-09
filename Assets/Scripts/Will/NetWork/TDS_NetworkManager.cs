@@ -125,7 +125,8 @@ public class TDS_NetworkManager : PunBehaviour
         TDS_GameManager.LocalPlayer = PlayerType.Unknown;
         TDS_UIManager.Instance?.SelectCharacter((int)PlayerType.Unknown);
         TDS_UIManager.Instance?.ClearCharacterSelectionMenu();
-        TDS_UIManager.Instance.ActivateMenu((int)UIState.InRoomSelection); 
+        TDS_UIManager.Instance.ActivateMenu((int)UIState.InRoomSelection);
+        TDS_UIManager.Instance.SetRoomInterractable(true);
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.JoinLobby(); 
     }
@@ -155,7 +156,11 @@ public class TDS_NetworkManager : PunBehaviour
 
         roomName = _btn.name;
 
-        if (PhotonNetwork.GetRoomList().Any(r => r.Name == roomName && (!r.IsOpen || r.PlayerCount == r.MaxPlayers))) return;
+        if (PhotonNetwork.GetRoomList().Any(r => r.Name == roomName && (!r.IsOpen || r.PlayerCount == r.MaxPlayers)))
+        {
+            TDS_UIManager.Instance?.ActivateErrorBox("This room is already full or in game!\nPlease select another room to enjoy the game!");
+            return;
+        }
 
         if (_roomId == RoomId.WaitForIt)
         {
@@ -163,9 +168,7 @@ public class TDS_NetworkManager : PunBehaviour
             return;
         }
 
-        //int _getIndex = (int)_roomId;
-        //string _stringID = _getIndex.ToString();
-        //PhotonNetwork.gameVersion = _stringID;
+        TDS_UIManager.Instance.SetRoomInterractable(false); 
 
         if (roomName == string.Empty) roomName = "RoomTest";
         PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
@@ -257,6 +260,8 @@ public class TDS_NetworkManager : PunBehaviour
             return; 
         }
     }
+
+    #if UNITY_EDITOR
     private void OnGUI()
     {
         GUILayout.Box(PhotonNetwork.GetPing().ToString()); 
@@ -265,6 +270,7 @@ public class TDS_NetworkManager : PunBehaviour
         GUILayout.Box(PhotonNetwork.isMasterClient.ToString());
         GUILayout.Box(TDS_GameManager.LocalPlayer.ToString());
     }
+    #endif
 
     void Start ()
     {
