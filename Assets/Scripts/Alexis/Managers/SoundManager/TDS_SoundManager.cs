@@ -58,7 +58,7 @@ public class TDS_SoundManager : MonoBehaviour
     /// </summary>
     private void LoadAssetBundle()
     {
-        AssetBundle _soundBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "SoundAssetsBundle")); 
+        AssetBundle _soundBundle = AssetBundle.LoadFromFile(Path.Combine(Application.persistentDataPath, "AssetBundles", "soundsassetsbundle")); 
         if(!_soundBundle)
         {
             Debug.Log("Asset Bundle not found");

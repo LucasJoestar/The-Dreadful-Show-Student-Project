@@ -56,7 +56,7 @@ public class TDS_VFXManager : MonoBehaviour
     /// </summary>
     private void LoadAssetBundle()
     {
-        AssetBundle _vfxBundle = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath, "AssetBundles", "vfxassetsbundle"));
+        AssetBundle _vfxBundle = AssetBundle.LoadFromFile(Path.Combine(Application.persistentDataPath, "AssetBundles", "vfxassetsbundle"));
         if (!_vfxBundle)
         {
             Debug.Log("Asset Bundle not found");
