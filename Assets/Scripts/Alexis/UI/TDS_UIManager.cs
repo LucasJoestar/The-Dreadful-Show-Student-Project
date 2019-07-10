@@ -604,7 +604,8 @@ public class TDS_UIManager : PunBehaviour
         localIsReady = _isReady;
 
         TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetPlayerReady"), new object[] { PhotonNetwork.player.ID, localIsReady });
-        if(!PhotonNetwork.isMasterClient)
+        SetPlayerReady(PhotonNetwork.player.ID, localIsReady); 
+        if (!PhotonNetwork.isMasterClient)
         {
             TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, localIsReady });
             return; 
@@ -709,7 +710,7 @@ public class TDS_UIManager : PunBehaviour
     public void SelectCharacter(int _newPlayerType)
     {
         //if (localIsReady) return;
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdatePlayerSelectionInfo"), new object[] { (int)TDS_GameManager.LocalPlayer, _newPlayerType });
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.OthersBuffered, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdatePlayerSelectionInfo"), new object[] { (int)TDS_GameManager.LocalPlayer, _newPlayerType, PhotonNetwork.player.ID });
 
         TDS_GameManager.LocalPlayer = (PlayerType)_newPlayerType == TDS_GameManager.LocalPlayer ? PlayerType.Unknown : (PlayerType)_newPlayerType;
         OnPlayerReady(TDS_GameManager.LocalPlayer != PlayerType.Unknown); 
@@ -926,9 +927,9 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     /// <param name="_previousPlayerType"></param>
     /// <param name="_nextPlayerType"></param>
-    public void UpdatePlayerSelectionInfo(int _previousPlayerType, int _nextPlayerType)
+    public void UpdatePlayerSelectionInfo(int _previousPlayerType, int _nextPlayerType, int _playerID)
     {
-        characterSelectionMenu.UpdateOnlineSelection((PlayerType)_previousPlayerType, (PlayerType)_nextPlayerType);
+        characterSelectionMenu.UpdateOnlineSelection((PlayerType)_previousPlayerType, (PlayerType)_nextPlayerType, _playerID);
     }
 
     /// <summary>

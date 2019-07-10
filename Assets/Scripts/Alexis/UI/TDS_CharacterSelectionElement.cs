@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems; 
 using TMPro; 
 
 public class TDS_CharacterSelectionElement : MonoBehaviour 
@@ -49,7 +50,10 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     }
 
     [SerializeField] private Image lockingFeedback = null;
-    [SerializeField] private Toggle readyToggle = null; 
+    [SerializeField] private Toggle readyToggle = null;
+
+    [SerializeField] private TDS_CustomEventTrigger leftArrowButton = null;
+    [SerializeField] private TDS_CustomEventTrigger rightArrowButton = null;
 
     private int currentIndex = 0;
 
@@ -87,17 +91,22 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// </summary>
     public void DisplayNextImage()
     {
-        if (TDS_UIManager.Instance.LocalIsReady) return;
+        if (TDS_UIManager.Instance.LocalIsReady)
+        {
+            StartCoroutine(WaitEndOfSelectionToSelect(readyToggle));
+            return;
+        }
         if (characterSelectionImages.Where(i => i.CanBeSelected).Count() <= 1) return;
-        characterSelectionImages[currentIndex].CharacterImage.gameObject.SetActive(false);
+        CurrentSelection.CharacterImage.gameObject.SetActive(false);
         currentIndex = currentIndex++ == characterSelectionImages.Length -1 ? 0 : currentIndex;
         if(!characterSelectionImages[currentIndex].CanBeSelected)
         {
             DisplayNextImage();
             return; 
         }
-        characterSelectionImages[currentIndex].CharacterImage.gameObject.SetActive(true);
-        TDS_UIManager.Instance?.UpdateLocalCharacterIndex(photonPlayer, currentIndex); 
+        CurrentSelection.CharacterImage.gameObject.SetActive(true);
+        TDS_UIManager.Instance?.UpdateLocalCharacterIndex(photonPlayer, currentIndex);
+        StartCoroutine(WaitEndOfSelectionToSelect(readyToggle));
     }
 
     /// <summary>
@@ -105,17 +114,24 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// </summary>
     public void DisplayPreviousImage()
     {
-        if (TDS_UIManager.Instance.LocalIsReady) return;
+        if (TDS_UIManager.Instance.LocalIsReady)
+        {
+            StartCoroutine(WaitEndOfSelectionToSelect(readyToggle));
+            return;
+        }
         if (characterSelectionImages.Where(i => i.CanBeSelected).Count() <= 1) return;
-        characterSelectionImages[currentIndex].CharacterImage.gameObject.SetActive(false);
+        CurrentSelection.CharacterImage.gameObject.SetActive(false);
         currentIndex = currentIndex-- == 0 ? characterSelectionImages.Length -1  : currentIndex;
         if (!characterSelectionImages[currentIndex].CanBeSelected)
         {
             DisplayPreviousImage();
             return;
         }
-        characterSelectionImages[currentIndex].CharacterImage.gameObject.SetActive(true);
+        CurrentSelection.CharacterImage.gameObject.SetActive(true);
+        readyToggle.Select(); 
         TDS_UIManager.Instance?.UpdateLocalCharacterIndex(photonPlayer, currentIndex);
+
+        StartCoroutine(WaitEndOfSelectionToSelect(readyToggle)); 
     }
 
     /// <summary>
@@ -124,10 +140,18 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// <param name="_index">Selected Index</param>
     public void DisplayImageAtIndex(int _index)
     {
-        if (!characterSelectionImages[_index].CanBeSelected) return; 
-        characterSelectionImages[currentIndex].CharacterImage.gameObject.SetActive(false);
+        if (!characterSelectionImages[_index].CanBeSelected) return;
+        CurrentSelection.CharacterImage.gameObject.SetActive(false);
         currentIndex = _index;
-        characterSelectionImages[currentIndex].CharacterImage.gameObject.SetActive(true);
+        CurrentSelection.CharacterImage.gameObject.SetActive(true);
+    }
+
+    public void DisplayImageOfType(PlayerType _playerType)
+    {
+        CurrentSelection.CharacterImage.gameObject.SetActive(false);
+        TDS_CharacterSelectionImage _image = characterSelectionImages.Where(i => i.CharacterType == _playerType).FirstOrDefault();
+        currentIndex = characterSelectionImages.ToList().IndexOf(_image);
+        CurrentSelection.CharacterImage.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -146,7 +170,8 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void LockElement(bool _playerIsReady)
     {
         // SET THE TOGGLE
-        if(lockingFeedback) lockingFeedback.gameObject.SetActive(_playerIsReady); 
+        if(lockingFeedback) lockingFeedback.gameObject.SetActive(_playerIsReady);
+        if (PhotonNetwork.player.ID != photonPlayer.ID) readyToggle.isOn = _playerIsReady; 
     }
 
     public void SetPlayerReady()
@@ -155,8 +180,15 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         TDS_UIManager.Instance.OnPlayerReady(readyToggle.isOn); 
     }
 
-    public void ActivateToggle()
+    public void SetPlayerLocal()
     {
+        leftArrowButton.GetComponent<Button>().interactable = true;
+        rightArrowButton.GetComponent<Button>().interactable = true;
+
+        leftArrowButton.OnSelectCallBacks.Add(() => DisplayPreviousImage());
+        rightArrowButton.OnSelectCallBacks.Add(() => DisplayNextImage());
+
+
         Selectable _launchButton = TDS_UIManager.Instance.LaunchGameButton;
         if(_launchButton != null)
         {
@@ -187,6 +219,13 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void ClearToggle()
     {
         readyToggle.onValueChanged.RemoveAllListeners();
+
+        leftArrowButton.OnSelectCallBacks.Clear(); 
+        rightArrowButton.OnSelectCallBacks.Clear();
+
+        leftArrowButton.GetComponent<Button>().interactable = false;
+        rightArrowButton.GetComponent<Button>().interactable = false;
+
         readyToggle.isOn = false;
         readyToggle.interactable = false; 
         Selectable _launchButton = TDS_UIManager.Instance.LaunchGameButton;
@@ -194,8 +233,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         {
             Selectable _returnButton = _launchButton.navigation.selectOnDown;
 
-            Navigation _nav = new Navigation();
-            _nav.mode = Navigation.Mode.Explicit;
+            Navigation _nav = readyToggle.navigation; 
 
             _nav.selectOnDown = _returnButton;
             readyToggle.navigation = _nav;
@@ -209,7 +247,15 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
             _returnButton.navigation = _nav;
         }
     }
-    #endregion
 
+    IEnumerator WaitEndOfSelectionToSelect(Selectable _selectable)
+    {
+        while (EventSystem.current.alreadySelecting)
+        {
+            yield return null; 
+        } 
+        _selectable.Select(); 
+    }
+    #endregion
 	#endregion
 }

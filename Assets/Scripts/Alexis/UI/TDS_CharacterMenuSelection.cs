@@ -60,7 +60,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
         if (_newPlayer.ID == PhotonNetwork.player.ID)
         {
             localElement = characterSelectionElements.Where(e => e.PhotonPlayer == _newPlayer).First();
-            localElement.ActivateToggle(); 
+            localElement.SetPlayerLocal(); 
         }
     }
 
@@ -86,7 +86,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     /// </summary>
     public void ClearMenu()
     {
-        characterSelectionElements.ToList().ForEach(e => e.DisconnectPlayer()); 
+        characterSelectionElements.ToList().Where(e => e != null).ToList().ForEach(e => e.DisconnectPlayer());
     }
 
     /// <summary>
@@ -97,6 +97,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     public void LockPlayer(int _playerID, bool _playerIsLocked)
     {
         // SET THE TOGGLE
+        if (PhotonNetwork.player.ID == _playerID ) return; 
         characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).First().LockElement(_playerIsLocked);
     }
 
@@ -106,10 +107,15 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     /// </summary>
     /// <param name="_previousType">Previous Type of the player</param>
     /// <param name="_newType">new Type of the player</param>
-    public void UpdateOnlineSelection(PlayerType _previousType, PlayerType _newType)
+    public void UpdateOnlineSelection(PlayerType _previousType, PlayerType _newType, int _playerID)
     {
         characterSelectionElements.ToList().ForEach(e => e.CharacterSelectionImages.Where(i => i.CharacterType == _previousType).ToList().ForEach(i => i.CanBeSelected = true));
         characterSelectionElements.ToList().ForEach(e => e.CharacterSelectionImages.Where(i => i.CharacterType == _newType).ToList().ForEach(i => i.CanBeSelected = false));
+        TDS_CharacterSelectionElement _element = characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).FirstOrDefault(); 
+        if(_element)
+        {
+            _element.DisplayImageOfType(_newType); 
+        }
         if (!TDS_UIManager.Instance.LocalIsReady && !localElement.CurrentSelection.CanBeSelected) localElement.DisplayNextImage(); 
     }
 
@@ -122,15 +128,6 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     public void UpdateMenuOnline(int _playerID, int _newIndex)
     {
         characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).FirstOrDefault().DisplayImageAtIndex(_newIndex); 
-    }
-
-    private void Update()
-    {
-        if (TDS_UIManager.Instance.UIState != UIState.InCharacterSelection) return;
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-            localElement.DisplayNextImage();
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-            localElement.DisplayPreviousImage(); 
     }
     #endregion
 
