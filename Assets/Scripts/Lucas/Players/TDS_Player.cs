@@ -252,6 +252,11 @@ public class TDS_Player : TDS_Character
     /// Time during which the player is invulnerable after being hit.
     /// </summary>
     public const float INVULNERABILITY_TIME = .5f;
+
+    /// <summary>
+    /// Minimum movement value of the character when moving on an axis.
+    /// </summary>
+    public const float MOVEMENT_MINIMUM_VALUE = .5f;
     #endregion
 
     #region Components & References
@@ -1656,6 +1661,10 @@ public class TDS_Player : TDS_Character
 
         if (_horizontal != 0 || _vertical != 0)
         {
+            // Set a minimum to movement if not null
+            if ((_horizontal != 0 ) && (Mathf.Abs(_horizontal) < MOVEMENT_MINIMUM_VALUE)) _horizontal = MOVEMENT_MINIMUM_VALUE * Mathf.Sign(_horizontal);
+            if ((_vertical != 0) && (Mathf.Abs(_vertical) < MOVEMENT_MINIMUM_VALUE)) _vertical = MOVEMENT_MINIMUM_VALUE * Mathf.Sign(_vertical);
+
             // Flip the player on the X axis if needed
             if ((_horizontal > 0 && !isFacingRight) || (_horizontal < 0 && isFacingRight)) Flip();
 
