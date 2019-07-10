@@ -127,6 +127,10 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     private void Update()
     {
         if (TDS_UIManager.Instance.UIState != UIState.InCharacterSelection) return;
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+            localElement.DisplayNextImage();
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+            localElement.DisplayPreviousImage(); 
     }
     #endregion
 
