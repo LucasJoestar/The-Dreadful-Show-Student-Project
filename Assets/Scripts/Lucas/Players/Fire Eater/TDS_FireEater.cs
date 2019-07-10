@@ -203,7 +203,7 @@ public class TDS_FireEater : TDS_Player
 
         // Timer before showing the mini game
         float _timer = .1f;
-        while (isInMiniGame && Input.GetButton(_buttonName) && (_timer > 0))
+        while (isInMiniGame && TDS_InputManager.GetButton(_buttonName) && (_timer > 0))
         {
             yield return null;
             _timer -= Time.deltaTime;
@@ -219,7 +219,7 @@ public class TDS_FireEater : TDS_Player
             {
                 yield return null;
 
-                if (Input.GetButtonUp(_buttonName))
+                if (TDS_InputManager.GetButtonUp(_buttonName))
                 {
                     IsInMiniGame = false;
                     break;
