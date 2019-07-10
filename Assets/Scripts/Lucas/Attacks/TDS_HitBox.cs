@@ -189,16 +189,10 @@ public class TDS_HitBox : MonoBehaviour
         // Apply attack effect
         if (!_target.IsDead) CurrentAttack.Effect.ApplyEffect(transform, _target);
 
-        // Create screen shake when player hit
-        TDS_Player _player = Owner as TDS_Player;
-        if (_player && _player.photonView.isMine)
+        // Call local method on the character who hit
+        if (Owner)
         {
-            float _force = .005f;
-            if (_player.ComboCurrent.Count == _player.ComboMax) _force *= 1.5f;
-            _force = _force * (_randomDamages / 2);
-            _force = Mathf.Clamp(_force, .01f, .3f);
-
-            TDS_Camera.Instance.ScreenShake(_force);
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", Owner.photonView.owner, TDS_RPCManager.GetInfo(Owner.photonView, Owner.GetType(), "HitCallback"), new object[] { });
         }
 
         // Triggers event

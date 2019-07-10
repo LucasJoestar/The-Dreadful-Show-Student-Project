@@ -969,6 +969,18 @@ public class TDS_Player : TDS_Character
     }
 
     /// <summary>
+    /// Method called when this character hit something.
+    /// Override it to implement feedback and other things.
+    /// </summary>
+    public override void HitCallback()
+    {
+        base.HitCallback();
+
+        // Screen shake guy !
+        TDS_Camera.Instance.StartScreenShake(comboCurrent.Count < 3 ? .01f : .012f, .125f);
+    }
+
+    /// <summary>
     /// Set invulnerability during a certain time.
     /// </summary>
     /// <returns></returns>
@@ -998,7 +1010,7 @@ public class TDS_Player : TDS_Character
         // Executes base method
         if (!base.TakeDamage(_damage))
         {
-            TDS_Camera.Instance.ScreenShake(.01f);
+            TDS_Camera.Instance.StartScreenShake(.01f, .05f);
             return false;
         }
 
@@ -1018,12 +1030,12 @@ public class TDS_Player : TDS_Character
 
             if (photonView.isMine)
             {
-                TDS_Camera.Instance.ScreenShake(.02f);
+                TDS_Camera.Instance.StartScreenShake(.1f, .15f);
             }
         }
         else if (photonView.isMine)
         {
-            TDS_Camera.Instance.ScreenShake(.25f);
+            TDS_Camera.Instance.StartScreenShake(.02f, .1f);
         }
         
         return true;

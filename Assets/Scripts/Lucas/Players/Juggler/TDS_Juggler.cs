@@ -1158,8 +1158,7 @@ public class TDS_Juggler : TDS_Player
         throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, throwAimingPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
 
         // Get layer for everything except this player one
-        whatIsAllButThis = -1;
-        whatIsAllButThis = ~(1 << gameObject.layer);
+        whatIsAllButThis = ~(1 << gameObject.layer | 1 << LayerMask.NameToLayer("Object"));
 
         // Get default aiming point
         defaultAimingPoint = throwAimingPoint;

@@ -202,8 +202,6 @@ public abstract class TDS_Damageable : PunBehaviour
                 OnDie?.Invoke();
                 Die();
             }
-
-            //enabled = !value;
         }
     }
 
@@ -330,6 +328,7 @@ public abstract class TDS_Damageable : PunBehaviour
         {
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Heal"), new object[] { _heal });
         }
+
         HealthCurrent += _heal;
         OnHeal?.Invoke(_heal);
     }
@@ -341,21 +340,18 @@ public abstract class TDS_Damageable : PunBehaviour
     /// <returns>Returns true if some damages were inflicted, false if none.</returns>
     public virtual bool TakeDamage(int _damage)
     {
-
-        // Local
-      
         if (IsInvulnerable || isDead) return false;
-        // Online
         
         if (PhotonNetwork.isMasterClient)
         {
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "TakeDamage"), new object[] { _damage });
+
             //TDS_FloatingText _floatingText = PhotonNetwork.Instantiate("HitFX", transform.position, Quaternion.identity, 0).GetComponent<TDS_FloatingText>();
             //_floatingText.Init(_damage); 
         }
-        TDS_VFXManager.Instance.InstanciateRandomHitEffect(transform.position);
 
-        // Local
+        TDS_VFXManager.Instance.InstanciateRandomHitEffect(new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z) + ((Vector3)Random.insideUnitCircle * 1f));
+
         HealthCurrent -= _damage;
         OnTakeDamage?.Invoke(_damage);
 

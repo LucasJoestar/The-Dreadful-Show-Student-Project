@@ -379,6 +379,14 @@ public abstract class TDS_Character : TDS_Damageable
     }
 
     /// <summary>
+    /// Method called when this character hit something.
+    /// Override it to implement feedback and other things.
+    /// </summary>
+    public virtual void HitCallback()
+    {
+    }
+
+    /// <summary>
     /// Automatically increases the speed of the character, according to all speed settings.
     /// </summary>
     protected virtual void IncreaseSpeed()

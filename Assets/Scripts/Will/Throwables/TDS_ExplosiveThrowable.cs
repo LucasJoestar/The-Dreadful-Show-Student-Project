@@ -155,11 +155,6 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
     {
         return; 
     }
-
-    protected override void OnTriggerEnter(Collider other)
-    {
-        return;
-    }
     #endregion
 
     #endregion

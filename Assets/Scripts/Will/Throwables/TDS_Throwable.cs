@@ -40,6 +40,8 @@ public class TDS_Throwable : PunBehaviour
     [SerializeField]
     protected bool isHoldByPlayer = false;
     [SerializeField]
+    protected new BoxCollider collider = null;
+    [SerializeField]
     protected float bouncePower = .5f;
     [SerializeField]
     protected float objectSpeed = 15f;
@@ -64,8 +66,6 @@ public class TDS_Throwable : PunBehaviour
     protected TDS_HitBox hitBox;
     [SerializeField]
     protected TDS_Attack attack = null; 
-    [SerializeField]
-    protected LayerMask whatDesactivate = new LayerMask();
     #endregion
     #endregion
 
@@ -97,6 +97,7 @@ public class TDS_Throwable : PunBehaviour
         rigidbody.isKinematic = false;
         transform.SetParent(null, true);
         isHeld = false;
+        collider.enabled = true;
     }
     /// <summary> 
     /// Reduces the durability of the object and if the durability is lower or equal to zero called the method that destroys the object. 
@@ -127,9 +128,9 @@ public class TDS_Throwable : PunBehaviour
         if(_carrier is TDS_Player)
         {
             isHoldByPlayer = true;
-            gameObject.layer = _carrier.gameObject.layer;
         }
         owner = _carrier;
+        collider.enabled = false;
         return true;
     }
 
@@ -157,6 +158,7 @@ public class TDS_Throwable : PunBehaviour
         }
         hitBox.Activate(attack, owner, _hitableTags.ObjectTags);
         isHeld = false;
+        collider.enabled = true;
     }
     #endregion
 
@@ -164,6 +166,7 @@ public class TDS_Throwable : PunBehaviour
     protected virtual void Awake()
     {
         if (!rigidbody) rigidbody = GetComponent<Rigidbody>();
+        if (!collider) collider = GetComponent<BoxCollider>();
         if (!hitBox)
         {
             hitBox = GetComponentInChildren<TDS_HitBox>();
@@ -176,12 +179,6 @@ public class TDS_Throwable : PunBehaviour
 
     protected virtual void OnCollisionEnter(Collision other)
     {
-        hitBox.Desactivate();
-    }
-
-    protected virtual void OnTriggerEnter(Collider other)
-    {
-        if(whatDesactivate != (whatDesactivate | (1 << other.gameObject.layer))) return;
         hitBox.Desactivate();
     }
 

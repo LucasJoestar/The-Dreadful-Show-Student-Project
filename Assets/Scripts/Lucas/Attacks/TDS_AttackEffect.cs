@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
+using Random = UnityEngine.Random;
+
 [Serializable]
 public class TDS_AttackEffect 
 {
@@ -57,12 +59,12 @@ public class TDS_AttackEffect
 
 
     /// <summary>Backing field for <see cref="PercentageHighest"/>.</summary>
-    [SerializeField] private float percentageHighest = 100;
+    [SerializeField] private int percentageHighest = 100;
 
     /// <summary>
     /// Highest percentage for this effect to be applied.
     /// </summary>
-    public float PercentageHighest
+    public int PercentageHighest
     {
         get { return percentageHighest; }
         set
@@ -73,12 +75,12 @@ public class TDS_AttackEffect
     }
 
     /// <summary>Backing field for <see cref="PercentageLowest"/>.</summary>
-    [SerializeField] private float percentageLowest = 100;
+    [SerializeField] private int percentageLowest = 100;
 
     /// <summary>
     /// Lowest percentage for this effect to be applied.
     /// </summary>
-    public float PercentageLowest
+    public int PercentageLowest
     {
         get { return percentageLowest; }
         set
@@ -130,6 +132,10 @@ public class TDS_AttackEffect
     /// <param name="_target">Target to apply effect on.</param>
     public void ApplyEffect(Transform _attacker, TDS_Damageable _target)
     {
+        int _percent = Random.Range(1, 100);
+
+        if ((_percent > percentageLowest) && ((_percent > percentageHighest) || (_percent > Random.Range(percentageLowest, percentageHighest)))) return;
+
         switch (EffectType)
         {
             case AttackEffectType.None:

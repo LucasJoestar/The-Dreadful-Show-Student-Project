@@ -737,10 +737,9 @@ public class TDS_Camera : MonoBehaviour
     /// Make a screen shake of a specified force.
     /// </summary>
     /// <param name="_force">Screen shake force.</param>
-    public void ScreenShake(float _force)
+    public void StartScreenShake(float _force, float _time = 0)
     {
-        Vector3 _force3 = ((Vector3)Random.insideUnitCircle.normalized) * _force;
-        transform.position += _force3;
+        StartCoroutine(ScreenShake(_force, _time));
     }
 
     /// <summary>
@@ -750,14 +749,18 @@ public class TDS_Camera : MonoBehaviour
     /// <param name="_time">Total duration of the screen shake.</param>
     public IEnumerator ScreenShake(float _force, float _time)
     {
+
         float _timer = _time;
+
+        if (_time == 0) _time = .0001f;
 
         while (_timer > 0)
         {
+            yield return new WaitForEndOfFrame();
+
             Vector3 _force3 = ((Vector3)Random.insideUnitCircle.normalized) * _force;
             transform.position += _force3;
 
-            yield return null;
             _timer -= Time.deltaTime;
         }
     }
