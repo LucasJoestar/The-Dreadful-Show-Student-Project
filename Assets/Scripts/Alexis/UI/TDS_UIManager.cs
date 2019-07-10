@@ -408,6 +408,7 @@ public class TDS_UIManager : PunBehaviour
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false);
                 gameOverScreenParent.SetActive(true);
+                StopAllCoroutines();
                 if (!PhotonNetwork.isMasterClient)
                 {
                     TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, false });
@@ -616,9 +617,9 @@ public class TDS_UIManager : PunBehaviour
     /// <summary>
     /// Stop all coroutines and switch the UI State to InGameOver
     /// </summary>
-    public void ResetUIManager()
+    public IEnumerator ResetUIManager()
     {
-        StopAllCoroutines();
+        yield return new WaitForSeconds(1.5f); 
         playerHealthBar.FilledImage.fillAmount = 1; 
         narratorCoroutine = null;
         followHiddenPlayerCouroutines.Clear();

@@ -162,30 +162,32 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         {
             Selectable _returnButton = _launchButton.navigation.selectOnDown;
 
-            Navigation _nav = new Navigation();
+            Navigation _nav = readyToggle.navigation;
             _nav.mode = Navigation.Mode.Explicit;
 
             _nav.selectOnDown = _launchButton;
             readyToggle.navigation = _nav;
 
+            _nav = _launchButton.navigation; 
             _nav.selectOnDown = _returnButton;
             _nav.selectOnUp = readyToggle;
             _launchButton.navigation = _nav;
 
+            _nav = _returnButton.navigation;
             _nav.selectOnUp = _launchButton;
             _nav.selectOnDown = null;
             _returnButton.navigation = _nav; 
 
         }
         readyToggle.interactable = true;
-        readyToggle.onValueChanged.AddListener(delegate { TDS_UIManager.Instance.OnPlayerReady(readyToggle.isOn);  });
+        readyToggle.onValueChanged.AddListener(delegate { TDS_UIManager.Instance.SelectCharacter((int)characterSelectionImages[currentIndex].CharacterType);  });
         readyToggle.Select(); 
     }
 
     public void ClearToggle()
     {
         readyToggle.onValueChanged.RemoveAllListeners();
-        readyToggle.isOn = false; 
+        readyToggle.isOn = false;
         readyToggle.interactable = false; 
         Selectable _launchButton = TDS_UIManager.Instance.LaunchGameButton;
         if (_launchButton != null)
