@@ -202,7 +202,8 @@ public class TDS_LevelManager : PunBehaviour
     {
         if (localPlayer.IsDead && !OnlinePlayers.Any(p => !p.IsDead))
         {
-            TDS_UIManager.Instance.ResetUIManager();
+            //TDS_UIManager.Instance.ResetUIManager();
+            TDS_UIManager.Instance.StartCoroutine(TDS_UIManager.Instance.ResetUIManager()); 
         }
     }
     #endregion
