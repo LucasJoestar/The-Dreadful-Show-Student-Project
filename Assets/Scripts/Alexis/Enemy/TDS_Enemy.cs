@@ -752,7 +752,7 @@ public abstract class TDS_Enemy : TDS_Character
         if (_targets.Length == 0) return null;
         //Set constraints here (Distance, type, etc...)
         _targets = _targets.Where(t => !t.IsDead).OrderBy(p => Vector3.Distance(transform.position, p.transform.position)).ToArray();
-        if (Area) _targets.OrderBy(t => Area.GetPlayerTargetCount(t.PlayerType)); 
+        if (Area) _targets.OrderBy(t => Area.GetEnemyContactCount(t, GetMaxRange(), this)); 
         return _targets.FirstOrDefault();
     }
     #endregion
