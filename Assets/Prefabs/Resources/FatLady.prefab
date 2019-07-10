@@ -77,6 +77,8 @@ MonoBehaviour:
   detectedColliders: []
   DetectedTags:
     ObjectTags:
+    - Name: Object
+      Color: {r: 0.25231397, g: 0.8490566, b: 0.2986929, a: 1}
     - Name: Throwable
       Color: {r: 0.8584906, g: 0.17412782, b: 0.78697515, a: 1}
 --- !u!65 &65237134778586120
@@ -215,22 +217,6 @@ MonoBehaviour:
     LocalPosition: {x: 0, y: 0, z: 0}
     Size: {x: 1, y: 0.5, z: 1}
   spriteHolder: {fileID: 0}
-  CatchButton: Catch
-  DodgeButton: Dodge
-  DPadXAxis: D-Pad X
-  DPadYAxis: D-Pad Y
-  HeavyAttackButton: Heavy Attack
-  HorizontalAxis: Horizontal
-  InteractButton: Interact
-  JumpButton: Jump
-  LightAttackButton: Light Attack
-  ParryButton: Parry
-  RightStickXAxis: Right Stick X
-  RightStickYAxis: Right Stick Y
-  SuperAttackButton: Super Attack
-  ThrowButton: Throw
-  UseObjectButton: Use Object
-  VerticalAxis: Vertical
   attacks: []
   isDodging: 0
   isGrounded: 1
