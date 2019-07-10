@@ -41,7 +41,11 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     #region Fields / Properties
     [Header("Character Selection Elements")]
     [SerializeField] private TDS_CharacterSelectionElement[] characterSelectionElements = new TDS_CharacterSelectionElement[] { };
-    private TDS_CharacterSelectionElement localElement = null; 
+    private TDS_CharacterSelectionElement localElement = null;
+    public TDS_CharacterSelectionElement LocalElement
+    {
+        get { return localElement;  }
+    }
     #endregion
 
     #region Methods
@@ -54,7 +58,10 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     {
         characterSelectionElements.Where(e => e.PhotonPlayer == null).First().SetPhotonPlayer(_newPlayer);
         if (_newPlayer.ID == PhotonNetwork.player.ID)
-            localElement = characterSelectionElements.Where(e => e.PhotonPlayer == _newPlayer).First(); 
+        {
+            localElement = characterSelectionElements.Where(e => e.PhotonPlayer == _newPlayer).First();
+            localElement.ActivateToggle(); 
+        }
     }
 
     /// <summary>
@@ -120,13 +127,6 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     private void Update()
     {
         if (TDS_UIManager.Instance.UIState != UIState.InCharacterSelection) return;
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-            localElement.DisplayPreviousImage();
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-            localElement.DisplayNextImage();
-        else if (Input.GetKeyDown(KeyCode.Space))
-            localElement.SelectCharacter(); 
-
     }
     #endregion
 

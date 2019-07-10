@@ -188,6 +188,10 @@ public class TDS_UIManager : PunBehaviour
     #region Buttons
     [Header("Buttons")]
     [SerializeField] private Button launchGameButton;
+    public Button LaunchGameButton
+    {
+        get { return launchGameButton;  }
+    }
     [SerializeField] private Button buttonQuitPause;
     [SerializeField] private Button buttonQuitGame;
     [SerializeField] private Button buttonRestartGame; 
@@ -432,7 +436,11 @@ public class TDS_UIManager : PunBehaviour
     /// <summary>
     /// Clear all selection elements in the menu 
     /// </summary>
-    public void ClearCharacterSelectionMenu() => characterSelectionMenu.ClearMenu();
+    public void ClearCharacterSelectionMenu()
+    {
+        characterSelectionMenu.ClearMenu();
+        characterSelectionMenu.LocalElement.ClearToggle(); 
+    }
 
     /// <summary>
     /// Clear the legacy UI from the online player when this one is disconnected
@@ -569,6 +577,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void LoadLevel()
     {
+        characterSelectionMenu.LocalElement.ClearToggle(); 
         if (isloadingNextScene)
         {
             //if (PhotonNetwork.isMasterClient)
@@ -593,7 +602,13 @@ public class TDS_UIManager : PunBehaviour
     {
         localIsReady = _isReady;
 
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, localIsReady });
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetPlayerReady"), new object[] { PhotonNetwork.player.ID, localIsReady });
+        if(!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, localIsReady });
+            return; 
+        }
+        UpdateReadySettings(PhotonNetwork.player.ID, localIsReady); 
     }
 
     public void QuitGame() => Application.Quit();
@@ -809,6 +824,11 @@ public class TDS_UIManager : PunBehaviour
         _player.OnTakeDamage += _player.UpdateLifeBar;
     }
 
+    public void SetPlayerReady(int _playerID, bool _isReady)
+    {
+        characterSelectionMenu.LockPlayer(_playerID, _isReady);
+    }
+
     /// <summary>
     /// Set the new name of the player (Used in Unity Event)
     /// </summary>
@@ -918,21 +938,14 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_isReady"></param>
     public void UpdateReadySettings(int _playerId, bool _isReady)
     {
-        if(PhotonNetwork.isMasterClient)
+        if (!PhotonNetwork.isMasterClient) return; 
+        PhotonPlayer _player = PhotonPlayer.Find(_playerId);
+        if (playerListReady.ContainsKey(_player))
         {
-            PhotonPlayer _player = PhotonPlayer.Find(_playerId);
-            if (playerListReady.ContainsKey(_player))
-            {
-                playerListReady[_player] = _isReady;
-            }
-            if (uiState == UIState.InCharacterSelection && launchGameButton) launchGameButton.interactable = !playerListReady.Any(p => p.Value == false) && localIsReady;
-            if (uiState == UIState.InGameOver && buttonRestartGame) buttonRestartGame.interactable = !playerListReady.Any(p => p.Value == false);
+            playerListReady[_player] = _isReady;
         }
-        if(UIState == UIState.InCharacterSelection)
-        {
-            /// LOCK THE PLAYER
-            characterSelectionMenu.LockPlayer(_playerId, _isReady); 
-        }
+        if (uiState == UIState.InCharacterSelection && launchGameButton) launchGameButton.interactable = !playerListReady.Any(p => p.Value == false) && localIsReady;
+        if (uiState == UIState.InGameOver && buttonRestartGame) buttonRestartGame.interactable = !playerListReady.Any(p => p.Value == false);
     }
 
     /// <summary>
