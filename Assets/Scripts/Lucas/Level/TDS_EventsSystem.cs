@@ -138,7 +138,7 @@ public class TDS_EventsSystem : PunBehaviour
             if (((events[_i].EventType == CustomEventType.CameraMovement) && !isLocal) ||
                 (events[_i].EventType == CustomEventType.WaitForAction))
             {
-                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "StartCoroutine"), new object[] { _i });
+                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "StartEventCoroutine"), new object[] { _i });
             }
 
             // If next one wait the previous, wait
