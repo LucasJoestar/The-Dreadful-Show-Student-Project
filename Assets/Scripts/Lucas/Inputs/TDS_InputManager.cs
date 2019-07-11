@@ -53,28 +53,6 @@ public class TDS_InputManager : MonoBehaviour
 	 *	-----------------------------------
 	*/
 
-    #region Events
-    /// <summary>
-    /// Event called when the <see cref="CANCEL_BUTTON"/> as been pressed down.
-    /// </summary>
-    public static event Action OnCancelButtonDown = null;
-
-    /// <summary>
-    /// Event called when the <see cref="SUBMIT_BUTTON"/> as been pressed down.
-    /// </summary>
-    public static event Action OnSubmitButtonDown = null;
-
-    /// <summary>
-    /// Event called when the <see cref="HORIZONTAL_AXIS"/> as been pressed down.
-    /// </summary>
-    public static event Action<int> OnHorizontalAxisDown = null;
-
-    /// <summary>
-    /// Event called when the <see cref="VERTICAL_AXIS"/> as been pressed down.
-    /// </summary>
-    public static event Action<int> OnVerticalAxisDown = null;
-    #endregion
-
     #region Fields / Properties
     /// <summary>
     /// Game inputs serialized object.
@@ -233,22 +211,25 @@ public class TDS_InputManager : MonoBehaviour
     /// <returns>Returns true if an axis with this name is pressed down, false otherwise.</returns>
     public static bool GetAxisDown(string _name)
     {
-        bool _pressed = inputs.Axis.Where(a => a.AxisName == _name).Any(a => a.LastState == AxisState.KeyDown);
+        return inputs.Axis.Where(a => a.AxisName == _name).Any(a => a.LastState == AxisState.KeyDown);
+    }
 
-        if (_pressed)
+    /// <summary>
+    /// Get if an axis with a specified name is pressed down.
+    /// </summary>
+    /// <param name="_name">Name of the axis to check.</param>
+    /// <param name="_value">Get the value of the pressed axis.</param>
+    /// <returns>Returns true if an axis with this name is pressed down, false otherwise.</returns>
+    public static bool GetAxisDown(string _name, out int _value)
+    {
+        if (GetAxisDown(_name))
         {
-            if (_name == HORIZONTAL_AXIS)
-            {
-                OnHorizontalAxisDown?.Invoke((int)Input.GetAxis(HORIZONTAL_AXIS));
-            }
-            else if (_name == VERTICAL_AXIS)
-            {
-                OnVerticalAxisDown?.Invoke((int)Input.GetAxis(VERTICAL_AXIS));
-            }
+            _value = (int)Input.GetAxis(_name);
 
             return true;
         }
 
+        _value = 0;
         return false;
     }
 
@@ -290,19 +271,7 @@ public class TDS_InputManager : MonoBehaviour
         bool _isButtonDown = inputs.Buttons.Where(b => b.Name == _name).FirstOrDefault().Keys.Any(k => Input.GetKeyDown(k));
 
         // If one is, return true ; if not, return if an axis button is
-        if (_isButtonDown)
-        {
-            if (_name == CANCEL_BUTTON)
-            {
-                OnCancelButtonDown?.Invoke();
-            }
-            else if (_name == SUBMIT_BUTTON)
-            {
-                OnSubmitButtonDown?.Invoke();
-            }
-
-            return true;
-        }
+        if (_isButtonDown) return true;
         else return GetAxisDown(_name);
     }
 

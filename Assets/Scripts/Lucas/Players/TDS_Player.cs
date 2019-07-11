@@ -589,17 +589,14 @@ public class TDS_Player : TDS_Character
     /// <param name="_targetPosition">Position where the object should land.</param>
     public override bool ThrowObject(Vector3 _targetPosition)
     {
+        if (photonView.isMine) IsPlayable = true;
+
         if (!base.ThrowObject(_targetPosition)) return false;
 
         // Triggers event
         OnThrow?.Invoke();
 
         // Update the animator
-        if (isGrounded)
-        {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.Throw });
-        }
-
         TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.LostObject });
 
         return true;
@@ -1075,7 +1072,16 @@ public class TDS_Player : TDS_Character
         // Interact !
         if (throwable && (playerType != PlayerType.Juggler))
         {
-            ThrowObject();
+            if (isGrounded)
+            {
+                IsPlayable = false;
+                SetAnim(PlayerAnimState.Throw);
+            }
+            else
+            {
+                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject_A"), new object[] { });
+            }
+
             return true;
         }
 

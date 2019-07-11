@@ -881,7 +881,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <summary>
     /// Call this method as an animation event to throw the object
     /// </summary>
-    public override bool ThrowObject()
+    public override bool ThrowObject_A()
     {
         if (isDead) return false; 
         float _range = Vector3.Distance(transform.position, playerTarget.transform.position) <  throwRange ? Vector3.Distance(transform.position, playerTarget.transform.position) : throwRange;

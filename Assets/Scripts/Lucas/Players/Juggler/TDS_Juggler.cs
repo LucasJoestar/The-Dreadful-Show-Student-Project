@@ -426,7 +426,7 @@ public class TDS_Juggler : TDS_Player
             if (TDS_InputManager.GetButtonDown(TDS_InputManager.PARRY_BUTTON))
             {
                 // Throws the object to the aiming position
-                ThrowObject();
+                ThrowObject_A();
 
                 if (!throwable) break;
             }
@@ -806,7 +806,7 @@ public class TDS_Juggler : TDS_Player
     /// <summary>
     /// Throws the weared throwable.
     /// </summary>
-    public override bool ThrowObject()
+    public override bool ThrowObject_A()
     {
         // Get the destination point in world space
         Vector3 _destinationPosition = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
@@ -822,7 +822,7 @@ public class TDS_Juggler : TDS_Player
     {
         if (!PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject"), new object[] { _targetPosition.x, _targetPosition.y, _targetPosition.z });
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject_A"), new object[] { _targetPosition.x, _targetPosition.y, _targetPosition.z });
             return false;
         }
 

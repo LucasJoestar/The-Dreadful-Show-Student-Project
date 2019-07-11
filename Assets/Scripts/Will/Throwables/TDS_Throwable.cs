@@ -120,7 +120,10 @@ public class TDS_Throwable : PunBehaviour
     public bool PickUp(TDS_Character _carrier, Transform _rootCharacterObject)
     {
         if (isHeld) return false;
-        //gameObject.layer = LayerMask.NameToLayer("Player");
+        if (hitBox.IsActive)
+        {
+            hitBox.Desactivate();
+        }
         rigidbody.isKinematic = true;
         transform.position = _rootCharacterObject.transform.position;
         transform.SetParent(_rootCharacterObject.transform, true);
