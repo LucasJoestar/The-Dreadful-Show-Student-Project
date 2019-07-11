@@ -338,7 +338,7 @@ public class TDS_FireEater : TDS_Player
     public void Puke()
     {
         IsAttacking = true;
-        animator.SetTrigger("Puke");
+        SetFireEaterAnim(FireEaterAnimState.Puke);
     }
 
     /// <summary>
@@ -348,6 +348,8 @@ public class TDS_FireEater : TDS_Player
     /// 'Just cause animation don't take a boolean... What a waste.</param>
     public void SpitFireBall(int _isUltra)
     {
+        if (!PhotonNetwork.isMasterClient) return;
+
         GameObject _fireBall = PhotonNetwork.Instantiate("FireBall", transform.position + (transform.right * .03f) + (Vector3.up * 1.35f), transform.rotation, 0);
 
         _fireBall.GetComponentInChildren<TDS_HitBox>().Activate(attacks[_isUltra == 0 ? 12 : 13], this);
@@ -455,6 +457,10 @@ public class TDS_FireEater : TDS_Player
 
             case FireEaterAnimState.Fire:
                 animator.SetTrigger("Fire");
+                break;
+
+            case FireEaterAnimState.Puke:
+                animator.SetTrigger("Puke");
                 break;
 
             default:
