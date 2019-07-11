@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -52,6 +53,28 @@ public class TDS_InputManager : MonoBehaviour
 	 *	-----------------------------------
 	*/
 
+    #region Events
+    /// <summary>
+    /// Event called when the <see cref="CANCEL_BUTTON"/> as been pressed down.
+    /// </summary>
+    public static event Action OnCancelButtonDown = null;
+
+    /// <summary>
+    /// Event called when the <see cref="SUBMIT_BUTTON"/> as been pressed down.
+    /// </summary>
+    public static event Action OnSubmitButtonDown = null;
+
+    /// <summary>
+    /// Event called when the <see cref="HORIZONTAL_AXIS"/> as been pressed down.
+    /// </summary>
+    public static event Action<int> OnHorizontalAxisDown = null;
+
+    /// <summary>
+    /// Event called when the <see cref="VERTICAL_AXIS"/> as been pressed down.
+    /// </summary>
+    public static event Action<int> OnVerticalAxisDown = null;
+    #endregion
+
     #region Fields / Properties
     /// <summary>
     /// Game inputs serialized object.
@@ -63,6 +86,11 @@ public class TDS_InputManager : MonoBehaviour
     /// </summary>
     private const string INPUT_ASSET_PATH = "Input/InputAsset";
 
+
+    /// <summary>
+    /// Name of the button used to cancel something.
+    /// </summary>
+    public const string CANCEL_BUTTON = "Cancel";
 
     /// <summary>
     /// Name of the button used to perform a catch.
@@ -123,6 +151,11 @@ public class TDS_InputManager : MonoBehaviour
     /// Name of the joystick right stick Y axis.
     /// </summary>
     public const string RIGHT_STICK_Y_AXIS = "Right Stick Y";
+
+    /// <summary>
+    /// Name of the button used to confirm something.
+    /// </summary>
+    public const string SUBMIT_BUTTON = "Submit";
 
     /// <summary>
     ///Name of the button used to perform the super attack.
@@ -200,7 +233,23 @@ public class TDS_InputManager : MonoBehaviour
     /// <returns>Returns true if an axis with this name is pressed down, false otherwise.</returns>
     public static bool GetAxisDown(string _name)
     {
-        return inputs.Axis.Where(a => a.AxisName == _name).Any(a => a.LastState == AxisState.KeyDown);
+        bool _pressed = inputs.Axis.Where(a => a.AxisName == _name).Any(a => a.LastState == AxisState.KeyDown);
+
+        if (_pressed)
+        {
+            if (_name == HORIZONTAL_AXIS)
+            {
+                OnHorizontalAxisDown?.Invoke((int)Input.GetAxis(HORIZONTAL_AXIS));
+            }
+            else if (_name == VERTICAL_AXIS)
+            {
+                OnVerticalAxisDown?.Invoke((int)Input.GetAxis(VERTICAL_AXIS));
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -241,7 +290,19 @@ public class TDS_InputManager : MonoBehaviour
         bool _isButtonDown = inputs.Buttons.Where(b => b.Name == _name).FirstOrDefault().Keys.Any(k => Input.GetKeyDown(k));
 
         // If one is, return true ; if not, return if an axis button is
-        if (_isButtonDown) return true;
+        if (_isButtonDown)
+        {
+            if (_name == CANCEL_BUTTON)
+            {
+                OnCancelButtonDown?.Invoke();
+            }
+            else if (_name == SUBMIT_BUTTON)
+            {
+                OnSubmitButtonDown?.Invoke();
+            }
+
+            return true;
+        }
         else return GetAxisDown(_name);
     }
 
@@ -277,6 +338,13 @@ public class TDS_InputManager : MonoBehaviour
         inputs = Resources.Load<TDS_InputSO>(INPUT_ASSET_PATH);
 
         // UnityEngineInternal.Input.NativeInputSystem.onBeforeUpdate ??
+    }
+
+    // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
+    private void OnDestroy()
+    {
+        OnCancelButtonDown = null;
+        OnSubmitButtonDown = null;
     }
 
     // Update is called every frame, if the MonoBehaviour is enabled

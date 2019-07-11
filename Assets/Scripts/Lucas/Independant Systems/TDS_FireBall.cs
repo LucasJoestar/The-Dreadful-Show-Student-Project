@@ -94,6 +94,8 @@ public class TDS_FireBall : MonoBehaviour
     /// <returns></returns>
     private IEnumerator MakeTrajectory()
     {
+        transform.position += transform.right * .5f;
+
         float _initialLifetime = lifetime;
 
         while (true)
