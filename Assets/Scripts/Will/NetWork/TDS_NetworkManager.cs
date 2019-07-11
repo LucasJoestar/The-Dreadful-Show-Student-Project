@@ -123,7 +123,6 @@ public class TDS_NetworkManager : PunBehaviour
 
         TDS_UIManager.Instance.LocalIsReady = false;
         TDS_GameManager.LocalPlayer = PlayerType.Unknown;
-        TDS_UIManager.Instance?.SelectCharacter((int)PlayerType.Unknown);
         TDS_UIManager.Instance?.ClearCharacterSelectionMenu();
         TDS_UIManager.Instance.ActivateMenu((int)UIState.InRoomSelection);
         TDS_UIManager.Instance.SetRoomInterractable(true);
