@@ -239,6 +239,7 @@ public class TDS_UIManager : PunBehaviour
 
     #region WorkInProgress
     //[Header("Work in Progress")]
+    private Coroutine checkInputCoroutine = null;
     #endregion
 
     #endregion
@@ -248,6 +249,93 @@ public class TDS_UIManager : PunBehaviour
     #region Original Methods
 
     #region IEnumerator
+    /// <summary>
+    /// Check the inputs and call the methods used during the various states of the menu 
+    /// </summary>
+    /// <param name="_state">State of the menu</param>
+    /// <returns></returns>
+    private IEnumerator CheckInputMenu(UIState _state)
+    {
+        if (_state == UIState.InMainMenu || _state == UIState.InGame || _state == UIState.InGameOver) yield break;
+        Action CancelAction = null;
+        Action SubmitAction = null;
+        Action<int> HorizontalAxisAction = null;
+
+        switch (_state)
+        {
+            case UIState.InMainMenu:
+                break;
+            case UIState.InRoomSelection:
+                CancelAction = () => ActivateMenu(UIState.InMainMenu); ;
+                break;
+            case UIState.InCharacterSelection:
+                CancelAction = CancelInCharacterSelection;
+                SubmitAction = SubmitInCharacterSelection;
+                HorizontalAxisAction = characterSelectionMenu.LocalElement.ChangeImage;
+                break;
+            case UIState.InGame:
+                break;
+            case UIState.InPause:
+                CancelAction = () => ActivateMenu(UIState.InGame);
+                break;
+            case UIState.InGameOver:
+                break;
+            default:
+                break;
+        }
+        int _value = 0;
+        while (UIState == _state)
+        {
+            if (TDS_InputManager.GetButtonDown(TDS_InputManager.CANCEL_BUTTON))
+            {
+                yield return new WaitForEndOfFrame();
+                CancelAction?.Invoke();
+            }
+            else if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUBMIT_BUTTON))
+            {
+                yield return new WaitForEndOfFrame();
+                SubmitAction?.Invoke();
+            }
+            else if (TDS_InputManager.GetAxisDown(TDS_InputManager.HORIZONTAL_AXIS, out _value))
+            {
+                yield return new WaitForEndOfFrame();
+                HorizontalAxisAction?.Invoke(_value);
+            }
+            yield return null;
+        }
+    }
+
+    /// <summary>
+    /// Display an image that follow the hidden player
+    /// Convert the player position into a screen position for the image
+    /// </summary>
+    /// <param name="_followedPlayer">Hidden and followed player </param>
+    /// <param name="_followingImage">The image that follows the player</param>
+    /// <returns></returns>
+    private IEnumerator FollowHiddenPlayer(TDS_Player _followedPlayer, Image _followingImage)
+    {
+        if (!_followedPlayer || !Application.isPlaying || Camera.main == null) yield break;
+        _followingImage.gameObject.SetActive(true);
+        Vector2 _screenPos = Camera.main.WorldToScreenPoint(_followedPlayer.transform.position);
+        _screenPos.x = Mathf.Clamp(_screenPos.x, _followingImage.rectTransform.rect.width / 2, Screen.width - (_followingImage.rectTransform.rect.width / 2));
+        _screenPos.y = Mathf.Clamp(_screenPos.y, _followingImage.rectTransform.rect.height / 2, Screen.width - (_followingImage.rectTransform.rect.height / 2));
+        _followingImage.transform.position = _screenPos;
+        while (_followedPlayer && _followingImage && Application.isPlaying)
+        {
+            //Debug.LogError(Camera.main.WorldToScreenPoint(_followedPlayer.transform.position));
+            _screenPos = Camera.main.WorldToScreenPoint(_followedPlayer.transform.position);
+            _screenPos.x = Mathf.Clamp(_screenPos.x, _followingImage.rectTransform.rect.width / 2, Screen.width - (_followingImage.rectTransform.rect.width / 2));
+            _screenPos.y = Mathf.Clamp(_screenPos.y, _followingImage.rectTransform.rect.height / 2, Screen.height - (_followingImage.rectTransform.rect.height / 2));
+            _followingImage.transform.position = Vector3.MoveTowards(_followingImage.transform.position, _screenPos, Time.deltaTime * 3600);
+            yield return null;
+        }
+        if (!_followedPlayer)
+        {
+            _followingImage.gameObject.SetActive(false);
+        }
+        yield return null;
+    }
+
     /// <summary>
     /// Fill the image until its fillAmount until it reaches the fillingValue
     /// At the end of the filling, remove the entry of the dictionary at the key _filledImage
@@ -268,6 +356,37 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Update the player count when the player is in the room selection Menu
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator UpdatePlayerCount()
+    {
+        while (!PhotonNetwork.connected)
+        {
+            Debug.Log("Not Connected");
+            yield return new WaitForSeconds(1);
+        }
+        RoomInfo[] _infos = new RoomInfo[] { };
+        while (uiState == UIState.InRoomSelection)
+        {
+            if (!PhotonNetwork.connected) yield break;
+            _infos = PhotonNetwork.GetRoomList();
+            roomSelectionElements.ToList().ForEach(e => e.PlayerCount = 0);
+            for (int i = 0; i < _infos.Length; i++)
+            {
+                for (int j = 0; j < roomSelectionElements.Length; j++)
+                {
+                    if (roomSelectionElements[j].RoomName == _infos[i].Name)
+                    {
+                        roomSelectionElements[j].PlayerCount = _infos[i].PlayerCount;
+                    }
+                }
+            }
+            yield return new WaitForSeconds(2);
+        }
+    }
+
+    /// <summary>
     /// Display all quotes in the narrator box
     /// </summary>
     /// <param name="_quotes">Quotes to display</param>
@@ -284,37 +403,6 @@ public class TDS_UIManager : PunBehaviour
         narratorBoxParent.SetActive(false);
         OnNarratorDialogEnded?.Invoke();
         narratorCoroutine = null; 
-    }
-
-    /// <summary>
-    /// Display an image that follow the hidden player
-    /// Convert the player position into a screen position for the image
-    /// </summary>
-    /// <param name="_followedPlayer">Hidden and followed player </param>
-    /// <param name="_followingImage">The image that follows the player</param>
-    /// <returns></returns>
-    private IEnumerator FollowHiddenPlayer(TDS_Player _followedPlayer, Image _followingImage)
-    {
-        if (!_followedPlayer || !Application.isPlaying) yield break; 
-        _followingImage.gameObject.SetActive(true);
-        Vector2 _screenPos = Camera.main.WorldToScreenPoint(_followedPlayer.transform.position);
-        _screenPos.x = Mathf.Clamp(_screenPos.x, _followingImage.rectTransform.rect.width / 2, Screen.width - (_followingImage.rectTransform.rect.width / 2));
-        _screenPos.y = Mathf.Clamp(_screenPos.y, _followingImage.rectTransform.rect.height / 2, Screen.width - (_followingImage.rectTransform.rect.height / 2));
-        _followingImage.transform.position = _screenPos; 
-        while (_followedPlayer && _followingImage && Application.isPlaying)
-        {
-            //Debug.LogError(Camera.main.WorldToScreenPoint(_followedPlayer.transform.position));
-            _screenPos = Camera.main.WorldToScreenPoint(_followedPlayer.transform.position);
-            _screenPos.x = Mathf.Clamp(_screenPos.x, _followingImage.rectTransform.rect.width / 2, Screen.width - (_followingImage.rectTransform.rect.width / 2)); 
-            _screenPos.y = Mathf.Clamp(_screenPos.y, _followingImage.rectTransform.rect.height / 2, Screen.height - (_followingImage.rectTransform.rect.height / 2));
-            _followingImage.transform.position = Vector3.MoveTowards(_followingImage.transform.position, _screenPos, Time.deltaTime * 3600);
-            yield return null; 
-        }
-        if(!_followedPlayer)
-        {
-            _followingImage.gameObject.SetActive(false); 
-        }
-        yield return null; 
     }
     #endregion
 
@@ -367,6 +455,7 @@ public class TDS_UIManager : PunBehaviour
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false);
                 gameOverScreenParent.SetActive(false);
+                Selectable.allSelectables.FirstOrDefault()?.Select();
                 break;
             case UIState.InRoomSelection:
                 mainMenuParent.SetActive(false);
@@ -375,7 +464,12 @@ public class TDS_UIManager : PunBehaviour
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false);
                 gameOverScreenParent.SetActive(false);
+                Selectable.allSelectables.FirstOrDefault()?.Select();
+
                 StartCoroutine(UpdatePlayerCount());
+                if (checkInputCoroutine != null)
+                    StopCoroutine(checkInputCoroutine);
+                checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InRoomSelection)); 
                 break;
             case UIState.InCharacterSelection:
                 mainMenuParent.SetActive(false);
@@ -384,6 +478,10 @@ public class TDS_UIManager : PunBehaviour
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false);
                 gameOverScreenParent.SetActive(false);
+
+                if (checkInputCoroutine != null)
+                    StopCoroutine(checkInputCoroutine);
+                checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InCharacterSelection));
                 break;
             case UIState.InGame:
                 mainMenuParent.SetActive(false);
@@ -400,6 +498,10 @@ public class TDS_UIManager : PunBehaviour
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(true);
                 gameOverScreenParent.SetActive(false);
+                Selectable.allSelectables.FirstOrDefault()?.Select();
+                if (checkInputCoroutine != null)
+                    StopCoroutine(checkInputCoroutine);
+                checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InPause));
                 break;
             case UIState.InGameOver:
                 mainMenuParent.SetActive(false);
@@ -408,6 +510,7 @@ public class TDS_UIManager : PunBehaviour
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false);
                 gameOverScreenParent.SetActive(true);
+                Selectable.allSelectables.FirstOrDefault()?.Select();
                 StopAllCoroutines();
                 if (!PhotonNetwork.isMasterClient)
                 {
@@ -432,6 +535,21 @@ public class TDS_UIManager : PunBehaviour
             StopCoroutine(narratorCoroutine);
         }
         narratorCoroutine = StartCoroutine(PlayNarratorQuotes(_text)); 
+    }
+
+    /// <summary>
+    /// Action called when the player use the cancel button in the character selection menu 
+    /// if the player is ready, unlock its character, else leave the room
+    /// </summary>
+    private void CancelInCharacterSelection()
+    {
+        if (uiState != UIState.InCharacterSelection) return;
+        if(localIsReady)
+        {
+            SelectCharacter();
+            return; 
+        }
+        TDS_NetworkManager.Instance.LeaveRoom(); 
     }
 
     /// <summary>
@@ -613,6 +731,29 @@ public class TDS_UIManager : PunBehaviour
         UpdateReadySettings(PhotonNetwork.player.ID, localIsReady); 
     }
 
+    /// <summary>
+    /// Call when the Restart Button is pressed 
+    /// If not master client, send a message to say the player is ready 
+    /// If master, send a message to everybody to reset the level
+    /// </summary>
+    public void OnRestartButtonPressed()
+    {
+        playerHealthBar.ResetLifeBar();
+        onlineBeardLadyLifeBar.ResetLifeBar();
+        onlineFatLadyLifeBar.ResetLifeBar();
+        onlineFireEaterLifeBar.ResetLifeBar();
+        onlineJugglerLifeBar.ResetLifeBar();
+        if (PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ResetLevel"), new object[] { });
+            ResetLevel();
+        }
+        else
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, true });
+        }
+    }
+
     public void QuitGame() => Application.Quit();
 
     /// <summary>
@@ -670,29 +811,6 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
-    /// Call when the Restart Button is pressed 
-    /// If not master client, send a message to say the player is ready 
-    /// If master, send a message to everybody to reset the level
-    /// </summary>
-    public void OnRestartButtonPressed()
-    {
-        playerHealthBar.ResetLifeBar();
-        onlineBeardLadyLifeBar.ResetLifeBar();
-        onlineFatLadyLifeBar.ResetLifeBar();
-        onlineFireEaterLifeBar.ResetLifeBar();
-        onlineJugglerLifeBar.ResetLifeBar(); 
-        if(PhotonNetwork.isMasterClient)
-        {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ResetLevel"), new object[] { });
-            ResetLevel();
-        }
-        else
-        {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, true });
-        }
-    }
-
-    /// <summary>
     /// Remove the player from the player ready list
     /// </summary>
     /// <param name="_playerID">Id of the removed player</param>
@@ -707,8 +825,9 @@ public class TDS_UIManager : PunBehaviour
     /// Select a new character (used in UnityEvent)
     /// </summary>
     /// <param name="_newPlayerType">Index of the enum PlayerType</param>
-    public void SelectCharacter(int _newPlayerType)
+    public void SelectCharacter()
     {
+        int _newPlayerType = (int)characterSelectionMenu.LocalElement.CurrentSelection.CharacterType; 
         TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.OthersBuffered, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdatePlayerSelectionInfo"), new object[] { (int)TDS_GameManager.LocalPlayer, _newPlayerType, PhotonNetwork.player.ID });
 
         TDS_GameManager.LocalPlayer = (PlayerType)_newPlayerType == TDS_GameManager.LocalPlayer ? PlayerType.Unknown : (PlayerType)_newPlayerType;
@@ -873,6 +992,26 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Action called when the player use the submit button in the character selection menu 
+    /// Lock the character when the player is not ready 
+    /// When the player is master client and everyone is ready, launch the game
+    /// </summary>
+    private void SubmitInCharacterSelection()
+    {
+        if (uiState != UIState.InCharacterSelection) return;
+        if (!localIsReady)
+        {
+            SelectCharacter();
+            return;
+        }
+        if (PhotonNetwork.isMasterClient && launchGameButton && !playerListReady.Any(p => p.Value == false) && localIsReady)
+        {
+            TDS_NetworkManager.Instance.LockRoom();
+            LoadLevel();
+        }
+    }
+
+    /// <summary>
     /// Display or remove the curtains in the canvas
     /// </summary>
     public void SwitchArrow()
@@ -957,37 +1096,6 @@ public class TDS_UIManager : PunBehaviour
         }
         if (uiState == UIState.InCharacterSelection && launchGameButton) launchGameButton.interactable = !playerListReady.Any(p => p.Value == false) && localIsReady;
         if (uiState == UIState.InGameOver && buttonRestartGame) buttonRestartGame.interactable = !playerListReady.Any(p => p.Value == false);
-    }
-
-    /// <summary>
-    /// Update the player count when the player is in the room selection Menu
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator UpdatePlayerCount()
-    {
-        while (!PhotonNetwork.connected)
-        {
-            Debug.Log("Not Connected"); 
-            yield return new WaitForSeconds(1);
-        }
-        RoomInfo[] _infos = new RoomInfo[] { }; 
-        while (uiState == UIState.InRoomSelection)
-        {
-            if (!PhotonNetwork.connected) yield break;
-            _infos = PhotonNetwork.GetRoomList();
-            roomSelectionElements.ToList().ForEach(e => e.PlayerCount = 0);
-            for (int i = 0; i < _infos.Length; i++)
-            {
-                for (int j = 0; j < roomSelectionElements.Length; j++)
-                {
-                    if (roomSelectionElements[j].RoomName == _infos[i].Name)
-                    {
-                        roomSelectionElements[j].PlayerCount = _infos[i].PlayerCount; 
-                    }
-                }
-            }
-            yield return new WaitForSeconds(2);
-        }
     }
     #endregion
 

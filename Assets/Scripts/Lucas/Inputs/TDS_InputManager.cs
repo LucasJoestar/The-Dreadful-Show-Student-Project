@@ -309,13 +309,6 @@ public class TDS_InputManager : MonoBehaviour
         // UnityEngineInternal.Input.NativeInputSystem.onBeforeUpdate ??
     }
 
-    // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
-    private void OnDestroy()
-    {
-        OnCancelButtonDown = null;
-        OnSubmitButtonDown = null;
-    }
-
     // Update is called every frame, if the MonoBehaviour is enabled
     private void Update()
     {
