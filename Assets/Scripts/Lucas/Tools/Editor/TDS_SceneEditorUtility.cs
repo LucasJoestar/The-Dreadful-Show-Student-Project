@@ -93,7 +93,7 @@ public class TDS_LoadSceneWindow : EditorWindow
     /// <summary>
     /// Call this window from the Unity menu toolbar.
     /// </summary>
-    [MenuItem("Tools/Scenes/Load Scene Menu")]
+    [MenuItem("Tools/Scenes Loader")]
     public static void CallWindow()
     {
         GetWindow(typeof(TDS_LoadSceneWindow), true, "Load Scene Window").Show();
