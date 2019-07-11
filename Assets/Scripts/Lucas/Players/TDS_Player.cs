@@ -995,7 +995,7 @@ public class TDS_Player : TDS_Character
         {
             yield return new WaitForSeconds(INVULNERABILITY_TIME / 7);
             _timer -= INVULNERABILITY_TIME / 7;
-            sprite.enabled = !sprite.enabled;
+            sprite.gameObject.SetActive(!sprite.gameObject.activeInHierarchy);
         }
 
         sprite.enabled = true;
@@ -1032,12 +1032,12 @@ public class TDS_Player : TDS_Character
 
             if (photonView.isMine)
             {
-                TDS_Camera.Instance.StartScreenShake(.1f, .15f);
+                TDS_Camera.Instance.StartScreenShake(.02f, .15f);
             }
         }
         else if (photonView.isMine)
         {
-            TDS_Camera.Instance.StartScreenShake(.02f, .1f);
+            TDS_Camera.Instance.StartScreenShake(.05f, .1f);
         }
         
         return true;
