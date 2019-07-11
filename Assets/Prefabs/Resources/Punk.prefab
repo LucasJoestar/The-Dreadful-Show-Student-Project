@@ -73,7 +73,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 1, z: 1.5}
   m_Center: {x: 0, y: 1.2, z: 0}
 --- !u!114 &114523981913157094
 MonoBehaviour:
@@ -161,8 +161,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.4844195, y: 2.8683274, z: 1}
-  m_Center: {x: -0.042566836, y: 1.4341637, z: 0}
+  m_Size: {x: 1.4, y: 2.8, z: 1.5}
+  m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!95 &95962912165042768
 Animator:
   serializedVersion: 3
@@ -288,8 +288,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114288389468539316}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 23
+  instantiationId: 23
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114288389468539316
