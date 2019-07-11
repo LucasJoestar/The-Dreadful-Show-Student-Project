@@ -56,7 +56,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     /// <param name="_newPlayer">Id of the added player</param>
     public void AddNewPlayer(PhotonPlayer _newPlayer)
     {
-        characterSelectionElements.Where(e => e.PhotonPlayer == null).First().SetPhotonPlayer(_newPlayer);
+        characterSelectionElements.Where(e => e.PhotonPlayer == null).FirstOrDefault()?.SetPhotonPlayer(_newPlayer);
         if (_newPlayer.ID == PhotonNetwork.player.ID)
         {
             localElement = characterSelectionElements.Where(e => e.PhotonPlayer == _newPlayer).First();
