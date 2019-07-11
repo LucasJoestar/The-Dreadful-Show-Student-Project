@@ -598,7 +598,7 @@ public abstract class TDS_Enemy : TDS_Character
             // Or if the agent is out of the bounds
             if ((Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > GetMaxRange()) 
                 || (Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) >= 1)
-                || (TDS_Camera.Instance.CurrentBounds.XMax < transform.position.x || TDS_Camera.Instance.CurrentBounds.XMin > transform.position.x))
+                || (TDS_Camera.Instance.CurrentBounds.XMax < transform.position.x && agent.Velocity.x > 0) || (TDS_Camera.Instance.CurrentBounds.XMin > transform.position.x && agent.Velocity.x < 0))
             {
                 yield return new WaitForSeconds(.1f); 
                 enemyState = EnemyState.ComputingPath;

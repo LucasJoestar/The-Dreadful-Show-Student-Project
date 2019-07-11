@@ -355,6 +355,7 @@ GameObject:
   - component: {fileID: 6051813889321369439}
   - component: {fileID: 6339605583579687809}
   - component: {fileID: 4369975036306928352}
+  - component: {fileID: 971945464950786522}
   m_Layer: 0
   m_Name: UIPrefab
   m_TagString: Untagged
@@ -514,6 +515,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c7ca649391236e49b43b1b27f81463f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &971945464950786522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1312500720897116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bcf6e551e8ee794e9274fc45c3e9f97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1348033205689514
@@ -2022,7 +2035,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 860, y: -230}
+  m_AnchoredPosition: {x: 180, y: -230}
   m_SizeDelta: {x: 360, y: 360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1831891121939504070
@@ -2057,8 +2070,8 @@ MonoBehaviour:
     characterType: 3
   lockingFeedback: {fileID: 2528173477404312809}
   readyToggle: {fileID: 3442314723295331495}
-  leftArrowButton: {fileID: 7950180164011711129}
-  rightArrowButton: {fileID: 2811952815651243717}
+  leftArrowButton: {fileID: 1401105676165372937}
+  rightArrowButton: {fileID: 4904395199412284359}
 --- !u!1 &104578315771813264
 GameObject:
   m_ObjectHideFlags: 0
@@ -3129,7 +3142,6 @@ GameObject:
   - component: {fileID: 4870045948454266400}
   - component: {fileID: 8687140234727699438}
   - component: {fileID: 3462188996171467211}
-  - component: {fileID: 6786387896008508538}
   m_Layer: 5
   m_Name: LeftArrow
   m_TagString: Untagged
@@ -3206,7 +3218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 4
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 7698881853851487259}
     m_SelectOnLeft: {fileID: 0}
@@ -3235,20 +3247,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &6786387896008508538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1199481555850346457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e65674ac5af5add478eabf438a749408, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
-  delegates: []
 --- !u!1 &1206528133214326866
 GameObject:
   m_ObjectHideFlags: 0
@@ -3649,7 +3647,6 @@ GameObject:
   - component: {fileID: 5644382737795140877}
   - component: {fileID: 4638807320314241348}
   - component: {fileID: 5040611571498695698}
-  - component: {fileID: 6737249290805910600}
   m_Layer: 5
   m_Name: RightArrow
   m_TagString: Untagged
@@ -3726,7 +3723,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 4
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 4522716618057881242}
     m_SelectOnLeft: {fileID: 2835923569797857627}
@@ -3755,20 +3752,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &6737249290805910600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1414682075090477222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e65674ac5af5add478eabf438a749408, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
-  delegates: []
 --- !u!1 &1496159294613864221
 GameObject:
   m_ObjectHideFlags: 0
@@ -4075,7 +4058,6 @@ GameObject:
   - component: {fileID: 5016287646857044565}
   - component: {fileID: 2219504764411468366}
   - component: {fileID: 5351266884569927030}
-  - component: {fileID: 983790973352207168}
   m_Layer: 5
   m_Name: LeftArrow
   m_TagString: Untagged
@@ -4152,7 +4134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 4
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 6993520766473625634}
     m_SelectOnLeft: {fileID: 0}
@@ -4181,20 +4163,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &983790973352207168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1684696857641342968}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e65674ac5af5add478eabf438a749408, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
-  delegates: []
 --- !u!1 &1802072100452778541
 GameObject:
   m_ObjectHideFlags: 0
@@ -4637,8 +4605,8 @@ MonoBehaviour:
     m_Mode: 4
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 7030937424535371528}
-    m_SelectOnLeft: {fileID: 1401105676165372937}
-    m_SelectOnRight: {fileID: 4904395199412284359}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -5908,8 +5876,8 @@ MonoBehaviour:
     characterType: 3
   lockingFeedback: {fileID: 2382764152802200047}
   readyToggle: {fileID: 4522716618057881242}
-  leftArrowButton: {fileID: 2816317271445051618}
-  rightArrowButton: {fileID: 6737249290805910600}
+  leftArrowButton: {fileID: 2835923569797857627}
+  rightArrowButton: {fileID: 5040611571498695698}
 --- !u!1 &2874736162333562709
 GameObject:
   m_ObjectHideFlags: 0
@@ -6220,7 +6188,6 @@ GameObject:
   - component: {fileID: 3668684502223842094}
   - component: {fileID: 7536801531712136798}
   - component: {fileID: 4904395199412284359}
-  - component: {fileID: 2811952815651243717}
   m_Layer: 5
   m_Name: RightArrow
   m_TagString: Untagged
@@ -6297,10 +6264,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 4
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 3442314723295331495}
-    m_SelectOnLeft: {fileID: 1401105676165372937}
+    m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
@@ -6326,20 +6293,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &2811952815651243717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3297419389771158414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e65674ac5af5add478eabf438a749408, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
-  delegates: []
 --- !u!1 &3412028957185254559
 GameObject:
   m_ObjectHideFlags: 0
@@ -9657,8 +9610,8 @@ MonoBehaviour:
     characterType: 3
   lockingFeedback: {fileID: 5156646405225799424}
   readyToggle: {fileID: 6993520766473625634}
-  leftArrowButton: {fileID: 983790973352207168}
-  rightArrowButton: {fileID: 6715284794722449702}
+  leftArrowButton: {fileID: 5351266884569927030}
+  rightArrowButton: {fileID: 5097422347185816395}
 --- !u!1 &5678331316556992792
 GameObject:
   m_ObjectHideFlags: 0
@@ -11084,8 +11037,8 @@ MonoBehaviour:
     m_Mode: 4
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 7030937424535371528}
-    m_SelectOnLeft: {fileID: 5351266884569927030}
-    m_SelectOnRight: {fileID: 5097422347185816395}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -12058,7 +12011,6 @@ GameObject:
   - component: {fileID: 9170166379070623762}
   - component: {fileID: 7416487440248389392}
   - component: {fileID: 3837385814559328299}
-  - component: {fileID: 5252188950596000781}
   m_Layer: 5
   m_Name: RightArrow
   m_TagString: Untagged
@@ -12135,7 +12087,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 4
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 7698881853851487259}
     m_SelectOnLeft: {fileID: 3462188996171467211}
@@ -12164,20 +12116,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &5252188950596000781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7021154430126167234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e65674ac5af5add478eabf438a749408, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
-  delegates: []
 --- !u!1 &7033334633141810731
 GameObject:
   m_ObjectHideFlags: 0
@@ -12385,8 +12323,8 @@ MonoBehaviour:
     characterType: 3
   lockingFeedback: {fileID: 2480150134622524644}
   readyToggle: {fileID: 7698881853851487259}
-  leftArrowButton: {fileID: 6786387896008508538}
-  rightArrowButton: {fileID: 5252188950596000781}
+  leftArrowButton: {fileID: 3462188996171467211}
+  rightArrowButton: {fileID: 3837385814559328299}
 --- !u!1 &7152889006335844338
 GameObject:
   m_ObjectHideFlags: 0
@@ -13518,7 +13456,6 @@ GameObject:
   - component: {fileID: 5837147339182586616}
   - component: {fileID: 1187346436733537862}
   - component: {fileID: 5097422347185816395}
-  - component: {fileID: 6715284794722449702}
   m_Layer: 5
   m_Name: RightArrow
   m_TagString: Untagged
@@ -13595,7 +13532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 4
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 6993520766473625634}
     m_SelectOnLeft: {fileID: 5351266884569927030}
@@ -13624,20 +13561,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &6715284794722449702
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7907492278090986375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e65674ac5af5add478eabf438a749408, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
-  delegates: []
 --- !u!1 &7920222937373183280
 GameObject:
   m_ObjectHideFlags: 0
@@ -14317,7 +14240,6 @@ GameObject:
   - component: {fileID: 2602276057081305143}
   - component: {fileID: 2484614693713601221}
   - component: {fileID: 1401105676165372937}
-  - component: {fileID: 7950180164011711129}
   m_Layer: 5
   m_Name: LeftArrow
   m_TagString: Untagged
@@ -14394,11 +14316,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 4
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 3442314723295331495}
     m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 4904395199412284359}
+    m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -14423,20 +14345,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &7950180164011711129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8190311463751295420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e65674ac5af5add478eabf438a749408, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
-  delegates: []
 --- !u!1 &8194017873467994786
 GameObject:
   m_ObjectHideFlags: 0
@@ -15136,8 +15044,8 @@ MonoBehaviour:
     m_Mode: 4
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 7030937424535371528}
-    m_SelectOnLeft: {fileID: 3462188996171467211}
-    m_SelectOnRight: {fileID: 3837385814559328299}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -15847,7 +15755,6 @@ GameObject:
   - component: {fileID: 1663341220965215976}
   - component: {fileID: 4072955368868837191}
   - component: {fileID: 2835923569797857627}
-  - component: {fileID: 2816317271445051618}
   m_Layer: 5
   m_Name: LeftArrow
   m_TagString: Untagged
@@ -15924,7 +15831,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 4
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 4522716618057881242}
     m_SelectOnLeft: {fileID: 0}
@@ -15953,20 +15860,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &2816317271445051618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8980124679013622881}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e65674ac5af5add478eabf438a749408, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
-  delegates: []
 --- !u!1 &8983205718573281552
 GameObject:
   m_ObjectHideFlags: 0
@@ -16070,8 +15963,8 @@ MonoBehaviour:
     m_Mode: 4
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 7030937424535371528}
-    m_SelectOnLeft: {fileID: 2835923569797857627}
-    m_SelectOnRight: {fileID: 5040611571498695698}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
