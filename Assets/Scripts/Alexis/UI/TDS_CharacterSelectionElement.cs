@@ -82,6 +82,11 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// </summary>
     public void DisconnectPlayer()
     {
+        if(!CurrentSelection.CanBeSelected)
+        {
+            TDS_UIManager.Instance.UnlockPlayerType(CurrentSelection.CharacterType); 
+        }
+        LockElement(false); 
         photonPlayer = null;
         gameObject.SetActive(false);
     }
@@ -91,6 +96,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// </summary>
     public void DisplayNextImage()
     {
+        if (photonPlayer == null) return; 
         if (TDS_UIManager.Instance.LocalIsReady)
         {
             StartCoroutine(WaitEndOfSelectionToSelect(readyToggle));
@@ -114,6 +120,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// </summary>
     public void DisplayPreviousImage()
     {
+        if (photonPlayer == null) return;
         if (TDS_UIManager.Instance.LocalIsReady)
         {
             StartCoroutine(WaitEndOfSelectionToSelect(readyToggle));
@@ -140,27 +147,24 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// <param name="_index">Selected Index</param>
     public void DisplayImageAtIndex(int _index)
     {
+        if (photonPlayer == null) return;
         if (!characterSelectionImages[_index].CanBeSelected) return;
         CurrentSelection.CharacterImage.gameObject.SetActive(false);
         currentIndex = _index;
         CurrentSelection.CharacterImage.gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// Display the character's image of type of the character 
+    /// </summary>
+    /// <param name="_playerType">Type of the character</param>
     public void DisplayImageOfType(PlayerType _playerType)
     {
+        if (photonPlayer == null) return;
         CurrentSelection.CharacterImage.gameObject.SetActive(false);
         TDS_CharacterSelectionImage _image = characterSelectionImages.Where(i => i.CharacterType == _playerType).FirstOrDefault();
         currentIndex = characterSelectionImages.ToList().IndexOf(_image);
         CurrentSelection.CharacterImage.gameObject.SetActive(true);
-    }
-
-    /// <summary>
-    /// Select the character at the current index to play
-    /// </summary>
-    public void SelectCharacter()
-    {
-        if (!characterSelectionImages[currentIndex].CanBeSelected) return;
-        TDS_UIManager.Instance?.SelectCharacter((int)characterSelectionImages[currentIndex].CharacterType); 
     }
 
     /// <summary>
@@ -171,15 +175,12 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     {
         // SET THE TOGGLE
         if(lockingFeedback) lockingFeedback.gameObject.SetActive(_playerIsReady);
-        if (PhotonNetwork.player.ID != photonPlayer.ID) readyToggle.isOn = _playerIsReady; 
+        if (photonPlayer == null || PhotonNetwork.player.ID != photonPlayer.ID) readyToggle.isOn = _playerIsReady; 
     }
 
-    public void SetPlayerReady()
-    {
-        LockElement(readyToggle.isOn);
-        TDS_UIManager.Instance.OnPlayerReady(readyToggle.isOn); 
-    }
-
+    /// <summary>
+    /// When the player is local link all the selectables and event necessary to navigate and select a character
+    /// </summary>
     public void SetPlayerLocal()
     {
         leftArrowButton.GetComponent<Button>().interactable = true;
@@ -216,6 +217,9 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         readyToggle.Select(); 
     }
 
+    /// <summary>
+    /// Remove the local player and all links and events 
+    /// </summary>
     public void ClearToggle()
     {
         readyToggle.onValueChanged.RemoveAllListeners();
@@ -248,6 +252,11 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Wait the end of the selection to select a new selectable
+    /// </summary>
+    /// <param name="_selectable">Next Selectable</param>
+    /// <returns></returns>
     IEnumerator WaitEndOfSelectionToSelect(Selectable _selectable)
     {
         while (EventSystem.current.alreadySelecting)

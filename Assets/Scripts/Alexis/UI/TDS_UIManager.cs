@@ -603,7 +603,7 @@ public class TDS_UIManager : PunBehaviour
     {
         localIsReady = _isReady;
 
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetPlayerReady"), new object[] { PhotonNetwork.player.ID, localIsReady });
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.OthersBuffered, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetPlayerReady"), new object[] { PhotonNetwork.player.ID, localIsReady });
         SetPlayerReady(PhotonNetwork.player.ID, localIsReady); 
         if (!PhotonNetwork.isMasterClient)
         {
@@ -709,7 +709,6 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_newPlayerType">Index of the enum PlayerType</param>
     public void SelectCharacter(int _newPlayerType)
     {
-        //if (localIsReady) return;
         TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.OthersBuffered, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdatePlayerSelectionInfo"), new object[] { (int)TDS_GameManager.LocalPlayer, _newPlayerType, PhotonNetwork.player.ID });
 
         TDS_GameManager.LocalPlayer = (PlayerType)_newPlayerType == TDS_GameManager.LocalPlayer ? PlayerType.Unknown : (PlayerType)_newPlayerType;
@@ -889,6 +888,16 @@ public class TDS_UIManager : PunBehaviour
     {
         if (!curtainsAnimator) return;
         curtainsAnimator.SetTrigger("Switch"); 
+    }
+
+    /// <summary>
+    /// Unlock a player on the local client
+    /// Called when a player leave the room
+    /// </summary>
+    /// <param name="_playerType">Type of the player to disconnect</param>
+    public void UnlockPlayerType(PlayerType _playerType)
+    {
+        characterSelectionMenu.UnlockCharacterOnline((PlayerType)_playerType); 
     }
 
     /// <summary>

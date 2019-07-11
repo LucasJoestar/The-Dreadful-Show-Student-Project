@@ -78,7 +78,11 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
         }
         if (_removedPlayer == PhotonNetwork.player) return;
         TDS_CharacterSelectionElement _cleanedElement = characterSelectionElements.Where(e => e.PhotonPlayer == _removedPlayer).FirstOrDefault();
-        if (_cleanedElement) _cleanedElement.DisconnectPlayer(); 
+        if (_cleanedElement)
+        {
+            _cleanedElement.DisconnectPlayer();
+        }
+        
     }
 
     /// <summary>
@@ -97,7 +101,11 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     public void LockPlayer(int _playerID, bool _playerIsLocked)
     {
         // SET THE TOGGLE
-        if (PhotonNetwork.player.ID == _playerID ) return; 
+        if (PhotonNetwork.player.ID == _playerID)
+        {
+            localElement.LockElement(_playerIsLocked); 
+            return;
+        }
         characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).First().LockElement(_playerIsLocked);
     }
 
@@ -117,6 +125,15 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
             _element.DisplayImageOfType(_newType); 
         }
         if (!TDS_UIManager.Instance.LocalIsReady && !localElement.CurrentSelection.CanBeSelected) localElement.DisplayNextImage(); 
+    }
+
+    /// <summary>
+    /// Unlick the character when a player leave the game
+    /// </summary>
+    /// <param name="_playerType">Player type to unlock</param>
+    public void UnlockCharacterOnline(PlayerType _playerType)
+    {
+        characterSelectionElements.ToList().ForEach(e => e.CharacterSelectionImages.Where(i => i.CharacterType == _playerType).ToList().ForEach(i => i.CanBeSelected = true));
     }
 
     /// <summary>
