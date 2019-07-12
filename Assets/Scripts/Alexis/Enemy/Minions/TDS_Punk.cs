@@ -87,7 +87,7 @@ public class TDS_Punk : TDS_Minion
     // Update is called once per frame
     protected override void Update()
     {
-        base.Update(); 
+        base.Update();
 	}
     #endregion
 
