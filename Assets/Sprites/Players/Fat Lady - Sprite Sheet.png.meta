@@ -1,0 +1,942 @@
+fileFormatVersion: 2
+guid: 7423327141d0af940b24e0b0572fae4c
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: FatLady_Run_1
+    21300002: FatLady_Run_2
+    21300004: FatLady_Run_3
+    21300006: FatLady_Run_4
+    21300008: FatLady_Idle_1
+    21300010: FatLady_Idle_2
+    21300012: FatLady_RunObject_1
+    21300014: FatLady_RunObject_2
+    21300016: FatLady_RunObject_3
+    21300018: FatLady_RunObject_4
+    21300020: FatLady_IdleObject_1
+    21300022: FatLady_IdleObject_2
+    21300024: FatLady_Down_1
+    21300026: FatLady_Down_2
+    21300028: FatLady_Parry
+    21300030: FatLady_Jump
+    21300032: FatLady_Fall
+    21300034: FatLady_Throw_1
+    21300036: FatLady_Throw_2
+    21300038: FatLady_Down_3
+    21300040: FatLady_Dodge_1
+    21300042: FatLady_Dodge_5
+    21300044: FatLady_HipStroke_1
+    21300046: FatLady_HipStroke_2
+    21300048: FatLady_Hammer_1
+    21300050: FatLady_Hammer_2
+    21300052: FatLady_BadKick_1
+    21300054: FatLady_BadKick_2
+    21300056: FatLady_Dodge_2
+    21300058: FatLady_Dodge_3
+    21300060: FatLady_Dodge_4
+    21300062: FatLady_Headbutt_1
+    21300064: FatLady_Headbutt_2
+    21300066: FatLady_LightAttack#1_1
+    21300068: FatLady_LightAttack#1_2
+    21300070: FatLady_LightAttack#2_1
+    21300072: FatLady_LightAttack#2_2
+    21300074: Fat Lady - Sprite Sheet_39
+    21300076: Fat Lady - Sprite Sheet_40
+    21300078: FatLady_LightAttack#3_1
+    21300080: FatLady_LightAttack#3_2
+  externalObjects: {}
+  serializedVersion: 9
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: FatLady_Run_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 3607
+        width: 291
+        height: 361
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c96dd3dd2597684d92a0c6a630adae1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Run_2
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 3606
+        width: 287
+        height: 367
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91d65c94ae1c258498afd61f758b0d93
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Run_3
+      rect:
+        serializedVersion: 2
+        x: 855
+        y: 3605
+        width: 275
+        height: 363
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1333adf2ef64f3b4291d0ddf8dc89e91
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Run_4
+      rect:
+        serializedVersion: 2
+        x: 1237
+        y: 3599
+        width: 267
+        height: 369
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d78e20b80e45caa44a237a0c93f72a8b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Idle_1
+      rect:
+        serializedVersion: 2
+        x: 1663
+        y: 3605
+        width: 268
+        height: 373
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 19437f68938e3a74fb55b66ed9a305b5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Idle_2
+      rect:
+        serializedVersion: 2
+        x: 2039
+        y: 3606
+        width: 265
+        height: 341
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f35bca339e429a468b3664715498662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_RunObject_1
+      rect:
+        serializedVersion: 2
+        x: 2428
+        y: 3607
+        width: 287
+        height: 361
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 234c008c9464ea9498ccbdaa91299d3d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_RunObject_2
+      rect:
+        serializedVersion: 2
+        x: 2821
+        y: 3606
+        width: 286
+        height: 370
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d586bb39e20823e49b6e2bb70d123128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_RunObject_3
+      rect:
+        serializedVersion: 2
+        x: 3165
+        y: 3607
+        width: 276
+        height: 364
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 566bd15b97faef04dbc1be1a2add1514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_RunObject_4
+      rect:
+        serializedVersion: 2
+        x: 3512
+        y: 3605
+        width: 265
+        height: 368
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50b36e9afa3b42645a10a0e6c0df7dce
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_IdleObject_1
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 3142
+        width: 267
+        height: 373
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d60ec1f616f9dd14fb9ce279a1aaa3d7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_IdleObject_2
+      rect:
+        serializedVersion: 2
+        x: 485
+        y: 3145
+        width: 262
+        height: 344
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e58bc319e325529459cd978c96cbb979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Down_1
+      rect:
+        serializedVersion: 2
+        x: 969
+        y: 3143
+        width: 244
+        height: 345
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e2887f9b0509df438e8ce7dcd819480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Down_2
+      rect:
+        serializedVersion: 2
+        x: 1341
+        y: 3168
+        width: 264
+        height: 305
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76e1796599f57bf44a6de991ecc9a75e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Parry
+      rect:
+        serializedVersion: 2
+        x: 2331
+        y: 3141
+        width: 270
+        height: 347
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc985aac3e2ed7f41ab20ec91b5446fa
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Jump
+      rect:
+        serializedVersion: 2
+        x: 2717
+        y: 3153
+        width: 212
+        height: 378
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5f00349ac63d5c49b402c1d38ca797e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Fall
+      rect:
+        serializedVersion: 2
+        x: 3047
+        y: 3144
+        width: 242
+        height: 371
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78faa4384d097b746a0e622324e67188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Throw_1
+      rect:
+        serializedVersion: 2
+        x: 3383
+        y: 3149
+        width: 260
+        height: 346
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b77a0b6722e83049851695cb456e361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Throw_2
+      rect:
+        serializedVersion: 2
+        x: 3743
+        y: 3142
+        width: 268
+        height: 357
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ca64bc90fa389d4da147560ae22a187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Down_3
+      rect:
+        serializedVersion: 2
+        x: 1795
+        y: 3143
+        width: 352
+        height: 190
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab8f8f977e7b31244baf9c1eb2b6527f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Dodge_1
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 2664
+        width: 296
+        height: 359
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4034d24f46c6d247a1f126fd9135892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Dodge_5
+      rect:
+        serializedVersion: 2
+        x: 1407
+        y: 2667
+        width: 230
+        height: 309
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5e1bfee5cc6bbf40a699c4ffb3750b9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_HipStroke_1
+      rect:
+        serializedVersion: 2
+        x: 1677
+        y: 2665
+        width: 316
+        height: 391
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93ac6596d6c5022478eb341ebe25dd5f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_HipStroke_2
+      rect:
+        serializedVersion: 2
+        x: 2103
+        y: 2664
+        width: 329
+        height: 385
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f80916ea32739d4fbf1289abb2f08ca
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Hammer_1
+      rect:
+        serializedVersion: 2
+        x: 2544
+        y: 2629
+        width: 289
+        height: 438
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60cf1ff6ca0aec54882f58193f55151c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Hammer_2
+      rect:
+        serializedVersion: 2
+        x: 2925
+        y: 2667
+        width: 366
+        height: 421
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5406db5bb6c4ea44881287879d2dc6d4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_BadKick_1
+      rect:
+        serializedVersion: 2
+        x: 3368
+        y: 2669
+        width: 259
+        height: 360
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa9b399a0f1e5714092891cb01c12701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_BadKick_2
+      rect:
+        serializedVersion: 2
+        x: 3704
+        y: 2669
+        width: 339
+        height: 380
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b078441de941bc8468e398e560f81e44
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Dodge_2
+      rect:
+        serializedVersion: 2
+        x: 509
+        y: 2664
+        width: 174
+        height: 171
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0dca83ede23e4bd4ea3de52b9effc828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Dodge_3
+      rect:
+        serializedVersion: 2
+        x: 855
+        y: 2663
+        width: 161
+        height: 194
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d177320d755ba34bb4bf10dc28214a6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Dodge_4
+      rect:
+        serializedVersion: 2
+        x: 1151
+        y: 2664
+        width: 177
+        height: 176
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9191089af8da8b040902ccefff6aa784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Headbutt_1
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 2205
+        width: 280
+        height: 341
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c387c4859f59504f8cd188e0faf939a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Headbutt_2
+      rect:
+        serializedVersion: 2
+        x: 493
+        y: 2205
+        width: 276
+        height: 300
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae807dac99810794a896a3ac05c0c8b4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_LightAttack#1_1
+      rect:
+        serializedVersion: 2
+        x: 921
+        y: 2205
+        width: 298
+        height: 330
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f4070a04efac144da7dfc7a9b0b824d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_LightAttack#1_2
+      rect:
+        serializedVersion: 2
+        x: 1360
+        y: 2206
+        width: 323
+        height: 365
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d01e573da7baf9c438c577284f90a51c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_LightAttack#2_1
+      rect:
+        serializedVersion: 2
+        x: 1832
+        y: 2257
+        width: 265
+        height: 352
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae5dbc95a63c20b42bd676c586e92434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_LightAttack#2_2
+      rect:
+        serializedVersion: 2
+        x: 2167
+        y: 2206
+        width: 377
+        height: 357
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bef34acab31a5fd469403c72dbdd6bd1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_LightAttack#3_1
+      rect:
+        serializedVersion: 2
+        x: 2659
+        y: 2203
+        width: 282
+        height: 301
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75196d4757f8ffd41ac57d97f0c9a25b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_LightAttack#3_2
+      rect:
+        serializedVersion: 2
+        x: 3024
+        y: 2189
+        width: 283
+        height: 440
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da91baa6a9ebd48428818791155ab407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: ab07e9917129467498a29c4060fb9dce
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
