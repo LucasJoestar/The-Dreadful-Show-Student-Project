@@ -535,6 +535,25 @@ public abstract class TDS_Character : TDS_Damageable
     }
     #endregion
 
+    #region Health
+    /// <summary>
+    /// Makes this object take damage and decrease its health if it is not invulnerable.
+    /// </summary>
+    /// <param name="_damage">Amount of damage this inflect to this object.</param>
+    /// <returns>Returns true if some damages were inflicted, false if none.</returns>
+    public override bool TakeDamage(int _damage)
+    {
+        if (base.TakeDamage(_damage))
+        {
+            if (throwable) DropObject();
+
+            return true;
+        }
+
+        return false;
+    }
+    #endregion
+
     #region UI 
     /// <summary>
     /// Fill the life bar

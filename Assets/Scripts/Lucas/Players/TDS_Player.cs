@@ -589,8 +589,6 @@ public class TDS_Player : TDS_Character
     /// <param name="_targetPosition">Position where the object should land.</param>
     public override bool ThrowObject(Vector3 _targetPosition)
     {
-        if (photonView.isMine) IsPlayable = true;
-
         if (!base.ThrowObject(_targetPosition)) return false;
 
         // Triggers event
@@ -998,7 +996,7 @@ public class TDS_Player : TDS_Character
             sprite.gameObject.SetActive(!sprite.gameObject.activeInHierarchy);
         }
 
-        sprite.enabled = true;
+        sprite.gameObject.SetActive(true);
         IsInvulnerable = false;
     }
 
@@ -1628,6 +1626,12 @@ public class TDS_Player : TDS_Character
         // If dodging, parrying or attacking, do not perform action
         if (isDodging || isParrying || isPreparingAttack) return;
 
+        // Check non-agressive actions
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.INTERACT_BUTTON)) Interact();
+
+        // If having a throwable, return
+        if (throwable) return;
+
         // Checks potentially agressives actions
         if (!IsPacific && isGrounded)
         {
@@ -1635,20 +1639,20 @@ public class TDS_Player : TDS_Character
 
             else if (TDS_InputManager.GetButtonDown(TDS_InputManager.HEAVY_ATTACK_BUTTON)) StartPreparingAttack(false);
 
-            if (!isAttacking)
+            else if (TDS_InputManager.GetButtonDown(TDS_InputManager.CATCH_BUTTON)) Catch();
+
+            else if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUPER_ATTACK_BUTTON)) SuperAttack();
+
+            else if (TDS_InputManager.GetButtonDown(TDS_InputManager.USE_OBJECT_BUTTON))
             {
-                if (TDS_InputManager.GetButtonDown(TDS_InputManager.CATCH_BUTTON)) Catch();
-
-                else if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUPER_ATTACK_BUTTON)) SuperAttack();
-
-                else if (TDS_InputManager.GetButtonDown(TDS_InputManager.USE_OBJECT_BUTTON)) UseObject();
+                UseObject();
+                return;
             }
         }
 
-        // Check non-agressive actions
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.INTERACT_BUTTON)) Interact();
+        if (isAttacking) return;
 
-        else if (TDS_InputManager.GetButtonDown(TDS_InputManager.DODGE_BUTTON) && !IsParalyzed) StartDodge();
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.DODGE_BUTTON) && !IsParalyzed) StartDodge();
 
         else if (TDS_InputManager.GetButtonDown(TDS_InputManager.PARRY_BUTTON) && isGrounded) StartCoroutine(Parry());
     }
@@ -1686,7 +1690,7 @@ public class TDS_Player : TDS_Character
         }
 
         // When pressing the jump method, check if on ground ; If it's all good, then let's jump
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.JUMP_BUTTON) && IsGrounded && !isPreparingAttack)
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.JUMP_BUTTON) && IsGrounded && !throwable && !isPreparingAttack)
         {
             StartJump();
         }
