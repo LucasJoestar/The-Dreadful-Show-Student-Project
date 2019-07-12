@@ -52,13 +52,13 @@ public class TDS_PlayerSpriteHolder : MonoBehaviour
 
     private void OnBecameInvisible()
     {
-        if (!Owner || Owner.IsDead || !playerSprite.enabled || !Application.isPlaying ) return; 
+        if (!Owner || Owner.IsDead || Owner.IsInvulnerable || !playerSprite.enabled || !Application.isPlaying ) return; 
         TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(Owner, true);
     }
 
     private void OnBecameVisible()
     {
-        if (!Owner || Owner.IsDead || !playerSprite.enabled || !Application.isPlaying) return;
+        if (!Owner || Owner.IsDead || Owner.IsInvulnerable || !playerSprite.enabled || !Application.isPlaying) return;
         TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(Owner, false);
     }
     #endregion
