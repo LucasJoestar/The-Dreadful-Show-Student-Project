@@ -131,21 +131,38 @@ public class TDS_SpritesEditor : EditorWindow
 
         if (GUILayout.Button(new GUIContent("Increment Layer", "Increment the selected GameObjects layer by the above number"), GUILayout.Height(25), GUILayout.Width(200)))
         {
-            SpriteRenderer[] _selected = null;
+            SpriteRenderer[] _sprites = null;
+            SpriteMask[] _masks = null;
             if (doUseChildrenSprites)
             {
-                _selected = Selection.gameObjects.ToList().SelectMany(s => s.GetComponentsInChildren<SpriteRenderer>()).ToArray();
+                _sprites = Selection.gameObjects.ToList().SelectMany(s => s.GetComponentsInChildren<SpriteRenderer>()).ToArray();
+                _masks = Selection.gameObjects.ToList().SelectMany(s => s.GetComponentsInChildren<SpriteMask>()).ToArray();
             }
             else
             {
-                _selected = Selection.gameObjects.ToList().Select(g => g.GetComponent<SpriteRenderer>()).Distinct().ToArray();
+                _sprites = Selection.gameObjects.ToList().Select(g => g.GetComponent<SpriteRenderer>()).Distinct().ToArray();
+                _masks = Selection.gameObjects.ToList().Select(s => s.GetComponent<SpriteMask>()).Distinct().ToArray();
             }
 
-            Undo.RecordObjects(_selected, "Increment Sprites layer order");
-
-            foreach (SpriteRenderer _sprite in _selected)
+            if (_sprites != null)
             {
-                _sprite.sortingOrder += layerIncrementValue;
+                Undo.RecordObjects(_sprites, "Increment Sprites layer order");
+
+                foreach (SpriteRenderer _sprite in _sprites)
+                {
+                    _sprite.sortingOrder += layerIncrementValue;
+                }
+            }
+
+            if (_masks != null)
+            {
+                Undo.RecordObjects(_masks, "Increment Sprites layer order");
+
+                foreach (SpriteMask _mask in _masks)
+                {
+                    _mask.backSortingOrder += layerIncrementValue;
+                    _mask.frontSortingOrder += layerIncrementValue;
+                }
             }
         }
 

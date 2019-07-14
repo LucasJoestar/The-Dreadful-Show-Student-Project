@@ -249,6 +249,11 @@ public class TDS_Player : TDS_Character
 
     #region Constants
     /// <summary>
+    /// Time to wait to drop object instead of throwing it.
+    /// </summary>
+    public const float DROP_OBJECT_TIME = .35f;
+
+    /// <summary>
     /// Time during which the player is invulnerable after being hit.
     /// </summary>
     public const float INVULNERABILITY_TIME = .5f;
@@ -562,6 +567,45 @@ public class TDS_Player : TDS_Character
         TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.LostObject });
 
         return true;
+    }
+
+    /// <summary>
+    /// Start a coroutine to drop object if the button is maintained or to throw it.
+    /// </summary>
+    /// <returns></returns>
+    public virtual IEnumerator DropObjectCoroutine()
+    {
+        float _timer = DROP_OBJECT_TIME;
+
+        while (TDS_InputManager.GetButton(TDS_InputManager.INTERACT_BUTTON))
+        {
+            yield return null;
+            _timer -= Time.deltaTime;
+
+            // If no throwable anymore, break
+            if (!throwable) yield break;
+
+            if (_timer > 0) continue;
+
+            DropObject();
+            yield break;
+        }
+
+        // If no throwable anymore, break
+        if (!throwable) yield break;
+
+        // Throw the object
+        if (isGrounded)
+        {
+            IsPlayable = false;
+            SetAnim(PlayerAnimState.Throw);
+        }
+        else
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject_A"), new object[] { });
+        }
+
+        yield break;
     }
 
     /// <summary>
@@ -916,6 +960,7 @@ public class TDS_Player : TDS_Character
     {
         base.GetUp();
 
+        IsPlayable = true;
         IsInvulnerable = false;
     }
 
@@ -929,6 +974,7 @@ public class TDS_Player : TDS_Character
         // Set animation
         SetAnim(PlayerAnimState.Down);
 
+        IsPlayable = false;
         IsInvulnerable = true;
 
         return true;
@@ -1017,6 +1063,9 @@ public class TDS_Player : TDS_Character
         // If preparing an attack, stop it
         if (isPreparingAttack) StopPreparingAttack();
 
+        // If dodging, stop it
+        if (isDodging) StopDodge();
+
         // And if in combo, reset it
         if (comboCurrent.Count > 0) BreakCombo();
 
@@ -1070,15 +1119,7 @@ public class TDS_Player : TDS_Character
         // Interact !
         if (throwable && (playerType != PlayerType.Juggler))
         {
-            if (isGrounded)
-            {
-                IsPlayable = false;
-                SetAnim(PlayerAnimState.Throw);
-            }
-            else
-            {
-                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject_A"), new object[] { });
-            }
+            StartCoroutine(DropObjectCoroutine());
 
             return true;
         }
@@ -1264,8 +1305,6 @@ public class TDS_Player : TDS_Character
     /// </summary>
     private void CheckGrounded()
     {
-        if (isAttacking) return; 
-
         // Set the player as grounded if something is detected in the ground detection box
         bool _isGrounded = groundDetectionBox.Overlap(transform.position).Length > 0;
 
@@ -1295,7 +1334,7 @@ public class TDS_Player : TDS_Character
         }
 
         // Updates animator grounded informations
-        if (!_isGrounded && !isDodging)
+        if (!_isGrounded && !isDodging && !isAttacking)
         {
             if (rigidbody.velocity.y < 0) SetAnim(PlayerAnimState.Falling);
             else SetAnim(PlayerAnimState.Jumping);
@@ -1748,7 +1787,7 @@ public class TDS_Player : TDS_Character
         if (!photonView.isMine || isDead || !PhotonNetwork.connected) return;
 
         // Checks if the player is grounded or not, and all related elements
-        CheckGrounded();
+        if (IsPlayable) CheckGrounded();
     }
 
     // LateUpdate is called every frame, if the Behaviour is enabled
@@ -1824,7 +1863,7 @@ public class TDS_Player : TDS_Character
         AdjustPositionOnRigidbody();
 
         // If not playable or down, return
-        if (!IsPlayable || IsDown) return;
+        if (!IsPlayable) return;
 
         // Check the player inputs
         CheckMovementsInputs();
