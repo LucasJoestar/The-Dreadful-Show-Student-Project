@@ -399,6 +399,12 @@ public abstract class TDS_Character : TDS_Damageable
     }
 
     /// <summary>
+    /// Set the bonus damages of the actual attack.
+    /// </summary>
+    /// <param name="_bonusDamages"></param>
+    public virtual void SetBonusDamages(int _bonusDamages) => hitBox.BonusDamages = _bonusDamages;
+
+    /// <summary>
     /// Stop or ends the current attack of the character.
     /// </summary>
     public virtual void StopAttack()

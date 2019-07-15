@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class TDS_FatLady : TDS_Player 
 {
@@ -158,6 +159,31 @@ public class TDS_FatLady : TDS_Player
     /// Set the amount of food of the Fat Lady to its maximum.
     /// </summary>
     public void SetFoodToMax() => FoodCurrent = foodMax;
+    #endregion
+
+    #region Attacks
+    /// <summary>
+    /// Makes the player prepare an attack.
+    /// By default, the player is supposed to just directly attack ; but for certain situations, the attack might not played directly : that's the goal of this method, to be override to rewrite a pre-attack behaviour.
+    /// </summary>
+    /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
+    protected override IEnumerator PrepareAttack(bool _isLight)
+    {
+        if (!_isLight)
+        {
+            SetAnim(PlayerAnimState.HeavyAttack);
+
+            while (TDS_InputManager.GetButton(TDS_InputManager.HEAVY_ATTACK_BUTTON))
+            {
+                // Charge attack while holding attack button down
+                yield return null;
+            }
+        }
+
+        // Executes the attack
+        preparingAttackCoroutine = StartCoroutine(base.PrepareAttack(_isLight));
+        yield break;
+    }
     #endregion
 
     #region Animations

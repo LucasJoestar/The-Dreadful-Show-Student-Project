@@ -771,6 +771,7 @@ public class TDS_Player : TDS_Character
 
         CancelInvoke("BreakCombo");
 
+        SetBonusDamages(0);
         PreparingAttackCoroutine = StartCoroutine(PrepareAttack(_isLight));
     }
 

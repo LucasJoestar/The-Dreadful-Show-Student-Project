@@ -103,6 +103,11 @@ public class TDS_HitBox : MonoBehaviour
     public Dictionary<Collider, TDS_Damageable> TouchedObjects { get; private set; } = new Dictionary<Collider, TDS_Damageable>();
 
     /// <summary>
+    /// Bonus damages for the current attack.
+    /// </summary>
+    public int BonusDamages = 0;
+
+    /// <summary>
     /// All tags to hit.
     /// </summary>
     public Tags HittableTags = new Tags();
@@ -170,6 +175,7 @@ public class TDS_HitBox : MonoBehaviour
     public void Desactivate()
     {
         CurrentAttack = null;
+        BonusDamages = 0;
         collider.enabled = false;
         TouchedObjects.Clear();
         IsActive = false;
@@ -183,8 +189,8 @@ public class TDS_HitBox : MonoBehaviour
     /// <param name="_target">Target to hit.</param>
     private void InflictDamages(TDS_Damageable _target)
     {
-        int _randomDamages = CurrentAttack.GetDamages;
-        if (!_target.TakeDamage(_randomDamages, collider.transform.position)) return;
+        int _damages = CurrentAttack.GetDamages + BonusDamages;
+        if (!_target.TakeDamage(_damages, collider.transform.position)) return;
 
         // Apply attack effect
         if (!_target.IsDead) CurrentAttack.Effect.ApplyEffect(transform, _target);
