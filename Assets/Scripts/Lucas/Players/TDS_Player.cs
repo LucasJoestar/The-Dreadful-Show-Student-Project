@@ -1064,9 +1064,6 @@ public class TDS_Player : TDS_Character
         // If preparing an attack, stop it
         if (isPreparingAttack) StopPreparingAttack();
 
-        // If dodging, stop it
-        if (isDodging) StopDodge();
-
         // And if in combo, reset it
         if (comboCurrent.Count > 0) BreakCombo();
 
