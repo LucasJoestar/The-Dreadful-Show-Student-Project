@@ -43,6 +43,12 @@ TextureImporter:
     21300076: Fat Lady - Sprite Sheet_40
     21300078: FatLady_LightAttack#3_1
     21300080: FatLady_LightAttack#3_2
+    21300082: FatLady_Snack_1
+    21300084: FatLady_Snack_2
+    21300086: FatLady_Snack_3
+    21300088: FatLady_Snack_4
+    21300090: FatLady_Snack_5
+    21300092: FatLady_Snack_6
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -395,7 +401,7 @@ TextureImporter:
         width: 240
         height: 340
       alignment: 9
-      pivot: {x: 0.7, y: 0.015}
+      pivot: {x: 0.65, y: 0.015}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -415,7 +421,7 @@ TextureImporter:
         width: 262
         height: 299
       alignment: 9
-      pivot: {x: 0.75, y: 0}
+      pivot: {x: 0.6, y: -0.025}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -530,12 +536,12 @@ TextureImporter:
       name: FatLady_Down_3
       rect:
         serializedVersion: 2
-        x: 1796
-        y: 3146
+        x: 1797
+        y: 3145
         width: 349
         height: 235
       alignment: 9
-      pivot: {x: 0.85, y: 0.3}
+      pivot: {x: 0.65, y: 0.275}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -575,7 +581,7 @@ TextureImporter:
         width: 228
         height: 306
       alignment: 9
-      pivot: {x: 0.675, y: 0.02}
+      pivot: {x: 0.55, y: 0.02}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -915,13 +921,133 @@ TextureImporter:
         width: 278
         height: 437
       alignment: 9
-      pivot: {x: 0.6, y: 0.01}
+      pivot: {x: 0.575, y: 0.01}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: da91baa6a9ebd48428818791155ab407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Snack_1
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 1644
+        width: 303
+        height: 468
+      alignment: 9
+      pivot: {x: 0.5, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ad1898fab5fb4f47a659af7ddc05c60
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Snack_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1648
+        width: 291
+        height: 376
+      alignment: 9
+      pivot: {x: 0.5, y: 0.015}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e03af8e2779223444af3dd214b0b2348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Snack_3
+      rect:
+        serializedVersion: 2
+        x: 859
+        y: 1644
+        width: 325
+        height: 349
+      alignment: 9
+      pivot: {x: 0.4975, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43663aa61c82f7f4f81af44b1fcb9cfb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Snack_4
+      rect:
+        serializedVersion: 2
+        x: 1288
+        y: 1644
+        width: 324
+        height: 351
+      alignment: 9
+      pivot: {x: 0.5, y: 0.0125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d7c6236b80ebad42b189ba9800b62de
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Snack_5
+      rect:
+        serializedVersion: 2
+        x: 1704
+        y: 1648
+        width: 328
+        height: 343
+      alignment: 9
+      pivot: {x: 0.5, y: 0.015}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e2b3d3f6ae1efc409ef14abe742f4ec
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FatLady_Snack_6
+      rect:
+        serializedVersion: 2
+        x: 2135
+        y: 1648
+        width: 325
+        height: 348
+      alignment: 9
+      pivot: {x: 0.499, y: 0.015}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81c53e684c4feaf429ba7d27b34b6a3e
       vertices: []
       indices: 
       edges: []

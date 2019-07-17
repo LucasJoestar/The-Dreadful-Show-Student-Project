@@ -1051,24 +1051,40 @@ public class TDS_Juggler : TDS_Player
     /// <summary>
     /// Checks inputs for this player's all actions.
     /// </summary>
-    public override void CheckActionsInputs()
+    /// <returns>Returns an int indicating at which step the method returned :
+    /// 0 if everything went good ;
+    /// A negative number if an action has been performed ;
+    /// 1 if dodging, parrying or preparing an attack ;
+    /// 2 if having a throwable ;
+    /// and 3 if attacking.</returns>
+    public override int CheckActionsInputs()
     {
-        base.CheckActionsInputs();
+        int _result = base.CheckActionsInputs();
+        if (_result != 0) return _result;
 
         // Check throw
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.THROW_BUTTON)) PrepareThrow();
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.THROW_BUTTON))
+        {
+            PrepareThrow();
+            return -1;
+        }
 
         // Check aiming point / angle changes
         if (TDS_InputManager.GetAxisDown(TDS_InputManager.D_PAD_X_Axis) && (Throwables.Count > 0))
         {
             SwitchThrowable((int)Input.GetAxis(TDS_InputManager.D_PAD_X_Axis));
+            return -1;
         }
 
         if (TDS_InputManager.GetAxis(TDS_InputManager.D_PAD_Y_Axis))
         {
             AimAngle += Input.GetAxis(TDS_InputManager.D_PAD_Y_Axis);
             ThrowAimingPoint = throwAimingPoint;
+            return -1;
         }
+
+        // If everything went good, return 0
+        return 0;
     }
     #endregion
 

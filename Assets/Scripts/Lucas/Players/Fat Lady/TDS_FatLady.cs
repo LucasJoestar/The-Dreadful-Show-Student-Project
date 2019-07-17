@@ -26,6 +26,8 @@ public class TDS_FatLady : TDS_Player
 	*/
 
     #region Fields / Properties
+
+    #region Variables
     /// <summary>Backing field for <see cref="IsBerserk"/>.</summary>
     [SerializeField] private bool isBerserk = false;
 
@@ -41,6 +43,40 @@ public class TDS_FatLady : TDS_Player
 
             if (value) SetFatLadyAnim(FatLadyAnimState.Berserk);
             else SetFatLadyAnim(FatLadyAnimState.Pacific);
+        }
+    }
+
+    /// <summary>Backing field for <see cref="IsSnackAvailable"/></summary>
+    [SerializeField] private bool isSnackAvailable = true;
+
+    /// <summary>
+    /// Indicates if the Fat Lady snack is ready for use.
+    /// </summary>
+    public bool IsSnackAvailable
+    {
+        get { return isSnackAvailable; }
+        set
+        {
+            if (restaureSnackCoroutine != null) StopCoroutine(restaureSnackCoroutine);
+            if (!value) restaureSnackCoroutine = StartCoroutine(RestauringSnack());
+
+            isSnackAvailable = value;
+        }
+    }
+
+    /// <summary>Backing field for <see cref="SnackRestaureTime"/>.</summary>
+    [SerializeField] private float snackRestaureTime = 30;
+
+    /// <summary>
+    /// Current amount of food the Fat Lady has.
+    /// </summary>
+    public float SnackRestaureTime
+    {
+        get { return snackRestaureTime; }
+        set
+        {
+            if (value < 0) value = 0;
+            snackRestaureTime = value;
         }
     }
 
@@ -60,54 +96,37 @@ public class TDS_FatLady : TDS_Player
         }
     }
 
-
-    /// <summary>Backing field for <see cref="FoodCurrent"/>.</summary>
-    [SerializeField] private int foodCurrent = 0;
-
-    /// <summary>
-    /// Current amount of food the Fat Lady has.
-    /// </summary>
-    public int FoodCurrent
-    {
-        get { return foodCurrent; }
-        set
-        {
-            value = Mathf.Clamp(value, 0, foodMax);
-            foodCurrent = value;
-        }
-    }
-
-    /// <summary>Backing field for <see cref="FoodMax"/>.</summary>
-    [SerializeField] private int foodMax = 3;
+    /// <summary>Backing field for <see cref="SnackHealValue"/>.</summary>
+    [SerializeField] private int snackHealValue = 3;
 
     /// <summary>
-    /// Maximum amount of food at the Fat Lady's disposal.
+    /// Heal value when snacking.
     /// </summary>
-    public int FoodMax
+    public int SnackHealValue
     {
-        get { return foodMax; }
+        get { return snackHealValue; }
         set
         {
             if (value < 0) value = 0;
-            foodMax = value;
+            snackHealValue = value;
         }
     }
+    #endregion
 
-    /// <summary>Backing field for <see cref="FoodHealValue"/>.</summary>
-    [SerializeField] private int foodHealValue = 3;
-
+    #region Coroutines
     /// <summary>
-    /// Heal value when eating some food.
+    /// Coroutine used to restaure the Fat Lady's snack.
     /// </summary>
-    public int FoodHealValue
-    {
-        get { return foodHealValue; }
-        set
-        {
-            if (value < 0) value = 0;
-            foodHealValue = value;
-        }
-    }
+    private Coroutine restaureSnackCoroutine = null;
+    #endregion
+
+    #region Memory & Debugs
+    /// <summary>
+    /// Timer used to restaure the snack.
+    /// </summary>
+    [SerializeField] private float snackRestaureTimer = 0;
+    #endregion
+
     #endregion
 
     #region Methods
@@ -129,36 +148,53 @@ public class TDS_FatLady : TDS_Player
     }
 
     /// <summary>
-    /// Starts the animation to eat some food if having in stock.
+    /// Coroutine restauring the Fat Lady's snack.
     /// </summary>
-    /// <returns>Returns false if having nothing to eat or being at maximum health value, true otherwise.</returns>
-    public bool Eat()
+    public void RestaureSnack() => IsSnackAvailable = true;
+
+    /// <summary>
+    /// Coroutine restauring the Fat Lady's snack after a certain time amount.
+    /// </summary>
+    private IEnumerator RestauringSnack()
     {
-        if ((foodCurrent == 0) || (healthCurrent == healthMax)) return false;
+        snackRestaureTimer = 0;
 
-        SetFatLadyAnim(FatLadyAnimState.Eat);
+        while (snackRestaureTimer < snackRestaureTime)
+        {
+            yield return null;
+            snackRestaureTimer += Time.deltaTime;
+        }
 
-        return true;
+        RestaureSnack();
     }
 
     /// <summary>
     /// Heal the Fat Lady be eating food if having some.
     /// </summary>
     /// <returns>Returns true if having some food to eat, false otherwise.</returns>
-    public bool FoodHeal()
+    public bool SnackHeal()
     {
-        if (foodCurrent == 0) return false;
+        if (!isSnackAvailable) return false;
 
-        Heal(foodHealValue);
-        FoodCurrent--;
+        Heal(snackHealValue);
+        IsSnackAvailable = false;
 
         return true;
     }
 
     /// <summary>
-    /// Set the amount of food of the Fat Lady to its maximum.
+    /// Starts the animation to eat some food if having in stock.
     /// </summary>
-    public void SetFoodToMax() => FoodCurrent = foodMax;
+    /// <returns>Returns false if having nothing to eat or being at maximum health value, true otherwise.</returns>
+    public bool StartEatingSnack()
+    {
+        if ((!isSnackAvailable) || (healthCurrent == healthMax)) return false;
+
+        SetFatLadyAnim(FatLadyAnimState.Snack);
+        FreezePlayer();
+
+        return true;
+    }
     #endregion
 
     #region Attacks
@@ -184,6 +220,46 @@ public class TDS_FatLady : TDS_Player
         preparingAttackCoroutine = StartCoroutine(base.PrepareAttack(_isLight));
         yield break;
     }
+
+    /// <summary>
+    /// Stops the player from preparing an attack.
+    /// </summary>
+    /// <returns>Returns true if successfully stopped preparing an attack, false if none was in preparation.</returns>
+    public override bool StopPreparingAttack()
+    {
+        if (!base.StopPreparingAttack()) return false;
+
+        // If combo at zero, reset animation manually (automatically set if stopping a combo)
+        if (comboCurrent.Count == 0) SetAnim(PlayerAnimState.ComboBreaker);
+        return true;
+    }
+    #endregion
+
+    #region Inputs
+    /// <summary>
+    /// Checks inputs for this player's all actions.
+    /// </summary>
+    /// <returns>Returns an int indicating at which step the method returned :
+    /// 0 if everything went good ;
+    /// A negative number if an action has been performed ;
+    /// 1 if dodging, parrying or preparing an attack ;
+    /// 2 if having a throwable ;
+    /// and 3 if attacking.</returns>
+    public override int CheckActionsInputs()
+    {
+        int _result = base.CheckActionsInputs();
+        if (_result != 0) return _result;
+
+        // Check if it's snack time
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.SNACK_BUTTON) && isGrounded)
+        {
+            StartEatingSnack();
+            return -1;
+        }
+
+        // If everything went good, return 0
+        return 0;
+    }
     #endregion
 
     #region Animations
@@ -206,6 +282,10 @@ public class TDS_FatLady : TDS_Player
 
             case FatLadyAnimState.Pacific:
                 animator.SetBool("IsBerserk", false);
+                break;
+
+            case FatLadyAnimState.Snack:
+                animator.SetTrigger("Snack");
                 break;
 
             default:
@@ -238,13 +318,15 @@ public class TDS_FatLady : TDS_Player
         OnHealthChanged += CheckHealthStatus;
 
         // Set food to maximum when hitting a checkpoint
-        TDS_Checkpoint.OnCheckpointActivated += SetFoodToMax;
+        TDS_Checkpoint.OnCheckpointActivated += RestaureSnack;
     }
 
     // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
-        TDS_Checkpoint.OnCheckpointActivated -= SetFoodToMax;
+        base.OnDestroy();
+
+        TDS_Checkpoint.OnCheckpointActivated -= RestaureSnack;
     }
 
     // Use this for initialization

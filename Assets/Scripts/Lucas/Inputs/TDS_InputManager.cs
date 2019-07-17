@@ -131,6 +131,11 @@ public class TDS_InputManager : MonoBehaviour
     public const string RIGHT_STICK_Y_AXIS = "Right Stick Y";
 
     /// <summary>
+    /// Name of the button used to get a snack.
+    /// </summary>
+    public const string SNACK_BUTTON = "Snack";
+
+    /// <summary>
     /// Name of the button used to confirm something.
     /// </summary>
     public const string SUBMIT_BUTTON = "Submit";

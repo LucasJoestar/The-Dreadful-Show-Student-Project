@@ -176,7 +176,7 @@ public enum FatLadyAnimState
 {
     Berserk,
     Pacific,
-    Eat
+    Snack
 }
 
 /// <summary>

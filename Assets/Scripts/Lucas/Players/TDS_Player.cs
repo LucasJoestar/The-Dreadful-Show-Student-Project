@@ -1118,7 +1118,6 @@ public class TDS_Player : TDS_Character
         if (throwable && (playerType != PlayerType.Juggler))
         {
             StartCoroutine(DropObjectCoroutine());
-
             return true;
         }
 
@@ -1658,40 +1657,73 @@ public class TDS_Player : TDS_Character
     /// <summary>
     /// Checks inputs for this player's all actions.
     /// </summary>
-    public virtual void CheckActionsInputs()
+    /// <returns>Returns an int indicating at which step the method returned :
+    /// 0 if everything went good ;
+    /// A negative number if an action has been performed ;
+    /// 1 if dodging, parrying or preparing an attack ;
+    /// 2 if having a throwable ;
+    /// and 3 if attacking.</returns>
+    public virtual int CheckActionsInputs()
     {
-        // If dodging, parrying or attacking, do not perform action
-        if (isDodging || isParrying || isPreparingAttack) return;
+        // If dodging, parrying or attacking, do not perform action, and return 1
+        if (isDodging || isParrying || isPreparingAttack) return 1;
 
         // Check non-agressive actions
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.INTERACT_BUTTON)) Interact();
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.INTERACT_BUTTON))
+        {
+            Interact();
+            return -1;
+        }
 
-        // If having a throwable, return
-        if (throwable) return;
+        // If having a throwable, return 2
+        if (throwable && (playerType != PlayerType.Juggler)) return 2;
 
         // Checks potentially agressives actions
         if (!IsPacific && isGrounded)
         {
-            if (TDS_InputManager.GetButtonDown(TDS_InputManager.LIGHT_ATTACK_BUTTON)) StartPreparingAttack(true);
-
-            else if (TDS_InputManager.GetButtonDown(TDS_InputManager.HEAVY_ATTACK_BUTTON)) StartPreparingAttack(false);
-
-            else if (TDS_InputManager.GetButtonDown(TDS_InputManager.CATCH_BUTTON)) Catch();
-
-            else if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUPER_ATTACK_BUTTON)) SuperAttack();
-
-            else if (TDS_InputManager.GetButtonDown(TDS_InputManager.USE_OBJECT_BUTTON))
+            if (TDS_InputManager.GetButtonDown(TDS_InputManager.LIGHT_ATTACK_BUTTON))
+            {
+                StartPreparingAttack(true);
+                return -1;
+            }
+            if (TDS_InputManager.GetButtonDown(TDS_InputManager.HEAVY_ATTACK_BUTTON))
+            {
+                StartPreparingAttack(false);
+                return -1;
+            }
+            if (TDS_InputManager.GetButtonDown(TDS_InputManager.CATCH_BUTTON))
+            {
+                Catch();
+                return -1;
+            }
+            if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUPER_ATTACK_BUTTON))
+            {
+                SuperAttack();
+                return -1;
+            }
+            if (TDS_InputManager.GetButtonDown(TDS_InputManager.USE_OBJECT_BUTTON))
             {
                 UseObject();
-                return;
+                return -1;
             }
         }
 
-        if (isAttacking) return;
+        // If attacking, return 3
+        if (isAttacking) return 3;
 
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.DODGE_BUTTON) && !IsParalyzed) StartDodge();
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.DODGE_BUTTON) && !IsParalyzed)
+        {
+            StartDodge();
+            return -1;
+        }
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.PARRY_BUTTON) && isGrounded)
+        {
+            StartCoroutine(Parry());
+            return -1;
+        }
 
-        else if (TDS_InputManager.GetButtonDown(TDS_InputManager.PARRY_BUTTON) && isGrounded) StartCoroutine(Parry());
+        // If everything went good, return 0
+        return 0;
     }
 
     /// <summary>
@@ -1868,7 +1900,8 @@ public class TDS_Player : TDS_Character
         CheckActionsInputs();
 	}
 
-    protected void OnDestroy()
+    // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
+    protected virtual void OnDestroy()
     {
         TDS_LevelManager.Instance?.RemoveOnlinePlayer(this); 
     }

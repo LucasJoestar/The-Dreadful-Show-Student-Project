@@ -38,17 +38,20 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
     /// <summary>SerializedProperties for <see cref="TDS_FatLady.isBerserk"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isBerserk = null;
 
+    /// <summary>SerializedProperties for <see cref="TDS_FatLady.isSnackAvailable"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isSnackAvailable = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_FatLady.snackRestaureTime"/> of type <see cref="float"/>.</summary>
+    private SerializedProperty snackRestaureTime = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_FatLady.snackRestaureTimer"/> of type <see cref="float"/>.</summary>
+    private SerializedProperty snackRestaureTimer = null;
+
     /// <summary>SerializedProperties for <see cref="TDS_FatLady.berserkHealthStep"/> of type <see cref="int"/>.</summary>
     private SerializedProperty berserkHealthStep = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_FatLady.foodCurrent"/> of type <see cref="int"/>.</summary>
-    private SerializedProperty foodCurrent = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_FatLady.foodHealValue"/> of type <see cref="int"/>.</summary>
-    private SerializedProperty foodHealValue = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_FatLady.foodMax"/> of type <see cref="int"/>.</summary>
-    private SerializedProperty foodMax = null;
+    /// <summary>SerializedProperties for <see cref="TDS_FatLady.snackHealValue"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty snackHealValue = null;
     #endregion
 
     #region Foldouts
@@ -212,24 +215,30 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
             fatLadies.ForEach(f => f.BerserkHealthStep = berserkHealthStep.intValue);
             serializedObject.Update();
         }
-        if (TDS_EditorUtility.IntSlider("Current Food", "Amount of food the Fat Lady is currently carrying on", foodCurrent, 0, foodMax.intValue))
-        {
-            fatLadies.ForEach(f => f.FoodCurrent = foodCurrent.intValue);
-            serializedObject.Update();
-        }
 
         GUILayout.Space(3);
-        TDS_EditorUtility.ProgressBar(25, (float)foodCurrent.intValue / foodMax.intValue, "Food");
-        GUILayout.Space(3);
 
-        if (TDS_EditorUtility.IntField("Max Food", "Maximum amount of food the Fat Lady can carry", foodMax))
+        if (Application.isPlaying)
         {
-            fatLadies.ForEach(f => f.FoodMax = foodMax.intValue);
+            if (TDS_EditorUtility.Toggle("Snack Available", "Indicates if the Fat Lady's snack is available for use", isSnackAvailable))
+            {
+                fatLadies.ForEach(f => f.IsSnackAvailable = isSnackAvailable.boolValue);
+                serializedObject.Update();
+            }
+
+            GUILayout.Space(3);
+            TDS_EditorUtility.ProgressBar(25, isSnackAvailable.boolValue ? 0 : snackRestaureTimer.floatValue / snackRestaureTime.floatValue, "Snack Restauration");
+            GUILayout.Space(3);
+        }
+
+        if (TDS_EditorUtility.FloatField("Snack Restaure Time", "Time i takes to restaure the snack after eating (in seconds)", snackRestaureTime))
+        {
+            fatLadies.ForEach(f => f.SnackRestaureTime = snackRestaureTime.floatValue);
             serializedObject.Update();
         }
-        if (TDS_EditorUtility.IntField("Food Heal Value", "Heal value when eating some food", foodHealValue))
+        if (TDS_EditorUtility.IntField("Snack Heal Value", "Heal value when snacking", snackHealValue))
         {
-            fatLadies.ForEach(f => f.FoodHealValue = foodHealValue.intValue);
+            fatLadies.ForEach(f => f.SnackHealValue = snackHealValue.intValue);
             serializedObject.Update();
         }
     }
@@ -248,10 +257,11 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
 
         // Get the serializedProperties from the serializedObject
         isBerserk = serializedObject.FindProperty("isBerserk");
+        isSnackAvailable = serializedObject.FindProperty("isSnackAvailable");
+        snackRestaureTime = serializedObject.FindProperty("snackRestaureTime");
+        snackRestaureTimer = serializedObject.FindProperty("snackRestaureTimer");
         berserkHealthStep = serializedObject.FindProperty("berserkHealthStep");
-        foodCurrent = serializedObject.FindProperty("foodCurrent");
-        foodHealValue = serializedObject.FindProperty("foodHealValue");
-        foodMax = serializedObject.FindProperty("foodMax");
+        snackHealValue = serializedObject.FindProperty("snackHealValue");
 
         // Loads the editor folded & unfolded values of this script
         isFatLadyUnfolded = EditorPrefs.GetBool("isFatLadyUnfolded", isFatLadyUnfolded);
