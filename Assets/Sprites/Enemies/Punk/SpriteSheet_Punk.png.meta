@@ -2,61 +2,61 @@ fileFormatVersion: 2
 guid: 8dfd914cb807d2e4589e16acccba25a7
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Punk_Run01
-    21300002: Punk_Run02
-    21300004: Punk_Run03
-    21300006: Punk_Run04
-    21300008: Punk_Idle01
-    21300010: Punk_Idle02
-    21300012: Punk_Death01
-    21300014: Punk_Death02
-    21300016: Punk_Death03
-    21300018: Punk_Death04
-    21300020: Punk_Death05
+    21300000: Punk_OldRun01
+    21300002: Punk_RunOld02
+    21300004: Punk_RunOld03
+    21300006: Punk_RunOld04
+    21300008: Punk_IdleOld01
+    21300010: Punk_IdleOld02
+    21300012: Punk_DeathOld01
+    21300014: Punk_DeathOld02
+    21300016: Punk_DeathOld03
+    21300018: Punk_DeathOld04
+    21300020: Punk_DeathOld05
     21300022: Punk_Hit01
-    21300024: Punk_Grounded01
-    21300026: Punk_Grounded02
-    21300028: Punk_Grounded03
-    21300030: Punk_Grounded04
-    21300032: Punk_Grounded05
-    21300034: Punk_Grounded06
-    21300036: Punk_Grounded07
-    21300038: Punk_Grounded08
-    21300040: Punk_Grounded09
-    21300042: Punk_Run01
-    21300044: Punk_Run02
-    21300046: Punk_Run03
-    21300048: Punk_Run04
-    21300050: Punk_Idle01
-    21300052: Punk_Idle02
-    21300054: Punk_Death01
-    21300056: Punk_Death02
-    21300058: Punk_Death03
-    21300060: Punk_Death04
-    21300062: Punk_Death05
-    21300064: Punk_Hit
-    21300066: Punk_Grounded01
-    21300068: Punk_Headbutt01
-    21300070: Punk_Headbutt02
+    21300024: Punk_GroundedOld01
+    21300026: Punk_GroundedOld02
+    21300028: Punk_GroundedOld03
+    21300030: Punk_GroundedOld04
+    21300032: Punk_GroundedOld05
+    21300034: Punk_GroundedOld06
+    21300036: Punk_GroundedOld07
+    21300038: Punk_GroundedOld08
+    21300040: Punk_GroundedOld09
+    21300042: Punk_OldRun01
+    21300044: Punk_RunOld02
+    21300046: Punk_RunOld03
+    21300048: Punk_RunOld04
+    21300050: Punk_IdleOld01
+    21300052: Punk_IdleOld02
+    21300054: Punk_DeathOld01
+    21300056: Punk_DeathOld02
+    21300058: Punk_DeathOld03
+    21300060: Punk_DeathOld04
+    21300062: Punk_DeathOld05
+    21300064: Punk_HitOld
+    21300066: Punk_GroundedOld01
+    21300068: Punk_HeadbuttOld01
+    21300070: Punk_HeadbuttOld02
     21300072: Punk_Heabutt3
     21300074: Punk_Heabutt4
     21300076: Punk_Heabutt03
     21300078: Punk_Heabutt04
-    21300080: Punk_Headbutt03
-    21300082: Punk_Headbutt04
-    21300084: Punk_Pick01
-    21300086: Punk_PickUp02
-    21300088: Punk_PickUp03
-    21300090: Punk_Throw01
-    21300092: Punk_Throw02
-    21300094: Punk_Throw03
-    21300096: Punk_Throw04
-    21300098: Punk_Throw05
-    21300100: Punk_Throw06
-    21300102: Punk_Kick01
-    21300104: Punk_Kick02
-    21300106: Punk_Taunt01
-    21300108: Punk_Taunt02
+    21300080: Punk_HeadbuttOld03
+    21300082: Punk_HeadbuttOld04
+    21300084: Punk_PickOld01
+    21300086: Punk_PickUpOld02
+    21300088: Punk_PickUpOld03
+    21300090: Punk_ThrowOld01
+    21300092: Punk_ThrowOld02
+    21300094: Punk_ThrowOld03
+    21300096: Punk_ThrowOld04
+    21300098: Punk_ThrowOld05
+    21300100: Punk_ThrowOld06
+    21300102: Punk_KickOld01
+    21300104: Punk_KickOld02
+    21300106: Punk_TauntOld01
+    21300108: Punk_TauntOld02
     21300110: Punk_Taunt03
     21300112: Punk_Taunt04
     21300114: Punk_Crowbar01
@@ -70,6 +70,18 @@ TextureImporter:
     21300130: Punk_IdleObj01
     21300132: Punk_IdleObj02
     21300134: Punk_RunObj04
+    21300136: Punk_TauntOld03
+    21300138: Punk_TauntOld04
+    21300140: Punk_CrowbarOld01
+    21300142: Punk_CrowbarOld02
+    21300144: Punk_CrowbarOld03
+    21300146: Punk_CrowbarOld04
+    21300148: Punk_RunObjOld01
+    21300150: Punk_RunObjOld02
+    21300152: Punk_RunObjOld03
+    21300154: Punk_RunObjOld04
+    21300156: Punk_IdleObjOld01
+    21300158: Punk_IdleObjOld02
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -152,7 +164,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Punk_Run01
+      name: Punk_OldRun01
       rect:
         serializedVersion: 2
         x: 78
@@ -172,7 +184,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Run02
+      name: Punk_RunOld02
       rect:
         serializedVersion: 2
         x: 293
@@ -192,11 +204,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Run03
+      name: Punk_RunOld03
       rect:
         serializedVersion: 2
         x: 489
-        y: 3731
+        y: 3736
         width: 176
         height: 296
       alignment: 7
@@ -212,7 +224,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Run04
+      name: Punk_RunOld04
       rect:
         serializedVersion: 2
         x: 728
@@ -232,7 +244,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Idle01
+      name: Punk_IdleOld01
       rect:
         serializedVersion: 2
         x: 1011
@@ -252,7 +264,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Idle02
+      name: Punk_IdleOld02
       rect:
         serializedVersion: 2
         x: 1220
@@ -272,7 +284,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Death01
+      name: Punk_DeathOld01
       rect:
         serializedVersion: 2
         x: 1481
@@ -292,7 +304,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Death02
+      name: Punk_DeathOld02
       rect:
         serializedVersion: 2
         x: 1696
@@ -312,7 +324,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Death03
+      name: Punk_DeathOld03
       rect:
         serializedVersion: 2
         x: 1943
@@ -332,7 +344,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Death04
+      name: Punk_DeathOld04
       rect:
         serializedVersion: 2
         x: 2249
@@ -352,7 +364,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Death05
+      name: Punk_DeathOld05
       rect:
         serializedVersion: 2
         x: 2537
@@ -372,7 +384,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Hit
+      name: Punk_HitOld
       rect:
         serializedVersion: 2
         x: 2964
@@ -392,7 +404,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded01
+      name: Punk_GroundedOld01
       rect:
         serializedVersion: 2
         x: 77
@@ -412,7 +424,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded02
+      name: Punk_GroundedOld02
       rect:
         serializedVersion: 2
         x: 302
@@ -432,7 +444,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded03
+      name: Punk_GroundedOld03
       rect:
         serializedVersion: 2
         x: 573
@@ -452,7 +464,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded04
+      name: Punk_GroundedOld04
       rect:
         serializedVersion: 2
         x: 967
@@ -472,10 +484,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded05
+      name: Punk_GroundedOld05
       rect:
         serializedVersion: 2
-        x: 1336
+        x: 1339
         y: 3341
         width: 323
         height: 88
@@ -492,7 +504,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded06
+      name: Punk_GroundedOld06
       rect:
         serializedVersion: 2
         x: 1726
@@ -512,7 +524,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded07
+      name: Punk_GroundedOld07
       rect:
         serializedVersion: 2
         x: 2073
@@ -532,7 +544,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded08
+      name: Punk_GroundedOld08
       rect:
         serializedVersion: 2
         x: 2352
@@ -552,7 +564,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Grounded09
+      name: Punk_GroundedOld09
       rect:
         serializedVersion: 2
         x: 2558
@@ -572,7 +584,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Headbutt01
+      name: Punk_HeadbuttOld01
       rect:
         serializedVersion: 2
         x: 76
@@ -592,7 +604,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Headbutt02
+      name: Punk_HeadbuttOld02
       rect:
         serializedVersion: 2
         x: 302
@@ -612,7 +624,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Headbutt03
+      name: Punk_HeadbuttOld03
       rect:
         serializedVersion: 2
         x: 512
@@ -632,7 +644,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Headbutt04
+      name: Punk_HeadbuttOld04
       rect:
         serializedVersion: 2
         x: 667
@@ -652,7 +664,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Pick01
+      name: Punk_PickOld01
       rect:
         serializedVersion: 2
         x: 1984
@@ -672,7 +684,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_PickUp02
+      name: Punk_PickUpOld02
       rect:
         serializedVersion: 2
         x: 2192
@@ -692,7 +704,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_PickUp03
+      name: Punk_PickUpOld03
       rect:
         serializedVersion: 2
         x: 2403
@@ -712,7 +724,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Throw01
+      name: Punk_ThrowOld01
       rect:
         serializedVersion: 2
         x: 2732
@@ -732,7 +744,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Throw02
+      name: Punk_ThrowOld02
       rect:
         serializedVersion: 2
         x: 2940
@@ -752,7 +764,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Throw03
+      name: Punk_ThrowOld03
       rect:
         serializedVersion: 2
         x: 3182
@@ -772,7 +784,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Throw04
+      name: Punk_ThrowOld04
       rect:
         serializedVersion: 2
         x: 3346
@@ -792,10 +804,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Throw05
+      name: Punk_ThrowOld05
       rect:
         serializedVersion: 2
-        x: 3531
+        x: 3534
         y: 2925
         width: 144
         height: 291
@@ -812,7 +824,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Throw06
+      name: Punk_ThrowOld06
       rect:
         serializedVersion: 2
         x: 3704
@@ -832,7 +844,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Kick01
+      name: Punk_KickOld01
       rect:
         serializedVersion: 2
         x: 3254
@@ -852,7 +864,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Kick02
+      name: Punk_KickOld02
       rect:
         serializedVersion: 2
         x: 3487
@@ -872,7 +884,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Taunt01
+      name: Punk_TauntOld01
       rect:
         serializedVersion: 2
         x: 2798
@@ -892,11 +904,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Taunt02
+      name: Punk_TauntOld02
       rect:
         serializedVersion: 2
-        x: 3127
-        y: 3334
+        x: 3130
+        y: 3339
         width: 158
         height: 297
       alignment: 7
@@ -912,7 +924,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Taunt03
+      name: Punk_TauntOld03
       rect:
         serializedVersion: 2
         x: 3367
@@ -932,10 +944,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Taunt04
+      name: Punk_TauntOld04
       rect:
         serializedVersion: 2
-        x: 3616
+        x: 3619
         y: 3334
         width: 156
         height: 296
@@ -952,7 +964,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Crowbar01
+      name: Punk_CrowbarOld01
       rect:
         serializedVersion: 2
         x: 915
@@ -972,7 +984,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Crowbar02
+      name: Punk_CrowbarOld02
       rect:
         serializedVersion: 2
         x: 1171
@@ -992,7 +1004,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Crowbar03
+      name: Punk_CrowbarOld03
       rect:
         serializedVersion: 2
         x: 1381
@@ -1012,7 +1024,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_Crowbar04
+      name: Punk_CrowbarOld04
       rect:
         serializedVersion: 2
         x: 1596
@@ -1032,7 +1044,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_RunObj01
+      name: Punk_RunObjOld01
       rect:
         serializedVersion: 2
         x: 65
@@ -1052,7 +1064,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_RunObj02
+      name: Punk_RunObjOld02
       rect:
         serializedVersion: 2
         x: 319
@@ -1072,7 +1084,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_RunObj03
+      name: Punk_RunObjOld03
       rect:
         serializedVersion: 2
         x: 547
@@ -1092,7 +1104,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_RunObj04
+      name: Punk_RunObjOld04
       rect:
         serializedVersion: 2
         x: 814
@@ -1112,7 +1124,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_IdleObj01
+      name: Punk_IdleObjOld01
       rect:
         serializedVersion: 2
         x: 1055
@@ -1132,7 +1144,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Punk_IdleObj02
+      name: Punk_IdleObjOld02
       rect:
         serializedVersion: 2
         x: 1278
