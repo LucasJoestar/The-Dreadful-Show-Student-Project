@@ -56,13 +56,8 @@ public class TDS_Mime : TDS_Minion
     protected override IEnumerator Wander()
     {
         yield return base.Wander();
-
-        isWaiting = true;
-        SetAnimationState((int)EnemyAnimationState.Taunt); 
-        while(isWaiting)
-        {
-            yield return null; 
-        }
+        agent.StopAgent();
+        
     }
 
 

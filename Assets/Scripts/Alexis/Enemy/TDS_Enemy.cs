@@ -177,6 +177,11 @@ public abstract class TDS_Enemy : TDS_Character
     [SerializeField] protected float recoilTimeDeath = .1f;
 
     /// <summary>
+    /// Probability to taunt after wandering
+    /// </summary>
+    [SerializeField] protected float tauntProbability = 0; 
+
+    /// <summary>
     /// The max distance an enemy can throw an object
     /// </summary>
     [SerializeField] protected float throwRange = 1;
@@ -272,7 +277,7 @@ public abstract class TDS_Enemy : TDS_Character
         //If the enemy has no attack, return null
         if (attacks == null || attacks.Length == 0) return null;
         // Get all attacks that can hit the target
-        TDS_EnemyAttack[] _availableAttacks = attacks.Where(a => a.MaxRange > _distance).ToArray();
+        TDS_EnemyAttack[] _availableAttacks = attacks.Where(a => a.MaxRange > _distance && a.MinRange < _distance).ToArray();
         // If there is no attack in Range, return null
         if (_availableAttacks.Length == 0) return null;
         // Set a random to compare with the probabilities of the attackes
@@ -305,7 +310,8 @@ public abstract class TDS_Enemy : TDS_Character
             Debug.Log("No Attack");
             return false; 
         }
-        return Attacks.Any(a => a.MaxRange >= Mathf.Abs(transform.position.x - playerTarget.transform.position.x)) && Mathf.Abs(transform.position.z - playerTarget.transform.position.z) <=  collider.size.z;
+        float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x);
+        return Attacks.Any(a => a.MaxRange >= _distance) && Attacks.Any(a => a.MinRange <= _distance) && Mathf.Abs(transform.position.z - playerTarget.transform.position.z) <=  collider.size.z;
     }
 
     /// <summary>
@@ -729,12 +735,22 @@ public abstract class TDS_Enemy : TDS_Character
             Flip();
         }
         SetAnimationState((int)EnemyAnimationState.Idle);
-        yield return new WaitForSeconds(Random.Range(1,5)); 
+        yield return new WaitForSeconds(Random.Range(1,5));
+        isWaiting = (Random.value * 100) <= tauntProbability;
+        if(isWaiting)
+        {
+            SetAnimationState((int)EnemyAnimationState.Taunt);
+            while (isWaiting)
+            {
+                yield return null;
+            }
+        }
         playerTarget = SearchTarget(); 
         if (playerTarget)
             enemyState = EnemyState.ComputingPath;
         else
             enemyState = EnemyState.Searching;
+        yield return null; 
     }
     #endregion
 
@@ -954,6 +970,16 @@ public abstract class TDS_Enemy : TDS_Character
     {
         //if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateLifeBar"), new object[] { _health });
         base.UpdateLifeBar(_health);
+    }
+
+    /// <summary>
+    /// Called when the bringing target has stopped
+    /// </summary>
+    public void TargetBrought()
+    {
+        BringingTarget.OnStopBringingCloser -= this.TargetBrought;
+        BringingTarget = null;
+        SetAnimationTrigger("BringTargetCloser");
     }
     #endregion
 

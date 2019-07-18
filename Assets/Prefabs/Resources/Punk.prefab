@@ -258,6 +258,7 @@ MonoBehaviour:
   recoilDistance: 0.2
   recoilDistanceDeath: 2.2
   recoilTimeDeath: 0.35
+  tauntProbability: 15
   throwRange: 7
   wanderingRangeMin: 3.5
   wanderingRangeMax: 5
@@ -290,8 +291,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114288389468539316}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 25
+  instantiationId: 25
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114288389468539316

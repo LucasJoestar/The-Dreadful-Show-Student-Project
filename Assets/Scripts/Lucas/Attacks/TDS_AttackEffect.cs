@@ -152,6 +152,12 @@ public class TDS_AttackEffect
 
             case AttackEffectType.BringCloser:
                 _target.BringCloser(_target.transform.position.x - _attacker.transform.position.x);
+                if(_attacker is TDS_Enemy)
+                {
+                    ((TDS_Enemy)_attacker).SetAnimationTrigger("BringTargetCloser");
+                    ((TDS_Enemy)_attacker).BringingTarget = _target; 
+                    _target.OnStopBringingCloser += ((TDS_Enemy)_attacker).TargetBrought; 
+                }
                 break;
 
             default:

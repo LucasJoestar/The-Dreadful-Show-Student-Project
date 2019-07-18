@@ -139,6 +139,8 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     private SerializedProperty recoilDistanceDeath = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.recoilTimeDeath"/> of type <see cref="float"/>.</summary>
     private SerializedProperty recoilTimeDeath = null;
+    /// <summary>SerializedProperty for <see cref="TDS_Enemy.tauntProbability"/> of type <see cref="float"/>.</summary>
+    private SerializedProperty tauntProbability = null; 
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.enemyState"/> of type <see cref="EnemyState"/>.</summary>
     private SerializedProperty enemyState = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.attacks"/> of type <see cref="TDS_EnemyAttack[]"/>.</summary>
@@ -269,6 +271,7 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         TDS_EditorUtility.FloatSlider("Detection range", "The maximum distance of the field of view of the enemy", detectionRange, 1, 25);
         TDS_EditorUtility.FloatSlider("Wandering range Min", "The wandering distance around the targeted player when other enemies attacking an enemy", wanderingRangeMin, 1, wanderingRangeMax.floatValue);
         TDS_EditorUtility.FloatSlider("Wandering range Max", "The wandering distance around the targeted player when other enemies attacking an enemy", wanderingRangeMax, wanderingRangeMin.floatValue, 10);
+        TDS_EditorUtility.FloatSlider("Taunt Probability", "The chance to taunt after wandering", tauntProbability, 0, 100);
         GUILayout.Space(3);
 
         //Draw a header for the enemy down settings
@@ -315,6 +318,7 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         recoilDistance = serializedObject.FindProperty("recoilDistance");
         recoilDistanceDeath = serializedObject.FindProperty("recoilDistanceDeath");
         recoilTimeDeath = serializedObject.FindProperty("recoilTimeDeath");
+        tauntProbability = serializedObject.FindProperty("tauntProbability"); 
 
         enemyState = serializedObject.FindProperty("enemyState");
 
@@ -376,6 +380,7 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
                     break;
             }
             Handles.DrawWireDisc(_pos, Vector3.up, _attack.MaxRange);
+            Handles.DrawWireDisc(_pos, Vector3.up, _attack.MinRange);
             Handles.Label(_pos + new Vector3(_attack.MaxRange, 0), _attack.AttackName); 
         }
 

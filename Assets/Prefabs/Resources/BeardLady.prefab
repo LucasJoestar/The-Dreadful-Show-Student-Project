@@ -92,6 +92,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6197b2b48fb80d349b4a42bc7dd8191e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Owner: {fileID: 0}
+  PlayerSprite: {fileID: 0}
 --- !u!1 &4673729681779936063
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,6 +217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6197b2b48fb80d349b4a42bc7dd8191e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Owner: {fileID: 0}
+  PlayerSprite: {fileID: 0}
 --- !u!1 &7181379643535501126
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,6 +681,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider: {fileID: 7152534036635644258}
   Owner: {fileID: 0}
+  BonusDamages: 0
   HittableTags:
     ObjectTags:
     - Name: Boss
