@@ -606,7 +606,7 @@ public abstract class TDS_Character : TDS_Damageable
         // Drop object if having one
         if (throwable) DropObject();
 
-        if (bringingCloserCoroutine != null) StopCoroutine(bringingCloserCoroutine);
+        if (bringingCloserCoroutine != null) StopBringingCloser();
 
         IsDown = true;
 

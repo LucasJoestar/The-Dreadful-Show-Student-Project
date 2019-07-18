@@ -377,11 +377,7 @@ public abstract class TDS_Damageable : PunBehaviour
     /// <param name="_distance">Distance to browse.</param>
     public virtual bool BringCloser(float _distance)
     {
-        if (bringingCloserCoroutine != null)
-        {
-            StopCoroutine(bringingCloserCoroutine);
-            StopBringingCloser();
-        }
+        if (bringingCloserCoroutine != null) StopBringingCloser();
 
         bringingCloserCoroutine = StartCoroutine(BringingCloser(_distance));
 
@@ -405,8 +401,6 @@ public abstract class TDS_Damageable : PunBehaviour
             yield return null;
         }
         
-        bringingCloserCoroutine = null;
-
         StopBringingCloser();
     }
 
@@ -459,6 +453,7 @@ public abstract class TDS_Damageable : PunBehaviour
     /// </summary>
     protected virtual void StopBringingCloser()
     {
+        if (bringingCloserCoroutine != null) StopCoroutine(bringingCloserCoroutine);
         OnStopBringingCloser?.Invoke();
     }
     #endregion
