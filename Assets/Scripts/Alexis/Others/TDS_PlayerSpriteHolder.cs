@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TDS_PlayerSpriteHolder : MonoBehaviour 
 {
@@ -38,30 +35,37 @@ public class TDS_PlayerSpriteHolder : MonoBehaviour
 	*/
 
     #region Fields / Properties
-    public TDS_Player Owner { get; set; }
-    private SpriteRenderer playerSprite = null;
+    /// <summary>
+    /// Player associated to this script.
+    /// </summary>
+    public TDS_Player Owner = null;
+
+    /// <summary>
+    /// Sprite to check visibility.
+    /// </summary>
+    public SpriteRenderer PlayerSprite = null;
     #endregion
 
-    #region Methods
-
     #region Unity Methods
-    private void Start()
-    {
-        playerSprite = GetComponentInChildren<SpriteRenderer>(); 
-    }
-
+    // OnBecameInvisible is called when the renderer is no longer visible by any camera
     private void OnBecameInvisible()
     {
-        if (!Owner || Owner.IsDead || Owner.IsInvulnerable || !playerSprite.enabled || !Application.isPlaying ) return; 
+        if (!Owner || Owner.IsDead || Owner.IsInvulnerable || !PlayerSprite.enabled || !Application.isPlaying ) return; 
         TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(Owner, true);
     }
 
+    // OnBecameVisible is called when the renderer became visible by any camera
     private void OnBecameVisible()
     {
-        if (!Owner || Owner.IsDead || Owner.IsInvulnerable || !playerSprite.enabled || !Application.isPlaying) return;
+        if (!Owner || Owner.IsDead || Owner.IsInvulnerable || !PlayerSprite.enabled || !Application.isPlaying) return;
         TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(Owner, false);
     }
-    #endregion
 
+    // Use this for initialization
+    private void Start()
+    {
+        // If missing references, just disable it
+        if (!Owner || !PlayerSprite) enabled = false;
+    }
     #endregion
 }

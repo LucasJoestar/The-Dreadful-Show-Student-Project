@@ -1132,7 +1132,6 @@ public class TDS_Player : TDS_Character
         if (_throwable = _nearestObject.GetComponent<TDS_Throwable>())
         {
             GrabObject(_throwable);
-
             return true;
         }
 
@@ -1140,7 +1139,6 @@ public class TDS_Player : TDS_Character
         if (_whiteRabbit = _nearestObject.GetComponent<TDS_WhiteRabbit>())
         {
             _whiteRabbit.Use(this);
-
             return true;
         }
 
@@ -1803,7 +1801,8 @@ public class TDS_Player : TDS_Character
         }
         if(spriteHolder)
         {
-            spriteHolder.Owner = this; 
+            if (!spriteHolder.Owner) spriteHolder.Owner = this;
+            if (!spriteHolder.PlayerSprite) spriteHolder.PlayerSprite = sprite;
         }
         // Set animation on revive
         OnRevive += () => animator.SetTrigger("REVIVE");
