@@ -400,7 +400,8 @@ public abstract class TDS_Damageable : PunBehaviour
             _distance -= BRING_CLOSER_SPEED;
             yield return null;
         }
-        
+
+        yield return null;
         StopBringingCloser();
     }
 
