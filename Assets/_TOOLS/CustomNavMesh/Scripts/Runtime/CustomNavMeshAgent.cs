@@ -130,7 +130,7 @@ public class CustomNavMeshAgent : MonoBehaviour
     {
         get
         {
-            return radius * .75f;
+            return radius;
         }
         set
         {

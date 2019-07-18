@@ -68,13 +68,10 @@ public abstract class TDS_Boss : TDS_Enemy
     /// Get the next attack to cast independently of the distance
     /// </summary>
     /// <returns></returns>
-    protected override TDS_EnemyAttack GetAttack(float _distance = 0)
+    protected override TDS_EnemyAttack GetAttack()
     {
         if (attacks.Length == 0) return null;
         TDS_EnemyAttack[] _availableAttacks = attacks;
-
-        if (_distance != 0)
-            _availableAttacks = attacks.Where(a => a.MinRange > _distance).ToArray(); 
 
         // Set a random to compare with the probabilities of the attackes
         float _random = UnityEngine.Random.Range(0, _availableAttacks.Max(a => a.Probability));

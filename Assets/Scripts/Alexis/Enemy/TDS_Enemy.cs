@@ -264,8 +264,9 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     /// <param name="_distance">Distance between the agent and its target</param>
     /// <returns>Attack to cast</returns>
-    protected virtual TDS_EnemyAttack GetAttack(float _distance = 0)
+    protected virtual TDS_EnemyAttack GetAttack()
     {
+        float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x); 
         //If the enemy has no attack, return null
         if (attacks == null || attacks.Length == 0) return null;
         // Get all attacks that can hit the target
@@ -302,7 +303,7 @@ public abstract class TDS_Enemy : TDS_Character
             Debug.Log("No Attack");
             return false; 
         }
-        return Mathf.Abs(transform.position.x - playerTarget.transform.position.x) <= attacks.Min(a => a.MaxRange) && Mathf.Abs(transform.position.z - playerTarget.transform.position.z) <=  agent.Radius;
+        return Attacks.Any(a => a.MaxRange >= Mathf.Abs(transform.position.x - playerTarget.transform.position.x)) && Mathf.Abs(transform.position.z - playerTarget.transform.position.z) <=  collider.size.z;
     }
 
     /// <summary>
@@ -335,7 +336,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns>cooldown of the attack</returns>
     protected virtual float StartAttack()
     {
-        TDS_EnemyAttack _attack = GetAttack(Vector3.Distance(transform.position, playerTarget.transform.position));
+        TDS_EnemyAttack _attack = GetAttack();
         if (_attack == null)
         {
             return 0;
@@ -549,9 +550,9 @@ public abstract class TDS_Enemy : TDS_Character
             if (speedCurrent < speedMax)
             {
                 IncreaseSpeed();
-                yield return null;
             }
-            else yield return new WaitForSeconds(.1f);
+            yield return null;
+
             //Check if the area allow to grab object
             // If the enemy hasn't a throwable, check if he can grab one
             if (throwable == null && canThrow)
@@ -587,12 +588,7 @@ public abstract class TDS_Enemy : TDS_Character
                     }
                 }
             }
-            // if any attack can be casted 
-            if (AttackCanBeCasted())
-            {
-                enemyState = EnemyState.Attacking;
-                yield break; 
-            }
+
             //if the target is too far from the destination, recalculate the path
             // OR If there is too much enemy in contact with the target, compute path to wander
             // Or if the agent is out of the bounds
@@ -604,7 +600,14 @@ public abstract class TDS_Enemy : TDS_Character
                 enemyState = EnemyState.ComputingPath;
                 yield break; 
             }
+            // if any attack can be casted 
+            if (AttackCanBeCasted())
+            {
+                enemyState = EnemyState.Attacking;
+                yield break;
+            }
         }
+
         //Debug.Log("OUT"); 
         // At the end of the path, is the agent has to throw an object, throw it
         if (throwable)
@@ -708,17 +711,15 @@ public abstract class TDS_Enemy : TDS_Character
             if (speedCurrent < speedMax)
             {
                 IncreaseSpeed();
-                yield return null;
             }
-            else yield return new WaitForSeconds(.1f);
+            yield return null;
 
-            if(TDS_Camera.Instance.CurrentBounds.XMax < transform.position.x || TDS_Camera.Instance.CurrentBounds.XMin > transform.position.x)
+            if (TDS_Camera.Instance.CurrentBounds.XMax < transform.position.x || TDS_Camera.Instance.CurrentBounds.XMin > transform.position.x || Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) <= 1) 
             {
                 yield return new WaitForSeconds(.1f);
                 enemyState = EnemyState.ComputingPath;
                 yield break;
             }
-
         }
         agent.RemoveAvoidanceLayer(new string[] { "Player" });
         if ((isFacingRight && playerTarget.transform.position.x < transform.position.x) || (!isFacingRight && playerTarget.transform.position.x > transform.position.x))
@@ -974,7 +975,7 @@ public abstract class TDS_Enemy : TDS_Character
         }
         else if(Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) <= 1) 
         {
-            _offset.x = Random.Range(GetMinRange(), GetMaxRange()) - agent.Radius;
+            _offset.x = Random.Range(GetMinRange(), GetMaxRange()) - (agent.Radius);
             _hastoWander = false;
         }
         else
@@ -1043,6 +1044,12 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public void ActivateEnemyAfterTaunt()
     {
+        if (!PhotonNetwork.isMasterClient) return;
+        if (behaviourCoroutine != null)
+        {
+            isWaiting = false;
+            return;
+        }
         ActivateEnemy(); 
     }
 

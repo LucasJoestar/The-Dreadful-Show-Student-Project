@@ -79,42 +79,15 @@ public class TDS_MinionEditor : TDS_EnemyEditor
     #region Methods
     protected override void DrawSettings()
     {
-        GUILayout.Space(10);
-        Color _originalColor = GUI.backgroundColor;
+        base.DrawSettings();
 
-        GUI.backgroundColor = TDS_EditorUtility.BoxDarkColor;
-        EditorGUILayout.BeginVertical("HelpBox");
-
-        if (TDS_EditorUtility.Button("Minion", "Wrap / unwrap Punk class settings", TDS_EditorUtility.HeaderStyle)) IsMinionUnfolded = !isMinionUnfolded;
-        if (isMinionUnfolded)
-        {
-            GUI.backgroundColor = TDS_EditorUtility.BoxLightColor;
-            EditorGUILayout.BeginVertical("HelpBox");
-
-            //Draw a header for the enemy evolution settings
-            EditorGUILayout.LabelField("Attack Settings", TDS_EditorUtility.HeaderStyle);
-            TDS_EditorUtility.PropertyField("Minion Attacks", "", attacks);
-
-            GUILayout.Space(3); 
-
-            //Draw a header for the enemy evolution settings
-            EditorGUILayout.LabelField("Evolve Settings", TDS_EditorUtility.HeaderStyle);
-            TDS_EditorUtility.RadioToggle("Has evolved", "Is the enemy evolved", hasEvolved);
-
-            EditorGUILayout.EndVertical();
-        }
-
-        serializedObject.ApplyModifiedProperties(); 
-
-        EditorGUILayout.EndVertical();
-        GUI.backgroundColor = _originalColor;
+        EditorGUILayout.LabelField("Evolve", TDS_EditorUtility.HeaderStyle);
+        TDS_EditorUtility.RadioToggle("Has Evolved", "Is the minion evolved", hasEvolved); 
     }
 
     #region Unity Methods
     public override void OnInspectorGUI()
     {
-        DrawSettings();
-
         base.OnInspectorGUI();
     }
 
@@ -129,10 +102,14 @@ public class TDS_MinionEditor : TDS_EnemyEditor
 
         // Get the property
         hasEvolved = serializedObject.FindProperty("hasEvolved");
-        attacks = serializedObject.FindProperty("attacks"); 
 
         //Get fold bool
         isMinionUnfolded = EditorPrefs.GetBool("isMinionUnfolded", isMinionUnfolded);
+    }
+
+    protected override void OnSceneGUI()
+    {
+        base.OnSceneGUI();
     }
     #endregion
 

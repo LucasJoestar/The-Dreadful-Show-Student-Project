@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f663be0ccd78c234188a9cf5a087f69f, type: 3}
   m_Name: Punk_Kick
   m_EditorClassIdentifier: 
-  name: Kick
+  attackName: Kick
   Effect:
     EffectType: 0
     duration: 5
@@ -25,5 +25,6 @@ MonoBehaviour:
   description: Un coup de pied!
   AnimationID: 7
   cooldown: 1.5
-  maxRange: 1.5
+  maxRange: 1.2
+  minRange: 0
   probability: 33
