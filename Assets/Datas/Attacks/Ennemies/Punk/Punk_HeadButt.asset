@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f663be0ccd78c234188a9cf5a087f69f, type: 3}
   m_Name: Punk_HeadButt
   m_EditorClassIdentifier: 
-  name: HeadButt
+  attackName: HeadButt
   Effect:
     EffectType: 0
     duration: 5
@@ -25,5 +25,6 @@ MonoBehaviour:
   description: Coup de boule!
   AnimationID: 6
   cooldown: 1
-  maxRange: 1.5
+  maxRange: 1.2
+  minRange: 0
   probability: 33

@@ -248,7 +248,7 @@ public static class GeometryHelper
         }
         if (IsInAnyTriangle(_groundedPosition, _triangles))
         {
-            // Debug.Log("Return HitPoint");
+
             return _groundedPosition; 
         }
         //Get the closest triangle
@@ -265,7 +265,6 @@ public static class GeometryHelper
             }
         }
 
-        // Debug.Log("Def"); 
         return _triangle.CenterPosition;
     }
 
