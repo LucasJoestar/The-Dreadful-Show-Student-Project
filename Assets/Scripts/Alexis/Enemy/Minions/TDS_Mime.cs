@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random; 
 
 public class TDS_Mime : TDS_Minion 
 {
-	/* TDS_Mime :
+    /* TDS_Mime :
 	 *
 	 *	#####################
 	 *	###### PURPOSE ######
@@ -34,39 +35,58 @@ public class TDS_Mime : TDS_Minion
 	 *	-----------------------------------
 	*/
 
-	#region Events
+    #region Events
 
-	#endregion
+    #endregion
 
-	#region Fields / Properties
+    #region Fields / Properties
 
-	#endregion
+    #endregion
 
-	#region Methods
+    #region Methods
 
-	#region Original Methods
-
-	#endregion
-
-	#region Unity Methods
-	// Awake is called when the script instance is being loaded
-    private void Awake()
+    #region Original Methods
+    /// <summary>
+    /// Cast the wandering method 
+    /// When too much enemies attack the same player, the enemy has to wander 
+    /// Move until reaching a position then wait between 0 and 1 seconds before searching a new target
+    /// Before moving again, taunt
+    /// </summary>
+    /// <returns></returns>
+    protected override IEnumerator Wander()
     {
+        yield return base.Wander();
 
+        isWaiting = true;
+        SetAnimationState((int)EnemyAnimationState.Taunt); 
+        while(isWaiting)
+        {
+            yield return null; 
+        }
     }
 
-	// Use this for initialization
-    private void Start()
-    {
-		
-    }
-	
-	// Update is called once per frame
-	private void Update()
-    {
-        
-	}
-	#endregion
 
-	#endregion
+    #endregion
+
+    #region Unity Methods
+    // Awake is called when the script instance is being loaded
+    protected override void Awake()
+    {
+        base.Awake(); 
+    }
+
+    // Use this for initialization
+    protected override void Start()
+    {
+        base.Start();
+    }
+
+    // Update is called once per frame
+    protected override void Update()
+    {
+        base.Update();
+    }
+    #endregion
+
+    #endregion
 }

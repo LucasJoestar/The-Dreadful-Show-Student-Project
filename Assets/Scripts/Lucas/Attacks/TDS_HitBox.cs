@@ -193,7 +193,7 @@ public class TDS_HitBox : MonoBehaviour
         if (!_target.TakeDamage(_damages, collider.transform.position)) return;
 
         // Apply attack effect
-        if (!_target.IsDead) CurrentAttack.Effect.ApplyEffect(transform, _target);
+        if (!_target.IsDead) CurrentAttack.Effect.ApplyEffect(Owner, _target);
 
         // Call local method on the character who hit
         if (Owner)

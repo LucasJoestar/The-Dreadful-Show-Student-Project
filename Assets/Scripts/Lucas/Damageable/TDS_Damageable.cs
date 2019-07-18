@@ -377,7 +377,11 @@ public abstract class TDS_Damageable : PunBehaviour
     /// <param name="_distance">Distance to browse.</param>
     public virtual bool BringCloser(float _distance)
     {
-        if (bringingCloserCoroutine != null) StopCoroutine(bringingCloserCoroutine);
+        if (bringingCloserCoroutine != null)
+        {
+            StopCoroutine(bringingCloserCoroutine);
+            StopBringingCloser();
+        }
 
         bringingCloserCoroutine = StartCoroutine(BringingCloser(_distance));
 

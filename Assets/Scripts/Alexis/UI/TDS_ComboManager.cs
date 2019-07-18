@@ -65,9 +65,14 @@ public class TDS_ComboManager : MonoBehaviour
     private IEnumerator ResetCombo()
     {
         yield return new WaitForSeconds(resetTimer);
+        ResetComboManager(); 
+    }
+
+    public void ResetComboManager()
+    {
         combocounter = 0;
-        comboText.text = string.Empty; 
-        resetComboCoroutine = null; 
+        comboText.text = string.Empty;
+        resetComboCoroutine = null;
     }
 	#endregion
 

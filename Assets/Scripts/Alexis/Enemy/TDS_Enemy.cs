@@ -147,7 +147,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <summary>
     /// When this bool is set to true, the enemy has to wait until it turn to false again
     /// </summary>
-    private bool isWaiting = false; 
+    protected bool isWaiting = false; 
 
     /// <summary>
     /// State of the enemy 
@@ -189,7 +189,9 @@ public abstract class TDS_Enemy : TDS_Character
     /// <summary>
     /// The maximum value of the wandering range around a player
     /// </summary>
-    [SerializeField] protected float wanderingRangeMax = 9; 
+    [SerializeField] protected float wanderingRangeMax = 9;
+
+    public TDS_Damageable BringingTarget { get; set; } = null;  
 
     /// <summary>
     /// Attacks of the enemy
@@ -697,7 +699,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// Move until reaching a position then wait between 0 and 1 seconds before searching a new target
     /// </summary>
     /// <returns></returns>
-    protected IEnumerator Wander()
+    protected virtual IEnumerator Wander()
     {
         SetAnimationState((int)EnemyAnimationState.Run);
         agent.AddAvoidanceLayer(new string[] { "Player" }); 
@@ -727,7 +729,7 @@ public abstract class TDS_Enemy : TDS_Character
             Flip();
         }
         SetAnimationState((int)EnemyAnimationState.Idle);
-        yield return new WaitForSeconds(Random.value); 
+        yield return new WaitForSeconds(Random.Range(1,5)); 
         playerTarget = SearchTarget(); 
         if (playerTarget)
             enemyState = EnemyState.ComputingPath;
@@ -1114,7 +1116,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// Set the animation of the enemy to the animationID
     /// </summary>
     /// <param name="_animationID"></param>
-    protected void SetAnimationState(int _animationID)
+    public void SetAnimationState(int _animationID)
     {
         if (!animator) return;
         animator.SetInteger("animationState", _animationID);
