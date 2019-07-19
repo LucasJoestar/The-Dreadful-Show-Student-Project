@@ -1129,7 +1129,7 @@ public class TDS_Player : TDS_Character
         TDS_Throwable _throwable = null;
 
         // Interact now with the object depending on its type
-        if (_throwable = _nearestObject.GetComponent<TDS_Throwable>())
+        if ((_throwable = _nearestObject.GetComponent<TDS_Throwable>()) && isGrounded)
         {
             GrabObject(_throwable);
             return true;
@@ -1667,7 +1667,7 @@ public class TDS_Player : TDS_Character
         if (isDodging || isParrying || isPreparingAttack) return 1;
 
         // Check non-agressive actions
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.INTERACT_BUTTON))
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.INTERACT_BUTTON) && !isAttacking)
         {
             Interact();
             return -1;
@@ -1774,8 +1774,6 @@ public class TDS_Player : TDS_Character
         rigidbody.isKinematic = !_doActive;
         collider.enabled = _doActive;
         enabled = _doActive;
-
-        Debug.Log("Activate => " + _doActive);
     }
     #endregion
 

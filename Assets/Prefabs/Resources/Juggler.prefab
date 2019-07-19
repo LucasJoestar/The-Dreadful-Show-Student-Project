@@ -334,6 +334,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider: {fileID: 65428636927362380}
   Owner: {fileID: 114059215239211722}
+  BonusDamages: 0
   HittableTags:
     ObjectTags:
     - Name: Boss
@@ -351,9 +352,9 @@ BoxCollider:
   m_GameObject: {fileID: 1460451521323524}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 1, z: 1.5}
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &1517258360597064
 GameObject:
@@ -754,6 +755,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6197b2b48fb80d349b4a42bc7dd8191e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Owner: {fileID: 0}
+  PlayerSprite: {fileID: 0}
 --- !u!1 &1903125291049952
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,7 +819,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1942066217794072}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 12, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4311397187767890}
@@ -941,7 +944,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.6881199, y: 1.5570738, z: 1}
+  m_Size: {x: 0.6881199, y: 1.5570738, z: 1.5}
   m_Center: {x: 0, y: 0.7785369, z: 0}
 --- !u!54 &54280045138941680
 Rigidbody:
