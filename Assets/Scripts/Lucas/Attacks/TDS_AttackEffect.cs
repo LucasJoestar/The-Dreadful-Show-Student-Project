@@ -130,7 +130,7 @@ public class TDS_AttackEffect
     /// </summary>
     /// <param name="_attacker">Transform of the attacker.</param>
     /// <param name="_target">Target to apply effect on.</param>
-    public void ApplyEffect(Transform _attacker, TDS_Damageable _target)
+    public void ApplyEffect(TDS_Character _attacker, TDS_Damageable _target)
     {
         int _percent = Random.Range(1, 100);
 
@@ -151,7 +151,13 @@ public class TDS_AttackEffect
                 break;
 
             case AttackEffectType.BringCloser:
-                _target.BringCloser(_target.transform.position.x - _attacker.position.x);
+                _target.BringCloser(_target.transform.position.x - _attacker.transform.position.x);
+                if(_attacker is TDS_Enemy)
+                {
+                    ((TDS_Enemy)_attacker).SetAnimationTrigger("BringTargetCloser");
+                    ((TDS_Enemy)_attacker).BringingTarget = _target; 
+                    _target.OnStopBringingCloser += ((TDS_Enemy)_attacker).TargetBrought; 
+                }
                 break;
 
             default:

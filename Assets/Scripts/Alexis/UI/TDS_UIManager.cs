@@ -766,6 +766,8 @@ public class TDS_UIManager : PunBehaviour
         narratorCoroutine = null;
         followHiddenPlayerCouroutines.Clear();
         filledImages.Clear();
+        curtainsAnimator.SetTrigger("Reset");
+        comboManager.ResetComboManager(); 
         for (int i = 0; i < canvasWorld.transform.childCount; i++)
         {
             Destroy(canvasWorld.transform.GetChild(i).gameObject); 

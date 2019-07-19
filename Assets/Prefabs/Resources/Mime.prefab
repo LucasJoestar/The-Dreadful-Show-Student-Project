@@ -106,7 +106,7 @@ Transform:
   m_GameObject: {fileID: 7460335355213779113}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.035, y: 0.5, z: 0.17}
-  m_LocalScale: {x: 1.4, y: 0.05, z: 1.5}
+  m_LocalScale: {x: 1.6, y: 0.05, z: 1.5}
   m_Children: []
   m_Father: {fileID: 7458245984201657169}
   m_RootOrder: 3
@@ -301,26 +301,24 @@ MonoBehaviour:
   shadowTransform: {fileID: 7458436610622199149}
   isAttacking: 0
   IsDown: 0
-  isFacingRight: 1
+  isFacingRight: 0
   IsPacific: 0
   IsParalyzed: 0
   aimAngle: 45
-  speedAccelerationTime: 0.5
+  speedAccelerationTime: 1
   speedCoef: 1
   speedCurrent: 0
   speedInitial: 1
-  speedMax: 2
-  throwBonusDamagesMax: 45
-  throwBonusDamagesMin: 45
+  speedMax: 2.75
+  throwBonusDamagesMax: 5
+  throwBonusDamagesMin: 2
   throwAimingPoint: {x: 0, y: 0, z: 0}
   canBeDown: 1
   canThrow: 1
   enemyState: 0
-  detectionRange: 5
-  recoilDistance: 0.1
-  recoilDistanceDeath: 0.1
-  recoilTimeDeath: 0.1
-  throwRange: 1
+  detectionRange: 20
+  tauntProbability: 70
+  throwRange: 10
   wanderingRangeMin: 5
   wanderingRangeMax: 9
   attacks:
