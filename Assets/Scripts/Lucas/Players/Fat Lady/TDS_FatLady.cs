@@ -208,11 +208,22 @@ public class TDS_FatLady : TDS_Player
         if (!_isLight)
         {
             SetAnim(PlayerAnimState.HeavyAttack);
+            float _timer = 0;
 
             while (TDS_InputManager.GetButton(TDS_InputManager.HEAVY_ATTACK_BUTTON))
             {
                 // Charge attack while holding attack button down
+                if (_timer > 2.5f)
+                {
+                    TDS_Camera.Instance.StartScreenShake(.0075f);
+                }
+                else if (_timer > 1f)
+                {
+                    TDS_Camera.Instance.StartScreenShake(_timer / 500);
+                }
+
                 yield return null;
+                _timer += Time.deltaTime;
             }
         }
 

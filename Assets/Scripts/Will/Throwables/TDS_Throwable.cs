@@ -126,6 +126,7 @@ public class TDS_Throwable : PunBehaviour
         }
         rigidbody.isKinematic = true;
         transform.position = _rootCharacterObject.transform.position;
+        transform.rotation = Quaternion.identity;
         transform.SetParent(_rootCharacterObject.transform, true);
         isHeld = true;
         if(_carrier is TDS_Player)

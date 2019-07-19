@@ -749,19 +749,16 @@ public class TDS_Camera : MonoBehaviour
     /// <param name="_time">Total duration of the screen shake.</param>
     public IEnumerator ScreenShake(float _force, float _time)
     {
-
-        float _timer = _time;
-
         if (_time == 0) _time = .0001f;
 
-        while (_timer > 0)
+        while (_time > 0)
         {
             yield return new WaitForEndOfFrame();
 
             Vector3 _force3 = ((Vector3)Random.insideUnitCircle.normalized) * _force;
             transform.position += _force3;
 
-            _timer -= Time.deltaTime;
+            _time -= Time.deltaTime;
         }
     }
     #endregion
