@@ -169,8 +169,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 9130136411102570083}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 4
-  instantiationId: 4
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &9130136411102570083
@@ -295,9 +295,7 @@ MonoBehaviour:
   canThrow: 0
   enemyState: 0
   detectionRange: 12
-  recoilDistance: 0.1
-  recoilDistanceDeath: 0.1
-  recoilTimeDeath: 0.1
+  tauntProbability: 0
   throwRange: 1
   wanderingRangeMin: 5
   wanderingRangeMax: 9
@@ -363,6 +361,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider: {fileID: 9130136411807208503}
   Owner: {fileID: 9130136411102570082}
+  BonusDamages: 0
   HittableTags:
     ObjectTags:
     - Name: Player
@@ -415,7 +414,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9e32ce224446c4746a4f714514e29c74, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -472,8 +471,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9130136412106016833}
   m_LocalRotation: {x: 0, y: 0.002181689, z: 0, w: 0.9999976}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.025, z: 1}
+  m_LocalPosition: {x: 0, y: 0.125, z: 0}
+  m_LocalScale: {x: 1.7, y: 0.025, z: 1.5}
   m_Children: []
   m_Father: {fileID: 9130136411102570105}
   m_RootOrder: 2
