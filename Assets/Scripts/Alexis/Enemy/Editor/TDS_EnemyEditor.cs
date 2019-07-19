@@ -133,12 +133,6 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     protected SerializedProperty wanderingRangeMin = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.wanderingRangeMax"/> of type <see cref="float"/>.</summary>
     protected SerializedProperty wanderingRangeMax = null;
-    /// <summary>SerializedProperty for <see cref="TDS_Enemy.recoilDistance"/> of type <see cref="float"/>.</summary>
-    private SerializedProperty recoilDistance = null;
-    /// <summary>SerializedProperty for <see cref="TDS_Enemy.recoilDistanceDeath"/> of type <see cref="float"/>.</summary>
-    private SerializedProperty recoilDistanceDeath = null;
-    /// <summary>SerializedProperty for <see cref="TDS_Enemy.recoilTimeDeath"/> of type <see cref="float"/>.</summary>
-    private SerializedProperty recoilTimeDeath = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.tauntProbability"/> of type <see cref="float"/>.</summary>
     private SerializedProperty tauntProbability = null; 
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.enemyState"/> of type <see cref="EnemyState"/>.</summary>
@@ -259,14 +253,6 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     protected virtual void DrawSettings()
     {
         // Draw a header for the enemy detection settings 
-        EditorGUILayout.LabelField("Recoil", TDS_EditorUtility.HeaderStyle);
-        TDS_EditorUtility.FloatSlider("Recoil Distance", "The distance the enemy has to be pushed when they're hit", recoilDistance, .1f, 1);
-        TDS_EditorUtility.FloatSlider("Recoil Distance on death", "The distance the enemy has to be pushed when they die", recoilDistanceDeath, .1f, 5);
-        TDS_EditorUtility.FloatSlider("Recoil Duration on death", "The time during the enemy is pushed when dying", recoilTimeDeath, .01f, 1);
-
-        GUILayout.Space(3);
-
-        // Draw a header for the enemy detection settings 
         EditorGUILayout.LabelField("Detection", TDS_EditorUtility.HeaderStyle);
         TDS_EditorUtility.FloatSlider("Detection range", "The maximum distance of the field of view of the enemy", detectionRange, 1, 25);
         TDS_EditorUtility.FloatSlider("Wandering range Min", "The wandering distance around the targeted player when other enemies attacking an enemy", wanderingRangeMin, 1, wanderingRangeMax.floatValue);
@@ -315,9 +301,6 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         detectionRange = serializedObject.FindProperty("detectionRange");
         wanderingRangeMin = serializedObject.FindProperty("wanderingRangeMin");
         wanderingRangeMax = serializedObject.FindProperty("wanderingRangeMax");
-        recoilDistance = serializedObject.FindProperty("recoilDistance");
-        recoilDistanceDeath = serializedObject.FindProperty("recoilDistanceDeath");
-        recoilTimeDeath = serializedObject.FindProperty("recoilTimeDeath");
         tauntProbability = serializedObject.FindProperty("tauntProbability"); 
 
         enemyState = serializedObject.FindProperty("enemyState");

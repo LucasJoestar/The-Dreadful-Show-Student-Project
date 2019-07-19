@@ -120,6 +120,23 @@ public abstract class TDS_Enemy : TDS_Character
 
     #region Fields / Properties
 
+    #region Constants
+    /// <summary>
+    /// Recoil Distance: When the enemy is hit, he is pushed in a direction with a distance equal of the recoilDistance
+    /// </summary>
+    protected const float RECOIL_DISTANCE = .1f;
+
+    /// <summary>
+    /// Recoil Distance: When the enemy is hit and dies, he is pushed in a direction with a distance equal of the recoilDistance 
+    /// </summary>
+    protected const float RECOIL_DISTANCE_DEATH = .1f;
+
+    /// <summary>
+    /// Recoil Time: When the enemy is hit, he is pushed in a direction during this time (in seconds)
+    /// </summary>
+    protected const float RECOIL_TIME_DEATH = .1f;
+    #endregion 
+
     #region Variables
     /// <summary>
     /// Bool that allows the enemy to be take down  
@@ -160,21 +177,6 @@ public abstract class TDS_Enemy : TDS_Character
     /// If a player is within this range, it can be detected
     /// </summary>
     [SerializeField] protected float detectionRange = 5;
-
-    /// <summary>
-    /// Recoil Distance: When the enemy is hit, he is pushed in a direction with a distance equal of the recoilDistance
-    /// </summary>
-    [SerializeField] protected float recoilDistance = .1f;
-
-    /// <summary>
-    /// Recoil Distance: When the enemy is hit and dies, he is pushed in a direction with a distance equal of the recoilDistance 
-    /// </summary>
-    [SerializeField] protected float recoilDistanceDeath = .1f;
-
-    /// <summary>
-    /// Recoil Time: When the enemy is hit, he is pushed in a direction during this time (in seconds)
-    /// </summary>
-    [SerializeField] protected float recoilTimeDeath = .1f;
 
     /// <summary>
     /// Probability to taunt after wandering
@@ -388,10 +390,10 @@ public abstract class TDS_Enemy : TDS_Character
         Vector3 _pos = Vector3.zero; 
         if (isDead)
         {
-            _pos = transform.position + (_direction * recoilDistanceDeath);
+            _pos = transform.position + (_direction * RECOIL_DISTANCE_DEATH);
             while (Vector3.Distance(transform.position, _pos) > .1f)
             {
-                transform.position = Vector3.MoveTowards(transform.position, _pos, recoilDistanceDeath / recoilTimeDeath * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, _pos, RECOIL_DISTANCE_DEATH / RECOIL_TIME_DEATH * Time.deltaTime);
                 yield return null;
             }
             yield break;
@@ -399,7 +401,7 @@ public abstract class TDS_Enemy : TDS_Character
         
         while (Vector3.Distance(transform.position, _pos) > .1f)
         {
-            _pos = transform.position + (_direction * recoilDistance);
+            _pos = transform.position + (_direction * RECOIL_DISTANCE);
             transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * 10);
             yield return null;
         }
