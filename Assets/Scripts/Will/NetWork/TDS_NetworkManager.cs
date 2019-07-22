@@ -72,11 +72,6 @@ public class TDS_NetworkManager : PunBehaviour
     #region Methods
     #region Original Methods    
     #region Loutre
-    public void DemoTest(string _iD)
-    {
-        PhotonNetwork.ConnectUsingSettings(_iD);
-    }
-
     public void ConnectAtLaunch()
     {
         int _tempID = 1;//Random.Range(0,9999);
@@ -88,6 +83,17 @@ public class TDS_NetworkManager : PunBehaviour
             PhotonNetwork.ConnectUsingSettings(_tempID.ToString());
         }
     }
+
+    public void DemoTest(string _iD)
+    {
+        PhotonNetwork.ConnectUsingSettings(_iD);
+    }
+
+    public void EnableOfflineMode()
+    {
+        PhotonNetwork.offlineMode = true;
+    }
+    //♥
     #endregion
 
     #region Lobby Methods    
