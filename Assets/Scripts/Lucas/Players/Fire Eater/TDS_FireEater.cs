@@ -328,7 +328,7 @@ public class TDS_FireEater : TDS_Player
         }
 
         // Executes the attack
-        preparingAttackCoroutine = StartCoroutine(base.PrepareAttack(_isLight));
+        PreparingAttackCoroutine = StartCoroutine(base.PrepareAttack(_isLight));
         yield break;
     }
 
