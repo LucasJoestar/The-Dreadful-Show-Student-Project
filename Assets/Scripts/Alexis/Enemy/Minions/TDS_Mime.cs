@@ -46,21 +46,6 @@ public class TDS_Mime : TDS_Minion
     #region Methods
 
     #region Original Methods
-    /// <summary>
-    /// Cast the wandering method 
-    /// When too much enemies attack the same player, the enemy has to wander 
-    /// Move until reaching a position then wait between 0 and 1 seconds before searching a new target
-    /// Before moving again, taunt
-    /// </summary>
-    /// <returns></returns>
-    protected override IEnumerator Wander()
-    {
-        yield return base.Wander();
-        agent.StopAgent();
-        
-    }
-
-
     #endregion
 
     #region Unity Methods

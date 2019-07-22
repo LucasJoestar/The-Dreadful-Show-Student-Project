@@ -313,7 +313,7 @@ public abstract class TDS_Enemy : TDS_Character
             return false; 
         }
         float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x);
-        return Attacks.Any(a => a.MaxRange >= _distance) && Attacks.Any(a => a.MinRange <= _distance) && Mathf.Abs(transform.position.z - playerTarget.transform.position.z) <=  collider.size.z;
+        return Attacks.Any(a => a.MaxRange >= _distance &&  a.MinRange <= _distance) && Mathf.Abs(transform.position.z - playerTarget.transform.position.z) <=  collider.size.z;
     }
 
     /// <summary>
