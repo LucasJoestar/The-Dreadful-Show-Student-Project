@@ -1,5 +1,4 @@
-﻿using System; 
-using UnityEngine;
+﻿using UnityEngine;
 using Photon;
 
 #pragma warning disable 0414
@@ -78,6 +77,14 @@ public class TDS_Throwable : PunBehaviour
     public TDS_HitBox HitBox { get { return hitBox; } }
     [SerializeField]
     protected TDS_Attack attack = null; 
+    public AttackEffectType ThrowableAttackType
+    {
+        get
+        {
+            if (!attack) return AttackEffectType.None;
+            return attack.Effect.EffectType; 
+        }
+    }
     #endregion
     #endregion
 
@@ -217,6 +224,7 @@ public class TDS_Throwable : PunBehaviour
             rigidbody.useGravity = true; 
         }
     }
+
     #endregion
     #endregion
 }
