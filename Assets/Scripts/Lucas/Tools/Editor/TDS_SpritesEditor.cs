@@ -168,6 +168,23 @@ public class TDS_SpritesEditor : EditorWindow
 
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(15);
+
+        if ((Selection.gameObjects.Length > 0) && GUILayout.Button("Debug Sprite(s) Group(s)", GUILayout.Width(175)))
+        {
+            SpriteRenderer[] _sprites = null;
+            if (doUseChildrenSprites) _sprites = Selection.gameObjects.ToList().SelectMany(s => s.GetComponentsInChildren<SpriteRenderer>()).ToArray();
+            else _sprites = Selection.gameObjects.ToList().Select(g => g.GetComponent<SpriteRenderer>()).Distinct().ToArray();
+
+            if (_sprites != null)
+            {
+                foreach (SpriteRenderer _sprite in _sprites)
+                {
+                    Debug.Log(_sprite.name + " => " + colorGroups.Where(g => g.Sprites.Contains(_sprite)).First().Name);
+                }
+            }
+        }
+
         GUILayout.FlexibleSpace();
 
         layerIncrementValue = EditorGUILayout.IntField(new GUIContent("Layer Increment value", "Value used to increment selected objects layer"), layerIncrementValue, GUILayout.Width(200));
@@ -279,10 +296,6 @@ public class TDS_SpritesEditor : EditorWindow
 
         EditorGUILayout.EndHorizontal();
     }
-    #endregion
-
-    #region General
-
     #endregion
 
     #region Color
