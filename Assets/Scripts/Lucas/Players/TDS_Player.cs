@@ -290,6 +290,11 @@ public class TDS_Player : TDS_Character
     protected Coroutine dodgeCoroutine = null;
 
     /// <summary>
+    /// References the coroutine setting player invulnerability after being hit.
+    /// </summary>
+    protected Coroutine invulnerabilityCoroutine = null;
+
+    /// <summary>
     /// References the current coroutine of the jump method. Null if none is actually running.
     /// </summary>
     protected Coroutine jumpCoroutine = null;
@@ -410,7 +415,7 @@ public class TDS_Player : TDS_Character
     /// <summary>
     /// Indicates if the player is preparing an attack.
     /// </summary>
-    [SerializeField] private bool isPreparingAttack = false;
+    [SerializeField] protected bool isPreparingAttack = false;
 
     /// <summary>Backing field for <see cref="ComboCurrent"/>.</summary>
     [SerializeField] protected List<bool> comboCurrent = new List<bool>();
@@ -735,7 +740,6 @@ public class TDS_Player : TDS_Character
     protected virtual IEnumerator PrepareAttack(bool _isLight)
     {
         Attack(_isLight);
-
         PreparingAttackCoroutine = null;
         yield break;
     }
@@ -795,7 +799,8 @@ public class TDS_Player : TDS_Character
         if (!isPreparingAttack) return false;
 
         StopCoroutine(preparingAttackCoroutine);
-        return false;
+        PreparingAttackCoroutine = null;
+        return true;
     }
 
     /// <summary>
@@ -991,8 +996,11 @@ public class TDS_Player : TDS_Character
         // Set animation
         SetAnim(PlayerAnimState.NotSliding);
 
-        IsPlayable = true;
-        IsInvulnerable = false;
+        if (invulnerabilityCoroutine == null)
+        {
+            IsPlayable = true;
+            IsInvulnerable = false;
+        }
     }
     #endregion
 
@@ -1034,6 +1042,8 @@ public class TDS_Player : TDS_Character
     private IEnumerator Invulnerability()
     {
         IsInvulnerable = true;
+        FreezePlayer();
+        Invoke("UnfreezePlayer", INVULNERABILITY_TIME / 2f);
 
         float _timer = INVULNERABILITY_TIME;
         while (_timer > 0)
@@ -1045,6 +1055,9 @@ public class TDS_Player : TDS_Character
 
         sprite.gameObject.SetActive(true);
         IsInvulnerable = false;
+
+        invulnerabilityCoroutine = null;
+        yield break;
     }
 
     /// <summary>
@@ -1073,7 +1086,7 @@ public class TDS_Player : TDS_Character
             // Triggers associated animation
             if (!IsDown) SetAnim(PlayerAnimState.Hit);
 
-            StartCoroutine(Invulnerability());
+            invulnerabilityCoroutine = StartCoroutine(Invulnerability());
 
             if (photonView.isMine)
             {

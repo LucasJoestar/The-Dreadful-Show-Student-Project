@@ -207,7 +207,7 @@ public class TDS_FatLady : TDS_Player
     {
         if (!_isLight)
         {
-            SetAnim(PlayerAnimState.HeavyAttack);
+            SetFatLadyAnim(FatLadyAnimState.PrepareAttack);
             float _timer = 0;
 
             while (TDS_InputManager.GetButton(TDS_InputManager.HEAVY_ATTACK_BUTTON))
@@ -228,7 +228,7 @@ public class TDS_FatLady : TDS_Player
         }
 
         // Executes the attack
-        preparingAttackCoroutine = StartCoroutine(base.PrepareAttack(_isLight));
+        PreparingAttackCoroutine = StartCoroutine(base.PrepareAttack(_isLight));
         yield break;
     }
 
@@ -271,6 +271,14 @@ public class TDS_FatLady : TDS_Player
         // If everything went good, return 0
         return 0;
     }
+
+    /// <summary>
+    /// Checks inputs for this player's movements.
+    /// </summary>
+    public override void CheckMovementsInputs()
+    {
+        if (!isPreparingAttack) base.CheckMovementsInputs();
+    }
     #endregion
 
     #region Animations
@@ -297,6 +305,10 @@ public class TDS_FatLady : TDS_Player
 
             case FatLadyAnimState.Snack:
                 animator.SetTrigger("Snack");
+                break;
+
+            case FatLadyAnimState.PrepareAttack:
+                animator.SetTrigger("PrepareAttack");
                 break;
 
             default:
