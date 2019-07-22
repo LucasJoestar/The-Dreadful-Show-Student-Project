@@ -15,16 +15,17 @@ MonoBehaviour:
   attackName: Throw ball!
   Effect:
     EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
+    duration: 0
+    percentageHighest: 0
+    percentageLowest: 0
+    damagesMax: 0
+    damagesMin: 0
   damagesMax: 5
   damagesMin: 10
   description: 
   AnimationID: 6
   cooldown: 5
   maxRange: 15
+  minRange: 5
   probability: 100
   thrownObjectName: Ball
