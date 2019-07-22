@@ -45,6 +45,7 @@ public class TDS_VFXManager : MonoBehaviour
     public static TDS_VFXManager Instance = null;
 
     private Dictionary<string, ParticleSystem> particleSystemsByName = new Dictionary<string, ParticleSystem>();
+    private List<ParticleSystem> hitParticleSystems = new List<ParticleSystem>();
     #endregion
 
     #region Methods
@@ -67,6 +68,13 @@ public class TDS_VFXManager : MonoBehaviour
         {
             particleSystemsByName.Add(_particlesSystems[i].name, _particlesSystems[i].GetComponent<ParticleSystem>());
         }
+        _vfxBundle = AssetBundle.LoadFromFile(Path.Combine(Application.persistentDataPath, "AssetBundles", "hitvfxassetsbundle"));
+        if (!_vfxBundle)
+        {
+            Debug.Log("Asset Bundle not found");
+            return;
+        }
+        hitParticleSystems = _vfxBundle.LoadAllAssets<GameObject>().ToList().Select(o => o.GetComponent<ParticleSystem>()).ToList();
     }
 
     /// <summary>
@@ -86,12 +94,28 @@ public class TDS_VFXManager : MonoBehaviour
 
     public void InstanciateRandomHitEffect(Vector3 _position)
     {
-        string _randomName = particleSystemsByName.Keys.ToList()[(int)UnityEngine.Random.Range(0, particleSystemsByName.Count)];
-        ParticleSystem _system = particleSystemsByName[_randomName];
+        int _randomIndex = (int)UnityEngine.Random.Range((int)0, (int)hitParticleSystems.Count);
+        ParticleSystem _system = hitParticleSystems[_randomIndex]; 
         Vector3 _offset = new Vector3(UnityEngine.Random.Range(-.5f, .5f), UnityEngine.Random.Range(.1f, 1.8f), 0);
         Instantiate(_system.gameObject, _position + _offset, Quaternion.identity); 
     }
 
+    public void InstanciateParticleSystemByName(string _name, Vector3 _position)
+    {
+        ParticleSystem _system = GetParticleSystemByName(_name);
+        if (_system == null) return;
+        if (!PhotonNetwork.isMasterClient) return;
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(GetComponent<PhotonView>(), this.GetType(), "InstanciateParticleSystemByName"), new object[] { _name, _position.x, _position.y, _position.z });
+        Instantiate(_system.gameObject, _position, Quaternion.identity);
+    }
+
+    public void InstanciateParticleSystemByName(string _name, float _positionX, float _positionY, float _positionZ)
+    {
+        if (PhotonNetwork.isMasterClient) return; 
+        ParticleSystem _system = GetParticleSystemByName(_name);
+        if (_system == null) return;
+        Instantiate(_system.gameObject, new Vector3(_positionX, _positionY, _positionZ), Quaternion.identity);
+    }
     #endregion
 
     #region Unity Methods

@@ -73,7 +73,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 3.29, y: 2.89}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -323,7 +323,7 @@ MonoBehaviour:
   wanderingRangeMax: 9
   attacks:
   - {fileID: 11400000, guid: 4aebd765c3be8d8498beae7a85bf9740, type: 2}
-  - {fileID: 11400000, guid: 9a7bab14d4650d0429dce35196900531, type: 2}
+  - {fileID: 11400000, guid: d0594515ea1b55a449e818a5ed89cc0a, type: 2}
   - {fileID: 11400000, guid: 99ea19334762d9742ba3b366b66dcc29, type: 2}
   agent: {fileID: 7357116028466201209}
   hasEvolved: 0
@@ -490,7 +490,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 7451159265197646713}
-  Owner: {fileID: 0}
+  Owner: {fileID: 8298822899273084217}
   BonusDamages: 0
   HittableTags:
     ObjectTags:
@@ -599,7 +599,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7460867864773856957}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7458245984201657169}

@@ -1,9 +1,10 @@
-﻿using UnityEngine;
-using Photon; 
+﻿using System; 
+using UnityEngine;
+using Photon;
 
 #pragma warning disable 0414
 [RequireComponent(typeof(Rigidbody))]
-public class TDS_Throwable : PunBehaviour 
+public class TDS_Throwable : PunBehaviour
 {
     /* TDS_Throwable :
 	 *
@@ -28,12 +29,11 @@ public class TDS_Throwable : PunBehaviour
 	*/
 
     #region Events
-
     #endregion
 
     #region Fields / Properties
     #region ObjectSettings
-    [SerializeField,Header("Object settings")]
+    [SerializeField, Header("Object settings")]
     protected bool canBeTakeByEnemies = false;
     [SerializeField]
     protected bool isHeld = false;
@@ -47,23 +47,35 @@ public class TDS_Throwable : PunBehaviour
     protected float objectSpeed = 15f;
     [SerializeField, Range(0, 20)]
     protected int bonusDamage = 0;
-    [SerializeField,Range(0,10)]
+    [SerializeField, Range(0, 10)]
     protected int durabilityToWithdraw = 2;
     [SerializeField, Range(0, 10)]
     protected int objectDurability = 10;
+    public int ObjectDurability
+    {
+        get { return objectDurability;  }
+        set
+        {
+            if(value > 0)
+            {
+                objectDurability = value; 
+            }
+        }
+    }
     [SerializeField]
     protected int weight = 2;
     public int Weight { get { return weight; } }
     [SerializeField]
-    protected new Rigidbody rigidbody = null;    
+    protected new Rigidbody rigidbody = null;
     #endregion
     #region PlayerSettings
-    [SerializeField, Header("Character settings")]       
+    [SerializeField, Header("Character settings")]
     protected TDS_Character owner = null;
     #endregion
     #region Hitbox
     [SerializeField]
     protected TDS_HitBox hitBox;
+    public TDS_HitBox HitBox { get { return hitBox; } }
     [SerializeField]
     protected TDS_Attack attack = null; 
     #endregion
@@ -85,7 +97,8 @@ public class TDS_Throwable : PunBehaviour
     protected virtual void DestroyThrowableObject()
     {
         if (!PhotonNetwork.isMasterClient) return;
-        PhotonNetwork.Instantiate("Poof", hitBox.Collider.bounds.center, Quaternion.identity, 0);
+        //PhotonNetwork.Instantiate("Poof", hitBox.Collider.bounds.center, Quaternion.identity, 0);
+        TDS_VFXManager.Instance.InstanciateParticleSystemByName("Projectile_PoufMagique", transform.position);
         PhotonNetwork.Destroy(gameObject);
     }
     /// <summary>
@@ -184,6 +197,8 @@ public class TDS_Throwable : PunBehaviour
     protected virtual void OnCollisionEnter(Collision other)
     {
         hitBox.Desactivate();
+        LoseDurability();
+        owner = null; 
     }
 
     protected virtual void Start ()

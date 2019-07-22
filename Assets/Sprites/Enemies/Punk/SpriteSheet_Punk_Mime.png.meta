@@ -88,6 +88,9 @@ TextureImporter:
     21300166: Mime_Fall
     21300168: Mime_Taunt
     21300170: Mime_Taunt02
+    21300172: Mime_Hook
+    21300174: Mime_Projectile
+    21300176: Mime_ProjectileWoosh
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -1907,6 +1910,66 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 897dcbda9a3192e4aba15bfe5b117bc9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mime_Hook
+      rect:
+        serializedVersion: 2
+        x: 2027
+        y: 1813
+        width: 38
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5418fe56e90e77244ac6c93fc30c704d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mime_Projectile
+      rect:
+        serializedVersion: 2
+        x: 2122
+        y: 1817
+        width: 20
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb86dcda1ff42a142bfcce05fc2906b6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mime_ProjectileWoosh
+      rect:
+        serializedVersion: 2
+        x: 2183
+        y: 1770
+        width: 64
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9a2df6d1cc74d042a55c9d26828a08a
       vertices: []
       indices: 
       edges: []
