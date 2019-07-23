@@ -40,6 +40,7 @@ public class TDS_Outline : MonoBehaviour
 
     public void DisableOutline()
     {
+        if(enableOutline)enableOutline = false;
         color = Color.black;
         outlineSize = 0;
     }
