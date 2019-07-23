@@ -96,11 +96,9 @@ public class TDS_HitBox : MonoBehaviour
     public bool IsActive { get; private set; }
 
     /// <summary>
-    /// All touched objects during the current attack.
-    /// Key is the <see cref="Collider"/> of the object detected.
-    /// Value is the object <see cref="TDS_Damageable"/> component used to deal damages and apply effect.
+    /// All touched colliders during the current attack.
     /// </summary>
-    public Dictionary<Collider, TDS_Damageable> TouchedObjects { get; private set; } = new Dictionary<Collider, TDS_Damageable>();
+    public List<Collider> TouchedObjects { get; private set; } = new List<Collider>();
 
     /// <summary>
     /// Bonus damages for the current attack.
@@ -236,25 +234,25 @@ public class TDS_HitBox : MonoBehaviour
     // OnTriggerEnter is called when the GameObject collides with another GameObject
     private void OnTriggerEnter(Collider other)
     {
-        // If the collider object should be hit, hit it
+        // If already touched this collider, return
+        if (TouchedObjects.Contains(other)) return;
 
+        // If the collider object should be hit, hit it
         // Check if object has tags
         if ((Owner && (other.gameObject == Owner.gameObject)) || !other.gameObject.HasTag(HittableTags.ObjectTags)) return;
         TDS_Damageable _target = other.GetComponent<TDS_Damageable>();
-
-        if (!_target || TouchedObjects.ContainsValue(_target)) return;
+        if (!_target) return;
 
         // Deal damages and apply effect
+        TouchedObjects.Add(other);
         InflictDamages(_target);
-
-        TouchedObjects.Add(other, _target);
     }
 
     // OnTriggerExit is called when the Collider other has stopped touching the trigger
     private void OnTriggerExit(Collider other)
     {
         // Removes object from the list of touched objects if it was in
-        if (TouchedObjects.ContainsKey(other)) TouchedObjects.Remove(other);
+        if (TouchedObjects.Contains(other)) TouchedObjects.Remove(other);
     }
 
     // Use this for initialization

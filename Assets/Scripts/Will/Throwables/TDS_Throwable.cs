@@ -33,17 +33,11 @@ public class TDS_Throwable : PunBehaviour
     #region Fields / Properties
     #region ObjectSettings
     [SerializeField, Header("Object settings")]
-    protected bool canBeTakeByEnemies = false;
-    [SerializeField]
     protected bool isHeld = false;
-    [SerializeField]
-    protected bool isHoldByPlayer = false;
     [SerializeField]
     protected new BoxCollider collider = null;
     [SerializeField]
     protected float bouncePower = .5f;
-    [SerializeField]
-    protected float objectSpeed = 15f;
     [SerializeField] private GameObject shadow = null;
     [SerializeField, Range(0, 20)]
     protected int bonusDamage = 0;
@@ -149,13 +143,9 @@ public class TDS_Throwable : PunBehaviour
         if (!shadow.activeInHierarchy) shadow.SetActive(true);
         rigidbody.isKinematic = true;
         transform.position = _rootCharacterObject.transform.position;
-        transform.rotation = Quaternion.identity;
         transform.SetParent(_rootCharacterObject.transform, true);
+        transform.rotation = Quaternion.identity;
         isHeld = true;
-        if(_carrier is TDS_Player)
-        {
-            isHoldByPlayer = true;
-        }
         owner = _carrier;
         collider.enabled = false;
         SetLayer(_carrier.gameObject.layer);
@@ -224,9 +214,12 @@ public class TDS_Throwable : PunBehaviour
 
     protected virtual void OnCollisionEnter(Collision other)
     {
-        hitBox.Desactivate();
-        LoseDurability();
-        owner = null; 
+        if (hitBox.IsActive)
+        {
+            hitBox.Desactivate();
+            LoseDurability();
+            owner = null;
+        }
     }
 
     protected virtual void Start ()
