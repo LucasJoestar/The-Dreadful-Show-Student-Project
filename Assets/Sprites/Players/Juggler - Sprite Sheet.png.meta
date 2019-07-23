@@ -2,7 +2,7 @@ fileFormatVersion: 2
 guid: e39d472bc7fb82a489b01ee7d1e894cf
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Juggler_Run_1
+    21300000: Juggler_RunObject_1
     21300002: Juggler_Run_2
     21300004: Juggler_Run_3
     21300006: Juggler_Run_4
@@ -34,6 +34,41 @@ TextureImporter:
     21300058: Juggler_Dodge_2
     21300060: Juggler_Dodge_3
     21300062: Juggler_Dodge_4
+    21300064: Juggler_RunObject_2
+    21300066: Juggler_RunObject_3
+    21300068: Juggler_RunObject_4
+    21300070: Juggler_Run_1
+    21300072: Juggler_Run_2
+    21300074: Juggler_Run_3
+    21300076: Juggler_Run_4
+    21300078: Juggler_IdleObject_1
+    21300080: Juggler_IdleObject_2
+    21300082: Juggler_IdleObject_3
+    21300084: Juggler_IdleObject_4
+    21300086: Juggler_Idle_1
+    21300088: Juggler_Idle_2
+    21300090: Juggler_Down_2
+    21300092: Juggler - Sprite Sheet_16
+    21300094: Juggler_Down_3
+    21300096: Juggler - Sprite Sheet_18
+    21300098: Juggler - Sprite Sheet_19
+    21300100: Juggler_Down_1
+    21300102: Juggler_Parry
+    21300104: Juggler_Jump
+    21300106: Juggler_Fall
+    21300108: Juggler_Throw_1
+    21300110: Juggler_Throw_2
+    21300112: Juggler_Throw_3
+    21300114: Juggler_Dodge_1
+    21300116: Juggler_Dodge_2
+    21300118: Juggler - Sprite Sheet_32
+    21300120: Juggler - Sprite Sheet_34
+    21300122: Juggler - Sprite Sheet_35
+    21300124: Juggler - Sprite Sheet_36
+    21300126: Juggler - Sprite Sheet_37
+    21300128: Juggler - Sprite Sheet_38
+    21300130: Juggler_HeavyAttack_1
+    21300132: Juggler_HeavyAttack_2
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -116,13 +151,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Juggler_Run_1
+      name: Juggler_RunObject_1
       rect:
         serializedVersion: 2
-        x: 9
-        y: 1727
-        width: 177
-        height: 265
+        x: 57
+        y: 1652
+        width: 187
+        height: 268
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -130,98 +165,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b0ef18a5073700140ad44409c8afc941
+      spriteID: 63b9218af197b634bb3153602d8efc15
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Juggler_Run_2
+      name: Juggler_RunObject_2
       rect:
         serializedVersion: 2
-        x: 239
-        y: 1727
-        width: 146
-        height: 240
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0a020f2e9918fed4ba19aff50e6ace02
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Juggler_Run_3
-      rect:
-        serializedVersion: 2
-        x: 447
-        y: 1729
-        width: 186
-        height: 262
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 72ed8ab8bc6c14f4888c796f28d6c57c
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Juggler_Run_4
-      rect:
-        serializedVersion: 2
-        x: 686
-        y: 1727
-        width: 133
-        height: 234
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 46a76a224a1078543b15786f12a95995
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Juggler_RunJuggling_1
-      rect:
-        serializedVersion: 2
-        x: 997
-        y: 1731
-        width: 171
-        height: 264
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: aa473c7d0a096a441bd113be16f55844
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Juggler_RunJuggling_2
-      rect:
-        serializedVersion: 2
-        x: 1230
-        y: 1731
-        width: 155
+        x: 306
+        y: 1654
+        width: 156
         height: 242
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -230,19 +185,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f273cdb123912f64f951230c4ca07f19
+      spriteID: d68e851a1fac4014b9bc932bba2920e5
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Juggler_RunJuggling_3
+      name: Juggler_RunObject_3
       rect:
         serializedVersion: 2
-        x: 1463
-        y: 1728
-        width: 184
-        height: 270
+        x: 574
+        y: 1653
+        width: 185
+        height: 271
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -250,19 +205,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fbb6bb2569e70b94e87e5295c8e9b55b
+      spriteID: 1a754034d3c7ea34280991e5890ee2fc
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Juggler_RunJuggling_4
+      name: Juggler_RunObject_4
       rect:
         serializedVersion: 2
-        x: 1700
-        y: 1729
-        width: 136
-        height: 239
+        x: 852
+        y: 1653
+        width: 137
+        height: 240
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -270,7 +225,167 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7104ba9ebcbccce4ea7a2bac7d6209f1
+      spriteID: 9907f98a0f4a4b142aede24809d5a74e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Juggler_Run_1
+      rect:
+        serializedVersion: 2
+        x: 1147
+        y: 1656
+        width: 181
+        height: 268
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f13fa59e2a61c5142872d158d0d2a91c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Juggler_Run_2
+      rect:
+        serializedVersion: 2
+        x: 1378
+        y: 1656
+        width: 186
+        height: 234
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d55ea0fb234d584dadba63ef9642ad4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Juggler_Run_3
+      rect:
+        serializedVersion: 2
+        x: 1614
+        y: 1655
+        width: 175
+        height: 256
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd0bfa0aa81c78342a729f1ac5665f2a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Juggler_Run_4
+      rect:
+        serializedVersion: 2
+        x: 1857
+        y: 1655
+        width: 151
+        height: 238
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86cb13075a7b41a4b907377a65721f62
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Juggler_IdleObject_1
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 1310
+        width: 277
+        height: 267
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49ab686387a884949860dfaed3190c13
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Juggler_IdleObject_2
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 1308
+        width: 216
+        height: 283
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0079266d3548ef841899cd7d6e935496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Juggler_IdleObject_3
+      rect:
+        serializedVersion: 2
+        x: 579
+        y: 1308
+        width: 237
+        height: 256
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d6d2b30eb30ab642812ab0c2c1bb53b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Juggler_IdleObject_4
+      rect:
+        serializedVersion: 2
+        x: 871
+        y: 1311
+        width: 245
+        height: 280
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ed043885fdb15c40a46e5d0bcbda34c
       vertices: []
       indices: 
       edges: []
@@ -279,18 +394,18 @@ TextureImporter:
       name: Juggler_Idle_1
       rect:
         serializedVersion: 2
-        x: 32
-        y: 1370
-        width: 162
-        height: 270
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 1200
+        y: 1311
+        width: 192
+        height: 284
+      alignment: 9
+      pivot: {x: 0.3, y: 0.015}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2d243baf48aa9474399c3f0c227d825e
+      spriteID: 49f3c31437bd58d49a4edc02ed361ca6
       vertices: []
       indices: 
       edges: []
@@ -299,88 +414,28 @@ TextureImporter:
       name: Juggler_Idle_2
       rect:
         serializedVersion: 2
-        x: 252
-        y: 1370
-        width: 161
-        height: 270
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 1479
+        y: 1308
+        width: 196
+        height: 266
+      alignment: 9
+      pivot: {x: 0.35, y: 0.02}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f8b4a48cb4598844090cf3cd46e5b391
+      spriteID: 84c0b1d212be0794a8f8c3349cb814b4
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Juggler_IdleJuggling_1
-      rect:
-        serializedVersion: 2
-        x: 472
-        y: 1370
-        width: 177
-        height: 270
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 58cbbe2cf2c4b2c47846f28406728147
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Juggler_IdleJuggling_2
-      rect:
-        serializedVersion: 2
-        x: 712
-        y: 1370
-        width: 177
-        height: 270
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 78ba62892cff27e40b95c91e2cc01b71
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Juggler_IdleJuggling_3
-      rect:
-        serializedVersion: 2
-        x: 930
-        y: 1370
-        width: 180
-        height: 270
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 92d3f66288aaed9489cf2abb9eb05105
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Juggler_Down_1
+      name: Juggler_Down_2
       rect:
         serializedVersion: 2
         x: 9
-        y: 1078
+        y: 999
         width: 218
         height: 242
       alignment: 7
@@ -390,27 +445,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8421c3de81571d54190caa4a3c61fe92
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Juggler_Down_2
-      rect:
-        serializedVersion: 2
-        x: 264
-        y: 1094
-        width: 274
-        height: 179
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6d960db31e4e6a941842de018052752d
+      spriteID: cc91415cdcf1e35439954e0b30bece4e
       vertices: []
       indices: 
       edges: []
@@ -419,68 +454,28 @@ TextureImporter:
       name: Juggler_Down_3
       rect:
         serializedVersion: 2
-        x: 605
-        y: 1078
-        width: 272
-        height: 80
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5544dcf166396c940b9fa5c831c8c8f3
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Juggler_Down_4
-      rect:
-        serializedVersion: 2
-        x: 954
-        y: 1096
-        width: 234
-        height: 103
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b8aecfc7eadcdd44197ad5fe9eb50a50
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Juggler_Down_5
-      rect:
-        serializedVersion: 2
-        x: 1271
-        y: 1085
+        x: 604
+        y: 999
         width: 273
         height: 80
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5118401dbc611ec4e864bdc3278b6271
+      spriteID: ae4434671012f894aa6b787975967db8
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Juggler_Hit
+      name: Juggler_Down_1
       rect:
         serializedVersion: 2
         x: 1700
-        y: 1078
+        y: 999
         width: 219
         height: 275
       alignment: 7
@@ -490,7 +485,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 545988fa745e1cc42ab0e0750f0fb502
+      spriteID: b43cc3b1e3d62f54fafd30da38815908
       vertices: []
       indices: 
       edges: []
@@ -500,17 +495,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 52
-        y: 727
+        y: 648
         width: 141
-        height: 258
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        height: 260
+      alignment: 9
+      pivot: {x: 0.5, y: 0.02}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0b6adf24f3ada414ab4577b868a57242
+      spriteID: cc75c3383f4aa664e8b401bfee11f49e
       vertices: []
       indices: 
       edges: []
@@ -520,17 +515,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 297
-        y: 786
+        y: 707
         width: 192
         height: 275
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.44, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f8fdf056815ba6e46bdd1bd664dbdca8
+      spriteID: 36c73acafe0ca0e42949e3518a581009
       vertices: []
       indices: 
       edges: []
@@ -540,17 +535,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 559
-        y: 753
-        width: 214
+        y: 674
+        width: 234
         height: 274
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.45, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 70e8c562523ee234c8d089c62956a5f3
+      spriteID: 9600eb10107b1914783ff4fa64788424
       vertices: []
       indices: 
       edges: []
@@ -559,18 +554,18 @@ TextureImporter:
       name: Juggler_Throw_1
       rect:
         serializedVersion: 2
-        x: 881
-        y: 727
-        width: 168
-        height: 286
+        x: 825
+        y: 674
+        width: 221
+        height: 246
       alignment: 9
-      pivot: {x: 0.44764057, y: 0}
+      pivot: {x: 0.4, y: 0.02}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 30de59754d1869149970e272ef4ee2c3
+      spriteID: e52f9b6f86fdcd6438d5263c202a295f
       vertices: []
       indices: 
       edges: []
@@ -579,18 +574,18 @@ TextureImporter:
       name: Juggler_Throw_2
       rect:
         serializedVersion: 2
-        x: 1101
-        y: 727
-        width: 158
-        height: 286
+        x: 1070
+        y: 672
+        width: 194
+        height: 276
       alignment: 9
-      pivot: {x: 0.5578142, y: 0}
+      pivot: {x: 0.4, y: 0.02}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c90ba2e5aecb62e4f83a616b51453d6d
+      spriteID: c93378f44595488468b42aa7a06b175c
       vertices: []
       indices: 
       edges: []
@@ -599,18 +594,18 @@ TextureImporter:
       name: Juggler_Throw_3
       rect:
         serializedVersion: 2
-        x: 1334
-        y: 727
-        width: 129
-        height: 298
+        x: 1302
+        y: 674
+        width: 154
+        height: 232
       alignment: 9
-      pivot: {x: 0.6232645, y: 0}
+      pivot: {x: 0.615, y: 0.02}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a731d9342ab15d14480230b48c360b8b
+      spriteID: 5a5d63d50634d194a9bb74a3d22285ca
       vertices: []
       indices: 
       edges: []
@@ -619,78 +614,18 @@ TextureImporter:
       name: Juggler_Dodge_1
       rect:
         serializedVersion: 2
-        x: 52
-        y: 406
+        x: 51
+        y: 327
         width: 209
-        height: 232
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        height: 233
+      alignment: 9
+      pivot: {x: 0.7, y: 0.01}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d21f571e827e00b4ba02d166d744f2b3
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Juggler_Dodge_5
-      rect:
-        serializedVersion: 2
-        x: 954
-        y: 405
-        width: 183
-        height: 237
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 38f77f03addccb34bb857713d65d164e
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Juggler_LightAttack
-      rect:
-        serializedVersion: 2
-        x: 1190
-        y: 405
-        width: 169
-        height: 262
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4b2f4b5fda26d1e42838ed15e93cf47d
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Juggler_HeavyAttack
-      rect:
-        serializedVersion: 2
-        x: 1433
-        y: 404
-        width: 214
-        height: 271
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4a1a7f7b2eba056438454282dc6307db
+      spriteID: a2b13c6504432f9459898509f7e424f3
       vertices: []
       indices: 
       edges: []
@@ -700,17 +635,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 291
-        y: 406
+        y: 328
         width: 181
         height: 151
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fa87d36c9e6a3b54ebbcf9df9c0878ec
+      spriteID: 8b1ff7cd42305ea42a23e371c90fa917
       vertices: []
       indices: 
       edges: []
@@ -720,17 +655,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 522
-        y: 409
-        width: 137
+        y: 330
+        width: 138
         height: 140
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.55, y: 0.04}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f5715f71092492649ab45b1cfbd1f4fc
+      spriteID: 66c88d2959d48b74fa721f130d924fe2
       vertices: []
       indices: 
       edges: []
@@ -740,9 +675,49 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 712
-        y: 405
+        y: 324
         width: 189
-        height: 135
+        height: 137
+      alignment: 9
+      pivot: {x: 0.475, y: 0.055}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a21b779f9d63c6e46bd915fd47bb73b2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Juggler_Dodge_5
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 326
+        width: 185
+        height: 237
+      alignment: 9
+      pivot: {x: 0.325, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ebb72b6a4b604e041a6c893f9fc2919b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Juggler_LightAttack
+      rect:
+        serializedVersion: 2
+        x: 1190
+        y: 326
+        width: 170
+        height: 262
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -750,7 +725,47 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c01569cbdba6f1244a8ea30f9ad5454c
+      spriteID: 83329726205e20849ab40e10c077eece
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Juggler_HeavyAttack_1
+      rect:
+        serializedVersion: 2
+        x: 1475
+        y: 324
+        width: 173
+        height: 277
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff2541c4f03453c4bbba152750915dee
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Juggler_HeavyAttack_2
+      rect:
+        serializedVersion: 2
+        x: 1680
+        y: 324
+        width: 216
+        height: 272
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 557044453d9ff29439d5f259ce76fcb8
       vertices: []
       indices: 
       edges: []

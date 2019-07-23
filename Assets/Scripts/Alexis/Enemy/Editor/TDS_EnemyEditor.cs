@@ -337,6 +337,8 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     {
         if (Selection.activeGameObject == null) return;
         Vector3 _pos = Selection.activeGameObject.transform.position;
+        if (attacks == null) return; 
+        if (attacks.arraySize == 0) return; 
         for (int i = 0; i < attacks.arraySize; i++)
         {
             TDS_EnemyAttack _attack = (serializedObject.targetObject as TDS_Enemy).Attacks[i];

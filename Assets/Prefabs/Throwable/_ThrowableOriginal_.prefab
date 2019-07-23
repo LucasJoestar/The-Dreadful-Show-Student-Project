@@ -55,7 +55,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9e32ce224446c4746a4f714514e29c74, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -101,6 +101,7 @@ MonoBehaviour:
   canBeTakeByEnemies: 0
   isHeld: 0
   isHoldByPlayer: 0
+  collider: {fileID: 0}
   bouncePower: 0.5
   objectSpeed: 15
   bonusDamage: 0
@@ -111,9 +112,6 @@ MonoBehaviour:
   owner: {fileID: 0}
   hitBox: {fileID: 3444907900535000355}
   attack: {fileID: 11400000, guid: 5b783ed432e74f242be4c42874729f99, type: 2}
-  whatDesactivate:
-    serializedVersion: 2
-    m_Bits: 28672
 --- !u!54 &3357969355024705391
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -307,6 +305,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider: {fileID: 3368386952385683435}
   Owner: {fileID: 0}
+  BonusDamages: 0
   HittableTags:
     ObjectTags: []
 --- !u!1 &9102226676782451288
@@ -335,8 +334,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9102226676782451288}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0}
-  m_LocalScale: {x: 1.2807499, y: 0.01, z: 1.3646}
+  m_LocalPosition: {x: 0, y: 0.225, z: 0}
+  m_LocalScale: {x: 1, y: 0.01, z: 1.5}
   m_Children: []
   m_Father: {fileID: 3338963929045791089}
   m_RootOrder: 1
@@ -366,7 +365,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: d6304ef16db9b4742943b4a113642aba, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

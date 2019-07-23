@@ -138,6 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider: {fileID: 7593376260666890814}
   Owner: {fileID: 0}
+  BonusDamages: 0
   HittableTags:
     ObjectTags: []
 --- !u!1 &7593376261498355142
@@ -209,8 +210,10 @@ MonoBehaviour:
   canBeTakeByEnemies: 0
   isHeld: 0
   isHoldByPlayer: 0
+  collider: {fileID: 0}
   bouncePower: 0.5
   objectSpeed: 15
+  shadow: {fileID: 0}
   bonusDamage: 0
   durabilityToWithdraw: 2
   objectDurability: 10
@@ -219,9 +222,6 @@ MonoBehaviour:
   owner: {fileID: 0}
   hitBox: {fileID: 0}
   attack: {fileID: 11400000, guid: b6d5b61386be20d41900816b63cf19ee, type: 2}
-  whatDesactivate:
-    serializedVersion: 2
-    m_Bits: 4096
   explodingDelay: 5
   explosionParticles: {fileID: 0}
   animator: {fileID: 2557665236746908573}
@@ -263,8 +263,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 9136283519379038369}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 4
-  instantiationId: 4
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &9136283519379038369
