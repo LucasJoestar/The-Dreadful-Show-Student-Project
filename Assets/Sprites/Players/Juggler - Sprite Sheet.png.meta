@@ -2,7 +2,7 @@ fileFormatVersion: 2
 guid: e39d472bc7fb82a489b01ee7d1e894cf
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Juggler_RunObject_1
+    21300000: Juggler_RunJuggle_1
     21300002: Juggler_Run_2
     21300004: Juggler_Run_3
     21300006: Juggler_Run_4
@@ -34,16 +34,16 @@ TextureImporter:
     21300058: Juggler_Dodge_2
     21300060: Juggler_Dodge_3
     21300062: Juggler_Dodge_4
-    21300064: Juggler_RunObject_2
-    21300066: Juggler_RunObject_3
-    21300068: Juggler_RunObject_4
+    21300064: Juggler_RunJuggle_2
+    21300066: Juggler_RunJuggle_3
+    21300068: Juggler_RunJuggle_4
     21300070: Juggler_Run_1
     21300072: Juggler_Run_2
     21300074: Juggler_Run_3
     21300076: Juggler_Run_4
-    21300078: Juggler_IdleObject_1
-    21300080: Juggler_IdleObject_2
-    21300082: Juggler_IdleObject_3
+    21300078: Juggler_IdleJuggle_1
+    21300080: Juggler_IdleJuggle_2
+    21300082: Juggler_IdleJuggle_3
     21300084: Juggler_IdleObject_4
     21300086: Juggler_Idle_1
     21300088: Juggler_Idle_2
@@ -69,6 +69,7 @@ TextureImporter:
     21300128: Juggler - Sprite Sheet_38
     21300130: Juggler_HeavyAttack_1
     21300132: Juggler_HeavyAttack_2
+    21300134: Juggler_IdleJuggle_4
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -151,14 +152,14 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Juggler_RunObject_1
+      name: Juggler_RunJuggle_1
       rect:
         serializedVersion: 2
         x: 57
         y: 1652
         width: 187
         height: 268
-      alignment: 7
+      alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -171,7 +172,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Juggler_RunObject_2
+      name: Juggler_RunJuggle_2
       rect:
         serializedVersion: 2
         x: 306
@@ -191,7 +192,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Juggler_RunObject_3
+      name: Juggler_RunJuggle_3
       rect:
         serializedVersion: 2
         x: 574
@@ -211,7 +212,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Juggler_RunObject_4
+      name: Juggler_RunJuggle_4
       rect:
         serializedVersion: 2
         x: 852
@@ -238,8 +239,8 @@ TextureImporter:
         y: 1656
         width: 181
         height: 268
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.47, y: 0.03}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -258,8 +259,8 @@ TextureImporter:
         y: 1656
         width: 186
         height: 234
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.44, y: 0.035}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -278,8 +279,8 @@ TextureImporter:
         y: 1655
         width: 175
         height: 256
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.46, y: -0.01}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -298,8 +299,8 @@ TextureImporter:
         y: 1655
         width: 151
         height: 238
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.425, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -311,15 +312,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Juggler_IdleObject_1
+      name: Juggler_IdleJuggle_1
       rect:
         serializedVersion: 2
         x: 8
         y: 1310
         width: 277
         height: 267
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.475, y: 0.025}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -331,15 +332,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Juggler_IdleObject_2
+      name: Juggler_IdleJuggle_2
       rect:
         serializedVersion: 2
         x: 328
         y: 1308
         width: 216
         height: 283
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.365, y: 0.025}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -351,15 +352,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Juggler_IdleObject_3
+      name: Juggler_IdleJuggle_3
       rect:
         serializedVersion: 2
         x: 579
         y: 1308
         width: 237
         height: 256
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.435, y: 0.0275}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -371,15 +372,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Juggler_IdleObject_4
+      name: Juggler_IdleJuggle_4
       rect:
         serializedVersion: 2
         x: 871
         y: 1311
         width: 245
         height: 280
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.44, y: 0.0135}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -718,8 +719,8 @@ TextureImporter:
         y: 326
         width: 170
         height: 262
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.51, y: 0.03}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -738,8 +739,8 @@ TextureImporter:
         y: 324
         width: 173
         height: 277
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.425, y: 0.025}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -758,8 +759,8 @@ TextureImporter:
         y: 324
         width: 216
         height: 272
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.56, y: 0.025}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

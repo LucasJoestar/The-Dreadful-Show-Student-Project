@@ -81,6 +81,9 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
     /// <summary>SerializedProperties for <see cref="TDS_Player.throwPreviewPrecision"/> of type <see cref="int"/>.</summary>
     private SerializedProperty throwPreviewPrecision = null;
 
+    /// <summary>SerializedProperties for <see cref="TDS_Juggler.whatCanAim"/> of type <see cref="LayerMask"/>.</summary>
+    private SerializedProperty whatCanAim = null;
+
     /// <summary>SerializedProperties for <see cref="TDS_Juggler.juggleTransform"/> of type <see cref="Transform"/>.</summary>
     private SerializedProperty juggleTransform = null;
 
@@ -321,6 +324,10 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
 
         GUILayout.Space(3);
 
+        TDS_EditorUtility.PropertyField("What Can Aim", "Indicates what the player can aim at", whatCanAim);
+
+        GUILayout.Space(2);
+
         if (EditorApplication.isPlaying)
         {
             if (TDS_EditorUtility.FloatSlider("Aiming Angle", "Angle used by the Juggler to aim for a throw", aimAngle, 15f, 60f))
@@ -365,6 +372,7 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
         throwableDistanceFromCenter = serializedObject.FindProperty("throwableDistanceFromCenter");
         maxThrowableAmount = serializedObject.FindProperty("maxThrowableAmount");
         throwPreviewPrecision = serializedObject.FindProperty("throwPreviewPrecision");
+        whatCanAim = serializedObject.FindProperty("whatCanAim");
         juggleTransform = serializedObject.FindProperty("juggleTransform");
         juggleTransformIdealLocalPosition = serializedObject.FindProperty("juggleTransformIdealLocalPosition");
 
