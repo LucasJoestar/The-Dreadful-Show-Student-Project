@@ -3,13 +3,18 @@
 [ExecuteInEditMode]
 public class TDS_Outline : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField, Space]
+    bool enableOutline = true;
+
+    [SerializeField,Space]
     Color color = Color.white;
 
-	[SerializeField]
+	
     SpriteRenderer spriteRenderer;
 
-	public SpriteRenderer SpriteRenderer{
+    [HideInInspector]
+    public SpriteRenderer SpriteRenderer 
+    {
 		get{
 			if(spriteRenderer == null){
 				spriteRenderer = GetComponent<SpriteRenderer>();
@@ -17,8 +22,12 @@ public class TDS_Outline : MonoBehaviour
 			return spriteRenderer;
 		}
 	}
-	[SerializeField,Range(0,15)]
+
+	[SerializeField,Range(0,15), Space]
 	float outlineSize = 1;
+
+    Color disabledColor = Color.black;
+    float disabledSize = 0;
 
 	Material preMat;
 
@@ -36,29 +45,59 @@ public class TDS_Outline : MonoBehaviour
         }
     }
 
-    void OnEnable() {
-		preMat = SpriteRenderer.sharedMaterial;
-		SpriteRenderer.sharedMaterial = DefaultMaterial;
-		UpdateOutline(outlineSize);
-	}
-
-	void OnDisable() {
-		SpriteRenderer.sharedMaterial = preMat;
-	}
-
-	void OnValidate(){
-		if(enabled){
-			UpdateOutline(outlineSize);
-		}
-	}
-
-    void UpdateOutline(float outline)
+    public void DisableOutline()
     {
         MaterialPropertyBlock _mpb = new MaterialPropertyBlock();
         SpriteRenderer.GetPropertyBlock(_mpb);
-        _mpb.SetFloat("_OutlineSize", outline);
+        _mpb.SetFloat("_OutlineSize", disabledSize);
+        _mpb.SetColor("_OutlineColor", disabledColor);        
+        SpriteRenderer.SetPropertyBlock(_mpb);
+    }
+
+    public void EnableOutline()
+    {
+        MaterialPropertyBlock _mpb = new MaterialPropertyBlock();
+        SpriteRenderer.GetPropertyBlock(_mpb);
+        _mpb.SetFloat("_OutlineSize", outlineSize);
         _mpb.SetColor("_OutlineColor", color);
         SpriteRenderer.SetPropertyBlock(_mpb);
     }
 
+    public void EnableOutline(Color _color,float _outlineSize)
+    {
+        enableOutline = true;
+        color = _color;
+        outlineSize = _outlineSize;
+        MaterialPropertyBlock _mpb = new MaterialPropertyBlock();
+        SpriteRenderer.GetPropertyBlock(_mpb);
+        _mpb.SetFloat("_OutlineSize", outlineSize);
+        _mpb.SetColor("_OutlineColor", color);
+        SpriteRenderer.SetPropertyBlock(_mpb);
+    }
+
+    void OnEnable()
+    {
+		preMat = SpriteRenderer.sharedMaterial;
+		SpriteRenderer.sharedMaterial = DefaultMaterial;
+		UpdateOutline();
+	}
+
+	void OnDisable()
+    {
+		SpriteRenderer.sharedMaterial = preMat;
+	}
+
+	void OnValidate()
+    {
+		if(enabled)
+        {
+			UpdateOutline();
+		}
+	}
+
+    void UpdateOutline()
+    {
+        if (!enableOutline) DisableOutline();
+        if (enableOutline) EnableOutline();
+    }
 }

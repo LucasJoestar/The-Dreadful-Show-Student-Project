@@ -47,9 +47,9 @@ Shader "Custom/Outline"
    	sampler2D _MainTex;
     sampler2D _AlphaTex;
 
-    float4 _MainTex_TexelSize; //magic var
-    float _OutlineSize; //outline size
-    fixed4 _OutlineColor; // outlie color
+    float4 _MainTex_TexelSize;
+    float _OutlineSize;
+    fixed4 _OutlineColor; 
 
     fixed4 SampleSpriteTexture (float2 uv)
     {
@@ -93,7 +93,7 @@ Shader "Custom/Outline"
 
             fixed4 frag(v2f IN) : SV_Target
             {
-               	fixed4 texColor = SampleSpriteTexture (IN.texcoord + fixed2(0,_MainTex_TexelSize.y*_OutlineSize)) * IN.color;
+                fixed4 texColor = SampleSpriteTexture (IN.texcoord + fixed2(0,_MainTex_TexelSize.y*_OutlineSize)) * IN.color;
                	fixed4 c = _OutlineColor * texColor.a;
                 return c;
             }

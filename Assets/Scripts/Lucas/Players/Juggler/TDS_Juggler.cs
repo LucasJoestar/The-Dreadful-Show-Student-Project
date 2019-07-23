@@ -171,10 +171,9 @@ public class TDS_Juggler : TDS_Player
     public List<TDS_Throwable> Throwables = new List<TDS_Throwable>();
 
     /// <summary>
-    /// Transform at the juggler's third hand position.
-    /// Used to set the selected throwable as child.
+    /// Transform used to set as children objects juggling with.
     /// </summary>
-    [SerializeField] private Transform thirdHandTransform = null;
+    [SerializeField] private Transform juggleTransform = null;
     #endregion
 
     #region Variables
@@ -280,33 +279,15 @@ public class TDS_Juggler : TDS_Player
     }
 
     /// <summary>
-    /// Layer mask referencing everything except this player layer.
+    /// Layer mask referencing what the player can aim at.
     /// </summary>
-    [SerializeField] private LayerMask whatIsAllButThis = new LayerMask();
-
-    /// <summary>
-    /// Transform used to set as children objects juggling with.
-    /// </summary>
-    [SerializeField] private Transform juggleTransform = null;
+    [SerializeField] private LayerMask whatCanAim = new LayerMask();
 
     /// <summary>
     /// The ideal position of the juggle transform in local space ;
     /// Used to lerp the transform to a new position when moving.
     /// </summary>
     [SerializeField] private Vector3 juggleTransformIdealLocalPosition = Vector3.zero;
-
-    /// <summary>
-    /// The position of the juggle transform in local space.
-    /// </summary>
-    public Vector3 JuggleTransformLocalPosition
-    {
-        get
-        {
-            Vector3 _return = juggleTransform.position - transform.position;
-            _return.x *= isFacingRight.ToSign();
-            return _return;
-        }
-    }
 
     /// <summary>
     /// Property for <see cref="throwAimingPoint"/> to update <see cref="throwVelocity"/> && <see cref="throwTrajectoryMotionPoints"/> on changes.
@@ -425,10 +406,13 @@ public class TDS_Juggler : TDS_Player
 
             if (TDS_InputManager.GetButtonDown(TDS_InputManager.PARRY_BUTTON))
             {
-                // Throws the object to the aiming position
-                ThrowObject_A();
-
-                if (!throwable) break;
+                // Triggers the throw animation ;
+                // If not having throwable anymore, update the animator
+                if (isGrounded)
+                {
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.Throw });
+                }
+                else ThrowObject_A();
             }
         }
 
@@ -473,7 +457,7 @@ public class TDS_Juggler : TDS_Player
             Vector3 _to = transform.position + new Vector3(_raycastedMotionPoints[_i + 1].x * isFacingRight.ToSign(), _raycastedMotionPoints[_i + 1].y, _raycastedMotionPoints[_i + 1].z);
 
             // If hit something, set the hit point as end of the preview trajectory
-            if (Physics.Linecast(_from, _to, out _hit, whatIsAllButThis, QueryTriggerInteraction.Ignore))
+            if (Physics.Linecast(_from, _to, out _hit, whatCanAim, QueryTriggerInteraction.Ignore))
             {
                 // Get the hit point in local space
                 _endPoint = transform.InverseTransformPoint(_hit.point);
@@ -612,15 +596,14 @@ public class TDS_Juggler : TDS_Player
         // Updates hands transform position by lerp
         Vector3 _newPos = juggleTransformIdealLocalPosition;
         _newPos.x *= isFacingRight.ToSign();
-        _newPos += transform.position;
 
         // Set juggling point height depending if kicked-out objects or not
         _newPos.y += juggleKickOutHeight;
 
         // If not at point, lerp position and update trajectory preview if aiming
-        if (juggleTransform.position != _newPos)
+        if (juggleTransform.localPosition != _newPos)
         {
-            juggleTransform.position = Vector3.Lerp(juggleTransform.position, _newPos, Time.deltaTime * 7);
+            juggleTransform.localPosition = Vector3.Lerp(juggleTransform.localPosition, _newPos, Time.deltaTime * 7);
         }
 
         // If not having any throwable, return
@@ -808,10 +791,17 @@ public class TDS_Juggler : TDS_Player
     /// </summary>
     public override bool ThrowObject_A()
     {
-        // Get the destination point in world space
-        Vector3 _destinationPosition = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
+        if (photonView.isMine)
+        {
+            // Get the destination point in world space
+            Vector3 _targetPosition = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
 
-        return ThrowObject(_destinationPosition);
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject"), new object[] { _targetPosition.x, _targetPosition.y, _targetPosition.z });
+
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -820,17 +810,10 @@ public class TDS_Juggler : TDS_Player
     /// <param name="_targetPosition">Position where the object should land.</param>
     public override bool ThrowObject(Vector3 _targetPosition)
     {
-        if (!PhotonNetwork.isMasterClient)
-        {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject_A"), new object[] { _targetPosition.x, _targetPosition.y, _targetPosition.z });
-            return false;
-        }
-
-        // If no throwable, return
-        if (!throwable) return false;
+        // Call this method in master client only
+        if (!PhotonNetwork.isMasterClient || !throwable) return false;
 
         // Now, throw that object
-        throwable.transform.localPosition = Vector3.zero;
         throwable.Throw(_targetPosition, aimAngle, RandomThrowBonusDamages);
 
         // Remove the throwable for all clients
@@ -845,13 +828,8 @@ public class TDS_Juggler : TDS_Player
         {
             Throwable = Throwables[0];
         }
+        else if (isAiming) StopAiming();
 
-        // Triggers the throw animation ;
-        // If not having throwable anymore, update the animator
-        if (isGrounded)
-        {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.Throw });
-        }
         if (CurrentThrowableAmount == 0)
         {
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.LostObject });
@@ -1102,6 +1080,9 @@ public class TDS_Juggler : TDS_Player
             throwAimingPoint.x *= -1;
             ThrowAimingPoint = throwAimingPoint;
         }
+
+        // Rotates the juggle transform so that it stays at the same location
+        juggleTransform.Rotate(Vector3.up, 180);
     }
     #endregion
 
@@ -1174,7 +1155,7 @@ public class TDS_Juggler : TDS_Player
         throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, throwAimingPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
 
         // Get layer for everything except this player one
-        whatIsAllButThis = ~(1 << gameObject.layer | 1 << LayerMask.NameToLayer("Object"));
+        whatCanAim = ~(1 << gameObject.layer | 1 << LayerMask.NameToLayer("Object"));
 
         // Get default aiming point
         defaultAimingPoint = throwAimingPoint;

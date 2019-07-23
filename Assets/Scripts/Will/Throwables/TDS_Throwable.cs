@@ -119,6 +119,7 @@ public class TDS_Throwable : PunBehaviour
         transform.SetParent(null, true);
         isHeld = false;
         collider.enabled = true;
+        SetLayer(LayerMask.NameToLayer("Object"));
     }
     /// <summary> 
     /// Reduces the durability of the object and if the durability is lower or equal to zero called the method that destroys the object. 
@@ -157,7 +158,23 @@ public class TDS_Throwable : PunBehaviour
         }
         owner = _carrier;
         collider.enabled = false;
+        SetLayer(_carrier.gameObject.layer);
+
         return true;
+    }
+
+    /// <summary>
+    /// Set this object layer.
+    /// </summary>
+    /// <param name="_layerID">ID of the new object layer.</param>
+    private void SetLayer(int _layerID)
+    {
+        if (PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetLayer"), new object[] { _layerID });
+        }
+
+        gameObject.layer = _layerID;
     }
 
     /// <summary> 
@@ -185,14 +202,15 @@ public class TDS_Throwable : PunBehaviour
         hitBox.Activate(attack, owner, _hitableTags.ObjectTags);
         isHeld = false;
         collider.enabled = true;
+        SetLayer(LayerMask.NameToLayer("Object"));
     }
     #endregion
 
     #region Unity Methods
     protected virtual void Awake()
     {
-        if (!rigidbody) rigidbody = GetComponent<Rigidbody>();
-        if (!collider) collider = GetComponent<BoxCollider>();
+        if (!rigidbody) rigidbody = GetComponentInChildren<Rigidbody>();
+        if (!collider) collider = GetComponentInChildren<BoxCollider>();
         if (!hitBox)
         {
             hitBox = GetComponentInChildren<TDS_HitBox>();
