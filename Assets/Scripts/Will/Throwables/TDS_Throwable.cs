@@ -44,6 +44,7 @@ public class TDS_Throwable : PunBehaviour
     protected float bouncePower = .5f;
     [SerializeField]
     protected float objectSpeed = 15f;
+    [SerializeField] private GameObject shadow = null;
     [SerializeField, Range(0, 20)]
     protected int bonusDamage = 0;
     [SerializeField, Range(0, 10)]
@@ -144,6 +145,7 @@ public class TDS_Throwable : PunBehaviour
         {
             hitBox.Desactivate();
         }
+        if (!shadow.activeInHierarchy) shadow.SetActive(true);
         rigidbody.isKinematic = true;
         transform.position = _rootCharacterObject.transform.position;
         transform.rotation = Quaternion.identity;
@@ -195,6 +197,7 @@ public class TDS_Throwable : PunBehaviour
         {
             hitBox = GetComponentInChildren<TDS_HitBox>();
         }
+        if (!shadow) shadow = transform.GetChild(1).gameObject;
         hitBox.OnTouch += hitBox.Desactivate;
         hitBox.OnTouch += BounceObject;
         hitBox.OnTouch += LoseDurability;
