@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon; 
 
-[RequireComponent(typeof(PhotonView), typeof(BoxCollider), typeof(TDS_HitBox))]
+[RequireComponent(typeof(PhotonView), typeof(BoxCollider), typeof(Rigidbody))]
 public class TDS_Projectile : PunBehaviour 
 {
     /* TDS_Projectile :
@@ -54,6 +54,7 @@ public class TDS_Projectile : PunBehaviour
     /// Hit box of the projectile.
     /// </summary>
     [SerializeField] private TDS_HitBox hitBox = null;
+    public TDS_HitBox HitBox { get { return hitBox;  } }
 
     #endregion
 
