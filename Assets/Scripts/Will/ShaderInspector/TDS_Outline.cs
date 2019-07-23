@@ -3,10 +3,12 @@
 [ExecuteInEditMode]
 public class TDS_Outline : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField, Space]
+    bool enableOutline = true;
+    [SerializeField,Space]
     Color color = Color.white;
 
-	[SerializeField]
+	[SerializeField, Space]
     SpriteRenderer spriteRenderer;
 
 	public SpriteRenderer SpriteRenderer{
@@ -17,7 +19,7 @@ public class TDS_Outline : MonoBehaviour
 			return spriteRenderer;
 		}
 	}
-	[SerializeField,Range(0,15)]
+	[SerializeField,Range(0,15), Space]
 	float outlineSize = 1;
 
 	Material preMat;
@@ -34,6 +36,12 @@ public class TDS_Outline : MonoBehaviour
             }
             return defaultMaterial;
         }
+    }
+
+    public void DisableOutline()
+    {
+        color = Color.black;
+        outlineSize = 0;
     }
 
     void OnEnable() {
@@ -54,6 +62,7 @@ public class TDS_Outline : MonoBehaviour
 
     void UpdateOutline(float outline)
     {
+        if (!enableOutline) DisableOutline();
         MaterialPropertyBlock _mpb = new MaterialPropertyBlock();
         SpriteRenderer.GetPropertyBlock(_mpb);
         _mpb.SetFloat("_OutlineSize", outline);
