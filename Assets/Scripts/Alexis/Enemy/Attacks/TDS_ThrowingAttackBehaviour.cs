@@ -47,8 +47,9 @@ public class TDS_ThrowingAttackBehaviour : TDS_EnemyAttack
     #region Original Methods
     public override void ApplyAttackBehaviour(TDS_Enemy _caster)
     {
-        if (thrownObjectName == string.Empty) return; 
-        GameObject _thrownObject = PhotonNetwork.Instantiate(thrownObjectName, _caster.HandsTransform.position, _caster.transform.rotation, 0);
+        if (thrownObjectName == string.Empty) return;
+        Quaternion _rotation = _caster.IsFacingRight ? Quaternion.Euler(0, 0, 0) : Quaternion.Euler(0, 180, 0); 
+        GameObject _thrownObject = PhotonNetwork.Instantiate(thrownObjectName, _caster.HandsTransform.position, _rotation, 0);
         if (!_thrownObject) return; 
         if(_thrownObject.GetComponent<TDS_Throwable>())
         {
@@ -65,8 +66,9 @@ public class TDS_ThrowingAttackBehaviour : TDS_EnemyAttack
         else if(_thrownObject.GetComponent<TDS_Projectile>())
         {
             Vector3 _dir = _caster.IsFacingRight ? Vector3.right : Vector3.left;
-            _thrownObject.GetComponent<TDS_HitBox>().Activate(this, _caster); 
-            _thrownObject.GetComponent<TDS_Projectile>().StartProjectileMovement(_dir, MaxRange); 
+            TDS_Projectile _proj = _thrownObject.GetComponent<TDS_Projectile>();
+            _proj.HitBox.Activate(this, _caster);
+            _proj.StartProjectileMovement(_dir, MaxRange); 
         }
     }
     #endregion

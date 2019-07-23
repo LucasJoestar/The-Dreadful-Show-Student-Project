@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon; 
 
-[RequireComponent(typeof(PhotonView), typeof(BoxCollider), typeof(TDS_HitBox))]
+[RequireComponent(typeof(PhotonView), typeof(BoxCollider), typeof(Rigidbody))]
 public class TDS_Projectile : PunBehaviour 
 {
     /* TDS_Projectile :
@@ -54,6 +54,7 @@ public class TDS_Projectile : PunBehaviour
     /// Hit box of the projectile.
     /// </summary>
     [SerializeField] private TDS_HitBox hitBox = null;
+    public TDS_HitBox HitBox { get { return hitBox;  } }
 
     #endregion
 
@@ -90,6 +91,14 @@ public class TDS_Projectile : PunBehaviour
         range = _range;
         StartCoroutine(ProjectileMovement(_direction));
     }
+
+    private void PrepareDestruction()
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+
+        StopAllCoroutines();
+        Invoke("CallDestruction", .001f);
+    }
     #endregion
 
     #region Unity Methods
@@ -101,15 +110,14 @@ public class TDS_Projectile : PunBehaviour
             hitBox = GetComponent<TDS_HitBox>();
             if (!hitBox) Debug.LogWarning("HitBox is missing on Projectile !");
         }
+        hitBox.OnTouch += PrepareDestruction; 
     }
 
-    // OnTriggerEnter is called when the GameObject collides with another GameObject
-    private void OnTriggerEnter(Collider collider)
+
+    private void OnCollisionEnter(Collision collision)
     {
         if (!PhotonNetwork.isMasterClient) return;
-
-        StopAllCoroutines();
-        Invoke("CallDestruction", .001f);
+        PrepareDestruction(); 
     }
     #endregion
 
