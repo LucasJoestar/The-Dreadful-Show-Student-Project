@@ -162,7 +162,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void LockElement(bool _playerIsReady)
     {
         // SET THE TOGGLE
-        if(lockingFeedback) lockingFeedback.gameObject.SetActive(_playerIsReady);
+        //if(lockingFeedback) lockingFeedback.gameObject.SetActive(_playerIsReady);
         if (photonPlayer == null || PhotonNetwork.player.ID != photonPlayer.ID) readyToggle.isOn = _playerIsReady; 
     }
 
@@ -208,6 +208,8 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// </summary>
     public void ClearToggle()
     {
+
+
         readyToggle.onValueChanged.RemoveAllListeners();
 
         leftArrowButton.onClick.RemoveListener(DisplayPreviousImage); 
@@ -216,8 +218,14 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         leftArrowButton.interactable = false;
         rightArrowButton.interactable = false;
 
-        readyToggle.isOn = false;
+        if (readyToggle.isOn)
+        {
+            readyToggle.GetComponent<Animator>().SetTrigger(readyToggle.animationTriggers.pressedTrigger);
+            readyToggle.isOn = false;
+        }
+
         readyToggle.interactable = false; 
+
         Selectable _launchButton = TDS_UIManager.Instance.LaunchGameButton;
         if (_launchButton != null)
         {

@@ -320,6 +320,7 @@ public class TDS_UIManager : PunBehaviour
         _screenPos.x = Mathf.Clamp(_screenPos.x, _followingImage.rectTransform.rect.width / 2, Screen.width - (_followingImage.rectTransform.rect.width / 2));
         _screenPos.y = Mathf.Clamp(_screenPos.y, _followingImage.rectTransform.rect.height / 2, Screen.width - (_followingImage.rectTransform.rect.height / 2));
         _followingImage.transform.position = _screenPos;
+        _followingImage.transform.GetChild(0).rotation = Quaternion.Euler(0, 0, _screenPos.x < Screen.width/2 ? 90 : -90 ); 
         while (_followedPlayer && _followingImage && Application.isPlaying)
         {
             //Debug.LogError(Camera.main.WorldToScreenPoint(_followedPlayer.transform.position));
@@ -327,6 +328,7 @@ public class TDS_UIManager : PunBehaviour
             _screenPos.x = Mathf.Clamp(_screenPos.x, _followingImage.rectTransform.rect.width / 2, Screen.width - (_followingImage.rectTransform.rect.width / 2));
             _screenPos.y = Mathf.Clamp(_screenPos.y, _followingImage.rectTransform.rect.height / 2, Screen.height - (_followingImage.rectTransform.rect.height / 2));
             _followingImage.transform.position = Vector3.MoveTowards(_followingImage.transform.position, _screenPos, Time.deltaTime * 3600);
+
             yield return null;
         }
         if (!_followedPlayer)
@@ -557,8 +559,11 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void ClearCharacterSelectionMenu()
     {
+        characterSelectionMenu.LocalElement.ClearToggle();
+
         characterSelectionMenu.ClearMenu();
-        characterSelectionMenu.LocalElement.ClearToggle(); 
+        ActivateMenu((int)UIState.InRoomSelection);
+        SetRoomInterractable(true);
     }
 
     /// <summary>
