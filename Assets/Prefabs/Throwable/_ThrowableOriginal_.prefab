@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3444803831096782895}
   - component: {fileID: 3357969355024705391}
   - component: {fileID: 3365279542923471985}
+  - component: {fileID: 594383609374293075}
   - component: {fileID: 3339952328888906788}
   - component: {fileID: 3339952328888906789}
   m_Layer: 11
@@ -55,7 +56,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9e32ce224446c4746a4f714514e29c74, type: 2}
+  - {fileID: 2100000, guid: d9bf6c42202a45440bb76cf52d8a5846, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -98,12 +99,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be188c0a9f7e8bd4da47cefd51a3eea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canBeTakeByEnemies: 0
   isHeld: 0
-  isHoldByPlayer: 0
   collider: {fileID: 0}
   bouncePower: 0.5
-  objectSpeed: 15
   shadow: {fileID: 0}
   bonusDamage: 0
   durabilityToWithdraw: 2
@@ -142,6 +140,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.6357956, y: 0.55, z: 1.5}
   m_Center: {x: 0, y: 0.275, z: 0}
+--- !u!114 &594383609374293075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3340567457088398535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea2d75b4e01762a488981a2671146c0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableOutline: 0
+  color: {r: 0.11173906, g: 0.4356029, b: 0.8773585, a: 1}
+  outlineSize: 1
 --- !u!114 &3339952328888906788
 MonoBehaviour:
   m_ObjectHideFlags: 0
