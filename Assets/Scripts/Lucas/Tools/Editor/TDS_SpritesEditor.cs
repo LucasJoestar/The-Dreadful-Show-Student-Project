@@ -74,6 +74,16 @@ public class TDS_SpritesEditor : EditorWindow
     [SerializeField] private bool isInFusionMode = false;
 
     /// <summary>
+    /// Name of the material to replace.
+    /// </summary>
+    [SerializeField] private string materialName = string.Empty;
+
+    /// <summary>
+    /// Material used to replace another material in the scene.
+    /// </summary>
+    [SerializeField] private Material material = null;
+
+    /// <summary>
     /// Groups of loaded sprite renderers sorted by color.
     /// </summary>
     [SerializeField] private TDS_ColorGroup[] colorGroups = new TDS_ColorGroup[] { };
@@ -114,6 +124,38 @@ public class TDS_SpritesEditor : EditorWindow
         GUILayout.Space(15);
 
         EditorGUILayout.LabelField(new GUIContent("General", "General Sprites Edition Section"), EditorStyles.boldLabel);
+
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(15);
+        if (GUILayout.Button(new GUIContent("Replace Sprite Materials", "Replace all sprites default material by the one interacting with light"), GUILayout.Width(250)))
+        {
+            if (material == null)
+            {
+                Debug.Log("The selected material is null !");
+                return;
+            }
+
+            SpriteRenderer[] _sprites = FindObjectsOfType<SpriteRenderer>();
+            Undo.RecordObjects(_sprites, "Replace sprites material");
+
+            foreach (SpriteRenderer _sprite in _sprites)
+            {
+                if (_sprite.sharedMaterial.name == materialName)
+                {
+                    _sprite.sharedMaterial = material;
+                }
+                else Debug.Log("??? => " + _sprite.sharedMaterial.name);
+            }
+        }
+
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(15);
+
+        materialName = EditorGUILayout.TextField("Material Name to Replace", materialName, GUILayout.Width(250));
+        material = (Material)EditorGUILayout.ObjectField("Material to use", material, typeof(Material), true, GUILayout.Width(250));
+
+        EditorGUILayout.EndHorizontal();
 
         if (Selection.gameObjects.Length == 0)
         {
