@@ -142,56 +142,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     private SerializedProperty playerType = null;
     #endregion
 
-    #region Inputs
-    /// <summary>SerializedProperties for <see cref="TDS_Player.CatchButton"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty catchButton = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.DodgeButton"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty dodgeButton = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.DPadX"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty dPadXAxis = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.DPadY"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty dPadYAxis = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.HeavyAttackButton"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty heavyAttackButton = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.HorizontalAxis"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty horizontalAxis = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.InteractButton"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty interactButton = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.JumpButton"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty jumpButton = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.LightAttackButton"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty lightAttackButton = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.Parry"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty parryButton = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.RightStickX"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty rightStickXAxis = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.RightStickY"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty rightStickYAxis = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.SuperAttackButton"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty superAttackButton = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.ThrowButton"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty throwButton = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.UseObjectButton"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty useObjectButton = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.VerticalAxis"/> of type <see cref="string"/>.</summary>
-    private SerializedProperty verticalAxis = null;
-    #endregion
-
     #endregion
 
     #region Foldouts
@@ -228,24 +178,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
             // Save this value
             EditorPrefs.SetBool("arePlayerDebugsUnfolded", value);
-        }
-    }
-
-    /// <summary>Backing field for <see cref="ArePlayerInputsUnfolded"/></summary>
-    private bool arePlayerInputsUnfolded = false;
-
-    /// <summary>
-    /// Indicates if the inputs of the editing scripts are unfolded.
-    /// </summary>
-    public bool ArePlayerInputsUnfolded
-    {
-        get { return arePlayerInputsUnfolded; }
-        set
-        {
-            arePlayerInputsUnfolded = value;
-
-            // Save this value
-            EditorPrefs.SetBool("arePlayerInputsUnfolded", value);
         }
     }
 
@@ -330,35 +262,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
     }
 
     /// <summary>
-    /// Draws the inputs editor of the TDS_Player editing objects.
-    /// </summary>
-    private void DrawInputs()
-    {
-        TDS_EditorUtility.TextField("Horizontal Axis", "Name of the axis input used to move in horizontal", horizontalAxis);
-        TDS_EditorUtility.TextField("Vertical Axis", "Name of the axis input used to move in vertical", verticalAxis);
-        TDS_EditorUtility.TextField("Right Stick X Axis", "Name of the joystick right stick X axis", rightStickXAxis);
-        TDS_EditorUtility.TextField("Right Stick Y Axis", "Name of the joystick right stick Y axis", rightStickYAxis);
-        TDS_EditorUtility.TextField("D-Pad X Axis", "Name of the joystick D-Pad X axis", dPadXAxis);
-        TDS_EditorUtility.TextField("D-Pad Y Axis", "Name of the joystick D-Pad Y axis", dPadYAxis);
-
-        GUILayout.Space(10);
-
-        TDS_EditorUtility.TextField("Jump", "Name of the button input used to perform a jump", jumpButton);
-        TDS_EditorUtility.TextField("Interact", "Name of the button input used to interact with the environment", interactButton);
-        TDS_EditorUtility.TextField("Use Object", "Name of the button input used to use an object", useObjectButton);
-        TDS_EditorUtility.TextField("Throw", "Name of the button input used to throw an object", throwButton);
-
-        GUILayout.Space(10);
-
-        TDS_EditorUtility.TextField("Light Attack", "Name of the button input used to perform a Light Attack", lightAttackButton);
-        TDS_EditorUtility.TextField("Heavy Attack", "Name of the button input used to perform a Heavy Attack", heavyAttackButton);
-        TDS_EditorUtility.TextField("Super Attack", "Name of the button input used to perform a Super Attack", superAttackButton);
-        TDS_EditorUtility.TextField("Catch", "Name of the button input used to perform the \"Catch\" Action", catchButton);
-        TDS_EditorUtility.TextField("Dodge", "Name of the button input used to perform the \"Dodge\" Action", dodgeButton);
-        TDS_EditorUtility.TextField("Parry", "Name of the button input used to parry attacks", parryButton);
-    }
-
-    /// <summary>
     /// Draws the custom editor of the TDS_Player class.
     /// </summary>
     protected void DrawPlayerEditor()
@@ -405,19 +308,6 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
             if (arePlayerVariablesUnfolded)
             {
                 DrawSettings();
-            }
-
-            EditorGUILayout.EndVertical();
-            GUILayout.Space(15);
-            EditorGUILayout.BeginVertical("Box");
-
-            // Button to show or not the Player class inputs
-            if (TDS_EditorUtility.Button("Inputs", "Wrap / unwrap inputs", TDS_EditorUtility.HeaderStyle)) ArePlayerInputsUnfolded = !arePlayerInputsUnfolded;
-
-            // If unfolded, draws the custom editor for the inputs
-            if (arePlayerInputsUnfolded)
-            {
-                DrawInputs();
             }
 
             EditorGUILayout.EndVertical();
@@ -559,28 +449,10 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         whatIsObstacle = serializedObject.FindProperty("WhatIsObstacle");
         playerType = serializedObject.FindProperty("playerType");
 
-        catchButton = serializedObject.FindProperty("CatchButton");
-        dodgeButton = serializedObject.FindProperty("DodgeButton");
-        dPadXAxis = serializedObject.FindProperty("DPadXAxis");
-        dPadYAxis = serializedObject.FindProperty("DPadYAxis");
-        heavyAttackButton = serializedObject.FindProperty("HeavyAttackButton");
-        horizontalAxis = serializedObject.FindProperty("HorizontalAxis");
-        interactButton = serializedObject.FindProperty("InteractButton");
-        jumpButton = serializedObject.FindProperty("JumpButton");
-        lightAttackButton = serializedObject.FindProperty("LightAttackButton");
-        parryButton = serializedObject.FindProperty("ParryButton");
-        rightStickXAxis = serializedObject.FindProperty("RightStickXAxis");
-        rightStickYAxis = serializedObject.FindProperty("RightStickYAxis");
-        superAttackButton = serializedObject.FindProperty("SuperAttackButton");
-        throwButton = serializedObject.FindProperty("ThrowButton");
-        useObjectButton = serializedObject.FindProperty("UseObjectButton");
-        verticalAxis = serializedObject.FindProperty("VerticalAxis");
-
         // Loads the editor folded & unfolded values of this script
         isPlayerUnfolded = EditorPrefs.GetBool("isPlayerUnfolded", isPlayerUnfolded);
         arePlayerComponentsUnfolded = EditorPrefs.GetBool("arePlayerComponentsUnfolded", arePlayerComponentsUnfolded);
         arePlayerDebugsUnfolded = EditorPrefs.GetBool("arePlayerDebugsUnfolded", arePlayerDebugsUnfolded);
-        arePlayerInputsUnfolded = EditorPrefs.GetBool("arePlayerInputsUnfolded", arePlayerInputsUnfolded);
         arePlayerVariablesUnfolded = EditorPrefs.GetBool("arePlayerVariablesUnfolded", arePlayerVariablesUnfolded);
     }
 

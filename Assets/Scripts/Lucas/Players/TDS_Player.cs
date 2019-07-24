@@ -1707,11 +1707,11 @@ public class TDS_Player : TDS_Character
                 Catch();
                 return -1;
             }
-            if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUPER_ATTACK_BUTTON))
+            /*if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUPER_ATTACK_BUTTON))
             {
                 SuperAttack();
                 return -1;
-            }
+            }*/
             if (TDS_InputManager.GetButtonDown(TDS_InputManager.USE_OBJECT_BUTTON))
             {
                 UseObject();

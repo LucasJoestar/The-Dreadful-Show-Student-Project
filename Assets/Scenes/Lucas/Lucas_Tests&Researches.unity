@@ -40784,7 +40784,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1132101758
 Transform:
   m_ObjectHideFlags: 0
@@ -61087,11 +61087,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FireEater
       objectReference: {fileID: 0}
-    - target: {fileID: 1785089289656064482, guid: e670877b6fc0de7449f90a72fbfa7449,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1785873569712971000, guid: e670877b6fc0de7449f90a72fbfa7449,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -63408,10 +63403,6 @@ PrefabInstance:
     - target: {fileID: 1366139620063678, guid: 99eb62c10851ec643a1a1236cfc985a6, type: 3}
       propertyPath: m_Name
       value: FatLady
-      objectReference: {fileID: 0}
-    - target: {fileID: 1366139620063678, guid: 99eb62c10851ec643a1a1236cfc985a6, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4307840657894174, guid: 99eb62c10851ec643a1a1236cfc985a6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -68879,11 +68870,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BeardLady
       objectReference: {fileID: 0}
-    - target: {fileID: 7181379643535501126, guid: d635b766f21f14947a364d7448b4dc2c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7179926860357853788, guid: d635b766f21f14947a364d7448b4dc2c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -74335,21 +74321,6 @@ PrefabInstance:
         type: 3}
       propertyPath: instantiationId
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2635326681832023650, guid: 131b9c2e9ac901841aa00daa77a82570,
-        type: 3}
-      propertyPath: m_Parameters.widthMultiplier
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2635326681832023650, guid: 131b9c2e9ac901841aa00daa77a82570,
-        type: 3}
-      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2635326681832023650, guid: 131b9c2e9ac901841aa00daa77a82570,
-        type: 3}
-      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
-      value: 0.2495144
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 131b9c2e9ac901841aa00daa77a82570, type: 3}
