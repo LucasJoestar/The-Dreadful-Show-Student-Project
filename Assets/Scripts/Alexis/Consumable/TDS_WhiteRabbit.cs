@@ -107,7 +107,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
         _player.Heal(_healingValue);
 
         OnUseRabbit?.Invoke();
-        PhotonNetwork.Instantiate(particlesName, transform.position + Vector3.up, Quaternion.identity, 0);
+        TDS_VFXManager.Instance.InstanciateParticleSystemByName(particlesName, transform.position + Vector3.up);
         PhotonNetwork.Destroy(gameObject);
     }
 
