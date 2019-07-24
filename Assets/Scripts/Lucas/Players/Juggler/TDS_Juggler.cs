@@ -595,7 +595,6 @@ public class TDS_Juggler : TDS_Player
     {
         // Updates hands transform position by lerp
         Vector3 _newPos = juggleTransformIdealLocalPosition;
-        _newPos.x *= isFacingRight.ToSign();
 
         // Set juggling point height depending if kicked-out objects or not
         _newPos.y += juggleKickOutHeight;
@@ -603,7 +602,7 @@ public class TDS_Juggler : TDS_Player
         // If not at point, lerp position and update trajectory preview if aiming
         if (juggleTransform.localPosition != _newPos)
         {
-            juggleTransform.localPosition = Vector3.Lerp(juggleTransform.localPosition, _newPos, Time.deltaTime * 7);
+            juggleTransform.localPosition = Vector3.Lerp(juggleTransform.localPosition, _newPos, Time.deltaTime * 5);
         }
 
         // If not having any throwable, return
@@ -618,7 +617,7 @@ public class TDS_Juggler : TDS_Player
 
             // Get theta value to position the object
             float _theta = _i + jugglerCounter;
-            if (_theta > CurrentThrowableAmount) _theta -= CurrentThrowableAmount;
+            if (_theta > CurrentThrowableAmount) _theta = 0;
             _theta *= _baseTheta;
 
             Vector3 _newPosition = new Vector3(Mathf.Sin(_theta), Mathf.Cos(_theta), 0f) * throwableDistanceFromCenter;
@@ -628,7 +627,7 @@ public class TDS_Juggler : TDS_Player
             _throwable.transform.localPosition = Vector3.Lerp(_throwable.transform.localPosition, _newPosition, Time.deltaTime * juggleSpeed * 2.5f);
 
             // Rotates the object
-            _throwable.transform.Rotate(Vector3.forward, Time.deltaTime * (_throwable.Weight * 5));
+            _throwable.transform.Rotate(Vector3.forward, Time.deltaTime * 100 * (5 / _throwable.Weight));
         }
 
         // Increase counter
@@ -639,12 +638,12 @@ public class TDS_Juggler : TDS_Player
     /// <summary>
     /// Kicks out juggling objects just above character.
     /// </summary>
-    private void KickOutJuggleLight() => juggleKickOutHeight = 1.75f;
+    private void KickOutJuggleLight() => juggleKickOutHeight = 5f;
 
     /// <summary>
     /// Kicks out juggling objects out of screen.
     /// </summary>
-    private void KickOutJuggleHeavy() => juggleKickOutHeight = 5;
+    private void KickOutJuggleHeavy() => juggleKickOutHeight = 15;
 
     /// <summary>
     /// Lerps the selected throwable position to the hand transform position.
@@ -1072,6 +1071,9 @@ public class TDS_Juggler : TDS_Player
     /// </summary>
     public override void Flip()
     {
+        // Get juggle transform rotation before flip
+        Quaternion _baseRotation = juggleTransform.rotation;
+
         base.Flip();
 
         // Reverse X position
@@ -1082,7 +1084,7 @@ public class TDS_Juggler : TDS_Player
         }
 
         // Rotates the juggle transform so that it stays at the same location
-        juggleTransform.Rotate(Vector3.up, 180);
+        juggleTransform.rotation = _baseRotation;
     }
     #endregion
 
@@ -1138,7 +1140,8 @@ public class TDS_Juggler : TDS_Player
         base.OnDrawGizmos();
 
         // Draws a gizmos at the juggle transform ideal position
-        Gizmos.DrawSphere(transform.position + (juggleTransformIdealLocalPosition * isFacingRight.ToSign()), .1f);
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawSphere(transform.position + new Vector3(juggleTransformIdealLocalPosition.x * isFacingRight.ToSign(), juggleTransformIdealLocalPosition.y, juggleTransformIdealLocalPosition.z), .1f);
     }
 
     // Use this for initialization

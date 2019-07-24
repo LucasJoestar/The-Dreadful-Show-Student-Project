@@ -174,12 +174,18 @@ public class TDS_Checkpoint : PunBehaviour
     /// <param name="_state"></param>
     public void SetAnimState(CheckpointAnimState _state)
     {
-        if (photonView.isMine)
-        {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetAnimState"), new object[] { (int)_state });
-        }
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, GetType(), "SetAnimState"), new object[] { (int)_state });
+    }
 
-        switch (_state)
+    /// <summary>
+    /// Set this checkpoint animation state
+    /// </summary>
+    /// <param name="_state"></param>
+    public void SetAnimState(int _state)
+    {
+        CheckpointAnimState _animState = (CheckpointAnimState)_state;
+
+        switch (_animState)
         {
             case CheckpointAnimState.Desactivated:
                 animator.SetBool("Activated", false);
@@ -196,15 +202,6 @@ public class TDS_Checkpoint : PunBehaviour
             default:
                 break;
         }
-    }
-
-    /// <summary>
-    /// Set this checkpoint animation state
-    /// </summary>
-    /// <param name="_state"></param>
-    public void SetAnimState(int _state)
-    {
-        SetAnimState((CheckpointAnimState)_state);
     }
     #endregion
 
@@ -243,7 +240,7 @@ public class TDS_Checkpoint : PunBehaviour
         if (other.gameObject.HasTag("Player"))
         {
             other.GetComponent<TDS_Player>().Heal(999);
-            Activate();
+            if (!isActivated) Activate();
         }
     }
     #endregion

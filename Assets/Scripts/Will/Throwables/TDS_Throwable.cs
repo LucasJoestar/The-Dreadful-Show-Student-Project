@@ -42,8 +42,6 @@ public class TDS_Throwable : PunBehaviour
     [SerializeField, Range(0, 20)]
     protected int bonusDamage = 0;
     [SerializeField, Range(0, 10)]
-    protected int durabilityToWithdraw = 2;
-    [SerializeField, Range(0, 10)]
     protected int objectDurability = 10;
     public int ObjectDurability
     {
@@ -122,7 +120,7 @@ public class TDS_Throwable : PunBehaviour
     protected virtual void LoseDurability()
     {
         if (!PhotonNetwork.isMasterClient) return;  
-        objectDurability -= durabilityToWithdraw;
+        objectDurability --;
         if (!(objectDurability <= 0)) return;
         DestroyThrowableObject();
     }

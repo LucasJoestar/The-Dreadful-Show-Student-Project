@@ -1707,11 +1707,11 @@ public class TDS_Player : TDS_Character
                 Catch();
                 return -1;
             }
-            if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUPER_ATTACK_BUTTON))
+            /*if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUPER_ATTACK_BUTTON))
             {
                 SuperAttack();
                 return -1;
-            }
+            }*/
             if (TDS_InputManager.GetButtonDown(TDS_InputManager.USE_OBJECT_BUTTON))
             {
                 UseObject();
@@ -1770,7 +1770,7 @@ public class TDS_Player : TDS_Character
         }
 
         // When pressing the jump method, check if on ground ; If it's all good, then let's jump
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.JUMP_BUTTON) && IsGrounded && !throwable && !isPreparingAttack)
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.JUMP_BUTTON) && IsGrounded && (!throwable || (playerType == PlayerType.Juggler)) && !isPreparingAttack)
         {
             StartJump();
         }
