@@ -435,7 +435,7 @@ public abstract class TDS_Character : TDS_Damageable
         throwable.Drop();
 
         // Set the throwable as null for all clients
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ParentThrowable"), new object[] { throwable.photonView.viewID, false });
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetThrowable"), new object[] { throwable.photonView.viewID, false });
 
         Throwable = null;
 
