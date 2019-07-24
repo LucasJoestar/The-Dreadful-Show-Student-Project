@@ -229,8 +229,7 @@ public class TDS_InputManager : MonoBehaviour
     {
         if (GetAxisDown(_name))
         {
-            _value = (int)Input.GetAxis(_name);
-
+            _value = (int)Mathf.Sign(Input.GetAxis(_name));
             return true;
         }
 
