@@ -549,6 +549,7 @@ public class TDS_UIManager : PunBehaviour
         if(localIsReady)
         {
             SelectCharacter();
+            characterSelectionMenu.LocalElement.TriggerToggle();
             return; 
         }
         TDS_NetworkManager.Instance.LeaveRoom(); 
@@ -1009,6 +1010,7 @@ public class TDS_UIManager : PunBehaviour
         if (!localIsReady)
         {
             SelectCharacter();
+            characterSelectionMenu.LocalElement.TriggerToggle(); 
             return;
         }
         if (PhotonNetwork.isMasterClient && launchGameButton && !playerListReady.Any(p => p.Value == false) && localIsReady)

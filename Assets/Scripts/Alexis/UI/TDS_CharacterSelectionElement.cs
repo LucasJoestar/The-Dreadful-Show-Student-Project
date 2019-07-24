@@ -208,8 +208,6 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// </summary>
     public void ClearToggle()
     {
-
-
         readyToggle.onValueChanged.RemoveAllListeners();
 
         leftArrowButton.onClick.RemoveListener(DisplayPreviousImage); 
@@ -253,6 +251,11 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         else
             DisplayPreviousImage(); 
     }
+
+    public void TriggerToggle()
+    {
+        readyToggle.GetComponent<Animator>().SetTrigger(readyToggle.animationTriggers.pressedTrigger);
+    }
     #endregion
-	#endregion
+    #endregion
 }
