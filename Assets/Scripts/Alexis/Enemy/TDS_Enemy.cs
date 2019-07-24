@@ -129,12 +129,12 @@ public abstract class TDS_Enemy : TDS_Character
     /// <summary>
     /// Recoil Distance: When the enemy is hit and dies, he is pushed in a direction with a distance equal of the recoilDistance 
     /// </summary>
-    protected const float RECOIL_DISTANCE_DEATH = .1f;
+    protected const float RECOIL_DISTANCE_DEATH = 1.2f;
 
     /// <summary>
     /// Recoil Time: When the enemy is hit, he is pushed in a direction during this time (in seconds)
     /// </summary>
-    protected const float RECOIL_TIME_DEATH = .1f;
+    protected const float RECOIL_TIME_DEATH = .5f;
     #endregion 
 
     #region Variables
@@ -164,7 +164,16 @@ public abstract class TDS_Enemy : TDS_Character
     /// <summary>
     /// When this bool is set to true, the enemy has to wait until it turn to false again
     /// </summary>
-    protected bool isWaiting = false; 
+    protected bool isWaiting = false;
+
+    /// <summary>
+    /// Behaviour Coroutine, used when the Behaviour is called and stopped
+    /// </summary>
+    protected Coroutine behaviourCoroutine = null;
+    /// <summary>
+    /// Additional Coroutine, used when the CastAttack, CastDetection, CastGrab and CastThrow are called or stopped
+    /// </summary>
+    protected Coroutine additionalCoroutine = null;
 
     /// <summary>
     /// State of the enemy 
@@ -230,6 +239,8 @@ public abstract class TDS_Enemy : TDS_Character
     /// Accessor of the handsTransform Property
     /// </summary>
     public Transform HandsTransform { get { return handsTransform;  } }
+
+    private Vector3 targetLastPosition = Vector3.zero;
     #endregion
 
     #region Components and References
@@ -249,14 +260,6 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     private TDS_Throwable targetedThrowable = null;
 
-    /// <summary>
-    /// Behaviour Coroutine, used when the Behaviour is called and stopped
-    /// </summary>
-    protected Coroutine behaviourCoroutine = null;
-    /// <summary>
-    /// Additional Coroutine, used when the CastAttack, CastDetection, CastGrab and CastThrow are called or stopped
-    /// </summary>
-    protected Coroutine additionalCoroutine = null; 
     #endregion
 
     #endregion
@@ -385,7 +388,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected IEnumerator ApplyRecoil(Vector3 _position)
     {
-        if (!PhotonNetwork.isMasterClient) yield break ; 
+        if (!PhotonNetwork.isMasterClient) yield break ;
         Vector3 _direction = new Vector3(transform.position.x - _position.x, 0, 0).normalized;
         Vector3 _pos = Vector3.zero; 
         if (isDead)
@@ -994,28 +997,52 @@ public abstract class TDS_Enemy : TDS_Character
     protected virtual Vector3 GetAttackingPosition(out bool _hastoWander)
     {
         Vector3 _offset = Vector3.zero;
-        int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;  
+        Vector3 _returnedPosition = transform.position; 
+        _hastoWander = Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) > 1;
+        if (agent.IsMoving && playerTarget)
+        {
+            _offset = playerTarget.transform.position - targetLastPosition;
+
+            _offset.y = 0; 
+            targetLastPosition = playerTarget.transform.position;
+            _returnedPosition = agent.LastPosition + _offset;
+            _returnedPosition.x = Mathf.Clamp(_returnedPosition.x, TDS_Camera.Instance.CurrentBounds.XMin, TDS_Camera.Instance.CurrentBounds.XMax); 
+            return _returnedPosition; 
+        }
+
         _offset.z = Random.Range(-agent.Radius, agent.Radius); 
+
         if (throwable)
         {
+            _hastoWander = false; 
             //Check if the agent is near enough to throw immediatly, or if he is to far away to throw
             float _distance = Mathf.Abs(playerTarget.transform.position.x - transform.position.x); 
             _offset.x = _distance < throwRange / 2 ? _distance : _distance < throwRange ? Random.Range(throwRange /2, _distance) : Random.Range(throwRange / 2, throwRange);
-            _hastoWander = false;
         }
-        else if(Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) <= 1) 
+        else if(!_hastoWander) 
         {
-            _offset.x = Random.Range(GetMinRange(), GetMaxRange()) - (agent.Radius);
-            _hastoWander = false;
+            TDS_EnemyAttack _attack = GetAttack();
+            if (_attack)
+            {
+                _offset.x = Random.Range(_attack.MinRange, _attack.MaxRange) - (agent.Radius);
+            }
+            else
+                _offset.x = Random.Range(GetMinRange(), GetMaxRange()) - agent.Radius;
+
+            if (_offset.x < agent.Radius) _offset.x = agent.Radius; 
         }
         else
         {
-            _hastoWander = true;
-            _coeff = Random.value > .5f ? 1 : -1;
             _offset = new Vector3(Random.Range(wanderingRangeMin, wanderingRangeMax), 0, Random.Range(wanderingRangeMin, wanderingRangeMax));
         }
+
+        int _coeff = _hastoWander ? Random.value > .5f ? 1 : -1 : playerTarget.transform.position.x > transform.position.x ? -1 : 1;
         _offset.x *= _coeff;
-        return playerTarget.transform.position + _offset; 
+
+        targetLastPosition = playerTarget.transform.position;
+        _returnedPosition = playerTarget.transform.position + _offset;
+        _returnedPosition.x = Mathf.Clamp(_returnedPosition.x, TDS_Camera.Instance.CurrentBounds.XMin, TDS_Camera.Instance.CurrentBounds.XMax);
+        return _returnedPosition;
     }
 
     /// <summary>
@@ -1035,9 +1062,18 @@ public abstract class TDS_Enemy : TDS_Character
         }
         else
         {
-            _offset.x = Random.Range(GetMinRange(), GetMaxRange()) - agent.Radius;
+            TDS_EnemyAttack _attack = GetAttack();
+            if (_attack)
+            {
+                _offset.x = Random.Range(_attack.MinRange, _attack.MaxRange) - (agent.Radius);
+            }
+            else
+                _offset.x = Random.Range(GetMinRange(), GetMaxRange()) - agent.Radius;
+
+            if (_offset.x < agent.Radius) _offset.x = agent.Radius;
         }
         _offset.x *= _coeff;
+        targetLastPosition = playerTarget.transform.position;
         return playerTarget.transform.position + _offset;
     }
     #endregion
