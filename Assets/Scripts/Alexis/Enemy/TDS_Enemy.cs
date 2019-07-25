@@ -1188,32 +1188,8 @@ public abstract class TDS_Enemy : TDS_Character
         if (!animator) return;
         switch ((EnemyAnimationState)_animationID)
         {
-            case EnemyAnimationState.Idle:
-                break;
-            case EnemyAnimationState.Run:
-                break;
             case EnemyAnimationState.Hit:
                 animator.SetTrigger("hitTrigger");
-                break;
-            case EnemyAnimationState.Grounded:
-                break;
-            case EnemyAnimationState.GrabObject:
-                break;
-            case EnemyAnimationState.ThrowObject:
-                break;
-            case EnemyAnimationState.AttackOne:
-                break;
-            case EnemyAnimationState.AttackTwo:
-                break;
-            case EnemyAnimationState.AttackThree:
-                break;
-            case EnemyAnimationState.SpecialAttack:
-                break;
-            case EnemyAnimationState.Death:
-                break;
-            case EnemyAnimationState.Taunt:
-                break;
-            case EnemyAnimationState.Brought:
                 break;
             case EnemyAnimationState.BringTargetCloser:
                 animator.SetTrigger("BringTargetCloser");
