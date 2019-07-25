@@ -1275,7 +1275,8 @@ public abstract class TDS_Enemy : TDS_Character
         enemyState = EnemyState.MakingDecision; 
         if (!isDead && !IsDown)
         {
-            SetAnimationState((int)EnemyAnimationState.Hit);
+            //SetAnimationState((int)EnemyAnimationState.Hit);
+            SetAnimationTrigger("hitTrigger"); 
         }
     }
     #endregion
