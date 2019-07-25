@@ -553,7 +553,7 @@ public abstract class TDS_Enemy : TDS_Character
         if (isDead || !PhotonNetwork.isMasterClient) yield break; 
         if(animator.GetInteger("animationState") != 1) SetAnimationState((int)EnemyAnimationState.Run);
         Collider[] _colliders;
-        Vector3 _closestPosition = targetedThrowable.GetComponent<Collider>().ClosestPoint(transform.position); 
+        Vector3 _closestPosition = targetedThrowable ? targetedThrowable.GetComponent<Collider>().ClosestPoint(transform.position) : Vector3.zero; 
         while (agent.IsMoving)
         {
             //Orientate the agent
@@ -574,6 +574,7 @@ public abstract class TDS_Enemy : TDS_Character
                 if (targetedThrowable)
                 {
                     //If the targeted throwable is close enough, grab it
+
                     if (Vector3.Distance(transform.position, _closestPosition) <= collider.size.z)
                     {
                         if (Vector3.Angle(targetedThrowable.transform.position - transform.position, transform.right) < 90) Flip();
@@ -584,7 +585,7 @@ public abstract class TDS_Enemy : TDS_Character
                 else
                 {
                     //Check if there is object around the enemy
-                    _colliders = Physics.OverlapSphere(transform.position, detectionRange);
+                    _colliders = Physics.OverlapSphere(transform.position, wanderingRangeMax);
                     if (_colliders.Length > 0)
                     {
                         _colliders = _colliders.Where(c => c.GetComponent<TDS_Throwable>() && IsBetweenEnemyAndTarget(c.transform.position)).OrderBy(c => Vector3.Distance(transform.position, c.transform.position)).ToArray();
