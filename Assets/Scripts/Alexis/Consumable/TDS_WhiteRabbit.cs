@@ -140,10 +140,6 @@ public class TDS_WhiteRabbit : TDS_Consumable
     #endregion
 
     #region Unity Methods
-    private void Awake()
-    {
-    }
-
     // Use this for initialization
     private void Start()
     {
