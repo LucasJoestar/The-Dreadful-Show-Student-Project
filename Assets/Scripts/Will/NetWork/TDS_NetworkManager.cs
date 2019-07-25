@@ -122,14 +122,6 @@ public class TDS_NetworkManager : PunBehaviour
     /// </summary>
     public void LeaveRoom()
     {
-        if (PhotonNetwork.isMasterClient)
-        {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LeaveRoom"), new object[] { });
-        }
-        TDS_UIManager.Instance?.ClearCharacterSelectionMenu();
-
-        TDS_UIManager.Instance.LocalIsReady = false;
-        TDS_GameManager.LocalPlayer = PlayerType.Unknown;
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.JoinLobby();
     }
@@ -237,17 +229,17 @@ public class TDS_NetworkManager : PunBehaviour
     }
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
-        if(PhotonNetwork.isMasterClient && TDS_UIManager.Instance && !TDS_UIManager.Instance.PlayerListReady.ContainsKey(newPlayer))
+        if(PhotonNetwork.isMasterClient && TDS_UIManager.Instance && !TDS_GameManager.PlayerListReady.ContainsKey(newPlayer))
         {
-            TDS_UIManager.Instance.PlayerListReady.Add(newPlayer, false); 
+            TDS_GameManager.PlayerListReady.Add(newPlayer, false); 
         }
         PlayerCount();
     }
     public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
     {
-        if (PhotonNetwork.isMasterClient && TDS_UIManager.Instance && TDS_UIManager.Instance.PlayerListReady.ContainsKey(otherPlayer))
+        if (PhotonNetwork.isMasterClient && TDS_UIManager.Instance && TDS_GameManager.PlayerListReady.ContainsKey(otherPlayer))
         {
-            TDS_UIManager.Instance.PlayerListReady.Remove(otherPlayer);
+            TDS_GameManager.PlayerListReady.Remove(otherPlayer);
         }
         PlayerCount();
     }

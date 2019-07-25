@@ -56,6 +56,18 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     [SerializeField] private Button rightArrowButton = null;
 
     private int currentIndex = 0;
+    private bool isLocked = false; 
+    public bool IsLocked
+    {
+        get
+        {
+            return isLocked;
+        }
+        set
+        {
+            isLocked = value; 
+        }
+    }
 
     public TDS_CharacterSelectionImage CurrentSelection
     {
@@ -86,7 +98,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         {
             TDS_UIManager.Instance.UnlockPlayerType(CurrentSelection.CharacterType); 
         }
-        LockElement(false); 
+        //LockElement(false); 
         photonPlayer = null;
         gameObject.SetActive(false);
     }
@@ -96,7 +108,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// </summary>
     public void DisplayNextImage()
     {
-        if (TDS_UIManager.Instance.LocalIsReady) return; 
+        if (TDS_GameManager.LocalIsReady) return; 
         if (photonPlayer == null) return; 
         if (characterSelectionImages.Where(i => i.CanBeSelected).Count() <= 1) return;
         CurrentSelection.CharacterImage.gameObject.SetActive(false);
@@ -115,7 +127,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// </summary>
     public void DisplayPreviousImage()
     {
-        if (TDS_UIManager.Instance.LocalIsReady) return;
+        if (TDS_GameManager.LocalIsReady) return;
         if (photonPlayer == null) return;
         if (characterSelectionImages.Where(i => i.CanBeSelected).Count() <= 1) return;
         CurrentSelection.CharacterImage.gameObject.SetActive(false);
@@ -159,11 +171,15 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// Display visual elements when the player is ready or not
     /// </summary>
     /// <param name="_playerIsReady">Does the elements have to be displayed or not?</param>
-    public void LockElement(bool _playerIsReady)
+    public void LockElement(bool _isPlayerReady)
     {
         // SET THE TOGGLE
         //if(lockingFeedback) lockingFeedback.gameObject.SetActive(_playerIsReady);
-        if (photonPlayer == null || PhotonNetwork.player.ID != photonPlayer.ID) readyToggle.isOn = _playerIsReady; 
+        if (photonPlayer != null && PhotonNetwork.player.ID != photonPlayer.ID && isLocked != _isPlayerReady)
+        {
+            TriggerToggle(); 
+            isLocked = _isPlayerReady; 
+        }
     }
 
     /// <summary>
@@ -216,9 +232,9 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         leftArrowButton.interactable = false;
         rightArrowButton.interactable = false;
 
-        if (readyToggle.isOn)
+        if (isLocked)
         {
-            readyToggle.GetComponent<Animator>().SetTrigger(readyToggle.animationTriggers.pressedTrigger);
+            TriggerToggle();
             readyToggle.isOn = false;
         }
 
