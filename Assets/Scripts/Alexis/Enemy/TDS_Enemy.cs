@@ -416,7 +416,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     /// <param name="_recoveryTime">Seconds to wait</param>
     /// <returns></returns>
-    protected IEnumerator ApplyRecoveryTime(float _recoveryTime)
+    public IEnumerator ApplyRecoveryTime(float _recoveryTime)
     {
         if (!PhotonNetwork.isMasterClient) yield break;
         if (behaviourCoroutine != null) StopCoroutine(behaviourCoroutine); 
@@ -935,15 +935,16 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns>if the agent take damages</returns>
     public override bool TakeDamage(int _damage)
     {
-        bool _isTakingDamages = base.TakeDamage(_damage);
-        if (_isTakingDamages)
-        {
-            if (!isDead && !IsDown)
-            {
-                SetAnimationState((int)EnemyAnimationState.Hit);
-            }
-        }
-        return _isTakingDamages;
+        return base.TakeDamage(_damage);
+
+        //bool _isTakingDamages = base.TakeDamage(_damage);
+        //if (_isTakingDamages)
+        //{
+        //    if (!isDead && !IsDown)
+        //    {
+        //        SetAnimationState((int)EnemyAnimationState.Hit);
+        //    }
+        //}
     }
 
     /// <summary>
