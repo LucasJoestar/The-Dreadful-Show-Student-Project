@@ -197,7 +197,7 @@ public abstract class TDS_Damageable : PunBehaviour
             if (value == false)
             {
                 OnRevive?.Invoke();
-                SetLayer(layerBeforeDeath);
+                gameObject.layer = layerBeforeDeath;
             }
             else
             {
@@ -319,12 +319,15 @@ public abstract class TDS_Damageable : PunBehaviour
     protected virtual void Die()
     {
         // Stop effects
-        if (bringingCloserCoroutine != null) StopBringingCloser();
-        StopBurning();
+        if (photonView.isMine)
+        {
+            if (bringingCloserCoroutine != null) StopBringingCloser();
+            StopBurning();
+        }
 
         // Change object layer to avoid problems
         layerBeforeDeath = gameObject.layer;
-        SetLayer(LayerMask.NameToLayer("Dead"));
+        gameObject.layer = LayerMask.NameToLayer("Dead");
     }
 
     /// <summary>
@@ -427,12 +430,7 @@ public abstract class TDS_Damageable : PunBehaviour
         }
 
         // If starting burning, instantiate a burn effect
-        if (burningCoroutines.Count == 0)
-        {
-            burnEffect = PhotonNetwork.Instantiate("Fire", new Vector3(transform.position.x, transform.position.y, transform.position.z + .25f), Quaternion.identity, 0).GetComponent<Animator>();
-
-            burnEffect.transform.SetParent(transform, true);
-        }
+        if (burningCoroutines.Count == 0) InstantiateFireEffect();
 
         burningCoroutines.Add(_id, StartCoroutine(Burning(_damagesMin, _damagesMax, _duration, _id)));
     }
@@ -467,6 +465,34 @@ public abstract class TDS_Damageable : PunBehaviour
     }
 
     /// <summary>
+    /// Destroys the fire effect object.
+    /// </summary>
+    protected virtual void DestroyFireEffect()
+    {
+        if (photonView.isMine)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "DestroyFireEffect"), new object[] { });
+        }
+
+        if (burnEffect) burnEffect.SetTrigger("Vanish");
+    }
+
+    /// <summary>
+    /// Instantiate the fire effect for burning.
+    /// </summary>
+    protected virtual void InstantiateFireEffect()
+    {
+        if (photonView.isMine)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "InstantiateFireEffect"), new object[] { });
+        }
+
+        burnEffect = ((GameObject)Instantiate(Resources.Load("Fire"), new Vector3(transform.position.x, transform.position.y, transform.position.z + .25f), Quaternion.identity)).GetComponent<Animator>();
+
+        burnEffect.transform.SetParent(transform, true);
+    }
+
+    /// <summary>
     /// Method called when stopped being bringed closer.
     /// </summary>
     protected virtual void StopBringingCloser()
@@ -489,23 +515,7 @@ public abstract class TDS_Damageable : PunBehaviour
             burningCoroutines.Clear();
         }
 
-        if (burnEffect) burnEffect.SetTrigger("Vanish");
-    }
-    #endregion
-
-    #region Other
-    /// <summary>
-    /// Set this object layer.
-    /// </summary>
-    /// <param name="_layerID">ID of the new object layer.</param>
-    protected void SetLayer(int _layerID)
-    {
-        if (photonView.isMine)
-        {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetLayer"), new object[] { _layerID });
-        }
-
-        gameObject.layer = _layerID;
+        DestroyFireEffect();
     }
     #endregion
 
