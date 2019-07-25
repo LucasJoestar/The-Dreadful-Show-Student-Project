@@ -89,7 +89,7 @@ MonoBehaviour:
   height: 0.8
   radius: 1
   pathRadius: 0.25
-  speed: 1
+  speed: 5
   steerForce: 85
   agentPriority: 1
   detectionAccuracy: 10
@@ -139,13 +139,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 2742738669462884067}
   ObservedComponentsFoldoutOpen: 1
-<<<<<<< HEAD
-  viewIdField: 0
-  instantiationId: -1
-=======
   viewIdField: 20
   instantiationId: 20
->>>>>>> master
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &2742738669462884067
