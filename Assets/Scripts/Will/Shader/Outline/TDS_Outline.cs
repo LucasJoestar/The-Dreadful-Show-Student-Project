@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 
 [ExecuteInEditMode]
 public class TDS_Outline : MonoBehaviour
@@ -8,7 +10,6 @@ public class TDS_Outline : MonoBehaviour
 
     [SerializeField,Space]
     Color color = Color.white;
-
 	
     SpriteRenderer spriteRenderer;
 

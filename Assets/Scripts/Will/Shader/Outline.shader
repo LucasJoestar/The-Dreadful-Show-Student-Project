@@ -4,9 +4,8 @@ Shader "Custom/Outline"
 {
 	 Properties
     {
-        [MaterialToggle] EnableOutline ("Enable Outline", Float) = 1
+        [HideInInspector] _Color ("Main Color", Color) = (1,1,1,1)
         [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
-        _Color ("Main Color", Color) = (1,1,1,1)
         [HideInInspector] PixelSnap ("Pixel snap", Float) = 0
         // Add values to determine if outlining is enabled and outline color.
         [PerRendererData] _OutlineSize ("Outline", Float) = 0
@@ -178,7 +177,7 @@ Shader "Custom/Outline"
             }
             ENDCG
         }
-//
+
         Pass
         {
         	Offset 0, 0
@@ -212,4 +211,5 @@ Shader "Custom/Outline"
             ENDCG
         }
     }
+    Fallback "Custom/Diffuse"
 }
