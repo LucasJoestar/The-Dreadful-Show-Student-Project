@@ -498,7 +498,7 @@ public abstract class TDS_Damageable : PunBehaviour
     /// Set this object layer.
     /// </summary>
     /// <param name="_layerID">ID of the new object layer.</param>
-    private void SetLayer(int _layerID)
+    protected void SetLayer(int _layerID)
     {
         if (photonView.isMine)
         {
