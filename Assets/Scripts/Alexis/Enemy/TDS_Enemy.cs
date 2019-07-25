@@ -551,7 +551,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected virtual IEnumerator CastDetection()
     {
         if (isDead || !PhotonNetwork.isMasterClient) yield break; 
-        SetAnimationState((int)EnemyAnimationState.Run);
+        if(animator.GetInteger("animationState") != 1) SetAnimationState((int)EnemyAnimationState.Run);
         Collider[] _colliders;
         while (agent.IsMoving)
         {
@@ -712,7 +712,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected virtual IEnumerator Wander()
     {
-        SetAnimationState((int)EnemyAnimationState.Run);
+        if (animator.GetInteger("animationState") != 1) SetAnimationState((int)EnemyAnimationState.Run);
         agent.AddAvoidanceLayer(new string[] { "Player" }); 
         while (agent.IsMoving)
         {
@@ -814,9 +814,9 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Die()
     {
         base.Die();
-        SetAnimationState((int)EnemyAnimationState.Death);
         if (PhotonNetwork.isMasterClient)
         {
+            SetAnimationState((int)EnemyAnimationState.Death);
             if (Area) Area.RemoveEnemy(this);
         }
     }
@@ -1186,7 +1186,7 @@ public abstract class TDS_Enemy : TDS_Character
         animator.SetInteger("animationState", _animationID);
         if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID });
 
-        //Debug.Log(GetInstanceID() + "New Anim => " + (EnemyAnimationState)_animationID);
+        Debug.Log(GetInstanceID() + "New Anim => " + (EnemyAnimationState)_animationID);
     }
 
     /// <summary>
