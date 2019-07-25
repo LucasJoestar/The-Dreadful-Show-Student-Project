@@ -463,7 +463,7 @@ public abstract class TDS_Damageable : PunBehaviour
         burningCoroutines[_id] = null;
         burningCoroutines.Remove(_id);
 
-        if (burningCoroutines.Count > 0) StopBurning();
+        if (burningCoroutines.Count == 0) StopBurning();
     }
 
     /// <summary>

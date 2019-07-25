@@ -490,10 +490,11 @@ public abstract class TDS_Character : TDS_Damageable
     public virtual void SetThrowable(int _throwableID, bool _doGrab)
     {
         TDS_Throwable _throwable = PhotonView.Find(_throwableID).GetComponent<TDS_Throwable>();
+
         if (_throwable)
         {
             _throwable.transform.SetParent(_doGrab ? handsTransform : null, true);
-            Throwable = _throwable;
+            Throwable = _doGrab ? _throwable : null;
         }
         else throwable = null;
     }
