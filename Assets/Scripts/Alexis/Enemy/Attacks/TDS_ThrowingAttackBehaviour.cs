@@ -57,9 +57,9 @@ public class TDS_ThrowingAttackBehaviour : TDS_EnemyAttack
              if(_throwable.ThrowableAttackType == AttackEffectType.BringCloser)
              {
                  _throwable.ObjectDurability = 1; 
-                 _throwable.HitBox.OnTouch += () => _caster.SetAnimationTrigger("BringTargetCloser");
-                 _throwable.HitBox.OnStopAttack += () => _caster.SetAnimationTrigger("EndBringingTargetCloser");
-             }
+                 _throwable.HitBox.OnTouch += () => _caster.SetAnimationState((int)EnemyAnimationState.BringTargetCloser);
+                 _throwable.HitBox.OnStopAttack += () => _caster.SetAnimationState((int)EnemyAnimationState.EndBringingTargetCloser);
+            }
              _caster.ThrowObject(_caster.PlayerTarget.transform.position);
             if (!_caster.IsFacingRight) _thrownObject.transform.Rotate(Vector3.up, 180);
         }

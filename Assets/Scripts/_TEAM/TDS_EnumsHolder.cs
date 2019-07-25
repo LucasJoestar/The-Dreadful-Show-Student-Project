@@ -151,7 +151,10 @@ public enum EnemyAnimationState
     SpecialAttack,
     Death, 
     Taunt, 
-    Brought
+    Brought, 
+    BringTargetCloser, 
+    EndBringingTargetCloser, 
+    StopSpinning
 }
 
 /// <summary>

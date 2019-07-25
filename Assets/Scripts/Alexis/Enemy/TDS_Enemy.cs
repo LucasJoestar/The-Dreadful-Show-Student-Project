@@ -553,6 +553,7 @@ public abstract class TDS_Enemy : TDS_Character
         if (isDead || !PhotonNetwork.isMasterClient) yield break; 
         if(animator.GetInteger("animationState") != 1) SetAnimationState((int)EnemyAnimationState.Run);
         Collider[] _colliders;
+        Vector3 _closestPosition = targetedThrowable.GetComponent<Collider>().ClosestPoint(transform.position); 
         while (agent.IsMoving)
         {
             //Orientate the agent
@@ -573,7 +574,7 @@ public abstract class TDS_Enemy : TDS_Character
                 if (targetedThrowable)
                 {
                     //If the targeted throwable is close enough, grab it
-                    if (Vector3.Distance(transform.position, targetedThrowable.transform.position) <= collider.size.z)
+                    if (Vector3.Distance(transform.position, _closestPosition) <= collider.size.z)
                     {
                         if (Vector3.Angle(targetedThrowable.transform.position - transform.position, transform.right) < 90) Flip();
                         enemyState = EnemyState.PickingUpObject;
@@ -985,7 +986,7 @@ public abstract class TDS_Enemy : TDS_Character
     {
         BringingTarget.OnStopBringingCloser -= this.TargetBrought;
         BringingTarget = null;
-        SetAnimationTrigger("BringTargetCloser");
+        SetAnimationState((int)EnemyAnimationState.BringTargetCloser); 
     }
     #endregion
 
@@ -1184,23 +1185,49 @@ public abstract class TDS_Enemy : TDS_Character
     public void SetAnimationState(int _animationID)
     {
         if (!animator) return;
-        animator.SetInteger("animationState", _animationID);
-        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID });
-
-        Debug.Log(GetInstanceID() + "New Anim => " + (EnemyAnimationState)_animationID);
-    }
-
-    /// <summary>
-    /// Set a trigger in the animator
-    /// </summary>
-    /// <param name="_triggerName">Name of the trigger</param>
-    public void SetAnimationTrigger(string _triggerName)
-    {
-        if (PhotonNetwork.isMasterClient)
+        switch ((EnemyAnimationState)_animationID)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationTrigger"), new object[] { _triggerName });
+            case EnemyAnimationState.Idle:
+                break;
+            case EnemyAnimationState.Run:
+                break;
+            case EnemyAnimationState.Hit:
+                animator.SetTrigger("hitTrigger");
+                break;
+            case EnemyAnimationState.Grounded:
+                break;
+            case EnemyAnimationState.GrabObject:
+                break;
+            case EnemyAnimationState.ThrowObject:
+                break;
+            case EnemyAnimationState.AttackOne:
+                break;
+            case EnemyAnimationState.AttackTwo:
+                break;
+            case EnemyAnimationState.AttackThree:
+                break;
+            case EnemyAnimationState.SpecialAttack:
+                break;
+            case EnemyAnimationState.Death:
+                break;
+            case EnemyAnimationState.Taunt:
+                break;
+            case EnemyAnimationState.Brought:
+                break;
+            case EnemyAnimationState.BringTargetCloser:
+                animator.SetTrigger("BringTargetCloser");
+                break;
+            case EnemyAnimationState.EndBringingTargetCloser:
+                animator.SetTrigger("EndBringingTargetCloser");
+                break;
+            case EnemyAnimationState.StopSpinning:
+                animator.SetTrigger("StopSpinning");
+                break; 
+            default:
+                animator.SetInteger("animationState", _animationID);
+                break;
         }
-        if (animator) animator.SetTrigger(_triggerName);
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID });
     }
 
     /// <summary>
@@ -1275,8 +1302,7 @@ public abstract class TDS_Enemy : TDS_Character
         enemyState = EnemyState.MakingDecision; 
         if (!isDead && !IsDown)
         {
-            //SetAnimationState((int)EnemyAnimationState.Hit);
-            SetAnimationTrigger("hitTrigger"); 
+            SetAnimationState((int)EnemyAnimationState.Hit);
         }
     }
     #endregion
