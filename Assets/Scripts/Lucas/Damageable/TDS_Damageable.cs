@@ -487,7 +487,7 @@ public abstract class TDS_Damageable : PunBehaviour
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "InstantiateFireEffect"), new object[] { });
         }
 
-        burnEffect = ((GameObject)Instantiate(Resources.Load("Fire"), new Vector3(transform.position.x, transform.position.y, transform.position.z + .25f), Quaternion.identity)).GetComponent<Animator>();
+        burnEffect = ((GameObject)Instantiate(Resources.Load("Fire"), new Vector3(transform.position.x, transform.position.y, transform.position.z - .05f), Quaternion.identity)).GetComponent<Animator>();
 
         burnEffect.transform.SetParent(transform, true);
     }
