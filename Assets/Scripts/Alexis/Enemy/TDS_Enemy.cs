@@ -573,7 +573,7 @@ public abstract class TDS_Enemy : TDS_Character
                 if (targetedThrowable)
                 {
                     //If the targeted throwable is close enough, grab it
-                    if (Vector3.Distance(transform.position, targetedThrowable.transform.position) <= (agent.Radius * 2))
+                    if (Vector3.Distance(transform.position, targetedThrowable.transform.position) <= collider.size.z)
                     {
                         if (Vector3.Angle(targetedThrowable.transform.position - transform.position, transform.right) < 90) Flip();
                         enemyState = EnemyState.PickingUpObject;

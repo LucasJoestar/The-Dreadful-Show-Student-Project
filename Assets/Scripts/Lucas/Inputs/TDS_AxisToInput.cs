@@ -102,8 +102,6 @@ public class TDS_AxisToInput
                 // Mhmm...
                 break;
         }
-
-        if (axisName == TDS_InputManager.PARRY_BUTTON) Debug.Log("Parry => " + lastState);
     }
     #endregion
 }
