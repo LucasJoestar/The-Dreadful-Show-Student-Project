@@ -135,21 +135,12 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private GameObject gameOverScreenParent; 
     #endregion
 
-    #region Local 
-    [Header("Local life bar")]
-    [SerializeField] private TDS_LifeBar playerHealthBar;
-    [SerializeField] private Image portraitBL;
-    [SerializeField] private Image portraitFL;
-    [SerializeField] private Image portraitFE;
-    [SerializeField] private Image portraitJUG;
-    #endregion
-
-    #region Online
-    [Header("Online lifebars")]
-    [SerializeField] private TDS_LifeBar onlineBeardLadyLifeBar;
-    [SerializeField] private TDS_LifeBar onlineFatLadyLifeBar;
-    [SerializeField] private TDS_LifeBar onlineJugglerLifeBar;
-    [SerializeField] private TDS_LifeBar onlineFireEaterLifeBar;
+    #region Lifebars
+    [Header("Lifebars")]
+    [SerializeField] private TDS_LifeBar beardLadyLifeBar;
+    [SerializeField] private TDS_LifeBar fatLadyLifeBar;
+    [SerializeField] private TDS_LifeBar jugglerLifeBar;
+    [SerializeField] private TDS_LifeBar fireEaterLifeBar;
 
     #region Hidden Players Images
     [Header("Hidden Player's Images")]
@@ -338,7 +329,10 @@ public class TDS_UIManager : PunBehaviour
     public IEnumerator ResetUIManager()
     {
         yield return new WaitForSeconds(1.5f);
-        playerHealthBar.FilledImage.fillAmount = 1;
+        beardLadyLifeBar.FilledImage.fillAmount = 1; 
+        fatLadyLifeBar.FilledImage.fillAmount = 1;
+        jugglerLifeBar.FilledImage.fillAmount = 1;
+        fireEaterLifeBar.FilledImage.fillAmount = 1;
         narratorCoroutine = null;
         followHiddenPlayerCouroutines.Clear();
         filledImages.Clear();
@@ -594,19 +588,19 @@ public class TDS_UIManager : PunBehaviour
             case PlayerType.Unknown:
                 break;
             case PlayerType.BeardLady:
-                if (onlineBeardLadyLifeBar) onlineBeardLadyLifeBar.gameObject.SetActive(false);
+                if (beardLadyLifeBar) beardLadyLifeBar.gameObject.SetActive(false);
                 if (hiddenBeardLadyImage) hiddenBeardLadyImage.gameObject.SetActive(false);
                 break;
             case PlayerType.FatLady:
-                if (onlineFatLadyLifeBar) onlineFatLadyLifeBar.gameObject.SetActive(false);
+                if (fatLadyLifeBar) fatLadyLifeBar.gameObject.SetActive(false);
                 if (hiddenFatLadyImage) hiddenFatLadyImage.gameObject.SetActive(false);
                 break;
             case PlayerType.FireEater:
-                if (onlineFireEaterLifeBar) onlineFireEaterLifeBar.gameObject.SetActive(false);
+                if (fireEaterLifeBar) fireEaterLifeBar.gameObject.SetActive(false);
                 if (hiddenFireEaterImage) hiddenFireEaterImage.gameObject.SetActive(false);
                 break;
             case PlayerType.Juggler:
-                if (onlineJugglerLifeBar) onlineJugglerLifeBar.gameObject.SetActive(false);
+                if (jugglerLifeBar) jugglerLifeBar.gameObject.SetActive(false);
                 if (hiddenJugglerImage) hiddenJugglerImage.gameObject.SetActive(false);
                 break;
             default:
@@ -760,11 +754,10 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void OnRestartButtonPressed()
     {
-        playerHealthBar.ResetLifeBar();
-        onlineBeardLadyLifeBar.ResetLifeBar();
-        onlineFatLadyLifeBar.ResetLifeBar();
-        onlineFireEaterLifeBar.ResetLifeBar();
-        onlineJugglerLifeBar.ResetLifeBar();
+        beardLadyLifeBar.ResetLifeBar();
+        fatLadyLifeBar.ResetLifeBar();
+        fireEaterLifeBar.ResetLifeBar();
+        jugglerLifeBar.ResetLifeBar();
         if (PhotonNetwork.isMasterClient)
         {
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ResetLevel"), new object[] { });
@@ -799,16 +792,16 @@ public class TDS_UIManager : PunBehaviour
             case PlayerType.Unknown:
                 break;
             case PlayerType.BeardLady:
-                onlineBeardLadyLifeBar.gameObject.SetActive(false); 
+                beardLadyLifeBar.gameObject.SetActive(false); 
                 break;
             case PlayerType.FatLady:
-                onlineFatLadyLifeBar.gameObject.SetActive(false);
+                fatLadyLifeBar.gameObject.SetActive(false);
                 break;
             case PlayerType.FireEater:
-                onlineFireEaterLifeBar.gameObject.SetActive(false);
+                fireEaterLifeBar.gameObject.SetActive(false);
                 break;
             case PlayerType.Juggler:
-                onlineJugglerLifeBar.gameObject.SetActive(false);
+                jugglerLifeBar.gameObject.SetActive(false);
                 break;
             default:
                 break;
@@ -896,57 +889,32 @@ public class TDS_UIManager : PunBehaviour
     public void SetPlayerLifeBar(TDS_Player _player)
     {
         TDS_LifeBar _playerLifeBar = null;
-        if (_player == TDS_LevelManager.Instance.LocalPlayer && _player.photonView.isMine)
+        switch (_player.PlayerType)
         {
-            _playerLifeBar = playerHealthBar;
-            playerHealthBar.gameObject.SetActive(true); 
-            switch (_player.PlayerType)
-            {
-                case PlayerType.Unknown:
-                    break;
-                case PlayerType.BeardLady:
-                    if (portraitBL) portraitBL.gameObject.SetActive(true); 
-                    break;
-                case PlayerType.FatLady:
-                    if(portraitFL) portraitFL.gameObject.SetActive(true); 
-                    break;
-                case PlayerType.FireEater:
-                    if(portraitFE) portraitFE.gameObject.SetActive(true);
-                    break;
-                case PlayerType.Juggler:
-                    if(portraitJUG) portraitJUG.gameObject.SetActive(true);
-                    break;
-                default:
-                    break;
-            }
+            case PlayerType.Unknown:
+                break;
+            case PlayerType.BeardLady:
+                _playerLifeBar = beardLadyLifeBar;
+                break;
+            case PlayerType.FatLady:
+                _playerLifeBar = fatLadyLifeBar;
+                break;
+            case PlayerType.FireEater:
+                _playerLifeBar = fireEaterLifeBar;
+                break;
+            case PlayerType.Juggler:
+                _playerLifeBar = jugglerLifeBar;
+                break;
+            default:
+                break;
         }
-        else
-        {
-            switch (_player.PlayerType)
-            {
-                case PlayerType.Unknown:
-                    break;
-                case PlayerType.BeardLady:
-                    _playerLifeBar = onlineBeardLadyLifeBar; 
-                    break;
-                case PlayerType.FatLady:
-                    _playerLifeBar = onlineFatLadyLifeBar;
-                    break;
-                case PlayerType.FireEater:
-                    _playerLifeBar = onlineFireEaterLifeBar;
-                    break;
-                case PlayerType.Juggler:
-                    _playerLifeBar = onlineJugglerLifeBar;
-                    break;
-                default:
-                    break;
-            }
-            if (!_playerLifeBar) return; 
-        }
+        if (!_playerLifeBar) return; 
         _playerLifeBar.gameObject.SetActive(true);
         _playerLifeBar.SetOwner(_player);
         _player.HealthBar = _playerLifeBar;
         _player.OnTakeDamage += _player.UpdateLifeBar;
+        if (_player == TDS_LevelManager.Instance.LocalPlayer && _player.photonView.isMine)
+            _playerLifeBar.transform.SetSiblingIndex(0);
     }
 
     public void SetPlayerReady(int _playerID, bool _isReady)

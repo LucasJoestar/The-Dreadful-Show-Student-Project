@@ -84,7 +84,6 @@ public static class TDS_GameManager
 
     public static int CurrentSceneIndex = 0;
 
-    //GAME MANAGER
     private static Dictionary<PhotonPlayer, bool> playerListReady = new Dictionary<PhotonPlayer, bool>();
     public static Dictionary<PhotonPlayer, bool> PlayerListReady
     {
@@ -92,7 +91,6 @@ public static class TDS_GameManager
     }
     private static bool localIsReady = false;
     public static bool LocalIsReady { get { return localIsReady; } set { localIsReady = value; } }
-    //GAME MANAGER
     #endregion
 
     #region Methods
