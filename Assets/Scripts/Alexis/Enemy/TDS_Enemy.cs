@@ -616,7 +616,7 @@ public abstract class TDS_Enemy : TDS_Character
                 yield break; 
             }
             // if any attack can be casted 
-            if (AttackCanBeCasted())
+            if (AttackCanBeCasted() && !throwable)
             {
                 enemyState = EnemyState.Attacking;
                 yield break;
