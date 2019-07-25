@@ -602,7 +602,6 @@ public class TDS_Player : TDS_Character
         // Throw the object
         if (isGrounded)
         {
-            Debug.Log("Throw => " + (throwable != null) + " : " + throwable.name);
             IsPlayable = false;
             SetAnim(PlayerAnimState.Throw);
         }
@@ -1345,10 +1344,19 @@ public class TDS_Player : TDS_Character
         // Updates animator grounded informations
         if (!_isGrounded && !isDodging && !isAttacking)
         {
-            if (rigidbody.velocity.y < 0) SetAnim(PlayerAnimState.Falling);
-            else SetAnim(PlayerAnimState.Jumping);
+            if (rigidbody.velocity.y < 0)
+            {
+                if (animator.GetInteger("GroundState") < 1)
+                {
+                    SetAnim(PlayerAnimState.Falling);
+                }
+            }
+            else if (animator.GetInteger("GroundState") > -1)
+            {
+                SetAnim(PlayerAnimState.Jumping);
+            }
         }
-        else
+        else if (animator.GetInteger("GroundState") != 0)
         {
             SetAnim(PlayerAnimState.Grounded);
         }
