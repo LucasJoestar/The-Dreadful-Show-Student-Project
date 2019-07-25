@@ -1652,6 +1652,8 @@ public class TDS_Player : TDS_Character
             default:
                 break;
         }
+
+        Debug.Log(name + " : New State => " + _state);
     }
 
     /// <summary>
