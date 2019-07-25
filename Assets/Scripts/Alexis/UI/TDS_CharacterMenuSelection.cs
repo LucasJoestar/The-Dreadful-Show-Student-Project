@@ -103,7 +103,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
         // SET THE TOGGLE
         if (PhotonNetwork.player.ID == _playerID)
         {
-            localElement.LockElement(_playerIsLocked); 
+            localElement.IsLocked = _playerIsLocked;
             return;
         }
         characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).First().LockElement(_playerIsLocked);
@@ -124,7 +124,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
         {
             _element.DisplayImageOfType(_newType); 
         }
-        if (!TDS_UIManager.Instance.LocalIsReady && !localElement.CurrentSelection.CanBeSelected) localElement.DisplayNextImage(); 
+        if (!TDS_GameManager.LocalIsReady && !localElement.CurrentSelection.CanBeSelected) localElement.DisplayNextImage(); 
     }
 
     /// <summary>

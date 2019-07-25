@@ -144,6 +144,11 @@ public abstract class TDS_Damageable : PunBehaviour
     [SerializeField] protected Animator animator = null;
 
     /// <summary>
+    /// Actual object used to simulate the burn on this object. None if not burning.
+    /// </summary>
+    [SerializeField] protected Animator burnEffect = null;
+
+    /// <summary>
     /// The main non-trigger collider of this object, used to detect collisions.
     /// </summary>
     [SerializeField] protected new BoxCollider collider = null;
@@ -196,11 +201,8 @@ public abstract class TDS_Damageable : PunBehaviour
             }
             else
             {
-                layerBeforeDeath = gameObject.layer;
-                gameObject.layer = LayerMask.NameToLayer("Dead");
-
-                OnDie?.Invoke();
                 Die();
+                OnDie?.Invoke();
             }
         }
     }
@@ -316,6 +318,16 @@ public abstract class TDS_Damageable : PunBehaviour
     /// </summary>
     protected virtual void Die()
     {
+        // Stop effects
+        if (photonView.isMine)
+        {
+            if (bringingCloserCoroutine != null) StopBringingCloser();
+            StopBurning();
+        }
+
+        // Change object layer to avoid problems
+        layerBeforeDeath = gameObject.layer;
+        gameObject.layer = LayerMask.NameToLayer("Dead");
     }
 
     /// <summary>
@@ -417,6 +429,9 @@ public abstract class TDS_Damageable : PunBehaviour
             _id = Random.Range(0, 999);
         }
 
+        // If starting burning, instantiate a burn effect
+        if (burningCoroutines.Count == 0) InstantiateFireEffect();
+
         burningCoroutines.Add(_id, StartCoroutine(Burning(_damagesMin, _damagesMax, _duration, _id)));
     }
 
@@ -443,7 +458,38 @@ public abstract class TDS_Damageable : PunBehaviour
             OnBurn?.Invoke(_damages);
         }
 
+        burningCoroutines[_id] = null;
         burningCoroutines.Remove(_id);
+
+        if (burningCoroutines.Count == 0) StopBurning();
+    }
+
+    /// <summary>
+    /// Destroys the fire effect object.
+    /// </summary>
+    protected virtual void DestroyFireEffect()
+    {
+        if (photonView.isMine)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "DestroyFireEffect"), new object[] { });
+        }
+
+        if (burnEffect) burnEffect.SetTrigger("Vanish");
+    }
+
+    /// <summary>
+    /// Instantiate the fire effect for burning.
+    /// </summary>
+    protected virtual void InstantiateFireEffect()
+    {
+        if (photonView.isMine)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "InstantiateFireEffect"), new object[] { });
+        }
+
+        burnEffect = ((GameObject)Instantiate(Resources.Load("Fire"), new Vector3(transform.position.x, transform.position.y, transform.position.z - .05f), Quaternion.identity)).GetComponent<Animator>();
+
+        burnEffect.transform.SetParent(transform, true);
     }
 
     /// <summary>
@@ -453,6 +499,23 @@ public abstract class TDS_Damageable : PunBehaviour
     {
         if (bringingCloserCoroutine != null) StopCoroutine(bringingCloserCoroutine);
         OnStopBringingCloser?.Invoke();
+    }
+
+    /// <summary>
+    /// Stops this object from burning.
+    /// </summary>
+    protected virtual void StopBurning()
+    {
+        if (burningCoroutines.Count > 0)
+        {
+            foreach (KeyValuePair<int, Coroutine> _burning in burningCoroutines)
+            {
+                StopCoroutine(_burning.Value);
+            }
+            burningCoroutines.Clear();
+        }
+
+        DestroyFireEffect();
     }
     #endregion
 

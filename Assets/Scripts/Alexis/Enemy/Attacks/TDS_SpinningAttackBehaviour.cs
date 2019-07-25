@@ -111,7 +111,7 @@ public class TDS_SpinningAttackBehaviour : TDS_EnemyAttack
     /// </summary>
     private void StopSpinning()
     {
-        caster.SetAnimationTrigger("StopSpinning"); 
+        caster.SetAnimationState((int)EnemyAnimationState.StopSpinning); 
     }
     #endregion
 

@@ -490,10 +490,11 @@ public abstract class TDS_Character : TDS_Damageable
     public virtual void SetThrowable(int _throwableID, bool _doGrab)
     {
         TDS_Throwable _throwable = PhotonView.Find(_throwableID).GetComponent<TDS_Throwable>();
+
         if (_throwable)
         {
             _throwable.transform.SetParent(_doGrab ? handsTransform : null, true);
-            Throwable = _throwable;
+            Throwable = _doGrab ? _throwable : null;
         }
         else throwable = null;
     }
@@ -542,6 +543,17 @@ public abstract class TDS_Character : TDS_Damageable
     #endregion
 
     #region Health
+    /// <summary>
+    /// Method called when the object dies.
+    /// Override this to implement code for a specific object.
+    /// </summary>
+    protected override void Die()
+    {
+        if (IsDown) GetUp();
+
+        base.Die();
+    }
+
     /// <summary>
     /// Makes this object take damage and decrease its health if it is not invulnerable.
     /// </summary>

@@ -135,21 +135,12 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private GameObject gameOverScreenParent; 
     #endregion
 
-    #region Local 
-    [Header("Local life bar")]
-    [SerializeField] private TDS_LifeBar playerHealthBar;
-    [SerializeField] private Image portraitBL;
-    [SerializeField] private Image portraitFL;
-    [SerializeField] private Image portraitFE;
-    [SerializeField] private Image portraitJUG;
-    #endregion
-
-    #region Online
-    [Header("Online lifebars")]
-    [SerializeField] private TDS_LifeBar onlineBeardLadyLifeBar;
-    [SerializeField] private TDS_LifeBar onlineFatLadyLifeBar;
-    [SerializeField] private TDS_LifeBar onlineJugglerLifeBar;
-    [SerializeField] private TDS_LifeBar onlineFireEaterLifeBar;
+    #region Lifebars
+    [Header("Lifebars")]
+    [SerializeField] private TDS_LifeBar beardLadyLifeBar;
+    [SerializeField] private TDS_LifeBar fatLadyLifeBar;
+    [SerializeField] private TDS_LifeBar jugglerLifeBar;
+    [SerializeField] private TDS_LifeBar fireEaterLifeBar;
 
     #region Hidden Players Images
     [Header("Hidden Player's Images")]
@@ -175,13 +166,8 @@ public class TDS_UIManager : PunBehaviour
         get { return playerNameField; }
     }
     [SerializeField] private TMP_Text playerCountText;
-    private Dictionary<PhotonPlayer, bool> playerListReady = new Dictionary<PhotonPlayer, bool>();
-    public Dictionary<PhotonPlayer, bool> PlayerListReady
-    {
-        get { return playerListReady; }
-    }
-    private bool localIsReady = false;
-    public bool LocalIsReady { get { return localIsReady; } set { localIsReady = value; } }
+
+
     #endregion
     #endregion
 
@@ -229,6 +215,7 @@ public class TDS_UIManager : PunBehaviour
 
     private Dictionary<PlayerType, Coroutine> followHiddenPlayerCouroutines = new Dictionary<PlayerType, Coroutine>();
 
+    private Coroutine checkInputCoroutine = null;
     #endregion
 
     #region ComboManager
@@ -238,8 +225,6 @@ public class TDS_UIManager : PunBehaviour
     #endregion
 
     #region WorkInProgress
-    //[Header("Work in Progress")]
-    private Coroutine checkInputCoroutine = null;
     #endregion
 
     #endregion
@@ -339,6 +324,28 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Stop all coroutines and switch the UI State to InGameOver
+    /// </summary>
+    public IEnumerator ResetUIManager()
+    {
+        yield return new WaitForSeconds(1.5f);
+        beardLadyLifeBar.FilledImage.fillAmount = 1; 
+        fatLadyLifeBar.FilledImage.fillAmount = 1;
+        jugglerLifeBar.FilledImage.fillAmount = 1;
+        fireEaterLifeBar.FilledImage.fillAmount = 1;
+        narratorCoroutine = null;
+        followHiddenPlayerCouroutines.Clear();
+        filledImages.Clear();
+        curtainsAnimator.SetTrigger("Reset");
+        comboManager.ResetComboManager();
+        for (int i = 0; i < canvasWorld.transform.childCount; i++)
+        {
+            Destroy(canvasWorld.transform.GetChild(i).gameObject);
+        }
+        ActivateMenu(UIState.InGameOver);
+    }
+
+    /// <summary>
     /// Fill the image until its fillAmount until it reaches the fillingValue
     /// At the end of the filling, remove the entry of the dictionary at the key _filledImage
     /// </summary>
@@ -405,6 +412,21 @@ public class TDS_UIManager : PunBehaviour
         narratorBoxParent.SetActive(false);
         OnNarratorDialogEnded?.Invoke();
         narratorCoroutine = null; 
+    }
+
+    private IEnumerator PreapreLeavingRoom()
+    {
+        TDS_GameManager.LocalIsReady = false;
+        characterSelectionMenu.LocalElement.ClearToggle();
+        yield return null;
+
+        characterSelectionMenu.ClearMenu();
+        TDS_GameManager.LocalPlayer = PlayerType.Unknown;
+        yield return null;
+
+        TDS_NetworkManager.Instance.LeaveRoom();
+        ActivateMenu((int)UIState.InRoomSelection);
+        SetRoomInterractable(true);
     }
     #endregion
 
@@ -546,25 +568,13 @@ public class TDS_UIManager : PunBehaviour
     private void CancelInCharacterSelection()
     {
         if (uiState != UIState.InCharacterSelection) return;
-        if(localIsReady)
+        if(TDS_GameManager.LocalIsReady)
         {
             SelectCharacter();
             characterSelectionMenu.LocalElement.TriggerToggle();
             return; 
         }
         TDS_NetworkManager.Instance.LeaveRoom(); 
-    }
-
-    /// <summary>
-    /// Clear all selection elements in the menu 
-    /// </summary>
-    public void ClearCharacterSelectionMenu()
-    {
-        characterSelectionMenu.LocalElement.ClearToggle();
-
-        characterSelectionMenu.ClearMenu();
-        ActivateMenu((int)UIState.InRoomSelection);
-        SetRoomInterractable(true);
     }
 
     /// <summary>
@@ -578,19 +588,19 @@ public class TDS_UIManager : PunBehaviour
             case PlayerType.Unknown:
                 break;
             case PlayerType.BeardLady:
-                if (onlineBeardLadyLifeBar) onlineBeardLadyLifeBar.gameObject.SetActive(false);
+                if (beardLadyLifeBar) beardLadyLifeBar.gameObject.SetActive(false);
                 if (hiddenBeardLadyImage) hiddenBeardLadyImage.gameObject.SetActive(false);
                 break;
             case PlayerType.FatLady:
-                if (onlineFatLadyLifeBar) onlineFatLadyLifeBar.gameObject.SetActive(false);
+                if (fatLadyLifeBar) fatLadyLifeBar.gameObject.SetActive(false);
                 if (hiddenFatLadyImage) hiddenFatLadyImage.gameObject.SetActive(false);
                 break;
             case PlayerType.FireEater:
-                if (onlineFireEaterLifeBar) onlineFireEaterLifeBar.gameObject.SetActive(false);
+                if (fireEaterLifeBar) fireEaterLifeBar.gameObject.SetActive(false);
                 if (hiddenFireEaterImage) hiddenFireEaterImage.gameObject.SetActive(false);
                 break;
             case PlayerType.Juggler:
-                if (onlineJugglerLifeBar) onlineJugglerLifeBar.gameObject.SetActive(false);
+                if (jugglerLifeBar) jugglerLifeBar.gameObject.SetActive(false);
                 if (hiddenJugglerImage) hiddenJugglerImage.gameObject.SetActive(false);
                 break;
             default:
@@ -725,16 +735,16 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void OnPlayerReady(bool _isReady)
     {
-        localIsReady = _isReady;
+        TDS_GameManager.LocalIsReady = _isReady;
 
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.OthersBuffered, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetPlayerReady"), new object[] { PhotonNetwork.player.ID, localIsReady });
-        SetPlayerReady(PhotonNetwork.player.ID, localIsReady); 
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.OthersBuffered, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetPlayerReady"), new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady });
+        SetPlayerReady(PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady); 
         if (!PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, localIsReady });
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady });
             return; 
         }
-        UpdateReadySettings(PhotonNetwork.player.ID, localIsReady); 
+        UpdateReadySettings(PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady); 
     }
 
     /// <summary>
@@ -744,11 +754,10 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void OnRestartButtonPressed()
     {
-        playerHealthBar.ResetLifeBar();
-        onlineBeardLadyLifeBar.ResetLifeBar();
-        onlineFatLadyLifeBar.ResetLifeBar();
-        onlineFireEaterLifeBar.ResetLifeBar();
-        onlineJugglerLifeBar.ResetLifeBar();
+        beardLadyLifeBar.ResetLifeBar();
+        fatLadyLifeBar.ResetLifeBar();
+        fireEaterLifeBar.ResetLifeBar();
+        jugglerLifeBar.ResetLifeBar();
         if (PhotonNetwork.isMasterClient)
         {
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ResetLevel"), new object[] { });
@@ -761,25 +770,6 @@ public class TDS_UIManager : PunBehaviour
     }
 
     public void QuitGame() => Application.Quit();
-
-    /// <summary>
-    /// Stop all coroutines and switch the UI State to InGameOver
-    /// </summary>
-    public IEnumerator ResetUIManager()
-    {
-        yield return new WaitForSeconds(1.5f); 
-        playerHealthBar.FilledImage.fillAmount = 1; 
-        narratorCoroutine = null;
-        followHiddenPlayerCouroutines.Clear();
-        filledImages.Clear();
-        curtainsAnimator.SetTrigger("Reset");
-        comboManager.ResetComboManager(); 
-        for (int i = 0; i < canvasWorld.transform.childCount; i++)
-        {
-            Destroy(canvasWorld.transform.GetChild(i).gameObject); 
-        }
-        ActivateMenu(UIState.InGameOver);    
-    }
 
     /// <summary>
     /// Reload the level
@@ -802,16 +792,16 @@ public class TDS_UIManager : PunBehaviour
             case PlayerType.Unknown:
                 break;
             case PlayerType.BeardLady:
-                onlineBeardLadyLifeBar.gameObject.SetActive(false); 
+                beardLadyLifeBar.gameObject.SetActive(false); 
                 break;
             case PlayerType.FatLady:
-                onlineFatLadyLifeBar.gameObject.SetActive(false);
+                fatLadyLifeBar.gameObject.SetActive(false);
                 break;
             case PlayerType.FireEater:
-                onlineFireEaterLifeBar.gameObject.SetActive(false);
+                fireEaterLifeBar.gameObject.SetActive(false);
                 break;
             case PlayerType.Juggler:
-                onlineJugglerLifeBar.gameObject.SetActive(false);
+                jugglerLifeBar.gameObject.SetActive(false);
                 break;
             default:
                 break;
@@ -825,8 +815,8 @@ public class TDS_UIManager : PunBehaviour
     public void RemovePlayer(int _playerID)
     {
         PhotonPlayer _player = PhotonPlayer.Find(_playerID);
-        if (!playerListReady.ContainsKey(_player)) return;
-        playerListReady.Remove(_player); 
+        if (!TDS_GameManager.PlayerListReady.ContainsKey(_player)) return;
+        TDS_GameManager.PlayerListReady.Remove(_player); 
     }
 
     /// <summary>
@@ -899,57 +889,32 @@ public class TDS_UIManager : PunBehaviour
     public void SetPlayerLifeBar(TDS_Player _player)
     {
         TDS_LifeBar _playerLifeBar = null;
-        if (_player == TDS_LevelManager.Instance.LocalPlayer && _player.photonView.isMine)
+        switch (_player.PlayerType)
         {
-            _playerLifeBar = playerHealthBar;
-            playerHealthBar.gameObject.SetActive(true); 
-            switch (_player.PlayerType)
-            {
-                case PlayerType.Unknown:
-                    break;
-                case PlayerType.BeardLady:
-                    if (portraitBL) portraitBL.gameObject.SetActive(true); 
-                    break;
-                case PlayerType.FatLady:
-                    if(portraitFL) portraitFL.gameObject.SetActive(true); 
-                    break;
-                case PlayerType.FireEater:
-                    if(portraitFE) portraitFE.gameObject.SetActive(true);
-                    break;
-                case PlayerType.Juggler:
-                    if(portraitJUG) portraitJUG.gameObject.SetActive(true);
-                    break;
-                default:
-                    break;
-            }
+            case PlayerType.Unknown:
+                break;
+            case PlayerType.BeardLady:
+                _playerLifeBar = beardLadyLifeBar;
+                break;
+            case PlayerType.FatLady:
+                _playerLifeBar = fatLadyLifeBar;
+                break;
+            case PlayerType.FireEater:
+                _playerLifeBar = fireEaterLifeBar;
+                break;
+            case PlayerType.Juggler:
+                _playerLifeBar = jugglerLifeBar;
+                break;
+            default:
+                break;
         }
-        else
-        {
-            switch (_player.PlayerType)
-            {
-                case PlayerType.Unknown:
-                    break;
-                case PlayerType.BeardLady:
-                    _playerLifeBar = onlineBeardLadyLifeBar; 
-                    break;
-                case PlayerType.FatLady:
-                    _playerLifeBar = onlineFatLadyLifeBar;
-                    break;
-                case PlayerType.FireEater:
-                    _playerLifeBar = onlineFireEaterLifeBar;
-                    break;
-                case PlayerType.Juggler:
-                    _playerLifeBar = onlineJugglerLifeBar;
-                    break;
-                default:
-                    break;
-            }
-            if (!_playerLifeBar) return; 
-        }
+        if (!_playerLifeBar) return; 
         _playerLifeBar.gameObject.SetActive(true);
         _playerLifeBar.SetOwner(_player);
         _player.HealthBar = _playerLifeBar;
         _player.OnTakeDamage += _player.UpdateLifeBar;
+        if (_player == TDS_LevelManager.Instance.LocalPlayer && _player.photonView.isMine)
+            _playerLifeBar.transform.SetSiblingIndex(0);
     }
 
     public void SetPlayerReady(int _playerID, bool _isReady)
@@ -986,6 +951,15 @@ public class TDS_UIManager : PunBehaviour
         roomSelectionElements.ToList().ForEach(e => e.RoomSelectionButton.interactable = _areInterractable);
     }
 
+    public void StartLeavingRoom()
+    {
+        if (PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "StartLeavingRoom"), new object[] { });
+        }
+        StartCoroutine(PreapreLeavingRoom());
+    }
+
     /// <summary>
     /// Stop the coroutine that fill the image
     /// </summary>
@@ -1007,13 +981,13 @@ public class TDS_UIManager : PunBehaviour
     private void SubmitInCharacterSelection()
     {
         if (uiState != UIState.InCharacterSelection) return;
-        if (!localIsReady)
+        if (!TDS_GameManager.LocalIsReady)
         {
             SelectCharacter();
             characterSelectionMenu.LocalElement.TriggerToggle(); 
             return;
         }
-        if (PhotonNetwork.isMasterClient && launchGameButton && !playerListReady.Any(p => p.Value == false) && localIsReady)
+        if (PhotonNetwork.isMasterClient && launchGameButton && !TDS_GameManager.PlayerListReady.Any(p => p.Value == false) && TDS_GameManager.LocalIsReady)
         {
             TDS_NetworkManager.Instance.LockRoom();
             LoadLevel();
@@ -1099,12 +1073,12 @@ public class TDS_UIManager : PunBehaviour
     {
         if (!PhotonNetwork.isMasterClient) return; 
         PhotonPlayer _player = PhotonPlayer.Find(_playerId);
-        if (playerListReady.ContainsKey(_player))
+        if (TDS_GameManager.PlayerListReady.ContainsKey(_player))
         {
-            playerListReady[_player] = _isReady;
+            TDS_GameManager.PlayerListReady[_player] = _isReady;
         }
-        if (uiState == UIState.InCharacterSelection && launchGameButton) launchGameButton.interactable = !playerListReady.Any(p => p.Value == false) && localIsReady;
-        if (uiState == UIState.InGameOver && buttonRestartGame) buttonRestartGame.interactable = !playerListReady.Any(p => p.Value == false);
+        if (uiState == UIState.InCharacterSelection && launchGameButton) launchGameButton.interactable = !TDS_GameManager.PlayerListReady.Any(p => p.Value == false) && TDS_GameManager.LocalIsReady;
+        if (uiState == UIState.InGameOver && buttonRestartGame) buttonRestartGame.interactable = !TDS_GameManager.PlayerListReady.Any(p => p.Value == false);
     }
     #endregion
 
