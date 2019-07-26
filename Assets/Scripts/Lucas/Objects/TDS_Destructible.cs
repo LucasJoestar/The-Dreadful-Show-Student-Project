@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-
-public class TDS_Destructible : TDS_Damageable
+﻿public class TDS_Destructible : TDS_Damageable
 {
     /* TDS_Damageable :
 	 *
@@ -43,7 +37,7 @@ public class TDS_Destructible : TDS_Damageable
     {
         base.Die();
         
-        SetAnimationState(DestructibleAnimState.Destruction);
+        if (PhotonNetwork.isMasterClient) SetAnimationState(DestructibleAnimState.Destruction);
     }
 
     /// <summary>
@@ -55,7 +49,7 @@ public class TDS_Destructible : TDS_Damageable
     {
         if (!base.TakeDamage(_damage)) return false;
         
-        if (!isDead)
+        if (!isDead && PhotonNetwork.isMasterClient)
         {
             SetAnimationState(DestructibleAnimState.Hit);
         }

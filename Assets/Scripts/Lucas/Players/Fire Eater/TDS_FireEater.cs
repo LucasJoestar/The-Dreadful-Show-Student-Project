@@ -389,7 +389,7 @@ public class TDS_FireEater : TDS_Player
     {
         if (base.TakeDamage(_damage))
         {
-            if (isInMiniGame) ExitMiniGame();
+            if (photonView.isMine && isInMiniGame) ExitMiniGame();
             return true;
         }
         return false;

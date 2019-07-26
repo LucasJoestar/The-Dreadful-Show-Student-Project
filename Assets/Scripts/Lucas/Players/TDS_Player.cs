@@ -1013,6 +1013,8 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         base.Die();
 
+        if (!photonView.isMine) return;
+
         // Drop object if needed
         if (throwable) DropObject();
 
@@ -1068,28 +1070,31 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Executes base method
         if (!base.TakeDamage(_damage))
         {
-            TDS_Camera.Instance.StartScreenShake(.01f, .05f);
+            if (photonView.isMine) TDS_Camera.Instance.StartScreenShake(.01f, .05f);
             return false;
         }
 
-        // If preparing an attack, stop it
-        if (isPreparingAttack) StopPreparingAttack();
+        if (photonView.isMine)
+        {
+            // If preparing an attack, stop it
+            if (isPreparingAttack) StopPreparingAttack();
 
-        // And if in combo, reset it
-        if (comboCurrent.Count > 0) BreakCombo();
-        if (IsAttacking) StopAttack();
+            // And if in combo, reset it
+            if (comboCurrent.Count > 0) BreakCombo();
+            if (IsAttacking) StopAttack();
+        }
 
         // If not dead, be just hit
         if (!isDead)
         {
-            // Triggers associated animation
-            if (!IsDown) SetAnim(PlayerAnimState.Hit);
-
             invulnerabilityCoroutine = StartCoroutine(Invulnerability());
 
             if (photonView.isMine)
             {
                 TDS_Camera.Instance.StartScreenShake(.02f, .15f);
+
+                // Triggers associated animation
+                if (!IsDown) SetAnim(PlayerAnimState.Hit);
             }
         }
         else if (photonView.isMine)
@@ -1110,11 +1115,13 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         if (!base.TakeDamage(_damage, _position))
         {
-            transform.position += new Vector3(.025f * (_position.x < transform.position.x ? 1 : 1), 0, 0);
+            if (photonView.isMine)
+            {
+                transform.position += new Vector3(.025f * (_position.x < transform.position.x ? 1 : 1), 0, 0);
 
+            }
             return false;
         }
-
         return true;
     }
     #endregion
