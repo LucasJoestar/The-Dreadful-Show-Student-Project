@@ -1237,6 +1237,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <param name="_position">Position of the attacker</param>
     protected virtual void ApplyDamagesBehaviour(int _damage, Vector3 _position)
     {
+        if (!PhotonNetwork.isMasterClient) return; 
         StopAll();
         StartCoroutine(ApplyRecoil(_position));
         enemyState = EnemyState.MakingDecision; 
