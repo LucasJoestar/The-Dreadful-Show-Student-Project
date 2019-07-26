@@ -908,7 +908,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public override bool ThrowObject_A()
     {
-        if (isDead) return false; 
+        if (isDead || !playerTarget) return false; 
         float _range = Vector3.Distance(transform.position, playerTarget.transform.position) <  throwRange ? Vector3.Distance(transform.position, playerTarget.transform.position) : throwRange;
         Vector3 _pos = (transform.position - transform.right * _range);
         StopWaiting(); 
