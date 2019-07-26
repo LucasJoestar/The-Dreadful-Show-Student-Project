@@ -35,18 +35,36 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
     #endregion
 
     #region Fields / Properties
-    [SerializeField] protected TDS_ComboManager comboCounter = null;   
-	#endregion
+    [SerializeField] protected TDS_ComboManager comboCounter = null;
+    [SerializeField] protected PlayerType playerType = PlayerType.Unknown; 
+    #endregion
 
-	#region Methods
+    #region Methods
 
-	#region Original Methods
-    
-	#endregion
+    #region Original Methods
+    public override void SetOwner(TDS_Character _owner)
+    {
+        base.SetOwner(_owner);
+        if(comboCounter)
+        {
+            if (!PhotonNetwork.offlineMode && _owner is TDS_Player && TDS_GameManager.LocalPlayer == playerType)
+            {
+                ((TDS_Player)_owner).HitBox.OnTouch += comboCounter.IncreaseCombo;
+                comboCounter.ResetComboManager(); 
+                comboCounter.gameObject.SetActive(true);
+                TDS_UIManager.Instance.ComboManager = comboCounter;
+            }
+            else
+            {
+                comboCounter.gameObject.SetActive(false);
+            }
+        }
+    }
+    #endregion
 
-	#region Unity Methods
-	// Update is called once per frame
-	protected override void Update()
+    #region Unity Methods
+    // Update is called once per frame
+    protected override void Update()
     {
         
 	}

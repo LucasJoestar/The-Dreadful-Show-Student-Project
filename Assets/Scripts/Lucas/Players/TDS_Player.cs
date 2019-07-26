@@ -1905,11 +1905,6 @@ public class TDS_Player : TDS_Character, IPunObservable
         {
             TDS_LevelManager.Instance?.InitOnlinePlayer(this); 
         }
-        else
-        {
-            if (TDS_UIManager.Instance.ComboManager)
-                hitBox.OnTouch += TDS_UIManager.Instance.ComboManager.IncreaseCombo; 
-        }
 
         // Since all players except the Juggler cannot change their throw angle & the point they are aiming,
         // get the throw velocity & projectile motion in local space at start time

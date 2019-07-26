@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections; 
 using UnityEngine;
+using UnityEngine.UI; 
 
 public class TDS_BeardLadyLifeBar : TDS_PlayerLifeBar 
 {
-	/* TDS_BeardLadyLifeBar :
+    /* TDS_BeardLadyLifeBar :
 	 *
 	 *	#####################
 	 *	###### PURPOSE ######
@@ -33,38 +32,58 @@ public class TDS_BeardLadyLifeBar : TDS_PlayerLifeBar
 	 *	-----------------------------------
 	*/
 
-	#region Events
+    #region Events
 
-	#endregion
+    #endregion
 
-	#region Fields / Properties
+    #region Fields / Properties
+    [SerializeField] private Image beardStateBar = null;
+    [SerializeField] private Image beardStateFilleBar = null;
+    [SerializeField] private float fillingTimer = .25f;
+    #endregion
 
-	#endregion
+    #region Methods
 
-	#region Methods
+    #region Original Methods
+    /// <summary>
+    /// Set the owner and add the methods on the linked events
+    /// </summary>
+    /// <param name="_owner"></param>
+    public override void SetOwner(TDS_Character _owner)
+    {
+        if (_owner is TDS_BeardLady)
+        {
+            base.SetOwner(_owner);
+            if (!beardStateBar) return; 
+            if(PhotonNetwork.offlineMode || TDS_GameManager.LocalPlayer == PlayerType.BeardLady)
+            {
+                beardStateBar.gameObject.SetActive(true);
+                ((TDS_BeardLady)_owner).OnBeardStateChanged += ChangeBeardState; 
+                return; 
+            }
+            beardStateBar.gameObject.SetActive(false); 
+        }
+    }
 
-	#region Original Methods
+    /// <summary>
+    /// Change the beard lady state on the beard bar
+    /// </summary>
+    /// <param name="_state"></param>
+    private void ChangeBeardState(BeardState _state)
+    {
+        if (!beardStateFilleBar) return;
+        beardStateFilleBar.fillAmount = (float)((int)_state +1) / ((int)BeardState.VeryVeryLongDude+1);
+    }
+   
+    #endregion
 
-	#endregion
-
-	#region Unity Methods
-	// Awake is called when the script instance is being loaded
+    #region Unity Methods
+    // Awake is called when the script instance is being loaded
     private void Awake()
     {
-
+        if (playerType != PlayerType.BeardLady)
+            playerType = PlayerType.BeardLady;
     }
-
-	// Use this for initialization
-    private void Start()
-    {
-		
-    }
-	
-	// Update is called once per frame
-	private void Update()
-    {
-        
-	}
 	#endregion
 
 	#endregion

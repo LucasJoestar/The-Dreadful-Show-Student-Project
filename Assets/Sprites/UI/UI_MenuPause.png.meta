@@ -4,6 +4,8 @@ TextureImporter:
   fileIDToRecycleName:
     21300000: Background_Pause
     21300002: Title_Pause
+    21300004: Button_Big
+    21300006: Button_Small
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -143,6 +145,46 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 07ab5dc6e1750ef46a9fe6ed1878638d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button_Big
+      rect:
+        serializedVersion: 2
+        x: 1569
+        y: 3042
+        width: 904
+        height: 164
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a826a1bed76c913449ab02c18736bd66
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button_Small
+      rect:
+        serializedVersion: 2
+        x: 1583
+        y: 2843
+        width: 466
+        height: 130
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d84a09d3d6c4ee64fa490426254f69a2
       vertices: []
       indices: 
       edges: []

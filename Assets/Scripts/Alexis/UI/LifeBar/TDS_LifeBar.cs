@@ -68,14 +68,17 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
     /// <summary>
     /// Stop the coroutine that fill the life bar and destroy the game object
     /// </summary>
-    public void DestroyLifeBar()
+    public virtual void DestroyLifeBar()
     {
-        if (TDS_UIManager.Instance)
+        if(owner is TDS_Enemy)
         {
-            TDS_UIManager.Instance.StopFilling(this);
+            if (TDS_UIManager.Instance)
+            {
+                TDS_UIManager.Instance.StopFilling(this);
+            }
+            UnityEngine.Object.Destroy(this.gameObject);
+            owner.OnDie -= DestroyLifeBar;
         }
-        UnityEngine.Object.Destroy(this.gameObject);
-        owner.OnDie -= DestroyLifeBar;
     }
 
     /// <summary>
@@ -90,7 +93,7 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
     /// <summary>
     /// Set all fill amount to 1
     /// </summary>
-    public void ResetLifeBar()
+    public virtual void ResetLifeBar()
     {
         if(foregroundFilledImage) foregroundFilledImage.fillAmount = 1;
         if(filledImage) filledImage.fillAmount = 1;
@@ -102,7 +105,7 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
     /// Link Destroy method on the event OnDie of the owner
     /// </summary>
     /// <param name="_owner">Owner of the life bar</param>
-    public void SetOwner(TDS_Character _owner)
+    public virtual void SetOwner(TDS_Character _owner)
     {
         owner = _owner;
     }
@@ -117,10 +120,13 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
     /// <param name="_hasToFollow">Does the lifebar has to follow its owner</param>
     public void SetOwner(TDS_Character _owner, Vector3 _offset, bool _hasToFollow = true)
     {
-        owner = _owner;
-        offset = _offset; 
-        hasToFollowOwner = _hasToFollow;
-        owner.OnDie += DestroyLifeBar;
+        SetOwner(_owner); 
+        if(owner is TDS_Enemy)
+        {
+            offset = _offset;
+            hasToFollowOwner = _hasToFollow;
+            owner.OnDie += DestroyLifeBar;
+        }
     }
     #endregion
 

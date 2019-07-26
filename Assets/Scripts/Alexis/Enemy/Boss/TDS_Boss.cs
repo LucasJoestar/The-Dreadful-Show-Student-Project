@@ -339,8 +339,7 @@ public abstract class TDS_Boss : TDS_Enemy
     {
         if (TDS_UIManager.Instance?.CanvasScreen)
         {
-            TDS_UIManager.Instance.SetBossLifeBar(this);
-            OnTakeDamage += UpdateLifeBar;
+            TDS_UIManager.Instance.SetBossLifeBar(this); 
         }
     }
 

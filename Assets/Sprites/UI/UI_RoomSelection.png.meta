@@ -12,6 +12,9 @@ TextureImporter:
     21300014: UI_RoomSelection_1
     21300016: TicketReady_01
     21300018: TicketReady_02
+    21300020: UI_RoomSelector
+    21300022: Panel_WaitingForPlayers
+    21300024: Text_WaitingForPlayers
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -120,7 +123,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 102
-        y: 3151
+        y: 3202
         width: 2249
         height: 269
       alignment: 0
@@ -140,7 +143,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 109
-        y: 2768
+        y: 2896
         width: 2255
         height: 269
       alignment: 0
@@ -160,7 +163,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 114
-        y: 2382
+        y: 2581
         width: 2249
         height: 264
       alignment: 0
@@ -180,7 +183,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 116
-        y: 1966
+        y: 2259
         width: 2248
         height: 263
       alignment: 0
@@ -200,7 +203,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 117
-        y: 1589
+        y: 1930
         width: 2249
         height: 268
       alignment: 0
@@ -239,12 +242,12 @@ TextureImporter:
       name: Ticket_Wait
       rect:
         serializedVersion: 2
-        x: 126
-        y: 1044
+        x: 112
+        y: 808
         width: 651
         height: 340
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -256,35 +259,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_RoomSelection_1
-      rect:
-        serializedVersion: 2
-        x: 856
-        y: 1065
-        width: 5
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f68098719893373418b0c4296f8efd1f
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: TicketReady_01
       rect:
         serializedVersion: 2
-        x: 868
-        y: 1041
+        x: 118
+        y: 414
         width: 517
         height: 337
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -299,10 +282,30 @@ TextureImporter:
       name: TicketReady_02
       rect:
         serializedVersion: 2
-        x: 1411
-        y: 1032
+        x: 659
+        y: 402
         width: 141
         height: 338
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cca2d95052f382546afa73fde20d2705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_RoomSelector
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 1430
+        width: 2411
+        height: 380
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -310,7 +313,47 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cca2d95052f382546afa73fde20d2705
+      spriteID: 5bbbac36f95c6a549b1508af544ab96d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Panel_WaitingForPlayers
+      rect:
+        serializedVersion: 2
+        x: 1130
+        y: 458
+        width: 1263
+        height: 467
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85cbb7f98e42ace47b3ef164614c59c7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Text_WaitingForPlayers
+      rect:
+        serializedVersion: 2
+        x: 1178
+        y: 11
+        width: 1236
+        height: 401
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf7c5fa40e3428a48a03ab5e9d7d9b5e
       vertices: []
       indices: 
       edges: []

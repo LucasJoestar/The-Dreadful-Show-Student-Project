@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class TDS_FatLadyLifeBar : TDS_PlayerLifeBar 
 {
-	/* TDS_FatLadyLifeBar :
+    /* TDS_FatLadyLifeBar :
 	 *
 	 *	#####################
 	 *	###### PURPOSE ######
@@ -33,39 +31,78 @@ public class TDS_FatLadyLifeBar : TDS_PlayerLifeBar
 	 *	-----------------------------------
 	*/
 
-	#region Events
+    #region Events
 
-	#endregion
+    #endregion
 
-	#region Fields / Properties
+    #region Fields / Properties
+    [SerializeField] Image feedingStatusBar = null;
+    [SerializeField] Image feedingStatusFilledBar = null;
+    [SerializeField] Image foregroundImage = null; 
+    #endregion
 
-	#endregion
+    #region Methods
 
-	#region Methods
+    #region Original Methods
+    /// <summary>
+    /// Set the owner and add the methods on the linked events
+    /// </summary>
+    /// <param name="_owner"></param>
+    public override void SetOwner(TDS_Character _owner)
+    {
+        if (_owner is TDS_FatLady)
+        {
+            base.SetOwner(_owner);
+            if (PhotonNetwork.offlineMode || TDS_GameManager.LocalPlayer == PlayerType.FatLady)
+            {
+                feedingStatusBar.gameObject.SetActive(true);
+                ((TDS_FatLady)_owner).OnAteSnack += StartFeedingBar;
+                ((TDS_FatLady)_owner).OnRestauringSnack += SetFeedingBarFilledValue;
+                ((TDS_FatLady)_owner).OnRestauredSnack += ResetFeedingBar;
+                return;
+            }
+            feedingStatusBar.gameObject.SetActive(false);
+        }
+    }
 
-	#region Original Methods
+    /// <summary>
+    /// Set the filled amount
+    /// </summary>
+    /// <param name="_newValue"></param>
+    private void SetFeedingBarFilledValue(float _newValue)
+    {
+        if (feedingStatusFilledBar)
+            feedingStatusFilledBar.fillAmount = Mathf.MoveTowards(feedingStatusFilledBar.fillAmount,_newValue, Time.deltaTime);
+    }
 
-	#endregion
+    /// <summary>
+    /// Set the color of the foreground to grey 
+    /// Set the fill amount to 0
+    /// </summary>
+    private void StartFeedingBar()
+    {
+        if (foregroundImage) foregroundImage.color = Color.grey; 
+        if (feedingStatusFilledBar) feedingStatusFilledBar.fillAmount = 0; 
+    }
 
-	#region Unity Methods
-	// Awake is called when the script instance is being loaded
+    /// <summary>
+    /// Set the color of the foreground to white 
+    /// Set the fill amount to 1
+    /// </summary>
+    private void ResetFeedingBar()
+    {
+        if (foregroundImage) foregroundImage.color = Color.white;
+        if (feedingStatusFilledBar) feedingStatusFilledBar.fillAmount = 1;
+    }
+    #endregion
+
+    #region Unity Methods
     private void Awake()
     {
-
+        if (playerType != PlayerType.FatLady)
+            playerType = PlayerType.FatLady;
     }
+    #endregion
 
-	// Use this for initialization
-    private void Start()
-    {
-		
-    }
-	
-	// Update is called once per frame
-	private void Update()
-    {
-        
-	}
-	#endregion
-
-	#endregion
+    #endregion
 }
