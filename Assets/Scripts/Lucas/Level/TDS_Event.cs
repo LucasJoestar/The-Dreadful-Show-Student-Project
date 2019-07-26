@@ -75,7 +75,7 @@ public class TDS_Event
     /// <summary>
     /// Type of this event.
     /// </summary>
-    [SerializeField] private CustomEventType eventType = CustomEventType.UnityEventMaster;
+    [SerializeField] private CustomEventType eventType = CustomEventType.UnityEventLocal;
 
     /// <summary>Public accessor for <see cref="eventType"/>.</summary>
     public CustomEventType EventType { get { return eventType; } }
@@ -269,7 +269,7 @@ public class TDS_Event
                 break;
 
             // Just invoke a Unity Event, that's it
-            case CustomEventType.UnityEventMaster:
+            case CustomEventType.UnityEventLocal:
                 unityEvent.Invoke();
                 break;
 

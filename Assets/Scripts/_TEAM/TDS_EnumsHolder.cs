@@ -122,7 +122,7 @@ public enum CustomEventType
     Wait,
     WaitForAction,
     CameraMovement,
-    UnityEventMaster,
+    UnityEventLocal,
     UnityEventForAll
 }
 
