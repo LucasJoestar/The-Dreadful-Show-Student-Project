@@ -25,8 +25,8 @@
             "CanUseSpriteAtlas"="True"
         }
 		
-		UsePass "Custom/Diffuse/FORWARD"
-        UsePass "Custom/Outline/OUTLINE"
+		UsePass "Custom/Diffuse"
+        UsePass "Custom/Outline"
 	} 
     Fallback "Custom/Outline"
 }
