@@ -36,14 +36,50 @@ public class TDS_VFXManager : MonoBehaviour
 
     #region Fields / Properties
 
+    #region Variables
+    // FXs used during fights and sweet game moments.
+    [Header("Fight FXs")]
+    [SerializeField] private ParticleSystem     aieFX = null;
+    public ParticleSystem   AieFX { get { return aieFX; } }
 
+    [SerializeField] private ParticleSystem     ouchFX = null;
+    public ParticleSystem   OuchFX { get { return ouchFX; } }
+
+    [SerializeField] private ParticleSystem     pafFX = null;
+    public ParticleSystem   PafFX { get { return pafFX; } }
+
+    [SerializeField] private ParticleSystem pifFX = null;
+    public ParticleSystem PifFX { get { return pifFX; } }
+
+    [SerializeField] private ParticleSystem poufFX = null;
+    public ParticleSystem PoufFX { get { return poufFX; } }
+
+    // FXs used for all kind of magic cool effects.
+    [Header("Magic FXs")]
+    [SerializeField] private ParticleSystem poofFX = null;
+    public ParticleSystem PoofFX { get { return poofFX; } }
+
+    [SerializeField] private ParticleSystem magicPoofFX = null;
+    public ParticleSystem MagicPoofFX { get { return magicPoofFX; } }
+
+    // Beard Lady related FXs.
+    [Header("Beard Lady")]
+    [SerializeField] private ParticleSystem beardGrowFX = null;
+    public ParticleSystem BeardGrowFX { get { return beardGrowFX; } }
+
+    //[SerializeField] private ParticleSystem beardMagicGrowFX = null;
+    //public ParticleSystem BeardMagicGrowFX { get { return beardMagicGrowFX; } }
+    #endregion
     [SerializeField] private TDS_VFXElement[] particleSystems = new TDS_VFXElement[] {};
     private TDS_VFXElement[] hitParticleSystems = null;
 
+    #region Singleton Instance
     /// <summary>
     /// Singleton instance of this class.
     /// </summary>
     public static TDS_VFXManager Instance = null;
+    #endregion
+
     #endregion
 
     #region Methods
