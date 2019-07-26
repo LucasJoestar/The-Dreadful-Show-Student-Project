@@ -134,7 +134,7 @@ public class TDS_Throwable : PunBehaviour
         {
             hitBox.Desactivate();
         }
-        if (!shadow.activeInHierarchy) shadow.SetActive(true);
+        if (shadow && !shadow.activeInHierarchy) shadow.SetActive(true);
         rigidbody.isKinematic = true;
         transform.position = _rootCharacterObject.transform.position;
         transform.SetParent(_rootCharacterObject.transform, true);

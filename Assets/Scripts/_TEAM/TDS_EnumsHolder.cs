@@ -154,7 +154,8 @@ public enum EnemyAnimationState
     Brought, 
     BringTargetCloser, 
     EndBringingTargetCloser, 
-    StopSpinning
+    StopSpinning, 
+    LightHit
 }
 
 /// <summary>

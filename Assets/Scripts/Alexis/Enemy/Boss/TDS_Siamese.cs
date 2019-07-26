@@ -55,39 +55,22 @@ public class TDS_Siamese : TDS_Boss
     /// </summary>
     private void SplitSiamese()
     {
-        if (!PhotonNetwork.isMasterClient) return; 
+        if (!PhotonNetwork.isMasterClient) return;
+        TDS_Enemy _e = null; 
         for (int i = 0; i < splitingEnemiesNames.Length; i++)
         {
-            PhotonNetwork.Instantiate(splitingEnemiesNames[i], transform.position + splitingPosition[i], Quaternion.identity, 0); 
+            _e = PhotonNetwork.Instantiate(splitingEnemiesNames[i], transform.position + splitingPosition[i], Quaternion.identity, 0).GetComponent<TDS_Enemy>();
+            if (Area && _e != null) Area.AddEnemy(_e); 
         }
-        PhotonNetwork.Destroy(this.gameObject); 
+        PhotonNetwork.Destroy(this.gameObject);
+        if (Area) Area.RemoveEnemy(this);
     }
-
     #region Overriden Methods
     #endregion
 
     #endregion
 
     #region Unity Methods
-    // Awake is called when the script instance is being loaded
-    protected override void Awake()
-    {
-        base.Awake();
-        //OnDie += SplitSiamese; 
-    }
-
-	// Use this for initialization
-    protected override void Start()
-    {
-        base.Start();
-    }
-	
-	// Update is called once per frame
-	protected override void Update()
-    {
-        base.Update(); 
-	}
-
     protected override void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;

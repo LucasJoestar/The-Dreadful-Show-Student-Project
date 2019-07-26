@@ -60,6 +60,16 @@ public abstract class TDS_Minion : TDS_Enemy
         hasEvolved = true; 
     }
 
+    /// <summary>
+    /// Override the Die Method
+    /// Remove the enemy from the Area
+    /// </summary>
+    protected override void Die()
+    {
+        base.Die();
+        if (Area) Area.RemoveEnemy(this);
+    }
+
     #endregion
 
     #region Overridden Methods

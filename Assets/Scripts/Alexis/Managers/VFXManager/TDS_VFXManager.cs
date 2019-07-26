@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using System.Linq; 
+using System.Linq;
 
-public class TDS_VFXManager : MonoBehaviour 
+public class TDS_VFXManager : MonoBehaviour
 {
     /* TDS_VFXManager :
 	 *
@@ -44,39 +44,13 @@ public class TDS_VFXManager : MonoBehaviour
     #region Fields / Properties
     public static TDS_VFXManager Instance = null;
 
-    private Dictionary<string, ParticleSystem> particleSystemsByName = new Dictionary<string, ParticleSystem>();
-    private List<ParticleSystem> hitParticleSystems = new List<ParticleSystem>();
+    [SerializeField] private TDS_VFXElement[] particleSystems = new TDS_VFXElement[] {};
+    private TDS_VFXElement[] hitParticleSystems = null; 
     #endregion
 
     #region Methods
 
     #region Original Methods
-    /// <summary>
-    /// Load the VFX asset bundle of the particles systems
-    /// Add the particles systems into the Dictionary particleSystemsByName
-    /// </summary>
-    private void LoadAssetBundle()
-    {
-        AssetBundle _vfxBundle = AssetBundle.LoadFromFile(Path.Combine(Application.persistentDataPath, "AssetBundles", "vfxassetsbundle"));
-        if (!_vfxBundle)
-        {
-            Debug.Log("Asset Bundle not found");
-            return;
-        }
-        GameObject[] _particlesSystems = _vfxBundle.LoadAllAssets<GameObject>();
-        for (int i = 0; i < _particlesSystems.Length; i++)
-        {
-            particleSystemsByName.Add(_particlesSystems[i].name, _particlesSystems[i].GetComponent<ParticleSystem>());
-        }
-        _vfxBundle = AssetBundle.LoadFromFile(Path.Combine(Application.persistentDataPath, "AssetBundles", "hitvfxassetsbundle"));
-        if (!_vfxBundle)
-        {
-            Debug.Log("Asset Bundle not found");
-            return;
-        }
-        hitParticleSystems = _vfxBundle.LoadAllAssets<GameObject>().ToList().Select(o => o.GetComponent<ParticleSystem>()).ToList();
-    }
-
     /// <summary>
     /// Get the Particle System with the name 
     /// </summary>
@@ -84,18 +58,23 @@ public class TDS_VFXManager : MonoBehaviour
     /// <returns></returns>
     public ParticleSystem GetParticleSystemByName(string _name)
     {
-        if (!particleSystemsByName.ContainsKey(_name))
-        {
-            Debug.Log("This gameobject does not exist");
-            return null;
-        }
-        return particleSystemsByName[_name]; 
+        TDS_VFXElement _element = particleSystems.Where(p => p.Name == _name).FirstOrDefault();
+        if (_element == null) return null;
+        return _element.ParticleSystem; 
     }
 
+    /// <summary>
+    /// Instantiate a raondom hit effect when a character is hit.
+    /// </summary>
+    /// <param name="_position"></param>
     public void InstanciateRandomHitEffect(Vector3 _position)
     {
-        int _randomIndex = (int)UnityEngine.Random.Range((int)0, (int)hitParticleSystems.Count);
-        ParticleSystem _system = hitParticleSystems[_randomIndex]; 
+        if(hitParticleSystems == null)
+        {
+            hitParticleSystems = particleSystems.Where(e => e.IsHitEffect).ToArray();
+        }
+        int _randomIndex = (int)UnityEngine.Random.Range((int)0, (int)hitParticleSystems.Length);
+        ParticleSystem _system = hitParticleSystems[_randomIndex].ParticleSystem; 
         Vector3 _offset = new Vector3(UnityEngine.Random.Range(-.5f, .5f), UnityEngine.Random.Range(.1f, 1.8f), 0);
         Instantiate(_system.gameObject, _position + _offset, Quaternion.identity); 
     }
@@ -131,9 +110,35 @@ public class TDS_VFXManager : MonoBehaviour
             Destroy(this);
             return; 
         }
-        LoadAssetBundle(); 
     }
+    
 	#endregion
 
 	#endregion
+}
+
+[Serializable]
+public class TDS_VFXElement
+{
+    [SerializeField] private ParticleSystem particleSystem;
+    public ParticleSystem ParticleSystem
+    {
+        get { return particleSystem;  }
+    }
+
+    [SerializeField] bool isHitEffect = false; 
+    public bool IsHitEffect
+    {
+        get { return isHitEffect;  }
+    }
+
+    public string Name
+    {
+        get { return particleSystem.name;  }
+    }
+
+    public TDS_VFXElement(ParticleSystem _system)
+    {
+        particleSystem = _system; 
+    }
 }

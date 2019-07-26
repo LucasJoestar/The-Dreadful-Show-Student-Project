@@ -327,9 +327,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224869584829798290}
+  - {fileID: 1331396997553533382}
   - {fileID: 5934187636922156191}
   - {fileID: 3084500815673702738}
-  - {fileID: 1331396997553533382}
   - {fileID: 6907218093770923293}
   - {fileID: 8546173661137546382}
   m_Father: {fileID: 224612949018700402}
@@ -404,10 +404,10 @@ MonoBehaviour:
   narratorBoxParent: {fileID: 1205917953095670}
   loadingScreenParent: {fileID: 1948310997285336671}
   gameOverScreenParent: {fileID: 6338402234991283160}
-  beardLadyLifeBar: {fileID: 2548065203727430575}
-  fatLadyLifeBar: {fileID: 9039899000779869832}
-  jugglerLifeBar: {fileID: 2604559447958545492}
-  fireEaterLifeBar: {fileID: 4643397370439879297}
+  beardLadyLifeBar: {fileID: 0}
+  fatLadyLifeBar: {fileID: 0}
+  jugglerLifeBar: {fileID: 0}
+  fireEaterLifeBar: {fileID: 0}
   hiddenBeardLadyImage: {fileID: 4427840998237792271}
   hiddenFatLadyImage: {fileID: 2735349908757328103}
   hiddenJugglerImage: {fileID: 4398001280683494583}
@@ -457,8 +457,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 27
+  instantiationId: 27
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &6731702032764320197
@@ -512,6 +512,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c7ca649391236e49b43b1b27f81463f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particleSystems:
+  - particleSystem: {fileID: 7094986414530080138, guid: a89862d7df0a2154fa0b54fc8a849499,
+      type: 3}
+    isHitEffect: 1
+  - particleSystem: {fileID: 198742772223849486, guid: ddf429217dbedd241a714e210db0d1a4,
+      type: 3}
+    isHitEffect: 0
+  - particleSystem: {fileID: 198742772223849486, guid: 33f6b9218ca4bf0408573a980271a013,
+      type: 3}
+    isHitEffect: 0
+  - particleSystem: {fileID: 7879058467074326629, guid: d5fabea95f68b344682cf1455e3d798f,
+      type: 3}
+    isHitEffect: 0
+  - particleSystem: {fileID: 7445347248329031590, guid: 9245738a4dedaa74f9844b0e75643799,
+      type: 3}
+    isHitEffect: 1
+  - particleSystem: {fileID: 3016156247356828596, guid: 75ab3b8d3fbc5ea4f876928d02c34bce,
+      type: 3}
+    isHitEffect: 1
+  - particleSystem: {fileID: 5211721441314228817, guid: e206ba083e11258489c1531d6b75089a,
+      type: 3}
+    isHitEffect: 1
+  - particleSystem: {fileID: 2547923030815362738, guid: e65ae402451c8f944b81b8f19ac820ad,
+      type: 3}
+    isHitEffect: 0
+  - particleSystem: {fileID: 8469455672546463900, guid: db235d0311025b44daefdc0c1cfa0855,
+      type: 3}
+    isHitEffect: 1
+  - particleSystem: {fileID: 198742772223849486, guid: 71169cd45071ac94ba9fc202ff4188ca,
+      type: 3}
+    isHitEffect: 0
+  - particleSystem: {fileID: 198742772223849486, guid: b21e1b4c273f9b24dba641e1d7ae69c3,
+      type: 3}
+    isHitEffect: 0
+  - particleSystem: {fileID: 198742772223849486, guid: 3b0abeaf23607974eb0e95d5e78dae82,
+      type: 3}
+    isHitEffect: 0
+  - particleSystem: {fileID: 1811133466299983596, guid: 9ac7926d24395d94fb0c814286a44a57,
+      type: 3}
+    isHitEffect: 1
+  - particleSystem: {fileID: 3446121272505700507, guid: 395b695260094364bba657c179cc918f,
+      type: 3}
+    isHitEffect: 1
 --- !u!114 &971945464950786522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7474,7 +7517,7 @@ RectTransform:
   - {fileID: 6065132882864041143}
   - {fileID: 2252134595656257018}
   m_Father: {fileID: 224328410374799850}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8390,7 +8433,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2362477090727930402}
   - component: {fileID: 5458202881452103897}
-  - component: {fileID: 9039899000779869832}
+  - component: {fileID: 4412605557078002276}
   m_Layer: 5
   m_Name: LifeBar FatLady
   m_TagString: Untagged
@@ -8428,7 +8471,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4766466702316918924}
   m_CullTransparentMesh: 0
---- !u!114 &9039899000779869832
+--- !u!114 &4412605557078002276
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8437,11 +8480,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4766466702316918924}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 638aefffcfa173341a2e406a0b2c9a08, type: 3}
+  m_Script: {fileID: 11500000, guid: a11b973121d870744b70788020109086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foregroundFilledImage: {fileID: 234680538446570187}
-  filledImage: {fileID: 483682811849235010}
+  foregroundFilledImage: {fileID: 0}
+  filledImage: {fileID: 0}
+  comboCounter: {fileID: 0}
 --- !u!1 &4798388643380470184
 GameObject:
   m_ObjectHideFlags: 0
@@ -8896,7 +8940,7 @@ RectTransform:
   - {fileID: 5890198214478295522}
   - {fileID: 2807031815125528335}
   m_Father: {fileID: 224328410374799850}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -10995,7 +11039,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7327596907566432051}
   - component: {fileID: 2531654845889410858}
-  - component: {fileID: 2604559447958545492}
+  - component: {fileID: 8456674802933092651}
   m_Layer: 5
   m_Name: LifeBar Juggler
   m_TagString: Untagged
@@ -11033,7 +11077,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6621019404466280796}
   m_CullTransparentMesh: 0
---- !u!114 &2604559447958545492
+--- !u!114 &8456674802933092651
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11042,11 +11086,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6621019404466280796}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 638aefffcfa173341a2e406a0b2c9a08, type: 3}
+  m_Script: {fileID: 11500000, guid: 36d8248ea28185549a959af54daf920e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foregroundFilledImage: {fileID: 1448209843277214737}
-  filledImage: {fileID: 5227878533276720865}
+  foregroundFilledImage: {fileID: 0}
+  filledImage: {fileID: 0}
+  comboCounter: {fileID: 0}
 --- !u!1 &6662494902660641868
 GameObject:
   m_ObjectHideFlags: 0
@@ -11607,7 +11652,7 @@ RectTransform:
   - {fileID: 1318521447044218375}
   - {fileID: 7327596907566432051}
   m_Father: {fileID: 224328410374799850}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -14027,7 +14072,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3311701139366633377}
   - component: {fileID: 8871293955330740836}
-  - component: {fileID: 2548065203727430575}
+  - component: {fileID: 8776489771077698336}
   m_Layer: 5
   m_Name: LifeBar BeardLady
   m_TagString: Untagged
@@ -14065,7 +14110,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8149970359697354553}
   m_CullTransparentMesh: 0
---- !u!114 &2548065203727430575
+--- !u!114 &8776489771077698336
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14074,11 +14119,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8149970359697354553}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 638aefffcfa173341a2e406a0b2c9a08, type: 3}
+  m_Script: {fileID: 11500000, guid: 55fbf3234ceb2654fbb1dafe4e50494c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foregroundFilledImage: {fileID: 8432803583392899226}
-  filledImage: {fileID: 1645967011163601615}
+  foregroundFilledImage: {fileID: 0}
+  filledImage: {fileID: 0}
+  comboCounter: {fileID: 0}
 --- !u!1 &8190311463751295420
 GameObject:
   m_ObjectHideFlags: 0
@@ -15256,7 +15302,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1318521447044218375}
   - component: {fileID: 8518094309095779690}
-  - component: {fileID: 4643397370439879297}
+  - component: {fileID: 7822463263627333703}
   m_Layer: 5
   m_Name: LifeBar FireEater
   m_TagString: Untagged
@@ -15294,7 +15340,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8909334862464881916}
   m_CullTransparentMesh: 0
---- !u!114 &4643397370439879297
+--- !u!114 &7822463263627333703
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15303,11 +15349,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8909334862464881916}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 638aefffcfa173341a2e406a0b2c9a08, type: 3}
+  m_Script: {fileID: 11500000, guid: 36d8248ea28185549a959af54daf920e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foregroundFilledImage: {fileID: 4491862709817109581}
-  filledImage: {fileID: 6041578075490011768}
+  foregroundFilledImage: {fileID: 0}
+  filledImage: {fileID: 0}
+  comboCounter: {fileID: 0}
 --- !u!1 &8933961121698200003
 GameObject:
   m_ObjectHideFlags: 0
