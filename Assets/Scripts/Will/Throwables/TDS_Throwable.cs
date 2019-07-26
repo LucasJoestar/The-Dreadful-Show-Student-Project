@@ -27,9 +27,6 @@ public class TDS_Throwable : PunBehaviour
 	 *	-----------------------------------
 	*/
 
-    #region Events
-    #endregion
-
     #region Fields / Properties
     #region ObjectSettings
     [SerializeField, Header("Object settings")]
@@ -88,7 +85,6 @@ public class TDS_Throwable : PunBehaviour
     /// </summary>
     protected void BounceObject()
     {
-        if (!PhotonNetwork.isMasterClient) return; 
         rigidbody.velocity *= bouncePower*-1;
     }
     /// <summary>
