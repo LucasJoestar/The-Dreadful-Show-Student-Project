@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
 using System.Linq;
 
 public class TDS_VFXManager : MonoBehaviour
@@ -37,15 +34,16 @@ public class TDS_VFXManager : MonoBehaviour
 	 *	-----------------------------------
 	*/
 
-    #region Events
-
-    #endregion
-
     #region Fields / Properties
-    public static TDS_VFXManager Instance = null;
+
 
     [SerializeField] private TDS_VFXElement[] particleSystems = new TDS_VFXElement[] {};
-    private TDS_VFXElement[] hitParticleSystems = null; 
+    private TDS_VFXElement[] hitParticleSystems = null;
+
+    /// <summary>
+    /// Singleton instance of this class.
+    /// </summary>
+    public static TDS_VFXManager Instance = null;
     #endregion
 
     #region Methods

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TDS_Player : TDS_Character 
+public class TDS_Player : TDS_Character, IPunObservable
 {
     /* TDS_Player :
 	 *
@@ -1799,6 +1799,29 @@ public class TDS_Player : TDS_Character
     }
     #endregion
 
+    #endregion
+
+    #region Photon Methods
+    // Called to send and receive streams
+    public void OnPhotonSerializeView(PhotonStream _stream, PhotonMessageInfo _info)
+    {
+        if (_stream.isWriting)
+        {
+            _stream.SendNext(TDS_Camera.Instance.CurrentBounds.XMin);
+            _stream.SendNext(TDS_Camera.Instance.CurrentBounds.XMax);
+            _stream.SendNext(TDS_Camera.Instance.CurrentBounds.ZMin);
+            _stream.SendNext(TDS_Camera.Instance.CurrentBounds.ZMax);
+        }
+        else
+        {
+            float _xMin = (float)_stream.ReceiveNext();
+            float _xMax = (float)_stream.ReceiveNext();
+            float _zMin = (float)_stream.ReceiveNext();
+            float _zMax = (float)_stream.ReceiveNext();
+
+            TDS_Camera.Instance.SetBoundsByOnline(_xMin, _xMax, _zMin, _zMax);
+        }
+    }
     #endregion
 
     #region Unity Methods

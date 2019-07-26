@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class TDS_BeardLady : TDS_Player 
@@ -26,6 +27,13 @@ public class TDS_BeardLady : TDS_Player
 	 *
 	 *	-----------------------------------
 	*/
+
+    #region Events
+    /// <summary>
+    /// Event called when the beard lady's state changed.
+    /// </summary>
+    public event Action<BeardState> OnBeardStateChanged = null;
+    #endregion
 
     #region Fields / Properties
 
@@ -76,6 +84,7 @@ public class TDS_BeardLady : TDS_Player
             }
 
             currentBeardState = value;
+            OnBeardStateChanged?.Invoke(value);
 
             if (value < BeardState.VeryVeryLongDude)
             {
