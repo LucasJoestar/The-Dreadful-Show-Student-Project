@@ -88,6 +88,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2984869754189752940}
+  - component: {fileID: 9149536132450758670}
   m_Layer: 9
   m_Name: Beard FXs Transform
   m_TagString: Untagged
@@ -109,6 +110,32 @@ Transform:
   m_Father: {fileID: 7179926860357853788}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9149536132450758670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4673729681779936063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents: []
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &7181286282021754452
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,6 +285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 7132007744230118298}
+  burnEffect: {fileID: 0}
   collider: {fileID: 7152357070691168762}
   sprite: {fileID: 7014392351545123446}
   isDead: 0
@@ -328,11 +356,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 24576
   playerType: 0
-  beardGrowMagicFX: {fileID: 1548626687783702, guid: 33f6b9218ca4bf0408573a980271a013,
-    type: 3}
-  beardBreakMagicFX: {fileID: 1548626687783702, guid: ddf429217dbedd241a714e210db0d1a4,
-    type: 3}
-  beardFXTransform: {fileID: 2984869754189752940}
+  beardFXTransformPhotonView: {fileID: 9149536132450758670}
   currentBeardState: 0
   beardGrowInterval: 5
   beardHealInterval: 5
@@ -410,6 +434,7 @@ MonoBehaviour:
   ownershipTransfer: 0
   ObservedComponents:
   - {fileID: 7078821753995162720}
+  - {fileID: 7078812957687010776}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1

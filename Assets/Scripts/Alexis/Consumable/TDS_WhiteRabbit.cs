@@ -100,14 +100,14 @@ public class TDS_WhiteRabbit : TDS_Consumable
     {
         if(!PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UseOnline"), new object[] { _player.PhotonID });
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "UseOnline"), new object[] { _player.PhotonID });
             return; 
         }
         int _healingValue = UnityEngine.Random.Range(healingValueMin, healingValueMax);
         _player.Heal(_healingValue);
 
         OnUseRabbit?.Invoke();
-        TDS_VFXManager.Instance.InstanciateParticleSystemByName(particlesName, transform.position + Vector3.up);
+        TDS_VFXManager.Instance.SpawnEffect(FXType.RabbitPoof, transform.position + Vector3.up);
         PhotonNetwork.Destroy(gameObject);
     }
 

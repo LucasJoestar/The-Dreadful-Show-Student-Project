@@ -60,29 +60,22 @@ public abstract class TDS_Minion : TDS_Enemy
         hasEvolved = true; 
     }
 
+    /// <summary>
+    /// Override the Die Method
+    /// Remove the enemy from the Area
+    /// </summary>
+    protected override void Die()
+    {
+        base.Die();
+        if (Area) Area.RemoveEnemy(this);
+    }
+
     #endregion
 
     #region Overridden Methods
     #endregion
 
     #region Unity Methods
-    // Awake is called when the script instance is being loaded
-    protected override void Awake()
-    {
-        base.Awake(); 
-    }
-
-    // Use this for initialization
-    protected override void Start()
-    {
-        base.Start(); 
-    }
-
-    // Update is called once per frame
-    protected override void Update()
-    {
-        base.Update(); 
-	}
     #endregion
 
     #endregion

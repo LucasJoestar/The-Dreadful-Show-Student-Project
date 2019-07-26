@@ -6,7 +6,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Camera))]
-public class TDS_Camera : MonoBehaviour 
+public class TDS_Camera : MonoBehaviour
 {
     /* TDS_Camera :
 	 *
@@ -169,7 +169,7 @@ public class TDS_Camera : MonoBehaviour
 
 
     /// <summary>Backing field for <see cref="Camera"/>.</summary>
-    [SerializeField] private new Camera camera = null;
+    [SerializeField] private Camera camera = null;
 
     /// <summary>
     /// Camera attached to this script.
@@ -635,6 +635,33 @@ public class TDS_Camera : MonoBehaviour
     }
 
     /// <summary>
+    /// Set bounds by values of online players.
+    /// </summary>
+    /// <param name="_xMin">X Min bounds value.</param>
+    /// <param name="_xMax">X Max bounds value.</param>
+    /// <param name="_zMin">Z Min bounds value.</param>
+    /// <param name="_zMax">Z Max bounds value.</param>
+    public void SetBoundsByOnline(float _xMin, float _xMax, float _zMin, float _zMax)
+    {
+        if (_xMin != currentBounds.XMin)
+        {
+            leftBoundVector = new Vector3(_xMin, currentBounds.XMinVector.y, currentBounds.XMinVector.z);
+        }
+        if (_xMax != currentBounds.XMax)
+        {
+            rightBoundVector = new Vector3(_xMax, currentBounds.XMaxVector.y, currentBounds.XMaxVector.z);
+        }
+        if (_zMin != currentBounds.ZMin)
+        {
+            bottomBoundVector = new Vector3(currentBounds.ZMinVector.x, currentBounds.ZMinVector.y, _zMin);
+        }
+        if (_zMax != currentBounds.ZMax)
+        {
+            topBoundVector = new Vector3(currentBounds.ZMaxVector.x, currentBounds.ZMaxVector.y, _zMax);
+        }
+    }
+
+    /// <summary>
     /// Wait to set bounds if minimum x value is visible by the camera or to its right.
     /// </summary>
     /// <param name="_bounds">Bounds to set.</param>
@@ -652,78 +679,117 @@ public class TDS_Camera : MonoBehaviour
 
         _boundsMovement[3] = _bounds.ZMax > currentBounds.ZMax ? 1 : _bounds.ZMax < currentBounds.ZMax ? - 1 : 0;
 
+        Vector3 _localPlayerPosition = new Vector3();
+        Vector3[] _playerPositions = new Vector3[TDS_LevelManager.Instance.OnlinePlayers.Count];
+
         // While all the bounds are not in the right place, set their position
         while (_boundsMovement.Any(m => m != 0))
         {
+            // Get all players position
+            _localPlayerPosition = TDS_LevelManager.Instance.LocalPlayer.transform.position;
+            for (int _i = 0; _i < TDS_LevelManager.Instance.OnlinePlayers.Count; _i++)
+            {
+                _playerPositions[_i] = TDS_LevelManager.Instance.OnlinePlayers[_i].transform.position;
+            }
+
             // Left bound move
             if (_boundsMovement[0] != 0)
             {
-                float _xMin = camera.WorldToViewportPoint(_bounds.XMinVector).x;
-                if (_xMin < .0001f)
+                if ((_playerPositions.Length == 0) || _playerPositions.All(p => p.x > _localPlayerPosition.x))
                 {
-                    leftBoundVector = _bounds.XMinVector;
-                    _boundsMovement[0] = 0;
+                    float _xMin = camera.WorldToViewportPoint(_bounds.XMinVector).x;
+                    if (_xMin < .0001f)
+                    {
+                        leftBoundVector = _bounds.XMinVector;
+                        _boundsMovement[0] = 0;
+                    }
+                    else
+                    {
+                        leftBoundVector = new Vector3(transform.position.x - (camera.orthographicSize * ((float)Screen.width / Screen.height)),
+                                          leftBound.transform.position.y,
+                                          leftBound.transform.position.z);
+                    }
                 }
-                else
+                else if (currentBounds.XMin == _bounds.XMin)
                 {
-                    leftBoundVector = new Vector3(transform.position.x - (camera.orthographicSize *                   ((float)Screen.width / Screen.height)),
-                                      leftBound.transform.position.y,
-                                      leftBound.transform.position.z);
+                    _boundsMovement[0] = 0;
                 }
             }
             // Right bound move
             if (_boundsMovement[1] != 0)
             {
-                float _xMax = camera.WorldToViewportPoint(_bounds.XMaxVector).x;
-                if (_xMax > .9999f)
+                if ((_playerPositions.Length == 0) || _playerPositions.All(p => p.x < _localPlayerPosition.x))
                 {
-                    rightBoundVector = _bounds.XMaxVector;
+                    float _xMax = camera.WorldToViewportPoint(_bounds.XMaxVector).x;
+                    if (_xMax > .9999f)
+                    {
+                        rightBoundVector = _bounds.XMaxVector;
+                        _boundsMovement[1] = 0;
+                    }
+                    else
+                    {
+                        rightBoundVector = new Vector3(transform.position.x + (camera.orthographicSize * ((float)Screen.width / Screen.height)),
+                                           rightBound.transform.position.y,
+                                           rightBound.transform.position.z);
+                    }
+                }
+                else if (currentBounds.XMax == _bounds.XMax)
+                {
                     _boundsMovement[1] = 0;
                 }
-                else
-                {
-                    rightBoundVector = new Vector3(transform.position.x + (camera.orthographicSize *                   ((float)Screen.width / Screen.height)),
-                                       rightBound.transform.position.y,
-                                       rightBound.transform.position.z);
-                }
+
             }
             // Bottom bound move
             if (_boundsMovement[2] != 0)
             {
-                float _zMin = camera.WorldToViewportPoint(_bounds.ZMinVector).y;
-                if (_zMin < .0001f)
+                if ((_playerPositions.Length == 0) || _playerPositions.All(p => p.z > _localPlayerPosition.z))
                 {
-                    bottomBoundVector = _bounds.ZMinVector;
-                    _boundsMovement[2] = 0;
-                }
-                else
-                {
-                    _zMin = camera.WorldToViewportPoint(currentBounds.ZMinVector).y;
+                    float _zMin = camera.WorldToViewportPoint(_bounds.ZMinVector).y;
+                    if (_zMin < .0001f)
+                    {
+                        bottomBoundVector = _bounds.ZMinVector;
+                        _boundsMovement[2] = 0;
+                    }
+                    else
+                    {
+                        _zMin = camera.WorldToViewportPoint(currentBounds.ZMinVector).y;
 
-                    bottomBoundVector = new Vector3(bottomBound.transform.position.x,
-                                        bottomBound.transform.position.y,
-                                        bottomBound.transform.position.z - (camera.orthographicSize *               2 * _zMin * VIEWPORT_CALCL_Y_COEF));
+                        bottomBoundVector = new Vector3(bottomBound.transform.position.x,
+                                            bottomBound.transform.position.y,
+                                            bottomBound.transform.position.z - (camera.orthographicSize * 2 * _zMin * VIEWPORT_CALCL_Y_COEF));
+                    }
+                }
+                else if (currentBounds.ZMin == _bounds.ZMin)
+                {
+                    _boundsMovement[2] = 0;
                 }
             }
             // Top bound move
             if (_boundsMovement[3] != 0)
             {
-                float _zMax = camera.WorldToViewportPoint(_bounds.ZMaxVector).y;
-                if ((_zMax > (VIEWPORT_Y_MAX_BOUND_VALUE - .0001f)) && (target.transform.position.z + 1 < _bounds.ZMax))
+                if ((_playerPositions.Length == 0) || _playerPositions.All(p => p.z < _localPlayerPosition.z))
                 {
-                    topBoundVector = _bounds.ZMaxVector;
-                    _boundsMovement[3] = 0;
-                }
-                else
-                {
-                    _zMax = camera.WorldToViewportPoint(currentBounds.ZMaxVector).y;
-                    float _zPos = topBound.transform.position.z + (camera.orthographicSize * 2 * (VIEWPORT_Y_MAX_BOUND_VALUE - _zMax) * VIEWPORT_CALCL_Y_COEF);
-
-                    if (target.transform.position.z + 1 < _zPos)
+                    float _zMax = camera.WorldToViewportPoint(_bounds.ZMaxVector).y;
+                    if ((_zMax > (VIEWPORT_Y_MAX_BOUND_VALUE - .0001f)) && (target.transform.position.z + 1 < _bounds.ZMax))
                     {
-                        topBoundVector = new Vector3(topBound.transform.position.x,
-                                     topBound.transform.position.y, _zPos);
+                        topBoundVector = _bounds.ZMaxVector;
+                        _boundsMovement[3] = 0;
                     }
+                    else
+                    {
+                        _zMax = camera.WorldToViewportPoint(currentBounds.ZMaxVector).y;
+                        float _zPos = topBound.transform.position.z + (camera.orthographicSize * 2 * (VIEWPORT_Y_MAX_BOUND_VALUE - _zMax) * VIEWPORT_CALCL_Y_COEF);
+
+                        if (target.transform.position.z + 1 < _zPos)
+                        {
+                            topBoundVector = new Vector3(topBound.transform.position.x,
+                                         topBound.transform.position.y, _zPos);
+                        }
+                    }
+                }
+                else if (currentBounds.ZMax == _bounds.ZMax)
+                {
+                    _boundsMovement[3] = 0;
                 }
             }
 

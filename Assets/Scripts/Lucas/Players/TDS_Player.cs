@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TDS_Player : TDS_Character 
+public class TDS_Player : TDS_Character, IPunObservable
 {
     /* TDS_Player :
 	 *
@@ -698,12 +698,10 @@ public class TDS_Player : TDS_Character
     /// </summary>
     public virtual void BreakCombo()
     {
-        if (ComboCurrent.Count < comboMax) SetAnim(PlayerAnimState.ComboBreaker);
+        if ((ComboCurrent.Count > 0) && (ComboCurrent.Count < comboMax)) SetAnim(PlayerAnimState.ComboBreaker);
 
         ComboCurrent = new List<bool>();
         CancelInvoke("BreakCombo");
-
-        if (IsAttacking) StopAttack();
     }
 
     /// <summary>
@@ -1079,6 +1077,7 @@ public class TDS_Player : TDS_Character
 
         // And if in combo, reset it
         if (comboCurrent.Count > 0) BreakCombo();
+        if (IsAttacking) StopAttack();
 
         // If not dead, be just hit
         if (!isDead)
@@ -1793,12 +1792,42 @@ public class TDS_Player : TDS_Character
     /// <param name="_doActive">Should it be activated or desactivated ?</param>
     public void ActivePlayer(bool _doActive)
     {
+        if (!photonView.isMine)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ActivePlayer"), new object[] { _doActive });
+
+            return;
+        }
+
         rigidbody.isKinematic = !_doActive;
         collider.enabled = _doActive;
         enabled = _doActive;
     }
     #endregion
 
+    #endregion
+
+    #region Photon Methods
+    // Called to send and receive streams
+    public void OnPhotonSerializeView(PhotonStream _stream, PhotonMessageInfo _info)
+    {
+        if (_stream.isWriting)
+        {
+            _stream.SendNext(TDS_Camera.Instance.CurrentBounds.XMin);
+            _stream.SendNext(TDS_Camera.Instance.CurrentBounds.XMax);
+            _stream.SendNext(TDS_Camera.Instance.CurrentBounds.ZMin);
+            _stream.SendNext(TDS_Camera.Instance.CurrentBounds.ZMax);
+        }
+        else
+        {
+            float _xMin = (float)_stream.ReceiveNext();
+            float _xMax = (float)_stream.ReceiveNext();
+            float _zMin = (float)_stream.ReceiveNext();
+            float _zMax = (float)_stream.ReceiveNext();
+
+            TDS_Camera.Instance.SetBoundsByOnline(_xMin, _xMax, _zMin, _zMax);
+        }
+    }
     #endregion
 
     #region Unity Methods
@@ -1813,7 +1842,6 @@ public class TDS_Player : TDS_Character
             interactionDetector = GetComponentInChildren<TDS_Detector>();
             if (!interactionDetector) Debug.LogWarning("The Interaction Detector of \"" + name + "\" for script TDS_Player is missing !");
         }
-
         if(!spriteHolder)
         {
             spriteHolder = GetComponentInChildren<TDS_PlayerSpriteHolder>();
@@ -1826,7 +1854,8 @@ public class TDS_Player : TDS_Character
         }
         // Set animation on revive
         OnRevive += () => animator.SetTrigger("REVIVE");
-        OnDie += TDS_LevelManager.Instance.CheckLivingPlayers; 
+        OnDie += () => StartCoroutine(TDS_LevelManager.Instance.CheckLivingPlayers());
+        //hitBox.OnTouchedNothing += BreakCombo;
     }
 
     // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations
@@ -1881,11 +1910,6 @@ public class TDS_Player : TDS_Character
         if(!photonView.isMine)
         {
             TDS_LevelManager.Instance?.InitOnlinePlayer(this); 
-        }
-        else
-        {
-            if (TDS_UIManager.Instance.ComboManager)
-                hitBox.OnTouch += TDS_UIManager.Instance.ComboManager.IncreaseCombo; 
         }
 
         // Since all players except the Juggler cannot change their throw angle & the point they are aiming,

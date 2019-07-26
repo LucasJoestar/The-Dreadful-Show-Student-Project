@@ -37,14 +37,8 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
     #region SerializedProperties
 
     #region Components & References
-    /// <summary>SerializedProperties for <see cref="TDS_Player.beardGrowMagicFX"/> of type <see cref="GameObject"/>.</summary>
-    private SerializedProperty beardGrowMagicFX = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.beardBreakMagicFX"/> of type <see cref="GameObject"/>.</summary>
-    private SerializedProperty beardBreakMagicFX = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.beardFXTransform"/> of type <see cref="Transform"/>.</summary>
-    private SerializedProperty beardFXTransform = null;
+    /// <summary>SerializedProperties for <see cref="TDS_Player.beardFXTransformPhotonView"/> of type <see cref="Transform"/>.</summary>
+    private SerializedProperty beardFXTransformPhotonView = null;
     #endregion
 
     #region Variables
@@ -168,10 +162,7 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
     /// </summary>
     private void DrawComponentsAndReferences()
     {
-        EditorGUILayout.ObjectField(beardGrowMagicFX, new GUIContent("Beard Grow FX", "FX instantiated when the Beard Lady's beard grows up"));
-        EditorGUILayout.ObjectField(beardBreakMagicFX, new GUIContent("Beard Break FX", "FX instantiated when the Beard Lady's beard breaks down"));
-
-        EditorGUILayout.ObjectField(beardFXTransform, new GUIContent("Beard FXs Transform", "Transform used to instantiate beard-related FXs"));
+        EditorGUILayout.ObjectField(beardFXTransformPhotonView, new GUIContent("Beard FXs Transform Photon View", "Photon Viw of the transform used to instantiate beard-related FXs"));
     }
 
     /// <summary>
@@ -321,9 +312,7 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
         else isBeardLadyMultiEditing = true;
 
         // Get the serializedProperties from the serializedObject
-        beardGrowMagicFX = serializedObject.FindProperty("beardGrowMagicFX");
-        beardBreakMagicFX = serializedObject.FindProperty("beardBreakMagicFX");
-        beardFXTransform = serializedObject.FindProperty("beardFXTransform");
+        beardFXTransformPhotonView = serializedObject.FindProperty("beardFXTransformPhotonView");
 
         currentBeardState = serializedObject.FindProperty("currentBeardState");
         beardGrowInterval = serializedObject.FindProperty("beardGrowInterval");

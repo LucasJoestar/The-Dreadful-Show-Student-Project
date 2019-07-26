@@ -657,6 +657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 2624376054273097410}
+  burnEffect: {fileID: 0}
   collider: {fileID: 2728626678253547198}
   sprite: {fileID: 2867292635500883872}
   isDead: 0
@@ -798,6 +799,7 @@ MonoBehaviour:
   ownershipTransfer: 0
   ObservedComponents:
   - {fileID: 2643246706789267868}
+  - {fileID: 2642579538162868418}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1

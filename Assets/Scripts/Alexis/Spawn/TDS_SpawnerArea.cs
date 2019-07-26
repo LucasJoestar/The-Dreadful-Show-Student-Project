@@ -216,6 +216,18 @@ public class TDS_SpawnerArea : PunBehaviour
     }
 
     /// <summary>
+    /// Add a new enemy to the list of spawned enemies
+    /// </summary>
+    /// <param name="_enemy">Enemy to add</param>
+    public void AddEnemy(TDS_Enemy _enemy)
+    {
+        if(_enemy && !spawnedEnemies.Contains(_enemy))
+        {
+            spawnedEnemies.Add(_enemy); 
+        }
+    }
+
+    /// <summary>
     /// Called when the Area has to be started
     /// When a player enter in the trigger or when the activation event is called
     /// Call the OnAreaActivated envent when the spawner area is ready and not activated yet

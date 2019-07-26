@@ -819,7 +819,6 @@ public abstract class TDS_Enemy : TDS_Character
         if (PhotonNetwork.isMasterClient)
         {
             SetAnimationState((int)EnemyAnimationState.Death);
-            if (Area) Area.RemoveEnemy(this);
         }
     }
 
@@ -909,44 +908,11 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public override bool ThrowObject_A()
     {
-        if (isDead) return false; 
+        if (isDead || !playerTarget) return false; 
         float _range = Vector3.Distance(transform.position, playerTarget.transform.position) <  throwRange ? Vector3.Distance(transform.position, playerTarget.transform.position) : throwRange;
         Vector3 _pos = (transform.position - transform.right * _range);
         StopWaiting(); 
         return ThrowObject(_pos);
-    }
-
-    /// <summary>
-    /// Overridden Throw Object Method
-    /// </summary>
-    /// <param name="_targetPosition"></param>
-    public override bool ThrowObject(Vector3 _targetPosition)
-    {
-        return base.ThrowObject(_targetPosition);
-    }
-
-    /// <summary>
-    /// Overriden method to take damages
-    /// If the agent take damages
-    /// Stop the movments of the agent
-    /// Stop the Behaviour Method
-    /// Set the state to making decision 
-    /// Change the animation state of the agent
-    /// </summary>
-    /// <param name="_damage">amount of damages</param>
-    /// <returns>if the agent take damages</returns>
-    public override bool TakeDamage(int _damage)
-    {
-        return base.TakeDamage(_damage);
-
-        //bool _isTakingDamages = base.TakeDamage(_damage);
-        //if (_isTakingDamages)
-        //{
-        //    if (!isDead && !IsDown)
-        //    {
-        //        SetAnimationState((int)EnemyAnimationState.Hit);
-        //    }
-        //}
     }
 
     /// <summary>
@@ -967,17 +933,6 @@ public abstract class TDS_Enemy : TDS_Character
             ApplyDamagesBehaviour(_damage, _position); 
         }
         return _isTakingDamages;
-    }
-
-    /// <summary>
-    /// Overriden method of the UpdateLifeBarMethod
-    /// If the client is master, call the method on every other clients
-    /// </summary>
-    /// <param name="_health"></param>
-    public override void UpdateLifeBar(int _health)
-    {
-        //if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateLifeBar"), new object[] { _health });
-        base.UpdateLifeBar(_health);
     }
 
     /// <summary>
@@ -1191,6 +1146,9 @@ public abstract class TDS_Enemy : TDS_Character
             case EnemyAnimationState.Hit:
                 animator.SetTrigger("hitTrigger");
                 break;
+            case EnemyAnimationState.Death:
+                animator.SetTrigger("deathTrigger");
+                break; 
             case EnemyAnimationState.BringTargetCloser:
                 animator.SetTrigger("BringTargetCloser");
                 break;
@@ -1199,6 +1157,9 @@ public abstract class TDS_Enemy : TDS_Character
                 break;
             case EnemyAnimationState.StopSpinning:
                 animator.SetTrigger("StopSpinning");
+                break;
+            case EnemyAnimationState.LightHit:
+                animator.SetTrigger("lightHitTrigger");
                 break; 
             default:
                 animator.SetInteger("animationState", _animationID);
@@ -1311,12 +1272,6 @@ public abstract class TDS_Enemy : TDS_Character
         {
             rigidbody.useGravity = false; 
         }
-    }
-
-    // Update is called once per frame
-    protected override void Update()
-    {
-        base.Update();
     }
 
     protected override void OnDrawGizmos()

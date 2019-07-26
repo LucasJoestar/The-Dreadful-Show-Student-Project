@@ -27,9 +27,6 @@ public class TDS_Throwable : PunBehaviour
 	 *	-----------------------------------
 	*/
 
-    #region Events
-    #endregion
-
     #region Fields / Properties
     #region ObjectSettings
     [SerializeField, Header("Object settings")]
@@ -88,7 +85,6 @@ public class TDS_Throwable : PunBehaviour
     /// </summary>
     protected void BounceObject()
     {
-        if (!PhotonNetwork.isMasterClient) return; 
         rigidbody.velocity *= bouncePower*-1;
     }
     /// <summary>
@@ -98,7 +94,7 @@ public class TDS_Throwable : PunBehaviour
     {
         if (!PhotonNetwork.isMasterClient) return;
         //PhotonNetwork.Instantiate("Poof", hitBox.Collider.bounds.center, Quaternion.identity, 0);
-        TDS_VFXManager.Instance.InstanciateParticleSystemByName("Projectile_PoufMagique", transform.position);
+        TDS_VFXManager.Instance.SpawnEffect(FXType.MagicDisappear, transform.position);
         PhotonNetwork.Destroy(gameObject);
     }
     /// <summary>
@@ -138,7 +134,7 @@ public class TDS_Throwable : PunBehaviour
         {
             hitBox.Desactivate();
         }
-        if (!shadow.activeInHierarchy) shadow.SetActive(true);
+        if (shadow && !shadow.activeInHierarchy) shadow.SetActive(true);
         rigidbody.isKinematic = true;
         transform.position = _rootCharacterObject.transform.position;
         transform.SetParent(_rootCharacterObject.transform, true);
@@ -155,7 +151,7 @@ public class TDS_Throwable : PunBehaviour
     /// Set this object layer.
     /// </summary>
     /// <param name="_layerID">ID of the new object layer.</param>
-    private void SetLayer(int _layerID)
+    protected void SetLayer(int _layerID)
     {
         if (PhotonNetwork.isMasterClient)
         {

@@ -295,7 +295,10 @@ public abstract class TDS_Boss : TDS_Enemy
         {
             agent.StopAgent();
             hitBox.Desactivate();
-            StartCoroutine(ApplyRecoil(_position));
+        }
+        else
+        {
+            SetAnimationState((int)EnemyAnimationState.LightHit);
         }
     }
 
@@ -335,8 +338,7 @@ public abstract class TDS_Boss : TDS_Enemy
     {
         if (TDS_UIManager.Instance?.CanvasScreen)
         {
-            TDS_UIManager.Instance.SetBossLifeBar(this);
-            OnTakeDamage += UpdateLifeBar;
+            TDS_UIManager.Instance.SetBossLifeBar(this); 
         }
     }
 
@@ -394,25 +396,6 @@ public abstract class TDS_Boss : TDS_Enemy
     #endregion
 
     #region Unity Methods
-    // Awake is called when the script instance is being loaded
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-
-    // Use this for initialization
-    protected override void Start()
-    {
-        base.Start(); 
-    }
-
-    // Update is called once per frame
-    protected override void Update()
-    {
-        base.Update(); 
-	}
-
-
     #endregion
 
     #endregion

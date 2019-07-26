@@ -122,7 +122,8 @@ public enum CustomEventType
     Wait,
     WaitForAction,
     CameraMovement,
-    UnityEvent
+    UnityEventMaster,
+    UnityEventForAll
 }
 
 /// <summary>
@@ -154,7 +155,8 @@ public enum EnemyAnimationState
     Brought, 
     BringTargetCloser, 
     EndBringingTargetCloser, 
-    StopSpinning
+    StopSpinning, 
+    LightHit
 }
 
 /// <summary>
@@ -194,6 +196,20 @@ public enum FireEaterAnimState
     DoNotSpit,
     Fire,
     Puke
+}
+
+/// <summary>
+/// Enum referencing all kinds of FX to instantiate.
+/// </summary>
+public enum FXType
+{
+    Kaboom,
+    Poof,
+    MagicAppear,
+    MagicDisappear,
+    RabbitPoof,
+    BeardGrowsUp,
+    BeardDamaged,
 }
 
 /// <summary>

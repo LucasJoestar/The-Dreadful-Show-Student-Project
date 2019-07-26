@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class TDS_BeardLady : TDS_Player 
@@ -27,23 +28,20 @@ public class TDS_BeardLady : TDS_Player
 	 *	-----------------------------------
 	*/
 
+    #region Events
+    /// <summary>
+    /// Event called when the beard lady's state changed.
+    /// </summary>
+    public event Action<BeardState> OnBeardStateChanged = null;
+    #endregion
+
     #region Fields / Properties
 
     #region Components & References
     /// <summary>
-    /// FX instantiated when the beard grows up.
-    /// </summary>
-    [SerializeField] private GameObject beardGrowMagicFX = null;
-
-    /// <summary>
-    /// FX instantiated when the beard breaks down.
-    /// </summary>
-    [SerializeField] private GameObject beardBreakMagicFX = null;
-
-    /// <summary>
     /// Transform used to instantiate the beard FX.
     /// </summary>
-    [SerializeField] private Transform beardFXTransform = null;
+    [SerializeField] private PhotonView beardFXTransformPhotonView = null;
     #endregion
 
     #region Variables
@@ -63,19 +61,20 @@ public class TDS_BeardLady : TDS_Player
 
             if (value > currentBeardState)
             {
-                Instantiate(beardGrowMagicFX, beardFXTransform, false);
+                TDS_VFXManager.Instance.SpawnEffect(FXType.BeardGrowsUp, beardFXTransformPhotonView.viewID);
             }
             else
             {
                 if (value < currentBeardState)
                 {
-                    Instantiate(beardBreakMagicFX, beardFXTransform, false);
+                    TDS_VFXManager.Instance.SpawnEffect(FXType.BeardDamaged, beardFXTransformPhotonView.viewID);
                 }
 
                 CancelInvokeGrowBeard();
             }
 
             currentBeardState = value;
+            OnBeardStateChanged?.Invoke(value);
 
             if (value < BeardState.VeryVeryLongDude)
             {

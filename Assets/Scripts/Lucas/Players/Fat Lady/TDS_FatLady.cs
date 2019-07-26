@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class TDS_FatLady : TDS_Player 
@@ -24,6 +25,23 @@ public class TDS_FatLady : TDS_Player
 	 *
 	 *	-----------------------------------
 	*/
+
+    #region Events
+    /// <summary>
+    /// Event called when the Fat Lady ate her snack.
+    /// </summary>
+    public event Action OnAteSnack = null;
+
+    /// <summary>
+    /// Event called when the Fat Lady's snack ahs been restaured.
+    /// </summary>
+    public event Action OnRestauredSnack = null;
+
+    /// <summary>
+    /// Event called every frame while restauring the Fat Lady's snack, with percentage from 0 to 1 as parameter (1 is fully restaured).
+    /// </summary>
+    public event Action<float> OnRestauringSnack = null;
+    #endregion
 
     #region Fields / Properties
 
@@ -58,7 +76,15 @@ public class TDS_FatLady : TDS_Player
         set
         {
             if (restaureSnackCoroutine != null) StopCoroutine(restaureSnackCoroutine);
-            if (!value) restaureSnackCoroutine = StartCoroutine(RestauringSnack());
+            if (value)
+            {
+                OnRestauredSnack?.Invoke();
+            }
+            else
+            {
+                OnAteSnack?.Invoke();
+                restaureSnackCoroutine = StartCoroutine(RestauringSnack());
+            }
 
             isSnackAvailable = value;
         }
@@ -161,6 +187,7 @@ public class TDS_FatLady : TDS_Player
 
         while (snackRestaureTimer < snackRestaureTime)
         {
+            OnRestauringSnack?.Invoke(snackRestaureTimer / snackRestaureTime);
             yield return null;
             snackRestaureTimer += Time.deltaTime;
         }

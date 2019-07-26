@@ -187,6 +187,7 @@ public class TDS_UIManager : PunBehaviour
     [Header("Animator")]
     [SerializeField] private Animator curtainsAnimator;
     [SerializeField] private Animator arrowAnimator;
+    [SerializeField] private Animator waitingPanelAnimator;
     #endregion
 
     #region Text
@@ -219,9 +220,9 @@ public class TDS_UIManager : PunBehaviour
     #endregion
 
     #region ComboManager
-    [Header("Combo Manager")]
-    [SerializeField] private TDS_ComboManager comboManager;
-    public TDS_ComboManager ComboManager { get { return comboManager; } }
+    //[Header("Combo Manager")]
+    //[SerializeField] private TDS_ComboManager comboManager;
+    public TDS_ComboManager ComboManager { get; set; }
     #endregion
 
     #region WorkInProgress
@@ -337,7 +338,7 @@ public class TDS_UIManager : PunBehaviour
         followHiddenPlayerCouroutines.Clear();
         filledImages.Clear();
         curtainsAnimator.SetTrigger("Reset");
-        comboManager.ResetComboManager();
+        ComboManager.ResetComboManager();
         for (int i = 0; i < canvasWorld.transform.childCount; i++)
         {
             Destroy(canvasWorld.transform.GetChild(i).gameObject);
@@ -574,7 +575,7 @@ public class TDS_UIManager : PunBehaviour
             characterSelectionMenu.LocalElement.TriggerToggle();
             return; 
         }
-        TDS_NetworkManager.Instance.LeaveRoom(); 
+        StartLeavingRoom(); 
     }
 
     /// <summary>
@@ -847,6 +848,7 @@ public class TDS_UIManager : PunBehaviour
         _boss.HealthBar = bossHealthBar;
 
         _boss.OnTakeDamage += _boss.UpdateLifeBar;
+        _boss.OnHeal += _boss.UpdateLifeBar;
         _boss.OnDie += () => bossHealthBar.gameObject.SetActive(false);
     }
 
@@ -864,7 +866,8 @@ public class TDS_UIManager : PunBehaviour
         _healthBar.SetOwner(_enemy, _offset, true);
         _enemy.HealthBar = _healthBar;
 
-        _enemy.OnTakeDamage += _enemy.UpdateLifeBar; 
+        _enemy.OnTakeDamage += _enemy.UpdateLifeBar;
+        _enemy.OnHeal += _enemy.UpdateLifeBar; 
     }
 
     /// <summary>
@@ -913,6 +916,7 @@ public class TDS_UIManager : PunBehaviour
         _playerLifeBar.SetOwner(_player);
         _player.HealthBar = _playerLifeBar;
         _player.OnTakeDamage += _player.UpdateLifeBar;
+        _player.OnHeal += _player.UpdateLifeBar; 
         if (_player == TDS_LevelManager.Instance.LocalPlayer && _player.photonView.isMine)
             _playerLifeBar.transform.SetSiblingIndex(0);
     }
@@ -1010,6 +1014,15 @@ public class TDS_UIManager : PunBehaviour
     {
         if (!curtainsAnimator) return;
         curtainsAnimator.SetTrigger("Switch"); 
+    }
+
+    /// <summary>
+    /// Display or hide the waiting Panel
+    /// </summary>
+    public void SwitchWaitingPanel()
+    {
+        if (!waitingPanelAnimator) return;
+        waitingPanelAnimator.SetTrigger("SwitchPanel");
     }
 
     /// <summary>

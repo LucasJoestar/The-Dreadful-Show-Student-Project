@@ -65,6 +65,11 @@ public class TDS_HitBox : MonoBehaviour
     /// Called when touched something with an attack.
     /// </summary>
     public event Action OnTouch = null;
+
+    /// <summary>
+    /// Event called if the hit box didn't hit anything.
+    /// </summary>
+    public event Action OnTouchedNothing = null;
     #endregion
 
     #region Fields / Properties
@@ -172,6 +177,7 @@ public class TDS_HitBox : MonoBehaviour
     /// </summary>
     public void Desactivate()
     {
+        if (TouchedObjects.Count == 0) OnTouchedNothing?.Invoke();
         CurrentAttack = null;
         BonusDamages = 0;
         collider.enabled = false;
