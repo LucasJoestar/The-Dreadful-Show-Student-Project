@@ -818,6 +818,7 @@ public abstract class TDS_Enemy : TDS_Character
         base.Die();
         if (PhotonNetwork.isMasterClient)
         {
+            StopAll(); 
             SetAnimationState((int)EnemyAnimationState.Death);
         }
     }
@@ -1145,11 +1146,9 @@ public abstract class TDS_Enemy : TDS_Character
         {
             case EnemyAnimationState.Hit:
                 animator.SetTrigger("hitTrigger");
-                Debug.Log(gameObject.GetInstanceID() + " HIT!"); 
                 break;
             case EnemyAnimationState.Death:
                 animator.SetTrigger("deathTrigger");
-                Debug.Log(gameObject.GetInstanceID() + " Death!");
                 break; 
             case EnemyAnimationState.BringTargetCloser:
                 animator.SetTrigger("BringTargetCloser");
