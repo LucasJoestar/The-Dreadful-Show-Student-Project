@@ -144,7 +144,7 @@ public class TDS_Checkpoint : PunBehaviour
         {
             _player = _deadPlayers[_i];
 
-            OnRespawnPlayer.Invoke(_player.PhotonID);
+            OnRespawnPlayer?.Invoke(_player.PhotonID);
 
             // Make player disappear in smoke
             TDS_VFXManager.Instance.SpawnEffect(FXType.MagicAppear, new Vector3(_player.transform.position.x, _player.transform.position.y + .25f, _player.transform.position.z));

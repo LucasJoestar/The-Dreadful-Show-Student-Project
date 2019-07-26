@@ -1005,23 +1005,6 @@ public class TDS_Juggler : TDS_Player
 
         return true;
     }
-
-    /// <summary>
-    /// Makes this object take damage and decrease its health if it is not invulnerable.
-    /// </summary>
-    /// <param name="_damage">Amount of damage this inflect to this object.</param>
-    /// <param name="_position">Position in world space from where the hit come from.</param>
-    /// <returns>Returns true if some damages were inflicted, false if none.</returns>
-    public override bool TakeDamage(int _damage, Vector3 _position)
-    {
-        // Executes base method
-        if (!base.TakeDamage(_damage)) return false;
-
-        // Is aiming, cancel the preparing throw
-        if (isAiming) StopAiming();
-
-        return true;
-    }
     #endregion
 
     #region Inputs
