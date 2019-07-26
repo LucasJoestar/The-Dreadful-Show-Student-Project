@@ -359,7 +359,7 @@ public abstract class TDS_Damageable : PunBehaviour
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "TakeDamage"), new object[] { _damage });
         }
 
-        TDS_VFXManager.Instance.InstanciateRandomHitEffect(new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z) + ((Vector3)Random.insideUnitCircle * 1f));
+        TDS_VFXManager.Instance.SpawnHitEffect(new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z) + ((Vector3)Random.insideUnitCircle * 1f));
 
         HealthCurrent -= _damage;
         OnTakeDamage?.Invoke(_damage);

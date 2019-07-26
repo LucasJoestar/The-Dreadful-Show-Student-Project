@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Photon;
 using UnityEngine;
-using System.Linq;
 
-public class TDS_VFXManager : MonoBehaviour
+public class TDS_VFXManager : PunBehaviour
 {
     /* TDS_VFXManager :
 	 *
@@ -36,46 +35,49 @@ public class TDS_VFXManager : MonoBehaviour
 
     #region Fields / Properties
 
-    #region Variables
-    // FXs used during fights and sweet game moments.
+    #region FXs
+    // FXs used during fights and other sweet moments
     [Header("Fight FXs")]
-    [SerializeField] private ParticleSystem     aieFX = null;
-    public ParticleSystem   AieFX { get { return aieFX; } }
+    [SerializeField] private ParticleSystem[] hitFXs = new ParticleSystem[] { };
+    /// <summary>Fight FXs, used randomly when dealing damages to something or someone.</summary>
+    public ParticleSystem[] HitFXs { get { return hitFXs; } }
 
-    [SerializeField] private ParticleSystem     ouchFX = null;
-    public ParticleSystem   OuchFX { get { return ouchFX; } }
+    [SerializeField] private ParticleSystem kaboomFX = null;
+    /// <summary>Fight FXs, used for explosions !.</summary>
+    public ParticleSystem KaboomFX { get { return kaboomFX; } }
 
-    [SerializeField] private ParticleSystem     pafFX = null;
-    public ParticleSystem   PafFX { get { return pafFX; } }
-
-    [SerializeField] private ParticleSystem pifFX = null;
-    public ParticleSystem PifFX { get { return pifFX; } }
-
-    [SerializeField] private ParticleSystem poufFX = null;
-    public ParticleSystem PoufFX { get { return poufFX; } }
-
-    // FXs used for all kind of magic cool effects.
+    // Magic FXs used for all kind of magic effects
     [Header("Magic FXs")]
     [SerializeField] private ParticleSystem poofFX = null;
+    /// <summary>Magic FX, with the "poof" word appearing in a smoke style.</summary>
     public ParticleSystem PoofFX { get { return poofFX; } }
 
     [SerializeField] private ParticleSystem magicPoofFX = null;
+    /// <summary>Magic FX, mainly used for making things appear.</summary>
     public ParticleSystem MagicPoofFX { get { return magicPoofFX; } }
 
-    // Beard Lady related FXs.
-    [Header("Beard Lady")]
+    [SerializeField] private ParticleSystem disappearMagicPoofFX = null;
+    /// <summary>Magic FX, mainly used for making things disappear.</summary>
+    public ParticleSystem DisappearMagicPoofFX { get { return disappearMagicPoofFX; } }
+
+    [SerializeField] private ParticleSystem rabbitMagicPoofFX = null;
+    /// <summary>Magic FX, usde to make the rabbit disappaer.</summary>
+    public ParticleSystem RabbitMagicPoofFX { get { return rabbitMagicPoofFX; } }
+
+    // Beard Lady related FXs
+    [Header("Beard Lady FXs")]
     [SerializeField] private ParticleSystem beardGrowFX = null;
+    /// <summary>FX used when the Beard Lady's beard grows up.</summary>
     public ParticleSystem BeardGrowFX { get { return beardGrowFX; } }
 
-    //[SerializeField] private ParticleSystem beardMagicGrowFX = null;
-    //public ParticleSystem BeardMagicGrowFX { get { return beardMagicGrowFX; } }
+    [SerializeField] private ParticleSystem beardDamagedFX = null;
+    /// <summary>FX used when the Beard lady's beard gets damaged.</summary>
+    public ParticleSystem BeardDamagedFX { get { return beardDamagedFX; } }
     #endregion
-    [SerializeField] private TDS_VFXElement[] particleSystems = new TDS_VFXElement[] {};
-    private TDS_VFXElement[] hitParticleSystems = null;
 
-    #region Singleton Instance
+    #region Singleton
     /// <summary>
-    /// Singleton instance of this class.
+    /// Singleton instance of this script.
     /// </summary>
     public static TDS_VFXManager Instance = null;
     #endregion
@@ -86,48 +88,122 @@ public class TDS_VFXManager : MonoBehaviour
 
     #region Original Methods
     /// <summary>
-    /// Get the Particle System with the name 
+    /// Get the related FX.
     /// </summary>
-    /// <param name="_name">Name of the particle system</param>
-    /// <returns></returns>
-    public ParticleSystem GetParticleSystemByName(string _name)
+    /// <param name="_fxType">Type of FX to get object from.</param>
+    /// <returns>Returns the Particle system associated with the gieven type.</returns>
+    public ParticleSystem GetFX(FXType _fxType)
     {
-        TDS_VFXElement _element = particleSystems.Where(p => p.Name == _name).FirstOrDefault();
-        if (_element == null) return null;
-        return _element.ParticleSystem; 
+        switch (_fxType)
+        {
+            case FXType.Kaboom:
+                return kaboomFX;
+
+            case FXType.Poof:
+                return poofFX;
+
+            case FXType.MagicAppear:
+                return magicPoofFX;
+
+            case FXType.MagicDisappear:
+                return disappearMagicPoofFX;
+
+            case FXType.RabbitPoof:
+                return rabbitMagicPoofFX;
+
+            case FXType.BeardGrowsUp:
+                return beardGrowFX;
+
+            case FXType.BeardDamaged:
+                return beardDamagedFX;
+
+            default:
+                // Nothing to see here...
+                return null;
+        }
     }
 
     /// <summary>
-    /// Instantiate a raondom hit effect when a character is hit.
+    /// Spawns a specific FX at a given position.
     /// </summary>
-    /// <param name="_position"></param>
-    public void InstanciateRandomHitEffect(Vector3 _position)
+    /// <param name="_fxtype">Type of FX to instantiate.</param>
+    /// <param name="_position">Position where to spawn the FX.</param>
+    public void SpawnEffect(FXType _fxtype, Vector3 _position)
     {
-        if(hitParticleSystems == null)
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SpawnEffect"), new object[] { (int)_fxtype, _position.x, _position.y, _position.z });
+    }
+
+    /// <summary>
+    /// Spawns a specific FX at a given position.
+    /// </summary>
+    /// <param name="_fxtype">Type of FX to instantiate.</param>
+    /// <param name="_transformPhoton">ID of the transform used as FX parent.</param>
+    public void SpawnEffect(FXType _fxtype, int _transformPhotonID)
+    {
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SpawnEffect"), new object[] { (int)_fxtype, _transformPhotonID });
+    }
+
+    /// <summary>
+    /// Spawns a specific FX at a given position.
+    /// </summary>
+    /// <param name="_fxtype">Type of FX to instantiate.</param>
+    /// <param name="_x">X coordinate where to spawn the effect.</param>
+    /// <param name="_y">Y coordinate where to spawn the effect.</param>
+    /// <param name="_z">Z coordinate where to spawn the effect.</param>
+    private void SpawnEffect(int _fxType, float _x, float _y, float _z)
+    {
+        ParticleSystem _fx = GetFX((FXType)_fxType);
+
+        if (_fx != null) Instantiate(_fx, new Vector3(_x, _y, _z), Quaternion.identity);
+        else
         {
-            hitParticleSystems = particleSystems.Where(e => e.IsHitEffect).ToArray();
+            Debug.Log("The FX for type \"" + (FXType)_fxType + "\" is not referenced !");
         }
-        int _randomIndex = (int)UnityEngine.Random.Range((int)0, (int)hitParticleSystems.Length);
-        ParticleSystem _system = hitParticleSystems[_randomIndex].ParticleSystem; 
-        Vector3 _offset = new Vector3(UnityEngine.Random.Range(-.5f, .5f), UnityEngine.Random.Range(.1f, 1.8f), 0);
-        Instantiate(_system.gameObject, _position + _offset, Quaternion.identity); 
     }
 
-    public void InstanciateParticleSystemByName(string _name, Vector3 _position)
+    /// <summary>
+    /// Spawns a specific FX at a given position.
+    /// </summary>
+    /// <param name="_fxtype">Type of FX to instantiate.</param>
+    /// <param name="_photonViewID">ID of the photon view of the transform to parent the FX to.</param>
+    private void SpawnEffect(int _fxType, int _photonViewID)
     {
-        ParticleSystem _system = GetParticleSystemByName(_name);
-        if (_system == null) return;
-        if (!PhotonNetwork.isMasterClient) return;
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(GetComponent<PhotonView>(), this.GetType(), "InstanciateParticleSystemByName"), new object[] { _name, _position.x, _position.y, _position.z });
-        Instantiate(_system.gameObject, _position, Quaternion.identity);
+        ParticleSystem _fx = GetFX((FXType)_fxType);
+
+        if (_fx != null)
+        {
+            PhotonView _photonView = PhotonView.Find(_photonViewID);
+            if (_photonView) Instantiate(_fx, _photonView.transform, false);
+        }
+        else
+        {
+            Debug.Log("The FX for type \"" + (FXType)_fxType + "\" is not referenced !");
+        }
     }
 
-    public void InstanciateParticleSystemByName(string _name, float _positionX, float _positionY, float _positionZ)
+    /// <summary>
+    /// Spawns a random hit effect at a given position.
+    /// </summary>
+    /// <param name="_position">Position where to spawn the FX.</param>
+    public void SpawnHitEffect(Vector3 _position)
     {
-        if (PhotonNetwork.isMasterClient) return; 
-        ParticleSystem _system = GetParticleSystemByName(_name);
-        if (_system == null) return;
-        Instantiate(_system.gameObject, new Vector3(_positionX, _positionY, _positionZ), Quaternion.identity);
+        if (hitFXs.Length > 0)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SpawnHitEffect"), new object[] { _position.x, _position.y, _position.z });
+
+            Instantiate(hitFXs[Random.Range(0, hitFXs.Length)], _position, Quaternion.identity);
+        }
+    }
+
+    /// <summary>
+    /// Spawns a random hit effect at a given position.
+    /// </summary>
+    /// <param name="_x">X coordinate where to spawn the effect.</param>
+    /// <param name="_y">Y coordinate where to spawn the effect.</param>
+    /// <param name="_z">Z coordinate where to spawn the effect.</param>
+    public void SpawnHitEffect(float _x, float _y, float _z)
+    {
+        Instantiate(hitFXs[Random.Range(0, hitFXs.Length)], new Vector3(_x, _y, _z), Quaternion.identity);
     }
     #endregion
 
@@ -149,30 +225,4 @@ public class TDS_VFXManager : MonoBehaviour
 	#endregion
 
 	#endregion
-}
-
-[Serializable]
-public class TDS_VFXElement
-{
-    [SerializeField] private ParticleSystem particleSystem;
-    public ParticleSystem ParticleSystem
-    {
-        get { return particleSystem;  }
-    }
-
-    [SerializeField] bool isHitEffect = false; 
-    public bool IsHitEffect
-    {
-        get { return isHitEffect;  }
-    }
-
-    public string Name
-    {
-        get { return particleSystem.name;  }
-    }
-
-    public TDS_VFXElement(ParticleSystem _system)
-    {
-        particleSystem = _system; 
-    }
 }

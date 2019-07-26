@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 public class TDS_ExplosiveThrowable : TDS_Throwable 
@@ -42,8 +40,6 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
     [Header("Explosion Settings")]
     [SerializeField, Range(1,60)] private float explodingDelay = 5;
 
-    [SerializeField] private ParticleSystem explosionParticles = null;
-
     [SerializeField] private Animator animator = null;
 
     [SerializeField, Range(.5f, 1f)] private float animationSpeedMin = .5f;
@@ -74,11 +70,12 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
             if (animator) animator.SetFloat("speedMultiplier", _animationSpeed); 
             yield return new WaitForEndOfFrame();
         }
-        if (isHeld) owner.DropObject();  
-        if (explosionParticles) explosionParticles.Play();
+        if (isHeld) owner.DropObject();
+        TDS_VFXManager.Instance.SpawnEffect(FXType.Kaboom, transform.position);
         hitBox.Activate(attack, owner, _hitableTags.ObjectTags);
-        if (explosionParticles)
-            yield return new WaitForSeconds(explosionParticles.main.duration);
+
+        if (TDS_VFXManager.Instance.KaboomFX)
+            yield return new WaitForSeconds(TDS_VFXManager.Instance.KaboomFX.main.duration);
         else yield return new WaitForSeconds(1); 
         DestroyThrowableObject(); 
     }

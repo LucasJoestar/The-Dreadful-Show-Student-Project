@@ -39,19 +39,9 @@ public class TDS_BeardLady : TDS_Player
 
     #region Components & References
     /// <summary>
-    /// FX instantiated when the beard grows up.
-    /// </summary>
-    [SerializeField] private GameObject beardGrowMagicFX = null;
-
-    /// <summary>
-    /// FX instantiated when the beard breaks down.
-    /// </summary>
-    [SerializeField] private GameObject beardBreakMagicFX = null;
-
-    /// <summary>
     /// Transform used to instantiate the beard FX.
     /// </summary>
-    [SerializeField] private Transform beardFXTransform = null;
+    [SerializeField] private PhotonView beardFXTransformPhotonView = null;
     #endregion
 
     #region Variables
@@ -71,13 +61,13 @@ public class TDS_BeardLady : TDS_Player
 
             if (value > currentBeardState)
             {
-                Instantiate(beardGrowMagicFX, beardFXTransform, false);
+                TDS_VFXManager.Instance.SpawnEffect(FXType.BeardGrowsUp, beardFXTransformPhotonView.viewID);
             }
             else
             {
                 if (value < currentBeardState)
                 {
-                    Instantiate(beardBreakMagicFX, beardFXTransform, false);
+                    TDS_VFXManager.Instance.SpawnEffect(FXType.BeardDamaged, beardFXTransformPhotonView.viewID);
                 }
 
                 CancelInvokeGrowBeard();
