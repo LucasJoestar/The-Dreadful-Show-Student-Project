@@ -1146,6 +1146,9 @@ public abstract class TDS_Enemy : TDS_Character
             case EnemyAnimationState.Hit:
                 animator.SetTrigger("hitTrigger");
                 break;
+            case EnemyAnimationState.Death:
+                animator.SetTrigger("deathTrigger");
+                break; 
             case EnemyAnimationState.BringTargetCloser:
                 animator.SetTrigger("BringTargetCloser");
                 break;
