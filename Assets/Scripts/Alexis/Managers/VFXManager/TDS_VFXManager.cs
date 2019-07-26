@@ -130,7 +130,7 @@ public class TDS_VFXManager : PunBehaviour
     /// <param name="_position">Position where to spawn the FX.</param>
     public void SpawnEffect(FXType _fxtype, Vector3 _position)
     {
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SpawnEffect"), new object[] { (int)_fxtype, _position.x, _position.y, _position.z });
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, GetType(), "SpawnEffect"), new object[] { (int)_fxtype, _position.x, _position.y, _position.z });
     }
 
     /// <summary>
@@ -140,7 +140,7 @@ public class TDS_VFXManager : PunBehaviour
     /// <param name="_transformPhoton">ID of the transform used as FX parent.</param>
     public void SpawnEffect(FXType _fxtype, int _transformPhotonID)
     {
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SpawnEffect"), new object[] { (int)_fxtype, _transformPhotonID });
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, GetType(), "SpawnEffect"), new object[] { (int)_fxtype, _transformPhotonID });
     }
 
     /// <summary>
@@ -189,21 +189,8 @@ public class TDS_VFXManager : PunBehaviour
     {
         if (hitFXs.Length > 0)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SpawnHitEffect"), new object[] { _position.x, _position.y, _position.z });
-
             Instantiate(hitFXs[Random.Range(0, hitFXs.Length)], _position, Quaternion.identity);
         }
-    }
-
-    /// <summary>
-    /// Spawns a random hit effect at a given position.
-    /// </summary>
-    /// <param name="_x">X coordinate where to spawn the effect.</param>
-    /// <param name="_y">Y coordinate where to spawn the effect.</param>
-    /// <param name="_z">Z coordinate where to spawn the effect.</param>
-    public void SpawnHitEffect(float _x, float _y, float _z)
-    {
-        Instantiate(hitFXs[Random.Range(0, hitFXs.Length)], new Vector3(_x, _y, _z), Quaternion.identity);
     }
     #endregion
 

@@ -1792,6 +1792,13 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <param name="_doActive">Should it be activated or desactivated ?</param>
     public void ActivePlayer(bool _doActive)
     {
+        if (!photonView.isMine)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ActivePlayer"), new object[] { _doActive });
+
+            return;
+        }
+
         rigidbody.isKinematic = !_doActive;
         collider.enabled = _doActive;
         enabled = _doActive;
