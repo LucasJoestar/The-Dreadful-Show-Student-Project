@@ -257,7 +257,7 @@ public class TDS_EventSystemEditor : Editor
                         TDS_EditorUtility.FloatField("Speed Coef", "Coefficient applied to the speed of the camera.", _event.FindPropertyRelative("cameraSpeedCoef"));
                         break;
 
-                    case CustomEventType.UnityEventMaster:
+                    case CustomEventType.UnityEventLocal:
                         TDS_EditorUtility.PropertyField("Unity Event", "Associated Unity Event to this event", _event.FindPropertyRelative("unityEvent"));
                         break;
 
