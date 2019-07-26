@@ -60,6 +60,7 @@ Shader "Custom/Outline"
 
     SubShader
     {
+        Name "OUTLINE"
         Tags
         {
             "Queue"="Transparent"
@@ -211,5 +212,4 @@ Shader "Custom/Outline"
             ENDCG
         }
     }
-    Fallback "Custom/Diffuse"
 }

@@ -9,10 +9,14 @@
         [HideInInspector] _Flip ("Flip", Vector) = (1,1,1,1)
         [PerRendererData] _AlphaTex ("External Alpha", 2D) = "white" {}
         [PerRendererData] _EnableExternalAlpha ("Enable External Alpha", Float) = 0
+    
+         _OutlineSize ("Outline", Float) = 0
+         _OutlineColor("Outline Color", Color) = (1,1,1,1)
     }
 
     SubShader
-    {
+    {    
+        
         Tags
         {
             "Queue"="Transparent"
@@ -20,13 +24,15 @@
             "RenderType"="Transparent"
             "PreviewType"="Plane"
             "CanUseSpriteAtlas"="True"
-        }
+        }   
+
+        UsePass "Custom/Outline/OUTLINE"
 
         Cull Off
         Lighting Off
         ZWrite Off
         Blend One OneMinusSrcAlpha
-
+        
         CGPROGRAM
         #pragma surface surf Lambert vertex:vert nofog nolightmap nodynlightmap keepalpha noinstancing
         #pragma multi_compile_local _ PIXELSNAP_ON
@@ -50,14 +56,14 @@
             UNITY_INITIALIZE_OUTPUT(Input, o);
             o.color = v.color * _Color * _RendererColor;
         }
-
+        
         void surf (Input IN, inout SurfaceOutput o)
         {
             fixed4 c = SampleSpriteTexture (IN.uv_MainTex) * IN.color;
             o.Albedo = c.rgb * c.a;
             o.Alpha = c.a;
         }
-        ENDCG
+        ENDCG              
     }
 Fallback "Transparent/VertexLit"
 }
