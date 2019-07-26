@@ -1835,7 +1835,6 @@ public class TDS_Player : TDS_Character, IPunObservable
             interactionDetector = GetComponentInChildren<TDS_Detector>();
             if (!interactionDetector) Debug.LogWarning("The Interaction Detector of \"" + name + "\" for script TDS_Player is missing !");
         }
-
         if(!spriteHolder)
         {
             spriteHolder = GetComponentInChildren<TDS_PlayerSpriteHolder>();
