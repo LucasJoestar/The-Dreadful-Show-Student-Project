@@ -643,19 +643,19 @@ public class TDS_Camera : MonoBehaviour
     /// <param name="_zMax">Z Max bounds value.</param>
     public void SetBoundsByOnline(float _xMin, float _xMax, float _zMin, float _zMax)
     {
-        if (_xMin != currentBounds.XMin)
+        if (_xMin > currentBounds.XMin)
         {
             leftBoundVector = new Vector3(_xMin, currentBounds.XMinVector.y, currentBounds.XMinVector.z);
         }
-        if (_xMax != currentBounds.XMax)
+        if (_xMax > currentBounds.XMax)
         {
             rightBoundVector = new Vector3(_xMax, currentBounds.XMaxVector.y, currentBounds.XMaxVector.z);
         }
-        if (_zMin != currentBounds.ZMin)
+        if (_zMin > currentBounds.ZMin)
         {
             bottomBoundVector = new Vector3(currentBounds.ZMinVector.x, currentBounds.ZMinVector.y, _zMin);
         }
-        if (_zMax != currentBounds.ZMax)
+        if (_zMax > currentBounds.ZMax)
         {
             topBoundVector = new Vector3(currentBounds.ZMaxVector.x, currentBounds.ZMaxVector.y, _zMax);
         }
