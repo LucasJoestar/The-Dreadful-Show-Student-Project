@@ -698,12 +698,10 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// </summary>
     public virtual void BreakCombo()
     {
-        if (ComboCurrent.Count < comboMax) SetAnim(PlayerAnimState.ComboBreaker);
+        if ((ComboCurrent.Count > 0) && (ComboCurrent.Count < comboMax)) SetAnim(PlayerAnimState.ComboBreaker);
 
         ComboCurrent = new List<bool>();
         CancelInvoke("BreakCombo");
-
-        if (IsAttacking) StopAttack();
     }
 
     /// <summary>
@@ -1079,6 +1077,7 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         // And if in combo, reset it
         if (comboCurrent.Count > 0) BreakCombo();
+        if (IsAttacking) StopAttack();
 
         // If not dead, be just hit
         if (!isDead)
@@ -1849,7 +1848,8 @@ public class TDS_Player : TDS_Character, IPunObservable
         }
         // Set animation on revive
         OnRevive += () => animator.SetTrigger("REVIVE");
-        OnDie += TDS_LevelManager.Instance.CheckLivingPlayers; 
+        OnDie += TDS_LevelManager.Instance.CheckLivingPlayers;
+        //hitBox.OnTouchedNothing += BreakCombo;
     }
 
     // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations
