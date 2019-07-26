@@ -1,5 +1,6 @@
 ﻿using Photon;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -198,12 +199,18 @@ public class TDS_LevelManager : PunBehaviour
     /// <summary>
     /// Check the count of living players, if there is no player alive, reload the scene
     /// </summary>
-    public void CheckLivingPlayers()
+    public IEnumerator CheckLivingPlayers()
     {
-        if (localPlayer.IsDead && !OnlinePlayers.Any(p => !p.IsDead))
+        if (localPlayer.IsDead)
         {
+            yield return new WaitForSeconds(2f);
+
             //TDS_UIManager.Instance.ResetUIManager();
-            TDS_UIManager.Instance.StartCoroutine(TDS_UIManager.Instance.ResetUIManager()); 
+            if (OnlinePlayers.All(p => p.IsDead)) TDS_UIManager.Instance.StartCoroutine(TDS_UIManager.Instance.ResetUIManager());
+            else if (OnlinePlayers.Count > 0)
+            {
+                TDS_Camera.Instance.Target = OnlinePlayers.Where(p => !p.IsDead).First().transform;
+            }
         }
     }
     #endregion
