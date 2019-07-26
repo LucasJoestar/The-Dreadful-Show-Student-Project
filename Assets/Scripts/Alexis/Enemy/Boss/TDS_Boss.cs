@@ -295,7 +295,6 @@ public abstract class TDS_Boss : TDS_Enemy
         {
             agent.StopAgent();
             hitBox.Desactivate();
-            StartCoroutine(ApplyRecoil(_position));
         }
         else
         {
