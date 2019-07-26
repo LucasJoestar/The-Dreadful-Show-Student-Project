@@ -71,7 +71,7 @@ public abstract class TDS_Boss : TDS_Enemy
     protected override TDS_EnemyAttack GetAttack()
     {
         if (attacks.Length == 0) return null;
-        TDS_EnemyAttack[] _availableAttacks = attacks;
+        TDS_EnemyAttack[] _availableAttacks = attacks.Where(a => a != null).ToArray();
 
         // Set a random to compare with the probabilities of the attackes
         float _random = UnityEngine.Random.Range(0, _availableAttacks.Max(a => a.Probability));
