@@ -1583,10 +1583,12 @@ public class TDS_Player : TDS_Character, IPunObservable
 
             case PlayerAnimState.Hit:
                 animator.SetTrigger("Hit");
+                Debug.Log("You have been hit");
                 break;
 
             case PlayerAnimState.Die:
                 animator.SetTrigger("Die");
+                Debug.Log("YOU DIED");
                 break;
 
             case PlayerAnimState.Dodge:
