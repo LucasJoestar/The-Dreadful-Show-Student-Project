@@ -506,21 +506,6 @@ public class TDS_FireEater : TDS_Player
         // Set player type, just in case
         PlayerType = PlayerType.FireEater;
     }
-
-    // Use this for initialization
-    protected override void Start()
-    {
-        base.Start();
-
-        // Freeze the Fire Eater when drunk & touching the ground while not dodging
-        OnGetOnGround += () => { if (isDrunk && !isDodging) FreezePlayer(); };
-    }
-
-    // Update is called once per frame
-    protected override void Update()
-    {
-        base.Update();
-    }
     #endregion
 
     #endregion
