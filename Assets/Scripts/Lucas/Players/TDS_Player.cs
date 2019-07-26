@@ -1847,7 +1847,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         }
         // Set animation on revive
         OnRevive += () => animator.SetTrigger("REVIVE");
-        OnDie += TDS_LevelManager.Instance.CheckLivingPlayers;
+        OnDie += () => StartCoroutine(TDS_LevelManager.Instance.CheckLivingPlayers());
         //hitBox.OnTouchedNothing += BreakCombo;
     }
 
