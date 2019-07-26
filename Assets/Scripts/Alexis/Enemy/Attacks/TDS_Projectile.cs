@@ -69,7 +69,7 @@ public class TDS_Projectile : PunBehaviour
             transform.position += _direction * speed * Time.deltaTime;
             yield return null; 
         }
-        CallDestruction();
+        PrepareDestruction(); 
     }
 
     /// <summary>
@@ -78,6 +78,7 @@ public class TDS_Projectile : PunBehaviour
     private void CallDestruction()
     {
         if (!PhotonNetwork.isMasterClient) return;
+        StopAllCoroutines(); 
         hitBox.Desactivate();
         TDS_VFXManager.Instance.SpawnEffect(FXType.MagicDisappear, transform.position); 
         PhotonNetwork.Destroy(gameObject);
@@ -93,7 +94,7 @@ public class TDS_Projectile : PunBehaviour
     private void PrepareDestruction()
     {
         if (!PhotonNetwork.isMasterClient) return;
-
+        CancelInvoke("CallDestruction");
         StopAllCoroutines();
         Invoke("CallDestruction", .001f);
     }
