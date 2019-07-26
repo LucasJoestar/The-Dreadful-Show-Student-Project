@@ -199,6 +199,20 @@ public enum FireEaterAnimState
 }
 
 /// <summary>
+/// Enum referencing all kinds of FX to instantiate.
+/// </summary>
+public enum FXType
+{
+    Kaboom,
+    Poof,
+    MagicAppear,
+    MagicDisappear,
+    RabbitPoof,
+    BeardGrowsUp,
+    BeardDamaged,
+}
+
+/// <summary>
 /// All animation states shared by all players.
 /// </summary>
 public enum PlayerAnimState

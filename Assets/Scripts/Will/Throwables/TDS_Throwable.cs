@@ -94,7 +94,7 @@ public class TDS_Throwable : PunBehaviour
     {
         if (!PhotonNetwork.isMasterClient) return;
         //PhotonNetwork.Instantiate("Poof", hitBox.Collider.bounds.center, Quaternion.identity, 0);
-        TDS_VFXManager.Instance.InstanciateParticleSystemByName("Projectile_PoufMagique", transform.position);
+        TDS_VFXManager.Instance.SpawnEffect(FXType.MagicDisappear, transform.position);
         PhotonNetwork.Destroy(gameObject);
     }
     /// <summary>
@@ -151,7 +151,7 @@ public class TDS_Throwable : PunBehaviour
     /// Set this object layer.
     /// </summary>
     /// <param name="_layerID">ID of the new object layer.</param>
-    private void SetLayer(int _layerID)
+    protected void SetLayer(int _layerID)
     {
         if (PhotonNetwork.isMasterClient)
         {

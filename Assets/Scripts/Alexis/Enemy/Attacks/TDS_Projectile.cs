@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using Photon; 
 
@@ -81,7 +79,7 @@ public class TDS_Projectile : PunBehaviour
     {
         if (!PhotonNetwork.isMasterClient) return;
         hitBox.Desactivate();
-        TDS_VFXManager.Instance.InstanciateParticleSystemByName("Projectile_PoufMagique", transform.position); 
+        TDS_VFXManager.Instance.SpawnEffect(FXType.MagicDisappear, transform.position); 
         PhotonNetwork.Destroy(gameObject);
     }
 
