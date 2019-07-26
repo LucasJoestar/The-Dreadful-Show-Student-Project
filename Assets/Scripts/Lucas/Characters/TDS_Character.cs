@@ -549,9 +549,11 @@ public abstract class TDS_Character : TDS_Damageable
     /// </summary>
     protected override void Die()
     {
-        if (IsDown) GetUp();
-
         base.Die();
+
+        if (!photonView.isMine) return;
+
+        if (IsDown) GetUp();
     }
 
     /// <summary>
@@ -563,7 +565,7 @@ public abstract class TDS_Character : TDS_Damageable
     {
         if (base.TakeDamage(_damage))
         {
-            if (throwable) DropObject();
+            if (PhotonNetwork.isMasterClient && throwable) DropObject();
 
             return true;
         }

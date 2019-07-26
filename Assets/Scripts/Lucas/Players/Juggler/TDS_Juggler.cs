@@ -1001,7 +1001,7 @@ public class TDS_Juggler : TDS_Player
         if (!base.TakeDamage(_damage)) return false;
 
         // Is aiming, cancel the preparing throw
-        if (isAiming) StopAiming();
+        if (photonView.isMine && isAiming) StopAiming();
 
         return true;
     }
