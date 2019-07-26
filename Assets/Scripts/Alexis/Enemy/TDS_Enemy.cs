@@ -282,7 +282,7 @@ public abstract class TDS_Enemy : TDS_Character
         //If the enemy has no attack, return null
         if (attacks == null || attacks.Length == 0) return null;
         // Get all attacks that can hit the target
-        TDS_EnemyAttack[] _availableAttacks = attacks.Where(a => a.MaxRange > _distance && a.MinRange < _distance).ToArray();
+        TDS_EnemyAttack[] _availableAttacks = attacks.Where(a => a != null && a.MaxRange > _distance && a.MinRange < _distance).ToArray();
         // If there is no attack in Range, return null
         if (_availableAttacks.Length == 0) return null;
         // Set a random to compare with the probabilities of the attackes
@@ -316,7 +316,7 @@ public abstract class TDS_Enemy : TDS_Character
             return false; 
         }
         float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x);
-        return Attacks.Any(a => a.MaxRange >= _distance &&  a.MinRange <= _distance) && Mathf.Abs(transform.position.z - playerTarget.transform.position.z) <=  collider.size.z;
+        return Attacks.Any(a => a != null && a.MaxRange >= _distance &&  a.MinRange <= _distance) && Mathf.Abs(transform.position.z - playerTarget.transform.position.z) <=  collider.size.z;
     }
 
     /// <summary>
@@ -367,7 +367,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected float GetMaxRange()
     {
-        return attacks.Select(a => a.MaxRange).Min();
+        return attacks.Where(a => a != null).Select(a => a.MaxRange).Min();
     }
 
     /// <summary>
@@ -376,7 +376,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     protected float GetMinRange()
     {
-        return attacks.Select(a => a.MaxRange).Max();
+        return attacks.Where(a => a != null).Select(a => a.MaxRange).Max();
     }
     #endregion
 
