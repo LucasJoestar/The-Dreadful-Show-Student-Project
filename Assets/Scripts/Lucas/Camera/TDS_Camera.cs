@@ -169,7 +169,7 @@ public class TDS_Camera : MonoBehaviour
 
 
     /// <summary>Backing field for <see cref="Camera"/>.</summary>
-    [SerializeField] private Camera camera = null;
+    [SerializeField] private new Camera camera = null;
 
     /// <summary>
     /// Camera attached to this script.
@@ -376,6 +376,12 @@ public class TDS_Camera : MonoBehaviour
     /// Position of the camera on the previous frame.
     /// </summary>
     private Vector3 previousPosition = new Vector3();
+
+    /// <summary>
+    /// Bounds value updated when setting new bounds.
+    /// This field contains bounds values when set, which then need to be send to other players if online (-999 value means bounds hasn't changed).
+    /// </summary>
+    private Vector4 onlineSendingBounds = new Vector4(-999, -999, -999, -999);
     #endregion
 
     #region Singleton
@@ -543,6 +549,18 @@ public class TDS_Camera : MonoBehaviour
     }
 
     /// <summary>
+    /// Get newly set bounds to send online to other players.
+    /// </summary>
+    /// <returns></returns>
+    public Vector4 GetSendingBounds()
+    {
+        Vector4 _bounds = onlineSendingBounds;
+        onlineSendingBounds = new Vector4(-999, -999, -999, -999);
+
+        return _bounds;
+    }
+
+    /// <summary>
     /// Method starting a coroutine that makes the camera look a particular transform for a certain duration.
     /// </summary>
     /// <param name="_x">X position to look.</param>
@@ -601,10 +619,7 @@ public class TDS_Camera : MonoBehaviour
     /// <summary>
     /// Reset the level bounds.
     /// </summary>
-    public void ResetBounds()
-    {
-        CurrentBounds = levelBounds;
-    }
+    public void ResetBounds() => CurrentBounds = levelBounds;
 
     /// <summary>
     /// Set new bounds for the camera.
@@ -637,27 +652,24 @@ public class TDS_Camera : MonoBehaviour
     /// <summary>
     /// Set bounds by values of online players.
     /// </summary>
-    /// <param name="_xMin">X Min bounds value.</param>
-    /// <param name="_xMax">X Max bounds value.</param>
-    /// <param name="_zMin">Z Min bounds value.</param>
-    /// <param name="_zMax">Z Max bounds value.</param>
-    public void SetBoundsByOnline(float _xMin, float _xMax, float _zMin, float _zMax)
+    /// <param name="_bounds">New bounds value.</param>
+    public void SetBoundsByOnline(Vector4 _bounds)
     {
-        if (_xMin > currentBounds.XMin)
+        if ((_bounds.x > -999) && (_bounds.x != currentBounds.XMin))
         {
-            leftBoundVector = new Vector3(_xMin, currentBounds.XMinVector.y, currentBounds.XMinVector.z);
+            leftBoundVector = new Vector3(_bounds.x, currentBounds.XMinVector.y, currentBounds.XMinVector.z);
         }
-        if (_xMax > currentBounds.XMax)
+        if ((_bounds.y > -999) && (_bounds.y > currentBounds.XMax))
         {
-            rightBoundVector = new Vector3(_xMax, currentBounds.XMaxVector.y, currentBounds.XMaxVector.z);
+            rightBoundVector = new Vector3(_bounds.y, currentBounds.XMaxVector.y, currentBounds.XMaxVector.z);
         }
-        if (_zMin > currentBounds.ZMin)
+        if ((_bounds.z > -999) && (_bounds.z > currentBounds.ZMin))
         {
-            bottomBoundVector = new Vector3(currentBounds.ZMinVector.x, currentBounds.ZMinVector.y, _zMin);
+            bottomBoundVector = new Vector3(currentBounds.ZMinVector.x, currentBounds.ZMinVector.y, _bounds.z);
         }
-        if (_zMax > currentBounds.ZMax)
+        if ((_bounds.w > -999) && (_bounds.w > currentBounds.ZMax))
         {
-            topBoundVector = new Vector3(currentBounds.ZMaxVector.x, currentBounds.ZMaxVector.y, _zMax);
+            topBoundVector = new Vector3(currentBounds.ZMaxVector.x, currentBounds.ZMaxVector.y, _bounds.w);
         }
     }
 
@@ -702,12 +714,20 @@ public class TDS_Camera : MonoBehaviour
                     {
                         leftBoundVector = _bounds.XMinVector;
                         _boundsMovement[0] = 0;
+
+                        // Set X Min bound value to send online
+                        onlineSendingBounds.x = currentBounds.XMin;
                     }
                     else
                     {
-                        leftBoundVector = new Vector3(transform.position.x - (camera.orthographicSize * ((float)Screen.width / Screen.height)),
-                                          leftBound.transform.position.y,
-                                          leftBound.transform.position.z);
+                        _xMin = transform.position.x - (camera.orthographicSize * ((float)Screen.width / Screen.height));
+                        if (_xMin != currentBounds.XMin)
+                        {
+                            leftBoundVector = new Vector3(_xMin, leftBound.transform.position.y, leftBound.transform.position.z);
+
+                            // Set X Min bound value to send online
+                            onlineSendingBounds.x = currentBounds.XMin;
+                        }
                     }
                 }
                 else if (currentBounds.XMin == _bounds.XMin)
@@ -725,12 +745,20 @@ public class TDS_Camera : MonoBehaviour
                     {
                         rightBoundVector = _bounds.XMaxVector;
                         _boundsMovement[1] = 0;
+
+                        // Set X Max bound value to send online
+                        onlineSendingBounds.y = currentBounds.XMax;
                     }
                     else
                     {
-                        rightBoundVector = new Vector3(transform.position.x + (camera.orthographicSize * ((float)Screen.width / Screen.height)),
-                                           rightBound.transform.position.y,
-                                           rightBound.transform.position.z);
+                        _xMax = transform.position.x + (camera.orthographicSize * ((float)Screen.width / Screen.height));
+                        if (_xMax != currentBounds.XMax)
+                        {
+                            rightBoundVector = new Vector3(_xMax, rightBound.transform.position.y, rightBound.transform.position.z);
+
+                            // Set X Max bound value to send online
+                            onlineSendingBounds.y = currentBounds.XMax;
+                        }
                     }
                 }
                 else if (currentBounds.XMax == _bounds.XMax)
@@ -749,14 +777,20 @@ public class TDS_Camera : MonoBehaviour
                     {
                         bottomBoundVector = _bounds.ZMinVector;
                         _boundsMovement[2] = 0;
+
+                        // Set Z Min bound value to send online
+                        onlineSendingBounds.z = currentBounds.ZMin;
                     }
                     else
                     {
-                        _zMin = camera.WorldToViewportPoint(currentBounds.ZMinVector).y;
+                        _zMin = bottomBound.transform.position.z - (camera.orthographicSize * 2 * camera.WorldToViewportPoint(currentBounds.ZMinVector).y * VIEWPORT_CALCL_Y_COEF);
+                        if (_zMin != currentBounds.ZMin)
+                        {
+                            bottomBoundVector = new Vector3(bottomBound.transform.position.x, bottomBound.transform.position.y, _zMin);
 
-                        bottomBoundVector = new Vector3(bottomBound.transform.position.x,
-                                            bottomBound.transform.position.y,
-                                            bottomBound.transform.position.z - (camera.orthographicSize * 2 * _zMin * VIEWPORT_CALCL_Y_COEF));
+                            // Set Z Min bound value to send online
+                            onlineSendingBounds.z = currentBounds.ZMin;
+                        }
                     }
                 }
                 else if (currentBounds.ZMin == _bounds.ZMin)
@@ -774,16 +808,20 @@ public class TDS_Camera : MonoBehaviour
                     {
                         topBoundVector = _bounds.ZMaxVector;
                         _boundsMovement[3] = 0;
+
+                        // Set Z Max bound value to send online
+                        onlineSendingBounds.w = currentBounds.ZMax;
                     }
                     else
                     {
-                        _zMax = camera.WorldToViewportPoint(currentBounds.ZMaxVector).y;
-                        float _zPos = topBound.transform.position.z + (camera.orthographicSize * 2 * (VIEWPORT_Y_MAX_BOUND_VALUE - _zMax) * VIEWPORT_CALCL_Y_COEF);
+                        _zMax = topBound.transform.position.z + (camera.orthographicSize * 2 * (VIEWPORT_Y_MAX_BOUND_VALUE - camera.WorldToViewportPoint(currentBounds.ZMaxVector).y) * VIEWPORT_CALCL_Y_COEF);
 
-                        if (target.transform.position.z + 1 < _zPos)
+                        if ((_zMax != currentBounds.ZMax) && (target.transform.position.z + 1 < _zMax))
                         {
-                            topBoundVector = new Vector3(topBound.transform.position.x,
-                                         topBound.transform.position.y, _zPos);
+                            topBoundVector = new Vector3(topBound.transform.position.x, topBound.transform.position.y, _zMax);
+
+                            // Set Z Max bound value to send online
+                            onlineSendingBounds.w = currentBounds.ZMax;
                         }
                     }
                 }

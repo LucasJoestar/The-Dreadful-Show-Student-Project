@@ -44,7 +44,7 @@ public class TDS_EventsSystem : PunBehaviour
     /// <summary>
     /// Indicates if this object should be destroyed when finished.
     /// </summary>
-    [SerializeField] private bool doDestroyOnFinish = false;
+    [SerializeField] private bool doDesactivateOnFinish = false;
 
     /// <summary>
     /// Indicates if the event system should loop or not.
@@ -116,7 +116,7 @@ public class TDS_EventsSystem : PunBehaviour
     /// <param name="other"></param>
     private void CheckTriggerValidation(Collider other)
     {
-        if ((isLocal || PhotonNetwork.isMasterClient) && !isActivated && other.gameObject.HasTag(detectedTags.ObjectTags)) StartEvents();
+        if (((isLocal && other.GetComponent<PhotonView>() && other.GetComponent<PhotonView>().isMine) || PhotonNetwork.isMasterClient) && !isActivated && other.gameObject.HasTag(detectedTags.ObjectTags)) StartEvents();
     }
 
     /// <summary>
@@ -135,6 +135,16 @@ public class TDS_EventsSystem : PunBehaviour
 
             currentEventCoroutine = StartEventCoroutine(_i);
 
+            if (currentEvent.EventType == CustomEventType.WaitOthers)
+            {
+                if (collider.enabled)
+                {
+                    collider.enabled = false;
+                    yield return null;
+                }
+                collider.enabled = true;
+            }
+
             if (((events[_i].EventType == CustomEventType.CameraMovement) && !isLocal) ||
                 (events[_i].EventType == CustomEventType.WaitForAction) || (events[_i].EventType == CustomEventType.UnityEventForAll))
             {
@@ -142,7 +152,9 @@ public class TDS_EventsSystem : PunBehaviour
             }
 
             // If next one wait the previous, wait
-            if ((_i < events.Length - 1) && events[_i + 1].DoWaitPreviousOne) yield return currentEventCoroutine;
+            if (((_i < events.Length - 1) && events[_i + 1].DoWaitPreviousOne) || (currentEvent.EventType == CustomEventType.WaitOthers)) yield return currentEventCoroutine;
+
+            if (currentEvent.EventType == CustomEventType.WaitOthers) collider.enabled = !doDesactivateTriggerOnActivation;
 
             while (isWaitingForOthers) yield return null;
         }
@@ -151,7 +163,7 @@ public class TDS_EventsSystem : PunBehaviour
         else
         {
             isActivated = false;
-            if (doDestroyOnFinish) Destroy(this);
+            if (doDesactivateOnFinish) enabled = false;
         }
 
         yield break;
@@ -222,7 +234,7 @@ public class TDS_EventsSystem : PunBehaviour
 
         isActivated = false;
 
-        if (doDestroyOnFinish) Destroy(this);
+        if (doDesactivateOnFinish) Destroy(this);
     }
 
     /// <summary>
@@ -262,6 +274,16 @@ public class TDS_EventsSystem : PunBehaviour
     // OnTriggerEnter is called when the GameObject collides with another GameObject
     private void OnTriggerEnter(Collider other)
     {
+        if (isActivated && (currentEvent.EventType == CustomEventType.WaitOthers) && other.gameObject.HasTag("Player"))
+        {
+            waitingPlayers.Add(other.GetComponent<TDS_Player>());
+            if (!TDS_LevelManager.Instance.AllPlayers.Except(waitingPlayers).Any())
+            {
+                waitingPlayers = new List<TDS_Player>();
+                currentEvent.StopWaitingAction();
+            }
+        }
+
         if (activationMode == TriggerActivationMode.Enter) CheckTriggerValidation(other);
         else if (activationMode == TriggerActivationMode.Traverse) wasActivatedFromRight = other.bounds.center.x > collider.bounds.center.x;
     }
@@ -269,6 +291,11 @@ public class TDS_EventsSystem : PunBehaviour
     // OnTriggerExit is called when the Collider other has stopped touching the trigger
     private void OnTriggerExit(Collider other)
     {
+        if (isActivated && (currentEvent.EventType == CustomEventType.WaitOthers) && other.gameObject.HasTag("Player"))
+        {
+            waitingPlayers.Remove(other.GetComponent<TDS_Player>());
+        }
+
         if ((activationMode == TriggerActivationMode.Exit) ||
            ((activationMode == TriggerActivationMode.Traverse) &&
            ((other.bounds.center.x > collider.bounds.center.x) != wasActivatedFromRight))) CheckTriggerValidation(other);

@@ -212,18 +212,18 @@ MonoBehaviour:
   positionOffset: {x: 0, y: 1.25, z: 0}
   avoidanceForce: 45
   baseOffset: 0
-  detectionRange: 2
+  detectionRange: 3.5
   height: 2.5
   radius: 1.3
   pathRadius: 0.25
   speed: 1
   steerForce: 80
   agentPriority: 1
-  detectionAccuracy: 3
+  detectionAccuracy: 5
   detectionFieldOfView: 90
   avoidanceLayer:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 11264
 --- !u!54 &1337013229762858612
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -396,8 +396,8 @@ MonoBehaviour:
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 0
-  healthMax: 1
+  healthCurrent: 50
+  healthMax: 50
   hitBox: {fileID: 1337013230161517857}
   healthBar: {fileID: 0}
   rigidbody: {fileID: 1337013229762858612}

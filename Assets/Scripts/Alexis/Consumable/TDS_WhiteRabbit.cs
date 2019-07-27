@@ -57,7 +57,6 @@ public class TDS_WhiteRabbit : TDS_Consumable
     private float boundRight; 
     [SerializeField, Range(1,10)] private float speed;
     private CustomNavMeshAgent agent;
-    [SerializeField] private string particlesName;
     #endregion
 
     #region Methods

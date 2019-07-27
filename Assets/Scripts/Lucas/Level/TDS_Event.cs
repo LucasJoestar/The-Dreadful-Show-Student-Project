@@ -70,7 +70,7 @@ public class TDS_Event
     /// <summary>
     /// Indicates if the waiting action is complete or not.
     /// </summary>
-    public bool IsActionComplete { get; private set; }
+    public bool IsActionComplete { get; private set; } = false;
 
     /// <summary>
     /// Type of this event.
@@ -261,6 +261,18 @@ public class TDS_Event
 
                 TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(PhotonView.Find(EventSystemID), typeof(TDS_EventsSystem), "SetPlayerWaiting")
                       , new object[] { TDS_LevelManager.Instance.LocalPlayer.PhotonID });
+                break;
+
+            // Wait other players
+            case CustomEventType.WaitOthers:
+                if (TDS_LevelManager.Instance.OnlinePlayers.Count > 0) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel"), new object[] { });
+
+                while (!IsActionComplete)
+                {
+                    yield return null;
+                }
+
+                if (TDS_LevelManager.Instance.OnlinePlayers.Count > 0) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel"), new object[] { });
                 break;
 
             // Make a camera movement

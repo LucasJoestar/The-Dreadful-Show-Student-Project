@@ -41,7 +41,7 @@ public class TDS_EventSystemEditor : Editor
     private SerializedProperty doDesactivateTriggerOnActivation = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doDestroyOnFinish"/> of type <see cref="bool"/>.</summary>
-    private SerializedProperty doDestroyOnFinish = null;
+    private SerializedProperty doDesactivateOnFinish = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doLoop"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty doLoop = null;
@@ -108,7 +108,7 @@ public class TDS_EventSystemEditor : Editor
         GUILayout.Space(2);
 
         TDS_EditorUtility.Toggle("Looping", "Should this event system loop when reaching the end or not", doLoop);
-        TDS_EditorUtility.Toggle("Destroy when Finished", "Should this object be destroyed when event system get finished", doDestroyOnFinish);
+        TDS_EditorUtility.Toggle("Des. when Finished", "Should this object be desactivated when event system get finished", doDesactivateOnFinish);
         TDS_EditorUtility.Toggle("Des. collider on activation", "Should this object collider be desactivated when starting events", doDesactivateTriggerOnActivation);
 
         GUILayout.Space(2);
@@ -304,7 +304,7 @@ public class TDS_EventSystemEditor : Editor
     {
         activationMode = serializedObject.FindProperty("activationMode");
         doDesactivateTriggerOnActivation = serializedObject.FindProperty("doDesactivateTriggerOnActivation");
-        doDestroyOnFinish = serializedObject.FindProperty("doDestroyOnFinish");
+        doDesactivateOnFinish = serializedObject.FindProperty("doDesactivateOnFinish");
         doLoop = serializedObject.FindProperty("doLoop");
         isActivated = serializedObject.FindProperty("isActivated");
         isLocal = serializedObject.FindProperty("isLocal");

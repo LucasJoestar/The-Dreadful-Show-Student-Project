@@ -691,7 +691,7 @@ MonoBehaviour:
     Color: {r: 1, g: 0.59607846, b: 0, a: 1}
     WhatDetect:
       serializedVersion: 2
-      m_Bits: 28672
+      m_Bits: 28673
     TriggerInteraction: 1
     LocalPosition: {x: 0, y: 0, z: 0}
     Size: {x: 1, y: 0.5, z: 1}
@@ -707,14 +707,14 @@ MonoBehaviour:
   IsPlayable: 1
   isPreparingAttack: 0
   comboCurrent: 
-  comboResetTime: 2
+  comboResetTime: 0.5
   JumpForce: 400
   jumpMaximumTime: 1.5
   comboMax: 1
   nextAttack: 0
   WhatIsObstacle:
     serializedVersion: 2
-    m_Bits: 24576
+    m_Bits: 24577
   playerType: 3
   projectilePreviewEndZone: {fileID: 2683374214604088168}
   lineRenderer: {fileID: 2635326681832023650}

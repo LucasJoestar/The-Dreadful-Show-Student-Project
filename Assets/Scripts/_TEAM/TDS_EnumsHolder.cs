@@ -121,6 +121,7 @@ public enum CustomEventType
     Instantiate,
     Wait,
     WaitForAction,
+    WaitOthers,
     CameraMovement,
     UnityEventLocal,
     UnityEventForAll

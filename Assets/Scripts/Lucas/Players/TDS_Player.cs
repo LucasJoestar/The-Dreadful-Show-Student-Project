@@ -1820,19 +1820,23 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         if (_stream.isWriting)
         {
-            _stream.SendNext(TDS_Camera.Instance.CurrentBounds.XMin);
-            _stream.SendNext(TDS_Camera.Instance.CurrentBounds.XMax);
-            _stream.SendNext(TDS_Camera.Instance.CurrentBounds.ZMin);
-            _stream.SendNext(TDS_Camera.Instance.CurrentBounds.ZMax);
+            Vector4 _bounds = TDS_Camera.Instance.GetSendingBounds();
+
+            _stream.SendNext(_bounds.x);
+            _stream.SendNext(_bounds.y);
+            _stream.SendNext(_bounds.z);
+            _stream.SendNext(_bounds.w);
         }
         else
         {
-            float _xMin = (float)_stream.ReceiveNext();
-            float _xMax = (float)_stream.ReceiveNext();
-            float _zMin = (float)_stream.ReceiveNext();
-            float _zMax = (float)_stream.ReceiveNext();
+            Vector4 _bounds = new Vector4();
 
-            TDS_Camera.Instance.SetBoundsByOnline(_xMin, _xMax, _zMin, _zMax);
+            _bounds.x = (float)_stream.ReceiveNext();
+            _bounds.y= (float)_stream.ReceiveNext();
+            _bounds.z = (float)_stream.ReceiveNext();
+            _bounds.w = (float)_stream.ReceiveNext();
+
+            TDS_Camera.Instance.SetBoundsByOnline(_bounds);
         }
     }
     #endregion
@@ -1859,10 +1863,11 @@ public class TDS_Player : TDS_Character, IPunObservable
             if (!spriteHolder.Owner) spriteHolder.Owner = this;
             if (!spriteHolder.PlayerSprite) spriteHolder.PlayerSprite = sprite;
         }
+
         // Set animation on revive
         OnRevive += () => animator.SetTrigger("REVIVE");
         OnDie += () => StartCoroutine(TDS_LevelManager.Instance.CheckLivingPlayers());
-        //hitBox.OnTouchedNothing += BreakCombo;
+        hitBox.OnTouchedNothing += BreakCombo;
     }
 
     // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations
