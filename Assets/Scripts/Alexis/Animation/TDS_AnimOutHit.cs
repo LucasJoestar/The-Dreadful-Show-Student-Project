@@ -12,8 +12,7 @@ public class TDS_AnimOutHit : StateMachineBehaviour
         if (!PhotonNetwork.isMasterClient) return;
         if (owner == null)
             owner = animator.GetComponent<TDS_Enemy>();
-        owner.StopAttack();
-        owner.Agent.StopAgent(); 
+        owner.StopAll(); 
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

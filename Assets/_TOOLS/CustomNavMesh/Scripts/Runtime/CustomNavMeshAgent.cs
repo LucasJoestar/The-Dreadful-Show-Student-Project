@@ -256,6 +256,7 @@ public class CustomNavMeshAgent : MonoBehaviour
         _direction.Normalize();
         // Avoidance = Tan(avoidanceForce) * velocity * time.deltatime
         Vector3 _avoidance = _direction * AvoidanceForce * Time.fixedDeltaTime;
+        Debug.DrawLine(transform.position + velocity, transform.position + velocity + _avoidance, Color.red, 1); 
         velocity += _avoidance;
         velocity = Vector3.ClampMagnitude(velocity, speed);
     }
@@ -270,7 +271,6 @@ public class CustomNavMeshAgent : MonoBehaviour
         if (CustomNavMeshManager.Triangles == null || CustomNavMeshManager.Triangles.Count == 0)
         {
             Debug.LogWarning("Triangles Not found. Must build the navmesh for the scene");
-            //Destroy(this);
             return false;
         }
         if (isMoving)
@@ -377,7 +377,7 @@ public class CustomNavMeshAgent : MonoBehaviour
                     if (!_hitInfo.transform.GetComponentInParent<NavMeshSurface>() && _hitInfo.collider.gameObject != this.gameObject)
                     {
                         // Add the direction to avoid to the list
-                        _dir = (_hitInfo.point - _hitInfo.transform.position);
+                        _dir = ((transform.position + velocity) - _hitInfo.point);
                         _dir.y = 0;
                         _obstaclesPos.Add(_dir);
                     }
@@ -394,7 +394,6 @@ public class CustomNavMeshAgent : MonoBehaviour
                 yield return null;
                 continue;
             }
-
             /* Get the predicted Velocity and the Predicted position*/
             _predictedPosition = OffsetPosition + velocity;
 

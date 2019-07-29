@@ -172,7 +172,8 @@ public enum EnemyState
     Attacking, 
     PickingUpObject, 
     ThrowingObject, 
-    Wandering
+    Wandering, 
+    Waiting
 }
 
 /// <summary>
