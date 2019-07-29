@@ -631,7 +631,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (!base.SetThrowable(_throwable)) return false;
 
         // Set animation
-        if (playerType != PlayerType.Juggler) SetAnim(PlayerAnimState.HasObject);
+        SetAnim(PlayerAnimState.HasObject);
         return true;
     }
 
@@ -1132,7 +1132,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     public virtual bool Interact()
     {
         // Interact !
-        if (throwable)
+        if (throwable && (playerType != PlayerType.Juggler))
         {
             StartCoroutine(DropObjectCoroutine());
             return true;
@@ -1152,10 +1152,10 @@ public class TDS_Player : TDS_Character, IPunObservable
             return true;
         }
 
-        TDS_WhiteRabbit _whiteRabbit = null;
-        if (_whiteRabbit = _nearestObject.GetComponent<TDS_WhiteRabbit>())
+        TDS_Consumable _consumable = null;
+        if (_consumable = _nearestObject.GetComponent<TDS_Consumable>())
         {
-            _whiteRabbit.Use(this);
+            _consumable.Use(this);
             return true;
         }
 

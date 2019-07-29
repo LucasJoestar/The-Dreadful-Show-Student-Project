@@ -124,12 +124,7 @@ public class TDS_Juggler : TDS_Player
     /// <summary>
     /// Zone at the end of the projectile preview, for feedback value.
     /// </summary>
-    [SerializeField] private GameObject projectilePreviewEndZone = null;
-
-    /// <summary>
-    /// Line renderer used to draw a preview for the preparing throw trajectory.
-    /// </summary>
-    [SerializeField] protected LineRenderer lineRenderer = null;
+    [SerializeField] private GameObject throwPreviewZone = null;
 
     /// <summary>
     /// The actual selected throwable. It is the object to throw, when throwing... Yep.
@@ -155,7 +150,7 @@ public class TDS_Juggler : TDS_Player
             {
                 if (Throwables.Contains(value)) Throwables.Remove(value);
                 value.transform.rotation = Quaternion.identity;
-                value.transform.SetParent(handsTransform);
+                value.transform.SetParent(handsTransform, true);
 
                 // Starts position lerp coroutine
                 throwableLerpCoroutine = StartCoroutine(LerpThrowableToHand());
@@ -426,8 +421,8 @@ public class TDS_Juggler : TDS_Player
     {
         // Let the player aim the point he wants, 'cause the juggler can do that. Yep
         // Aim with IJKL or the right joystick axis
-        float _xMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_X_Axis);
-        float _zMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_Y_AXIS);
+        float _xMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_X_Axis) * 2;
+        float _zMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_Y_AXIS) * 3;
 
         if (_xMovement != 0 || _zMovement != 0)
         {
@@ -439,8 +434,12 @@ public class TDS_Juggler : TDS_Player
 
             // Lerp aiming point position
             ThrowAimingPoint = Vector3.Lerp(throwAimingPoint, _newAimingPoint, Time.deltaTime * 15);
+
+            // Set preview zone position
+            throwPreviewZone.transform.position = throwPreviewZone.transform.position = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), .01f, transform.position.z + throwAimingPoint.z);
         }
 
+        /*
         // Raycast along the trajectory preview and stop the trail when hit something
         RaycastHit _hit = new RaycastHit();
         Vector3[] _raycastedMotionPoints = (Vector3[])throwTrajectoryMotionPoints.Clone();
@@ -499,7 +498,7 @@ public class TDS_Juggler : TDS_Player
             _raycastedMotionPoints[_i].z *= isFacingRight.ToSign();
         }
 
-        lineRenderer.DrawTrajectory(_raycastedMotionPoints);
+        lineRenderer.DrawTrajectory(_raycastedMotionPoints);*/
     }
 
     /// <summary>
@@ -619,7 +618,7 @@ public class TDS_Juggler : TDS_Player
         isAiming = true;
         aimCoroutine = StartCoroutine(Aim());
 
-        projectilePreviewEndZone.SetActive(true);
+        throwPreviewZone.SetActive(true);
 
         return true;
     }
@@ -640,7 +639,7 @@ public class TDS_Juggler : TDS_Player
             // Updates juggling informations
             UpdateJuggleParameters(false);
         }
-        else SetAnim(PlayerAnimState.LostObject);
+        if (CurrentThrowableAmount == 0) SetAnim(PlayerAnimState.LostObject);
 
         return true;
     }
@@ -655,7 +654,8 @@ public class TDS_Juggler : TDS_Player
         // Get if was juggling before taking this throwable
         bool _wasJuggling = CurrentThrowableAmount > 0;
 
-        if (!base.SetThrowable(_throwable)) return false;
+        if (!_throwable) return false;
+        Throwable = _throwable;
 
         if (CurrentThrowableAmount > 0)
         {
@@ -682,8 +682,8 @@ public class TDS_Juggler : TDS_Player
             StopCoroutine(aimCoroutine);
         }
 
-        lineRenderer.DrawTrajectory(new Vector3[0]);
-        projectilePreviewEndZone.SetActive(false);
+        //lineRenderer.DrawTrajectory(new Vector3[0]);
+        throwPreviewZone.SetActive(false);
 
         // Reset throw aiming point
         ThrowAimingPoint = defaultAimingPoint;
@@ -985,18 +985,17 @@ public class TDS_Juggler : TDS_Player
         base.Awake();
 
         // Try to get components references if they are missing
-        if (!lineRenderer)
-        {
-            lineRenderer = GetComponentInChildren<LineRenderer>();
-            if (!lineRenderer) Debug.LogWarning("The LineRenderer of \"" + name + "\" for script TDS_Player is missing !");
-        }
         if (!juggleTransform)
         {
             Debug.LogWarning("The Juggle Transform of \"" + name + "\" for script TDS_Juggler is missing !");
         }
-        if (!projectilePreviewEndZone)
+        if (!throwPreviewZone)
         {
             Debug.LogWarning("The Projectile Preview End Zone of \"" + name + "\" for script TDS_Juggler is missing !");
+        }
+        else if (throwPreviewZone.activeInHierarchy)
+        {
+            throwPreviewZone.SetActive(false);
         }
 
         // Set player type, just in case

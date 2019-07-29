@@ -497,6 +497,8 @@ public abstract class TDS_Character : TDS_Damageable
             _throwable.transform.localPosition = Vector3.zero;
             _throwable.transform.rotation = Quaternion.identity;
 
+            if (!isFacingRight) _throwable.transform.Rotate(Vector3.up, 180);
+
             return true;
         }
 
