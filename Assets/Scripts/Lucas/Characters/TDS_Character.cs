@@ -573,7 +573,7 @@ public abstract class TDS_Character : TDS_Damageable
     {
         if (base.TakeDamage(_damage))
         {
-            if (PhotonNetwork.isMasterClient && throwable) DropObject();
+            if (photonView.isMine && throwable) DropObject();
 
             return true;
         }

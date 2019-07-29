@@ -193,6 +193,7 @@ public enum FireEaterAnimState
 {
     Sober,
     Drunk,
+    MiniGame,
     Spit,
     DoNotSpit,
     Fire,

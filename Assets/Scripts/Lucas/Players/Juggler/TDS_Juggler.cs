@@ -406,10 +406,9 @@ public class TDS_Juggler : TDS_Player
 
             if (TDS_InputManager.GetButtonDown(TDS_InputManager.PARRY_BUTTON))
             {
-                // Triggers the throw animation ;
-                // If not having throwable anymore, update the animator
-                if (isGrounded) SetAnimOnline(PlayerAnimState.Throw);
-                else ThrowObject_A();
+                // Triggers the throw animation
+                IsPlayable = false;
+                SetAnimOnline(PlayerAnimState.Throw);
 
                 if (CurrentThrowableAmount == 0) break;
             }

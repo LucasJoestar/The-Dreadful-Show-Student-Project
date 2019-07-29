@@ -584,18 +584,11 @@ public class TDS_Player : TDS_Character, IPunObservable
         }
 
         // If no throwable anymore, break
-        if (!throwable) yield break;
+        if (!throwable || (playerType == PlayerType.Juggler)) yield break;
 
         // Throw the object
-        if (isGrounded)
-        {
-            IsPlayable = false;
-            SetAnimOnline(PlayerAnimState.Throw);
-        }
-        else
-        {
-            ThrowObject_A();
-        }
+        IsPlayable = false;
+        SetAnimOnline(PlayerAnimState.Throw);
 
         yield break;
     }
@@ -1139,7 +1132,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     public virtual bool Interact()
     {
         // Interact !
-        if (throwable && (playerType != PlayerType.Juggler))
+        if (throwable)
         {
             StartCoroutine(DropObjectCoroutine());
             return true;
@@ -1153,7 +1146,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         TDS_Throwable _throwable = null;
 
         // Interact now with the object depending on its type
-        if ((_throwable = _nearestObject.GetComponent<TDS_Throwable>()) && isGrounded)
+        if (_throwable = _nearestObject.GetComponent<TDS_Throwable>())
         {
             GrabObject(_throwable);
             return true;
@@ -1357,12 +1350,12 @@ public class TDS_Player : TDS_Character, IPunObservable
         {
             if (rigidbody.velocity.y < 0)
             {
-                if (animator.GetInteger("GroundState") < 1)
+                if (animator.GetInteger("GroundState") > -1)
                 {
                     SetAnimOnline(PlayerAnimState.Falling);
                 }
             }
-            else if (animator.GetInteger("GroundState") > -1)
+            else if (animator.GetInteger("GroundState") < 1)
             {
                 SetAnimOnline(PlayerAnimState.Jumping);
             }
@@ -1599,6 +1592,7 @@ public class TDS_Player : TDS_Character, IPunObservable
                 break;
 
             case PlayerAnimState.Throw:
+                if (!isGrounded) animator.SetInteger("GroundState", 0);
                 animator.SetTrigger("Throw");
                 break;
 
@@ -1797,7 +1791,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         }
 
         // When pressing the jump method, check if on ground ; If it's all good, then let's jump
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.JUMP_BUTTON) && IsGrounded && (!throwable || (playerType == PlayerType.Juggler)) && !isPreparingAttack)
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.JUMP_BUTTON) && IsGrounded /*&& (!throwable || (playerType == PlayerType.Juggler))*/ && !isPreparingAttack)
         {
             StartJump();
         }

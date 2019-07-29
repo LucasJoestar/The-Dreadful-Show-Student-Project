@@ -196,7 +196,7 @@ public class TDS_FireEater : TDS_Player
     /// <returns></returns>
     private IEnumerator MiniGame(string _buttonName)
     {
-        SetFireEaterAnim(FireEaterAnimState.Spit);
+        SetFireEaterAnim(FireEaterAnimState.MiniGame);
 
         isInMiniGame = true;
         OnTriggerMiniGame = () => SetFireEaterAnim(FireEaterAnimState.DoNotSpit);
@@ -222,14 +222,14 @@ public class TDS_FireEater : TDS_Player
                 if (TDS_InputManager.GetButtonUp(_buttonName))
                 {
                     IsInMiniGame = false;
+
+                    // Triggers associated mini game state action
+                    OnTriggerMiniGame?.Invoke();
+                    SetFireEaterAnim(FireEaterAnimState.Fire);
                     break;
                 }
             }
         }
-
-        // Triggers associated mini game state action
-        OnTriggerMiniGame?.Invoke();
-        SetFireEaterAnim(FireEaterAnimState.Fire);
     }
 
     /// <summary>
@@ -445,6 +445,11 @@ public class TDS_FireEater : TDS_Player
 
             case FireEaterAnimState.Drunk:
                 animator.SetBool("IsDrunk", true);
+                break;
+
+            case FireEaterAnimState.MiniGame:
+                animator.ResetTrigger("Fire");
+                animator.SetInteger("FireID", 9999999);
                 break;
 
             case FireEaterAnimState.Spit:
