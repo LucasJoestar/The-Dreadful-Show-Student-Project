@@ -780,7 +780,7 @@ public abstract class TDS_Enemy : TDS_Character
         TDS_Player[] _targets = null; 
         
         if(TDS_LevelManager.Instance)
-            _targets = TDS_LevelManager.Instance.AllPlayers.ToArray();
+            _targets = TDS_LevelManager.Instance.AllPlayers.Where(t => !t.IsDead).ToArray();
         else
             _targets = Physics.OverlapSphere(transform.position, 10).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
 
