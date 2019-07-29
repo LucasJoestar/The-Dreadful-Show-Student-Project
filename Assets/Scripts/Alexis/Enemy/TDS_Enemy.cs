@@ -499,6 +499,10 @@ public abstract class TDS_Enemy : TDS_Character
                 additionalCoroutine = StartCoroutine(Wander());
                 yield return additionalCoroutine; 
                 break;
+            case EnemyState.Waiting:
+                additionalCoroutine = StartCoroutine(Waiting());
+                yield return additionalCoroutine;
+                break; 
             #endregion
             default:
                 break;
@@ -609,12 +613,16 @@ public abstract class TDS_Enemy : TDS_Character
             //if the target is too far from the destination, recalculate the path
             // OR If there is too much enemy in contact with the target, compute path to wander
             // Or if the agent is out of the bounds
-            if ((Vector3.Distance(agent.LastPosition, playerTarget.transform.position) > GetMaxRange()) 
+            if ((Vector3.Distance(targetLastPosition, playerTarget.transform.position) > GetMaxRange()) 
                 || (Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) >= 1)
                 || (TDS_Camera.Instance.CurrentBounds.XMax < transform.position.x && agent.Velocity.x > 0) || (TDS_Camera.Instance.CurrentBounds.XMin > transform.position.x && agent.Velocity.x < 0))
             {
                 yield return new WaitForSeconds(.1f); 
                 enemyState = EnemyState.ComputingPath;
+                //Debug.Log($"Distance => {Vector3.Distance(targetLastPosition, playerTarget.transform.position) > GetMaxRange()}\n" +
+                //    $"Too Many enemies => {Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) >= 1}\n" +
+                //    $"Out of camera bounds => {(TDS_Camera.Instance.CurrentBounds.XMax < transform.position.x && agent.Velocity.x > 0) || (TDS_Camera.Instance.CurrentBounds.XMin > transform.position.x && agent.Velocity.x < 0)}"); 
+                //Debug.Log("Recompute from Detection");
                 yield break; 
             }
             // if any attack can be casted 
@@ -755,18 +763,37 @@ public abstract class TDS_Enemy : TDS_Character
             Flip();
         }
         SetAnimationState((int)EnemyAnimationState.Idle);
-        yield return new WaitForSeconds(Random.Range(1,5));
-        isWaiting = (Random.value * 100) <= tauntProbability;
-        if(isWaiting)
+        enemyState = EnemyState.Waiting; 
+    }
+
+    private IEnumerator Waiting()
+    {
+        targetLastPosition = playerTarget.transform.position; 
+        Vector3 _offset = playerTarget.transform.position - targetLastPosition;
+        
+        while (Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) >= 1)
         {
-            SetAnimationState((int)EnemyAnimationState.Taunt);
-            while (isWaiting)
+            if(Vector3.Distance(targetLastPosition, playerTarget.transform.position) > agent.Radius)
             {
-                yield return null;
+                agent.SetDestination(transform.position + _offset); 
             }
+            else
+            {
+                isWaiting = (Random.value * 100) <= tauntProbability;
+                if (isWaiting)
+                {
+                    SetAnimationState((int)EnemyAnimationState.Taunt);
+                    while (isWaiting)
+                    {
+                        yield return null;
+                    }
+                    yield return new WaitForSeconds(Random.Range(1, 5)); 
+                }
+            }
+            playerTarget = SearchTarget(); 
+            yield return null;
         }
-        enemyState = EnemyState.MakingDecision;
-        yield return null; 
+        enemyState = EnemyState.MakingDecision; 
     }
     #endregion
 
@@ -828,6 +855,7 @@ public abstract class TDS_Enemy : TDS_Character
         base.Die();
         if (PhotonNetwork.isMasterClient)
         {
+            Debug.Log("IN"); 
             StopAll(); 
             SetAnimationState((int)EnemyAnimationState.Death);
         }
@@ -1008,7 +1036,7 @@ public abstract class TDS_Enemy : TDS_Character
 
             int _coeff = _hasToWander ? Random.value > .5f ? 1 : -1 : playerTarget.transform.position.x > transform.position.x ? -1 : 1;
             _offset.x *= _coeff;
-
+            
             _returnedPosition = playerTarget.transform.position + _offset;
         }
 
@@ -1185,7 +1213,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <summary>
     /// Stop the agent, drop the held object and stop the coroutines
     /// </summary>
-    protected void StopAll()
+    public void StopAll()
     {
         agent.StopAgent();
         base.StopAttack(); 

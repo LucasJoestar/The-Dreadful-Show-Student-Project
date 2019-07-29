@@ -127,8 +127,6 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     private SerializedProperty canThrow = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.throwRange"/> of type <see cref="bool"/>.</summary>
     protected SerializedProperty throwRange = null;
-    /// <summary>SerializedProperty for <see cref="TDS_Enemy.detectionRange"/> of type <see cref="float"/>.</summary>
-    protected SerializedProperty detectionRange = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.wanderingRangeMin"/> of type <see cref="float"/>.</summary>
     protected SerializedProperty wanderingRangeMin = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.wanderingRangeMax"/> of type <see cref="float"/>.</summary>
@@ -254,7 +252,6 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     {
         // Draw a header for the enemy detection settings 
         EditorGUILayout.LabelField("Detection", TDS_EditorUtility.HeaderStyle);
-        TDS_EditorUtility.FloatSlider("Detection range", "The maximum distance of the field of view of the enemy", detectionRange, 1, 25);
         TDS_EditorUtility.FloatSlider("Wandering range Min", "The wandering distance around the targeted player when other enemies attacking an enemy", wanderingRangeMin, 1, wanderingRangeMax.floatValue);
         TDS_EditorUtility.FloatSlider("Wandering range Max", "The wandering distance around the targeted player when other enemies attacking an enemy", wanderingRangeMax, wanderingRangeMin.floatValue, 10);
         TDS_EditorUtility.FloatSlider("Taunt Probability", "The chance to taunt after wandering", tauntProbability, 0, 100);
@@ -298,7 +295,6 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         canBeDown = serializedObject.FindProperty("canBeDown");
         canThrow = serializedObject.FindProperty("canThrow");
         throwRange = serializedObject.FindProperty("throwRange"); 
-        detectionRange = serializedObject.FindProperty("detectionRange");
         wanderingRangeMin = serializedObject.FindProperty("wanderingRangeMin");
         wanderingRangeMax = serializedObject.FindProperty("wanderingRangeMax");
         tauntProbability = serializedObject.FindProperty("tauntProbability"); 
@@ -377,8 +373,6 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         }
 
         Handles.color = Color.yellow;
-        Handles.DrawWireDisc((serializedObject.targetObject as TDS_Enemy).transform.position, Vector3.up, detectionRange.floatValue);
-        Handles.Label(_pos + new Vector3(detectionRange.floatValue, 0), "Detection Range");
 
         if(Application.isPlaying)
         {
