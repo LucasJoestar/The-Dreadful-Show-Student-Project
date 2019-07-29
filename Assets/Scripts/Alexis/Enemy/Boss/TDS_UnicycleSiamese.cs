@@ -208,6 +208,7 @@ public class TDS_UnicycleSiamese : TDS_Enemy
     protected override void ComputePath()
     {
         if (isDead || !PhotonNetwork.isMasterClient) return;
+        if (!playerTarget) playerTarget = SearchTarget(); 
         bool _pathComputed = false;
         Vector3 _targetedPosition = GetAttackingPosition();
         if (agent.IsMoving) agent.StopAgent(); 

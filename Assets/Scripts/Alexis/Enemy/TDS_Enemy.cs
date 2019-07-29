@@ -181,11 +181,13 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     [SerializeField] protected EnemyState enemyState = EnemyState.Searching;
 
+    /*
     /// <summary>
     /// Detection Range of the enemy 
     /// If a player is within this range, it can be detected
     /// </summary>
     [SerializeField] protected float detectionRange = 5;
+    */
 
     /// <summary>
     /// Probability to taunt after wandering
@@ -778,9 +780,9 @@ public abstract class TDS_Enemy : TDS_Character
         TDS_Player[] _targets = null; 
         
         if(TDS_LevelManager.Instance)
-            _targets = TDS_LevelManager.Instance.AllPlayers.Where(p => Vector3.Distance(p.transform.position, transform.position) <= detectionRange).ToArray();
+            _targets = TDS_LevelManager.Instance.AllPlayers.ToArray();
         else
-            _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
+            _targets = Physics.OverlapSphere(transform.position, 10).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
 
 
         if (_targets.Length == 0) return null;
