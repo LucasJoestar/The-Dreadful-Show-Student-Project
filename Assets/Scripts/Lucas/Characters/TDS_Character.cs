@@ -421,10 +421,10 @@ public abstract class TDS_Character : TDS_Damageable
     /// <returns>Returns true if successfully dropped the object, false if not having an object to drop.</returns>
     public virtual bool DropObject()
     {
-        // Call this method in master client only
-        if (!PhotonNetwork.isMasterClient)
+        // Call this method in owner only
+        if (!photonView.isMine)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "DropObject"), new object[] { });
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "ThrowObject_A"), new object[] { });
             return false;
         }
 
@@ -433,12 +433,6 @@ public abstract class TDS_Character : TDS_Damageable
 
         // Drooop
         throwable.Drop();
-
-        // Set the throwable as null for all clients
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetThrowable"), new object[] { throwable.photonView.viewID, false });
-
-        Throwable = null;
-
         return true;
     }
 
@@ -453,17 +447,12 @@ public abstract class TDS_Character : TDS_Damageable
         // Call this method in master client only
         if (!PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "GrabObject"), new object[] { _throwable.photonView.viewID });
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "GrabObject"), new object[] { _throwable.photonView.viewID });
             return false;
         }
 
         // Take the object if possible
-        if (throwable || !_throwable.PickUp(this, handsTransform)) return false;
-
-        // Set the throwable for all clients
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetThrowable"), new object[] { _throwable.photonView.viewID, true });
-
-        Throwable = _throwable;
+        if (throwable || !_throwable.PickUp(this)) return false;
 
         return true;
     }
@@ -483,20 +472,46 @@ public abstract class TDS_Character : TDS_Damageable
     }
 
     /// <summary>
-    /// Set this character throwable (Grab or Throw / Drop).
+    /// Removes the throwable from the character.
     /// </summary>
-    /// <param name="_throwableID">ID of the throwable to set.</param>
-    /// <param name="_doGrab">Indicates if the character grabs the throwable or throw / drop it.</param>
-    public virtual void SetThrowable(int _throwableID, bool _doGrab)
+    /// <returns>Returns true if successfully removed the throwable, false otherwise.</returns>
+    public virtual bool RemoveThrowable()
     {
-        TDS_Throwable _throwable = PhotonView.Find(_throwableID).GetComponent<TDS_Throwable>();
+        if (!throwable) return false;
 
+        throwable = null;
+        return true;
+    }
+
+    /// <summary>
+    /// Set this character throwable.
+    /// </summary>
+    /// <param name="_throwable">Throwable to set.</param>
+    /// <returns>Returns true if successfully set the throwable, false otherwise.</returns>
+    public virtual bool SetThrowable(TDS_Throwable _throwable)
+    {
         if (_throwable)
         {
-            _throwable.transform.SetParent(_doGrab ? handsTransform : null, true);
-            Throwable = _doGrab ? _throwable : null;
+            Throwable = _throwable;
+            _throwable.transform.SetParent(handsTransform, true);
+            _throwable.transform.localPosition = Vector3.zero;
+            _throwable.transform.rotation = Quaternion.identity;
+
+            return true;
         }
-        else throwable = null;
+
+        return false;
+    }
+
+    /// <summary>
+    /// Set this character throwable.
+    /// </summary>
+    /// <param name="_throwableID">ID of the throwable to set.</param>
+    protected virtual void SetThrowable(int _throwableID)
+    {
+        PhotonView _throwable = PhotonView.Find(_throwableID);
+
+        if (_throwable) SetThrowable(_throwable.GetComponent<TDS_Throwable>());
     }
 
     /// <summary>
@@ -504,6 +519,9 @@ public abstract class TDS_Character : TDS_Damageable
     /// </summary>
     public virtual bool ThrowObject_A()
     {
+        // If not mine, return false
+        if (!photonView.isMine) return false;
+
         // Get the destination point in world space
         Vector3 _destinationPosition = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
 
@@ -516,29 +534,19 @@ public abstract class TDS_Character : TDS_Damageable
     /// <param name="_targetPosition">Position where the object should land</param>
     public virtual bool ThrowObject(Vector3 _targetPosition)
     {
-        // Call this method in master client only
-        if (!PhotonNetwork.isMasterClient || !throwable) return false;
+        // Call this method in owner only
+        if (!photonView.isMine)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "ThrowObject_A"), new object[] { });
+            return false;
+        }
+
+        // Return false if no throwable
+        if (!throwable) return false;
 
         // Alright, then throw it !
         throwable.Throw(_targetPosition, aimAngle, RandomThrowBonusDamages);
-
-        // Set the throwable as null for all clients
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetThrowable"), new object[] { throwable.photonView.viewID, false });
-
-        Throwable = null;
-
         return true;
-    }
-
-    /// <summary>
-    /// Throws the weared throwable.
-    /// </summary>
-    /// <param name="_x">X position where to throw.</param>
-    /// <param name="_y">Y position where to throw.</param>
-    /// <param name="_z">Z position where to throw.</param>
-    public virtual void ThrowObject(float _x, float _y, float _z)
-    {
-        ThrowObject(new Vector3(_x, _y, _z));
     }
     #endregion
 

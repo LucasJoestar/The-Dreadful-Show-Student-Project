@@ -562,19 +562,6 @@ public class TDS_Player : TDS_Character, IPunObservable
 
     #region Aim & Throwables
     /// <summary>
-    /// Drop the weared throwable.
-    /// </summary>
-    public override bool DropObject()
-    {
-        if (!base.DropObject()) return false;
-
-        // Updates the animator informations
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.LostObject });
-
-        return true;
-    }
-
-    /// <summary>
     /// Start a coroutine to drop object if the button is maintained or to throw it.
     /// </summary>
     /// <returns></returns>
@@ -603,11 +590,11 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (isGrounded)
         {
             IsPlayable = false;
-            SetAnim(PlayerAnimState.Throw);
+            SetAnimOnline(PlayerAnimState.Throw);
         }
         else
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject_A"), new object[] { });
+            ThrowObject_A();
         }
 
         yield break;
@@ -625,10 +612,33 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         // Triggers event
         OnGrabObject?.Invoke();
+        return true;
+    }
 
-        // Updates animator informations
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.HasObject });
+    /// <summary>
+    /// Removes the throwable from the character.
+    /// </summary>
+    /// <returns>Returns true if successfully removed the throwable, false otherwise.</returns>
+    public override bool RemoveThrowable()
+    {
+        if (!base.RemoveThrowable()) return false;
 
+        // Set animation
+        if (playerType != PlayerType.Juggler) SetAnim(PlayerAnimState.LostObject);
+        return true;
+    }
+
+    /// <summary>
+    /// Set this character throwable.
+    /// </summary>
+    /// <param name="_throwable">Throwable to set.</param>
+    /// <returns>Returns true if successfully set the throwable, false otherwise.</returns>
+    public override bool SetThrowable(TDS_Throwable _throwable)
+    {
+        if (!base.SetThrowable(_throwable)) return false;
+
+        // Set animation
+        if (playerType != PlayerType.Juggler) SetAnim(PlayerAnimState.HasObject);
         return true;
     }
 
@@ -642,10 +652,6 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         // Triggers event
         OnThrow?.Invoke();
-
-        // Update the animator
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.LostObject });
-
         return true;
     }
     #endregion
@@ -685,8 +691,8 @@ public class TDS_Player : TDS_Character, IPunObservable
         ComboCurrent.Add(_isLight);
 
         // Set animator
-        if (_isLight) SetAnim(PlayerAnimState.LightAttack);
-        else SetAnim(PlayerAnimState.HeavyAttack);
+        if (_isLight) SetAnimOnline(PlayerAnimState.LightAttack);
+        else SetAnimOnline(PlayerAnimState.HeavyAttack);
 
         #if UNITY_EDITOR
         if (comboCurrent.Count > comboMax) Debug.LogError($"Player \"{name}\" should not have a combo of {comboCurrent.Count} !");
@@ -698,7 +704,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// </summary>
     public virtual void BreakCombo()
     {
-        if ((ComboCurrent.Count > 0) && (ComboCurrent.Count < comboMax)) SetAnim(PlayerAnimState.ComboBreaker);
+        if ((ComboCurrent.Count > 0) && (ComboCurrent.Count < comboMax)) SetAnimOnline(PlayerAnimState.ComboBreaker);
 
         ComboCurrent = new List<bool>();
         CancelInvoke("BreakCombo");
@@ -820,7 +826,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Catch
 
         // Triggers the associated animation
-        SetAnim(PlayerAnimState.Catch);
+        SetAnimOnline(PlayerAnimState.Catch);
     }
 
     /// <summary>
@@ -839,7 +845,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         rigidbody.AddForce(Vector3.right * Mathf.Clamp(speedCurrent, speedInitial, speedMax) * speedCoef * isFacingRight.ToSign() * speedMax * (isGrounded ? 10 : 2));
 
         // Triggers the associated animation
-        SetAnim(PlayerAnimState.Dodge);
+        SetAnimOnline(PlayerAnimState.Dodge);
 
         // Adds a little force to the player to move him along while dodging
         while (true)
@@ -864,8 +870,8 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         IsInvulnerable = true;
         isParrying = true;
-        
-        SetAnim(PlayerAnimState.Parrying);
+
+        SetAnimOnline(PlayerAnimState.Parrying);
 
         OnStartParry?.Invoke();
 
@@ -876,7 +882,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         }
 
         // Stop parrying
-        SetAnim(PlayerAnimState.NotParrying);
+        SetAnimOnline(PlayerAnimState.NotParrying);
         isParrying = false;
         IsInvulnerable = _wasInvulnerable;
 
@@ -949,7 +955,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (!base.BringCloser(_distance)) return false;
 
         // Set Animation
-        SetAnim(PlayerAnimState.Sliding);
+        SetAnimOnline(PlayerAnimState.Sliding);
 
         IsPlayable = false;
         IsInvulnerable = true;
@@ -976,7 +982,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (!base.PutOnTheGround()) return false;
 
         // Set animation
-        SetAnim(PlayerAnimState.Down);
+        SetAnimOnline(PlayerAnimState.Down);
 
         IsPlayable = false;
         IsInvulnerable = true;
@@ -992,7 +998,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         base.StopBringingCloser();
 
         // Set animation
-        SetAnim(PlayerAnimState.NotSliding);
+        SetAnimOnline(PlayerAnimState.NotSliding);
 
         if (invulnerabilityCoroutine == null)
         {
@@ -1019,8 +1025,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (throwable) DropObject();
 
         // Triggers associated animations
-        SetAnim(PlayerAnimState.Grounded);
-        SetAnim(PlayerAnimState.Die);
+        SetAnimOnline(PlayerAnimState.Die);
     }
 
     /// <summary>
@@ -1094,7 +1099,7 @@ public class TDS_Player : TDS_Character, IPunObservable
                 TDS_Camera.Instance.StartScreenShake(.02f, .15f);
 
                 // Triggers associated animation
-                if (!IsDown) SetAnim(PlayerAnimState.Hit);
+                if (!IsDown) SetAnimOnline(PlayerAnimState.Hit);
             }
         }
         else if (photonView.isMine)
@@ -1354,17 +1359,17 @@ public class TDS_Player : TDS_Character, IPunObservable
             {
                 if (animator.GetInteger("GroundState") < 1)
                 {
-                    SetAnim(PlayerAnimState.Falling);
+                    SetAnimOnline(PlayerAnimState.Falling);
                 }
             }
             else if (animator.GetInteger("GroundState") > -1)
             {
-                SetAnim(PlayerAnimState.Jumping);
+                SetAnimOnline(PlayerAnimState.Jumping);
             }
         }
         else if (animator.GetInteger("GroundState") != 0)
         {
-            SetAnim(PlayerAnimState.Grounded);
+            SetAnimOnline(PlayerAnimState.Grounded);
         }
     }
     
@@ -1536,13 +1541,13 @@ public class TDS_Player : TDS_Character, IPunObservable
             if (!isMoving)
             {
                 isMoving = true;
-                SetAnim(PlayerAnimState.Run);
+                SetAnimOnline(PlayerAnimState.Run);
             }
         }
         else if (isMoving)
         {
             isMoving = false;
-            SetAnim(PlayerAnimState.Idle);
+            SetAnimOnline(PlayerAnimState.Idle);
         }
     }
 
@@ -1570,14 +1575,6 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <param name="_state">State of the player animator to set.</param>
     public void SetAnim(PlayerAnimState _state)
     {
-        // Online
-        if (photonView.isMine)
-        {
-            // if (!animator) return;
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)_state });
-        }
-
-        // Local
         switch (_state)
         {
             case PlayerAnimState.Idle:
@@ -1594,6 +1591,7 @@ public class TDS_Player : TDS_Character, IPunObservable
 
             case PlayerAnimState.Die:
                 animator.SetTrigger("Die");
+                animator.SetInteger("GroundState", 0);
                 break;
 
             case PlayerAnimState.Dodge:
@@ -1676,6 +1674,20 @@ public class TDS_Player : TDS_Character, IPunObservable
     public void SetAnim(int _animState)
     {
         SetAnim((PlayerAnimState)_animState); 
+    }
+
+    /// <summary>
+    /// Set this player animator informations, for all game clients.
+    /// </summary>
+    /// <param name="_state">State of the player animator to set.</param>
+    public void SetAnimOnline(PlayerAnimState _state)
+    {
+        if (photonView.isMine)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)_state });
+        }
+
+        SetAnim(_state);
     }
     #endregion
 
@@ -1781,7 +1793,7 @@ public class TDS_Player : TDS_Character, IPunObservable
             isMoving = false;
             SpeedCurrent = 0;
 
-            SetAnim(PlayerAnimState.Idle);
+            SetAnimOnline(PlayerAnimState.Idle);
         }
 
         // When pressing the jump method, check if on ground ; If it's all good, then let's jump
@@ -1867,7 +1879,6 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Set animation on revive
         OnRevive += () => animator.SetTrigger("REVIVE");
         OnDie += () => StartCoroutine(TDS_LevelManager.Instance.CheckLivingPlayers());
-        hitBox.OnTouchedNothing += BreakCombo;
     }
 
     // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations
@@ -1889,6 +1900,12 @@ public class TDS_Player : TDS_Character, IPunObservable
         // At the end of the frame, set the previous position as this one
         previousPosition = transform.position;
         previousColliderPosition = collider.bounds.center;
+    }
+
+    // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
+    protected virtual void OnDestroy()
+    {
+        TDS_LevelManager.Instance?.RemoveOnlinePlayer(this);
     }
 
     // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
@@ -1954,12 +1971,6 @@ public class TDS_Player : TDS_Character, IPunObservable
         CheckMovementsInputs();
         CheckActionsInputs();
 	}
-
-    // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
-    protected virtual void OnDestroy()
-    {
-        TDS_LevelManager.Instance?.RemoveOnlinePlayer(this); 
-    }
     #endregion
 
     #endregion

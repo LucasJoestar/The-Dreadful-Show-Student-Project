@@ -142,12 +142,6 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
         }
     }
 
-    // Use this for initialization
-    protected override void Start()
-    {
-        base.Start();
-    }
-
     protected override void OnCollisionEnter(Collision other)
     {
         return; 

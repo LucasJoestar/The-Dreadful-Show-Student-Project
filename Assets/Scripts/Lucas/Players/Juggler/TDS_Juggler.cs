@@ -408,11 +408,10 @@ public class TDS_Juggler : TDS_Player
             {
                 // Triggers the throw animation ;
                 // If not having throwable anymore, update the animator
-                if (isGrounded)
-                {
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.Throw });
-                }
+                if (isGrounded) SetAnimOnline(PlayerAnimState.Throw);
                 else ThrowObject_A();
+
+                if (CurrentThrowableAmount == 0) break;
             }
         }
 
@@ -505,50 +504,6 @@ public class TDS_Juggler : TDS_Player
     }
 
     /// <summary>
-    /// Drop the weared throwable.
-    /// </summary>
-    public override bool DropObject()
-    {
-        if (!PhotonNetwork.isMasterClient)
-        {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "DropObject"), new object[] { });
-            return false;
-        }
-
-        // If no throwable, return
-        if (!throwable) return false;
-
-        // Drooop
-        throwable.Drop();
-
-        // Remove the throwable for all clients
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetThrowable"), new object[] { throwable.photonView.viewID, false });
-
-        // Set ownership
-        throwable.photonView.TransferOwnership(PhotonNetwork.masterClient);
-
-        // Set new throwable
-        throwable = null;
-        if (CurrentThrowableAmount > 0)
-        {
-            Throwable = Throwables[0];
-        }
-
-        // Updates the animator informations
-        if (CurrentThrowableAmount == 0)
-        {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.LostObject });
-        }
-        else
-        {
-            // Updates juggling informations
-            UpdateJuggleParameters(false);
-        }
-
-        return true;
-    }
-
-    /// <summary>
     /// Try to grab a throwable.
     /// When grabbed, the object follows the character and can be thrown by this one.
     /// </summary>
@@ -556,34 +511,15 @@ public class TDS_Juggler : TDS_Player
     /// <returns>Returns true if the throwable was successfully grabbed, false either.</returns>
     public override bool GrabObject(TDS_Throwable _throwable)
     {
+        // Call this method in master client only
         if (!PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "GrabObject"), new object[] { _throwable.photonView.viewID });
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "GrabObject"), new object[] { _throwable.photonView.viewID });
             return false;
         }
 
         // If currently wearing the maximum amount of throwables he can, return
-        if (CurrentThrowableAmount == maxThrowableAmount) return false;
-
-        // Take the object
-        if (!_throwable.PickUp(this, handsTransform)) return false;
-
-        // Set the throwable for all clients
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetThrowable"), new object[] { _throwable.photonView.viewID, true });
-
-        Throwable = _throwable;
-
-        // Updates juggling informations
-        UpdateJuggleParameters(true);
-
-        // Updates animator informations
-        if (CurrentThrowableAmount > 0)
-        {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.HasObject });
-        }
-
-        // Set ownership
-        _throwable.photonView.TransferOwnership(photonView.owner);
+        if ((CurrentThrowableAmount == maxThrowableAmount) || !_throwable.PickUp(this)) return false;
 
         return true;
     }
@@ -690,39 +626,47 @@ public class TDS_Juggler : TDS_Player
     }
 
     /// <summary>
-    /// Set this character throwable (Grab or Throw / Drop).
+    /// Removes the throwable from the character.
     /// </summary>
-    /// <param name="_throwableID">ID of the throwable to set.</param>
-    /// <param name="_doGrab">Indicates if the character grabs the throwable or throw / drop it.</param>
-    public override void SetThrowable(int _throwableID, bool _doGrab)
+    /// <returns>Returns true if successfully removed the throwable, false otherwise.</returns>
+    public override bool RemoveThrowable()
     {
-        TDS_Throwable _throwable = PhotonView.Find(_throwableID).GetComponent<TDS_Throwable>();
+        if (!throwable) return false;
 
-        if (_throwable)
+        throwable = null;
+        if (CurrentThrowableAmount > 0)
         {
-            if (_doGrab)
-            {
-                _throwable.transform.SetParent( handsTransform, true);
-                Throwable = _throwable;
-            }
-            else
-            {
-                _throwable.transform.SetParent(null, true);
-                throwable = null;
-                if (CurrentThrowableAmount > 0)
-                {
-                    Throwable = Throwables[0];
-                }
-            }
+            Throwable = Throwables[0];
+
+            // Updates juggling informations
+            UpdateJuggleParameters(false);
         }
-        else
+        else SetAnim(PlayerAnimState.LostObject);
+
+        return true;
+    }
+
+    /// <summary>
+    /// Set this character throwable.
+    /// </summary>
+    /// <param name="_throwable">Throwable to set.</param>
+    /// <returns>Returns true if successfully set the throwable, false otherwise.</returns>
+    public override bool SetThrowable(TDS_Throwable _throwable)
+    {
+        // Get if was juggling before taking this throwable
+        bool _wasJuggling = CurrentThrowableAmount > 0;
+
+        if (!base.SetThrowable(_throwable)) return false;
+
+        if (CurrentThrowableAmount > 0)
         {
-            throwable = null;
-            if (CurrentThrowableAmount > 0)
-            {
-                Throwable = Throwables[0];
-            }
+            if (!_wasJuggling) SetAnim(PlayerAnimState.HasObject);
+
+            // Updates juggling informations
+            UpdateJuggleParameters(true);
         }
+
+        return true;
     }
 
     /// <summary>
@@ -783,63 +727,6 @@ public class TDS_Juggler : TDS_Player
 
         // Starts position lerp coroutine
         throwableLerpCoroutine = StartCoroutine(LerpThrowableToHand());
-    }
-
-    /// <summary>
-    /// Throws the weared throwable.
-    /// </summary>
-    public override bool ThrowObject_A()
-    {
-        if (photonView.isMine)
-        {
-            // Get the destination point in world space
-            Vector3 _targetPosition = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
-
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ThrowObject"), new object[] { _targetPosition.x, _targetPosition.y, _targetPosition.z });
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /// <summary>
-    /// Throws the weared throwable.
-    /// </summary>
-    /// <param name="_targetPosition">Position where the object should land.</param>
-    public override bool ThrowObject(Vector3 _targetPosition)
-    {
-        // Call this method in master client only
-        if (!PhotonNetwork.isMasterClient || !throwable) return false;
-
-        // Now, throw that object
-        throwable.Throw(_targetPosition, aimAngle, RandomThrowBonusDamages);
-
-        // Remove the throwable for all clients
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetThrowable"), new object[] { throwable.photonView.viewID, false });
-
-        // Set ownership
-        throwable.photonView.TransferOwnership(PhotonNetwork.masterClient);
-
-        // Set new throwable
-        throwable = null;
-        if (CurrentThrowableAmount > 0)
-        {
-            Throwable = Throwables[0];
-        }
-        else if (isAiming) StopAiming();
-
-        if (CurrentThrowableAmount == 0)
-        {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)PlayerAnimState.LostObject });
-        }
-        else
-        {
-            // Updates juggling informations
-            UpdateJuggleParameters(false);
-        }
-
-        return true;
     }
 
     /// <summary>

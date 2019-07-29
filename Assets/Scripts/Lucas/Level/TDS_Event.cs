@@ -163,12 +163,12 @@ public class TDS_Event
                 if (doNeedSpecificPlayerType && TDS_LevelManager.Instance.AllPlayers.Any(p => p.PlayerType == playerType))
                 {
                     TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", TDS_LevelManager.Instance.AllPlayers.ToList().Where(p => p.PlayerType == playerType).Select(p => p.photonView.owner).First(), TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateDialogBox")
-                      , new object[] { TDS_GameManager.GetDialog(textID)[1] });
+                      , new object[] { TDS_GameManager.GetDialog(textID)[0] });
                 }
                 else
                 {
                     TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateDialogBox")
-                      , new object[] { TDS_GameManager.GetDialog(textID)[1] });
+                      , new object[] { TDS_GameManager.GetDialog(textID)[0] });
                 }
                 break;
 

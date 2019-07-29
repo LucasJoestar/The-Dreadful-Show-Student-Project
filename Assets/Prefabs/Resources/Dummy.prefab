@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 674643195}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.111, z: -0.32}
-  m_LocalScale: {x: 1.9388037, y: 0.05, z: 1.5}
+  m_LocalPosition: {x: 0, y: 0.225, z: 0}
+  m_LocalScale: {x: 1.9388037, y: 0.01, z: 1.5}
   m_Children: []
   m_Father: {fileID: 8209000919409631136}
   m_RootOrder: 1
@@ -57,7 +57,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: d6304ef16db9b4742943b4a113642aba, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 8209000919409631141}
+  burnEffect: {fileID: 0}
   collider: {fileID: 8209000919409631142}
   sprite: {fileID: 8209000919574048872}
   isDead: 0
