@@ -40,7 +40,7 @@ public class TDS_DiffuseOutline : MonoBehaviour
         {
             if (defaultMaterial == null)
             {
-                defaultMaterial = Resources.Load<Material>("Diffuse");
+                defaultMaterial = Resources.Load<Material>("DiffuseOutline");
             }
             return defaultMaterial;
         }

@@ -365,7 +365,7 @@ GameObject:
   - component: {fileID: 1462314083}
   - component: {fileID: 1462314082}
   m_Layer: 0
-  m_Name: Dummy_diffuseOutline
+  m_Name: Dummy_diffuse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -388,7 +388,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 16ce0f7cb3c68fb44a05aa16d9d03362, type: 2}
+  - {fileID: 2100000, guid: 2f1dc958000802945936be65e2360485, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -468,7 +468,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 01bd2de02961c154f9b9cf47e9437e1e, type: 2}
+  - {fileID: 2100000, guid: d9bf6c42202a45440bb76cf52d8a5846, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -522,12 +522,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1723894390}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea2d75b4e01762a488981a2671146c0c, type: 3}
+  m_Script: {fileID: 11500000, guid: bcc1f8f4fb86112428385c76d98aecee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enableOutline: 1
-  color: {r: 0.8490566, g: 0, b: 0, a: 1}
-  outlineSize: 4.08
+  color: {r: 1, g: 0, b: 0.88149357, a: 1}
+  outlineSize: 11.22
 --- !u!1 &1793197244
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,8 +607,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1823450684}
   - component: {fileID: 1823450683}
+  - component: {fileID: 1823450685}
   m_Layer: 0
-  m_Name: Dummy_Diffuse
+  m_Name: Dummy_diffuseOutline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -676,3 +677,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1823450685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823450682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea2d75b4e01762a488981a2671146c0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableOutline: 1
+  color: {r: 0.9245283, g: 0.21028489, b: 0, a: 1}
+  outlineSize: 15

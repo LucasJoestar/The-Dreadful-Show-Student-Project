@@ -26,8 +26,6 @@
             "CanUseSpriteAtlas"="True"
         }   
 
-        UsePass "Custom/Outline/OUTLINE"
-
         Cull Off
         Lighting Off
         ZWrite Off
