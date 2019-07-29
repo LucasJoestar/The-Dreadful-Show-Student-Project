@@ -729,11 +729,22 @@ public abstract class TDS_Enemy : TDS_Character
             }
             yield return null;
 
+            //If the agent is out of bounds, make them go into the camera bounds
             if (TDS_Camera.Instance.CurrentBounds.XMax < transform.position.x || TDS_Camera.Instance.CurrentBounds.XMin > transform.position.x || Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) <= 1) 
             {
                 yield return new WaitForSeconds(.1f);
                 enemyState = EnemyState.ComputingPath;
                 yield break;
+            }
+            //Search a new target and chack if an attack can be casted, if so, break and attack
+            playerTarget = SearchTarget();
+            if (AttackCanBeCasted())
+            {
+                agent.StopAgent();
+                agent.RemoveAvoidanceLayer(new string[] { "Player" });
+                SetAnimationState((int)EnemyAnimationState.Idle);
+                enemyState = EnemyState.Attacking; 
+                yield break; 
             }
         }
         agent.RemoveAvoidanceLayer(new string[] { "Player" });
@@ -752,11 +763,7 @@ public abstract class TDS_Enemy : TDS_Character
                 yield return null;
             }
         }
-        playerTarget = SearchTarget(); 
-        if (playerTarget)
-            enemyState = EnemyState.ComputingPath;
-        else
-            enemyState = EnemyState.Searching;
+        enemyState = EnemyState.MakingDecision;
         yield return null; 
     }
     #endregion
@@ -770,15 +777,16 @@ public abstract class TDS_Enemy : TDS_Character
     {
         TDS_Player[] _targets = null; 
         
-        if(!TDS_LevelManager.Instance)
-            _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
+        if(TDS_LevelManager.Instance)
+            _targets = TDS_LevelManager.Instance.AllPlayers.Where(p => Vector3.Distance(p.transform.position, transform.position) <= detectionRange).ToArray();
         else
-            _targets = TDS_LevelManager.Instance.AllPlayers.Where(p => Vector3.Distance(p.transform.position, transform.position) <= detectionRange).ToArray(); 
-        
+            _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
+
+
         if (_targets.Length == 0) return null;
         //Set constraints here (Distance, type, etc...)
         _targets = _targets.Where(t => !t.IsDead).OrderBy(p => Vector3.Distance(transform.position, p.transform.position)).ToArray();
-        if (Area) _targets.OrderBy(t => Area.GetEnemyContactCount(t, GetMaxRange(), this)); 
+        if (Area) _targets.OrderBy(t => Area.GetPlayerTargetCount(t.PlayerType)); 
         return _targets.FirstOrDefault();
     }
     #endregion
@@ -953,53 +961,56 @@ public abstract class TDS_Enemy : TDS_Character
     /// Also if there is to much enemies close enough the player, go to a wandering position
     /// </summary>
     /// <returns></returns>
-    protected virtual Vector3 GetAttackingPosition(out bool _hastoWander)
+    protected virtual Vector3 GetAttackingPosition(out bool _hasToWander)
     {
+        //Search a new target
+        playerTarget = SearchTarget(); 
+
         Vector3 _offset = Vector3.zero;
         Vector3 _returnedPosition = transform.position; 
-        _hastoWander = Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) > 1;
-        if (agent.IsMoving && playerTarget)
+        _hasToWander = Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) > 1;
+
+        // If the agent is currently wandering, keep the offset with the target
+        if (agent.IsMoving && playerTarget && _hasToWander)
         {
             _offset = playerTarget.transform.position - targetLastPosition;
 
             _offset.y = 0; 
-            targetLastPosition = playerTarget.transform.position;
             _returnedPosition = agent.LastPosition + _offset;
-            _returnedPosition.x = Mathf.Clamp(_returnedPosition.x, TDS_Camera.Instance.CurrentBounds.XMin, TDS_Camera.Instance.CurrentBounds.XMax); 
-            return _returnedPosition; 
-        }
-
-        _offset.z = Random.Range(-agent.Radius, agent.Radius); 
-
-        if (throwable)
-        {
-            _hastoWander = false; 
-            //Check if the agent is near enough to throw immediatly, or if he is to far away to throw
-            float _distance = Mathf.Abs(playerTarget.transform.position.x - transform.position.x); 
-            _offset.x = _distance < throwRange / 2 ? _distance : _distance < throwRange ? Random.Range(throwRange /2, _distance) : Random.Range(throwRange / 2, throwRange);
-        }
-        else if(!_hastoWander) 
-        {
-            TDS_EnemyAttack _attack = GetAttack();
-            if (_attack)
-            {
-                _offset.x = Random.Range(_attack.MinRange, _attack.MaxRange) - (agent.Radius);
-            }
-            else
-                _offset.x = Random.Range(GetMinRange(), GetMaxRange()) - agent.Radius;
-
-            if (_offset.x < agent.Radius) _offset.x = agent.Radius; 
         }
         else
         {
-            _offset = new Vector3(Random.Range(wanderingRangeMin, wanderingRangeMax), 0, Random.Range(wanderingRangeMin, wanderingRangeMax));
+            _offset.z = Random.Range(-agent.Radius, agent.Radius);
+            //If the agent has a throwable, get in range to throw it on the target
+            if (throwable)
+            {
+                _hasToWander = false;
+                //Check if the agent is near enough to throw immediatly, or if he is to far away to throw
+                float _distance = Mathf.Abs(playerTarget.transform.position.x - transform.position.x);
+                _offset.x = _distance < throwRange / 2 ? _distance : _distance < throwRange ? Random.Range(throwRange / 2, _distance) : Random.Range(throwRange / 2, throwRange);
+            }
+            else if (!_hasToWander)
+            {
+                TDS_EnemyAttack _attack = GetAttack();
+                if (_attack)
+                {
+                    _offset.x = Random.Range(_attack.MinRange, _attack.MaxRange) - (agent.Radius);
+                }
+
+                if (_offset.x < agent.Radius) _offset.x = agent.Radius;
+            }
+            else
+            {
+                _offset = new Vector3(Random.Range(wanderingRangeMin, wanderingRangeMax), 0, Random.Range(wanderingRangeMin, wanderingRangeMax));
+            }
+
+            int _coeff = _hasToWander ? Random.value > .5f ? 1 : -1 : playerTarget.transform.position.x > transform.position.x ? -1 : 1;
+            _offset.x *= _coeff;
+
+            _returnedPosition = playerTarget.transform.position + _offset;
         }
 
-        int _coeff = _hastoWander ? Random.value > .5f ? 1 : -1 : playerTarget.transform.position.x > transform.position.x ? -1 : 1;
-        _offset.x *= _coeff;
-
         targetLastPosition = playerTarget.transform.position;
-        _returnedPosition = playerTarget.transform.position + _offset;
         _returnedPosition.x = Mathf.Clamp(_returnedPosition.x, TDS_Camera.Instance.CurrentBounds.XMin, TDS_Camera.Instance.CurrentBounds.XMax);
         return _returnedPosition;
     }
@@ -1148,7 +1159,7 @@ public abstract class TDS_Enemy : TDS_Character
                 animator.SetTrigger("hitTrigger");
                 break;
             case EnemyAnimationState.Death:
-                animator.SetTrigger("deathTrigger");
+                animator.SetBool("isDead", true);
                 break; 
             case EnemyAnimationState.BringTargetCloser:
                 animator.SetTrigger("BringTargetCloser");
