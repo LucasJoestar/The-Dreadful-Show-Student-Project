@@ -285,20 +285,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64604b01ce952ca4c84d469ae0ef00c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isHeld: 0
-  collider: {fileID: 7593376261498355137}
-  bouncePower: 0.5
-  shadow: {fileID: 686166241511664065}
-  bonusDamage: 0
-  objectDurability: 10
-  weight: 2
-  rigidbody: {fileID: 7593376261498355140}
   owner: {fileID: 0}
-  hitBox: {fileID: 0}
   attack: {fileID: 11400000, guid: b6d5b61386be20d41900816b63cf19ee, type: 2}
+  collider: {fileID: 7593376261498355137}
+  shadow: {fileID: 686166241511664065}
+  hitBox: {fileID: 0}
+  rigidbody: {fileID: 7593376261498355140}
+  isHeld: 0
+  bouncePower: 0.5
+  bonusDamage: 0
+  ObjectDurability: 2
+  weight: 2
   explodingDelay: 5
-  explosionParticles: {fileID: 7879058467074326629, guid: d5fabea95f68b344682cf1455e3d798f,
-    type: 3}
   animator: {fileID: 2557665236746908573}
   animationSpeedMin: 0.5
   animationSpeedMax: 3.5
@@ -338,8 +336,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 9136283519379038369}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 27
-  instantiationId: 27
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &9136283519379038369

@@ -202,16 +202,16 @@ MonoBehaviour:
   baseOffset: 0
   detectionRange: 2.5
   height: 2.4
-  radius: 1.43
-  pathRadius: 0.2
+  radius: 1.45
+  pathRadius: 0.73
   speed: 4
-  steerForce: 80
+  steerForce: 89
   agentPriority: 1
   detectionAccuracy: 5
   detectionFieldOfView: 90
   avoidanceLayer:
     serializedVersion: 2
-    m_Bits: 11264
+    m_Bits: 9216
 --- !u!54 &2085316961524171260
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -283,8 +283,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 2085316961524171248}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 33
+  instantiationId: 33
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &2085316961524171248
@@ -409,7 +409,6 @@ MonoBehaviour:
   canBeDown: 0
   canThrow: 0
   enemyState: 0
-  detectionRange: 25
   tauntProbability: 0
   throwRange: 1
   wanderingRangeMin: 3

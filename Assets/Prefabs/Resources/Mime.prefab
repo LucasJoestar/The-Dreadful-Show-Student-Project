@@ -264,7 +264,7 @@ MonoBehaviour:
   detectionRange: 3.5
   height: 2.4
   radius: 1
-  pathRadius: 0.25
+  pathRadius: 0.5
   speed: 5
   steerForce: 80
   agentPriority: 1
@@ -317,14 +317,13 @@ MonoBehaviour:
   canBeDown: 1
   canThrow: 1
   enemyState: 0
-  detectionRange: 20
   tauntProbability: 70
   throwRange: 10
   wanderingRangeMin: 5
   wanderingRangeMax: 9
   attacks:
   - {fileID: 11400000, guid: 4aebd765c3be8d8498beae7a85bf9740, type: 2}
-  - {fileID: 11400000, guid: 9a7bab14d4650d0429dce35196900531, type: 2}
+  - {fileID: 11400000, guid: d0594515ea1b55a449e818a5ed89cc0a, type: 2}
   - {fileID: 11400000, guid: 99ea19334762d9742ba3b366b66dcc29, type: 2}
   agent: {fileID: 7357116028466201209}
   hasEvolved: 0
@@ -351,8 +350,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 7357021260321849951}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 28
-  instantiationId: 28
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &7357021260321849951

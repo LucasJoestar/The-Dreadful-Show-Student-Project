@@ -93,12 +93,12 @@ public abstract class TDS_Boss : TDS_Enemy
     {
         if (!PhotonNetwork.isMasterClient || castedAttack == null) return false;
         if (castedAttack.GetType() == typeof(TDS_SpinningAttackBehaviour)) return true; 
-        if (Mathf.Abs(transform.position.z - playerTarget.transform.position.z) >= .25f)
+        if (Mathf.Abs(transform.position.z - playerTarget.transform.position.z) > collider.size.z)
         {
             //Debug.Log(Mathf.Abs(transform.position.z - playerTarget.transform.position.z)); 
             return false;
         }
-        float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x); 
+        float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x) - agent.Radius;
         return castedAttack.MaxRange > _distance && _distance > castedAttack.MinRange; 
     }
 
@@ -240,9 +240,8 @@ public abstract class TDS_Boss : TDS_Enemy
                 yield break;
             }
             //if the target is too far from the destination, recalculate the path
-            if (Mathf.Abs(agent.LastPosition.z - playerTarget.transform.position.z) > .6f ||  Mathf.Abs(transform.position.x - playerTarget.transform.position.x) > castedAttack.MaxRange)
+            if (Mathf.Abs(agent.LastPosition.z - playerTarget.transform.position.z) > collider.size.z ||  Mathf.Abs(transform.position.x - playerTarget.transform.position.x) > castedAttack.MaxRange - agent.Radius)
             {
-                yield return new WaitForSeconds(.1f);
                 enemyState = EnemyState.ComputingPath;
                 yield break;
             }
@@ -362,12 +361,9 @@ public abstract class TDS_Boss : TDS_Enemy
         {
             int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;
             float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x);
-            if(_distance < castedAttack.MinRange)
-            {
-                castedAttack = GetAttack(); 
-            }
-            _attackingPosition.x = _distance < castedAttack.MaxRange ? transform.position.x : playerTarget.transform.position.x + ((castedAttack.MaxRange - agent.Radius) * _coeff);
-            _attackingPosition.z = playerTarget.transform.position.z; 
+
+            Debug.Log(_distance + " /// " + castedAttack.MinRange + "-->" + castedAttack.MaxRange);
+            _attackingPosition = playerTarget.transform.position + new Vector3(UnityEngine.Random.Range(castedAttack.MinRange, castedAttack.MaxRange) - (agent.Radius), 0, 0); 
         }
         return _attackingPosition;
     }
