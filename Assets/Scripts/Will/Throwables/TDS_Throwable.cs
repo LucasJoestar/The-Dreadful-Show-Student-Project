@@ -79,6 +79,7 @@ public class TDS_Throwable : PunBehaviour
     /// </summary>
     [Header("Settings")]
     [SerializeField] protected bool isHeld = false;
+    public bool IsHeld { get { return isHeld; } }
 
     /// <summary>
     /// Bounce power used to make the object bounce on object hit.

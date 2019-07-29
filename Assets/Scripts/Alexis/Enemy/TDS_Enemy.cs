@@ -167,19 +167,15 @@ public abstract class TDS_Enemy : TDS_Character
     protected bool isWaiting = false;
 
     /// <summary>
-    /// Behaviour Coroutine, used when the Behaviour is called and stopped
-    /// </summary>
-    protected Coroutine behaviourCoroutine = null;
-    /// <summary>
-    /// Additional Coroutine, used when the CastAttack, CastDetection, CastGrab and CastThrow are called or stopped
-    /// </summary>
-    protected Coroutine additionalCoroutine = null;
-
-    /// <summary>
     /// State of the enemy 
     /// Check this state to know what to do
     /// </summary>
-    [SerializeField] protected EnemyState enemyState = EnemyState.Searching;
+    [SerializeField] protected EnemyState enemyState = EnemyState.None;
+    
+    public EnemyState EnemyState
+    {
+        get { return EnemyState; }
+    }
 
     /*
     /// <summary>
@@ -421,95 +417,9 @@ public abstract class TDS_Enemy : TDS_Character
     public IEnumerator ApplyRecoveryTime(float _recoveryTime)
     {
         if (!PhotonNetwork.isMasterClient) yield break;
-        if (behaviourCoroutine != null) StopCoroutine(behaviourCoroutine); 
+        //if (behaviourCoroutine != null) StopCoroutine(behaviourCoroutine); 
         yield return new WaitForSeconds(_recoveryTime);
-        behaviourCoroutine = StartCoroutine(Behaviour());
-        yield break;
-    }
-
-    /// <summary>
-    /// <see cref="TDS_Minion.Behaviour"/> or <see cref="TDS_Punk.Behaviour"/>
-    /// </summary>
-    /// <returns></returns>
-    protected virtual IEnumerator Behaviour()
-    {
-        if (!PhotonNetwork.isMasterClient) yield break; 
-        // If the enemy is dead or paralyzed, they can't behave
-        if (isDead || (IsParalyzed && IsPacific)) yield break;
-        // If there is no target, the agent has to get one
-        if (!playerTarget || playerTarget.IsDead)
-            enemyState = EnemyState.Searching;
-        switch (enemyState)
-        {
-            #region Searching
-            case EnemyState.Searching:
-                // If there is no target, search a new target
-                SetAnimationState((int)EnemyAnimationState.Idle); 
-                playerTarget = SearchTarget();
-                //If a target is found -> Set the state to TakingDecision
-                if (playerTarget)
-                {
-                    enemyState = EnemyState.MakingDecision;
-                    goto case EnemyState.MakingDecision;
-                }
-                //ELSE -> Set the state to Search
-                else
-                {
-                    enemyState = EnemyState.Wandering;
-                    break;
-                }
-            #endregion
-            #region Making Decision
-            case EnemyState.MakingDecision:
-                TakeDecision();
-                break; 
-            #endregion
-            #region Computing Path
-            case EnemyState.ComputingPath:
-                ComputePath();
-                break; 
-            #endregion
-            #region Getting In Range
-            case EnemyState.GettingInRange:
-                additionalCoroutine = StartCoroutine(CastDetection());
-                yield return additionalCoroutine; 
-                break; 
-            #endregion
-            #region Attacking
-            case EnemyState.Attacking:
-                additionalCoroutine = StartCoroutine(CastAttack());
-                yield return additionalCoroutine; 
-                break; 
-            #endregion
-            #region Grabbing Object
-            case EnemyState.PickingUpObject:
-                additionalCoroutine = StartCoroutine(CastGrab(targetedThrowable));
-                yield return additionalCoroutine; 
-                targetedThrowable = null;
-                break; 
-            #endregion
-            #region Throwing Object
-            case EnemyState.ThrowingObject:
-                additionalCoroutine = StartCoroutine(CastThrow());
-                yield return additionalCoroutine;
-                break;
-            #endregion
-            #region Wandering
-            case EnemyState.Wandering:
-                additionalCoroutine = StartCoroutine(Wander());
-                yield return additionalCoroutine; 
-                break;
-            case EnemyState.Waiting:
-                additionalCoroutine = StartCoroutine(Waiting());
-                yield return additionalCoroutine;
-                break; 
-            #endregion
-            default:
-                break;
-        }
-        additionalCoroutine = null; 
-        yield return new WaitForSeconds(.1f);
-        behaviourCoroutine = StartCoroutine(Behaviour());
+        SetEnemyState(EnemyState.MakingDecision); 
         yield break;
     }
 
@@ -519,12 +429,13 @@ public abstract class TDS_Enemy : TDS_Character
     /// Wait for the end of the attack
     /// </summary>
     /// <returns></returns>
-    protected virtual IEnumerator CastAttack()
+    public virtual IEnumerator CastAttack()
     {
+        Debug.Log("Attack!"); 
         if (isDead || !PhotonNetwork.isMasterClient) yield break; 
         if(IsPacific)
         {
-            enemyState = EnemyState.MakingDecision;
+            SetEnemyState(EnemyState.MakingDecision);
             yield break; 
         }
         //Throw attack
@@ -542,10 +453,12 @@ public abstract class TDS_Enemy : TDS_Character
         float _cooldown = StartAttack();
         while (IsAttacking)
         {
+            Debug.Log("Is Attacking!");
             yield return new WaitForSeconds(.1f);
         }
+        Debug.Log("End attack!"); 
         yield return new WaitForSeconds(_cooldown);
-        enemyState = EnemyState.MakingDecision;
+        SetEnemyState(EnemyState.MakingDecision);
     }
 
     /// <summary>
@@ -554,7 +467,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// Check if there is player to attack  
     /// </summary>
     /// <returns></returns>
-    protected virtual IEnumerator CastDetection()
+    public virtual IEnumerator CastDetection()
     {
         if (isDead || !PhotonNetwork.isMasterClient) yield break; 
         if(animator.GetInteger("animationState") != 1) SetAnimationState((int)EnemyAnimationState.Run);
@@ -584,7 +497,7 @@ public abstract class TDS_Enemy : TDS_Character
                     if (Vector3.Distance(transform.position, _closestPosition) <= collider.size.z)
                     {
                         if (Vector3.Angle(targetedThrowable.transform.position - transform.position, transform.right) < 90) Flip();
-                        enemyState = EnemyState.PickingUpObject;
+                        SetEnemyState(EnemyState.PickingUpObject);
                         yield break;
                     }
                 }
@@ -602,7 +515,7 @@ public abstract class TDS_Enemy : TDS_Character
                                 //Get the closest throwable
                                 targetedThrowable = _colliders.Select(c => c.GetComponent<TDS_Throwable>()).First();
                                 //Set a new path to the throwable 
-                                enemyState = EnemyState.ComputingPath;
+                                SetEnemyState(EnemyState.ComputingPath);
                                 yield break; 
                             }
                         }
@@ -617,8 +530,8 @@ public abstract class TDS_Enemy : TDS_Character
                 || (Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) >= 1)
                 || (TDS_Camera.Instance.CurrentBounds.XMax < transform.position.x && agent.Velocity.x > 0) || (TDS_Camera.Instance.CurrentBounds.XMin > transform.position.x && agent.Velocity.x < 0))
             {
-                yield return new WaitForSeconds(.1f); 
-                enemyState = EnemyState.ComputingPath;
+                yield return new WaitForSeconds(.1f);
+                SetEnemyState(EnemyState.ComputingPath);
                 //Debug.Log($"Distance => {Vector3.Distance(targetLastPosition, playerTarget.transform.position) > GetMaxRange()}\n" +
                 //    $"Too Many enemies => {Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) >= 1}\n" +
                 //    $"Out of camera bounds => {(TDS_Camera.Instance.CurrentBounds.XMax < transform.position.x && agent.Velocity.x > 0) || (TDS_Camera.Instance.CurrentBounds.XMin > transform.position.x && agent.Velocity.x < 0)}"); 
@@ -628,7 +541,8 @@ public abstract class TDS_Enemy : TDS_Character
             // if any attack can be casted 
             if (AttackCanBeCasted() && !throwable)
             {
-                enemyState = EnemyState.Attacking;
+                Debug.Log("IN!"); 
+                SetEnemyState(EnemyState.Attacking);
                 yield break;
             }
         }
@@ -637,10 +551,10 @@ public abstract class TDS_Enemy : TDS_Character
         // At the end of the path, is the agent has to throw an object, throw it
         if (throwable)
         {
-            enemyState = EnemyState.ThrowingObject;
+            SetEnemyState(EnemyState.ThrowingObject);
             yield break; 
         }
-        enemyState = EnemyState.MakingDecision;
+        SetEnemyState(EnemyState.MakingDecision);
     }
 
     /// <summary>
@@ -649,9 +563,15 @@ public abstract class TDS_Enemy : TDS_Character
     /// Start and wait for the end of the animation
     /// <param name="_throwable">Object to throw</param>
     /// <returns></returns>
-    protected IEnumerator CastGrab(TDS_Throwable _throwable)
+    public IEnumerator CastGrab()
     {
-        if (isDead || !PhotonNetwork.isMasterClient) yield break; 
+        if (isDead || !PhotonNetwork.isMasterClient) yield break;
+        if(targetedThrowable == null || targetedThrowable.IsHeld)
+        {
+            if (targetedThrowable) targetedThrowable = null; 
+            SetEnemyState(EnemyState.MakingDecision);
+            yield break; 
+        }
         //Pick up an object
         if (agent.IsMoving)
         {
@@ -666,7 +586,7 @@ public abstract class TDS_Enemy : TDS_Character
         if (CanThrow)
         {
             //Grab the object 
-            isWaiting = GrabObject(_throwable);
+            isWaiting = GrabObject(targetedThrowable);
             //Wait until the end of the animation 
             while (isWaiting)
             {
@@ -674,7 +594,7 @@ public abstract class TDS_Enemy : TDS_Character
             }
         }
         yield return null;
-        enemyState = EnemyState.MakingDecision;
+        SetEnemyState(EnemyState.MakingDecision);
     }
 
     /// <summary>
@@ -683,7 +603,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// Start and wait for the end of the animation
     /// </summary>
     /// <returns></returns>
-    protected IEnumerator CastThrow()
+    public IEnumerator CastThrow()
     {
         if (isDead || !PhotonNetwork.isMasterClient) yield break; 
         //Throw the held object
@@ -713,7 +633,7 @@ public abstract class TDS_Enemy : TDS_Character
             canThrow = false;
             SetAnimationState((int)EnemyAnimationState.Idle);
         }
-        enemyState = EnemyState.MakingDecision;
+        SetEnemyState(EnemyState.MakingDecision);
     }
 
     /// <summary>
@@ -722,7 +642,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// Move until reaching a position then wait between 0 and 1 seconds before searching a new target
     /// </summary>
     /// <returns></returns>
-    protected virtual IEnumerator Wander()
+    public virtual IEnumerator Wander()
     {
         if (animator.GetInteger("animationState") != 1) SetAnimationState((int)EnemyAnimationState.Run);
         agent.AddAvoidanceLayer(new string[] { "Player" }); 
@@ -742,18 +662,17 @@ public abstract class TDS_Enemy : TDS_Character
             //If the agent is out of bounds, make them go into the camera bounds
             if (TDS_Camera.Instance.CurrentBounds.XMax < transform.position.x || TDS_Camera.Instance.CurrentBounds.XMin > transform.position.x || Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) <= 1) 
             {
-                yield return new WaitForSeconds(.1f);
-                enemyState = EnemyState.ComputingPath;
+                SetEnemyState(EnemyState.ComputingPath);
                 yield break;
             }
             //Search a new target and chack if an attack can be casted, if so, break and attack
-            playerTarget = SearchTarget();
+            playerTarget = GetPlayerTarget();
             if (AttackCanBeCasted())
             {
                 agent.StopAgent();
                 agent.RemoveAvoidanceLayer(new string[] { "Player" });
                 SetAnimationState((int)EnemyAnimationState.Idle);
-                enemyState = EnemyState.Attacking; 
+                SetEnemyState(EnemyState.Attacking);
                 yield break; 
             }
         }
@@ -763,10 +682,14 @@ public abstract class TDS_Enemy : TDS_Character
             Flip();
         }
         SetAnimationState((int)EnemyAnimationState.Idle);
-        enemyState = EnemyState.Waiting; 
+        SetEnemyState(EnemyState.Waiting);
     }
 
-    private IEnumerator Waiting()
+    /// <summary>
+    /// Waiting Method
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator Waiting()
     {
         targetLastPosition = playerTarget.transform.position; 
         Vector3 _offset = playerTarget.transform.position - targetLastPosition;
@@ -790,10 +713,10 @@ public abstract class TDS_Enemy : TDS_Character
                     yield return new WaitForSeconds(Random.Range(1, 5)); 
                 }
             }
-            playerTarget = SearchTarget(); 
+            playerTarget = GetPlayerTarget(); 
             yield return null;
         }
-        enemyState = EnemyState.MakingDecision; 
+        SetEnemyState(EnemyState.MakingDecision);
     }
     #endregion
 
@@ -802,7 +725,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// Search the best player to target
     /// </summary>
     /// <returns>Best player to target</returns>
-    protected virtual TDS_Player SearchTarget()
+    protected virtual TDS_Player GetPlayerTarget()
     {
         TDS_Player[] _targets = null; 
         
@@ -939,7 +862,9 @@ public abstract class TDS_Enemy : TDS_Character
         base.StopBringingCloser();
 
         SetAnimationState((int)EnemyAnimationState.Idle);
-        behaviourCoroutine = StartCoroutine(Behaviour());
+
+        //behaviourCoroutine = StartCoroutine(Behaviour());
+        SetEnemyState(EnemyState.MakingDecision); 
     }
 
     /// <summary>
@@ -979,7 +904,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public void TargetBrought()
     {
-        BringingTarget.OnStopBringingCloser -= this.TargetBrought;
+        BringingTarget.OnStopBringingCloser -= TargetBrought;
         BringingTarget = null;
         SetAnimationState((int)EnemyAnimationState.BringTargetCloser); 
     }
@@ -994,7 +919,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected virtual Vector3 GetAttackingPosition(out bool _hasToWander)
     {
         //Search a new target
-        playerTarget = SearchTarget(); 
+        playerTarget = GetPlayerTarget(); 
 
         Vector3 _offset = Vector3.zero;
         Vector3 _returnedPosition = transform.position; 
@@ -1102,7 +1027,8 @@ public abstract class TDS_Enemy : TDS_Character
         if (!PhotonNetwork.isMasterClient) return;
         IsPacific = false;
         IsParalyzed = false;
-        behaviourCoroutine = StartCoroutine(Behaviour());
+        SetEnemyState(EnemyState.MakingDecision);
+        //behaviourCoroutine = StartCoroutine(Behaviour());
     }
 
     /// <summary>
@@ -1111,11 +1037,13 @@ public abstract class TDS_Enemy : TDS_Character
     public void ActivateEnemyAfterTaunt()
     {
         if (!PhotonNetwork.isMasterClient) return;
-        if (behaviourCoroutine != null)
+        
+        if (isWaiting)
         {
             isWaiting = false;
             return;
         }
+        
         ActivateEnemy(); 
     }
 
@@ -1124,17 +1052,17 @@ public abstract class TDS_Enemy : TDS_Character
     /// If the path can be computed, set the state to Getting in Range
     /// else set the state to MakingDecision
     /// </summary>
-    protected virtual void ComputePath()
+    public virtual void ComputePath()
     {
         if (isDead || !PhotonNetwork.isMasterClient) return; 
         if(!playerTarget || playerTarget.IsDead)
         {
-            enemyState = EnemyState.Searching;
+            SetEnemyState(EnemyState.MakingDecision);
             return; 
         }
         if(IsParalyzed)
         {
-            enemyState = EnemyState.MakingDecision;
+            SetEnemyState(EnemyState.MakingDecision);
             return; 
         }
         //Compute the path
@@ -1155,12 +1083,12 @@ public abstract class TDS_Enemy : TDS_Character
         //If the path is computed, reach the end of the path
         if (_pathComputed)
         {
-            enemyState = _hasToWander ? EnemyState.Wandering : EnemyState.GettingInRange;
+            SetEnemyState(_hasToWander? EnemyState.Wandering : EnemyState.GettingInRange);
         }
         else
         {
             SetAnimationState((int)EnemyAnimationState.Idle);
-            enemyState = EnemyState.MakingDecision;
+            SetEnemyState(EnemyState.MakingDecision);
         }
     }
 
@@ -1211,6 +1139,16 @@ public abstract class TDS_Enemy : TDS_Character
     }
 
     /// <summary>
+    /// Set the new enemyState and update the state machine
+    /// </summary>
+    /// <param name="_newState">New state</param>
+    public void SetEnemyState(EnemyState _newState)
+    {
+        enemyState = _newState;
+        animator.SetInteger("enemyState", (int)enemyState); 
+    }
+
+    /// <summary>
     /// Stop the agent, drop the held object and stop the coroutines
     /// </summary>
     public void StopAll()
@@ -1220,6 +1158,8 @@ public abstract class TDS_Enemy : TDS_Character
         if(throwable) DropObject();
 
         //StopAllCoroutines();
+
+        /*
         if (behaviourCoroutine != null)
         {
             StopCoroutine(behaviourCoroutine);
@@ -1230,6 +1170,7 @@ public abstract class TDS_Enemy : TDS_Character
             StopCoroutine(additionalCoroutine);
             additionalCoroutine = null;
         }
+        */
     }
 
     /// <summary>
@@ -1242,7 +1183,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// If an attack can be casted, set the state to attack
     /// Else if the target is too far away, set the state to compute path
     /// </summary>
-    protected virtual void TakeDecision()
+    public virtual void TakeDecision()
     {
         //Take decisions
         if (isDead || !PhotonNetwork.isMasterClient) return;
@@ -1251,18 +1192,21 @@ public abstract class TDS_Enemy : TDS_Character
         // If the target can't be targeted, search for another target
         if (!playerTarget || playerTarget.IsDead)
         {
-            enemyState = EnemyState.Searching;
-            return; 
+            SearchTarget();
         }
         // Check if the agent can attack
         if (AttackCanBeCasted() && !IsPacific)
         {
-            enemyState = EnemyState.Attacking;
+            SetEnemyState(EnemyState.Attacking);
         }
         // Else getting in range
         else if (!IsParalyzed)
         {
-            enemyState = EnemyState.ComputingPath;
+            SetEnemyState(EnemyState.ComputingPath);
+        }
+        else
+        {
+            SetEnemyState(EnemyState.MakingDecision); 
         }
     }
 
@@ -1280,11 +1224,16 @@ public abstract class TDS_Enemy : TDS_Character
         if (!PhotonNetwork.isMasterClient) return; 
         StopAll();
         StartCoroutine(ApplyRecoil(_position));
-        enemyState = EnemyState.MakingDecision; 
+        SetEnemyState(EnemyState.None);
         if (!isDead && !IsDown)
         {
             SetAnimationState((int)EnemyAnimationState.Hit);
         }
+    }
+
+    public void SearchTarget()
+    {
+        playerTarget = GetPlayerTarget(); 
     }
     #endregion
 

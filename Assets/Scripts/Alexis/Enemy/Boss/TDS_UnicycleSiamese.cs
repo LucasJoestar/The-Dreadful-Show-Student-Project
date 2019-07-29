@@ -78,6 +78,7 @@ public class TDS_UnicycleSiamese : TDS_Enemy
         return _v; 
     }
 
+    /*
     protected override IEnumerator Behaviour()
     {
         if (!PhotonNetwork.isMasterClient) yield break;
@@ -129,8 +130,9 @@ public class TDS_UnicycleSiamese : TDS_Enemy
         behaviourCoroutine = StartCoroutine(Behaviour());
         yield break;
     }
+    */
 
-    protected override IEnumerator CastAttack()
+    public override IEnumerator CastAttack()
     {
         if (isDead || !PhotonNetwork.isMasterClient) yield break;
         if (IsPacific)
@@ -158,11 +160,11 @@ public class TDS_UnicycleSiamese : TDS_Enemy
         if (_targetedPosition != Vector3.zero)
         {
             agent.SetDestination(_targetedPosition);
-            enemyState = EnemyState.GettingInRange;
+            SetEnemyState(EnemyState.GettingInRange);
         }
         else
         {
-            enemyState = EnemyState.ComputingPath;
+            SetEnemyState(EnemyState.ComputingPath);
             yield break; 
         }
         yield return new WaitForSeconds(_cooldown);
@@ -173,7 +175,7 @@ public class TDS_UnicycleSiamese : TDS_Enemy
     /// Check if an attack can be casted on this closest player
     /// </summary>
     /// <returns></returns>
-    protected override IEnumerator CastDetection()
+    public override IEnumerator CastDetection()
     {
         if (isDead) yield break;
         SetAnimationState((int)EnemyAnimationState.Run);
@@ -190,25 +192,25 @@ public class TDS_UnicycleSiamese : TDS_Enemy
                 yield return null;
             }
             else yield return new WaitForSeconds(.1f);
-            playerTarget = SearchTarget();
+            playerTarget = GetPlayerTarget();
             // if any attack can be casted 
             if (!playerTarget) continue; 
             if (AttackCanBeCasted())
             {
-                enemyState = EnemyState.Attacking;
+                SetEnemyState(EnemyState.Attacking);
                 yield break;
             }
         }
-        enemyState = EnemyState.ComputingPath;
+        SetEnemyState(EnemyState.ComputingPath);
     }
 
     /// <summary>
     /// Compute the path to the bounds
     /// </summary>
-    protected override void ComputePath()
+    public override void ComputePath()
     {
         if (isDead || !PhotonNetwork.isMasterClient) return;
-        if (!playerTarget) playerTarget = SearchTarget(); 
+        if (!playerTarget) playerTarget = GetPlayerTarget(); 
         bool _pathComputed = false;
         Vector3 _targetedPosition = GetAttackingPosition();
         if (agent.IsMoving) agent.StopAgent(); 
@@ -216,24 +218,24 @@ public class TDS_UnicycleSiamese : TDS_Enemy
         //If the path is computed, reach the end of the path
         if (_pathComputed)
         {
-            enemyState = EnemyState.GettingInRange;
+            SetEnemyState(EnemyState.GettingInRange);
             hasReachedRightBound = !hasReachedRightBound;
         }
         else
         {
-            enemyState = EnemyState.MakingDecision;
+            SetEnemyState(EnemyState.MakingDecision);
         }
     }
 
     /// <summary>
     /// Take a Decision
     /// </summary>
-    protected override void TakeDecision()
+    public override void TakeDecision()
     {
         if (IsDead || !PhotonNetwork.isMasterClient) return;
         if (isAttacking || hitBox.IsActive) StopAttack();
         // If the target can't be targeted, search for another target
-        enemyState = EnemyState.ComputingPath;
+        SetEnemyState(EnemyState.ComputingPath);
     }
 
     #endregion
@@ -254,7 +256,7 @@ public class TDS_UnicycleSiamese : TDS_Enemy
         bounds = TDS_Camera.Instance?.CurrentBounds;
         hasReachedRightBound = Mathf.Abs(transform.position.x - bounds.XMin) >= Mathf.Abs(transform.position.x - bounds.XMax) ? true : false;
         base.Start();
-        behaviourCoroutine = StartCoroutine(Behaviour()); 
+        SetEnemyState(EnemyState.MakingDecision); 
     }
 
     // Update is called once per frame
