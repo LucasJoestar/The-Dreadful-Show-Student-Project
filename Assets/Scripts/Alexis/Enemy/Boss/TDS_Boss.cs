@@ -220,8 +220,6 @@ public abstract class TDS_Boss : TDS_Enemy
         if (isDead) yield break;
         SetAnimationState((int)EnemyAnimationState.Run);
         // Wait some time before calling again Behaviour(); 
-        Collider[] _colliders;
-        float _distance;
         while (agent.IsMoving)
         {
             //Orientate the agent
@@ -235,26 +233,7 @@ public abstract class TDS_Boss : TDS_Enemy
                 yield return null;
             }
             else yield return new WaitForSeconds(.1f);
-            //Check if the area allow to grab object
-            // if any attack can be casted
-            //Check if a player is close enough to cast the attack on the player (not the targeted one but the closer one)
-            _distance = Vector3.Distance(transform.position, playerTarget.transform.position);
-            _colliders = Physics.OverlapSphere(transform.position, detectionRange);
-            if (_colliders.Length > 0)
-            {
-                _colliders = _colliders.Where(t => t.gameObject.HasTag("Player")).OrderBy(c => Vector3.Distance(transform.position, c.transform.position)).ToArray();
-                if (_colliders.Length > 0)
-                {
-                    for (int i = 0; i < _colliders.Length; i++)
-                    {
-                        if(transform.position.z - _colliders[i].transform.position.z <= .5f)
-                        {
-                            _distance = Vector3.Distance(transform.position, _colliders[i].transform.position);
-                            break; 
-                        }
-                    }
-                }
-            }
+
             if (AttackCanBeCasted())
             {
                 enemyState = EnemyState.Attacking;
@@ -268,7 +247,7 @@ public abstract class TDS_Boss : TDS_Enemy
                 yield break;
             }
         } 
-        enemyState = EnemyState.Attacking;
+        enemyState = EnemyState.MakingDecision;
     }
 
     /// <summary>
@@ -359,12 +338,13 @@ public abstract class TDS_Boss : TDS_Enemy
     /// <returns>Return a random player within the detection Range</returns>
     protected override TDS_Player SearchTarget()
     {
+        base.SearchTarget(); 
         TDS_Player[] _targets = null;
-        if (!TDS_LevelManager.Instance)
-            _targets = Physics.OverlapSphere(transform.position, detectionRange).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
+        if (TDS_LevelManager.Instance)
+            _targets = TDS_LevelManager.Instance.AllPlayers.Where(t => !t.IsDead).ToArray();
         else
-            _targets = TDS_LevelManager.Instance.AllPlayers.Where(p => Vector3.Distance(p.transform.position, transform.position) <= detectionRange).ToArray(); if (_targets.Length == 0) return null;
-        _targets = _targets.Where(t => !t.IsDead).ToArray();
+            _targets = Physics.OverlapSphere(transform.position, 10).Where(d => d.gameObject.HasTag("Player")).Select(t => t.GetComponent<TDS_Player>()).ToArray();
+
         if (_targets.Length == 0) return null;
         int _randomIndex = UnityEngine.Random.Range(0, _targets.Length - 1);
         return _targets[_randomIndex];
