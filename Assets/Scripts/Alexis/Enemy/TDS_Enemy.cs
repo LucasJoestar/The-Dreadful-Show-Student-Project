@@ -852,13 +852,13 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     protected override void Die()
     {
-        base.Die();
         if (PhotonNetwork.isMasterClient)
         {
-            Debug.Log("IN"); 
-            StopAll(); 
+            StopAll();
             SetAnimationState((int)EnemyAnimationState.Death);
         }
+        base.Die();
+
     }
 
     /// <summary>
@@ -926,7 +926,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public override void StopAttack()
     {
-        if (!PhotonNetwork.isMasterClient || isDead ) return; 
+        if (!PhotonNetwork.isMasterClient) return; 
         SetAnimationState((int)EnemyAnimationState.Idle);
         base.StopAttack();
     }
@@ -1216,7 +1216,7 @@ public abstract class TDS_Enemy : TDS_Character
     public void StopAll()
     {
         agent.StopAgent();
-        base.StopAttack(); 
+        StopAttack();
         if(throwable) DropObject();
 
         //StopAllCoroutines();

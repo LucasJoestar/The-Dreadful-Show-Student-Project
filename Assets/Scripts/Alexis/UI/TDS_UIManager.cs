@@ -330,10 +330,12 @@ public class TDS_UIManager : PunBehaviour
     public IEnumerator ResetUIManager()
     {
         yield return new WaitForSeconds(1.5f);
-        beardLadyLifeBar.FilledImage.fillAmount = 1; 
-        fatLadyLifeBar.FilledImage.fillAmount = 1;
-        jugglerLifeBar.FilledImage.fillAmount = 1;
-        fireEaterLifeBar.FilledImage.fillAmount = 1;
+        beardLadyLifeBar.ResetLifeBar(); 
+        fatLadyLifeBar.ResetLifeBar();
+        jugglerLifeBar.ResetLifeBar();
+        fireEaterLifeBar.ResetLifeBar();
+        bossHealthBar.ResetLifeBar(); 
+
         narratorCoroutine = null;
         followHiddenPlayerCouroutines.Clear();
         filledImages.Clear();

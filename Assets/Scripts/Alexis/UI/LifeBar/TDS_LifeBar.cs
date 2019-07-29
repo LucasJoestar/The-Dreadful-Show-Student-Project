@@ -97,6 +97,7 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
     {
         if(foregroundFilledImage) foregroundFilledImage.fillAmount = 1;
         if(filledImage) filledImage.fillAmount = 1;
+        owner = null; 
         gameObject.SetActive(false);
     }
 
