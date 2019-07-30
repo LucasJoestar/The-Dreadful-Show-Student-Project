@@ -55,9 +55,6 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
     #region SerializedProperties
 
     #region Components & References
-    /// <summary>SerializedProperties for <see cref="TDS_Player.throwPreviewZone"/> of type <see cref="GameObject"/>.</summary>
-    private SerializedProperty throwPreviewZone = null;
-
     /// <summary>SerializedProperty for <see cref="TDS_Juggler.Throwables"/> of type <see cref="List{T}"/><see cref="TDS_Throwable"/>.</summary>
     private SerializedProperty throwables = null;
 
@@ -77,9 +74,6 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
 
     /// <summary>SerializedProperty for <see cref="TDS_Juggler.MaxThrowableAmount"/> of type <see cref="int"/>.</summary>
     private SerializedProperty maxThrowableAmount = null;
-
-    /// <summary>SerializedProperties for <see cref="TDS_Player.throwPreviewPrecision"/> of type <see cref="int"/>.</summary>
-    private SerializedProperty throwPreviewPrecision = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Juggler.whatCanAim"/> of type <see cref="LayerMask"/>.</summary>
     private SerializedProperty whatCanAim = null;
@@ -204,7 +198,6 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
         GUILayout.Space(5);
 
         TDS_EditorUtility.ObjectField("Juggle Transform", "Juggle transform, where to set as children objects juggling with", juggleTransform, typeof(Transform));
-        TDS_EditorUtility.ObjectField("Throw Preview Zone", "Zone at the end of the projectile preview used for feedback value", throwPreviewZone, typeof(GameObject));
     }
 
     /// <summary>
@@ -328,20 +321,10 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
             if (TDS_EditorUtility.FloatSlider("Aiming Angle", "Angle used by the Juggler to aim for a throw", aimAngle, 15f, 60f))
             {
                 jugglers.ForEach(j => j.AimAngle = aimAngle.floatValue);
-                jugglers.ForEach(j => j.ThrowAimingPoint = j.ThrowAimingPoint);
                 serializedObject.Update();
             }
 
-            if (TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (in local space)", throwAimingPoint))
-            {
-                jugglers.ForEach(j => j.ThrowAimingPoint = throwAimingPoint.vector3Value);
-            }
-        }
-
-        if (TDS_EditorUtility.IntField("Projectile Preview Precision", "Amount of points used to draw previews of the projectile trajectory", throwPreviewPrecision))
-        {
-            jugglers.ForEach(j => j.ThrowPreviewPrecision = throwPreviewPrecision.intValue);
-            serializedObject.Update();
+            TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (in local space)", throwAimingPoint);
         }
     }
     #endregion
@@ -358,15 +341,13 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
         else isJugglerMultiEditing = true;
 
         // Get the serializedProperties from the serializedObject
-        throwPreviewZone = serializedObject.FindProperty("throwPreviewZone");
+        throwables = serializedObject.FindProperty("Throwables");
         juggleTransform = serializedObject.FindProperty("juggleTransform");
 
         isAiming = serializedObject.FindProperty("isAiming");
-        throwables = serializedObject.FindProperty("Throwables");
         juggleSpeed = serializedObject.FindProperty("juggleSpeed");
         throwableDistanceFromCenter = serializedObject.FindProperty("throwableDistanceFromCenter");
         maxThrowableAmount = serializedObject.FindProperty("maxThrowableAmount");
-        throwPreviewPrecision = serializedObject.FindProperty("throwPreviewPrecision");
         whatCanAim = serializedObject.FindProperty("whatCanAim");
         juggleTransformIdealLocalPosition = serializedObject.FindProperty("juggleTransformIdealLocalPosition");
 

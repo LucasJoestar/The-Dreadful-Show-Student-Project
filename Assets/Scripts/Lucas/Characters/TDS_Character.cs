@@ -357,6 +357,17 @@ public abstract class TDS_Character : TDS_Damageable
     /// Point where the character is aiming to throw (Local space).
     /// </summary>
     [SerializeField] protected Vector3 throwAimingPoint = Vector3.zero;
+
+    /// <summary>
+    /// Returns <see cref="throwAimingPoint"/> vector3 in world space.
+    /// </summary>
+    public Vector3 ThrowAimingPoint
+    {
+        get
+        {
+            return transform.position + new Vector3(throwAimingPoint.x * isFacingRight.ToSign(), throwAimingPoint.y, throwAimingPoint.z);
+        }
+    }
     #endregion
 
     #endregion
@@ -425,7 +436,7 @@ public abstract class TDS_Character : TDS_Damageable
         // Call this method in owner only
         if (!photonView.isMine)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "ThrowObject_A"), new object[] { });
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "DropObject"), new object[] { });
             return false;
         }
 
@@ -525,10 +536,7 @@ public abstract class TDS_Character : TDS_Damageable
         // If not mine, return false
         if (!photonView.isMine) return false;
 
-        // Get the destination point in world space
-        Vector3 _destinationPosition = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
-
-        return ThrowObject(_destinationPosition);
+        return ThrowObject(ThrowAimingPoint);
     }
 
     /// <summary>

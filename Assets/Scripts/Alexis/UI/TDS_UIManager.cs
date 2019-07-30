@@ -151,6 +151,26 @@ public class TDS_UIManager : PunBehaviour
     #endregion
     #endregion
 
+    #region Feedback
+    // Image for the aim target of the Juggler
+    [Header("Feedback")]
+    [SerializeField] private Image jugglerAimTarget = null;
+
+    /// <summary>
+    /// RectTransform of the Juggler aim target.
+    /// </summary>
+    public RectTransform JugglerAimTargetTransform
+    {
+        get
+        {
+            if (jugglerAimTarget) return jugglerAimTarget.rectTransform;
+
+            Debug.Log("Missing Juggler Aim Target reference !");
+            return null;
+        }
+    }
+    #endregion
+
     #region Room Selection Menu
     [Header("RoomSelectionMenu")]
     [SerializeField] private TDS_RoomSelectionElement[] roomSelectionElements = new TDS_RoomSelectionElement[] { }; 
@@ -198,25 +218,6 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private TMP_Text narratorBoxText;
     //Text of the Error Box
     [SerializeField] private TMP_Text errorBoxText;
-    #endregion
-
-    #region Feedback
-    // Image for the aim target of the Juggler
-    [SerializeField] private Image jugglerAimTarget = null;
-
-    /// <summary>
-    /// RectTransform of the Juggler aim target.
-    /// </summary>
-    public RectTransform JugglerAimTargetTransform
-    {
-        get
-        {
-            if (jugglerAimTarget) return jugglerAimTarget.rectTransform;
-
-            Debug.Log("Missing Juggler Aim Target reference !");
-            return null;
-        }
-    }
     #endregion
 
     #region Resources
@@ -481,7 +482,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void ActivateJugglerAimTarget()
     {
-        jugglerAimTarget.enabled = true;
+        jugglerAimTarget.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -661,7 +662,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void DesctivateJugglerAimTarget()
     {
-        jugglerAimTarget.enabled = false;
+        jugglerAimTarget.gameObject.SetActive(false);
     }
 
     /// <summary>
