@@ -202,16 +202,16 @@ MonoBehaviour:
   baseOffset: 0
   detectionRange: 2.5
   height: 2.4
-  radius: 1.43
-  pathRadius: 0.2
+  radius: 1.45
+  pathRadius: 0.5
   speed: 4
-  steerForce: 80
+  steerForce: 89
   agentPriority: 1
   detectionAccuracy: 5
   detectionFieldOfView: 90
   avoidanceLayer:
     serializedVersion: 2
-    m_Bits: 11264
+    m_Bits: 9216
 --- !u!54 &2085316961524171260
 Rigidbody:
   m_ObjectHideFlags: 0

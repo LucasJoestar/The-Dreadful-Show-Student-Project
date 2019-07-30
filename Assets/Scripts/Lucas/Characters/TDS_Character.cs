@@ -373,8 +373,9 @@ public abstract class TDS_Character : TDS_Damageable
     {
         isFacingRight = !isFacingRight;
         transform.Rotate(Vector3.up, 180);
+
         shadowTransform.localPosition = new Vector3(shadowTransform.localPosition.x, shadowTransform.localPosition.y, shadowTransform.localPosition.z * -1);
-        // if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
+
         OnFlip?.Invoke();
     }
 
@@ -496,6 +497,8 @@ public abstract class TDS_Character : TDS_Damageable
             _throwable.transform.SetParent(handsTransform, true);
             _throwable.transform.localPosition = Vector3.zero;
             _throwable.transform.rotation = Quaternion.identity;
+
+            if (!isFacingRight) _throwable.transform.Rotate(Vector3.up, 180);
 
             return true;
         }

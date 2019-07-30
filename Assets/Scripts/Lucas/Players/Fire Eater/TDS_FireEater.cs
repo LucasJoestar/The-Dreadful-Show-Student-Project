@@ -203,8 +203,14 @@ public class TDS_FireEater : TDS_Player
 
         // Timer before showing the mini game
         float _timer = .1f;
-        while (isInMiniGame && TDS_InputManager.GetButton(_buttonName) && (_timer > 0))
+        while (isInMiniGame && (_timer > 0))
         {
+            if (!TDS_InputManager.GetButton(_buttonName))
+            {
+                isInMiniGame = false;
+                break;
+            }
+
             yield return null;
             _timer -= Time.deltaTime;
         }
@@ -212,24 +218,24 @@ public class TDS_FireEater : TDS_Player
         // While maintaining the attack button and being in mini game (it can be cancelled when hit, or when ending), play it
         if (isInMiniGame)
         {
-            animator.SetBool("IsInMiniGame", true);
+            IsInMiniGame = true;
             animator.SetFloat("MiniGameSpeed", Random.Range(.45f, .9f));
 
             while (isInMiniGame)
             {
                 yield return null;
 
-                if (TDS_InputManager.GetButtonUp(_buttonName))
+                if (!TDS_InputManager.GetButton(_buttonName))
                 {
                     IsInMiniGame = false;
-
-                    // Triggers associated mini game state action
-                    OnTriggerMiniGame?.Invoke();
-                    SetFireEaterAnim(FireEaterAnimState.Fire);
                     break;
                 }
             }
         }
+
+        // Triggers associated mini game state action
+        OnTriggerMiniGame?.Invoke();
+        SetFireEaterAnim(FireEaterAnimState.Fire);
     }
 
     /// <summary>
@@ -265,15 +271,8 @@ public class TDS_FireEater : TDS_Player
     /// </summary>
     public void ExitMiniGame()
     {
-        if (photonView.isMine)
-        {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "ExitMiniGame"), new object[] { });
-        }
-
+        OnTriggerMiniGame = () => SetFireEaterAnim(FireEaterAnimState.DoNotSpit);
         IsInMiniGame = false;
-
-        OnTriggerMiniGame = null;
-        animator.SetInteger("FireID", 0);
     }
     #endregion
 

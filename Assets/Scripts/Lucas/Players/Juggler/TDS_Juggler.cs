@@ -124,12 +124,7 @@ public class TDS_Juggler : TDS_Player
     /// <summary>
     /// Zone at the end of the projectile preview, for feedback value.
     /// </summary>
-    [SerializeField] private GameObject projectilePreviewEndZone = null;
-
-    /// <summary>
-    /// Line renderer used to draw a preview for the preparing throw trajectory.
-    /// </summary>
-    [SerializeField] protected LineRenderer lineRenderer = null;
+    [SerializeField] private GameObject throwPreviewZone = null;
 
     /// <summary>
     /// The actual selected throwable. It is the object to throw, when throwing... Yep.
@@ -155,7 +150,7 @@ public class TDS_Juggler : TDS_Player
             {
                 if (Throwables.Contains(value)) Throwables.Remove(value);
                 value.transform.rotation = Quaternion.identity;
-                value.transform.SetParent(handsTransform);
+                value.transform.SetParent(handsTransform, true);
 
                 // Starts position lerp coroutine
                 throwableLerpCoroutine = StartCoroutine(LerpThrowableToHand());
@@ -169,6 +164,11 @@ public class TDS_Juggler : TDS_Player
     /// All throwables the juggler has in hands.
     /// </summary>
     public List<TDS_Throwable> Throwables = new List<TDS_Throwable>();
+
+    /// <summary>
+    /// Transform of the target point currently aiming.
+    /// </summary>
+    private RectTransform aimTargetTransform = null;
 
     /// <summary>
     /// Transform used to set as children objects juggling with.
@@ -396,6 +396,9 @@ public class TDS_Juggler : TDS_Player
     /// <returns></returns>
     protected virtual IEnumerator Aim()
     {
+        // Activate aiming target and set its default position
+        aimTargetTransform.anchoredPosition = TDS_Camera.Instance.Camera.WorldToScreenPoint(new Vector3(transform.position.x + (7.5f * isFacingRight.ToSign()), transform.position.y, transform.position.z));
+
         // While holding the throw button, aim a position
         while (TDS_InputManager.GetButton(TDS_InputManager.THROW_BUTTON))
         {
@@ -426,80 +429,114 @@ public class TDS_Juggler : TDS_Player
     {
         // Let the player aim the point he wants, 'cause the juggler can do that. Yep
         // Aim with IJKL or the right joystick axis
-        float _xMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_X_Axis);
-        float _zMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_Y_AXIS);
+        float _xMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_X_Axis) * 2;
+        float _yMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_Y_AXIS) * 2;
+        Vector2 _newTarget = aimTargetTransform.anchoredPosition;
 
-        if (_xMovement != 0 || _zMovement != 0)
+        // Clamp X target position in screen
+        if (_xMovement != 0)
         {
-            _xMovement *= isFacingRight.ToSign();
+            _newTarget.x += _xMovement;
 
-            // Clamp aiming point
-            Vector3 _newAimingPoint = Vector3.ClampMagnitude(new Vector3(throwAimingPoint.x + _xMovement, throwAimingPoint.y, throwAimingPoint.z + _zMovement), 15);
-            _newAimingPoint.y = -10;
+            if (_xMovement > 0)
+            {
+                if (_newTarget.x > Screen.currentResolution.width) _newTarget.x = Screen.currentResolution.width;
+            }
+            else if (_newTarget.x < 0) _newTarget.x = 0;
+        }
+        // Now clamp Y target position in screen
+        if (_yMovement != 0)
+        {
+            _newTarget.y += _yMovement;
 
-            // Lerp aiming point position
-            ThrowAimingPoint = Vector3.Lerp(throwAimingPoint, _newAimingPoint, Time.deltaTime * 15);
+            if (_yMovement > 0)
+            {
+                if (_newTarget.y > Screen.currentResolution.height) _newTarget.y = Screen.currentResolution.height;
+            }
+            else if (_newTarget.y < 0) _newTarget.y = 0;
         }
 
-        // Raycast along the trajectory preview and stop the trail when hit something
-        RaycastHit _hit = new RaycastHit();
-        Vector3[] _raycastedMotionPoints = (Vector3[])throwTrajectoryMotionPoints.Clone();
-        Vector3 _endPoint = new Vector3();
-        bool _hasHit = false;
+        // Set tnew target if different
+        if (_newTarget != aimTargetTransform.anchoredPosition) aimTargetTransform.anchoredPosition = _newTarget;
 
-        for (int _i = 0; _i < _raycastedMotionPoints.Length - 1; _i++)
-        {
-            // Get the points to raycast from & to in world space
-            Vector3 _from = transform.position + new Vector3(_raycastedMotionPoints[_i].x * isFacingRight.ToSign(), _raycastedMotionPoints[_i].y, _raycastedMotionPoints[_i].z);
+        // OLD SHOOT SYSTEM
 
-            Vector3 _to = transform.position + new Vector3(_raycastedMotionPoints[_i + 1].x * isFacingRight.ToSign(), _raycastedMotionPoints[_i + 1].y, _raycastedMotionPoints[_i + 1].z);
-
-            // If hit something, set the hit point as end of the preview trajectory
-            if (Physics.Linecast(_from, _to, out _hit, whatCanAim, QueryTriggerInteraction.Ignore))
+            /*
+            if (_xMovement != 0 || _zMovement != 0)
             {
-                // Get the hit point in local space
-                _endPoint = transform.InverseTransformPoint(_hit.point);
-                _endPoint.z *= isFacingRight.ToSign();
+                _xMovement *= isFacingRight.ToSign();
 
-                // Get the throw preview motion points with the new hit point
-                _raycastedMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, _endPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
+                // Clamp aiming point
+                Vector3 _newAimingPoint = Vector3.ClampMagnitude(new Vector3(throwAimingPoint.x + _xMovement, throwAimingPoint.y, throwAimingPoint.z + _zMovement), 15);
+                _newAimingPoint.y = -10;
 
+                // Lerp aiming point position
+                ThrowAimingPoint = Vector3.Lerp(throwAimingPoint, _newAimingPoint, Time.deltaTime * 15);
+
+                // Set preview zone position
+                throwPreviewZone.transform.position = throwPreviewZone.transform.position = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), .01f, transform.position.z + throwAimingPoint.z);
+            }
+
+
+            // Raycast along the trajectory preview and stop the trail when hit something
+            RaycastHit _hit = new RaycastHit();
+            Vector3[] _raycastedMotionPoints = (Vector3[])throwTrajectoryMotionPoints.Clone();
+            Vector3 _endPoint = new Vector3();
+            bool _hasHit = false;
+
+            for (int _i = 0; _i < _raycastedMotionPoints.Length - 1; _i++)
+            {
+                // Get the points to raycast from & to in world space
+                Vector3 _from = transform.position + new Vector3(_raycastedMotionPoints[_i].x * isFacingRight.ToSign(), _raycastedMotionPoints[_i].y, _raycastedMotionPoints[_i].z);
+
+                Vector3 _to = transform.position + new Vector3(_raycastedMotionPoints[_i + 1].x * isFacingRight.ToSign(), _raycastedMotionPoints[_i + 1].y, _raycastedMotionPoints[_i + 1].z);
+
+                // If hit something, set the hit point as end of the preview trajectory
+                if (Physics.Linecast(_from, _to, out _hit, whatCanAim, QueryTriggerInteraction.Ignore))
+                {
+                    // Get the hit point in local space
+                    _endPoint = transform.InverseTransformPoint(_hit.point);
+                    _endPoint.z *= isFacingRight.ToSign();
+
+                    // Get the throw preview motion points with the new hit point
+                    _raycastedMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, _endPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
+
+                    // Updates the position of the end preview zone & its rotation according to the hit point
+                    projectilePreviewEndZone.transform.position = _hit.point;
+
+                    Quaternion _rotation = Quaternion.Lerp(projectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, _hit.normal), Time.deltaTime * 15);
+
+                    projectilePreviewEndZone.transform.rotation = _rotation;
+
+                    // Set indicative boolean
+                    _hasHit = true;
+
+                    break;
+                }
+            }
+
+            // If no touch, update end zone position & rotation
+            if (!_hasHit)
+            {
                 // Updates the position of the end preview zone & its rotation according to the hit point
-                projectilePreviewEndZone.transform.position = _hit.point;
+                projectilePreviewEndZone.transform.position = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
 
-                Quaternion _rotation = Quaternion.Lerp(projectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, _hit.normal), Time.deltaTime * 15);
+                Quaternion _rotation = Quaternion.Lerp(projectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, Vector3.up), Time.deltaTime * 15);
+                _rotation.x *= isFacingRight.ToSign();
 
                 projectilePreviewEndZone.transform.rotation = _rotation;
 
-                // Set indicative boolean
-                _hasHit = true;
-
-                break;
+                // Set end point
+                _endPoint = throwAimingPoint;
             }
-        }
 
-        // If no touch, update end zone position & rotation
-        if (!_hasHit)
-        {
-            // Updates the position of the end preview zone & its rotation according to the hit point
-            projectilePreviewEndZone.transform.position = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
+            // Draws the trajectory preview
+            for (int _i = 0; _i < _raycastedMotionPoints.Length; _i++)
+            {
+                _raycastedMotionPoints[_i].z *= isFacingRight.ToSign();
+            }
 
-            Quaternion _rotation = Quaternion.Lerp(projectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, Vector3.up), Time.deltaTime * 15);
-            _rotation.x *= isFacingRight.ToSign();
-
-            projectilePreviewEndZone.transform.rotation = _rotation;
-
-            // Set end point
-            _endPoint = throwAimingPoint;
-        }
-
-        // Draws the trajectory preview
-        for (int _i = 0; _i < _raycastedMotionPoints.Length; _i++)
-        {
-            _raycastedMotionPoints[_i].z *= isFacingRight.ToSign();
-        }
-
-        lineRenderer.DrawTrajectory(_raycastedMotionPoints);
+            lineRenderer.DrawTrajectory(_raycastedMotionPoints);*/
     }
 
     /// <summary>
@@ -619,7 +656,7 @@ public class TDS_Juggler : TDS_Player
         isAiming = true;
         aimCoroutine = StartCoroutine(Aim());
 
-        projectilePreviewEndZone.SetActive(true);
+        throwPreviewZone.SetActive(true);
 
         return true;
     }
@@ -640,7 +677,7 @@ public class TDS_Juggler : TDS_Player
             // Updates juggling informations
             UpdateJuggleParameters(false);
         }
-        else SetAnim(PlayerAnimState.LostObject);
+        if (CurrentThrowableAmount == 0) SetAnim(PlayerAnimState.LostObject);
 
         return true;
     }
@@ -655,7 +692,8 @@ public class TDS_Juggler : TDS_Player
         // Get if was juggling before taking this throwable
         bool _wasJuggling = CurrentThrowableAmount > 0;
 
-        if (!base.SetThrowable(_throwable)) return false;
+        if (!_throwable) return false;
+        Throwable = _throwable;
 
         if (CurrentThrowableAmount > 0)
         {
@@ -682,8 +720,8 @@ public class TDS_Juggler : TDS_Player
             StopCoroutine(aimCoroutine);
         }
 
-        lineRenderer.DrawTrajectory(new Vector3[0]);
-        projectilePreviewEndZone.SetActive(false);
+        //lineRenderer.DrawTrajectory(new Vector3[0]);
+        throwPreviewZone.SetActive(false);
 
         // Reset throw aiming point
         ThrowAimingPoint = defaultAimingPoint;
@@ -985,18 +1023,17 @@ public class TDS_Juggler : TDS_Player
         base.Awake();
 
         // Try to get components references if they are missing
-        if (!lineRenderer)
-        {
-            lineRenderer = GetComponentInChildren<LineRenderer>();
-            if (!lineRenderer) Debug.LogWarning("The LineRenderer of \"" + name + "\" for script TDS_Player is missing !");
-        }
         if (!juggleTransform)
         {
             Debug.LogWarning("The Juggle Transform of \"" + name + "\" for script TDS_Juggler is missing !");
         }
-        if (!projectilePreviewEndZone)
+        if (!throwPreviewZone)
         {
             Debug.LogWarning("The Projectile Preview End Zone of \"" + name + "\" for script TDS_Juggler is missing !");
+        }
+        else if (throwPreviewZone.activeInHierarchy)
+        {
+            throwPreviewZone.SetActive(false);
         }
 
         // Set player type, just in case

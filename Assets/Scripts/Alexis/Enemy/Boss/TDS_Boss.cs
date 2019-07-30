@@ -81,6 +81,7 @@ public abstract class TDS_Boss : TDS_Enemy
         if (_availableAttacks.Length == 0) return null;
         // Get a random Index to cast a random attack
         int _randomIndex = UnityEngine.Random.Range(0, _availableAttacks.Length);
+        targetLastPosition = playerTarget.transform.position; 
         return _availableAttacks[_randomIndex];
     }
 
@@ -91,15 +92,16 @@ public abstract class TDS_Boss : TDS_Enemy
     /// <returns></returns>
     protected override bool AttackCanBeCasted()
     {
-        if (!PhotonNetwork.isMasterClient || castedAttack == null) return false;
+        if (!PhotonNetwork.isMasterClient || castedAttack == null || !playerTarget || playerTarget.IsDead) return false;
         if (castedAttack.GetType() == typeof(TDS_SpinningAttackBehaviour)) return true; 
-        if (Mathf.Abs(transform.position.z - playerTarget.transform.position.z) >= .25f)
+        if (Mathf.Abs(transform.position.z - playerTarget.transform.position.z) > collider.size.z)
         {
             //Debug.Log(Mathf.Abs(transform.position.z - playerTarget.transform.position.z)); 
             return false;
         }
-        float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x); 
-        return castedAttack.MaxRange > _distance && _distance > castedAttack.MinRange; 
+        float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x);
+        return (castedAttack.MaxRange >= _distance && castedAttack.MinRange <= _distance);
+
     }
 
     /// <summary>
@@ -123,80 +125,6 @@ public abstract class TDS_Boss : TDS_Enemy
     }
 
     /// <summary>
-    /// General Behaviour of a Boss
-    /// </summary>
-    /// <returns></returns>
-    protected override IEnumerator Behaviour()
-    {
-        if (!PhotonNetwork.isMasterClient) yield break; 
-        // If the enemy is dead or paralyzed, they can't behave
-        if (isDead || IsParalyzed || IsPacific) yield break;
-        // If there is no target, the agent has to get one
-        if (!playerTarget || playerTarget.IsDead)
-            enemyState = EnemyState.Searching;
-        switch (enemyState)
-        {
-            #region Searching
-            case EnemyState.Searching:
-                // If there is no target, search a new target
-                SetAnimationState((int)EnemyAnimationState.Idle); 
-                playerTarget = SearchTarget();
-                //If a target is found -> Set the state to TakingDecision
-                if (playerTarget)
-                {
-                    enemyState = EnemyState.MakingDecision;
-                    goto case EnemyState.MakingDecision;
-                }
-                //ELSE -> Set the state to Search
-                else
-                {
-                    enemyState = EnemyState.Searching;
-                    yield return new WaitForSeconds(1);
-                    break;
-                }
-            #endregion
-            #region Making Decision
-            case EnemyState.MakingDecision:
-                TakeDecision();
-                break;
-            #endregion
-            #region Computing Path
-            case EnemyState.ComputingPath:
-                ComputePath();
-                break;
-            #endregion
-            #region Getting In Range
-            case EnemyState.GettingInRange:
-                additionalCoroutine = StartCoroutine(CastDetection());
-                yield return additionalCoroutine; 
-                break;
-            #endregion
-            #region Attacking
-            case EnemyState.Attacking:
-                additionalCoroutine = StartCoroutine(CastAttack());
-                yield return additionalCoroutine;
-                break;
-            #endregion
-            #region Grabbing Object
-            case EnemyState.PickingUpObject:
-                enemyState = EnemyState.MakingDecision; 
-                break;
-            #endregion
-            #region Throwing Object
-            case EnemyState.ThrowingObject:
-                enemyState = EnemyState.MakingDecision;
-                break;
-            #endregion
-            default:
-                break;
-        }
-        additionalCoroutine = null; 
-        yield return new WaitForSeconds(.1f);
-        behaviourCoroutine = StartCoroutine(Behaviour());
-        yield break;
-    }
-
-    /// <summary>
     /// Cast an the casted Attack
     /// Stop the agent movements
     /// Set its orientation
@@ -204,7 +132,7 @@ public abstract class TDS_Boss : TDS_Enemy
     /// Set the casted as null then set its state to search
     /// </summary>
     /// <returns></returns>
-    protected override IEnumerator CastAttack()
+    public override IEnumerator CastAttack()
     {
         yield return base.CastAttack();
         castedAttack = null;
@@ -215,7 +143,7 @@ public abstract class TDS_Boss : TDS_Enemy
     /// Also check if the path has to be recalculated
     /// </summary>
     /// <returns></returns>
-    protected override IEnumerator CastDetection()
+    public override IEnumerator CastDetection()
     {
         if (isDead) yield break;
         SetAnimationState((int)EnemyAnimationState.Run);
@@ -230,24 +158,22 @@ public abstract class TDS_Boss : TDS_Enemy
             if (speedCurrent < speedMax)
             {
                 IncreaseSpeed();
-                yield return null;
             }
-            else yield return new WaitForSeconds(.1f);
+            yield return null;
 
             if (AttackCanBeCasted())
             {
-                enemyState = EnemyState.Attacking;
+                SetEnemyState(EnemyState.Attacking);
                 yield break;
             }
             //if the target is too far from the destination, recalculate the path
-            if (Mathf.Abs(agent.LastPosition.z - playerTarget.transform.position.z) > .6f ||  Mathf.Abs(transform.position.x - playerTarget.transform.position.x) > castedAttack.MaxRange)
+            if (Mathf.Abs(agent.LastPosition.z - playerTarget.transform.position.z) > collider.size.z || (Vector3.Distance(targetLastPosition, playerTarget.transform.position) > GetMaxRange()))
             {
-                yield return new WaitForSeconds(.1f);
-                enemyState = EnemyState.ComputingPath;
+                SetEnemyState(EnemyState.ComputingPath);
                 yield break;
             }
-        } 
-        enemyState = EnemyState.MakingDecision;
+        }
+        SetEnemyState(EnemyState.MakingDecision);
     }
 
     /// <summary>
@@ -265,15 +191,14 @@ public abstract class TDS_Boss : TDS_Enemy
         if (!isDead && _damage >= damagesThreshold)
         {
             SetAnimationState((int)EnemyAnimationState.Hit);
-            agent.StopAgent();
-            hitBox.Desactivate();
+            //StopAll(); 
+            SetEnemyState(EnemyState.None); 
             StartCoroutine(ApplyRecoil(_position));
-            enemyState = EnemyState.MakingDecision;
         }
         else if (isDead)
         {
-            agent.StopAgent();
-            hitBox.Desactivate();
+            //StopAll();
+            SetEnemyState(EnemyState.None);
         }
         else
         {
@@ -284,12 +209,12 @@ public abstract class TDS_Boss : TDS_Enemy
     /// <summary>
     /// Compute the path to the atacking Position
     /// </summary>
-    protected override void ComputePath()
+    public override void ComputePath()
     {
         if (!PhotonNetwork.isMasterClient || isDead) return;
         if (IsParalyzed)
         {
-            enemyState = EnemyState.MakingDecision;
+            SetEnemyState(EnemyState.MakingDecision);
             return;
         }
         //Compute the path
@@ -301,12 +226,12 @@ public abstract class TDS_Boss : TDS_Enemy
         //If the path is computed, reach the end of the path
         if (_pathComputed)
         {
-            enemyState = EnemyState.GettingInRange;
+            SetEnemyState(EnemyState.GettingInRange);
         }
         else
         {
             SetAnimationState((int)EnemyAnimationState.Idle);
-            enemyState = EnemyState.MakingDecision;
+            SetEnemyState(EnemyState.MakingDecision);
         }
     }
 
@@ -325,7 +250,7 @@ public abstract class TDS_Boss : TDS_Enemy
     /// Get the casted attack and check if it can be casted, if so, cast it
     /// Else compute path until reaching a attacking position
     /// </summary>
-    protected override void TakeDecision()
+    public override void TakeDecision()
     {
         if (!PhotonNetwork.isMasterClient) return; 
         if(!castedAttack) castedAttack = GetAttack();
@@ -336,9 +261,9 @@ public abstract class TDS_Boss : TDS_Enemy
     /// Get a random player to target
     /// </summary>
     /// <returns>Return a random player within the detection Range</returns>
-    protected override TDS_Player SearchTarget()
+    protected override TDS_Player GetPlayerTarget()
     {
-        base.SearchTarget(); 
+        base.GetPlayerTarget(); 
         TDS_Player[] _targets = null;
         if (TDS_LevelManager.Instance)
             _targets = TDS_LevelManager.Instance.AllPlayers.Where(t => !t.IsDead).ToArray();
@@ -360,14 +285,17 @@ public abstract class TDS_Boss : TDS_Enemy
         Vector3 _attackingPosition = transform.position;
         if (playerTarget)
         {
-            int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;
-            float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x);
-            if(_distance < castedAttack.MinRange)
+            if (Vector3.Distance(transform.position, targetLastPosition) > castedAttack.MaxRange )
             {
-                castedAttack = GetAttack(); 
+                Vector3 _offset = playerTarget.transform.position - targetLastPosition;
+                _attackingPosition = agent.LastPosition + _offset; 
             }
-            _attackingPosition.x = _distance < castedAttack.MaxRange ? transform.position.x : playerTarget.transform.position.x + ((castedAttack.MaxRange - agent.Radius) * _coeff);
-            _attackingPosition.z = playerTarget.transform.position.z; 
+            else
+            {
+                int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;
+                _attackingPosition = playerTarget.transform.position + new Vector3(UnityEngine.Random.Range(castedAttack.MinRange, castedAttack.MaxRange) - (agent.Radius) * _coeff, 0, 0);
+            }
+            targetLastPosition = playerTarget.transform.position;
         }
         return _attackingPosition;
     }

@@ -79,6 +79,7 @@ public class TDS_Throwable : PunBehaviour
     /// </summary>
     [Header("Settings")]
     [SerializeField] protected bool isHeld = false;
+    public bool IsHeld { get { return isHeld; } }
 
     /// <summary>
     /// Bounce power used to make the object bounce on object hit.
@@ -163,16 +164,10 @@ public class TDS_Throwable : PunBehaviour
     {
         if (!isHeld) return;
 
-        if (photonView.isMine)
+        if (owner.photonView.isMine)
         {
             // Drop the throwable for other players
             TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Drop"), new object[] { transform.position.x, transform.position.y, transform.position.z });
-        }
-
-        if (PhotonNetwork.isMasterClient)
-        {
-            // Transfer ownership
-            photonView.TransferOwnership(PhotonNetwork.masterClient);
         }
 
         rigidbody.isKinematic = false;
@@ -237,9 +232,6 @@ public class TDS_Throwable : PunBehaviour
         {
             if (hitBox.IsActive) hitBox.Desactivate();
 
-            // Transfer ownership
-            photonView.TransferOwnership(owner.photonView.owner);
-
             // Pickup the throwable for other players
             TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PickUp"), new object[] { _owner.PhotonID });
         }
@@ -275,7 +267,7 @@ public class TDS_Throwable : PunBehaviour
     {
         if (!isHeld) return;
 
-        if (photonView.isMine)
+        if (owner.photonView.isMine)
         {
             // Throw the throwable for other players
             TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Throw"), new object[] { transform.position.x, transform.position.y, transform.position.z, _finalPosition.x, _finalPosition.y, _finalPosition.z, _angle, _bonusDamage });
@@ -284,9 +276,6 @@ public class TDS_Throwable : PunBehaviour
         if (PhotonNetwork.isMasterClient)
         {
             ActivateHitbox(_bonusDamage);
-
-            // Transfer ownership
-            photonView.TransferOwnership(PhotonNetwork.masterClient);
         }
 
         transform.SetParent(null, true);

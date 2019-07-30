@@ -377,7 +377,7 @@ public class CustomNavMeshAgent : MonoBehaviour
                     if (!_hitInfo.transform.GetComponentInParent<NavMeshSurface>() && _hitInfo.collider.gameObject != this.gameObject)
                     {
                         // Add the direction to avoid to the list
-                        _dir = ((transform.position + velocity) - _hitInfo.point);
+                        _dir = velocity - (_hitInfo.point - transform.position);
                         _dir.y = 0;
                         _obstaclesPos.Add(_dir);
                     }

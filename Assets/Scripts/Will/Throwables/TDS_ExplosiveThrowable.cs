@@ -71,7 +71,7 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
             yield return new WaitForEndOfFrame();
         }
         if (isHeld) owner.DropObject();
-        TDS_VFXManager.Instance.SpawnEffect(FXType.Kaboom, transform.position);
+        TDS_VFXManager.Instance.SpawnEffect(FXType.Kaboom, transform.position + Vector3.up);
         hitBox.Activate(attack, owner, _hitableTags.ObjectTags);
 
         if (TDS_VFXManager.Instance.KaboomFX)
@@ -110,14 +110,28 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
     public override void Throw(Vector3 _finalPosition, float _angle, int _bonusDamage)
     {
         if (!isHeld) return;
+
+        if (owner.photonView.isMine)
+        {
+            // Throw the throwable for other players
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Throw"), new object[] { transform.position.x, transform.position.y, transform.position.z, _finalPosition.x, _finalPosition.y, _finalPosition.z, _angle, _bonusDamage });
+        }
+
+        transform.SetParent(null, true);
+
+        rigidbody.isKinematic = false;
+        rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position, _finalPosition, _angle);
+
+        collider.enabled = true;
+
+        owner.RemoveThrowable();
+
+        gameObject.layer = LayerMask.NameToLayer("Object");
+
         if (hitBox.IsActive)
         {
             hitBox.Desactivate();
         }
-        rigidbody.isKinematic = false;
-        transform.SetParent(null, true);
-        bonusDamage = _bonusDamage;
-        rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position, _finalPosition, _angle);
         Tags _hitableTags = owner.HitBox.HittableTags;
         if (owner is TDS_Enemy)
         {

@@ -104,23 +104,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3444803831096782895, guid: cbcb09eb06b2069448219913fc1ed493,
         type: 3}
-      propertyPath: objectDurability
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3444803831096782895, guid: cbcb09eb06b2069448219913fc1ed493,
-        type: 3}
       propertyPath: weight
       value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3339952328888906788, guid: cbcb09eb06b2069448219913fc1ed493,
-        type: 3}
-      propertyPath: viewIdField
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3339952328888906788, guid: cbcb09eb06b2069448219913fc1ed493,
-        type: 3}
-      propertyPath: instantiationId
-      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 3365279542923471985, guid: cbcb09eb06b2069448219913fc1ed493,
         type: 3}
@@ -147,6 +132,16 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 0.225
       objectReference: {fileID: 0}
+    - target: {fileID: 3339952328888906788, guid: cbcb09eb06b2069448219913fc1ed493,
+        type: 3}
+      propertyPath: viewIdField
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3339952328888906788, guid: cbcb09eb06b2069448219913fc1ed493,
+        type: 3}
+      propertyPath: instantiationId
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 4532982596238788323, guid: cbcb09eb06b2069448219913fc1ed493,
         type: 3}
       propertyPath: m_Sprite
@@ -161,7 +156,7 @@ PrefabInstance:
     - target: {fileID: 3368386952385683435, guid: cbcb09eb06b2069448219913fc1ed493,
         type: 3}
       propertyPath: m_Size.y
-      value: 0.8
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3368386952385683435, guid: cbcb09eb06b2069448219913fc1ed493,
         type: 3}
@@ -171,7 +166,7 @@ PrefabInstance:
     - target: {fileID: 3368386952385683435, guid: cbcb09eb06b2069448219913fc1ed493,
         type: 3}
       propertyPath: m_Center.y
-      value: 0.4
+      value: 0.35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cbcb09eb06b2069448219913fc1ed493, type: 3}
