@@ -5,7 +5,7 @@
         _MainTex ("Texture", 2D) = "white" {}
 
 
-        [HideInInspector] _color("Color", Color) = (1.0,1.0,1.0,1.0)
+        [HideInInspector]_color("Color", Color) = (1.0,1.0,1.0,1.0)
 
         [HideInInspector]_Red("Filter Color 1", Color) = (1.0,0,0,1.0) //Red
         [HideInInspector]_Green("Filter Color 2", Color) = (0,1.0,0,1.0) //Green
@@ -120,7 +120,7 @@
                     return half4(0,0,0,0);
                 }
 
-                 float4 transparent = float4(0,0,0,0);
+                   float4 transparent = float4(0,0,0,0);
                    float4 Red = lerp(_ColorReplacement1,transparent,smoothstep(0,_LerpValue1,dis(_Red)));
                    float4 Green = lerp(_ColorReplacement2,transparent,smoothstep(0,_LerpValue2,dis(_Green)));
                    float4 Blue = lerp(_ColorReplacement3,transparent,smoothstep(0,_LerpValue3,dis(_Blue)));

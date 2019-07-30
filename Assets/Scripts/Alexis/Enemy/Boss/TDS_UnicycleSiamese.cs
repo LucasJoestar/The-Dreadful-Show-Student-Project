@@ -138,7 +138,7 @@ public class TDS_UnicycleSiamese : TDS_Enemy
                 yield return null;
             }
             else yield return new WaitForSeconds(.1f);
-            playerTarget = GetPlayerTarget();
+            SearchTarget(); 
             // if any attack can be casted 
             if (!playerTarget) continue; 
             if (AttackCanBeCasted())
@@ -156,7 +156,7 @@ public class TDS_UnicycleSiamese : TDS_Enemy
     public override void ComputePath()
     {
         if (isDead || !PhotonNetwork.isMasterClient) return;
-        if (!playerTarget) playerTarget = GetPlayerTarget(); 
+        if (!playerTarget) SearchTarget(); 
         bool _pathComputed = false;
         Vector3 _targetedPosition = GetAttackingPosition();
         if (agent.IsMoving) agent.StopAgent(); 

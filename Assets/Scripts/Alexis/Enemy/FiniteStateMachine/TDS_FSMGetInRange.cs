@@ -15,8 +15,8 @@ public class TDS_FSMGetInRange : StateMachineBehaviour
 
         if (!owner) owner = animator.GetComponent<TDS_Enemy>();
         if (!owner) return;
-
         gettingInRangeCoroutine = owner.StartCoroutine(owner.CastDetection()); 
+        
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
