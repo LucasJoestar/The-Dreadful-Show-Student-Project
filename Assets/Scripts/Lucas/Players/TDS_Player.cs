@@ -1116,7 +1116,6 @@ public class TDS_Player : TDS_Character, IPunObservable
             if (photonView.isMine)
             {
                 transform.position += new Vector3(.025f * (_position.x < transform.position.x ? 1 : 1), 0, 0);
-
             }
             return false;
         }
@@ -1372,9 +1371,8 @@ public class TDS_Player : TDS_Character, IPunObservable
     public override void Flip()
     {
         base.Flip();
-        if (photonView.isMine) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
-        // Flip X throw velocity
-        throwVelocity.x *= -1;
+
+        if (photonView.isMine) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Flip"), new object[] { });
     }
 
     /// <summary>
@@ -1763,8 +1761,8 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// </summary>
     public virtual void CheckMovementsInputs()
     {
-        // If the character is paralyzed or attacking, do not move
-        if (IsParalyzed || isAttacking || isParrying || isDodging) return;
+        // If the character is paralyzed or dodging, do not move
+        if (IsParalyzed || isDodging) return;
 
         // Moves the player on the X & Z axis regarding the the axis pressure.
         float _horizontal = Input.GetAxis(TDS_InputManager.HORIZONTAL_AXIS);
@@ -1772,12 +1770,17 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         if (_horizontal != 0 || _vertical != 0)
         {
-            // Set a minimum to movement if not null
+            // Set a minimum to X movement if not null
             if ((_horizontal != 0 ) && (Mathf.Abs(_horizontal) < MOVEMENT_MINIMUM_VALUE)) _horizontal = MOVEMENT_MINIMUM_VALUE * Mathf.Sign(_horizontal);
-            if ((_vertical != 0) && (Mathf.Abs(_vertical) < MOVEMENT_MINIMUM_VALUE)) _vertical = MOVEMENT_MINIMUM_VALUE * Mathf.Sign(_vertical);
 
             // Flip the player on the X axis if needed
             if ((_horizontal > 0 && !isFacingRight) || (_horizontal < 0 && isFacingRight)) Flip();
+
+            // If attacking or parrying, do not move
+            if (isAttacking || isParrying) return;
+
+            // Set a minimum to Z movement if not null
+            if ((_vertical != 0) && (Mathf.Abs(_vertical) < MOVEMENT_MINIMUM_VALUE)) _vertical = MOVEMENT_MINIMUM_VALUE * Mathf.Sign(_vertical);
 
             MoveInDirection(transform.position + new Vector3(_horizontal, 0, _vertical));
         }
@@ -1790,8 +1793,11 @@ public class TDS_Player : TDS_Character, IPunObservable
             SetAnimOnline(PlayerAnimState.Idle);
         }
 
+        // If attacking or parrying, do not move
+        if (isAttacking || isParrying) return;
+
         // When pressing the jump method, check if on ground ; If it's all good, then let's jump
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.JUMP_BUTTON) && IsGrounded /*&& (!throwable || (playerType == PlayerType.Juggler))*/ && !isPreparingAttack)
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.JUMP_BUTTON) && IsGrounded && !isPreparingAttack)
         {
             StartJump();
         }
@@ -1909,20 +1915,6 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         // Draws the ground detection box gizmos
         groundDetectionBox.DrawGizmos(transform.position);
-
-        // Draws a gizmos at the aiming point in editor
-        Vector3 _gizmosPos = throwAimingPoint;
-        _gizmosPos.x *= isFacingRight.ToSign();
-        _gizmosPos += transform.position;
-
-        Gizmos.DrawIcon(_gizmosPos, "AimIcon", true);
-
-        if (handsTransform)
-        {
-            // Draws a gizmos at the hands transform ideal position
-            Gizmos.DrawSphere(handsTransform.position, .07f);
-            Gizmos.DrawIcon(handsTransform.position, "HandIcon", true);
-        }
     }
 
     // Use this for initialization

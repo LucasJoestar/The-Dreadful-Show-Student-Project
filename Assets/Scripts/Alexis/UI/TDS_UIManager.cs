@@ -197,7 +197,26 @@ public class TDS_UIManager : PunBehaviour
     //Text of the narrator Box
     [SerializeField] private TMP_Text narratorBoxText;
     //Text of the Error Box
-    [SerializeField] private TMP_Text errorBoxText; 
+    [SerializeField] private TMP_Text errorBoxText;
+    #endregion
+
+    #region Feedback
+    // Image for the aim target of the Juggler
+    [SerializeField] private Image jugglerAimTarget = null;
+
+    /// <summary>
+    /// RectTransform of the Juggler aim target.
+    /// </summary>
+    public RectTransform JugglerAimTargetTransform
+    {
+        get
+        {
+            if (jugglerAimTarget) return jugglerAimTarget.rectTransform;
+
+            Debug.Log("Missing Juggler Aim Target reference !");
+            return null;
+        }
+    }
     #endregion
 
     #region Resources
@@ -458,6 +477,14 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Activates the aim target on UI of the Juggler.
+    /// </summary>
+    public void ActivateJugglerAimTarget()
+    {
+        jugglerAimTarget.enabled = true;
+    }
+
+    /// <summary>
     /// Call the method Activate Menu from Unity Event
     /// </summary>
     /// <param name="_uiState">UI State</param>
@@ -627,6 +654,14 @@ public class TDS_UIManager : PunBehaviour
     {
         if (errorBoxParent == null) return;
         errorBoxParent.SetActive(false);
+    }
+
+    /// <summary>
+    /// Desactivates the aim target on UI of the Juggler.
+    /// </summary>
+    public void DesctivateJugglerAimTarget()
+    {
+        jugglerAimTarget.enabled = false;
     }
 
     /// <summary>
