@@ -431,7 +431,6 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     public virtual IEnumerator CastAttack()
     {
-        Debug.Log("Attack!"); 
         if (isDead || !PhotonNetwork.isMasterClient) yield break; 
         if(IsPacific)
         {
@@ -453,10 +452,9 @@ public abstract class TDS_Enemy : TDS_Character
         float _cooldown = StartAttack();
         while (IsAttacking)
         {
-            Debug.Log("Is Attacking!");
+
             yield return new WaitForSeconds(.1f);
         }
-        Debug.Log("End attack!"); 
         yield return new WaitForSeconds(_cooldown);
         SetEnemyState(EnemyState.MakingDecision);
     }
@@ -541,7 +539,6 @@ public abstract class TDS_Enemy : TDS_Character
             // if any attack can be casted 
             if (AttackCanBeCasted() && !throwable)
             {
-                Debug.Log("IN!"); 
                 SetEnemyState(EnemyState.Attacking);
                 yield break;
             }
@@ -1083,6 +1080,7 @@ public abstract class TDS_Enemy : TDS_Character
         //If the path is computed, reach the end of the path
         if (_pathComputed)
         {
+            SetAnimationState((int)EnemyAnimationState.Run); 
             SetEnemyState(_hasToWander? EnemyState.Wandering : EnemyState.GettingInRange);
         }
         else
@@ -1145,6 +1143,14 @@ public abstract class TDS_Enemy : TDS_Character
     public void SetEnemyState(EnemyState _newState)
     {
         enemyState = _newState;
+        switch (enemyState)
+        {
+            case EnemyState.MakingDecision:
+                animator.SetTrigger("resetBehaviour");
+                break; 
+            default:
+                break;
+        }
         animator.SetInteger("enemyState", (int)enemyState); 
     }
 
@@ -1156,21 +1162,7 @@ public abstract class TDS_Enemy : TDS_Character
         agent.StopAgent();
         StopAttack();
         if(throwable) DropObject();
-
-        //StopAllCoroutines();
-
-        /*
-        if (behaviourCoroutine != null)
-        {
-            StopCoroutine(behaviourCoroutine);
-            behaviourCoroutine = null;
-        }
-        if (additionalCoroutine != null)
-        {
-            StopCoroutine(additionalCoroutine);
-            additionalCoroutine = null;
-        }
-        */
+        SetEnemyState(EnemyState.None); 
     }
 
     /// <summary>
@@ -1224,13 +1216,15 @@ public abstract class TDS_Enemy : TDS_Character
         if (!PhotonNetwork.isMasterClient) return; 
         StopAll();
         StartCoroutine(ApplyRecoil(_position));
-        SetEnemyState(EnemyState.None);
         if (!isDead && !IsDown)
         {
             SetAnimationState((int)EnemyAnimationState.Hit);
         }
     }
 
+    /// <summary>
+    /// Search the best Target
+    /// </summary>
     public void SearchTarget()
     {
         playerTarget = GetPlayerTarget(); 
@@ -1256,13 +1250,9 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void Start()
     {
         base.Start();
-        if (PhotonNetwork.isMasterClient)
+        if (!PhotonNetwork.isMasterClient)
         {
-            // behaviourCoroutine = StartCoroutine(Behaviour());
-        }
-        else
-        {
-            rigidbody.useGravity = false; 
+            rigidbody.useGravity = false;
         }
     }
 

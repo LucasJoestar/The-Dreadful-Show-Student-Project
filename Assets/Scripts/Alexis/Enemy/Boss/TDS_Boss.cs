@@ -91,15 +91,16 @@ public abstract class TDS_Boss : TDS_Enemy
     /// <returns></returns>
     protected override bool AttackCanBeCasted()
     {
-        if (!PhotonNetwork.isMasterClient || castedAttack == null) return false;
+        if (!PhotonNetwork.isMasterClient || castedAttack == null || !playerTarget || playerTarget.IsDead) return false;
         if (castedAttack.GetType() == typeof(TDS_SpinningAttackBehaviour)) return true; 
         if (Mathf.Abs(transform.position.z - playerTarget.transform.position.z) > collider.size.z)
         {
             //Debug.Log(Mathf.Abs(transform.position.z - playerTarget.transform.position.z)); 
             return false;
         }
-        float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x) - agent.Radius;
-        return castedAttack.MaxRange > _distance && _distance > castedAttack.MinRange; 
+        float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x);
+        return (castedAttack.MaxRange >= _distance && castedAttack.MinRange <= _distance);
+
     }
 
     /// <summary>
@@ -156,9 +157,8 @@ public abstract class TDS_Boss : TDS_Enemy
             if (speedCurrent < speedMax)
             {
                 IncreaseSpeed();
-                yield return null;
             }
-            else yield return new WaitForSeconds(.1f);
+            yield return null;
 
             if (AttackCanBeCasted())
             {
@@ -190,15 +190,12 @@ public abstract class TDS_Boss : TDS_Enemy
         if (!isDead && _damage >= damagesThreshold)
         {
             SetAnimationState((int)EnemyAnimationState.Hit);
-            agent.StopAgent();
-            hitBox.Desactivate();
+            StopAll(); 
             StartCoroutine(ApplyRecoil(_position));
-            SetEnemyState(EnemyState.None);
         }
         else if (isDead)
         {
-            agent.StopAgent();
-            hitBox.Desactivate();
+            StopAll();
         }
         else
         {
@@ -288,7 +285,6 @@ public abstract class TDS_Boss : TDS_Enemy
             int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;
             float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x);
 
-            Debug.Log(_distance + " /// " + castedAttack.MinRange + "-->" + castedAttack.MaxRange);
             _attackingPosition = playerTarget.transform.position + new Vector3(UnityEngine.Random.Range(castedAttack.MinRange, castedAttack.MaxRange) - (agent.Radius), 0, 0); 
         }
         return _attackingPosition;

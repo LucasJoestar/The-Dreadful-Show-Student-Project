@@ -78,60 +78,6 @@ public class TDS_UnicycleSiamese : TDS_Enemy
         return _v; 
     }
 
-    /*
-    protected override IEnumerator Behaviour()
-    {
-        if (!PhotonNetwork.isMasterClient) yield break;
-        // If the enemy is dead or paralyzed, they can't behave
-        if (isDead || IsParalyzed || IsPacific) yield break;
-        // If there is no target, the agent has to get one
-        switch (enemyState)
-        {
-            #region Searching
-            case EnemyState.Searching:
-                enemyState = EnemyState.MakingDecision;
-                goto case EnemyState.MakingDecision;
-            #endregion
-            #region Making Decision
-            case EnemyState.MakingDecision:
-                TakeDecision();
-                break;
-            #endregion
-            #region Computing Path
-            case EnemyState.ComputingPath:
-                ComputePath();
-                break;
-            #endregion
-            #region Getting In Range
-            case EnemyState.GettingInRange:
-                additionalCoroutine = StartCoroutine(CastDetection());
-                yield return additionalCoroutine;
-                break;
-            #endregion
-            #region Attacking
-            case EnemyState.Attacking:
-                additionalCoroutine = StartCoroutine(CastAttack());
-                yield return additionalCoroutine;
-                break;
-            #endregion
-            #region Grabbing Object
-            case EnemyState.PickingUpObject:
-                break;
-            #endregion
-            #region Throwing Object
-            case EnemyState.ThrowingObject:
-                break;
-            #endregion
-            default:
-                break;
-        }
-        additionalCoroutine = null;
-        //yield return new WaitForSeconds(.1f);
-        behaviourCoroutine = StartCoroutine(Behaviour());
-        yield break;
-    }
-    */
-
     public override IEnumerator CastAttack()
     {
         if (isDead || !PhotonNetwork.isMasterClient) yield break;
@@ -157,6 +103,7 @@ public class TDS_UnicycleSiamese : TDS_Enemy
             yield return new WaitForSeconds(.1f);
         }
         playerTarget = null;
+        yield return new WaitForSeconds(_cooldown);
         if (_targetedPosition != Vector3.zero)
         {
             agent.SetDestination(_targetedPosition);
@@ -167,7 +114,6 @@ public class TDS_UnicycleSiamese : TDS_Enemy
             SetEnemyState(EnemyState.ComputingPath);
             yield break; 
         }
-        yield return new WaitForSeconds(_cooldown);
     }
 
     /// <summary>
