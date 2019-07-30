@@ -73,13 +73,6 @@ public class TDS_SpinningAttackBehaviour : TDS_EnemyAttack
                                             new Vector3(_bounds.XMax, 0, _bounds.ZMax ),
                                             new Vector3(_bounds.XMax, 0, _bounds.ZMin ),
                                             new Vector3((_bounds.XMin + _bounds.XMax) / 2, 0, (_bounds.ZMin + _bounds.ZMax) / 2)};
-        /*
-        spinningPositions = new Vector3[5] {new Vector3(UnityEngine.Random.Range(_bounds.XMin, _bounds.XMax), 0, _bounds.ZMax ),
-                                            new Vector3(UnityEngine.Random.Range(_bounds.XMin, _bounds.XMax), 0, _bounds.ZMin ),
-                                            new Vector3(UnityEngine.Random.Range(_bounds.XMin, _bounds.XMax), 0, _bounds.ZMax ),
-                                            new Vector3(UnityEngine.Random.Range(_bounds.XMin, _bounds.XMax), 0, _bounds.ZMin ),
-                                            new Vector3((_bounds.XMin + _bounds.XMax) / 2, 0, (_bounds.ZMin + _bounds.ZMax) / 2)};
-        */
         caster.Agent.OnDestinationReached += GoNextSpinningPosition;
         GoNextSpinningPosition();
     }

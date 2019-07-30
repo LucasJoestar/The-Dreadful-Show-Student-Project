@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 686166241511664065}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.005, z: 1.5}
+  m_LocalScale: {x: 1, y: 0.05, z: 1.5}
   m_Children: []
   m_Father: {fileID: 7593376261498355138}
   m_RootOrder: 1
@@ -125,7 +125,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9e32ce224446c4746a4f714514e29c74, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -289,7 +289,7 @@ MonoBehaviour:
   attack: {fileID: 11400000, guid: b6d5b61386be20d41900816b63cf19ee, type: 2}
   collider: {fileID: 7593376261498355137}
   shadow: {fileID: 686166241511664065}
-  hitBox: {fileID: 0}
+  hitBox: {fileID: 7593376260666890815}
   rigidbody: {fileID: 7593376261498355140}
   isHeld: 0
   bouncePower: 0.5

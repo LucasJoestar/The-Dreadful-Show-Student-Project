@@ -165,6 +165,7 @@ public enum EnemyAnimationState
 /// </summary>
 public enum EnemyState
 {
+    None,
     Searching, 
     MakingDecision, 
     ComputingPath, 
