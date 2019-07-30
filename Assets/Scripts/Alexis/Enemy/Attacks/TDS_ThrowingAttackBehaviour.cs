@@ -65,7 +65,6 @@ public class TDS_ThrowingAttackBehaviour : TDS_EnemyAttack
         }
         else if(_thrownObject.GetComponent<TDS_Projectile>())
         {
-            if (!_caster.IsFacingRight) _thrownObject.transform.Rotate(Vector3.up, 180);
             Vector3 _dir = _caster.IsFacingRight ? Vector3.right : Vector3.left;
             TDS_Projectile _proj = _thrownObject.GetComponent<TDS_Projectile>();
             _proj.HitBox.Activate(this, _caster);

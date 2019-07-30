@@ -238,7 +238,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public Transform HandsTransform { get { return handsTransform;  } }
 
-    private Vector3 targetLastPosition = Vector3.zero;
+    protected Vector3 targetLastPosition = Vector3.zero;
     #endregion
 
     #region Components and References
@@ -662,7 +662,7 @@ public abstract class TDS_Enemy : TDS_Character
                 SetEnemyState(EnemyState.ComputingPath);
                 yield break;
             }
-            //Search a new target and chack if an attack can be casted, if so, break and attack
+            //Search a new target and check if an attack can be casted, if so, break and attack
             playerTarget = GetPlayerTarget();
             if (AttackCanBeCasted())
             {
@@ -710,7 +710,7 @@ public abstract class TDS_Enemy : TDS_Character
                     yield return new WaitForSeconds(Random.Range(1, 5)); 
                 }
             }
-            playerTarget = GetPlayerTarget(); 
+            SearchTarget();  
             yield return null;
         }
         SetEnemyState(EnemyState.MakingDecision);
@@ -750,7 +750,8 @@ public abstract class TDS_Enemy : TDS_Character
         _distance -= agent.Radius * Mathf.Sign(_distance);
         if (!base.BringCloser(_distance)) return false;
 
-        StopAll();
+        //StopAll();
+        SetEnemyState(EnemyState.None); 
         SetAnimationState((int)EnemyAnimationState.Brought);
 
         return true;
@@ -774,7 +775,8 @@ public abstract class TDS_Enemy : TDS_Character
     {
         if (PhotonNetwork.isMasterClient)
         {
-            StopAll();
+            //StopAll();
+            SetEnemyState(EnemyState.None);
             SetAnimationState((int)EnemyAnimationState.Death);
         }
         base.Die();
@@ -832,10 +834,28 @@ public abstract class TDS_Enemy : TDS_Character
         if (!canBeDown || isDead || IsDown || !PhotonNetwork.isMasterClient) return false;
         if (!base.PutOnTheGround()) return false;
 
-        StopAll();
+        //StopAll();
+        SetEnemyState(EnemyState.None);
         SetAnimationState((int)EnemyAnimationState.Grounded);
 
         return true;
+    }
+
+    public override bool SetThrowable(TDS_Throwable _throwable)
+    {
+        if (_throwable)
+        {
+            Throwable = _throwable;
+            _throwable.transform.SetParent(handsTransform, true);
+            _throwable.transform.localPosition = Vector3.zero;
+            _throwable.transform.rotation = Quaternion.identity;
+
+            if (!isFacingRight && enemyState != EnemyState.Attacking) _throwable.transform.Rotate(Vector3.up, 180);
+
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -916,7 +936,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected virtual Vector3 GetAttackingPosition(out bool _hasToWander)
     {
         //Search a new target
-        playerTarget = GetPlayerTarget(); 
+        if (!playerTarget) SearchTarget();  
 
         Vector3 _offset = Vector3.zero;
         Vector3 _returnedPosition = transform.position; 
@@ -1019,7 +1039,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <summary>
     /// This Method is called when the enemy has to be activated by an event
     /// </summary>
-    public virtual void ActivateEnemy(bool _hasToTaunt = false)
+    public virtual void ActivateEnemy(bool _hastoTaunt = false)
     {
         if (!PhotonNetwork.isMasterClient) return;
         IsPacific = false;
@@ -1080,7 +1100,10 @@ public abstract class TDS_Enemy : TDS_Character
         //If the path is computed, reach the end of the path
         if (_pathComputed)
         {
-            SetAnimationState((int)EnemyAnimationState.Run); 
+            SetAnimationState((int)EnemyAnimationState.Run);
+            //Orientate the agent
+            if (isFacingRight && agent.Velocity.x < 0 || !isFacingRight && agent.Velocity.x > 0)
+                Flip();
             SetEnemyState(_hasToWander? EnemyState.Wandering : EnemyState.GettingInRange);
         }
         else
@@ -1162,7 +1185,6 @@ public abstract class TDS_Enemy : TDS_Character
         agent.StopAgent();
         StopAttack();
         if(throwable) DropObject();
-        SetEnemyState(EnemyState.None); 
     }
 
     /// <summary>
@@ -1180,7 +1202,9 @@ public abstract class TDS_Enemy : TDS_Character
         //Take decisions
         if (isDead || !PhotonNetwork.isMasterClient) return;
         if (isAttacking || hitBox.IsActive) StopAttack();
-        if (agent.IsMoving) agent.StopAgent(); 
+        if (agent.IsMoving) agent.StopAgent();
+        speedCurrent = speedInitial; 
+        agent.Speed = speedCurrent; 
         // If the target can't be targeted, search for another target
         if (!playerTarget || playerTarget.IsDead)
         {
@@ -1213,8 +1237,9 @@ public abstract class TDS_Enemy : TDS_Character
     /// <param name="_position">Position of the attacker</param>
     protected virtual void ApplyDamagesBehaviour(int _damage, Vector3 _position)
     {
-        if (!PhotonNetwork.isMasterClient) return; 
-        StopAll();
+        if (!PhotonNetwork.isMasterClient) return;
+        SetEnemyState(EnemyState.None);
+        //StopAll();
         StartCoroutine(ApplyRecoil(_position));
         if (!isDead && !IsDown)
         {
@@ -1227,7 +1252,8 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public void SearchTarget()
     {
-        playerTarget = GetPlayerTarget(); 
+        playerTarget = GetPlayerTarget();
+        targetLastPosition = playerTarget.transform.position; 
     }
     #endregion
 

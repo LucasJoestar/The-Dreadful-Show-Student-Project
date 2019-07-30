@@ -14,7 +14,6 @@ public class TDS_FSMWander : StateMachineBehaviour
         if (!owner) owner = animator.GetComponent<TDS_Enemy>();
         if (!owner) return;
         wanderingCoroutine = owner.StartCoroutine(owner.Wander());
-
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

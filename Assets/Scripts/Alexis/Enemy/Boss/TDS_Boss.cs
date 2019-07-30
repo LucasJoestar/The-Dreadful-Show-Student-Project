@@ -81,6 +81,7 @@ public abstract class TDS_Boss : TDS_Enemy
         if (_availableAttacks.Length == 0) return null;
         // Get a random Index to cast a random attack
         int _randomIndex = UnityEngine.Random.Range(0, _availableAttacks.Length);
+        targetLastPosition = playerTarget.transform.position; 
         return _availableAttacks[_randomIndex];
     }
 
@@ -166,7 +167,7 @@ public abstract class TDS_Boss : TDS_Enemy
                 yield break;
             }
             //if the target is too far from the destination, recalculate the path
-            if (Mathf.Abs(agent.LastPosition.z - playerTarget.transform.position.z) > collider.size.z ||  Mathf.Abs(transform.position.x - playerTarget.transform.position.x) > castedAttack.MaxRange - agent.Radius)
+            if (Mathf.Abs(agent.LastPosition.z - playerTarget.transform.position.z) > collider.size.z || (Vector3.Distance(targetLastPosition, playerTarget.transform.position) > GetMaxRange()))
             {
                 SetEnemyState(EnemyState.ComputingPath);
                 yield break;
@@ -190,12 +191,14 @@ public abstract class TDS_Boss : TDS_Enemy
         if (!isDead && _damage >= damagesThreshold)
         {
             SetAnimationState((int)EnemyAnimationState.Hit);
-            StopAll(); 
+            //StopAll(); 
+            SetEnemyState(EnemyState.None); 
             StartCoroutine(ApplyRecoil(_position));
         }
         else if (isDead)
         {
-            StopAll();
+            //StopAll();
+            SetEnemyState(EnemyState.None);
         }
         else
         {
@@ -282,10 +285,17 @@ public abstract class TDS_Boss : TDS_Enemy
         Vector3 _attackingPosition = transform.position;
         if (playerTarget)
         {
-            int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;
-            float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x);
-
-            _attackingPosition = playerTarget.transform.position + new Vector3(UnityEngine.Random.Range(castedAttack.MinRange, castedAttack.MaxRange) - (agent.Radius), 0, 0); 
+            if (Vector3.Distance(transform.position, targetLastPosition) > castedAttack.MaxRange )
+            {
+                Vector3 _offset = playerTarget.transform.position - targetLastPosition;
+                _attackingPosition = agent.LastPosition + _offset; 
+            }
+            else
+            {
+                int _coeff = playerTarget.transform.position.x > transform.position.x ? -1 : 1;
+                _attackingPosition = playerTarget.transform.position + new Vector3(UnityEngine.Random.Range(castedAttack.MinRange, castedAttack.MaxRange) - (agent.Radius) * _coeff, 0, 0);
+            }
+            targetLastPosition = playerTarget.transform.position;
         }
         return _attackingPosition;
     }

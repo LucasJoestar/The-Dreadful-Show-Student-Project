@@ -13,7 +13,6 @@ public class TDS_FSMComputePath : StateMachineBehaviour
         if (!PhotonNetwork.isMasterClient) return;
         if (!owner) owner = animator.GetComponent<TDS_Enemy>();
         if (!owner) return;
-
         owner.ComputePath();
     }
 
