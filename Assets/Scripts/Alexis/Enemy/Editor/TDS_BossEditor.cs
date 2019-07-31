@@ -38,8 +38,8 @@ public class TDS_BossEditor : TDS_EnemyEditor
 
 
     #region Fields / Properties
-    protected SerializedProperty damagesThreshold = null; 
-
+    protected SerializedProperty damagesThreshold = null;
+    protected SerializedProperty portrait = null; 
     #region FoldOut
     /// <summary>Backing field for <see cref="IsBossUnfolded"/></summary>
     private bool isBossUnfolded = false;

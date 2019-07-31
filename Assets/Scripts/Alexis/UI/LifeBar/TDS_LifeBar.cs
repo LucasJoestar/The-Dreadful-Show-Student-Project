@@ -52,6 +52,8 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
     #region Fields and properties
     private bool hasToFollowOwner = false;
 
+    private Image background = null; 
+    public Image Background { get { return background; } }
     [SerializeField] protected Image foregroundFilledImage = null; 
     public Image ForegroundFilledImage { get { return foregroundFilledImage; }}
     [SerializeField] protected Image filledImage = null;
@@ -132,6 +134,11 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
     #endregion
 
     #region Unity Methods
+    protected virtual void Awake()
+    {
+        if (!background) background = transform.GetChild(0).GetComponent<Image>(); 
+    }
+
     protected virtual void Update()
     {
         FollowOwner();
