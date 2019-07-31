@@ -36,7 +36,7 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
 
     #region Fields / Properties
     [SerializeField] protected TDS_ComboManager comboCounter = null;
-    [SerializeField] protected PlayerType playerType = PlayerType.Unknown; 
+    [SerializeField] protected PlayerType playerType = PlayerType.Unknown;
     #endregion
 
     #region Methods
@@ -62,13 +62,5 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
     }
     #endregion
 
-    #region Unity Methods
-    // Update is called once per frame
-    protected override void Update()
-    {
-        
-	}
-	#endregion
-
-	#endregion
+    #endregion
 }

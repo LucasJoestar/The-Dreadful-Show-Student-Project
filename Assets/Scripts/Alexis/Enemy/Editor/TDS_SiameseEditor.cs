@@ -47,6 +47,8 @@ public class TDS_SiameseEditor : TDS_BossEditor
     SerializedProperty splitingEnemiesNames = null;
     /// <summary>SerializedProperty for <see cref="TDS_Siamese.splitingPosition"/> of type <see cref="Vector3[]"/>. </summary>
     SerializedProperty splitingPosition = null;
+    /// <summary>SerializedProperty for <see cref="TDS_Siamese.splittingPortrait"/> of type <see cref="GameObject"/>. </summary>
+    SerializedProperty splittingPortrait = null;
 
     /// <summary>Backing field for <see cref="AreSplittingSettingsUnfolded"/></summary>
     private bool areSplittingSettingsUnfolded = false;
@@ -134,8 +136,12 @@ public class TDS_SiameseEditor : TDS_BossEditor
                     splitingPosition.InsertArrayElementAtIndex(0);
                     splitingPosition.GetArrayElementAtIndex(0).vector3Value = Vector3.forward;
                     Repaint();
-                    serializedObject.ApplyModifiedProperties();
                 }
+                EditorGUILayout.Space(); 
+
+                TDS_EditorUtility.ObjectField("Splitting Portrait", "Portrait of the splitting enemies", splittingPortrait, typeof(GameObject)); 
+                serializedObject.ApplyModifiedProperties();
+
             }
             EditorGUILayout.EndVertical();
             EditorGUILayout.Space();
@@ -156,6 +162,7 @@ public class TDS_SiameseEditor : TDS_BossEditor
         spinningSpeed = serializedObject.FindProperty("spinningSpeed");
         splitingEnemiesNames = serializedObject.FindProperty("splitingEnemiesNames");
         splitingPosition = serializedObject.FindProperty("splitingPosition");
+        splittingPortrait = serializedObject.FindProperty("splittingPortrait");
     }
 
     public override void OnInspectorGUI()

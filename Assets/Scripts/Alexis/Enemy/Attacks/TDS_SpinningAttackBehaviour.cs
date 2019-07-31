@@ -75,6 +75,7 @@ public class TDS_SpinningAttackBehaviour : TDS_EnemyAttack
                                             new Vector3((_bounds.XMin + _bounds.XMax) / 2, 0, (_bounds.ZMin + _bounds.ZMax) / 2)};
         caster.Agent.OnDestinationReached += GoNextSpinningPosition;
         GoNextSpinningPosition();
+        caster.IsInvulnerable = true; 
     }
 
 
@@ -104,7 +105,8 @@ public class TDS_SpinningAttackBehaviour : TDS_EnemyAttack
     /// </summary>
     private void StopSpinning()
     {
-        caster.SetAnimationState((int)EnemyAnimationState.StopSpinning); 
+        caster.SetAnimationState((int)EnemyAnimationState.StopSpinning);
+        caster.IsInvulnerable = false;
     }
     #endregion
 

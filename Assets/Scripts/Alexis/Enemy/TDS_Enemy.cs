@@ -926,16 +926,6 @@ public abstract class TDS_Enemy : TDS_Character
         SetAnimationState((int)EnemyAnimationState.BringTargetCloser); 
     }
 
-    /// <summary>
-    /// Fill the life bar
-    /// </summary>
-    /// <param name="_health"></param>
-    public override void UpdateLifeBar(int _health)
-    {
-        base.UpdateLifeBar(_health);
-        if (!HealthBar.Background.gameObject.activeInHierarchy)
-            HealthBar.Background.gameObject.SetActive(true);
-    }
     #endregion
 
     #region Vector3
@@ -1275,7 +1265,7 @@ public abstract class TDS_Enemy : TDS_Character
     public void SearchTarget()
     {
         playerTarget = GetPlayerTarget();
-        targetLastPosition = playerTarget.transform.position; 
+        if(playerTarget) targetLastPosition = playerTarget.transform.position; 
     }
 
     #endregion

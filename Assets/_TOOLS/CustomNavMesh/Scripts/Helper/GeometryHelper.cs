@@ -54,7 +54,7 @@ public static class GeometryHelper
 
         Vector3 _ab = _b - _a; // I
         float _anglesign = AngleSign(_a, _b, _c);
-        Vector3 _cd = _anglesign < 0 ? _d - _c : _c - _d; // J
+        Vector3 _cd = _anglesign < 0 ? _d - _c : _c - _d; // J 
 
         Vector3 _pointLeft = _anglesign < 0 ? _c : _d;
 
@@ -197,6 +197,13 @@ public static class GeometryHelper
     public static Triangle GetTriangleContainingPosition(Vector3 _position, List<Triangle> triangles)
     {
         RaycastHit _hit;
+        foreach (Triangle triangle in triangles)
+        {
+            if (IsInTriangle(_position, triangle))
+            {
+                return triangle;
+            }
+        }
         if (Physics.Raycast(_position, Vector3.down, out _hit, 5))
         {
             Vector3 _onGroundPosition = _hit.point;

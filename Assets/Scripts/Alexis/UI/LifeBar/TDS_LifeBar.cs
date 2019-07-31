@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using Photon;
 
 #pragma warning disable 0649
 
-public class TDS_LifeBar : UnityEngine.MonoBehaviour
+public abstract class TDS_LifeBar : UnityEngine.MonoBehaviour
 {
     /* TDS_LifeBar :
 	 *
@@ -50,9 +47,7 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
     #endregion
 
     #region Fields and properties
-    private bool hasToFollowOwner = false;
-
-    private Image background = null; 
+    protected Image background = null; 
     public Image Background { get { return background; } }
     [SerializeField] protected Image foregroundFilledImage = null; 
     public Image ForegroundFilledImage { get { return foregroundFilledImage; }}
@@ -61,7 +56,6 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
 
     protected TDS_Character owner = null;
 
-    private Vector3 offset;
     #endregion
 
     #region Methods
@@ -72,24 +66,8 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
     /// </summary>
     public virtual void DestroyLifeBar()
     {
-        if(owner is TDS_Enemy)
-        {
-            if (TDS_UIManager.Instance)
-            {
-                TDS_UIManager.Instance.StopFilling(this);
-            }
-            UnityEngine.Object.Destroy(this.gameObject);
-            owner.OnDie -= DestroyLifeBar;
-        }
-    }
-
-    /// <summary>
-    /// Make the gameObject follow its owner with a certain offset
-    /// </summary>
-    public void FollowOwner()
-    {
-        if (!hasToFollowOwner || !owner) return;
-        transform.position = Vector3.MoveTowards(transform.position, owner.transform.position + offset, Time.deltaTime * 10);
+        owner = null; 
+        gameObject.SetActive(false); 
     }
 
     /// <summary>
@@ -114,22 +92,13 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
     }
 
     /// <summary>
-    /// Set the owner of the lifebar 
-    /// Link Destroy method on the event OnDie of the owner
-    /// Set the follow boolean on true and get an offset
+    /// Fill the lifebar!
     /// </summary>
-    /// <param name="_owner">Owner of the life bar</param>
-    /// <param name="_offset">Offset from the owner</param>
-    /// <param name="_hasToFollow">Does the lifebar has to follow its owner</param>
-    public void SetOwner(TDS_Character _owner, Vector3 _offset, bool _hasToFollow = true)
+    public virtual void UpdateLifeBar(int _currentHealth)
     {
-        SetOwner(_owner); 
-        if(owner is TDS_Enemy)
-        {
-            offset = _offset;
-            hasToFollowOwner = _hasToFollow;
-            owner.OnDie += DestroyLifeBar;
-        }
+        if (!TDS_UIManager.Instance || !owner) return;
+        float _fillingValue = Mathf.Clamp((float)owner.HealthCurrent / (float)owner.HealthMax, 0, 1);
+        TDS_UIManager.Instance.FillImage(this, _fillingValue); 
     }
     #endregion
 
@@ -137,11 +106,6 @@ public class TDS_LifeBar : UnityEngine.MonoBehaviour
     protected virtual void Awake()
     {
         if (!background) background = transform.GetChild(0).GetComponent<Image>(); 
-    }
-
-    protected virtual void Update()
-    {
-        FollowOwner();
     }
     #endregion
 

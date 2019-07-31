@@ -593,19 +593,6 @@ public abstract class TDS_Character : TDS_Damageable
     }
     #endregion
 
-    #region UI 
-    /// <summary>
-    /// Fill the life bar
-    /// </summary>
-    /// <param name="_health"></param>
-    public virtual void UpdateLifeBar(int _health)
-    {
-        if (!HealthBar || !TDS_UIManager.Instance) return;
-        float _fillingValue = Mathf.Clamp((float)healthCurrent / (float)healthMax, 0, 1);
-        TDS_UIManager.Instance.FillImage(HealthBar, _fillingValue); 
-    }
-    #endregion
-
     #region Effects
     /// <summary>
     /// Bring this damageable closer from a certain distance.

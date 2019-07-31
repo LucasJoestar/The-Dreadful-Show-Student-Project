@@ -223,7 +223,8 @@ public class TDS_SpawnerArea : PunBehaviour
     {
         if(_enemy && !spawnedEnemies.Contains(_enemy))
         {
-            spawnedEnemies.Add(_enemy); 
+            spawnedEnemies.Add(_enemy);
+            _enemy.Area = this; 
         }
     }
 
@@ -277,8 +278,8 @@ public class TDS_SpawnerArea : PunBehaviour
     {
         if (!PhotonNetwork.isMasterClient) return;
         spawnedEnemies.Remove(_removedEnemy);
-        deadEnemies.Add(_removedEnemy); 
-        if(spawnedEnemies.Count == 0)
+        deadEnemies.Add(_removedEnemy);
+        if (spawnedEnemies.Count == 0)
         {
             waveIndex++;
             OnNextWave?.Invoke();

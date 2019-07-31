@@ -41,11 +41,19 @@ public class TDS_UnicycleSiamese : TDS_Enemy
     #region Fields / Properties
     private bool hasReachedRightBound = false; 
     private TDS_Bounds bounds = null;
+    
     #endregion
 
     #region Methods
 
     #region Original Methods
+
+    private IEnumerator ResetAttackCoolDown(float _cooldown)
+    {
+        IsPacific = true;
+        yield return new WaitForSeconds(_cooldown);
+        IsPacific = false; 
+    }
 
     #region OverridenMethods
     /// <summary>
@@ -55,9 +63,12 @@ public class TDS_UnicycleSiamese : TDS_Enemy
     /// <returns></returns>
     protected override bool AttackCanBeCasted()
     {
-        bool _canAttack = base.AttackCanBeCasted();
-        //if (_canAttack)
-        //    _canAttack = Mathf.Abs(transform.position.z - playerTarget.transform.position.z) <= agent.Radius * 2;
+        float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x);
+        bool _canAttack = Attacks.Any(a => a != null && a.MaxRange >= _distance && a.MinRange <= _distance);
+        if(!_canAttack) return false;
+        _canAttack = Attacks.Any(a => a.MinRange > 0) || Mathf.Abs(transform.position.z - playerTarget.transform.position.z) <= collider.size.z;
+
+        ///
         if (_canAttack)
             _canAttack = IsFacingRight ? transform.position.x < playerTarget.transform.position.x : transform.position.x > playerTarget.transform.position.x; 
         return _canAttack; 
@@ -83,6 +94,7 @@ public class TDS_UnicycleSiamese : TDS_Enemy
         if (isDead || !PhotonNetwork.isMasterClient) yield break;
         if (IsPacific)
         {
+            SetEnemyState(EnemyState.MakingDecision);
             yield break;
         }
         //Throw attack
@@ -103,17 +115,8 @@ public class TDS_UnicycleSiamese : TDS_Enemy
             yield return new WaitForSeconds(.1f);
         }
         playerTarget = null;
-        yield return new WaitForSeconds(_cooldown);
-        if (_targetedPosition != Vector3.zero)
-        {
-            agent.SetDestination(_targetedPosition);
-            SetEnemyState(EnemyState.GettingInRange);
-        }
-        else
-        {
-            SetEnemyState(EnemyState.ComputingPath);
-            yield break; 
-        }
+        StartCoroutine(ResetAttackCoolDown(_cooldown)); 
+        SetEnemyState(EnemyState.MakingDecision);
     }
 
     /// <summary>
@@ -184,6 +187,11 @@ public class TDS_UnicycleSiamese : TDS_Enemy
         SetEnemyState(EnemyState.ComputingPath);
     }
 
+    protected override void Die()
+    {
+        base.Die();
+        if (Area) Area.RemoveEnemy(this);
+    }
     #endregion
 
     #endregion
@@ -193,7 +201,7 @@ public class TDS_UnicycleSiamese : TDS_Enemy
     protected override void Awake()
     {
         base.Awake();
-        canThrow = false; 
+        canThrow = false;
     }
 
     // Use this for initialization
