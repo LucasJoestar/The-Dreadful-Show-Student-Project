@@ -135,21 +135,8 @@ public class TDS_Juggler : TDS_Player
         get { return throwable; }
         set
         {
-            // Set the old selected one position
-            if (throwable)
-            {
-                throwable.transform.position = juggleTransform.position;
-                //throwable.transform.SetParent(juggleTransform);
-                Throwables.Add(throwable);
-
-                // Associate the new throwabke juggling with with an anchor
-                Transform _anchor = objectAnchors[Throwables.Count - 1];
-                _anchor.position = throwable.Sprite.bounds.center;
-                throwable.transform.SetParent(_anchor);
-
-                // Stop coroutine if needed
-                if (throwableLerpCoroutine != null) StopCoroutine(throwableLerpCoroutine);
-            }
+            // Stop coroutine if needed
+            if (throwableLerpCoroutine != null) StopCoroutine(throwableLerpCoroutine);
 
             // Set the new one
             if (value != null)
@@ -179,6 +166,18 @@ public class TDS_Juggler : TDS_Player
 
                 // Starts position lerp coroutine
                 throwableLerpCoroutine = StartCoroutine(LerpThrowableToHand());
+            }
+
+            // Set the old selected one position
+            if (throwable)
+            {
+                throwable.transform.position = juggleTransform.position;
+                Throwables.Add(throwable);
+
+                // Associate the new throwabke juggling with with an anchor
+                Transform _anchor = objectAnchors[Throwables.Count - 1];
+                _anchor.position = throwable.Sprite.bounds.center;
+                throwable.transform.SetParent(_anchor);
             }
 
             throwable = value;
@@ -268,20 +267,12 @@ public class TDS_Juggler : TDS_Player
         get { return Throwables.Count; }
     }
 
-    /// <summary>Backing field for <see cref="MaxThrowableAmount"/>.</summary>
-    [SerializeField] private int maxThrowableAmount = 5;
-
     /// <summary>
     /// Maximum amount of throwable this Juggler can carry on.
     /// </summary>
     public int MaxThrowableAmount
     {
-        get { return maxThrowableAmount; }
-        set
-        {
-            if (value < 1) value = 1;
-            maxThrowableAmount = value;
-        }
+        get { return objectAnchors.Length; }
     }
 
     /// <summary>
@@ -452,7 +443,7 @@ public class TDS_Juggler : TDS_Player
         }
 
         // If currently wearing the maximum amount of throwables he can, return
-        if ((CurrentThrowableAmount == maxThrowableAmount) || !_throwable.PickUp(this)) return false;
+        if ((CurrentThrowableAmount == MaxThrowableAmount) || !_throwable.PickUp(this)) return false;
 
         return true;
     }
@@ -500,14 +491,14 @@ public class TDS_Juggler : TDS_Player
 
             Vector3 _newPosition = new Vector3(
                                    Mathf.Sin(_theta) * throwableDistanceFromCenter, 
-                                   Mathf.Cos(_theta)) * throwableDistanceFromCenter;
+                                   Mathf.Cos(_theta) * throwableDistanceFromCenter);
             _newPosition.y += throwableDistanceFromCenter;
 
             // Position update
-            _throwable.localPosition = Vector3.Lerp(_throwable.transform.localPosition, _newPosition, Time.deltaTime * juggleSpeed);
+            _throwable.localPosition = Vector3.Lerp(_throwable.localPosition, _newPosition, Time.deltaTime * juggleSpeed);
 
             // Rotates the object
-            _throwable.Rotate(Vector3.forward, Time.deltaTime * 100 * (5 / Throwables[_i].Weight));
+            _throwable.Rotate(Vector3.forward, Time.deltaTime * 200 + (2f / Throwables[_i].Weight));
         }
 
         // Increase counter
@@ -535,7 +526,7 @@ public class TDS_Juggler : TDS_Player
 
         while (throwable)
         {
-            throwable.transform.position = Vector3.Lerp(throwable.transform.position, handsTransform.position, Time.deltaTime * 7);
+            throwable.transform.position = Vector3.Lerp(throwable.transform.position, handsTransform.position, Time.deltaTime * 5);
 
             if (throwable.transform.position == handsTransform.position)
             {
@@ -647,23 +638,51 @@ public class TDS_Juggler : TDS_Player
             _selected = Throwables[CurrentThrowableAmount - 1];
             Throwables.RemoveAt(CurrentThrowableAmount - 1);
             Throwables.Insert(0, throwable);
+
+            // Reorder the anchor array
+            _objectAnchors[0] = objectAnchors[CurrentThrowableAmount - 1];
+            _objectAnchors[0].position = throwable.Sprite.bounds.center;
+            throwable.transform.SetParent(_objectAnchors[0]);
+
+            for (int _i = 0; _i < CurrentThrowableAmount - 1; _i++)
+            {
+                _objectAnchors[_i + 1] = objectAnchors[_i];
+            }
+            for (int _i = CurrentThrowableAmount; _i < objectAnchors.Length; _i++)
+            {
+                _objectAnchors[_i] = objectAnchors[_i];
+            }
         }
         else
         {
             _selected = Throwables[0];
             Throwables.RemoveAt(0);
             Throwables.Add(throwable);
+
+            // Reorder the anchor array
+            _objectAnchors[CurrentThrowableAmount - 1] = objectAnchors[0];
+            _objectAnchors[CurrentThrowableAmount - 1].position = throwable.Sprite.bounds.center;
+            throwable.transform.SetParent(_objectAnchors[CurrentThrowableAmount - 1]);
+
+            for (int _i = 0; _i < CurrentThrowableAmount - 1; _i++)
+            {
+                _objectAnchors[_i] = objectAnchors[_i + 1];
+            }
+            for (int _i = CurrentThrowableAmount; _i < objectAnchors.Length; _i++)
+            {
+                _objectAnchors[_i] = objectAnchors[_i];
+            }
         }
 
-        // Set previous one transform
-        throwable.transform.SetParent(juggleTransform);
+        objectAnchors = _objectAnchors;
 
         // Stop coroutine if needed
         if (throwableLerpCoroutine != null) StopCoroutine(throwableLerpCoroutine);
 
         // Set the new throwable
+        
+        _selected.transform.SetParent(handsTransform, true);
         _selected.transform.rotation = Quaternion.identity;
-        _selected.transform.SetParent(handsTransform);
 
         throwable = _selected;
 
@@ -705,27 +724,27 @@ public class TDS_Juggler : TDS_Player
 
             case 1:
                 juggleSpeed = 2;
-                throwableDistanceFromCenter = .25f;
+                throwableDistanceFromCenter = 1;
                 break;
 
             case 2:
                 juggleSpeed = 2.5f;
-                throwableDistanceFromCenter = .5f;
+                throwableDistanceFromCenter = 1.25f;
                 break;
 
             case 3:
-                juggleSpeed = 2.8f;
-                throwableDistanceFromCenter = .8f;
+                juggleSpeed = 3.5f;
+                throwableDistanceFromCenter = 1.5f;
                 break;
 
             case 4:
-                juggleSpeed = 3.15f;
-                throwableDistanceFromCenter = 1f;
+                juggleSpeed = 3.75f;
+                throwableDistanceFromCenter = 2f;
                 break;
 
             case 5:
-                juggleSpeed = 3.5f;
-                throwableDistanceFromCenter = 1.25f;
+                juggleSpeed = 4f;
+                throwableDistanceFromCenter = 2.5f;
                 break;
 
             // If amount is superior to 5
@@ -938,6 +957,10 @@ public class TDS_Juggler : TDS_Player
         {
             Debug.LogWarning("The Juggle Transform of \"" + name + "\" for script TDS_Juggler is missing !");
         }
+        if (objectAnchors.Length == 0)
+        {
+            objectAnchors = juggleTransform.GetComponentsInChildren<Transform>();
+        }
 
         // Set player type, just in case
         PlayerType = PlayerType.Juggler;
@@ -970,12 +993,6 @@ public class TDS_Juggler : TDS_Player
 
             // Get aim target RectTransform
             aimTargetTransform = TDS_UIManager.Instance.JugglerAimTargetTransform;
-        }
-
-        objectAnchors = new Transform[maxThrowableAmount];
-        for (int _i = 0; _i < maxThrowableAmount; _i++)
-        {
-            objectAnchors[_i] = Instantiate(new GameObject("Anchor #" + _i), juggleTransform).transform;
         }
     }
 
