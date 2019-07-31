@@ -56,8 +56,8 @@ public abstract class TDS_Boss : TDS_Enemy
     [SerializeField] protected int damagesThreshold = 10; 
     protected TDS_EnemyAttack castedAttack = null;
 
-    [SerializeField] protected Image portrait = null; 
-    public Image Portrait
+    [SerializeField] protected GameObject portrait = null; 
+    public GameObject Portrait
     {
         get { return portrait;  }
     }

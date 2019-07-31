@@ -13,9 +13,9 @@ TextureImporter:
     21300016: BossLifeBar_Background
     21300018: Arrow_Variant
     21300020: BossLifeBar_Foreground
-    21300022: SiameseUniC_Head
-    21300024: SiameseUniD_Head
-    21300026: SiameseBrutal_Head
+    21300022: SiameseUniC_Portrait
+    21300024: SiameseUniD_Portrait
+    21300026: SiameseBrutal_Portrait
     21300028: FireEaterPortrait
     21300030: JugglerPortrait
     21300032: BeardLadyPortrait
@@ -349,7 +349,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SiameseUniC_Head
+      name: SiameseUniC_Portrait
       rect:
         serializedVersion: 2
         x: 68
@@ -369,7 +369,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SiameseUniD_Head
+      name: SiameseUniD_Portrait
       rect:
         serializedVersion: 2
         x: 335
@@ -389,7 +389,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SiameseBrutal_Head
+      name: SiameseBrutal_Portrait
       rect:
         serializedVersion: 2
         x: 582
@@ -517,7 +517,7 @@ TextureImporter:
         width: 74
         height: 854
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -537,7 +537,7 @@ TextureImporter:
         width: 90
         height: 876
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -557,7 +557,7 @@ TextureImporter:
         width: 254
         height: 971
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

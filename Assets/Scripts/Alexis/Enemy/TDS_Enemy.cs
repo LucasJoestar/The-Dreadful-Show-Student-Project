@@ -925,6 +925,17 @@ public abstract class TDS_Enemy : TDS_Character
         BringingTarget = null;
         SetAnimationState((int)EnemyAnimationState.BringTargetCloser); 
     }
+
+    /// <summary>
+    /// Fill the life bar
+    /// </summary>
+    /// <param name="_health"></param>
+    public override void UpdateLifeBar(int _health)
+    {
+        base.UpdateLifeBar(_health);
+        if (!HealthBar.Background.gameObject.activeInHierarchy)
+            HealthBar.Background.gameObject.SetActive(true);
+    }
     #endregion
 
     #region Vector3
@@ -1086,8 +1097,14 @@ public abstract class TDS_Enemy : TDS_Character
         // Select a position
         bool _pathComputed = false;
         Vector3 _position;
-        bool _hasToWander = false; 
-        if (targetedThrowable && canThrow)
+        bool _hasToWander = false;
+        if (transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax || transform.position.x < TDS_Camera.Instance.CurrentBounds.XMin)
+        {
+            _position = transform.position;
+            if (transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax) _position.x = TDS_Camera.Instance.CurrentBounds.XMax - agent.Radius; 
+            else _position.x = TDS_Camera.Instance.CurrentBounds.XMin + agent.Radius;
+        }
+        else if (targetedThrowable && canThrow)
         {
             _position = targetedThrowable.transform.position;
         }
@@ -1205,6 +1222,11 @@ public abstract class TDS_Enemy : TDS_Character
         if (agent.IsMoving) agent.StopAgent();
         speedCurrent = speedInitial; 
         agent.Speed = speedCurrent; 
+        if(transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax || transform.position.x < TDS_Camera.Instance.CurrentBounds.XMin)
+        {
+            SetEnemyState(EnemyState.ComputingPath);
+            return; 
+        }
         // If the target can't be targeted, search for another target
         if (!playerTarget || playerTarget.IsDead)
         {
@@ -1255,6 +1277,7 @@ public abstract class TDS_Enemy : TDS_Character
         playerTarget = GetPlayerTarget();
         targetLastPosition = playerTarget.transform.position; 
     }
+
     #endregion
 
     #endregion
