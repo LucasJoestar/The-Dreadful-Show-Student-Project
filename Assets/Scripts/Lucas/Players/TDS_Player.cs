@@ -659,19 +659,21 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// Makes the player active its planned attack.
     /// </summary>
     /// <param name="_attackIndex">Index of the attack to activate from <see cref="attacks"/>.</param>
-    public virtual void ActiveAttack(int _attackIndex)
+    /// <returns>Returns true if the attack as correctly been activated, false otherwise.</returns>
+    public virtual bool ActiveAttack(int _attackIndex)
     {
         #if UNITY_EDITOR
         // If index is out of range, debug it
         if ((_attackIndex < 0) || (_attackIndex >= attacks.Length))
         {
             Debug.LogWarning($"The Player \"{name}\" has no selected attack to perform");
-            return;
+            return false;
         }
         #endif
 
         // Activate the hit box
         hitBox.Activate(attacks[_attackIndex]);
+        return true;
     }
 
     /// <summary>

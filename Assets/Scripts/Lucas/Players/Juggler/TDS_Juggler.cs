@@ -123,6 +123,11 @@ public class TDS_Juggler : TDS_Player
 
     #region Components & References
     /// <summary>
+    /// Currently locked enemy.
+    /// </summary>
+    private TDS_Enemy lockedEnemy = null;
+
+    /// <summary>
     /// Dictionnary containing juggling throwables as keys with their anchor as value.
     /// </summary>
     private Dictionary<TDS_Throwable, Transform> throwableAnchors = new Dictionary<TDS_Throwable, Transform>();
@@ -193,6 +198,11 @@ public class TDS_Juggler : TDS_Player
     /// Transform of the target point currently aiming.
     /// </summary>
     private RectTransform aimTargetTransform = null;
+
+    /// <summary>
+    /// Transform of the arrow for the locked aiming enemy.
+    /// </summary>
+    private RectTransform aimArrowTransform = null;
 
     /// <summary>
     /// Transform used to set as children objects juggling with.
@@ -319,13 +329,14 @@ public class TDS_Juggler : TDS_Player
     /// Makes the player active its planned attack.
     /// </summary>
     /// <param name="_attackIndex">Index of the attack to activate from <see cref="attacks"/>.</param>
-    public override void ActiveAttack(int _attackIndex)
+    /// <returns>Returns true if the attack as correctly been activated, false otherwise.</returns>
+    public override bool ActiveAttack(int _attackIndex)
     {
         // If aiming, stop
         if (isAiming) StopAiming();
 
         // Attack
-        base.ActiveAttack(_attackIndex);
+        return base.ActiveAttack(_attackIndex);
     }
 
     /// <summary>
@@ -394,11 +405,25 @@ public class TDS_Juggler : TDS_Player
     /// </summary>
     protected void AimMethod()
     {
+        Vector2 _newTarget = aimTargetTransform.anchoredPosition;
+
+        // If aiming a locked enemy, keep target on it
+        if (lockedEnemy != null)
+        {
+            _newTarget = TDS_Camera.Instance.Camera.WorldToScreenPoint(lockedEnemy.Collider.bounds.center);
+
+            if (_newTarget != aimTargetTransform.anchoredPosition)
+            {
+                aimTargetTransform.anchoredPosition = _newTarget;
+            }
+
+            return;
+        }
+
         // Let the player aim the point he wants, 'cause the juggler can do that. Yep
         // Aim with IJKL or the right joystick axis
         float _xMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_X_Axis) * 30;
         float _yMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_Y_AXIS) * 30;
-        Vector2 _newTarget = aimTargetTransform.anchoredPosition;
 
         // Clamp X target position in screen
         if (_xMovement != 0)

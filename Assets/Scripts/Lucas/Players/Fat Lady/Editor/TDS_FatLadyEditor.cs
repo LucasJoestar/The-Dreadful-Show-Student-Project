@@ -35,11 +35,14 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
     #region Fields / Properties
 
     #region SerializedProperties
-    /// <summary>SerializedProperties for <see cref="TDS_FatLady.isBerserk"/> of type <see cref="bool"/>.</summary>
-    private SerializedProperty isBerserk = null;
+    /// <summary>SerializedProperties for <see cref="TDS_FatLady.isAngry"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isAngry = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_FatLady.isSnackAvailable"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isSnackAvailable = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_FatLady.angrySpeedCoef"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty angrySpeedCoef = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_FatLady.snackRestaureTime"/> of type <see cref="float"/>.</summary>
     private SerializedProperty snackRestaureTime = null;
@@ -47,8 +50,8 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
     /// <summary>SerializedProperties for <see cref="TDS_FatLady.snackRestaureTimer"/> of type <see cref="float"/>.</summary>
     private SerializedProperty snackRestaureTimer = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_FatLady.berserkHealthStep"/> of type <see cref="int"/>.</summary>
-    private SerializedProperty berserkHealthStep = null;
+    /// <summary>SerializedProperties for <see cref="TDS_FatLady.angryHealthStep"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty angryHealthStep = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_FatLady.snackHealValue"/> of type <see cref="int"/>.</summary>
     private SerializedProperty snackHealValue = null;
@@ -201,18 +204,24 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
     {
         if (Application.isPlaying)
         {
-            if (TDS_EditorUtility.Toggle("Berserk", "Indicates if the Fat Lady is in Berserk or in \"Pacific\" mode", isBerserk))
+            if (TDS_EditorUtility.Toggle("Angry", "Indicates if the Fat Lady is in Angry or in \"Cool\" mode", isAngry))
             {
-                fatLadies.ForEach(f => f.IsBerserk = isBerserk.boolValue);
+                fatLadies.ForEach(f => f.IsAngry = isAngry.boolValue);
                 serializedObject.Update();
             }
 
             GUILayout.Space(5);
         }
 
-        if (TDS_EditorUtility.IntField("Berserk Health Step", "Health value separating the Berserk mode and the Pacific one", berserkHealthStep))
+        if (TDS_EditorUtility.FloatField("Angry Speed Coef", "Coefficient applied to the Fat Lady's speed when angry", angrySpeedCoef))
         {
-            fatLadies.ForEach(f => f.BerserkHealthStep = berserkHealthStep.intValue);
+            fatLadies.ForEach(f => f.AngrySpeedCoef = angrySpeedCoef.floatValue);
+            serializedObject.Update();
+        }
+
+        if (TDS_EditorUtility.IntField("Angry Health Step", "Health value separating the Angry mode and the Cool one", angryHealthStep))
+        {
+            fatLadies.ForEach(f => f.AngryHealthStep = angryHealthStep.intValue);
             serializedObject.Update();
         }
 
@@ -256,11 +265,12 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
         else isFatLadyMultiEditing = true;
 
         // Get the serializedProperties from the serializedObject
-        isBerserk = serializedObject.FindProperty("isBerserk");
+        isAngry = serializedObject.FindProperty("isAngry");
         isSnackAvailable = serializedObject.FindProperty("isSnackAvailable");
+        angrySpeedCoef = serializedObject.FindProperty("angrySpeedCoef");
         snackRestaureTime = serializedObject.FindProperty("snackRestaureTime");
         snackRestaureTimer = serializedObject.FindProperty("snackRestaureTimer");
-        berserkHealthStep = serializedObject.FindProperty("berserkHealthStep");
+        angryHealthStep = serializedObject.FindProperty("angryHealthStep");
         snackHealValue = serializedObject.FindProperty("snackHealValue");
 
         // Loads the editor folded & unfolded values of this script

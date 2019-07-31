@@ -46,21 +46,29 @@ public class TDS_FatLady : TDS_Player
     #region Fields / Properties
 
     #region Variables
-    /// <summary>Backing field for <see cref="IsBerserk"/>.</summary>
-    [SerializeField] private bool isBerserk = false;
+    /// <summary>Backing field for <see cref="IsAngry"/>.</summary>
+    [SerializeField] private bool isAngry = false;
 
     /// <summary>
-    /// Indicates if the Fat Lady is currently in berserk mode or not.
+    /// Indicates if the Fat Lady is currently very very angry or not.
     /// </summary>
-    public bool IsBerserk
+    public bool IsAngry
     {
-        get { return isBerserk; }
+        get { return isAngry; }
         set
         {
-            isBerserk = value;
+            isAngry = value;
 
-            if (value) SetFatLadyAnim(FatLadyAnimState.Berserk);
-            else SetFatLadyAnim(FatLadyAnimState.Pacific);
+            if (value)
+            {
+                SpeedCoef *= angrySpeedCoef;
+                SetFatLadyAnim(FatLadyAnimState.Angry);
+            }
+            else
+            {
+                SpeedCoef /= angrySpeedCoef;
+                SetFatLadyAnim(FatLadyAnimState.Cool);
+            }
         }
     }
 
@@ -90,6 +98,22 @@ public class TDS_FatLady : TDS_Player
         }
     }
 
+    /// <summary>Backing field for <see cref="AngrySpeedCoef"/>.</summary>
+    [SerializeField] private float angrySpeedCoef = 1.25f;
+
+    /// <summary>
+    /// Coefficient of the Fat Lady's speed when she's angry.
+    /// </summary>
+    public float AngrySpeedCoef
+    {
+        get { return angrySpeedCoef; }
+        set
+        {
+            if (value < 0) value = 0;
+            angrySpeedCoef = value;
+        }
+    }
+
     /// <summary>Backing field for <see cref="SnackRestaureTime"/>.</summary>
     [SerializeField] private float snackRestaureTime = 30;
 
@@ -106,19 +130,19 @@ public class TDS_FatLady : TDS_Player
         }
     }
 
-    /// <summary>Backing field for <see cref="BerserkHealthStep"/>.</summary>
-    [SerializeField] private int berserkHealthStep = 33;
+    /// <summary>Backing field for <see cref="AngryHealthStep"/>.</summary>
+    [SerializeField] private int angryHealthStep = 33;
 
     /// <summary>
-    /// Health value separating the berserk mode (when healrh is lower) from the "pacific" mode (when higher).
+    /// Health value separating the angry mode (when health is lower) from the "cool" mode (when higher).
     /// </summary>
-    public int BerserkHealthStep
+    public int AngryHealthStep
     {
-        get { return berserkHealthStep; }
+        get { return angryHealthStep; }
         set
         {
             if (value < 0) value = 0;
-            berserkHealthStep = value;
+            angryHealthStep = value;
         }
     }
 
@@ -166,11 +190,11 @@ public class TDS_FatLady : TDS_Player
     /// <param name="_health">New health value of the Fat Lady.</param>
     public void CheckHealthStatus(int _health)
     {
-        if (_health > berserkHealthStep)
+        if (_health > angryHealthStep)
         {
-            if (isBerserk) IsBerserk = false;
+            if (isAngry) IsAngry = false;
         }
-        else if (!isBerserk) IsBerserk = true;
+        else if (!isAngry) IsAngry = true;
     }
 
     /// <summary>
@@ -225,6 +249,20 @@ public class TDS_FatLady : TDS_Player
     #endregion
 
     #region Attacks
+    /// <summary>
+    /// Makes the player active its planned attack.
+    /// </summary>
+    /// <param name="_attackIndex">Index of the attack to activate from <see cref="attacks"/>.</param>
+    /// <returns>Returns true if the attack as correctly been activated, false otherwise.</returns>
+    public override bool ActiveAttack(int _attackIndex)
+    {
+        if (!base.ActiveAttack(_attackIndex)) return false;
+
+        // If angry, increase damages
+        if (isAngry) hitBox.BonusDamages += Mathf.CeilToInt((hitBox.BonusDamages / 2f) + (hitBox.CurrentAttack.GetDamages / 3f));
+        return true;
+    }
+
     /// <summary>
     /// Makes the player prepare an attack.
     /// By default, the player is supposed to just directly attack ; but for certain situations, the attack might not played directly : that's the goal of this method, to be override to rewrite a pre-attack behaviour.
@@ -322,12 +360,12 @@ public class TDS_FatLady : TDS_Player
 
         switch (_state)
         {
-            case FatLadyAnimState.Berserk:
-                animator.SetBool("IsBerserk", true);
+            case FatLadyAnimState.Angry:
+                animator.SetBool("IsAngry", true);
                 break;
 
-            case FatLadyAnimState.Pacific:
-                animator.SetBool("IsBerserk", false);
+            case FatLadyAnimState.Cool:
+                animator.SetBool("IsAngry", false);
                 break;
 
             case FatLadyAnimState.Snack:
