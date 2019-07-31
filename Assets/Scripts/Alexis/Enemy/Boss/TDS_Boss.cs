@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Linq; 
 using UnityEngine;
+using UnityEngine.UI; 
 
 public abstract class TDS_Boss : TDS_Enemy
 {
@@ -57,6 +56,11 @@ public abstract class TDS_Boss : TDS_Enemy
     [SerializeField] protected int damagesThreshold = 10; 
     protected TDS_EnemyAttack castedAttack = null;
 
+    [SerializeField] protected Image portrait = null; 
+    public Image Portrait
+    {
+        get { return portrait;  }
+    }
     #endregion
 
     #region Methods
@@ -285,7 +289,7 @@ public abstract class TDS_Boss : TDS_Enemy
         Vector3 _attackingPosition = transform.position;
         if (playerTarget)
         {
-            if (Vector3.Distance(transform.position, targetLastPosition) > castedAttack.MaxRange )
+            if (Vector3.Distance(playerTarget.transform.position, targetLastPosition) > castedAttack.MaxRange )
             {
                 Vector3 _offset = playerTarget.transform.position - targetLastPosition;
                 _attackingPosition = agent.LastPosition + _offset; 

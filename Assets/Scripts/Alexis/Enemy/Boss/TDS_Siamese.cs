@@ -65,6 +65,7 @@ public class TDS_Siamese : TDS_Boss
         PhotonNetwork.Destroy(this.gameObject);
         if (Area) Area.RemoveEnemy(this);
     }
+
     #region Overriden Methods
     #endregion
 

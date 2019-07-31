@@ -48,23 +48,6 @@ public class TDS_Fakir : TDS_Minion
 	#endregion
 
 	#region Unity Methods
-	// Awake is called when the script instance is being loaded
-    private void Awake()
-    {
-
-    }
-
-	// Use this for initialization
-    private void Start()
-    {
-		
-    }
-	
-	// Update is called once per frame
-	private void Update()
-    {
-        
-	}
 	#endregion
 
 	#endregion

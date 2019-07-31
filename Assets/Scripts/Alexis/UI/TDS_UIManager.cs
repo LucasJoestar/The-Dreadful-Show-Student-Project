@@ -884,6 +884,10 @@ public class TDS_UIManager : PunBehaviour
         bossHealthBar.gameObject.SetActive(true);
 
         _boss.HealthBar = bossHealthBar;
+        if(_boss.Portrait)
+        {
+            GameObject _bossPortrait = GameObject.Instantiate(_boss.Portrait.gameObject, bossHealthBar.transform, false);
+        }
 
         _boss.OnTakeDamage += _boss.UpdateLifeBar;
         _boss.OnHeal += _boss.UpdateLifeBar;
@@ -898,10 +902,11 @@ public class TDS_UIManager : PunBehaviour
     public void SetEnemyLifebar(TDS_Enemy _enemy)
     {
         if (lifeBarPrefab == null || !canvasWorld) return;
-        Vector3 _offset = (Vector3.up * .2f) + (Vector3.forward * -.5f); 
+        Vector3 _offset = (Vector3.up * .2f) - Vector3.forward; 
         TDS_LifeBar _healthBar = Instantiate(lifeBarPrefab, _enemy.transform.position + _offset, Quaternion.identity, canvasWorld.transform).GetComponent<TDS_LifeBar>();
 
         _healthBar.SetOwner(_enemy, _offset, true);
+        _healthBar.Background.gameObject.SetActive(false); 
         _enemy.HealthBar = _healthBar;
 
         _enemy.OnTakeDamage += _enemy.UpdateLifeBar;

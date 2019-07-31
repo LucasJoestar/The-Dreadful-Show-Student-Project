@@ -601,6 +601,8 @@ public abstract class TDS_Character : TDS_Damageable
     public virtual void UpdateLifeBar(int _health)
     {
         if (!HealthBar || !TDS_UIManager.Instance) return;
+        if (!HealthBar.Background.gameObject.activeInHierarchy)
+            HealthBar.Background.gameObject.SetActive(true);
         float _fillingValue = Mathf.Clamp((float)healthCurrent / (float)healthMax, 0, 1);
         TDS_UIManager.Instance.FillImage(HealthBar, _fillingValue); 
     }
