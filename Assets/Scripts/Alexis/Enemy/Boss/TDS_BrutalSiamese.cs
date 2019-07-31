@@ -54,6 +54,12 @@ public class TDS_BrutalSiamese : TDS_Enemy
         _hasToWander = false; 
         return base.GetAttackingPosition();
     }
+
+    protected override void Die()
+    {
+        base.Die();
+        if (Area) Area.RemoveEnemy(this);
+    }
     #endregion
 
     #region Unity Methods

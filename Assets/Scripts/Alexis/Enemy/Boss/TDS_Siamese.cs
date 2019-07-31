@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq; 
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class TDS_Siamese : TDS_Boss 
@@ -43,7 +40,8 @@ public class TDS_Siamese : TDS_Boss
 
     #region Fields / Properties
     [SerializeField] private string[] splitingEnemiesNames = new string[] { };
-    [SerializeField] private Vector3[] splitingPosition = new Vector3[] { }; 
+    [SerializeField] private Vector3[] splitingPosition = new Vector3[] { };
+    [SerializeField] private GameObject splittingPortrait = null; 
     #endregion
 
     #region Methods
@@ -56,21 +54,29 @@ public class TDS_Siamese : TDS_Boss
     private void SplitSiamese()
     {
         if (!PhotonNetwork.isMasterClient) return;
+        List<TDS_Enemy> _spawnedEnemies = new List<TDS_Enemy>(); 
         TDS_Enemy _e = null; 
         for (int i = 0; i < splitingEnemiesNames.Length; i++)
         {
             _e = PhotonNetwork.Instantiate(splitingEnemiesNames[i], transform.position + splitingPosition[i], Quaternion.identity, 0).GetComponent<TDS_Enemy>();
-            if (Area && _e != null) Area.AddEnemy(_e); 
+            if(_e != null)
+            {
+                if (Area) Area.AddEnemy(_e);
+                _spawnedEnemies.Add(_e);
+            }
         }
-        PhotonNetwork.Destroy(this.gameObject);
+        TDS_UIManager.Instance.SetBossLifeBar(_spawnedEnemies.ToArray(), splittingPortrait);
         if (Area) Area.RemoveEnemy(this);
+        PhotonNetwork.Destroy(this.gameObject);
     }
+
     #region Overriden Methods
     #endregion
 
     #endregion
 
     #region Unity Methods
+
     protected override void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;

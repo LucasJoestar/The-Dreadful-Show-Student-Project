@@ -151,6 +151,26 @@ public class TDS_UIManager : PunBehaviour
     #endregion
     #endregion
 
+    #region Feedback
+    // Image for the aim target of the Juggler
+    [Header("Feedback")]
+    [SerializeField] private Image jugglerAimTarget = null;
+
+    /// <summary>
+    /// RectTransform of the Juggler aim target.
+    /// </summary>
+    public RectTransform JugglerAimTargetTransform
+    {
+        get
+        {
+            if (jugglerAimTarget) return jugglerAimTarget.rectTransform;
+
+            Debug.Log("Missing Juggler Aim Target reference !");
+            return null;
+        }
+    }
+    #endregion
+
     #region Room Selection Menu
     [Header("RoomSelectionMenu")]
     [SerializeField] private TDS_RoomSelectionElement[] roomSelectionElements = new TDS_RoomSelectionElement[] { }; 
@@ -200,29 +220,10 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private TMP_Text errorBoxText;
     #endregion
 
-    #region Feedback
-    // Image for the aim target of the Juggler
-    [SerializeField] private Image jugglerAimTarget = null;
-
-    /// <summary>
-    /// RectTransform of the Juggler aim target.
-    /// </summary>
-    public RectTransform JugglerAimTargetTransform
-    {
-        get
-        {
-            if (jugglerAimTarget) return jugglerAimTarget.rectTransform;
-
-            Debug.Log("Missing Juggler Aim Target reference !");
-            return null;
-        }
-    }
-    #endregion
-
     #region Resources
     [Header("Enemies")]
     [SerializeField] GameObject lifeBarPrefab = null;
-    [SerializeField] private TDS_LifeBar bossHealthBar;
+    [SerializeField] private TDS_BossLifeBar bossHealthBar;
     #endregion
 
     #region Coroutines
@@ -481,7 +482,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void ActivateJugglerAimTarget()
     {
-        jugglerAimTarget.enabled = true;
+        jugglerAimTarget.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -661,7 +662,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void DesctivateJugglerAimTarget()
     {
-        jugglerAimTarget.enabled = false;
+        jugglerAimTarget.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -883,10 +884,38 @@ public class TDS_UIManager : PunBehaviour
         bossHealthBar.gameObject.SetActive(true);
 
         _boss.HealthBar = bossHealthBar;
+        if(_boss.Portrait)
+        {
+            bossHealthBar.SetBossPortrait(_boss.Portrait); 
+        }
 
-        _boss.OnTakeDamage += _boss.UpdateLifeBar;
-        _boss.OnHeal += _boss.UpdateLifeBar;
-        _boss.OnDie += () => bossHealthBar.gameObject.SetActive(false);
+        _boss.OnTakeDamage += bossHealthBar.UpdateLifeBar;
+        _boss.OnHeal += bossHealthBar.UpdateLifeBar;
+        _boss.OnDie += bossHealthBar.DestroyLifeBar;
+    }
+
+    /// <summary>
+    /// Set the boss lifebar's subowners
+    /// and set the game object to active 
+    /// and add the event on take damages and heal
+    /// </summary>
+    /// <param name="_subonwers"></param>
+    public void SetBossLifeBar(TDS_Enemy[] _subonwers, GameObject _portrait = null)
+    {
+        if (!bossHealthBar) return;
+        bossHealthBar.SetSubOwners(_subonwers);
+        bossHealthBar.gameObject.SetActive(true);
+        if(_portrait != null) bossHealthBar.SetBossPortrait(_portrait); 
+
+        for (int i = 0; i < _subonwers.Length; i++)
+        {
+            TDS_Enemy _e = _subonwers[i];
+
+            _e.OnTakeDamage += bossHealthBar.UpdateLifeBar;
+            _e.OnHeal += bossHealthBar.UpdateLifeBar;
+            _e.OnDie += bossHealthBar.DestroyLifeBar;
+        }
+
     }
 
     /// <summary>
@@ -897,14 +926,15 @@ public class TDS_UIManager : PunBehaviour
     public void SetEnemyLifebar(TDS_Enemy _enemy)
     {
         if (lifeBarPrefab == null || !canvasWorld) return;
-        Vector3 _offset = (Vector3.up * .2f) + (Vector3.forward * -.5f); 
-        TDS_LifeBar _healthBar = Instantiate(lifeBarPrefab, _enemy.transform.position + _offset, Quaternion.identity, canvasWorld.transform).GetComponent<TDS_LifeBar>();
+        Vector3 _offset = (Vector3.up * .2f) - Vector3.forward; 
+        TDS_EnemyLifeBar _healthBar = Instantiate(lifeBarPrefab, _enemy.transform.position + _offset, Quaternion.identity, canvasWorld.transform).GetComponent<TDS_EnemyLifeBar>();
 
-        _healthBar.SetOwner(_enemy, _offset, true);
+        _healthBar.SetOwner(_enemy, _offset);
+        _healthBar.Background.gameObject.SetActive(false); 
         _enemy.HealthBar = _healthBar;
 
-        _enemy.OnTakeDamage += _enemy.UpdateLifeBar;
-        _enemy.OnHeal += _enemy.UpdateLifeBar; 
+        _enemy.OnTakeDamage += _healthBar.UpdateLifeBar;
+        _enemy.OnHeal += _healthBar.UpdateLifeBar; 
     }
 
     /// <summary>
@@ -952,8 +982,8 @@ public class TDS_UIManager : PunBehaviour
         _playerLifeBar.gameObject.SetActive(true);
         _playerLifeBar.SetOwner(_player);
         _player.HealthBar = _playerLifeBar;
-        _player.OnTakeDamage += _player.UpdateLifeBar;
-        _player.OnHeal += _player.UpdateLifeBar; 
+        _player.OnTakeDamage += _playerLifeBar.UpdateLifeBar;
+        _player.OnHeal += _playerLifeBar.UpdateLifeBar; 
         if (_player == TDS_LevelManager.Instance.LocalPlayer && _player.photonView.isMine)
             _playerLifeBar.transform.SetSiblingIndex(0);
     }

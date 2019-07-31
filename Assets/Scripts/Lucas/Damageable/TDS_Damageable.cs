@@ -153,6 +153,9 @@ public abstract class TDS_Damageable : PunBehaviour
     /// </summary>
     [SerializeField] protected new BoxCollider collider = null;
 
+    /// <summary>Public accessor for <see cref="collider"/>.</summary>
+    public BoxCollider Collider { get { return collider; } }
+
     /// <summary>
     /// The sprite renderer used to render this object in the scene.
     /// </summary>

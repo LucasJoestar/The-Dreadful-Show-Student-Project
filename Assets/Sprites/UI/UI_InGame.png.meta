@@ -13,9 +13,9 @@ TextureImporter:
     21300016: BossLifeBar_Background
     21300018: Arrow_Variant
     21300020: BossLifeBar_Foreground
-    21300022: SiameseUniC_Head
-    21300024: SiameseUniD_Head
-    21300026: SiameseBrutal_Head
+    21300022: SiameseUniC_Portrait
+    21300024: SiameseUniD_Portrait
+    21300026: SiameseBrutal_Portrait
     21300028: FireEaterPortrait
     21300030: JugglerPortrait
     21300032: BeardLadyPortrait
@@ -25,6 +25,8 @@ TextureImporter:
     21300040: BeardBar_Background
     21300042: BeardBar_FilledValue
     21300044: BeardBar_ForeGround
+    21300046: Juggler_ShootArrow
+    21300048: Juggler_ShootIcon
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -349,7 +351,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SiameseUniC_Head
+      name: SiameseUniC_Portrait
       rect:
         serializedVersion: 2
         x: 68
@@ -369,7 +371,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SiameseUniD_Head
+      name: SiameseUniD_Portrait
       rect:
         serializedVersion: 2
         x: 335
@@ -389,7 +391,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SiameseBrutal_Head
+      name: SiameseBrutal_Portrait
       rect:
         serializedVersion: 2
         x: 582
@@ -517,7 +519,7 @@ TextureImporter:
         width: 74
         height: 854
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -537,7 +539,7 @@ TextureImporter:
         width: 90
         height: 876
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -557,13 +559,53 @@ TextureImporter:
         width: 254
         height: 971
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: 0655d2334ac9efc449c76b20b134206a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Juggler_ShootArrow
+      rect:
+        serializedVersion: 2
+        x: 2229
+        y: 3196
+        width: 116
+        height: 219
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ec5d76bfd1cf54478aa072787159e1b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Juggler_ShootIcon
+      rect:
+        serializedVersion: 2
+        x: 2097
+        y: 3290
+        width: 91
+        height: 111
+      alignment: 8
+      pivot: {x: 1, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee2374f82417b6c43810fa368860e8d7
       vertices: []
       indices: 
       edges: []

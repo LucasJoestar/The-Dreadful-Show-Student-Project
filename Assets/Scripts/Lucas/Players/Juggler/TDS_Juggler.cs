@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TDS_Juggler : TDS_Player
@@ -122,9 +123,14 @@ public class TDS_Juggler : TDS_Player
 
     #region Components & References
     /// <summary>
-    /// Zone at the end of the projectile preview, for feedback value.
+    /// Currently locked enemy.
     /// </summary>
-    [SerializeField] private GameObject throwPreviewZone = null;
+    private TDS_Enemy lockedEnemy = null;
+
+    /// <summary>
+    /// Dictionnary containing juggling throwables as keys with their anchor as value.
+    /// </summary>
+    private Dictionary<TDS_Throwable, Transform> throwableAnchors = new Dictionary<TDS_Throwable, Transform>();
 
     /// <summary>
     /// The actual selected throwable. It is the object to throw, when throwing... Yep.
@@ -134,26 +140,49 @@ public class TDS_Juggler : TDS_Player
         get { return throwable; }
         set
         {
-            // Set the old selected one position
-            if (throwable)
-            {
-                throwable.transform.position = juggleTransform.position;
-                throwable.transform.SetParent(juggleTransform);
-                Throwables.Add(throwable);
-
-                // Stop coroutine if needed
-                if (throwableLerpCoroutine != null) StopCoroutine(throwableLerpCoroutine);
-            }
+            // Stop coroutine if needed
+            if (throwableLerpCoroutine != null) StopCoroutine(throwableLerpCoroutine);
 
             // Set the new one
             if (value != null)
             {
-                if (Throwables.Contains(value)) Throwables.Remove(value);
+                if (Throwables.Contains(value))
+                {
+                    // Reorder the anchor array
+                    Transform[] _objectAnchors = new Transform[objectAnchors.Length];
+                    int _index = Throwables.IndexOf(value);
+                    for (int _i = 0; _i < _index; _i++)
+                    {
+                        _objectAnchors[_i] = objectAnchors[_i];
+                    }
+                    for (int _i = _index; _i < objectAnchors.Length - 1; _i++)
+                    {
+                        _objectAnchors[_i] = objectAnchors[_i + 1];
+                    }
+                    _objectAnchors[objectAnchors.Length - 1] = objectAnchors[_index];
+
+                    objectAnchors = _objectAnchors;
+
+                    // Remove the object
+                    Throwables.Remove(value);
+                }
                 value.transform.rotation = Quaternion.identity;
                 value.transform.SetParent(handsTransform, true);
 
                 // Starts position lerp coroutine
                 throwableLerpCoroutine = StartCoroutine(LerpThrowableToHand());
+            }
+
+            // Set the old selected one position
+            if (throwable)
+            {
+                throwable.transform.position = juggleTransform.position;
+                Throwables.Add(throwable);
+
+                // Associate the new throwabke juggling with with an anchor
+                Transform _anchor = objectAnchors[Throwables.Count - 1];
+                _anchor.position = throwable.Sprite.bounds.center;
+                throwable.transform.SetParent(_anchor);
             }
 
             throwable = value;
@@ -171,9 +200,19 @@ public class TDS_Juggler : TDS_Player
     private RectTransform aimTargetTransform = null;
 
     /// <summary>
+    /// Transform of the arrow for the locked aiming enemy.
+    /// </summary>
+    private RectTransform aimArrowTransform = null;
+
+    /// <summary>
     /// Transform used to set as children objects juggling with.
     /// </summary>
     [SerializeField] private Transform juggleTransform = null;
+
+    /// <summary>
+    /// Anchors used to juggle with throwables.
+    /// </summary>
+    [SerializeField] private Transform[] objectAnchors = new Transform[] { };
     #endregion
 
     #region Variables
@@ -238,44 +277,12 @@ public class TDS_Juggler : TDS_Player
         get { return Throwables.Count; }
     }
 
-    /// <summary>Backing field for <see cref="MaxThrowableAmount"/>.</summary>
-    [SerializeField] private int maxThrowableAmount = 5;
-
     /// <summary>
     /// Maximum amount of throwable this Juggler can carry on.
     /// </summary>
     public int MaxThrowableAmount
     {
-        get { return maxThrowableAmount; }
-        set
-        {
-            if (value < 1) value = 1;
-            maxThrowableAmount = value;
-        }
-    }
-
-    /// <summary>Backing field for <see cref="ThrowPreviewPrecision"/>.</summary>
-    [SerializeField] private int throwPreviewPrecision = 10;
-
-    /// <summary>
-    /// Amount of point used to draw the throw preview trajectory.
-    /// </summary>
-    public int ThrowPreviewPrecision
-    {
-        get { return throwPreviewPrecision; }
-        set
-        {
-            if (value < 1) value = 1;
-            throwPreviewPrecision = value;
-
-            #if UNITY_EDITOR
-            // Updates the trajectory preview
-            if (UnityEditor.EditorApplication.isPlaying)
-            {
-                throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, throwAimingPoint, throwVelocity.magnitude, aimAngle, value);
-            }
-            #endif
-        }
+        get { return objectAnchors.Length; }
     }
 
     /// <summary>
@@ -288,28 +295,6 @@ public class TDS_Juggler : TDS_Player
     /// Used to lerp the transform to a new position when moving.
     /// </summary>
     [SerializeField] private Vector3 juggleTransformIdealLocalPosition = Vector3.zero;
-
-    /// <summary>
-    /// Property for <see cref="throwAimingPoint"/> to update <see cref="throwVelocity"/> && <see cref="throwTrajectoryMotionPoints"/> on changes.
-    /// </summary>
-    public Vector3 ThrowAimingPoint
-    {
-        get { return throwAimingPoint; }
-        set
-        {
-            throwAimingPoint = value;
-
-            #if UNITY_EDITOR
-            // Updates the velocity & trajectory preview
-            if (UnityEditor.EditorApplication.isPlaying)
-            {
-                throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(handsTransform.localPosition, value, aimAngle);
-
-                throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, value, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
-            }
-            #endif
-        }
-    }
     #endregion
 
     #region Coroutines
@@ -329,16 +314,6 @@ public class TDS_Juggler : TDS_Player
     /// Counter helping to position the objects juggling with.
     /// </summary>
     private float jugglerCounter = 0;
-
-    /// <summary>
-    /// Default aiming point, when starting aiming.
-    /// </summary>
-    private Vector3 defaultAimingPoint = Vector3.zero;
-
-    /// <summary>
-    /// Points used to draw a preview of the projectile trajectory when preparing a throw (Local space).
-    /// </summary>
-    private Vector3[] throwTrajectoryMotionPoints = new Vector3[] { };
     #endregion
 
     #endregion
@@ -354,13 +329,14 @@ public class TDS_Juggler : TDS_Player
     /// Makes the player active its planned attack.
     /// </summary>
     /// <param name="_attackIndex">Index of the attack to activate from <see cref="attacks"/>.</param>
-    public override void ActiveAttack(int _attackIndex)
+    /// <returns>Returns true if the attack as correctly been activated, false otherwise.</returns>
+    public override bool ActiveAttack(int _attackIndex)
     {
         // If aiming, stop
         if (isAiming) StopAiming();
 
         // Attack
-        base.ActiveAttack(_attackIndex);
+        return base.ActiveAttack(_attackIndex);
     }
 
     /// <summary>
@@ -397,7 +373,9 @@ public class TDS_Juggler : TDS_Player
     protected virtual IEnumerator Aim()
     {
         // Activate aiming target and set its default position
-        aimTargetTransform.anchoredPosition = TDS_Camera.Instance.Camera.WorldToScreenPoint(new Vector3(transform.position.x + (7.5f * isFacingRight.ToSign()), transform.position.y, transform.position.z));
+        TDS_UIManager.Instance.ActivateJugglerAimTarget();
+
+        aimTargetTransform.anchoredPosition = TDS_Camera.Instance.Camera.WorldToScreenPoint(ThrowAimingPoint);
 
         // While holding the throw button, aim a position
         while (TDS_InputManager.GetButton(TDS_InputManager.THROW_BUTTON))
@@ -427,11 +405,25 @@ public class TDS_Juggler : TDS_Player
     /// </summary>
     protected void AimMethod()
     {
+        Vector2 _newTarget = aimTargetTransform.anchoredPosition;
+
+        // If aiming a locked enemy, keep target on it
+        if (lockedEnemy != null)
+        {
+            _newTarget = TDS_Camera.Instance.Camera.WorldToScreenPoint(lockedEnemy.Collider.bounds.center);
+
+            if (_newTarget != aimTargetTransform.anchoredPosition)
+            {
+                aimTargetTransform.anchoredPosition = _newTarget;
+            }
+
+            return;
+        }
+
         // Let the player aim the point he wants, 'cause the juggler can do that. Yep
         // Aim with IJKL or the right joystick axis
-        float _xMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_X_Axis) * 2;
-        float _yMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_Y_AXIS) * 2;
-        Vector2 _newTarget = aimTargetTransform.anchoredPosition;
+        float _xMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_X_Axis) * 30;
+        float _yMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_Y_AXIS) * 30;
 
         // Clamp X target position in screen
         if (_xMovement != 0)
@@ -458,85 +450,6 @@ public class TDS_Juggler : TDS_Player
 
         // Set tnew target if different
         if (_newTarget != aimTargetTransform.anchoredPosition) aimTargetTransform.anchoredPosition = _newTarget;
-
-        // OLD SHOOT SYSTEM
-
-            /*
-            if (_xMovement != 0 || _zMovement != 0)
-            {
-                _xMovement *= isFacingRight.ToSign();
-
-                // Clamp aiming point
-                Vector3 _newAimingPoint = Vector3.ClampMagnitude(new Vector3(throwAimingPoint.x + _xMovement, throwAimingPoint.y, throwAimingPoint.z + _zMovement), 15);
-                _newAimingPoint.y = -10;
-
-                // Lerp aiming point position
-                ThrowAimingPoint = Vector3.Lerp(throwAimingPoint, _newAimingPoint, Time.deltaTime * 15);
-
-                // Set preview zone position
-                throwPreviewZone.transform.position = throwPreviewZone.transform.position = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), .01f, transform.position.z + throwAimingPoint.z);
-            }
-
-
-            // Raycast along the trajectory preview and stop the trail when hit something
-            RaycastHit _hit = new RaycastHit();
-            Vector3[] _raycastedMotionPoints = (Vector3[])throwTrajectoryMotionPoints.Clone();
-            Vector3 _endPoint = new Vector3();
-            bool _hasHit = false;
-
-            for (int _i = 0; _i < _raycastedMotionPoints.Length - 1; _i++)
-            {
-                // Get the points to raycast from & to in world space
-                Vector3 _from = transform.position + new Vector3(_raycastedMotionPoints[_i].x * isFacingRight.ToSign(), _raycastedMotionPoints[_i].y, _raycastedMotionPoints[_i].z);
-
-                Vector3 _to = transform.position + new Vector3(_raycastedMotionPoints[_i + 1].x * isFacingRight.ToSign(), _raycastedMotionPoints[_i + 1].y, _raycastedMotionPoints[_i + 1].z);
-
-                // If hit something, set the hit point as end of the preview trajectory
-                if (Physics.Linecast(_from, _to, out _hit, whatCanAim, QueryTriggerInteraction.Ignore))
-                {
-                    // Get the hit point in local space
-                    _endPoint = transform.InverseTransformPoint(_hit.point);
-                    _endPoint.z *= isFacingRight.ToSign();
-
-                    // Get the throw preview motion points with the new hit point
-                    _raycastedMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, _endPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
-
-                    // Updates the position of the end preview zone & its rotation according to the hit point
-                    projectilePreviewEndZone.transform.position = _hit.point;
-
-                    Quaternion _rotation = Quaternion.Lerp(projectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, _hit.normal), Time.deltaTime * 15);
-
-                    projectilePreviewEndZone.transform.rotation = _rotation;
-
-                    // Set indicative boolean
-                    _hasHit = true;
-
-                    break;
-                }
-            }
-
-            // If no touch, update end zone position & rotation
-            if (!_hasHit)
-            {
-                // Updates the position of the end preview zone & its rotation according to the hit point
-                projectilePreviewEndZone.transform.position = new Vector3(transform.position.x + (throwAimingPoint.x * isFacingRight.ToSign()), transform.position.y + throwAimingPoint.y, transform.position.z + throwAimingPoint.z);
-
-                Quaternion _rotation = Quaternion.Lerp(projectilePreviewEndZone.transform.rotation, Quaternion.FromToRotation(Vector3.up, Vector3.up), Time.deltaTime * 15);
-                _rotation.x *= isFacingRight.ToSign();
-
-                projectilePreviewEndZone.transform.rotation = _rotation;
-
-                // Set end point
-                _endPoint = throwAimingPoint;
-            }
-
-            // Draws the trajectory preview
-            for (int _i = 0; _i < _raycastedMotionPoints.Length; _i++)
-            {
-                _raycastedMotionPoints[_i].z *= isFacingRight.ToSign();
-            }
-
-            lineRenderer.DrawTrajectory(_raycastedMotionPoints);*/
     }
 
     /// <summary>
@@ -555,7 +468,7 @@ public class TDS_Juggler : TDS_Player
         }
 
         // If currently wearing the maximum amount of throwables he can, return
-        if ((CurrentThrowableAmount == maxThrowableAmount) || !_throwable.PickUp(this)) return false;
+        if ((CurrentThrowableAmount == MaxThrowableAmount) || !_throwable.PickUp(this)) return false;
 
         return true;
     }
@@ -565,6 +478,16 @@ public class TDS_Juggler : TDS_Player
     /// </summary>
     private void Juggle()
     {
+        // If not having any throwable, just set position if different and return
+        if (CurrentThrowableAmount == 0)
+        {
+            if (juggleTransform.localPosition != juggleTransformIdealLocalPosition)
+            {
+                juggleTransform.localPosition = juggleTransformIdealLocalPosition;
+            }
+            return;
+        }
+
         // Updates hands transform position by lerp
         Vector3 _newPos = juggleTransformIdealLocalPosition;
 
@@ -577,29 +500,30 @@ public class TDS_Juggler : TDS_Player
             juggleTransform.localPosition = Vector3.Lerp(juggleTransform.localPosition, _newPos, Time.deltaTime * 5);
         }
 
-        // If not having any throwable, return
-        if (CurrentThrowableAmount == 0) return;
-
+        // Juggle now !
         float _baseTheta = 2 * Mathf.PI / CurrentThrowableAmount;
+        float _theta = 0;
 
         for (int _i = 0; _i < CurrentThrowableAmount; _i++)
         {
             // Create variables
-            TDS_Throwable _throwable = Throwables[_i];
+            Transform _throwable = objectAnchors[_i];
 
             // Get theta value to position the object
-            float _theta = _i + jugglerCounter;
-            if (_theta > CurrentThrowableAmount) _theta = 0;
+            _theta = _i + jugglerCounter;
+            if (_theta > CurrentThrowableAmount) _theta -= CurrentThrowableAmount;
             _theta *= _baseTheta;
 
-            Vector3 _newPosition = new Vector3(Mathf.Sin(_theta), Mathf.Cos(_theta), 0f) * throwableDistanceFromCenter;
+            Vector3 _newPosition = new Vector3(
+                                   Mathf.Sin(_theta) * throwableDistanceFromCenter, 
+                                   Mathf.Cos(_theta) * throwableDistanceFromCenter);
             _newPosition.y += throwableDistanceFromCenter;
 
             // Position update
-            _throwable.transform.localPosition = Vector3.Lerp(_throwable.transform.localPosition, _newPosition, Time.deltaTime * juggleSpeed * 2.5f);
+            _throwable.localPosition = Vector3.Lerp(_throwable.localPosition, _newPosition, Time.deltaTime * juggleSpeed);
 
             // Rotates the object
-            _throwable.transform.Rotate(Vector3.forward, Time.deltaTime * 100 * (5 / _throwable.Weight));
+            _throwable.Rotate(Vector3.forward, Time.deltaTime * 200 + (2f / Throwables[_i].Weight));
         }
 
         // Increase counter
@@ -627,7 +551,7 @@ public class TDS_Juggler : TDS_Player
 
         while (throwable)
         {
-            throwable.transform.position = Vector3.Lerp(throwable.transform.position, handsTransform.position, Time.deltaTime * 7);
+            throwable.transform.position = Vector3.Lerp(throwable.transform.position, handsTransform.position, Time.deltaTime * 5);
 
             if (throwable.transform.position == handsTransform.position)
             {
@@ -655,8 +579,6 @@ public class TDS_Juggler : TDS_Player
 
         isAiming = true;
         aimCoroutine = StartCoroutine(Aim());
-
-        throwPreviewZone.SetActive(true);
 
         return true;
     }
@@ -720,11 +642,8 @@ public class TDS_Juggler : TDS_Player
             StopCoroutine(aimCoroutine);
         }
 
-        //lineRenderer.DrawTrajectory(new Vector3[0]);
-        throwPreviewZone.SetActive(false);
-
-        // Reset throw aiming point
-        ThrowAimingPoint = defaultAimingPoint;
+        // Desactivate aim target
+        TDS_UIManager.Instance.DesctivateJugglerAimTarget();
 
         return true;
     }
@@ -737,33 +656,83 @@ public class TDS_Juggler : TDS_Player
     {
         // Get selected throwable & place the previous one in the juggling list
         TDS_Throwable _selected = null;
+        Transform[] _objectAnchors = new Transform[objectAnchors.Length];
+
         if (_index < 0)
         {
             _selected = Throwables[CurrentThrowableAmount - 1];
             Throwables.RemoveAt(CurrentThrowableAmount - 1);
             Throwables.Insert(0, throwable);
+
+            // Reorder the anchor array
+            _objectAnchors[0] = objectAnchors[CurrentThrowableAmount - 1];
+            _objectAnchors[0].position = throwable.Sprite.bounds.center;
+            throwable.transform.SetParent(_objectAnchors[0]);
+
+            for (int _i = 0; _i < CurrentThrowableAmount - 1; _i++)
+            {
+                _objectAnchors[_i + 1] = objectAnchors[_i];
+            }
+            for (int _i = CurrentThrowableAmount; _i < objectAnchors.Length; _i++)
+            {
+                _objectAnchors[_i] = objectAnchors[_i];
+            }
         }
         else
         {
             _selected = Throwables[0];
             Throwables.RemoveAt(0);
             Throwables.Add(throwable);
+
+            // Reorder the anchor array
+            _objectAnchors[CurrentThrowableAmount - 1] = objectAnchors[0];
+            _objectAnchors[CurrentThrowableAmount - 1].position = throwable.Sprite.bounds.center;
+            throwable.transform.SetParent(_objectAnchors[CurrentThrowableAmount - 1]);
+
+            for (int _i = 0; _i < CurrentThrowableAmount - 1; _i++)
+            {
+                _objectAnchors[_i] = objectAnchors[_i + 1];
+            }
+            for (int _i = CurrentThrowableAmount; _i < objectAnchors.Length; _i++)
+            {
+                _objectAnchors[_i] = objectAnchors[_i];
+            }
         }
 
-        // Set previous one transform
-        throwable.transform.SetParent(juggleTransform);
+        objectAnchors = _objectAnchors;
 
         // Stop coroutine if needed
         if (throwableLerpCoroutine != null) StopCoroutine(throwableLerpCoroutine);
 
         // Set the new throwable
+        
+        _selected.transform.SetParent(handsTransform, true);
         _selected.transform.rotation = Quaternion.identity;
-        _selected.transform.SetParent(handsTransform);
 
         throwable = _selected;
 
         // Starts position lerp coroutine
         throwableLerpCoroutine = StartCoroutine(LerpThrowableToHand());
+    }
+
+    /// <summary>
+    /// Throws the weared throwable.
+    /// </summary>
+    public override bool ThrowObject_A()
+    {
+        // If not mine, return false
+        if (!photonView.isMine) return false;
+
+        // Get the destination point in world space
+        Ray _ray = TDS_Camera.Instance.Camera.ScreenPointToRay(aimTargetTransform.anchoredPosition);
+        RaycastHit _info = new RaycastHit();
+
+        if (Physics.Raycast(_ray, out _info, 100, whatCanAim))
+        {
+            return ThrowObject(_info.point);
+        }
+
+        return ThrowObject(_ray.origin + (_ray.direction * 75));
     }
 
     /// <summary>
@@ -780,27 +749,27 @@ public class TDS_Juggler : TDS_Player
 
             case 1:
                 juggleSpeed = 2;
-                throwableDistanceFromCenter = .25f;
+                throwableDistanceFromCenter = 1;
                 break;
 
             case 2:
                 juggleSpeed = 2.5f;
-                throwableDistanceFromCenter = .5f;
+                throwableDistanceFromCenter = 1.25f;
                 break;
 
             case 3:
-                juggleSpeed = 2.8f;
-                throwableDistanceFromCenter = .8f;
+                juggleSpeed = 3.5f;
+                throwableDistanceFromCenter = 1.5f;
                 break;
 
             case 4:
-                juggleSpeed = 3.15f;
-                throwableDistanceFromCenter = 1f;
+                juggleSpeed = 3.75f;
+                throwableDistanceFromCenter = 2f;
                 break;
 
             case 5:
-                juggleSpeed = 3.5f;
-                throwableDistanceFromCenter = 1.25f;
+                juggleSpeed = 4f;
+                throwableDistanceFromCenter = 2.5f;
                 break;
 
             // If amount is superior to 5
@@ -960,13 +929,6 @@ public class TDS_Juggler : TDS_Player
             return -1;
         }
 
-        if (TDS_InputManager.GetAxis(TDS_InputManager.D_PAD_Y_Axis))
-        {
-            AimAngle += Input.GetAxis(TDS_InputManager.D_PAD_Y_Axis);
-            ThrowAimingPoint = throwAimingPoint;
-            return -1;
-        }
-
         // If everything went good, return 0
         return 0;
     }
@@ -982,13 +944,6 @@ public class TDS_Juggler : TDS_Player
         Quaternion _baseRotation = juggleTransform.rotation;
 
         base.Flip();
-
-        // Reverse X position
-        if (isAiming)
-        {
-            throwAimingPoint.x *= -1;
-            ThrowAimingPoint = throwAimingPoint;
-        }
 
         // Rotates the juggle transform so that it stays at the same location
         juggleTransform.rotation = _baseRotation;
@@ -1027,13 +982,9 @@ public class TDS_Juggler : TDS_Player
         {
             Debug.LogWarning("The Juggle Transform of \"" + name + "\" for script TDS_Juggler is missing !");
         }
-        if (!throwPreviewZone)
+        if (objectAnchors.Length == 0)
         {
-            Debug.LogWarning("The Projectile Preview End Zone of \"" + name + "\" for script TDS_Juggler is missing !");
-        }
-        else if (throwPreviewZone.activeInHierarchy)
-        {
-            throwPreviewZone.SetActive(false);
+            objectAnchors = juggleTransform.GetComponentsInChildren<Transform>();
         }
 
         // Set player type, just in case
@@ -1060,17 +1011,14 @@ public class TDS_Juggler : TDS_Player
 
         base.Start();
 
-        // Get trajectory motion points
-        throwTrajectoryMotionPoints = TDS_ThrowUtility.GetThrowMotionPoints(handsTransform.localPosition, throwAimingPoint, throwVelocity.magnitude, aimAngle, throwPreviewPrecision);
+        if (photonView.isMine)
+        {
+            // Set events 
+            SetEvents();
 
-        // Get layer for everything except this player one
-        whatCanAim = ~(1 << gameObject.layer | 1 << LayerMask.NameToLayer("Object"));
-
-        // Get default aiming point
-        defaultAimingPoint = throwAimingPoint;
-
-        // Set events
-        if (photonView.isMine) SetEvents();
+            // Get aim target RectTransform
+            aimTargetTransform = TDS_UIManager.Instance.JugglerAimTargetTransform;
+        }
     }
 
     // Update is called once per frame
@@ -1079,7 +1027,7 @@ public class TDS_Juggler : TDS_Player
         base.Update();
 
         // 3, 2, 1... Let's Jam !
-        if (photonView.isMine && !isDead) Juggle();
+        if (!isDead) Juggle();
     }
 	#endregion
 

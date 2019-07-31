@@ -38,8 +38,8 @@ public class TDS_BossEditor : TDS_EnemyEditor
 
 
     #region Fields / Properties
-    protected SerializedProperty damagesThreshold = null; 
-
+    protected SerializedProperty damagesThreshold = null;
+    protected SerializedProperty portrait = null; 
     #region FoldOut
     /// <summary>Backing field for <see cref="IsBossUnfolded"/></summary>
     private bool isBossUnfolded = false;
@@ -69,7 +69,9 @@ public class TDS_BossEditor : TDS_EnemyEditor
     {
         base.DrawSettings();
 
-        TDS_EditorUtility.IntSlider("Damages Threshold", "How much damages had to be taken to play the hit animation", damagesThreshold, 1, 50); 
+        TDS_EditorUtility.IntSlider("Damages Threshold", "How much damages had to be taken to play the hit animation", damagesThreshold, 1, 50);
+
+        TDS_EditorUtility.ObjectField("Boss Portrait", "Portrait to display next to the boss' lifebar", portrait, typeof(GameObject)); 
     }
     #endregion
 
@@ -77,7 +79,8 @@ public class TDS_BossEditor : TDS_EnemyEditor
     protected override void OnEnable()
     {
         base.OnEnable();
-        damagesThreshold = serializedObject.FindProperty("damagesThreshold"); 
+        damagesThreshold = serializedObject.FindProperty("damagesThreshold");
+        portrait = serializedObject.FindProperty("portrait"); 
     }
 
     public override void OnInspectorGUI()

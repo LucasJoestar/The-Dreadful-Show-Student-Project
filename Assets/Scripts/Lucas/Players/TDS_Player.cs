@@ -331,6 +331,11 @@ public class TDS_Player : TDS_Character, IPunObservable
         protected set { attacks = value; }
     }
 
+    /// <summary>
+    /// Indicates if the player can flip.
+    /// </summary>
+    public bool CanFlip = true;
+
     /// <summary>Backing field for <see cref="IsDodging"/>.</summary>
     [SerializeField] protected bool isDodging = false;
 
@@ -654,19 +659,21 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// Makes the player active its planned attack.
     /// </summary>
     /// <param name="_attackIndex">Index of the attack to activate from <see cref="attacks"/>.</param>
-    public virtual void ActiveAttack(int _attackIndex)
+    /// <returns>Returns true if the attack as correctly been activated, false otherwise.</returns>
+    public virtual bool ActiveAttack(int _attackIndex)
     {
         #if UNITY_EDITOR
         // If index is out of range, debug it
         if ((_attackIndex < 0) || (_attackIndex >= attacks.Length))
         {
             Debug.LogWarning($"The Player \"{name}\" has no selected attack to perform");
-            return;
+            return false;
         }
         #endif
 
         // Activate the hit box
         hitBox.Activate(attacks[_attackIndex]);
+        return true;
     }
 
     /// <summary>
@@ -1774,7 +1781,7 @@ public class TDS_Player : TDS_Character, IPunObservable
             if ((_horizontal != 0 ) && (Mathf.Abs(_horizontal) < MOVEMENT_MINIMUM_VALUE)) _horizontal = MOVEMENT_MINIMUM_VALUE * Mathf.Sign(_horizontal);
 
             // Flip the player on the X axis if needed
-            if ((_horizontal > 0 && !isFacingRight) || (_horizontal < 0 && isFacingRight)) Flip();
+            if (((_horizontal > 0 && !isFacingRight) || (_horizontal < 0 && isFacingRight)) && CanFlip) Flip();
 
             // If attacking or parrying, do not move
             if (isAttacking || isParrying) return;
@@ -1926,10 +1933,6 @@ public class TDS_Player : TDS_Character, IPunObservable
         {
             TDS_LevelManager.Instance?.InitOnlinePlayer(this); 
         }
-
-        // Since all players except the Juggler cannot change their throw angle & the point they are aiming,
-        // get the throw velocity & projectile motion in local space at start time
-        throwVelocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(handsTransform.localPosition, throwAimingPoint, aimAngle);
 
         // Initializes ground detection box X & Z size based on collider size
         groundDetectionBox.Size.x = collider.size.x - .001f;

@@ -213,11 +213,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18dda57ee8a7f354ba608a59dfff9996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collider: {fileID: 0}
-  Owner: {fileID: 0}
+  collider: {fileID: 8316895618276044249}
+  Owner: {fileID: 6228752325099018470}
   BonusDamages: 0
   HittableTags:
-    ObjectTags: []
+    ObjectTags:
+    - Name: Player
+      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
 --- !u!1 &8324170712202841065
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,13 +303,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53bdbd26138585f4aa59027c60557c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionOffset: {x: 0, y: 1.2, z: 0}
+  positionOffset: {x: 0, y: 1.5, z: 0}
   avoidanceForce: 45
   baseOffset: 0
   detectionRange: 3.5
-  height: 2.4
+  height: 3
   radius: 1
-  pathRadius: 0.25
+  pathRadius: 0.5
   speed: 4
   steerForce: 80
   agentPriority: 1
@@ -433,32 +435,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc47d02e59f6b14d870bf6513881672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
+  animator: {fileID: 3088651002119351410}
   burnEffect: {fileID: 0}
-  collider: {fileID: 0}
-  sprite: {fileID: 0}
+  collider: {fileID: 8316902795381107907}
+  sprite: {fileID: 8176192794216596615}
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 0
-  healthMax: 1
-  hitBox: {fileID: 0}
+  healthCurrent: 50
+  healthMax: 50
+  hitBox: {fileID: 8220737141146118317}
   healthBar: {fileID: 0}
-  rigidbody: {fileID: 0}
+  rigidbody: {fileID: 8305109959566459029}
   throwable: {fileID: 0}
-  handsTransform: {fileID: 0}
-  shadowTransform: {fileID: 0}
+  handsTransform: {fileID: 8328266892160233703}
+  shadowTransform: {fileID: 8326568344640052173}
   isAttacking: 0
   IsDown: 0
-  isFacingRight: 1
+  isFacingRight: 0
   IsPacific: 0
   IsParalyzed: 0
   aimAngle: 45
   speedAccelerationTime: 0.5
   speedCoef: 1
   speedCurrent: 0
-  speedInitial: 1
-  speedMax: 2
+  speedInitial: 1.5
+  speedMax: 3
   throwBonusDamagesMax: 45
   throwBonusDamagesMin: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
@@ -466,11 +468,12 @@ MonoBehaviour:
   canThrow: 1
   enemyState: 0
   tauntProbability: 0
-  throwRange: 1
+  throwRange: 5
   wanderingRangeMin: 5
   wanderingRangeMax: 9
-  attacks: []
-  agent: {fileID: 0}
+  attacks:
+  - {fileID: 11400000, guid: eda2cc5418e908042bfb88957e93f957, type: 2}
+  agent: {fileID: 8220726644610976985}
   hasEvolved: 0
 --- !u!95 &3088651002119351410
 Animator:

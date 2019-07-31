@@ -2,7 +2,6 @@
 using Photon;
 
 #pragma warning disable 0414
-[RequireComponent(typeof(BoxCollider), typeof(Rigidbody))]
 public class TDS_Throwable : PunBehaviour
 {
     /* TDS_Throwable :
@@ -73,6 +72,14 @@ public class TDS_Throwable : PunBehaviour
     /// Rigidbody of the object.
     /// </summary>
     [SerializeField] protected new Rigidbody rigidbody = null;
+
+    /// <summary>
+    /// SpriteRenderer of the throwable.
+    /// </summary>
+    [SerializeField] protected SpriteRenderer sprite = null;
+
+    /// <summary>Public accessor for <see cref="sprite"/>.</summary>
+    public SpriteRenderer Sprite { get { return sprite; } }
 
     /// <summary>
     /// Indicates if the throwable is currently held by someone.
@@ -314,10 +321,11 @@ public class TDS_Throwable : PunBehaviour
     protected virtual void Awake()
     {
         // Get missing references
-        if (!rigidbody) rigidbody = GetComponent<Rigidbody>();
-        if (!collider) collider = GetComponent<BoxCollider>();
+        if (!rigidbody) rigidbody = GetComponentInChildren<Rigidbody>();
+        if (!collider) collider = GetComponentInChildren<BoxCollider>();
         if (!hitBox) hitBox = GetComponentInChildren<TDS_HitBox>();
-        if (!shadow) shadow = transform.GetChild(1).gameObject;
+        if (!shadow) shadow = transform.GetChild(0).GetChild(1).gameObject;
+        if (!sprite) sprite = GetComponentInChildren<SpriteRenderer>();
 
         // Set event on hitbox hit
         hitBox.OnTouch += OnHitSomething;
