@@ -12,25 +12,25 @@
         [HideInInspector]_Cyan("Filter Color 6", Color) = (0,1.0,1.0,1.0) //Cyan
         [HideInInspector]_White("Filter Color 7", Color) = (1.0,1.0,1.0,1.0) //Cyan
 
-        [Toggle(ENABLE_SWAP)]
-        _EnableSwap("Enable swap color", Float) = 1
+        [PerRendererData]_EnableSwapColor("Enable swap",Float) = 1 //Act like boolean
 
-        _BlinkColor("Blink color", Color) = (1.0,0,0,0)
+        [PerRendererData]_BlinkColor("Blink color", Color) = (1.0,0,0,0)
 
-        _ColorReplacement1("Red", Color) = (1.0,0,0,0) //Red
-        _LerpValue1("Red to",Range(0,1)) = 0
-        _ColorReplacement2("Green", Color) = (0,1.0,0,0) //Green
-        _LerpValue2("Green to",Range(0,1)) = 0
-        _ColorReplacement3("Blue", Color) = (0,0,1.0,0) //Blue
-        _LerpValue3("Blue to",Range(0,1)) = 0
-        _ColorReplacement4("Yellow", Color) = (1.0,1.0,0,0) //Yellow
-        _LerpValue4("Yellow to",Range(0,1)) = 0
-        _ColorReplacement5("Purple", Color) = (1.0,0,1.0,0) //Purple
-        _LerpValue5("Purple to",Range(0,1)) = 0
-        _ColorReplacement6("Cyan", Color) = (0,1.0,1.0,0) //Cyan
-        _LerpValue6("Cyan to",Range(0,1)) = 0
-        _ColorReplacement7("White", Color) = (1.0,1.0,1.0,0) //White
-        _LerpValue7("White to",Range(0,1)) = 0
+        [PerRendererData]_ColorReplacement1("Red", Color) = (1.0,0,0,0) //Red
+        [PerRendererData]_LerpValue1("Red to",Range(0,1)) = 0
+        [PerRendererData]_ColorReplacement2("Green", Color) = (0,1.0,0,0) //Green
+        [PerRendererData]_LerpValue2("Green to",Range(0,1)) = 0
+        [PerRendererData]_ColorReplacement3("Blue", Color) = (0,0,1.0,0) //Blue
+        [PerRendererData]_LerpValue3("Blue to",Range(0,1)) = 0
+        [PerRendererData]_ColorReplacement4("Yellow", Color) = (1.0,1.0,0,0) //Yellow
+        [PerRendererData]_LerpValue4("Yellow to",Range(0,1)) = 0
+        [PerRendererData]_ColorReplacement5("Purple", Color) = (1.0,0,1.0,0) //Purple
+        [PerRendererData]_LerpValue5("Purple to",Range(0,1)) = 0
+        [PerRendererData]_ColorReplacement6("Cyan", Color) = (0,1.0,1.0,0) //Cyan
+        [PerRendererData]_LerpValue6("Cyan to",Range(0,1)) = 0
+        [PerRendererData]_ColorReplacement7("White", Color) = (1.0,1.0,1.0,0) //White
+        [PerRendererData]_LerpValue7("White to",Range(0,1)) = 0
+        [HideInInspector]_FinalColor("Final",Color) = (0,0,0,0)
     }
 
     SubShader
@@ -57,12 +57,12 @@
             fixed4 _color;
 
             //MainColors
-             float4 _Red, _Green, _Blue, _Yellow, _Purple, _Cyan, _White, _BlinkColor;
+             float4 _Red, _Green, _Blue, _Yellow, _Purple, _Cyan, _White, _BlinkColor, _FinalColor;
 
             //Colors Replacement
              float4 _ColorReplacement1, _ColorReplacement2, _ColorReplacement3, _ColorReplacement4, _ColorReplacement5, _ColorReplacement6, _ColorReplacement7;
 
-             float _LerpValue1, _LerpValue2, _LerpValue3, _LerpValue4, _LerpValue5, _LerpValue6, _LerpValue7, _LerpValue, _EnableSwap;
+             float _LerpValue1, _LerpValue2, _LerpValue3, _LerpValue4, _LerpValue5, _LerpValue6, _LerpValue7, _LerpValue, _EnableSwapColor;
 
             struct appdata
             {
@@ -104,13 +104,23 @@
                    float4 Yellow = lerp(_ColorReplacement4,transparent,smoothstep(0,_LerpValue4,dis(_Yellow)));
                    float4 Purple = lerp(_ColorReplacement5,transparent,smoothstep(0,_LerpValue5,dis(_Purple)));
                    float4 Cyan = lerp(_ColorReplacement6,transparent,smoothstep(0,_LerpValue6,dis(_Cyan)));
-                   float4 White = lerp(_ColorReplacement7,transparent,smoothstep(0,_LerpValue7,dis(_White)));
-                   
-                   #ifdef ENABLE_SWAP
-                        return _color + (Green + Red + Blue + Yellow + Purple + Cyan + White);
-                   #else
-                        return _color + _BlinkColor;
-                   #endif
+                   float4 White = lerp(_ColorReplacement7,transparent,smoothstep(0,_LerpValue7,dis(_White)));                    
+
+                   if(_EnableSwapColor == 1)
+                   {
+                       _FinalColor = _color + (Green + Red + Blue + Yellow + Purple + Cyan + White);
+                   }
+                   if(_EnableSwapColor == 0)
+                   {
+                        _FinalColor = _color + _BlinkColor;
+                   }
+                   return  _FinalColor;
+
+                   //#ifdef ENABLE_SWAP
+                        //return _color + (Green + Red + Blue + Yellow + Purple + Cyan + White);
+                   //#else
+                        //return _color + _BlinkColor;
+                   //#endif
             }
             ENDCG
         }

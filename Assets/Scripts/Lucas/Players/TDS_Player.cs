@@ -1336,14 +1336,14 @@ public class TDS_Player : TDS_Character, IPunObservable
 
             if (!_isGrounded)
             {
-                speedCoef = .7f;
+                SpeedCoef *= .7f;
 
                 // Activates event
                 OnGetOffGround?.Invoke();
             }
             else
             {
-                speedCoef = 1;
+                SpeedCoef /= .7f;
                 rigidbody.velocity = Vector3.zero;
 
                 // Activates event

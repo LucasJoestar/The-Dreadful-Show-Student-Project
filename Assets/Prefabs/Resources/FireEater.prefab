@@ -475,8 +475,8 @@ MonoBehaviour:
   speedAccelerationTime: 0.5
   speedCoef: 1
   speedCurrent: 0
-  speedInitial: 2.5
-  speedMax: 4
+  speedInitial: 2.75
+  speedMax: 4.5
   throwBonusDamagesMax: 6
   throwBonusDamagesMin: 2
   throwAimingPoint: {x: 7.5, y: 0, z: 0}
@@ -507,6 +507,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 80db81eceebd5d24d8199d2656248d92, type: 2}
   - {fileID: 11400000, guid: 8850e69b435178b489f4bad2d8869380, type: 2}
   - {fileID: 11400000, guid: 999d214d5bf40ee4d9ee95295a7ff290, type: 2}
+  CanFlip: 1
   isDodging: 0
   isGrounded: 1
   isJumping: 0
@@ -526,7 +527,7 @@ MonoBehaviour:
   playerType: 3
   isDrunk: 0
   isInMiniGame: 0
-  drunkSpeedCoef: 0.8
+  drunkSpeedCoef: 0.7
   soberUpTime: 10
   xMovementAfterDrunkenDodge: 1.5
   drunkJumpForce: 200
