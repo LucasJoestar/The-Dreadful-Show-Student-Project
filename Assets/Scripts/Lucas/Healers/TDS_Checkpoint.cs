@@ -1,6 +1,7 @@
 ﻿using Photon;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -95,6 +96,11 @@ public class TDS_Checkpoint : PunBehaviour
     }
 
     /// <summary>
+    /// List referencing all healed players.
+    /// </summary>
+    private List<int> healedPlayers = new List<int>();
+
+    /// <summary>
     /// Position where to spawn on this checkpoint (local space).
     /// </summary>
     [SerializeField] private Vector3 spawnPosition = Vector3.zero;
@@ -109,22 +115,15 @@ public class TDS_Checkpoint : PunBehaviour
     private void Activate()
     {
         IsActivated = true;
-        TDS_LevelManager.Instance.SetCheckpoint(this);
-
         trigger.enabled = false;
 
         SetAnimState(CheckpointAnimState.Activated);
 
         // Resurrect dead players
-        Respawn();
+        StartCoroutine(RespawnCoroutine());
 
         OnCheckpointActivated?.Invoke();
     }
-
-    /// <summary>
-    /// Starts the coroutine to make dead players respawn.
-    /// </summary>
-    public void Respawn() => StartCoroutine(RespawnCoroutine());
 
     /// <summary>
     /// Make all dead players respawn to this point.
@@ -227,7 +226,7 @@ public class TDS_Checkpoint : PunBehaviour
     private void OnDrawGizmos()
     {
         // Draw gizmos indicating if the point is activated or not
-        Gizmos.color = isActivated ? (TDS_LevelManager.Instance.Checkpoint == this ? Color.green : Color.blue) : Color.red;
+        Gizmos.color = isActivated ? Color.green : Color.red;
         Gizmos.DrawCube(transform.position + (Vector3.up * 1.5f), Vector3.one * .25f);
 
         // Draw spawn point gizmo
@@ -238,9 +237,11 @@ public class TDS_Checkpoint : PunBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // On trigger enter, heal the player and activate the checkpoint
-        if (other.gameObject.HasTag("Player"))
+        if (other.gameObject.HasTag("Player") && !healedPlayers.Contains(other.GetInstanceID()))
         {
             other.GetComponent<TDS_Player>().Heal(999);
+            healedPlayers.Add(other.GetInstanceID());
+
             if (!isActivated) Activate();
         }
     }

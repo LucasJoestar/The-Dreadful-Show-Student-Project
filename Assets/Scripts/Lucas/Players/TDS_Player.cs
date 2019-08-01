@@ -1818,16 +1818,15 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <param name="_doActive">Should it be activated or desactivated ?</param>
     public void ActivePlayer(bool _doActive)
     {
-        if (!photonView.isMine)
+        // Call this method for other clients
+        if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ActivePlayer"), new object[] { _doActive });
-
-            return;
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "ActivePlayer"), new object[] { _doActive });
         }
 
         rigidbody.isKinematic = !_doActive;
         collider.enabled = _doActive;
-        enabled = _doActive;
+        IsPlayable = _doActive;
     }
     #endregion
 
@@ -1886,6 +1885,9 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Set animation on revive
         OnRevive += () => animator.SetTrigger("REVIVE");
         OnDie += () => StartCoroutine(TDS_LevelManager.Instance.CheckLivingPlayers());
+
+        // Add local player tag if it's mine
+        if (photonView.isMine) gameObject.AddTag("Local Player");
     }
 
     // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations

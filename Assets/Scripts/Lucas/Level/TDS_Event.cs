@@ -4,6 +4,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
+using Object = UnityEngine.Object;
+
 #pragma warning disable 0649
 [Serializable]
 public class TDS_Event 
@@ -45,32 +47,14 @@ public class TDS_Event
     public string Name = "New Event";
 
     /// <summary>
-    /// Is this event triggered only if the local player is a specific character ?
+    /// Does this event require a specific player type in game.
     /// </summary>
-    [SerializeField] private bool doNeedSpecificPlayerType = false;
+    [SerializeField] private bool doRequireSpecificPlayerType = false;
 
     /// <summary>
-    /// Should the event system wait for all players performing an action or not.
+    /// Indicates if the event is waiting for something or not.
     /// </summary>
-    [SerializeField] private bool doWaitForAllPlayers = false;
-
-    /// <summary>
-    /// Public accessor for <see cref="doWaitForAllPlayers"/>.
-    /// </summary>
-    public bool DoWaitForAllPlayers { get { return doWaitForAllPlayers; } }
-
-    /// <summary>
-    /// Indicates if this event should wait the end of the previous one before starting.
-    /// </summary>
-    [SerializeField] private bool doWaitPreviousEvent = true;
-
-    /// <summary>Public accessor for <see cref="doWaitPreviousEvent"/>.</summary>
-    public bool DoWaitPreviousOne { get { return doWaitPreviousEvent; } }
-
-    /// <summary>
-    /// Indicates if the waiting action is complete or not.
-    /// </summary>
-    public bool IsActionComplete { get; private set; } = false;
+    public bool IsWaiting { get; private set; } = true;
 
     /// <summary>
     /// Type of this event.
@@ -81,9 +65,9 @@ public class TDS_Event
     public CustomEventType EventType { get { return eventType; } }
 
     /// <summary>
-    /// Time to wait.
+    /// Delay to wait before starting processing this event.
     /// </summary>
-    [SerializeField] private float waitTime = 0;
+    [SerializeField] private float delay = 0;
 
     /// <summary>
     /// Speed coefficient applied to the camera movement.
@@ -91,25 +75,25 @@ public class TDS_Event
     [SerializeField] private float cameraSpeedCoef = 1;
 
     /// <summary>
-    /// ID of this event associated Event System photon view.
+    /// Time during which the camera will wait in front of its target before reset.
     /// </summary>
-    public int EventSystemID = 0;
+    [SerializeField] private float cameraWaitTime = 1;
 
     /// <summary>
-    /// Name of the prefab to instantiate.
+    /// Prefab to instantiate.
     /// </summary>
-    [SerializeField] private string prefabName = null;
+    [SerializeField] private GameObject prefab = null;
 
     /// <summary>
-    /// Local player type required to execute this action.
+    /// Player type required to execute this action.
     /// If unknown, then no specific player type is required.
     /// </summary>
     [SerializeField] private PlayerType playerType = PlayerType.Unknown;
 
     /// <summary>
-    /// Text ID used to load a narrator quote or information box text.
+    /// Event string, used for text ID to load a narrator quote / information box text, or as name of a prefab to instantiate with Photon.
     /// </summary>
-    [SerializeField] private string textID = "ID";
+    [SerializeField] private string eventString = "ID";
 
     /// <summary>
     /// Transform used for the event.
@@ -124,14 +108,22 @@ public class TDS_Event
     /// <summary>
     /// Action to wait player to perform.
     /// </summary>
-    [SerializeField] private WaitForAction actionType = WaitForAction.Dodge;
+    [SerializeField] private WaitForAction actionType = WaitForAction.UseRabbit;
     #endregion
 
     #region Methods
     /// <summary>
-    /// Stop to wait for the action.
+    /// Check left bound position, and stop waiting if set as expected.
     /// </summary>
-    public void StopWaitingAction() => IsActionComplete = true;
+    private void CheckBound(float _xMovement)
+    {
+        if (TDS_Camera.Instance.CurrentBounds.XMin >= eventTransform.position.x) StopWaiting();
+    }
+
+    /// <summary>
+    /// Stop waiting. Just stop it.
+    /// </summary>
+    public void StopWaiting() => IsWaiting = false;
 
     /// <summary>
     /// Triggers this event.
@@ -139,145 +131,62 @@ public class TDS_Event
     /// <returns></returns>
     public IEnumerator Trigger()
     {
+        // If this event requires a specific player type and he's not in the game, just skip this event
+        if (doRequireSpecificPlayerType && !TDS_LevelManager.Instance.AllPlayers.Any(p => p.PlayerType == playerType)) yield break;
+
+        // Wait for delay
+        yield return new WaitForSeconds(delay);
+
         switch (eventType)
         {
-            // Triggers a particular quote of the Narrator
-            case CustomEventType.Narrator:
+            // Make a camera movement
+            case CustomEventType.CameraMovement:
+                yield return TDS_Camera.Instance.LookTarget(eventTransform.position.x, eventTransform.position.y, eventTransform.position.z, cameraWaitTime, cameraSpeedCoef);
+                break;
 
-                // Activate narrator in other players too
-                if (doNeedSpecificPlayerType && TDS_LevelManager.Instance.AllPlayers.Any(p => p.PlayerType == playerType))
+            // Desactivate the current information box
+            case CustomEventType.DesactiveInfoBox:
+                if (doRequireSpecificPlayerType)
                 {
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", TDS_LevelManager.Instance.AllPlayers.ToList().Where(p => p.PlayerType == playerType).Select(p => p.photonView.owner).First(), TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateNarratorBox")
-                      , new object[] { TDS_GameManager.GetDialog(textID).Skip(1).ToArray() });
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", TDS_LevelManager.Instance.AllPlayers.ToList().Where(p => p.PlayerType == playerType).Select(p => p.photonView.owner).First(), TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "DesactivateDialogBox")
+                      , new object[] { });
                 }
                 else
                 {
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateNarratorBox")
-                      , new object[] { TDS_GameManager.GetDialog(textID).Skip(1).ToArray() });
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "DesactivateDialogBox")
+                      , new object[] { });
                 }
                 break;
 
             // Display a message in an information box
             case CustomEventType.DisplayInfoBox:
-                // Activate narrator in other players too
-                if (doNeedSpecificPlayerType && TDS_LevelManager.Instance.AllPlayers.Any(p => p.PlayerType == playerType))
+                // Activate the info box for the requested player or for everyone
+                if (doRequireSpecificPlayerType)
                 {
                     TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", TDS_LevelManager.Instance.AllPlayers.ToList().Where(p => p.PlayerType == playerType).Select(p => p.photonView.owner).First(), TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateDialogBox")
-                      , new object[] { TDS_GameManager.GetDialog(textID)[0] });
+                      , new object[] { TDS_GameManager.GetDialog(eventString)[1] });
                 }
                 else
                 {
                     TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateDialogBox")
-                      , new object[] { TDS_GameManager.GetDialog(textID)[0] });
-                }
-                break;
-
-            // Desactivate the current information box
-            case CustomEventType.DesactiveInfoBox:
-                if (doNeedSpecificPlayerType && TDS_LevelManager.Instance.AllPlayers.Any(p => p.PlayerType == playerType))
-                {
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", TDS_LevelManager.Instance.AllPlayers.ToList().Where(p => p.PlayerType == playerType).Select(p => p.photonView.owner).First(), TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "DesactivateDialogBox")
-                      , new object[] {  });
-                }
-                else
-                {
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "DesactivateDialogBox")
-                      , new object[] {  });
+                      , new object[] { TDS_GameManager.GetDialog(eventString)[1] });
                 }
                 break;
 
             // Instantiate a prefab
             case CustomEventType.Instantiate:
-                PhotonNetwork.Instantiate(prefabName, eventTransform.position, eventTransform.rotation, 0);
+                GameObject _object = Object.Instantiate(prefab, eventTransform.position, eventTransform.rotation);
+                _object.transform.SetParent(eventTransform, true);
                 break;
 
-            // Wait during a certain time
-            case CustomEventType.Wait:
-                yield return new WaitForSeconds(waitTime);
+            // Instantiate with Photon
+            case CustomEventType.InstantiatePhoton:
+                PhotonNetwork.Instantiate(eventString, eventTransform.position, eventTransform.rotation, 0);
                 break;
 
-            // Wait for an action of the local player
-            case CustomEventType.WaitForAction:
-                switch (actionType)
-                {
-                    case WaitForAction.Jump:
-                        TDS_LevelManager.Instance.LocalPlayer.OnJump += StopWaitingAction;
-                        break;
-
-                    case WaitForAction.Dodge:
-                        TDS_LevelManager.Instance.LocalPlayer.OnStartDodging += StopWaitingAction;
-                        break;
-
-                    case WaitForAction.Grab:
-                        TDS_LevelManager.Instance.LocalPlayer.OnGrabObject += StopWaitingAction;
-                        break;
-
-                    case WaitForAction.Throw:
-                        TDS_LevelManager.Instance.LocalPlayer.OnThrow += StopWaitingAction;
-                        break;
-
-                    case WaitForAction.UseRabbit:
-                        TDS_WhiteRabbit.OnUseRabbit += StopWaitingAction;
-                        TDS_WhiteRabbit.OnLoseRabbit += StopWaitingAction;
-                        break;
-
-                    default:
-                        break;
-                }
-
-                while (!IsActionComplete)
-                {
-                    yield return null;
-                }
-
-                switch (actionType)
-                {
-                    case WaitForAction.Jump:
-                        TDS_LevelManager.Instance.LocalPlayer.OnJump -= StopWaitingAction;
-                        break;
-
-                    case WaitForAction.Dodge:
-                        TDS_LevelManager.Instance.LocalPlayer.OnStartDodging -= StopWaitingAction;
-                        break;
-
-                    case WaitForAction.Grab:
-                        TDS_LevelManager.Instance.LocalPlayer.OnGrabObject -= StopWaitingAction;
-                        break;
-
-                    case WaitForAction.Throw:
-                        TDS_LevelManager.Instance.LocalPlayer.OnThrow -= StopWaitingAction;
-                        break;
-
-                    case WaitForAction.UseRabbit:
-                        TDS_WhiteRabbit.OnUseRabbit -= StopWaitingAction;
-                        TDS_WhiteRabbit.OnLoseRabbit -= StopWaitingAction;
-                        break;
-
-                    default:
-                        break;
-                }
-
-                IsActionComplete = false;
-
-                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(PhotonView.Find(EventSystemID), typeof(TDS_EventsSystem), "SetPlayerWaiting")
-                      , new object[] { TDS_LevelManager.Instance.LocalPlayer.PhotonID });
-                break;
-
-            // Wait other players
-            case CustomEventType.WaitOthers:
-                if (TDS_LevelManager.Instance.OnlinePlayers.Count > 0) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel"), new object[] { });
-
-                while (!IsActionComplete)
-                {
-                    yield return null;
-                }
-
-                if (TDS_LevelManager.Instance.OnlinePlayers.Count > 0) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel"), new object[] { });
-                break;
-
-            // Make a camera movement
-            case CustomEventType.CameraMovement:
-                yield return TDS_Camera.Instance.LookTarget(eventTransform.position.x, eventTransform.position.y, eventTransform.position.z, waitTime, cameraSpeedCoef);
+            // Triggers a particular quote of the Narrator
+            case CustomEventType.Narrator:
+                TDS_UIManager.Instance.ActivateNarratorBox(TDS_GameManager.GetDialog(eventString).Skip(1).ToArray());
                 break;
 
             // Just invoke a Unity Event, that's it
@@ -286,8 +195,57 @@ public class TDS_Event
                 break;
 
             // Just invoke a Unity Event, that's it
-            case CustomEventType.UnityEventForAll:
+            case CustomEventType.UnityEventOnline:
                 unityEvent.Invoke();
+                break;
+
+            // Wait for an action of the local player
+            case CustomEventType.WaitForAction:
+                switch (actionType)
+                {
+                    case WaitForAction.UseRabbit:
+                        TDS_WhiteRabbit.OnUseRabbit += StopWaiting;
+                        TDS_WhiteRabbit.OnLoseRabbit += StopWaiting;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                while (IsWaiting)
+                {
+                    yield return null;
+                }
+
+                switch (actionType)
+                {
+                    case WaitForAction.UseRabbit:
+                        TDS_WhiteRabbit.OnUseRabbit -= StopWaiting;
+                        TDS_WhiteRabbit.OnLoseRabbit -= StopWaiting;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                IsWaiting = true;
+                break;
+
+            // Wait that everyone is in the zone
+            case CustomEventType.WaitForEveryone:
+                if ((TDS_LevelManager.Instance.OtherPlayers.Count > 0) && (TDS_Camera.Instance.CurrentBounds.XMin < eventTransform.position.x))
+                {
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel"), new object[] { });
+
+                    TDS_Camera.Instance.OnMoveX += CheckBound;
+
+                    yield return new WaitForSeconds(.25f);
+
+                    // Wait patiently
+                    while (IsWaiting) yield return null;
+
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel"), new object[] { });
+                }
                 break;
 
             // Nobody here but us chicken

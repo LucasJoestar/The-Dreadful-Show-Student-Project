@@ -105,6 +105,23 @@ public class TDS_RPCManager : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Get informations used by the called method Online
+    /// Concat in a string the informations
+    /// Info: ID#typeName#MethodName#Arguments
+    /// </summary>
+    /// <param name="_photonViewID">ID from the PhotonView of the caller</param>
+    /// <param name="_type">Type of the caller</param>
+    /// <param name="_methodName">Name of the called method</param>
+    /// <param name="args">arguments used in the method</param>
+    /// <returns></returns>
+    public static string GetInfo(int _photonViewID, Type _type, string _methodName)
+    {
+        string _info = $"{_photonViewID}#{_type.ToString()}#{_methodName}";
+        return _info;
+    }
+
     /// <summary>
     /// Get informations used by the called method Online
     /// Concat in a string the informations
@@ -117,8 +134,7 @@ public class TDS_RPCManager : MonoBehaviour
     /// <returns></returns>
     public static string GetInfo(PhotonView _photonView, Type _type, string _methodName)
     {
-        string _info = $"{_photonView.viewID}#{_type.ToString()}#{_methodName}";
-        return _info; 
+        return GetInfo(_photonView.viewID, _type, _methodName);
     }
     #endregion
 

@@ -44,19 +44,6 @@ public class TDS_LevelManager : PunBehaviour
 
     #region Fields / Properties
     /// <summary>
-    /// Last activated checkpoint.
-    /// </summary>
-    [SerializeField] protected TDS_Checkpoint checkpoint = null;
-
-    /// <summary>Public accessor for <see cref="checkpoint"/>.</summary>
-    public TDS_Checkpoint Checkpoint { get { return checkpoint; } }
-
-    /// <summary>
-    /// Get the ID of this object photon view.
-    /// </summary>
-    public int phID { get { return photonView.viewID; } }
-
-    /// <summary>
     /// Local player, the one who play on this machine.
     /// </summary>
     [SerializeField] protected TDS_Player localPlayer = null;
@@ -65,20 +52,21 @@ public class TDS_LevelManager : PunBehaviour
     public TDS_Player LocalPlayer { get { return localPlayer; } }
 
     /// <summary>
-    /// Online players, the ones that play with the one playing on this machine.
+    /// Other players, that is the ones playing with you, guy. (Online and local)
     /// </summary>
-    [SerializeField] protected List<TDS_Player> onlinePlayers = new List<TDS_Player>();
+    [SerializeField] protected List<TDS_Player> otherPlayers = new List<TDS_Player>();
 
-    /// <summary>Public accessor for <see cref="onlinePlayers"/>.</summary>
-    public List<TDS_Player> OnlinePlayers { get { return onlinePlayers; } }
+    /// <summary>Public accessor for <see cref="otherPlayers"/>.</summary>
+    public List<TDS_Player> OtherPlayers { get { return otherPlayers; } }
 
     /// <summary>
     /// Get all players of the game, local and online ones.
     /// </summary>
     public TDS_Player[] AllPlayers
     {
-        get { return onlinePlayers.Append(localPlayer).ToArray(); }
+        get { return otherPlayers.Append(localPlayer).ToArray(); }
     }
+
 
     /// <summary>
     /// Points where to spawn at game start.
@@ -132,53 +120,12 @@ public class TDS_LevelManager : PunBehaviour
     }
 
     /// <summary>
-    /// Make all dead players respawn.
-    /// </summary>
-    private void Respawn()
-    {
-        if (checkpoint) checkpoint.Respawn();
-        else
-        {
-            // Test use
-            TDS_Player[] _deadPlayers = AllPlayers.Where(p => p.IsDead).ToArray();
-
-            if (_deadPlayers.Length == 0) return;
-
-            TDS_Player _player = null;
-
-            for (int _i = 0; _i < _deadPlayers.Length; _i++)
-            {
-                _player = _deadPlayers[_i];
-
-                _player.transform.position = StartSpawnPoints[_i];
-                _player.HealthCurrent = _player.HealthMax;
-                _player.gameObject.SetActive(true);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Set new checkpoint where to respawn.
-    /// </summary>
-    /// <param name="_checkpoint">Checkpoint to set as new one.</param>
-    public void SetCheckpoint(TDS_Checkpoint _checkpoint)
-    {
-        if (_checkpoint == null) return;
-
-        checkpoint = _checkpoint;
-        OnCheckpointActivated?.Invoke(_checkpoint);
-
-        // Make dead players respawn
-        Respawn();
-    }
-
-    /// <summary>
     /// Add the player in the list of online players
     /// </summary>
     /// <param name="_onlinePlayer">Player to add to the onlinePlayer List</param>
     public void InitOnlinePlayer(TDS_Player _onlinePlayer)
     {
-        onlinePlayers.Add(_onlinePlayer);
+        otherPlayers.Add(_onlinePlayer);
     }
 
     /// <summary>
@@ -193,7 +140,7 @@ public class TDS_LevelManager : PunBehaviour
             return;
         }
         TDS_UIManager.Instance.ClearUIRelatives(_player.PlayerType);
-        if (onlinePlayers.Contains(_player)) onlinePlayers.Remove(_player);
+        if (otherPlayers.Contains(_player)) otherPlayers.Remove(_player);
     }
 
     /// <summary>
@@ -206,10 +153,10 @@ public class TDS_LevelManager : PunBehaviour
             yield return new WaitForSeconds(2f);
 
             //TDS_UIManager.Instance.ResetUIManager();
-            if (OnlinePlayers.All(p => p.IsDead)) TDS_UIManager.Instance.StartCoroutine(TDS_UIManager.Instance.ResetUIManager());
-            else if (OnlinePlayers.Count > 0)
+            if (OtherPlayers.All(p => p.IsDead)) TDS_UIManager.Instance.StartCoroutine(TDS_UIManager.Instance.ResetUIManager());
+            else if (OtherPlayers.Count > 0)
             {
-                TDS_Camera.Instance.Target = OnlinePlayers.Where(p => !p.IsDead).First().transform;
+                TDS_Camera.Instance.Target = OtherPlayers.Where(p => !p.IsDead).First().transform;
             }
         }
     }

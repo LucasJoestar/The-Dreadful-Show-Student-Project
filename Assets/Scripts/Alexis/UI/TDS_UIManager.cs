@@ -944,7 +944,7 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_isPaused"></param>
     public void SetPause(bool _isPaused)
     {
-        if (TDS_LevelManager.Instance && TDS_LevelManager.Instance.OnlinePlayers.Count == 0)
+        if (TDS_LevelManager.Instance && TDS_LevelManager.Instance.OtherPlayers.Count == 0)
         {
             Time.timeScale = _isPaused ? 0 : 1;
         }

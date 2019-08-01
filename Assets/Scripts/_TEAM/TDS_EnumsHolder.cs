@@ -115,16 +115,19 @@ public enum CheckpointAnimState
 /// </summary>
 public enum CustomEventType
 {
-    Narrator,
+    // Local Events
     DisplayInfoBox,
     DesactiveInfoBox,
-    Instantiate,
-    Wait,
+    InstantiatePhoton,
     WaitForAction,
-    WaitOthers,
-    CameraMovement,
+    WaitForEveryone,
     UnityEventLocal,
-    UnityEventForAll
+    
+    // Online Events
+    Narrator = 21,
+    Instantiate,
+    CameraMovement,
+    UnityEventOnline
 }
 
 /// <summary>
@@ -298,9 +301,5 @@ public enum UIState
 /// </summary>
 public enum WaitForAction
 {
-    Jump,
-    Dodge,
-    Grab,
-    Throw,
     UseRabbit
 }

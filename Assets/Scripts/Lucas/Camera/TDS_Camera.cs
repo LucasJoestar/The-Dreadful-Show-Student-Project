@@ -692,16 +692,16 @@ public class TDS_Camera : MonoBehaviour
         _boundsMovement[3] = _bounds.ZMax > currentBounds.ZMax ? 1 : _bounds.ZMax < currentBounds.ZMax ? - 1 : 0;
 
         Vector3 _localPlayerPosition = new Vector3();
-        Vector3[] _playerPositions = new Vector3[TDS_LevelManager.Instance.OnlinePlayers.Count];
+        Vector3[] _playerPositions = new Vector3[TDS_LevelManager.Instance.OtherPlayers.Count];
 
         // While all the bounds are not in the right place, set their position
         while (_boundsMovement.Any(m => m != 0))
         {
             // Get all players position
             _localPlayerPosition = TDS_LevelManager.Instance.LocalPlayer.transform.position;
-            for (int _i = 0; _i < TDS_LevelManager.Instance.OnlinePlayers.Count; _i++)
+            for (int _i = 0; _i < TDS_LevelManager.Instance.OtherPlayers.Count; _i++)
             {
-                _playerPositions[_i] = TDS_LevelManager.Instance.OnlinePlayers[_i].transform.position;
+                _playerPositions[_i] = TDS_LevelManager.Instance.OtherPlayers[_i].transform.position;
             }
 
             // Left bound move

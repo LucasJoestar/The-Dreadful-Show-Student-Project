@@ -676,7 +676,18 @@ public abstract class TDS_Character : TDS_Damageable
             Gizmos.DrawCube(collider.bounds.center, collider.bounds.size);
         }
     }
-	#endregion
 
-	#endregion
+    // Use this for initialization
+    protected override void Start()
+    {
+        base.Start();
+
+        if (!photonView.isMine)
+        {
+            rigidbody.isKinematic = true;
+        }
+    }
+    #endregion
+
+    #endregion
 }

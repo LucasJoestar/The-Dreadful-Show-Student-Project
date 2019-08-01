@@ -549,6 +549,10 @@ public abstract class TDS_Damageable : PunBehaviour
     // Use this for initialization
     protected virtual void Start ()
     {
+        if (!photonView.isMine && !PhotonNetwork.isMasterClient)
+        {
+            collider.enabled = false;
+        }
     }
 	
 	// Update is called once per frame

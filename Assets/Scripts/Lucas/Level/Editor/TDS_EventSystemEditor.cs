@@ -37,11 +37,11 @@ public class TDS_EventSystemEditor : Editor
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.activationMode"/> of type <see cref="TriggerActivationMode"/>.</summary>
     private SerializedProperty activationMode = null;
 
-    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doDesactivateTriggerOnActivation"/> of type <see cref="bool"/>.</summary>
-    private SerializedProperty doDesactivateTriggerOnActivation = null;
+    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doDesTriggerOnActiv"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty doDesTriggerOnActiv = null;
 
-    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doDestroyOnFinish"/> of type <see cref="bool"/>.</summary>
-    private SerializedProperty doDesactivateOnFinish = null;
+    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doDesObjectOnFinish"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty doDesObjectOnFinish = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doLoop"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty doLoop = null;
@@ -51,9 +51,6 @@ public class TDS_EventSystemEditor : Editor
 
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.isLocal"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isLocal = null;
-
-    /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.isWaitingOthers"/> of type <see cref="bool"/>.</summary>
-    private SerializedProperty isWaitingForOthers = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.currentEvent"/> of type <see cref="TDS_Event"/>.</summary>
     private SerializedProperty currentEvent = null;
@@ -99,7 +96,7 @@ public class TDS_EventSystemEditor : Editor
         {
             GUILayout.Space(3);
 
-            EditorGUILayout.LabelField(new GUIContent("Current Event", "Current event processing"), new GUIContent(((CustomEventType)currentEvent.FindPropertyRelative("eventType").enumValueIndex).ToString()));
+            EditorGUILayout.LabelField(new GUIContent("Current Event", "Current event processing"), new GUIContent(currentEvent.FindPropertyRelative("Name").ToString()));
         }
 
         GUILayout.Space(5);
@@ -107,9 +104,9 @@ public class TDS_EventSystemEditor : Editor
         TDS_EditorUtility.Toggle("Local", "Is this event system local-based or online ?", isLocal);
         GUILayout.Space(2);
 
+        TDS_EditorUtility.Toggle("Des. Collider on Activation", "Should this object collider be desactivated when starting events", doDesTriggerOnActiv);
         TDS_EditorUtility.Toggle("Looping", "Should this event system loop when reaching the end or not", doLoop);
-        TDS_EditorUtility.Toggle("Des. when Finished", "Should this object be desactivated when event system get finished", doDesactivateOnFinish);
-        TDS_EditorUtility.Toggle("Des. collider on activation", "Should this object collider be desactivated when starting events", doDesactivateTriggerOnActivation);
+        TDS_EditorUtility.Toggle("Des. Object when Finished", "Should this object be deactivated when the event system gets finished", doDesObjectOnFinish);
 
         GUILayout.Space(2);
 
@@ -187,82 +184,79 @@ public class TDS_EventSystemEditor : Editor
             GUI.color = Color.white;
             EditorGUILayout.EndHorizontal();
 
-            CustomEventType _eventTypeValue;
-
             // If unfolded, draws this event
             if (foldouts[_i])
             {
                 SerializedProperty _eventType = _event.FindPropertyRelative("eventType");
-                SerializedProperty _doRequireType = _event.FindPropertyRelative("doNeedSpecificPlayerType");
+                SerializedProperty _doRequireType = _event.FindPropertyRelative("doRequireSpecificPlayerType");
 
                 TDS_EditorUtility.TextField("Name", "Name of this event", _eventName);
 
                 GUILayout.Space(3);
 
                 TDS_EditorUtility.PropertyField("Event Type", "Type of this event", _eventType);
-                _eventTypeValue = (CustomEventType)_eventType.enumValueIndex;
+                CustomEventType _eventTypeValue = (CustomEventType)_eventType.enumValueIndex;
+                if (_eventType.enumValueIndex > 5) _eventTypeValue += 15;
 
-                if ((_eventTypeValue == CustomEventType.Narrator) || (_eventTypeValue == CustomEventType.DisplayInfoBox) || (_eventTypeValue == CustomEventType.DesactiveInfoBox))
+                TDS_EditorUtility.FloatField("Delay", "Delay before starting this event", _event.FindPropertyRelative("delay"));
+
+                GUILayout.Space(3);
+
+                TDS_EditorUtility.Toggle("Require specific Player type", "Should this event require a specific player type to be triggered", _doRequireType);
+                if (_doRequireType.boolValue)
                 {
-                    TDS_EditorUtility.Toggle("Require specific Player type", "Should this event require a specific player type to be triggered", _doRequireType);
-
-                    if (_doRequireType.boolValue)
-                    {
-                        TDS_EditorUtility.PropertyField("Required type of Player", "Required type of player to trigger this event", _event.FindPropertyRelative("playerType"));
-                    }
-                }
-
-                if (_i > 0)
-                {
-                    GUILayout.Space(3);
-
-                    TDS_EditorUtility.Toggle("Wait previous event complete", "Should this event only be triggered when the previous one is complete", _event.FindPropertyRelative("doWaitPreviousEvent"));
+                    TDS_EditorUtility.PropertyField("Required type of Player", "Required type of player to trigger this event", _event.FindPropertyRelative("playerType"));
                 }
 
                 GUILayout.Space(5);
 
-                switch ((CustomEventType)_eventType.enumValueIndex)
+                switch (_eventTypeValue)
                 {
-                    case CustomEventType.Narrator:
-                        TDS_EditorUtility.TextField("Text ID", "ID of the text to use for the Narrator", _event.FindPropertyRelative("textID"));
-                        break;
+                    case CustomEventType.CameraMovement:
+                        TDS_EditorUtility.PropertyField("Target", "Target to make the camera look ", _event.FindPropertyRelative("eventTransform"));
 
-                    case CustomEventType.DisplayInfoBox:
-                        TDS_EditorUtility.TextField("Text ID", "ID of the text to use for the Info Box", _event.FindPropertyRelative("textID"));
+                        TDS_EditorUtility.FloatField("Duration", "Time to look at the target", _event.FindPropertyRelative("cameraWaitTime"));
+
+                        TDS_EditorUtility.FloatField("Speed Coef", "Coefficient applied to the speed of the camera.", _event.FindPropertyRelative("cameraSpeedCoef"));
                         break;
 
                     case CustomEventType.DesactiveInfoBox:
                         break;
 
+                    case CustomEventType.DisplayInfoBox:
+                        TDS_EditorUtility.TextField("Text ID", "ID of the text to use for the Info Box", _event.FindPropertyRelative("eventString"));
+                        break;
+
                     case CustomEventType.Instantiate:
-                        TDS_EditorUtility.PropertyField("Prefab Name", "Name of the prefab to instantiate", _event.FindPropertyRelative("prefabName"));
+                        TDS_EditorUtility.PropertyField("Prefab", "Prefab to instantiate", _event.FindPropertyRelative("prefab"));
 
                         TDS_EditorUtility.PropertyField("Instantiation transform reference", "Transform to use as reference for position & rotation for the transform of the instantiated object", _event.FindPropertyRelative("eventTransform"));
                         break;
 
-                    case CustomEventType.Wait:
-                        TDS_EditorUtility.FloatField("Time to wait", "Time to wait for this event (in seconds).", _event.FindPropertyRelative("waitTime"));
+                    case CustomEventType.InstantiatePhoton:
+                        TDS_EditorUtility.PropertyField("Prefab Name", "Name of the prefab to instantiate", _event.FindPropertyRelative("eventString"));
+
+                        TDS_EditorUtility.PropertyField("Instantiation transform reference", "Transform to use as reference for position & rotation for the transform of the instantiated object", _event.FindPropertyRelative("eventTransform"));
                         break;
 
-                    case CustomEventType.WaitForAction:
-                        TDS_EditorUtility.PropertyField("Wait for everyone", "Should this action be performed by every player", _event.FindPropertyRelative("doWaitForAllPlayers"));
-                        TDS_EditorUtility.PropertyField("Action to wait", "Action to wait the player to perform", _event.FindPropertyRelative("actionType"));
-                        break;
-
-                    case CustomEventType.CameraMovement:
-                        TDS_EditorUtility.PropertyField("Target", "Target to make the camera look ", _event.FindPropertyRelative("eventTransform"));
-
-                        TDS_EditorUtility.FloatField("Duration", "Time to look at the target", _event.FindPropertyRelative("waitTime"));
-
-                        TDS_EditorUtility.FloatField("Speed Coef", "Coefficient applied to the speed of the camera.", _event.FindPropertyRelative("cameraSpeedCoef"));
+                    case CustomEventType.Narrator:
+                        TDS_EditorUtility.TextField("Text ID", "ID of the text to use for the Narrator", _event.FindPropertyRelative("eventString"));
                         break;
 
                     case CustomEventType.UnityEventLocal:
                         TDS_EditorUtility.PropertyField("Unity Event", "Associated Unity Event to this event", _event.FindPropertyRelative("unityEvent"));
                         break;
 
-                    case CustomEventType.UnityEventForAll:
+                    case CustomEventType.UnityEventOnline:
                         TDS_EditorUtility.PropertyField("Unity Event", "Associated Unity Event to this event", _event.FindPropertyRelative("unityEvent"));
+                        break;
+
+                    case CustomEventType.WaitForAction:
+                        TDS_EditorUtility.PropertyField("Action to wait", "Action to wait the player to perform", _event.FindPropertyRelative("actionType"));
+                        break;
+
+                    case CustomEventType.WaitForEveryone:
+                        TDS_EditorUtility.PropertyField("Bound min X", "Transform to use for minimum bound X value to wait", _event.FindPropertyRelative("eventTransform"));
                         break;
 
                     default:
@@ -303,12 +297,11 @@ public class TDS_EventSystemEditor : Editor
     private void OnEnable()
     {
         activationMode = serializedObject.FindProperty("activationMode");
-        doDesactivateTriggerOnActivation = serializedObject.FindProperty("doDesactivateTriggerOnActivation");
-        doDesactivateOnFinish = serializedObject.FindProperty("doDesactivateOnFinish");
+        doDesTriggerOnActiv = serializedObject.FindProperty("doDesTriggerOnActiv");
+        doDesObjectOnFinish = serializedObject.FindProperty("doDesObjectOnFinish");
         doLoop = serializedObject.FindProperty("doLoop");
         isActivated = serializedObject.FindProperty("isActivated");
         isLocal = serializedObject.FindProperty("isLocal");
-        isWaitingForOthers = serializedObject.FindProperty("isWaitingForOthers");
         currentEvent = serializedObject.FindProperty("currentEvent");
         events = serializedObject.FindProperty("events");
         detectedTags = serializedObject.FindProperty("detectedTags");

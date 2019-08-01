@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// Scriptable object used to save and access to all tags of a project
@@ -61,7 +62,7 @@ public class TagsSO : ScriptableObject
     /// <summary>
     /// All this project tags.
     /// </summary>
-    public Tag[]        AllTags
+    public Tag[]                    AllTags
     {
         get
         {
@@ -83,12 +84,18 @@ public class TagsSO : ScriptableObject
     /// <summary>
     /// All custom tags of this project.
     /// </summary>
-    public Tags         CustomTags              = new Tags();
+    public Tags                     CustomTags              = new Tags();
 
     /// <summary>
     /// All Unity built-in tags of this project.
     /// </summary>
-    public Tags         UnityBuiltInTags        = new Tags();
+    public Tags                     UnityBuiltInTags        = new Tags();
+
+
+    /// <summary>
+    /// Dictionary referencing all scene objects tags with their ID as key and tags as value.
+    /// </summary>
+    private Dictionary<int, Tags>   objectsTags             = new Dictionary<int, Tags>();
     #endregion
 
     #region Methods
@@ -112,7 +119,86 @@ public class TagsSO : ScriptableObject
         // Destroy the created editor
         DestroyImmediate(_thisEditor);
     }
-    #endif
+#endif
+    #endregion
+
+    #region Runtime
+    /// <summary>
+    /// Adds a new tag to a GameObject.
+    /// </summary>
+    /// <param name="_object">GameObject to add tag to.</param>
+    /// <param name="_newTag">New Tag to add.</param>
+    public void AddTagToObject(GameObject _object, string _newTag)
+    {
+        RegisterObject(_object);
+
+        objectsTags[_object.GetInstanceID()].AddTag(_newTag);
+    }
+
+    /// <summary>
+    /// Adds a new tag to a GameObject.
+    /// </summary>
+    /// <param name="_object">GameObject to add tag to.</param>
+    /// <param name="_newTag">New Tag to add.</param>
+    public void AddTagToObject(GameObject _object, Tag _newTag)
+    {
+        RegisterObject(_object);
+
+        objectsTags[_object.GetInstanceID()].AddTag(_newTag);
+    }
+
+
+    /// <summary>
+    /// Get an object tags.
+    /// </summary>
+    /// <param name="_object">Object to get tags from.</param>
+    /// <returns>Returns the tags of the object.</returns>
+    public Tag[] GetObjectTags(GameObject _object)
+    {
+        RegisterObject(_object);
+
+        return objectsTags[_object.GetInstanceID()].ObjectTags;
+    }
+
+
+    /// <summary>
+    /// Registers a GameObject into the field <see cref="objectsTags"/>.
+    /// </summary>
+    /// <param name="_object">GameObject to register.</param>
+    private void RegisterObject(GameObject _object)
+    {
+        int _id = _object.GetInstanceID();
+
+        if (!objectsTags.ContainsKey(_id))
+        {
+            objectsTags.Add(_id, new Tags(MultiTags.GetTags(_object.tag.Split(MultiTags.TAG_SEPARATOR))));
+        }
+    }
+
+
+    /// <summary>
+    /// Removes a new tag from a GameObject.
+    /// </summary>
+    /// <param name="_object">GameObject to remove tag from.</param>
+    /// <param name="_tag">Tag to remove.</param>
+    public void RemoveTagFromObject(GameObject _object, string _tag)
+    {
+        RegisterObject(_object);
+
+        objectsTags[_object.GetInstanceID()].RemoveTag(_tag);
+    }
+
+    /// <summary>
+    /// Removes a new tag from a GameObject.
+    /// </summary>
+    /// <param name="_object">GameObject to remove tag from.</param>
+    /// <param name="_tag">Tag to remove.</param>
+    public void RemoveTagFromObject(GameObject _object, Tag _tag)
+    {
+        RegisterObject(_object);
+
+        objectsTags[_object.GetInstanceID()].RemoveTag(_tag);
+    }
     #endregion
 
     #endregion

@@ -19,7 +19,7 @@ public class TDS_EventsSystem : PunBehaviour
 	 *	####### TO DO #######
 	 *	#####################
 	 *
-	 *	... Everything.
+	 *	
 	 *
 	 *	#####################
 	 *	### MODIFICATIONS ###
@@ -39,12 +39,12 @@ public class TDS_EventsSystem : PunBehaviour
     /// <summary>
     /// Indicates if this object trigger should be desactivated when starting events.
     /// </summary>
-    [SerializeField] private bool doDesactivateTriggerOnActivation = true;
+    [SerializeField] private bool doDesTriggerOnActiv = true;
 
     /// <summary>
     /// Indicates if this object should be destroyed when finished.
     /// </summary>
-    [SerializeField] private bool doDesactivateOnFinish = false;
+    [SerializeField] private bool doDesObjectOnFinish = false;
 
     /// <summary>
     /// Indicates if the event system should loop or not.
@@ -62,17 +62,12 @@ public class TDS_EventsSystem : PunBehaviour
     [SerializeField] private bool isLocal = false;
 
     /// <summary>
-    /// Boolean used when waiting for other players.
-    /// </summary>
-    [SerializeField] private bool isWaitingForOthers = false;
-
-    /// <summary>
     /// When entering this event, if activation is on traverse, indicates if it was from right or left.
     /// </summary>
     [SerializeField] private bool wasActivatedFromRight = false;
 
     /// <summary>
-    /// BoxCollider of the objecT.
+    /// BoxCollider of the object.
     /// </summary>
     [SerializeField] private new BoxCollider collider = null;
 
@@ -90,11 +85,6 @@ public class TDS_EventsSystem : PunBehaviour
     /// All events to trigger in this events system.
     /// </summary>
     [SerializeField] private TDS_Event[] events = new TDS_Event[] { };
-
-    /// <summary>
-    /// Players who are waiting at an event.
-    /// </summary>
-    private List<TDS_Player> waitingPlayers = new List<TDS_Player>();
 
     /// <summary>
     /// Tags detected used to activate this event system.
@@ -116,7 +106,7 @@ public class TDS_EventsSystem : PunBehaviour
     /// <param name="other"></param>
     private void CheckTriggerValidation(Collider other)
     {
-        if (((isLocal && other.GetComponent<PhotonView>() && other.GetComponent<PhotonView>().isMine) || PhotonNetwork.isMasterClient) && !isActivated && other.gameObject.HasTag(detectedTags.ObjectTags)) StartEvents();
+        if ((isLocal || PhotonNetwork.isMasterClient) && !isActivated && other.gameObject.HasTag(detectedTags.ObjectTags)) StartEvents();
     }
 
     /// <summary>
@@ -127,72 +117,27 @@ public class TDS_EventsSystem : PunBehaviour
     {
         for (int _i = 0; _i < events.Length; _i++)
         {
-            // Starts the coroutine
-            if (events[_i].EventType == CustomEventType.WaitForAction)
-            {
-                isWaitingForOthers = true;
-            }
-
+            // Starts the event
             currentEventCoroutine = StartEventCoroutine(_i);
 
-            if (currentEvent.EventType == CustomEventType.WaitOthers)
-            {
-                if (collider.enabled)
-                {
-                    collider.enabled = false;
-                    yield return null;
-                }
-                collider.enabled = true;
-            }
-
-            if (((events[_i].EventType == CustomEventType.CameraMovement) && !isLocal) ||
-                (events[_i].EventType == CustomEventType.WaitForAction) || (events[_i].EventType == CustomEventType.UnityEventForAll))
+            if (!isLocal && ((int)events[_i].EventType > 20))
             {
                 TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "StartEventCoroutine"), new object[] { _i });
             }
 
-            // If next one wait the previous, wait
-            if (((_i < events.Length - 1) && events[_i + 1].DoWaitPreviousOne) || (currentEvent.EventType == CustomEventType.WaitOthers)) yield return currentEventCoroutine;
-
-            if (currentEvent.EventType == CustomEventType.WaitOthers) collider.enabled = !doDesactivateTriggerOnActivation;
-
-            while (isWaitingForOthers) yield return null;
+            // Wait end of event to start next one
+            yield return currentEventCoroutine;
         }
 
+        // Loop if needed, or just stop the system
         if (doLoop) StartCoroutine(EventsSystem());
         else
         {
             isActivated = false;
-            if (doDesactivateOnFinish) enabled = false;
+            if (doDesObjectOnFinish) gameObject.SetActive(false);
         }
 
         yield break;
-    }
-
-    /// <summary>
-    /// Set a player as waiting.
-    /// </summary>
-    /// <param name="_playerID">ID of the player who is waiting.</param>
-    public void SetPlayerWaiting(int _playerID)
-    {
-        if (!isWaitingForOthers) return;
-
-        if (currentEvent.DoWaitForAllPlayers)
-        {
-            waitingPlayers.Add(PhotonView.Find(_playerID).GetComponent<TDS_Player>());
-
-            if (!waitingPlayers.Union(TDS_LevelManager.Instance.AllPlayers).Any())
-            {
-                isWaitingForOthers = false;
-                waitingPlayers = new List<TDS_Player>();
-            }
-        }
-        else
-        {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "StopWaitingForEvent"), new object[] { });
-
-            isWaitingForOthers = false;
-        }
     }
 
     /// <summary>
@@ -213,7 +158,7 @@ public class TDS_EventsSystem : PunBehaviour
     {
         if (isActivated) return;
 
-        if (doDesactivateTriggerOnActivation && collider)
+        if (doDesTriggerOnActiv && collider)
         {
             collider.enabled = false;
         }
@@ -229,20 +174,12 @@ public class TDS_EventsSystem : PunBehaviour
     {
         if (!isActivated) return;
 
-        if (currentEventCoroutine != null) StopCoroutine(currentEventCoroutine);
         StopAllCoroutines();
+        if (currentEventCoroutine != null) StopCoroutine(currentEventCoroutine);
 
         isActivated = false;
 
-        if (doDesactivateOnFinish) Destroy(this);
-    }
-
-    /// <summary>
-    /// Stop waiting for an event.
-    /// </summary>
-    public void StopWaitingForEvent()
-    {
-        currentEvent.StopWaitingAction();
+        if (doDesObjectOnFinish) gameObject.SetActive(false);
     }
     #endregion
 
@@ -250,40 +187,12 @@ public class TDS_EventsSystem : PunBehaviour
     // Awake is called when the script instance is being loaded
     private void Awake()
     {
-        if (!collider)
-        {
-            collider = GetComponent<BoxCollider>();
-            if (!collider)
-            {
-                Debug.LogWarning("BoxCollider on Event System \"" + name + "\" is missing !");
-                return;
-            }
-        }
-    }
-
-    // Use this for initialization
-    private void Start()
-    {
-        // Set photon view ID for each event
-        foreach (TDS_Event _event in events)
-        {
-            _event.EventSystemID = photonView.viewID;
-        }
+        if (!collider) collider = GetComponent<BoxCollider>();
     }
 
     // OnTriggerEnter is called when the GameObject collides with another GameObject
     private void OnTriggerEnter(Collider other)
     {
-        if (isActivated && (currentEvent.EventType == CustomEventType.WaitOthers) && other.gameObject.HasTag("Player"))
-        {
-            waitingPlayers.Add(other.GetComponent<TDS_Player>());
-            if (!TDS_LevelManager.Instance.AllPlayers.Except(waitingPlayers).Any())
-            {
-                waitingPlayers = new List<TDS_Player>();
-                currentEvent.StopWaitingAction();
-            }
-        }
-
         if (activationMode == TriggerActivationMode.Enter) CheckTriggerValidation(other);
         else if (activationMode == TriggerActivationMode.Traverse) wasActivatedFromRight = other.bounds.center.x > collider.bounds.center.x;
     }
@@ -291,11 +200,6 @@ public class TDS_EventsSystem : PunBehaviour
     // OnTriggerExit is called when the Collider other has stopped touching the trigger
     private void OnTriggerExit(Collider other)
     {
-        if (isActivated && (currentEvent.EventType == CustomEventType.WaitOthers) && other.gameObject.HasTag("Player"))
-        {
-            waitingPlayers.Remove(other.GetComponent<TDS_Player>());
-        }
-
         if ((activationMode == TriggerActivationMode.Exit) ||
            ((activationMode == TriggerActivationMode.Traverse) &&
            ((other.bounds.center.x > collider.bounds.center.x) != wasActivatedFromRight))) CheckTriggerValidation(other);

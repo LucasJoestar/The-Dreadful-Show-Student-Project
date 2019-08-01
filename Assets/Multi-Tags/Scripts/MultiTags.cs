@@ -91,7 +91,7 @@ public static class MultiTags
     /// <summary>
     /// The scriptable object containing all this project tags. Null if none.
     /// </summary>
-    private static TagsSO               TagsAsset                   { get { return Resources.Load<TagsSO>(TAGS_ASSET_PATH); } }
+    public static TagsSO               TagsAsset                   { get { return Resources.Load<TagsSO>(TAGS_ASSET_PATH); } }
     #endregion
 
     #region Methods
@@ -136,7 +136,6 @@ public static class MultiTags
     {
         return DoesTagExist(_tag.Name);
     }
-
 
     /// <summary>
     /// Get a Tag object from a given tag name.

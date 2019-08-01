@@ -43,13 +43,46 @@ public static class MultiTagsExtensions
 
     #region GameObject
     /// <summary>
+    /// Add a new tag to this GameObject.
+    /// </summary>
+    /// <param name="_go">Game object to add tag to.</param>
+    /// <param name="_newTag">New tag to add.</param>
+    public static void AddTag(this GameObject _go, string _newTag)
+    {
+        #if UNITY_EDITOR
+        if (!Application.isPlaying) return;
+        #endif
+
+        MultiTags.TagsAsset.AddTagToObject(_go, _newTag);
+    }
+
+    /// <summary>
+    /// Add a new tag to this GameObject.
+    /// </summary>
+    /// <param name="_go">Game object to add tag to.</param>
+    /// <param name="_newTag">New tag to add.</param>
+    public static void AddTag(this GameObject _go, Tag _newTag)
+    {
+        #if UNITY_EDITOR
+        if (!Application.isPlaying) return;
+        #endif
+
+        MultiTags.TagsAsset.AddTagToObject(_go, _newTag);
+    }
+
+
+    /// <summary>
     /// Get all this game object tag names.
     /// </summary>
     /// <param name="_go">Game object to get tags from.</param>
     /// <returns>Returns all this game object tag names.</returns>
     public static string[] GetTagNames(this GameObject _go)
     {
-        return _go.tag.Split(MultiTags.TAG_SEPARATOR);
+        #if UNITY_EDITOR
+        if (!Application.isPlaying) return _go.tag.Split(MultiTags.TAG_SEPARATOR);
+        #endif
+
+        return MultiTags.TagsAsset.GetObjectTags(_go).Select(t => t.Name).ToArray();
     }
 
     /// <summary>
@@ -59,7 +92,11 @@ public static class MultiTagsExtensions
     /// <returns>Returns a Tags object from all this game object tags.</returns>
     public static Tag[] GetTags(this GameObject _go)
     {
-        return MultiTags.GetTags(_go.GetTagNames());
+        #if UNITY_EDITOR
+        if (!Application.isPlaying) return MultiTags.GetTags(_go.GetTagNames());
+        #endif
+
+        return MultiTags.TagsAsset.GetObjectTags(_go);
     }
 
 
@@ -105,7 +142,7 @@ public static class MultiTagsExtensions
     /// <returns>Returns true if the game object has the specified tag, false otherwise.</returns>
     public static bool HasTag(this GameObject _go, Tag _tag)
     {
-        return _go.GetTagNames().Contains(_tag.Name);
+        return _go.GetTags().Contains(_tag);
     }
 
     /// <summary>
@@ -116,7 +153,7 @@ public static class MultiTagsExtensions
     /// <returns>Returns true if the game object has at least one of the specified tags, false otherwise.</returns>
     public static bool HasTag(this GameObject _go, Tag[] _tags)
     {
-        return _go.GetTagNames().Intersect(_tags.Select(t => t.Name)).Any();
+        return _go.GetTags().Intersect(_tags).Any();
     }
 
     /// <summary>
@@ -127,7 +164,36 @@ public static class MultiTagsExtensions
     /// <returns>Returns true if the game object has all the specified tags, false if it lacks event one.</returns>
     public static bool HasTags(this GameObject _go, Tag[] _tags)
     {
-        return !_go.GetTagNames().Except(_tags.Select(t => t.Name)).Any();
+        return !_go.GetTags().Except(_tags).Any();
+    }
+
+
+    /// <summary>
+    /// Removes a tag from a GameObject.
+    /// </summary>
+    /// <param name="_go">Game object to remove tag from.</param>
+    /// <param name="_tag">Tag to remove.</param>
+    public static void RemoveTag(this GameObject _go, string _tag)
+    {
+        #if UNITY_EDITOR
+        if (!Application.isPlaying) return;
+        #endif
+
+        MultiTags.TagsAsset.RemoveTagFromObject(_go, _tag);
+    }
+
+    /// <summary>
+    /// Removes a tag from a GameObject.
+    /// </summary>
+    /// <param name="_go">Game object to remove tag from.</param>
+    /// <param name="_tag">Tag to remove.</param>
+    public static void RemoveTag(this GameObject _go, Tag _tag)
+    {
+        #if UNITY_EDITOR
+        if (!Application.isPlaying) return;
+        #endif
+
+        MultiTags.TagsAsset.RemoveTagFromObject(_go, _tag);
     }
     #endregion
 }
