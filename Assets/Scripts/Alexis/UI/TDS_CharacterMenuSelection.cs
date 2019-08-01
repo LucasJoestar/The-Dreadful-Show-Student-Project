@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq; 
-using UnityEngine.UI;
-using TMPro; 
+﻿using System.Linq; 
 using UnityEngine;
 
 #pragma warning disable 0649
@@ -60,7 +55,8 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
         if (_newPlayer.ID == PhotonNetwork.player.ID)
         {
             localElement = characterSelectionElements.Where(e => e.PhotonPlayer == _newPlayer).First();
-            localElement.SetPlayerLocal(); 
+            localElement.SetPlayerLocal();
+            return; 
         }
     }
 
@@ -90,7 +86,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     /// </summary>
     public void ClearMenu()
     {
-        characterSelectionElements.ToList().Where(e => e != null).ToList().ForEach(e => e.DisconnectPlayer());
+        characterSelectionElements.ToList().ForEach(e => e.DisconnectPlayer()); 
     }
 
     /// <summary>
@@ -145,6 +141,18 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     public void UpdateMenuOnline(int _playerID, int _newIndex)
     {
         characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).FirstOrDefault().DisplayImageAtIndex(_newIndex); 
+    }
+
+    /// <summary>
+    /// Update the selection element relative to a player. 
+    /// Used online
+    /// </summary>
+    /// <param name="_player"></param>
+    /// <param name="_newIndex"></param>
+    public void UpdateMenuOnline(int _playerID, PlayerType _playerType)
+    {
+
+        characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).FirstOrDefault().DisplayImageOfType(_playerType);
     }
     #endregion
 

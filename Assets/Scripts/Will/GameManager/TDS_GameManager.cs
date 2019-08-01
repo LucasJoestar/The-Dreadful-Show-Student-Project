@@ -90,7 +90,14 @@ public static class TDS_GameManager
         get { return playerListReady; }
     }
     private static bool localIsReady = false;
-    public static bool LocalIsReady { get { return localIsReady; } set { localIsReady = value; } }
+    public static bool LocalIsReady
+    {
+        get { return localIsReady; }
+        set
+        {
+            localIsReady = value;
+        }
+    }
     #endregion
 
     #region Methods
