@@ -243,9 +243,19 @@ public class TDS_HitBox : MonoBehaviour
         // If already touched this collider, return
         if (TouchedObjects.Contains(other)) return;
 
+        foreach (Tag _tag in other.gameObject.GetTags())
+        {
+            Debug.Log("Tag => " + _tag.Name);
+        }
+
+        Debug.Log("Has ? => " + other.gameObject.HasTag(HittableTags.ObjectTags));
+
         // If the collider object should be hit, hit it
         // Check if object has tags
         if ((Owner && (other.gameObject == Owner.gameObject)) || !other.gameObject.HasTag(HittableTags.ObjectTags)) return;
+
+        Debug.Log("In");
+
         TDS_Damageable _target = other.GetComponent<TDS_Damageable>();
         if (!_target) return;
 

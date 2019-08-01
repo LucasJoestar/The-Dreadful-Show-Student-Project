@@ -142,7 +142,7 @@ public static class MultiTagsExtensions
     /// <returns>Returns true if the game object has the specified tag, false otherwise.</returns>
     public static bool HasTag(this GameObject _go, Tag _tag)
     {
-        return _go.GetTags().Contains(_tag);
+        return _go.GetTagNames().Contains(_tag.Name);
     }
 
     /// <summary>
@@ -153,7 +153,7 @@ public static class MultiTagsExtensions
     /// <returns>Returns true if the game object has at least one of the specified tags, false otherwise.</returns>
     public static bool HasTag(this GameObject _go, Tag[] _tags)
     {
-        return _go.GetTags().Intersect(_tags).Any();
+        return _go.GetTagNames().Intersect(_tags.Select(t => t.Name)).Any();
     }
 
     /// <summary>
@@ -164,7 +164,7 @@ public static class MultiTagsExtensions
     /// <returns>Returns true if the game object has all the specified tags, false if it lacks event one.</returns>
     public static bool HasTags(this GameObject _go, Tag[] _tags)
     {
-        return !_go.GetTags().Except(_tags).Any();
+        return !_go.GetTagNames().Except(_tags.Select(t => t.Name)).Any();
     }
 
 
