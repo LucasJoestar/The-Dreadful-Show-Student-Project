@@ -163,7 +163,7 @@ public class TDS_FireEater : TDS_Player
     private IEnumerator GetDrunkCorourine()
     {
         IsDrunk = true;
-        speedCoef = drunkSpeedCoef;
+        SpeedCoef *= drunkSpeedCoef;
         SetFireEaterAnim(FireEaterAnimState.Drunk);
 
         soberUpTimer = soberUpTime;
@@ -174,7 +174,7 @@ public class TDS_FireEater : TDS_Player
             soberUpTimer -= Time.deltaTime;
         }
 
-        speedCoef = 1;
+        SpeedCoef /= drunkSpeedCoef;
         IsDrunk = false;
         SetFireEaterAnim(FireEaterAnimState.Sober);
     }

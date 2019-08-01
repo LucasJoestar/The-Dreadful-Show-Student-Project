@@ -259,7 +259,7 @@ public class TDS_FatLady : TDS_Player
         if (!base.ActiveAttack(_attackIndex)) return false;
 
         // If angry, increase damages
-        if (isAngry) hitBox.BonusDamages += Mathf.CeilToInt((hitBox.BonusDamages / 2f) + (hitBox.CurrentAttack.GetDamages / 3f));
+        if (isAngry) hitBox.BonusDamages += Mathf.CeilToInt(hitBox.CurrentAttack.GetDamages / 3f);
         return true;
     }
 

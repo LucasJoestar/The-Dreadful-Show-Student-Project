@@ -308,8 +308,8 @@ MonoBehaviour:
   speedAccelerationTime: 0.5
   speedCoef: 1
   speedCurrent: 0
-  speedInitial: 2.5
-  speedMax: 4
+  speedInitial: 2.75
+  speedMax: 4.5
   throwBonusDamagesMax: 3
   throwBonusDamagesMin: 0
   throwAimingPoint: {x: 7.5, y: 0, z: 0}
@@ -339,6 +339,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a4763eb038697824fb311b61eac23395, type: 2}
   - {fileID: 11400000, guid: a8b367a4de4ce8449a9285286850dab5, type: 2}
   - {fileID: 11400000, guid: e31b34119bd248b479cbf6303ad66f21, type: 2}
+  CanFlip: 1
   isDodging: 0
   isGrounded: 1
   isJumping: 0
@@ -355,7 +356,7 @@ MonoBehaviour:
   WhatIsObstacle:
     serializedVersion: 2
     m_Bits: 24577
-  playerType: 0
+  playerType: 1
   beardFXTransformPhotonView: {fileID: 9149536132450758670}
   currentBeardState: 0
   beardGrowInterval: 5
@@ -690,7 +691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 7152534036635644258}
-  Owner: {fileID: 0}
+  Owner: {fileID: 7078812957687010776}
   BonusDamages: 0
   HittableTags:
     ObjectTags:
