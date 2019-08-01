@@ -108,13 +108,13 @@
 
                    if(_EnableSwapColor == 1)
                    {
-                       _FinalColor = (Green + Red + Blue + Yellow + Purple + Cyan + White);
+                       _FinalColor = _color + (Green + Red + Blue + Yellow + Purple + Cyan + White);
                    }
                    if(_EnableSwapColor == 0)
                    {
-                        _FinalColor = _BlinkColor;
+                        _FinalColor = _color + _BlinkColor;
                    }
-                   return _color + _FinalColor;
+                   return  _FinalColor;
 
                    //#ifdef ENABLE_SWAP
                         //return _color + (Green + Red + Blue + Yellow + Purple + Cyan + White);
