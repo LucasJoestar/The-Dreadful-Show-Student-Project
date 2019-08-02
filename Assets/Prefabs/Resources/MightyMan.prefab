@@ -103,13 +103,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53bdbd26138585f4aa59027c60557c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionOffset: {x: 0, y: 1.2, z: 0}
+  positionOffset: {x: 0, y: 1.5, z: 0}
   avoidanceForce: 45
   baseOffset: 0
   detectionRange: 3.5
-  height: 2.4
-  radius: 1
-  pathRadius: 0.25
+  height: 3
+  radius: 1.5
+  pathRadius: 0.5
   speed: 4
   steerForce: 80
   agentPriority: 1
@@ -235,32 +235,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 293923c44e42ff241b3a087df2e56fba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
+  animator: {fileID: 3915507819661743588}
   burnEffect: {fileID: 0}
-  collider: {fileID: 0}
-  sprite: {fileID: 0}
+  collider: {fileID: 4029280704881698364}
+  sprite: {fileID: 3888539910000889464}
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 0
-  healthMax: 1
-  hitBox: {fileID: 0}
+  healthCurrent: 150
+  healthMax: 150
+  hitBox: {fileID: 3932942832233620050}
   healthBar: {fileID: 0}
-  rigidbody: {fileID: 0}
+  rigidbody: {fileID: 4017457112927914602}
   throwable: {fileID: 0}
-  handsTransform: {fileID: 0}
-  shadowTransform: {fileID: 0}
+  handsTransform: {fileID: 3968375963929066008}
+  shadowTransform: {fileID: 3966716620350656818}
   isAttacking: 0
   IsDown: 0
-  isFacingRight: 1
+  isFacingRight: 0
   IsPacific: 0
   IsParalyzed: 0
   aimAngle: 45
   speedAccelerationTime: 0.5
   speedCoef: 1
   speedCurrent: 0
-  speedInitial: 1
-  speedMax: 2
+  speedInitial: 1.5
+  speedMax: 3
   throwBonusDamagesMax: 45
   throwBonusDamagesMin: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
@@ -271,8 +271,11 @@ MonoBehaviour:
   throwRange: 1
   wanderingRangeMin: 5
   wanderingRangeMax: 9
-  attacks: []
-  agent: {fileID: 0}
+  attacks:
+  - {fileID: 11400000, guid: 5f3dbe37b66fcb34fbc42804b3b5ef6d, type: 2}
+  - {fileID: 11400000, guid: 44b3e5964ca3f9b46aff3692e4f22295, type: 2}
+  - {fileID: 11400000, guid: 1a8ac49624f349c4bab1b7c621b15417, type: 2}
+  agent: {fileID: 3932927971346318886}
   hasEvolved: 0
 --- !u!1 &3964421302987546672
 GameObject:

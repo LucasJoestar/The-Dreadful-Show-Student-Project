@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TDS_MightyMan : TDS_Minion 
 {
-	/* TDS_MightyMan :
+    /* TDS_MightyMan :
 	 *
 	 *	#####################
 	 *	###### PURPOSE ######
@@ -33,39 +33,22 @@ public class TDS_MightyMan : TDS_Minion
 	 *	-----------------------------------
 	*/
 
-	#region Events
+    #region Events
 
-	#endregion
+    #endregion
 
-	#region Fields / Properties
+    #region Fields / Properties
 
-	#endregion
+    #endregion
 
-	#region Methods
+    #region Methods
 
-	#region Original Methods
+    #region Original Methods
 
-	#endregion
+    #endregion
 
-	#region Unity Methods
-	// Awake is called when the script instance is being loaded
-    private void Awake()
-    {
+    #region Unity Methods
+    #endregion
 
-    }
-
-	// Use this for initialization
-    private void Start()
-    {
-		
-    }
-	
-	// Update is called once per frame
-	private void Update()
-    {
-        
-	}
-	#endregion
-
-	#endregion
+    #endregion
 }
