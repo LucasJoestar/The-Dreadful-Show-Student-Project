@@ -39,8 +39,10 @@
         {
             "Queue" = "Transparent"
         } 
+        ZTest Always
         ZWrite Off  
         Blend SrcAlpha OneMinusSrcAlpha
+        
         LOD 100
 
         Pass
