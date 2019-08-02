@@ -96,6 +96,16 @@ public class TDS_Camera : MonoBehaviour
 
     #region Fields / Properties
     /// <summary>
+    /// Target aspect width used to calculate the camera rect.
+    /// </summary>
+    public const float CAMERA_ASPECT_WIDTH = 16f;
+
+    /// <summary>
+    /// Target aspect height used to calculate the camera rect.
+    /// </summary>
+    public const float CAMERA_ASPECT_HEIGHT = 9f;
+
+    /// <summary>
     /// Coefficient used in viewport calculs due to camera rotation ; work for a 17 angle.
     /// </summary>
     public const float VIEWPORT_CALCL_Y_COEF = 1.04569165f;
@@ -838,6 +848,33 @@ public class TDS_Camera : MonoBehaviour
     }
 
     /// <summary>
+    /// Calculates and set the Camera view aspect based on target ratio.
+    /// </summary>
+    public void SetCameraAspect()
+    {
+        // Set aspect ratio in 16/9
+        float _targetAspect = CAMERA_ASPECT_WIDTH / CAMERA_ASPECT_HEIGHT;
+        float _cameraAspect = (float)Screen.width / Screen.height;
+
+        float _heightRatio = _cameraAspect / _targetAspect;
+
+        // If ratio is correct, return
+        if (_heightRatio == 1) return;
+        
+        // If ratio is inferior to one (not large enough), set black bars on top & bottom of the screen
+        if (_heightRatio < 1)
+        {
+            camera.rect = new Rect(0, (1 - _heightRatio) / 2, 1, _heightRatio);
+        }
+        // If superior to one (too large), then set black bars on left & right of the screen
+        else
+        {
+            float _widthRatio = 1 / _heightRatio;
+            camera.rect = new Rect((1 - _widthRatio) / 2, 0, _widthRatio, 1);
+        }
+    }
+
+    /// <summary>
     /// Make a screen shake of a specified force.
     /// </summary>
     /// <param name="_force">Screen shake force.</param>
@@ -908,6 +945,9 @@ public class TDS_Camera : MonoBehaviour
     // Use this for initialization
     private void Start ()
     {
+        // Calculate aspect
+        SetCameraAspect();
+
         // Set default level bounds
         levelBounds = new TDS_Bounds(leftBound.transform.position, rightBound.transform.position, bottomBound.transform.position, topBound.transform.position);
         currentBounds = levelBounds;
