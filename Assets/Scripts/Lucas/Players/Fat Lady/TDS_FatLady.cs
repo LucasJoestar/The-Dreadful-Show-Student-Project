@@ -250,20 +250,6 @@ public class TDS_FatLady : TDS_Player
 
     #region Attacks
     /// <summary>
-    /// Makes the player active its planned attack.
-    /// </summary>
-    /// <param name="_attackIndex">Index of the attack to activate from <see cref="attacks"/>.</param>
-    /// <returns>Returns true if the attack as correctly been activated, false otherwise.</returns>
-    public override bool ActiveAttack(int _attackIndex)
-    {
-        if (!base.ActiveAttack(_attackIndex)) return false;
-
-        // If angry, increase damages
-        if (isAngry) hitBox.BonusDamages += Mathf.CeilToInt(hitBox.CurrentAttack.GetDamages / 3f);
-        return true;
-    }
-
-    /// <summary>
     /// Makes the player prepare an attack.
     /// By default, the player is supposed to just directly attack ; but for certain situations, the attack might not played directly : that's the goal of this method, to be override to rewrite a pre-attack behaviour.
     /// </summary>
@@ -274,17 +260,21 @@ public class TDS_FatLady : TDS_Player
         {
             SetFatLadyAnim(FatLadyAnimState.PrepareAttack);
             float _timer = 0;
+            float _littleLimit = isAngry ? .5f : 1f;
+            float _bigLimit = isAngry ? 1.5f : 2.5f;
+            float _littleShake = isAngry ? 350 : 500;
+            float _bigShake = isAngry ? .008f : .0075f;
 
             while (TDS_InputManager.GetButton(TDS_InputManager.HEAVY_ATTACK_BUTTON))
             {
                 // Charge attack while holding attack button down
-                if (_timer > 2.5f)
+                if (_timer > _bigLimit)
                 {
-                    TDS_Camera.Instance.StartScreenShake(.0075f);
+                    TDS_Camera.Instance.StartScreenShake(_bigShake);
                 }
-                else if (_timer > 1f)
+                else if (_timer > _littleLimit)
                 {
-                    TDS_Camera.Instance.StartScreenShake(_timer / 500);
+                    TDS_Camera.Instance.StartScreenShake(_timer / _littleShake);
                 }
 
                 yield return null;
@@ -335,14 +325,6 @@ public class TDS_FatLady : TDS_Player
 
         // If everything went good, return 0
         return 0;
-    }
-
-    /// <summary>
-    /// Checks inputs for this player's movements.
-    /// </summary>
-    public override void CheckMovementsInputs()
-    {
-        if (!isPreparingAttack) base.CheckMovementsInputs();
     }
     #endregion
 

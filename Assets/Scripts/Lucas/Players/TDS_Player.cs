@@ -1784,7 +1784,7 @@ public class TDS_Player : TDS_Character, IPunObservable
             if (((_horizontal > 0 && !isFacingRight) || (_horizontal < 0 && isFacingRight)) && CanFlip) Flip();
 
             // If attacking or parrying, do not move
-            if (isAttacking || isParrying) return;
+            if (isAttacking || isParrying || (isPreparingAttack && (playerType != PlayerType.FireEater))) return;
 
             // Set a minimum to Z movement if not null
             if ((_vertical != 0) && (Mathf.Abs(_vertical) < MOVEMENT_MINIMUM_VALUE)) _vertical = MOVEMENT_MINIMUM_VALUE * Mathf.Sign(_vertical);
@@ -1801,10 +1801,10 @@ public class TDS_Player : TDS_Character, IPunObservable
         }
 
         // If attacking or parrying, do not move
-        if (isAttacking || isParrying) return;
+        if (isAttacking || isPreparingAttack || isParrying) return;
 
         // When pressing the jump method, check if on ground ; If it's all good, then let's jump
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.JUMP_BUTTON) && IsGrounded && !isPreparingAttack)
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.JUMP_BUTTON) && IsGrounded)
         {
             StartJump();
         }

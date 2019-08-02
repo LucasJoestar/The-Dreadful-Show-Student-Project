@@ -308,8 +308,6 @@ public class TDS_InputManager : MonoBehaviour
         }
 
         inputs = Resources.Load<TDS_InputSO>(INPUT_ASSET_PATH);
-
-        // UnityEngineInternal.Input.NativeInputSystem.onBeforeUpdate ??
     }
 
     // Update is called every frame, if the MonoBehaviour is enabled

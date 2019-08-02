@@ -134,7 +134,7 @@ public class TDS_EventsSystem : PunBehaviour
         else
         {
             isActivated = false;
-            if (doDesObjectOnFinish) gameObject.SetActive(false);
+            if (doDesObjectOnFinish) enabled = false;
         }
 
         yield break;
@@ -179,7 +179,7 @@ public class TDS_EventsSystem : PunBehaviour
 
         isActivated = false;
 
-        if (doDesObjectOnFinish) gameObject.SetActive(false);
+        if (doDesObjectOnFinish) enabled = false;
     }
     #endregion
 
