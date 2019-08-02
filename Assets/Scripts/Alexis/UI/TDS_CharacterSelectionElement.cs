@@ -42,6 +42,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public PhotonPlayer PhotonPlayer { get { return photonPlayer; } }
 
     [SerializeField] private TMP_Text playerName = null;
+    [SerializeField] private TMP_InputField playerNameInputField = null; 
 
     [SerializeField] private TDS_CharacterSelectionImage[] characterSelectionImages = new TDS_CharacterSelectionImage[] { };
     public TDS_CharacterSelectionImage[] CharacterSelectionImages
@@ -49,11 +50,14 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         get { return characterSelectionImages;  }
     }
 
-    [SerializeField] private Image lockingFeedback = null;
     [SerializeField] private Toggle readyToggle = null;
+    public Toggle ReadyToggle { get { return readyToggle; } }
 
     [SerializeField] private Button leftArrowButton = null;
     [SerializeField] private Button rightArrowButton = null;
+
+    [SerializeField] private Image localPelletImage = null;
+    [SerializeField] private Image ownerCrownImage = null; 
 
     private int currentIndex = 0;
     private bool isLocked = false; 
@@ -65,7 +69,9 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         }
         set
         {
-            isLocked = value; 
+            isLocked = value;
+            readyToggle.animator.SetBool("IsReady", value);
+            readyToggle.animator.SetTrigger("ReadyChanged"); 
         }
     }
 
@@ -86,6 +92,8 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     {
         photonPlayer = _player;
         if (playerName) playerName.text = _player.NickName;
+        if (playerNameInputField) playerNameInputField.text = _player.NickName; 
+        if (_player.IsMasterClient && ownerCrownImage) ownerCrownImage.gameObject.SetActive(true);
         gameObject.SetActive(true); 
     }
 
@@ -148,7 +156,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void DisplayImageAtIndex(int _index)
     {
         if (photonPlayer == null) return;
-        if (!characterSelectionImages[_index].CanBeSelected) return;
+        if (_index >= characterSelectionImages.Length || !characterSelectionImages[_index].CanBeSelected) return;
         CurrentSelection.CharacterImage.gameObject.SetActive(false);
         currentIndex = _index;
         CurrentSelection.CharacterImage.gameObject.SetActive(true);
@@ -163,6 +171,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         if (photonPlayer == null) return;
         CurrentSelection.CharacterImage.gameObject.SetActive(false);
         TDS_CharacterSelectionImage _image = characterSelectionImages.Where(i => i.CharacterType == _playerType).FirstOrDefault();
+        if (_image == null) return;
         currentIndex = characterSelectionImages.ToList().IndexOf(_image);
         CurrentSelection.CharacterImage.gameObject.SetActive(true);
     }
@@ -174,11 +183,10 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void LockElement(bool _isPlayerReady)
     {
         // SET THE TOGGLE
-        //if(lockingFeedback) lockingFeedback.gameObject.SetActive(_playerIsReady);
-        if (photonPlayer != null && PhotonNetwork.player.ID != photonPlayer.ID && isLocked != _isPlayerReady)
+        if (photonPlayer != null && PhotonNetwork.player.ID != photonPlayer.ID)
         {
-            TriggerToggle(); 
-            isLocked = _isPlayerReady; 
+            readyToggle.animator.SetTrigger(readyToggle.animationTriggers.pressedTrigger); 
+            IsLocked = _isPlayerReady; 
         }
     }
 
@@ -187,11 +195,20 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// </summary>
     public void SetPlayerLocal()
     {
-        leftArrowButton.interactable = true;
-        rightArrowButton.interactable = true;
-
-        leftArrowButton.onClick.AddListener(DisplayPreviousImage);
-        rightArrowButton.onClick.AddListener(DisplayNextImage);
+        if (localPelletImage) localPelletImage.gameObject.SetActive(true);
+        if (playerNameInputField) playerNameInputField.interactable = true; 
+        if (leftArrowButton)
+        {
+            leftArrowButton.interactable = true;
+            leftArrowButton.onClick.AddListener(DisplayPreviousImage);
+            leftArrowButton.gameObject.SetActive(true); 
+        }
+        if(rightArrowButton)
+        {
+            rightArrowButton.interactable = true;
+            rightArrowButton.onClick.AddListener(DisplayNextImage);
+            rightArrowButton.gameObject.SetActive(true); 
+        }      
 
         Selectable _launchButton = TDS_UIManager.Instance.LaunchGameButton;
         if(_launchButton != null)
@@ -226,14 +243,25 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     {
         readyToggle.onValueChanged.RemoveAllListeners();
 
-        leftArrowButton.onClick.RemoveListener(DisplayPreviousImage); 
-        rightArrowButton.onClick.RemoveListener(DisplayNextImage);
+        if (localPelletImage) localPelletImage.gameObject.SetActive(false);
+        if (playerNameInputField) playerNameInputField.interactable = false;
 
-        leftArrowButton.interactable = false;
-        rightArrowButton.interactable = false;
+        if (leftArrowButton)
+        {
+            leftArrowButton.interactable = false;
+            leftArrowButton.onClick.RemoveAllListeners();
+            leftArrowButton.gameObject.SetActive(false);
+        }
+        if (rightArrowButton)
+        {
+            rightArrowButton.interactable = false;
+            rightArrowButton.onClick.RemoveAllListeners();
+            rightArrowButton.gameObject.SetActive(false);
+        }
 
         if (isLocked)
         {
+            IsLocked = false; 
             TriggerToggle();
             readyToggle.isOn = false;
         }
@@ -258,6 +286,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
             _nav.selectOnDown = null;
             _returnButton.navigation = _nav;
         }
+        TDS_GameManager.LocalIsReady = false; 
     }
 
     public void ChangeImage(int _axisValue)

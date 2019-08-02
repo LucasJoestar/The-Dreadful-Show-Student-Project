@@ -153,7 +153,7 @@ public class TDS_LevelManager : PunBehaviour
             yield return new WaitForSeconds(2f);
 
             //TDS_UIManager.Instance.ResetUIManager();
-            if (OtherPlayers.All(p => p.IsDead)) TDS_UIManager.Instance.StartCoroutine(TDS_UIManager.Instance.ResetUIManager());
+            if (OtherPlayers.All(p => p.IsDead)) TDS_UIManager.Instance.StartCoroutine(TDS_UIManager.Instance.ResetInGameUI());
             else if (OtherPlayers.Count > 0)
             {
                 TDS_Camera.Instance.Target = OtherPlayers.Where(p => !p.IsDead).First().transform;

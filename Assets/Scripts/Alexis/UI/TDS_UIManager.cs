@@ -179,6 +179,7 @@ public class TDS_UIManager : PunBehaviour
     #region CharacterSelectionMenus
     [Header("Character Selection Menu")]
     [SerializeField] private TDS_CharacterMenuSelection characterSelectionMenu;
+    public TDS_CharacterMenuSelection CharacterSelectionMenu { get { return characterSelectionMenu; }}
     #region TextField
     [SerializeField] private TMP_Text playerNameField;
     public TMP_Text PlayerNameField
@@ -347,7 +348,7 @@ public class TDS_UIManager : PunBehaviour
     /// <summary>
     /// Stop all coroutines and switch the UI State to InGameOver
     /// </summary>
-    public IEnumerator ResetUIManager()
+    public IEnumerator ResetInGameUI()
     {
         yield return new WaitForSeconds(1.5f);
         beardLadyLifeBar.ResetLifeBar(); 
@@ -439,9 +440,12 @@ public class TDS_UIManager : PunBehaviour
 
     private IEnumerator PreapreLeavingRoom()
     {
-        TDS_GameManager.LocalIsReady = false;
         characterSelectionMenu.LocalElement.ClearToggle();
-        yield return null;
+        while (characterSelectionMenu.LocalElement.ReadyToggle.animator.IsInTransition(0))
+        {
+            yield return null; 
+        }
+        yield return new WaitForSeconds(.5f);
 
         characterSelectionMenu.ClearMenu();
         TDS_GameManager.LocalPlayer = PlayerType.Unknown;
@@ -449,7 +453,6 @@ public class TDS_UIManager : PunBehaviour
 
         TDS_NetworkManager.Instance.LeaveRoom();
         ActivateMenu((int)UIState.InRoomSelection);
-        SetRoomInterractable(true);
     }
     #endregion
 
@@ -1119,6 +1122,11 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_newCharacterSelectionIndex">new Index</param>
     public void UpdateOnlineCharacterIndex(int _player, int _newCharacterSelectionIndex) => characterSelectionMenu.UpdateMenuOnline(_player, _newCharacterSelectionIndex);
 
+    public void UpdateOnlineCharacterType(int _player, int _newCharacterSelectionType)
+    {
+        characterSelectionMenu.UpdateMenuOnline(_player, (PlayerType)_newCharacterSelectionType);
+    }
+
     /// <summary>
     /// Display the number of players in the room and their names
     /// If the player is the master client, also display the launch button
@@ -1162,6 +1170,11 @@ public class TDS_UIManager : PunBehaviour
     }
     #endregion
 
+    private void SendInfoToNewPlayer(PhotonPlayer _newPlayer)
+    {
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", _newPlayer, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateOnlineCharacterType"), new object[] { PhotonNetwork.player.ID, (int)characterSelectionMenu.LocalElement.CurrentSelection.CharacterType });
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", _newPlayer, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetPlayerReady"), new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady });
+    }
     #endregion
 
     #region Unity Methods
@@ -1200,7 +1213,6 @@ public class TDS_UIManager : PunBehaviour
     {
         base.OnJoinedLobby();
         SetRoomInterractable(true);
-
     }
 
     public override void OnDisconnectedFromPhoton()
@@ -1217,6 +1229,7 @@ public class TDS_UIManager : PunBehaviour
     {
         base.OnPhotonPlayerConnected(newPlayer);
         characterSelectionMenu.AddNewPlayer(newPlayer);
+        SendInfoToNewPlayer(newPlayer);
     }
 
     public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
@@ -1230,6 +1243,7 @@ public class TDS_UIManager : PunBehaviour
         base.OnJoinedRoom();
         PhotonNetwork.playerList.ToList().ForEach(p => characterSelectionMenu.AddNewPlayer(p)); 
     }
+
     #endregion
 
     #endregion
