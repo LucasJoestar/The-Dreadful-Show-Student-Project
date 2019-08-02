@@ -230,7 +230,6 @@ public class TDS_Throwable : PunBehaviour
     public virtual bool PickUp(TDS_Character _owner)
     {
         if (isHeld) return false;
-
         isHeld = true;
         owner = _owner;
         owner.SetThrowable(this);

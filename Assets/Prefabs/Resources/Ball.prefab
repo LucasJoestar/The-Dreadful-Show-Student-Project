@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 4458971642939108426}
   - component: {fileID: 4458971642939108422}
   - component: {fileID: 3284423453206718969}
-  - component: {fileID: 3742428236298919779}
   m_Layer: 11
   m_Name: Ball
   m_TagString: Object
@@ -66,17 +65,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be188c0a9f7e8bd4da47cefd51a3eea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isHeld: 0
-  collider: {fileID: 0}
-  bouncePower: 0.5
-  shadow: {fileID: 7992838211602191232}
-  bonusDamage: 2
-  objectDurability: 1
-  weight: 1
-  rigidbody: {fileID: 4458971642939108420}
   owner: {fileID: 0}
-  hitBox: {fileID: 0}
   attack: {fileID: 11400000, guid: 5b783ed432e74f242be4c42874729f99, type: 2}
+  collider: {fileID: 0}
+  shadow: {fileID: 7992838211602191232}
+  hitBox: {fileID: 0}
+  rigidbody: {fileID: 4458971642939108420}
+  sprite: {fileID: 0}
+  isHeld: 0
+  bouncePower: 0.5
+  bonusDamage: 2
+  ObjectDurability: 2
+  weight: 1
 --- !u!212 &4458971642939108426
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -159,90 +159,12 @@ MonoBehaviour:
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
   ObservedComponents:
-  - {fileID: 3742428236298919779}
+  - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!114 &3742428236298919779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4458971642939108425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PositionModel:
-    SynchronizeEnabled: 1
-    TeleportEnabled: 1
-    TeleportIfDistanceGreaterThan: 3
-    InterpolateOption: 4
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 10
-    InterpolateMoveTowardsAcceleration: 2
-    InterpolateMoveTowardsDeceleration: 2
-    InterpolateSpeedCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: -1
-        value: 0
-        inSlope: 0
-        outSlope: Infinity
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 1
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 4
-        value: 4
-        inSlope: 1
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    ExtrapolateOption: 0
-    ExtrapolateSpeed: 1
-    ExtrapolateIncludingRoundTripTime: 1
-    ExtrapolateNumberOfStoredPositions: 1
-    DrawErrorGizmo: 1
-  m_RotationModel:
-    SynchronizeEnabled: 0
-    InterpolateOption: 1
-    InterpolateRotateTowardsSpeed: 180
-    InterpolateLerpSpeed: 5
-  m_ScaleModel:
-    SynchronizeEnabled: 0
-    InterpolateOption: 0
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 0
 --- !u!1 &4458971643463101267
 GameObject:
   m_ObjectHideFlags: 0
