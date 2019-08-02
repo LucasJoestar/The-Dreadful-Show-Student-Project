@@ -10,7 +10,7 @@
         [HideInInspector]_Yellow("Filter Color 4", Color) = (1.0,1.0,0,1.0) //Yellow
         [HideInInspector]_Purple("Filter Color 5", Color) = (1.0,0,1.0,1.0) //Purple
         [HideInInspector]_Cyan("Filter Color 6", Color) = (0,1.0,1.0,1.0) //Cyan
-        [HideInInspector]_White("Filter Color 7", Color) = (1.0,1.0,1.0,1.0) //Cyan
+        [PerRendererData]_Custom("Filter Color 7", Color) = (1.0,1.0,1.0,1.0) //Custom
 
         [PerRendererData]_EnableSwapColor("Enable swap",Float) = 1 //Act like boolean
 
@@ -28,8 +28,8 @@
         [PerRendererData]_LerpValue5("Purple to",Range(0,1)) = 0
         [PerRendererData]_ColorReplacement6("Cyan", Color) = (0,1.0,1.0,0) //Cyan
         [PerRendererData]_LerpValue6("Cyan to",Range(0,1)) = 0
-        [PerRendererData]_ColorReplacement7("White", Color) = (1.0,1.0,1.0,0) //White
-        [PerRendererData]_LerpValue7("White to",Range(0,1)) = 0
+        [PerRendererData]_ColorReplacement7("Custom", Color) = (1.0,1.0,1.0,0) //Custom
+        [PerRendererData]_LerpValue7("Custom to",Range(0,1)) = 0
         [HideInInspector]_FinalColor("Final",Color) = (0,0,0,0)
     }
 
@@ -59,7 +59,7 @@
             fixed4 _color;
 
             //MainColors
-             float4 _Red, _Green, _Blue, _Yellow, _Purple, _Cyan, _White, _BlinkColor, _FinalColor;
+             float4 _Red, _Green, _Blue, _Yellow, _Purple, _Cyan, _Custom, _BlinkColor, _FinalColor;
 
             //Colors Replacement
              float4 _ColorReplacement1, _ColorReplacement2, _ColorReplacement3, _ColorReplacement4, _ColorReplacement5, _ColorReplacement6, _ColorReplacement7;
@@ -106,11 +106,11 @@
                    float4 Yellow = lerp(_ColorReplacement4,transparent,smoothstep(0,_LerpValue4,dis(_Yellow)));
                    float4 Purple = lerp(_ColorReplacement5,transparent,smoothstep(0,_LerpValue5,dis(_Purple)));
                    float4 Cyan = lerp(_ColorReplacement6,transparent,smoothstep(0,_LerpValue6,dis(_Cyan)));
-                   float4 White = lerp(_ColorReplacement7,transparent,smoothstep(0,_LerpValue7,dis(_White)));                    
+                   float4 Custom = lerp(_ColorReplacement7,transparent,smoothstep(0,_LerpValue7,dis(_Custom)));                    
 
                    if(_EnableSwapColor == 1)
                    {
-                       _FinalColor = _color + (Green + Red + Blue + Yellow + Purple + Cyan + White);
+                       _FinalColor = _color + (Green + Red + Blue + Yellow + Purple + Cyan + Custom);
                    }
                    if(_EnableSwapColor == 0)
                    {
@@ -119,7 +119,7 @@
                    return  _FinalColor;
 
                    //#ifdef ENABLE_SWAP
-                        //return _color + (Green + Red + Blue + Yellow + Purple + Cyan + White);
+                        //return _color + (Green + Red + Blue + Yellow + Purple + Cyan + Custom);
                    //#else
                         //return _color + _BlinkColor;
                    //#endif

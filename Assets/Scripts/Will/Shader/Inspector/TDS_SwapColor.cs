@@ -38,11 +38,13 @@ public class TDS_SwapColor : MonoBehaviour
     Color replacementYellow = new Color(1f, 1f, 0, 0);
     [SerializeField, Range(0, 1)]
     float yellowTo = 0;
-    //W
+    //Custom
     [SerializeField, Space, Space, Space]
-    Color replacementWhite = new Color(1f, 1f, 1f, 0);
+    Color eyedropperCustom = new Color(1f, 1f, 1f, 0);
+    [SerializeField]
+    Color replacementCustom = new Color(1f, 1f, 1f, 0);
     [SerializeField, Range(0, 1)]
-    float whiteTo = 0;
+    float customTo = 0;
 
     [HideInInspector]
     public SpriteRenderer SpriteRenderer
@@ -110,9 +112,10 @@ public class TDS_SwapColor : MonoBehaviour
         //Y
         _mpb.SetColor("_ColorReplacement4", replacementYellow);
         _mpb.SetFloat("_LerpValue4", yellowTo);
-        //W
-        _mpb.SetColor("_ColorReplacement7", replacementWhite);
-        _mpb.SetFloat("_LerpValue7", whiteTo);
+        //Custom
+        _mpb.SetColor("_Custom", eyedropperCustom);
+        _mpb.SetColor("_ColorReplacement7", replacementCustom);
+        _mpb.SetFloat("_LerpValue7", customTo);
         SpriteRenderer.SetPropertyBlock(_mpb);
     }
     //void UpdateColor()
