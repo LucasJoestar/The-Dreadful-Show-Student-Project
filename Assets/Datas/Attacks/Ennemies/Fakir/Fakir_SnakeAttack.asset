@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f663be0ccd78c234188a9cf5a087f69f, type: 3}
   m_Name: Fakir_SnakeAttack
   m_EditorClassIdentifier: 
-  attackName: New Attack
+  attackName: Snake Attack
   Effect:
     EffectType: 0
     duration: 5
@@ -20,11 +20,11 @@ MonoBehaviour:
     percentageLowest: 100
     damagesMax: 5
     damagesMin: 5
-  damagesMax: 1
-  damagesMin: 1
+  damagesMax: 12
+  damagesMin: 18
   description: 
-  AnimationID: 0
+  AnimationID: 9
   cooldown: 3
-  maxRange: 0
+  maxRange: 1.4
   minRange: 0
-  probability: 0
+  probability: 12

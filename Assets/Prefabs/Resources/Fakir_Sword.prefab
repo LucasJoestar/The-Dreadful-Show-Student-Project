@@ -74,9 +74,10 @@ GameObject:
   - component: {fileID: 8462223660539153977}
   - component: {fileID: 8462223660539153958}
   - component: {fileID: 8462223660539153959}
-  m_Layer: 0
+  - component: {fileID: 8255562489602362338}
+  m_Layer: 11
   m_Name: Fakir_Sword
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126,21 +127,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be188c0a9f7e8bd4da47cefd51a3eea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canBeTakeByEnemies: 0
-  isHeld: 0
-  isHoldByPlayer: 0
-  collider: {fileID: 8462223660539153959}
-  bouncePower: 0.5
-  objectSpeed: 15
-  shadow: {fileID: 8462223661139009156}
-  bonusDamage: 0
-  durabilityToWithdraw: 1
-  objectDurability: 1
-  weight: 2
-  rigidbody: {fileID: 8462223660539153977}
   owner: {fileID: 0}
-  hitBox: {fileID: 0}
   attack: {fileID: 11400000, guid: 03477318084242345a0260b10c460d70, type: 2}
+  collider: {fileID: 8462223660539153959}
+  shadow: {fileID: 8462223661139009156}
+  hitBox: {fileID: 8462223660036227109}
+  rigidbody: {fileID: 8462223660539153977}
+  sprite: {fileID: 8462223661869008575}
+  isHeld: 0
+  bouncePower: 0.5
+  bonusDamage: 2
+  ObjectDurability: 2
+  weight: 1
 --- !u!65 &8462223660539153959
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -154,6 +152,32 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.8, y: 0.2, z: 1.45}
   m_Center: {x: 0.8, y: 0, z: 0}
+--- !u!114 &8255562489602362338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8462223660539153956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents: []
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &8462223661139009156
 GameObject:
   m_ObjectHideFlags: 0

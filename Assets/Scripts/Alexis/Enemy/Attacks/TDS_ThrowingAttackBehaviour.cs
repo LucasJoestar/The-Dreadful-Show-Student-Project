@@ -49,6 +49,7 @@ public class TDS_ThrowingAttackBehaviour : TDS_EnemyAttack
     {
         if (thrownObjectName == string.Empty) return;
         GameObject _thrownObject = PhotonNetwork.Instantiate(thrownObjectName, _caster.HandsTransform.position, _caster.transform.rotation, 0);
+        //Debug.LogError("Stop!");
         if (!_thrownObject) return; 
         if(_thrownObject.GetComponent<TDS_Throwable>())
         {
