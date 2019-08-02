@@ -105,7 +105,7 @@ public class TDS_SpinningAttackBehaviour : TDS_EnemyAttack
     /// </summary>
     private void StopSpinning()
     {
-        caster.SetAnimationState((int)EnemyAnimationState.StopSpinning);
+        caster.SetAnimationState((int)EnemyAnimationState.StopDashing);
         caster.IsInvulnerable = false;
     }
     #endregion

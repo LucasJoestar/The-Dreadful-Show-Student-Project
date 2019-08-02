@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [ExecuteInEditMode]
 public class TDS_SwapColor : MonoBehaviour
 {
-    [SerializeField, Space]
-    bool enableSwap = true;
+    #region Fields / Properties
+    [Space]
+    public bool EnableSwap = true;
     [SerializeField, Space, Space, Space]
     Color blinkColor = new Color(1f, 1f, 1f, 0);
     //R
@@ -62,44 +61,27 @@ public class TDS_SwapColor : MonoBehaviour
 
     Material preMat;
 
-    //static Material defaultMaterial = null;
+    static Material defaultMaterial = null;
 
-    //public static Material DefaultMaterial
-    //{
-    //    get
-    //    {
-    //        if (defaultMaterial == null)
-    //        {
-    //            defaultMaterial = Resources.Load<Material>("SwapColor");
-    //        }
-    //        return defaultMaterial;
-    //    }
-    //}
-
-    void OnEnable()
+    public static Material DefaultMaterial
     {
-        preMat = SpriteRenderer.sharedMaterial;
-        //SpriteRenderer.sharedMaterial = DefaultMaterial;
-        UpdateColor();
-    }
-
-    void OnDisable()
-    {
-        SpriteRenderer.sharedMaterial = preMat;
-    }
-
-    void OnValidate()
-    {
-        if (enabled)
+        get
         {
-            UpdateColor();
+            if (defaultMaterial == null)
+            {
+                defaultMaterial = Resources.Load<Material>("SwapColor");
+            }
+            return defaultMaterial;
         }
     }
+    #endregion
 
+    #region Methods
+    #region Original Methods 
     void UpdateColor()
     {
         float _valueBoolToFloat;
-        if (enableSwap)
+        if (EnableSwap)
         {
             _valueBoolToFloat = 1;
         }
@@ -118,7 +100,7 @@ public class TDS_SwapColor : MonoBehaviour
         _mpb.SetFloat("_LerpValue2", greenTo);
         //B
         _mpb.SetColor("_ColorReplacement3", replacementBlue);
-        _mpb.SetFloat("_LerpValue3", blueTo);        
+        _mpb.SetFloat("_LerpValue3", blueTo);
         //C
         _mpb.SetColor("_ColorReplacement6", replacementCyan);
         _mpb.SetFloat("_LerpValue6", cyanTo);
@@ -133,4 +115,66 @@ public class TDS_SwapColor : MonoBehaviour
         _mpb.SetFloat("_LerpValue7", whiteTo);
         SpriteRenderer.SetPropertyBlock(_mpb);
     }
+    //void UpdateColor()
+    //{
+    //    float _valueBoolToFloat;
+    //    if (EnableSwap)
+    //    {
+    //        _valueBoolToFloat = 1;
+    //    }
+    //    else _valueBoolToFloat = 0;
+
+    //    MaterialPropertyBlock _mpb = new MaterialPropertyBlock();
+    //    SpriteRenderer.GetPropertyBlock(_mpb);
+    //    _mpb.SetFloat("_EnableSwapColor", _valueBoolToFloat);
+    //    //
+    //    _mpb.SetColor("_BlinkColor", blinkColor);
+    //    //R
+    //    _mpb.SetColor("_ColorReplacement1", replacementRed);
+    //    _mpb.SetFloat("_LerpValue1", redTo);
+    //    //G
+    //    _mpb.SetColor("_ColorReplacement2", replacementGreen);
+    //    _mpb.SetFloat("_LerpValue2", greenTo);
+    //    //B
+    //    _mpb.SetColor("_ColorReplacement3", replacementBlue);
+    //    _mpb.SetFloat("_LerpValue3", blueTo);
+    //    //C
+    //    _mpb.SetColor("_ColorReplacement6", replacementCyan);
+    //    _mpb.SetFloat("_LerpValue6", cyanTo);
+    //    //M
+    //    _mpb.SetColor("_ColorReplacement5", replacementPurple);
+    //    _mpb.SetFloat("_LerpValue5", purpleTo);
+    //    //Y
+    //    _mpb.SetColor("_ColorReplacement4", replacementYellow);
+    //    _mpb.SetFloat("_LerpValue4", yellowTo);
+    //    //W
+    //    _mpb.SetColor("_ColorReplacement7", replacementWhite);
+    //    _mpb.SetFloat("_LerpValue7", whiteTo);
+    //    SpriteRenderer.SetPropertyBlock(_mpb);
+    //}
+
+    #endregion
+
+    #region Shader Methods
+    void OnEnable()
+    {
+        preMat = SpriteRenderer.sharedMaterial;
+        SpriteRenderer.sharedMaterial = DefaultMaterial;
+        UpdateColor();
+    }
+
+    void OnDisable()
+    {
+        SpriteRenderer.sharedMaterial = preMat;
+    }
+
+    void OnValidate()
+    {
+        if (enabled)
+        {
+            UpdateColor();
+        }
+    }
+    #endregion
+    #endregion
 }

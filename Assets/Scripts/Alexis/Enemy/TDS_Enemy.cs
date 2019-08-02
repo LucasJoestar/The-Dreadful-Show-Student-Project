@@ -1153,8 +1153,8 @@ public abstract class TDS_Enemy : TDS_Character
             case EnemyAnimationState.EndBringingTargetCloser:
                 animator.SetTrigger("EndBringingTargetCloser");
                 break;
-            case EnemyAnimationState.StopSpinning:
-                animator.SetTrigger("StopSpinning");
+            case EnemyAnimationState.StopDashing:
+                animator.SetTrigger("StopDashing");
                 break;
             case EnemyAnimationState.LightHit:
                 animator.SetTrigger("lightHitTrigger");

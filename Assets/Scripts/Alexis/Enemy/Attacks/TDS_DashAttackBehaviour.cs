@@ -26,16 +26,19 @@ public class TDS_DashAttackBehaviour : TDS_EnemyAttack
         Vector3 _endPosition = _originalPosition; 
         if(isDashingForward)
         {
-            _endPosition += (_caster.IsFacingRight ? _caster.transform.right : -_caster.transform.right) * dashingDistance; 
+            _endPosition += (_caster.IsFacingRight ? Vector3.right : -Vector3.right) * dashingDistance; 
         }
         else
         {
-            _endPosition -= (_caster.IsFacingRight ? _caster.transform.right : -_caster.transform.right) * dashingDistance;
+            _endPosition -= (_caster.IsFacingRight ? Vector3.right : -Vector3.right) * dashingDistance;
         }
-        while(_caster.IsAttacking)
+        _caster.IsInvulnerable = true; 
+        while(_caster.IsAttacking && Vector3.Distance(_caster.transform.position, _endPosition) > 0)
         {
             _caster.transform.position = Vector3.MoveTowards(_caster.transform.position, _endPosition, Time.deltaTime * dashingSpeed * 10); 
             yield return null; 
         }
+        _caster.IsInvulnerable = false;
+        _caster.SetAnimationState((int)EnemyAnimationState.StopDashing);
     }
 }
