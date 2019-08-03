@@ -75,7 +75,20 @@ public enum AttackEffectType
     None,
     Burn,
     PutOnTheGround,
-    BringCloser
+    BringCloser,
+    Knockback,
+    Project
+}
+
+/// <summary>
+/// All axis used by game controllers.
+/// </summary>
+public enum AxisType
+{
+    Horizontal,
+    Vertical,
+    HorizontalAim,
+    VerticalAim
 }
 
 /// <summary>
@@ -98,6 +111,29 @@ public enum BeardState
     Normal,
     Long,
     VeryVeryLongDude
+}
+
+/// <summary>
+/// All buttons used by game controllers.
+/// </summary>
+public enum ButtonType
+{
+    Confirm,
+    Cancel,
+    Up,
+    Down,
+    Left,
+    Right,
+    Jump,
+    LightAttack,
+    HeavyAttack,
+    Interact,
+    Dodge,
+    Parry,
+    Pause,
+    Aim,
+    Shoot,
+    Snack
 }
 
 /// <summary>
@@ -220,6 +256,17 @@ public enum FXType
 }
 
 /// <summary>
+/// All animation states used for the Juggler's aim target UI feedback.
+/// </summary>
+public enum JugglerAimTargetAnimState
+{
+    Disabled = -1,
+    Neutral,
+    UnderTarget,
+    Locked
+}
+
+/// <summary>
 /// All animation states shared by all players.
 /// </summary>
 public enum PlayerAnimState
@@ -290,7 +337,8 @@ public enum UIState
 {
     InMainMenu, 
     InRoomSelection,
-    InCharacterSelection,
+    InOnlineCharacterSelection,
+    InLocalCharacterSelection,
     InGame, 
     InPause, 
     InGameOver

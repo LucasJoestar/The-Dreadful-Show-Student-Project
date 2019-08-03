@@ -57,16 +57,14 @@ public class TDS_AxisToInput
     public AxisState LastState { get { return lastState; } }
     #endregion
 
-    #region Constructor
-    /// <summary>
-    /// Creates a new AxisToInput object with a specified axis name.
-    /// </summary>
-    /// <param name="_axisName">Name of the axis to use.</param>
-    public TDS_AxisToInput(string _axisName)
+    public TDS_AxisToInput()
     {
-        axisName = _axisName;
     }
-    #endregion
+
+    public TDS_AxisToInput(string _name)
+    {
+        axisName = _name;
+    }
 
     #region Methods
     /// <summary>

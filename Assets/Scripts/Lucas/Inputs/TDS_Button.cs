@@ -43,9 +43,17 @@ public class TDS_Button
     [SerializeField] private string name = "New Button";
 
     /// <summary>
-    /// Name of the button, used to reference it.
+    /// Name of the button.
     /// </summary>
     public string Name { get { return name; } }
+
+    /// <summary>Backing field for <see cref="Axis"/>.</summary>
+    [SerializeField] private TDS_AxisToInput axis = new TDS_AxisToInput();
+
+    /// <summary>
+    /// Axis transformed to input associated with this button.
+    /// </summary>
+    public TDS_AxisToInput Axis { get { return axis; } }
 
     /// <summary>Backing field for <see cref="Keys"/>.</summary>
     [SerializeField] private KeyCode[] keys = new KeyCode[] { };
@@ -56,14 +64,10 @@ public class TDS_Button
     public KeyCode[] Keys { get { return keys; } }
     #endregion
 
-    #region Constructor
-    /// <summary>
-    /// Creates a new button with a given name.
-    /// </summary>
-    /// <param name="_name">Name of the newly created button.</param>
+    public TDS_Button() { }
+
     public TDS_Button(string _name)
     {
         name = _name;
     }
-    #endregion
 }

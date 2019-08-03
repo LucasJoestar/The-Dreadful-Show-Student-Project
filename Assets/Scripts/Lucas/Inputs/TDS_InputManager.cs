@@ -100,6 +100,11 @@ public class TDS_InputManager : MonoBehaviour
     public const string HORIZONTAL_AXIS = "Horizontal";
 
     /// <summary>
+    /// Name of the second axis used horizontally.
+    /// </summary>
+    public const string HORIZONTAL_ALT_AXIS = "Horizontal Alt";
+
+    /// <summary>
     /// Name of the button used to interact with the environment.
     /// </summary>
     public const string INTERACT_BUTTON = "Interact";
@@ -118,16 +123,6 @@ public class TDS_InputManager : MonoBehaviour
     /// Name of the button used to parry.
     /// </summary>
     public const string PARRY_BUTTON = "Parry";
-
-    /// <summary>
-    /// Name of the joystick right stick X axis.
-    /// </summary>
-    public const string RIGHT_STICK_X_Axis = "Right Stick X";
-
-    /// <summary>
-    /// Name of the joystick right stick Y axis.
-    /// </summary>
-    public const string RIGHT_STICK_Y_AXIS = "Right Stick Y";
 
     /// <summary>
     /// Name of the button used to get a snack.
@@ -158,6 +153,11 @@ public class TDS_InputManager : MonoBehaviour
     /// Name of the axis used to move on the Z axis.
     /// </summary>
     public const string VERTICAL_AXIS = "Vertical";
+
+    /// <summary>
+    /// Name of the second axis used vertically.
+    /// </summary>
+    public const string VERTICAL_ALT_AXIS = "Vertical Alt";
     #endregion
 
     #region Singleton
@@ -184,7 +184,7 @@ public class TDS_InputManager : MonoBehaviour
 
         TDS_InputSO _inputAsset = ScriptableObject.CreateInstance<TDS_InputSO>();
 
-        _inputAsset.Axis = new TDS_AxisToInput[] { new TDS_AxisToInput(D_PAD_X_Axis), new TDS_AxisToInput(D_PAD_Y_Axis), new TDS_AxisToInput(RIGHT_STICK_X_Axis), new TDS_AxisToInput(RIGHT_STICK_Y_AXIS), new TDS_AxisToInput(HORIZONTAL_AXIS), new TDS_AxisToInput(VERTICAL_AXIS) };
+        _inputAsset.Axis = new TDS_AxisToInput[] { new TDS_AxisToInput(D_PAD_X_Axis), new TDS_AxisToInput(D_PAD_Y_Axis), new TDS_AxisToInput(HORIZONTAL_AXIS), new TDS_AxisToInput(VERTICAL_AXIS), new TDS_AxisToInput(HORIZONTAL_ALT_AXIS), new TDS_AxisToInput(VERTICAL_ALT_AXIS) };
 
         _inputAsset.Buttons = new TDS_Button[] { new TDS_Button(CATCH_BUTTON), new TDS_Button(DODGE_BUTTON), new TDS_Button(HEAVY_ATTACK_BUTTON), new TDS_Button(INTERACT_BUTTON), new TDS_Button(JUMP_BUTTON), new TDS_Button(LIGHT_ATTACK_BUTTON), new TDS_Button(PARRY_BUTTON), new TDS_Button(SUPER_ATTACK_BUTTON), new TDS_Button(THROW_BUTTON), new TDS_Button(USE_OBJECT_BUTTON) };
 

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class TDS_Juggler : TDS_Player
@@ -123,9 +122,9 @@ public class TDS_Juggler : TDS_Player
 
     #region Components & References
     /// <summary>
-    /// Currently locked enemy.
+    /// Current target enemy of the Juggler.
     /// </summary>
-    private TDS_Enemy lockedEnemy = null;
+    private TDS_Enemy targetEnemy = null;
 
     /// <summary>
     /// Dictionnary containing juggling throwables as keys with their anchor as value.
@@ -141,7 +140,11 @@ public class TDS_Juggler : TDS_Player
         set
         {
             // Stop coroutine if needed
-            if (throwableLerpCoroutine != null) StopCoroutine(throwableLerpCoroutine);
+            if (throwableLerpCoroutine != null)
+            {
+                StopCoroutine(throwableLerpCoroutine);
+                throwableLerpCoroutine = null;
+            }
 
             // Set the new one
             if (value != null)
@@ -304,6 +307,11 @@ public class TDS_Juggler : TDS_Player
     private Coroutine aimCoroutine = null;
 
     /// <summary>
+    /// Reference of the current coroutine of the lock behaviour.
+    /// </summary>
+    private Coroutine lockCoroutine = null;
+
+    /// <summary>
     /// Coroutine lerping throwable position to hands transform position.
     /// </summary>
     private Coroutine throwableLerpCoroutine = null;
@@ -381,13 +389,21 @@ public class TDS_Juggler : TDS_Player
         while (TDS_InputManager.GetButton(TDS_InputManager.THROW_BUTTON))
         {
             // Draws the preview of the projectile trajectory while holding the throw button
-            AimMethod();
+            if (lockCoroutine == null) AimMethod();
 
             yield return null;
 
-            if (TDS_InputManager.GetButtonDown(TDS_InputManager.PARRY_BUTTON))
+            if (TDS_InputManager.GetButtonUp(TDS_InputManager.PARRY_BUTTON))
             {
+                targetEnemy = null;
                 // Triggers the throw animation
+                if (lockCoroutine != null)
+                {
+                    StopCoroutine(lockCoroutine);
+                    lockCoroutine = null;
+                }
+                TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
+
                 IsPlayable = false;
                 SetAnimOnline(PlayerAnimState.Throw);
 
@@ -405,25 +421,12 @@ public class TDS_Juggler : TDS_Player
     /// </summary>
     protected void AimMethod()
     {
+        // Let the player aim the point he wants, 'cause the juggler can do that. Yep
         Vector2 _newTarget = aimTargetTransform.anchoredPosition;
 
-        // If aiming a locked enemy, keep target on it
-        if (lockedEnemy != null)
-        {
-            _newTarget = TDS_Camera.Instance.Camera.WorldToScreenPoint(lockedEnemy.Collider.bounds.center);
-
-            if (_newTarget != aimTargetTransform.anchoredPosition)
-            {
-                aimTargetTransform.anchoredPosition = _newTarget;
-            }
-
-            return;
-        }
-
-        // Let the player aim the point he wants, 'cause the juggler can do that. Yep
         // Aim with IJKL or the right joystick axis
-        float _xMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_X_Axis) * 30;
-        float _yMovement = Input.GetAxis(TDS_InputManager.RIGHT_STICK_Y_AXIS) * 30;
+        float _xMovement = Input.GetAxis(TDS_InputManager.HORIZONTAL_ALT_AXIS) * 30;
+        float _yMovement = Input.GetAxis(TDS_InputManager.VERTICAL_ALT_AXIS) * 30;
 
         // Clamp X target position in screen
         if (_xMovement != 0)
@@ -448,8 +451,31 @@ public class TDS_Juggler : TDS_Player
             else if (_newTarget.y < 0) _newTarget.y = 0;
         }
 
-        // Set tnew target if different
+        // Set new target if different
         if (_newTarget != aimTargetTransform.anchoredPosition) aimTargetTransform.anchoredPosition = _newTarget;
+
+        // Check if target is under enemy
+        Ray _ray = TDS_Camera.Instance.Camera.ScreenPointToRay(aimTargetTransform.anchoredPosition);
+        RaycastHit _hit = new RaycastHit();
+
+        if (Physics.Raycast(_ray, out _hit, 100, whatCanAim) && _hit.collider.gameObject.HasTag("Enemy"))
+        {
+            if (!targetEnemy) TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.UnderTarget);
+            TDS_Enemy _target = _hit.collider.GetComponent<TDS_Enemy>();
+
+            if (targetEnemy != _target) targetEnemy = _target;
+
+            // If pressing throw button, lock the enemy !
+            if (TDS_InputManager.GetButtonDown(TDS_InputManager.PARRY_BUTTON))
+            {
+                lockCoroutine = StartCoroutine(LockEnemy());
+            }
+        }
+        else if (targetEnemy)
+        {
+            targetEnemy = null;
+            TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
+        }
     }
 
     /// <summary>
@@ -551,7 +577,7 @@ public class TDS_Juggler : TDS_Player
 
         while (throwable)
         {
-            throwable.transform.position = Vector3.Lerp(throwable.transform.position, handsTransform.position, Time.deltaTime * 5);
+            throwable.transform.position = Vector3.Lerp(throwable.transform.position, handsTransform.position, Time.deltaTime * 7.5f);
 
             if (throwable.transform.position == handsTransform.position)
             {
@@ -562,6 +588,38 @@ public class TDS_Juggler : TDS_Player
         }
 
         yield break;
+    }
+
+    /// <summary>
+    /// Locks an enemy.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator LockEnemy()
+    {
+        // Wait a few before starting
+        yield return new WaitForSeconds(.1f);
+
+        // Set aim target & arrow positions
+        aimTargetTransform.anchoredPosition = TDS_Camera.Instance.Camera.WorldToScreenPoint(targetEnemy.Collider.bounds.center);
+        aimArrowTransform.anchoredPosition = (Vector2)TDS_Camera.Instance.Camera.WorldToScreenPoint(new Vector3(targetEnemy.Collider.bounds.center.x, targetEnemy.Collider.bounds.max.y + .1f, targetEnemy.Collider.bounds.center.z)) - aimTargetTransform.anchoredPosition;
+
+        // Set lock animation
+        TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Locked);
+
+        // Lock the target enemy !
+        while (targetEnemy && TDS_InputManager.GetButton(TDS_InputManager.PARRY_BUTTON))
+        {
+            Vector2 _newTarget = TDS_Camera.Instance.Camera.WorldToScreenPoint(targetEnemy.Collider.bounds.center);
+
+            if (_newTarget != aimTargetTransform.anchoredPosition)
+            {
+                aimTargetTransform.anchoredPosition = _newTarget;
+            }
+
+            yield return null;
+        }
+
+        lockCoroutine = null;
     }
 
     /// <summary>
@@ -637,9 +695,17 @@ public class TDS_Juggler : TDS_Player
         if (!isAiming && aimCoroutine == null) return false;
 
         if (isAiming) isAiming = false;
+
+        targetEnemy = null;
         if (aimCoroutine != null)
         {
             StopCoroutine(aimCoroutine);
+            aimCoroutine = null;
+        }
+        if (lockCoroutine != null)
+        {
+            StopCoroutine(lockCoroutine);
+            lockCoroutine = null;
         }
 
         // Desactivate aim target
@@ -702,7 +768,11 @@ public class TDS_Juggler : TDS_Player
         objectAnchors = _objectAnchors;
 
         // Stop coroutine if needed
-        if (throwableLerpCoroutine != null) StopCoroutine(throwableLerpCoroutine);
+        if (throwableLerpCoroutine != null)
+        {
+            StopCoroutine(throwableLerpCoroutine);
+            throwableLerpCoroutine = null;
+        }
 
         // Set the new throwable
         
@@ -1016,8 +1086,9 @@ public class TDS_Juggler : TDS_Player
             // Set events 
             SetEvents();
 
-            // Get aim target RectTransform
+            // Get aim target & arrow RectTransform
             aimTargetTransform = TDS_UIManager.Instance.JugglerAimTargetTransform;
+            aimArrowTransform = TDS_UIManager.Instance.JugglerAimArrowTransform;
         }
     }
 

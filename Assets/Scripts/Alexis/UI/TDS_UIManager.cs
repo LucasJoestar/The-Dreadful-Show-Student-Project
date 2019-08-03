@@ -152,9 +152,12 @@ public class TDS_UIManager : PunBehaviour
     #endregion
 
     #region Feedback
-    // Image for the aim target of the Juggler
+    // Animator of the Juggler's aim target, giving player feedback
     [Header("Feedback")]
-    [SerializeField] private Image jugglerAimTarget = null;
+    [SerializeField] private Animator jugglerAimTargetAnimator = null;
+
+    // GameObject for the aim target of the Juggler
+    [SerializeField] private RectTransform jugglerAimTarget = null;
 
     /// <summary>
     /// RectTransform of the Juggler aim target.
@@ -163,9 +166,26 @@ public class TDS_UIManager : PunBehaviour
     {
         get
         {
-            if (jugglerAimTarget) return jugglerAimTarget.rectTransform;
+            if (jugglerAimTarget) return jugglerAimTarget;
 
             Debug.Log("Missing Juggler Aim Target reference !");
+            return null;
+        }
+    }
+
+    // Image for the aim target of the Juggler
+    [SerializeField] private Image jugglerAimArrow = null;
+
+    /// <summary>
+    /// RectTransform of the Juggler aim arrow.
+    /// </summary>
+    public RectTransform JugglerAimArrowTransform
+    {
+        get
+        {
+            if (jugglerAimArrow) return jugglerAimArrow.rectTransform;
+
+            Debug.Log("Missing Juggler Aim Arrow reference !");
             return null;
         }
     }
@@ -194,14 +214,14 @@ public class TDS_UIManager : PunBehaviour
 
     #region Buttons
     [Header("Buttons")]
-    [SerializeField] private Button launchGameButton;
+    [SerializeField] private UnityEngine.UI.Button launchGameButton;
     public Button LaunchGameButton
     {
         get { return launchGameButton;  }
     }
-    [SerializeField] private Button buttonQuitPause;
-    [SerializeField] private Button buttonQuitGame;
-    [SerializeField] private Button buttonRestartGame; 
+    [SerializeField] private UnityEngine.UI.Button buttonQuitPause;
+    [SerializeField] private UnityEngine.UI.Button buttonQuitGame;
+    [SerializeField] private UnityEngine.UI.Button buttonRestartGame; 
     #endregion
 
     #region Animator
@@ -275,7 +295,7 @@ public class TDS_UIManager : PunBehaviour
             case UIState.InRoomSelection:
                 CancelAction = () => ActivateMenu(UIState.InMainMenu); ;
                 break;
-            case UIState.InCharacterSelection:
+            case UIState.InOnlineCharacterSelection:
                 CancelAction = CancelInCharacterSelection;
                 SubmitAction = SubmitInCharacterSelection;
                 HorizontalAxisAction = characterSelectionMenu.LocalElement.ChangeImage;
@@ -485,6 +505,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void ActivateJugglerAimTarget()
     {
+        SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
         jugglerAimTarget.gameObject.SetActive(true);
     }
 
@@ -529,7 +550,7 @@ public class TDS_UIManager : PunBehaviour
                     StopCoroutine(checkInputCoroutine);
                 checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InRoomSelection)); 
                 break;
-            case UIState.InCharacterSelection:
+            case UIState.InOnlineCharacterSelection:
                 mainMenuParent.SetActive(false);
                 roomSelectionMenuParent.SetActive(false);
                 characterSelectionMenuParent.SetActive(true);
@@ -539,7 +560,7 @@ public class TDS_UIManager : PunBehaviour
 
                 if (checkInputCoroutine != null)
                     StopCoroutine(checkInputCoroutine);
-                checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InCharacterSelection));
+                checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InOnlineCharacterSelection));
                 break;
             case UIState.InGame:
                 mainMenuParent.SetActive(false);
@@ -601,7 +622,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     private void CancelInCharacterSelection()
     {
-        if (uiState != UIState.InCharacterSelection) return;
+        if (uiState != UIState.InOnlineCharacterSelection) return;
         if(TDS_GameManager.LocalIsReady)
         {
             SelectCharacter();
@@ -666,6 +687,7 @@ public class TDS_UIManager : PunBehaviour
     public void DesctivateJugglerAimTarget()
     {
         jugglerAimTarget.gameObject.SetActive(false);
+        SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Disabled);
     }
 
     /// <summary>
@@ -941,6 +963,15 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Set animation state for the Juggler's aim target UI system.
+    /// </summary>
+    /// <param name="_state">New state of the aim target.</param>
+    public void SetJugglerAimTargetAnim(JugglerAimTargetAnimState _state)
+    {
+        jugglerAimTargetAnimator.SetInteger("State", (int)_state);
+    }
+
+    /// <summary>
     /// Set the game in pause menu
     /// If the player is alone, freeze the time
     /// </summary>
@@ -1054,7 +1085,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     private void SubmitInCharacterSelection()
     {
-        if (uiState != UIState.InCharacterSelection) return;
+        if (uiState != UIState.InOnlineCharacterSelection) return;
         if (!TDS_GameManager.LocalIsReady)
         {
             SelectCharacter();
@@ -1135,7 +1166,7 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_displayLaunchButton">LaunchButton</param>
     public void UpdatePlayerCount(int _playerCount, bool _displayLaunchButton, PhotonPlayer[] _players)
     {
-        if (uiState != UIState.InCharacterSelection) return;
+        if (uiState != UIState.InOnlineCharacterSelection) return;
         if (playerCountText) playerCountText.text = $"Players : {_playerCount}/4";
         if (launchGameButton) launchGameButton.gameObject.SetActive(_displayLaunchButton);
     }
@@ -1165,7 +1196,7 @@ public class TDS_UIManager : PunBehaviour
         {
             TDS_GameManager.PlayerListReady[_player] = _isReady;
         }
-        if (uiState == UIState.InCharacterSelection && launchGameButton) launchGameButton.interactable = !TDS_GameManager.PlayerListReady.Any(p => p.Value == false) && TDS_GameManager.LocalIsReady;
+        if (uiState == UIState.InOnlineCharacterSelection && launchGameButton) launchGameButton.interactable = !TDS_GameManager.PlayerListReady.Any(p => p.Value == false) && TDS_GameManager.LocalIsReady;
         if (uiState == UIState.InGameOver && buttonRestartGame) buttonRestartGame.interactable = !TDS_GameManager.PlayerListReady.Any(p => p.Value == false);
     }
     #endregion
@@ -1206,7 +1237,7 @@ public class TDS_UIManager : PunBehaviour
         }
         if (uiGameObject)
             uiGameObject.SetActive(true);
-        ActivateMenu(uiState); 
+        ActivateMenu(uiState);
     }
 
     public override void OnJoinedLobby()

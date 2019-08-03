@@ -24,6 +24,11 @@ public class TDS_InputSO : ScriptableObject
 
     #region Fields / Properties
     /// <summary>
+    /// All controllers available for the game.
+    /// </summary>
+    public TDS_Controller[] controllers = new TDS_Controller[] { };
+
+    /// <summary>
     /// All axis from this project.
     /// </summary>
     public TDS_AxisToInput[] Axis = new TDS_AxisToInput[] { };
