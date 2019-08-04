@@ -118,43 +118,46 @@ public class TDS_SwapColor : MonoBehaviour
         _mpb.SetFloat("_LerpValue7", customTo);
         SpriteRenderer.SetPropertyBlock(_mpb);
     }
-    //void UpdateColor()
-    //{
-    //    float _valueBoolToFloat;
-    //    if (EnableSwap)
-    //    {
-    //        _valueBoolToFloat = 1;
-    //    }
-    //    else _valueBoolToFloat = 0;
 
-    //    MaterialPropertyBlock _mpb = new MaterialPropertyBlock();
-    //    SpriteRenderer.GetPropertyBlock(_mpb);
-    //    _mpb.SetFloat("_EnableSwapColor", _valueBoolToFloat);
-    //    //
-    //    _mpb.SetColor("_BlinkColor", blinkColor);
-    //    //R
-    //    _mpb.SetColor("_ColorReplacement1", replacementRed);
-    //    _mpb.SetFloat("_LerpValue1", redTo);
-    //    //G
-    //    _mpb.SetColor("_ColorReplacement2", replacementGreen);
-    //    _mpb.SetFloat("_LerpValue2", greenTo);
-    //    //B
-    //    _mpb.SetColor("_ColorReplacement3", replacementBlue);
-    //    _mpb.SetFloat("_LerpValue3", blueTo);
-    //    //C
-    //    _mpb.SetColor("_ColorReplacement6", replacementCyan);
-    //    _mpb.SetFloat("_LerpValue6", cyanTo);
-    //    //M
-    //    _mpb.SetColor("_ColorReplacement5", replacementPurple);
-    //    _mpb.SetFloat("_LerpValue5", purpleTo);
-    //    //Y
-    //    _mpb.SetColor("_ColorReplacement4", replacementYellow);
-    //    _mpb.SetFloat("_LerpValue4", yellowTo);
-    //    //W
-    //    _mpb.SetColor("_ColorReplacement7", replacementWhite);
-    //    _mpb.SetFloat("_LerpValue7", whiteTo);
-    //    SpriteRenderer.SetPropertyBlock(_mpb);
-    //}
+    void UpdateColor(Color _replacementRed, float _redTo,
+                     Color _replacementGreen, float greenTo,
+                     Color _replacementBlue, float blueTo)
+    {
+        float _valueBoolToFloat;
+        if (EnableSwap)
+        {
+            _valueBoolToFloat = 1;
+        }
+        else _valueBoolToFloat = 0;
+
+        MaterialPropertyBlock _mpb = new MaterialPropertyBlock();
+        SpriteRenderer.GetPropertyBlock(_mpb);
+        _mpb.SetFloat("_EnableSwapColor", _valueBoolToFloat);
+        //
+        _mpb.SetColor("_BlinkColor", blinkColor);
+        //R
+        _mpb.SetColor("_ColorReplacement1", replacementRed);
+        _mpb.SetFloat("_LerpValue1", redTo);
+        //G
+        _mpb.SetColor("_ColorReplacement2", replacementGreen);
+        _mpb.SetFloat("_LerpValue2", greenTo);
+        //B
+        _mpb.SetColor("_ColorReplacement3", replacementBlue);
+        _mpb.SetFloat("_LerpValue3", blueTo);
+        //C
+        _mpb.SetColor("_ColorReplacement6", replacementCyan);
+        _mpb.SetFloat("_LerpValue6", cyanTo);
+        //M
+        _mpb.SetColor("_ColorReplacement5", replacementPurple);
+        _mpb.SetFloat("_LerpValue5", purpleTo);
+        //Y
+        _mpb.SetColor("_ColorReplacement4", replacementYellow);
+        _mpb.SetFloat("_LerpValue4", yellowTo);
+        //W
+        _mpb.SetColor("_ColorReplacement7", replacementCustom);
+        _mpb.SetFloat("_LerpValue7", customTo);
+        SpriteRenderer.SetPropertyBlock(_mpb);
+    }
 
     #endregion
 
