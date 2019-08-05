@@ -8,7 +8,6 @@ using Photon;
 using TMPro;
 
 #pragma warning disable 0649
-
 public class TDS_UIManager : PunBehaviour 
 {
     /* TDS_UIManager :
@@ -152,8 +151,11 @@ public class TDS_UIManager : PunBehaviour
     #endregion
 
     #region Feedback
-    // Animator of the Juggler's aim target, giving player feedback
+    // Animator used to display cutscene black bars.
     [Header("Feedback")]
+    [SerializeField] private Animator cutsceneBlackBarsAnimator = null;
+
+    // Animator of the Juggler's aim target, giving player feedback
     [SerializeField] private Animator jugglerAimTargetAnimator = null;
 
     // GameObject for the aim target of the Juggler
@@ -295,7 +297,7 @@ public class TDS_UIManager : PunBehaviour
             case UIState.InRoomSelection:
                 CancelAction = () => ActivateMenu(UIState.InMainMenu); ;
                 break;
-            case UIState.InOnlineCharacterSelection:
+            case UIState.InCharacterSelection:
                 CancelAction = CancelInCharacterSelection;
                 SubmitAction = SubmitInCharacterSelection;
                 HorizontalAxisAction = characterSelectionMenu.LocalElement.ChangeImage;
@@ -478,6 +480,14 @@ public class TDS_UIManager : PunBehaviour
 
     #region void
     /// <summary>
+    /// Activates the cutscene black bars, on top & bottom of screen.
+    /// </summary>
+    public void ActivateCutsceneBlackBars()
+    {
+        cutsceneBlackBarsAnimator.SetBool("IsActivated", true);
+    }
+
+    /// <summary>
     /// Fill the text of the dialog box as _text
     /// Set the parent of the dialogbox Active
     /// </summary>
@@ -550,7 +560,7 @@ public class TDS_UIManager : PunBehaviour
                     StopCoroutine(checkInputCoroutine);
                 checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InRoomSelection)); 
                 break;
-            case UIState.InOnlineCharacterSelection:
+            case UIState.InCharacterSelection:
                 mainMenuParent.SetActive(false);
                 roomSelectionMenuParent.SetActive(false);
                 characterSelectionMenuParent.SetActive(true);
@@ -560,7 +570,7 @@ public class TDS_UIManager : PunBehaviour
 
                 if (checkInputCoroutine != null)
                     StopCoroutine(checkInputCoroutine);
-                checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InOnlineCharacterSelection));
+                checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InCharacterSelection));
                 break;
             case UIState.InGame:
                 mainMenuParent.SetActive(false);
@@ -622,7 +632,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     private void CancelInCharacterSelection()
     {
-        if (uiState != UIState.InOnlineCharacterSelection) return;
+        if (uiState != UIState.InCharacterSelection) return;
         if(TDS_GameManager.LocalIsReady)
         {
             SelectCharacter();
@@ -661,6 +671,14 @@ public class TDS_UIManager : PunBehaviour
             default:
                 break;
         }
+    }
+
+    /// <summary>
+    /// Desactivates the cutscene black bars, on top & bottom of screen.
+    /// </summary>
+    public void DesactivateCutsceneBlackBars()
+    {
+        cutsceneBlackBarsAnimator.SetBool("IsActivated", false);
     }
 
     /// <summary>
@@ -1085,7 +1103,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     private void SubmitInCharacterSelection()
     {
-        if (uiState != UIState.InOnlineCharacterSelection) return;
+        if (uiState != UIState.InCharacterSelection) return;
         if (!TDS_GameManager.LocalIsReady)
         {
             SelectCharacter();
@@ -1166,7 +1184,7 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_displayLaunchButton">LaunchButton</param>
     public void UpdatePlayerCount(int _playerCount, bool _displayLaunchButton, PhotonPlayer[] _players)
     {
-        if (uiState != UIState.InOnlineCharacterSelection) return;
+        if (uiState != UIState.InCharacterSelection) return;
         if (playerCountText) playerCountText.text = $"Players : {_playerCount}/4";
         if (launchGameButton) launchGameButton.gameObject.SetActive(_displayLaunchButton);
     }
@@ -1196,7 +1214,7 @@ public class TDS_UIManager : PunBehaviour
         {
             TDS_GameManager.PlayerListReady[_player] = _isReady;
         }
-        if (uiState == UIState.InOnlineCharacterSelection && launchGameButton) launchGameButton.interactable = !TDS_GameManager.PlayerListReady.Any(p => p.Value == false) && TDS_GameManager.LocalIsReady;
+        if (uiState == UIState.InCharacterSelection && launchGameButton) launchGameButton.interactable = !TDS_GameManager.PlayerListReady.Any(p => p.Value == false) && TDS_GameManager.LocalIsReady;
         if (uiState == UIState.InGameOver && buttonRestartGame) buttonRestartGame.interactable = !TDS_GameManager.PlayerListReady.Any(p => p.Value == false);
     }
     #endregion

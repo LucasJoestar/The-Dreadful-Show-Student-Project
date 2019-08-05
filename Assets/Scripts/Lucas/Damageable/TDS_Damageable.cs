@@ -100,6 +100,12 @@ public abstract class TDS_Damageable : PunBehaviour
     public event Action OnDie = null;
 
     /// <summary>
+    /// Die event.
+    /// Called when this object just die, with the object as parameter.
+    /// </summary>
+    public static event Action<GameObject> OnDieWithObject = null;
+
+    /// <summary>
     /// Heal event.
     /// Called when the object is healed, with the amount as parameter
     /// </summary>
@@ -205,7 +211,6 @@ public abstract class TDS_Damageable : PunBehaviour
             else
             {
                 Die();
-                OnDie?.Invoke();
             }
         }
     }
@@ -327,6 +332,10 @@ public abstract class TDS_Damageable : PunBehaviour
             if (bringingCloserCoroutine != null) StopBringingCloser();
             StopBurning();
         }
+
+        // Call events
+        OnDie?.Invoke();
+        OnDieWithObject?.Invoke(gameObject);
 
         // Change object layer to avoid problems
         layerBeforeDeath = gameObject.layer;

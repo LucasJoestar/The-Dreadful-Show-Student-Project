@@ -59,14 +59,9 @@ public class TDS_Checkpoint : PunBehaviour
 
     #region Events
     /// <summary>
-    /// Event called when activating any checkpoint.
+    /// Event called when a player pass a checkpoint, on that player machine only.
     /// </summary>
-    public static event Action OnCheckpointActivated = null;
-
-    /// <summary>
-    /// Called when making a player respawn, with that player photon ID as parameter.
-    /// </summary>
-    public static event Action<int> OnRespawnPlayer = null;
+    public static event Action OnPassCheckpoint = null;
     #endregion
 
     #region Fields / Properties
@@ -115,15 +110,16 @@ public class TDS_Checkpoint : PunBehaviour
     private void Activate()
     {
         IsActivated = true;
-        trigger.enabled = false;
-
         SetAnimState(CheckpointAnimState.Activated);
 
         // Resurrect dead players
         StartCoroutine(RespawnCoroutine());
-
-        OnCheckpointActivated?.Invoke();
     }
+
+    /// <summary>
+    /// Call the event OnPassCheckpoint ; this method is called on a player machine when this one pass a checkpoint.
+    /// </summary>
+    private void CallOnPassCheckpoint() => OnPassCheckpoint?.Invoke();
 
     /// <summary>
     /// Make all dead players respawn to this point.
@@ -143,14 +139,10 @@ public class TDS_Checkpoint : PunBehaviour
         {
             _player = _deadPlayers[_i];
 
-            OnRespawnPlayer?.Invoke(_player.PhotonID);
-
             // Make player disappear in smoke
             TDS_VFXManager.Instance.SpawnEffect(FXType.MagicAppear, new Vector3(_player.transform.position.x, _player.transform.position.y + .25f, _player.transform.position.z));
 
-            _player.gameObject.SetActive(false);
-            _player.ActivePlayer(false);
-            _player.HealthCurrent = _player.HealthMax;
+            _player.DisappearBeforeRespawn();
 
             yield return new WaitForSeconds(1);
 
@@ -159,10 +151,8 @@ public class TDS_Checkpoint : PunBehaviour
 
             if (!_player.IsFacingRight) _player.Flip();
             _player.transform.position = transform.position + spawnPosition + (Vector3.right * 1);
-            _player.gameObject.SetActive(true);
-            _player.StartDodge();
 
-            _player.OnStopDodgeOneShot += () => _player.ActivePlayer(true);
+            _player.RespawnPlayer();
 
             yield return new WaitForSeconds(.5f);
         }
@@ -239,10 +229,21 @@ public class TDS_Checkpoint : PunBehaviour
         // On trigger enter, heal the player and activate the checkpoint
         if (other.gameObject.HasTag("Player") && !healedPlayers.Contains(other.GetInstanceID()))
         {
-            other.GetComponent<TDS_Player>().Heal(999);
             healedPlayers.Add(other.GetInstanceID());
 
+            TDS_Player _player = other.GetComponent<TDS_Player>();
+            _player.Heal(999);
+
+            // Call the OnPassCheckpoint event on the player machine
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", _player.photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "CallOnPassCheckpoint"), new object[] { });
+
             if (!isActivated) Activate();
+
+            // If the checkpoint healed all players, just disable its box trigger
+            if (healedPlayers.Count == TDS_LevelManager.Instance.AllPlayers.Length)
+            {
+                trigger.enabled = false;
+            }
         }
     }
     #endregion

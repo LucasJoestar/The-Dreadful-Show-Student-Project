@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 2742738669462884067}
   m_Layer: 11
   m_Name: WhiteRabbit
-  m_TagString: Object
+  m_TagString: Object|Outline
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -138,8 +138,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 2742738669462884067}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 105
+  instantiationId: 105
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &2742738669462884067
@@ -230,6 +230,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3506606084320457882}
   - component: {fileID: 6968526544088790671}
+  - component: {fileID: 7790664494719115650}
   m_Layer: 11
   m_Name: Sprite
   m_TagString: Untagged
@@ -268,7 +269,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9e32ce224446c4746a4f714514e29c74, type: 2}
+  - {fileID: 2100000, guid: 01bd2de02961c154f9b9cf47e9437e1e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -299,6 +300,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7790664494719115650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174018509150757933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea2d75b4e01762a488981a2671146c0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableOutline: 0
+  color: {r: 0.09620863, g: 0.8867924, b: 0.18825577, a: 1}
+  outlineSize: 1.5
 --- !u!1 &2331840991759760418
 GameObject:
   m_ObjectHideFlags: 0

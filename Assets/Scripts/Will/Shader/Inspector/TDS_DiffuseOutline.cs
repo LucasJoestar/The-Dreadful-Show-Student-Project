@@ -48,6 +48,7 @@ public class TDS_DiffuseOutline : MonoBehaviour
 
     public void DisableOutline()
     {
+        enableOutline = false;
         MaterialPropertyBlock _mpb = new MaterialPropertyBlock();
         SpriteRenderer.GetPropertyBlock(_mpb);
         _mpb.SetFloat("_OutlineSize", disabledSize);
@@ -57,6 +58,7 @@ public class TDS_DiffuseOutline : MonoBehaviour
 
     public void EnableOutline()
     {
+        enableOutline = true;
         MaterialPropertyBlock _mpb = new MaterialPropertyBlock();
         SpriteRenderer.GetPropertyBlock(_mpb);
         _mpb.SetFloat("_OutlineSize", outlineSize);

@@ -271,15 +271,18 @@ public class TDS_Player : TDS_Character, IPunObservable
     public TDS_Summoner Summoner = null;
 
     /// <summary>
-    /// <see cref="TDS_Detector"/> used to detect when possible interactions with the environment are availables.
+    /// <see cref="TDS_PlayerInteractionBox"/> used to detect when possible interactions with the environment are availables.
     /// </summary>
-    [SerializeField] protected TDS_Detector interactionDetector = null;
+    [SerializeField] protected TDS_PlayerInteractionBox interactionBox = null;
 
     /// <summary>
     /// Virtual box used to detect if the player is grounded or not.
     /// </summary>
     [SerializeField] protected TDS_VirtualBox groundDetectionBox = new TDS_VirtualBox();
 
+    /// <summary>
+    /// Sprite holder, used to display informations relatives to the player sprite.
+    /// </summary>
     [SerializeField] protected TDS_PlayerSpriteHolder spriteHolder; 
     #endregion
 
@@ -622,7 +625,11 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (!base.RemoveThrowable()) return false;
 
         // Set animation
-        if (playerType != PlayerType.Juggler) SetAnim(PlayerAnimState.LostObject);
+        SetAnim(PlayerAnimState.LostObject);
+
+        // Activates the detection box
+        interactionBox.DisplayInteractionFeedback(true);
+
         return true;
     }
 
@@ -637,6 +644,10 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         // Set animation
         SetAnim(PlayerAnimState.HasObject);
+
+        // Desactivates the detection box
+        interactionBox.DisplayInteractionFeedback(false);
+
         return true;
     }
 
@@ -734,6 +745,9 @@ public class TDS_Player : TDS_Character, IPunObservable
             // Reset the combo when reaching its end
             BreakCombo();
         }
+
+        // Activates the detection box
+        interactionBox.DisplayInteractionFeedback(true);
     }
 
     /// <summary>
@@ -779,6 +793,9 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         CancelInvoke("BreakCombo");
 
+        // Desactivates the detection box
+        interactionBox.DisplayInteractionFeedback(false);
+
         SetBonusDamages(0);
         PreparingAttackCoroutine = StartCoroutine(PrepareAttack(_isLight));
     }
@@ -804,6 +821,10 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         StopCoroutine(preparingAttackCoroutine);
         PreparingAttackCoroutine = null;
+
+        // Activates the detection box
+        interactionBox.DisplayInteractionFeedback(true);
+
         return true;
     }
 
@@ -839,6 +860,9 @@ public class TDS_Player : TDS_Character, IPunObservable
         IsInvulnerable = true;
         isDodging = true;
 
+        // Desactivates the detection box
+        interactionBox.DisplayInteractionFeedback(false);
+
         OnStartDodging?.Invoke();
 
         // Adds an little force at the start of the dodge
@@ -871,6 +895,9 @@ public class TDS_Player : TDS_Character, IPunObservable
         IsInvulnerable = true;
         isParrying = true;
 
+        // Desactivates the detection box
+        interactionBox.DisplayInteractionFeedback(false);
+
         SetAnimOnline(PlayerAnimState.Parrying);
 
         OnStartParry?.Invoke();
@@ -885,6 +912,9 @@ public class TDS_Player : TDS_Character, IPunObservable
         SetAnimOnline(PlayerAnimState.NotParrying);
         isParrying = false;
         IsInvulnerable = _wasInvulnerable;
+
+        // Activates the detection box
+        interactionBox.DisplayInteractionFeedback(true);
 
         OnStopParry?.Invoke();
     }
@@ -910,6 +940,9 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Stop dodging
         IsInvulnerable = false;
         isDodging = false;
+
+        // Activates the detection box
+        interactionBox.DisplayInteractionFeedback(true);
 
         // Call events
         OnStopDodge?.Invoke();
@@ -1023,6 +1056,9 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         // Drop object if needed
         if (throwable) DropObject();
+
+        // Desactivates the detection box
+        interactionBox.DisplayInteractionFeedback(false);
 
         // Triggers associated animations
         SetAnimOnline(PlayerAnimState.Die);
@@ -1145,7 +1181,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         }
 
         // Get the nearest object in range ; if null, cannot interact, so return false
-        GameObject _nearestObject = interactionDetector.NearestObject;
+        GameObject _nearestObject = interactionBox.NearestObject;
 
         if (!_nearestObject) return false;
 
@@ -1385,7 +1421,15 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <summary>
     /// Freezes the player's movements and actions.
     /// </summary>
-    public void FreezePlayer() => IsPlayable = false;
+    public void FreezePlayer()
+    {
+        IsPlayable = false;
+        if (isMoving)
+        {
+            isMoving = false;
+            SetAnim(PlayerAnimState.Idle);
+        }
+    }
 
     /// <summary>
     /// Starts a jump.
@@ -1813,20 +1857,55 @@ public class TDS_Player : TDS_Character, IPunObservable
 
     #region Others
     /// <summary>
-    /// Activate or desactivate the player.
+    /// Makes the player disappear before respawning.
     /// </summary>
-    /// <param name="_doActive">Should it be activated or desactivated ?</param>
-    public void ActivePlayer(bool _doActive)
+    public void DisappearBeforeRespawn()
     {
         // Call this method for other clients
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "ActivePlayer"), new object[] { _doActive });
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "DisappearBeforeRespawn"), new object[] { });
         }
 
-        rigidbody.isKinematic = !_doActive;
-        collider.enabled = _doActive;
-        IsPlayable = _doActive;
+        if (photonView.isMine)
+        {
+            rigidbody.isKinematic = true;
+            collider.enabled = false;
+            IsPlayable = false;
+        }
+
+        sprite.enabled = false;
+    }
+
+    /// <summary>
+    /// Makes the player respawn.
+    /// </summary>
+    public void RespawnPlayer()
+    {
+        // Call this method for other clients
+        if (PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "RespawnPlayer"), new object[] { });
+        }
+
+        sprite.enabled = true;
+
+        if (photonView.isMine)
+        {
+            Heal(999);
+            StartDodge();
+            OnStopDodgeOneShot += SetPlayerPlayable;
+        }
+    }
+
+    /// <summary>
+    /// Set the player playable, after respawning.
+    /// </summary>
+    private void SetPlayerPlayable()
+    {
+        rigidbody.isKinematic = false;
+        collider.enabled = true;
+        IsPlayable = true;
     }
     #endregion
 
@@ -1866,10 +1945,10 @@ public class TDS_Player : TDS_Character, IPunObservable
         base.Awake();
 
         // Try to get components references if they are missing
-        if (!interactionDetector)
+        if (!interactionBox)
         {
-            interactionDetector = GetComponentInChildren<TDS_Detector>();
-            if (!interactionDetector) Debug.LogWarning("The Interaction Detector of \"" + name + "\" for script TDS_Player is missing !");
+            interactionBox = GetComponentInChildren<TDS_PlayerInteractionBox>();
+            if (!interactionBox) Debug.LogWarning("The Interaction Detector of \"" + name + "\" for script TDS_Player is missing !");
         }
         if(!spriteHolder)
         {

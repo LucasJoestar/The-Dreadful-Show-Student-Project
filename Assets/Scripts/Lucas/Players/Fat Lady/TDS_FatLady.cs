@@ -388,7 +388,7 @@ public class TDS_FatLady : TDS_Player
         OnHealthChanged += CheckHealthStatus;
 
         // Set food to maximum when hitting a checkpoint
-        TDS_Checkpoint.OnCheckpointActivated += RestaureSnack;
+        TDS_Checkpoint.OnPassCheckpoint += RestaureSnack;
     }
 
     // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
@@ -396,7 +396,7 @@ public class TDS_FatLady : TDS_Player
     {
         base.OnDestroy();
 
-        TDS_Checkpoint.OnCheckpointActivated -= RestaureSnack;
+        TDS_Checkpoint.OnPassCheckpoint -= RestaureSnack;
     }
 
     // Use this for initialization

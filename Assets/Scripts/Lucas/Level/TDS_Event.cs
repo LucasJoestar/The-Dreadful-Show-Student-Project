@@ -80,6 +80,11 @@ public class TDS_Event
     [SerializeField] private float cameraWaitTime = 1;
 
     /// <summary>
+    /// Integer associated with this event.
+    /// </summary>
+    [SerializeField] private int eventInt = 1;
+
+    /// <summary>
     /// Prefab to instantiate.
     /// </summary>
     [SerializeField] private GameObject prefab = null;
@@ -124,6 +129,20 @@ public class TDS_Event
     /// Stop waiting. Just stop it.
     /// </summary>
     public void StopWaiting() => IsWaiting = false;
+
+    /// <summary>
+    /// Checks if the object that died has the required tag to complete the event.
+    /// </summary>
+    /// <param name="_objectTags">Tags of the object that just died.</param>
+    private void CheckObjectDeath(GameObject _object)
+    {
+        if (_object.HasTag(eventString))
+        {
+            eventInt--;
+
+            if (eventInt == 0) StopWaiting();
+        }
+    }
 
     /// <summary>
     /// Triggers this event.
@@ -173,6 +192,12 @@ public class TDS_Event
                 }
                 break;
 
+            // Freeze local player
+            case CustomEventType.FreezePlayerForCutscene:
+                TDS_UIManager.Instance.ActivateCutsceneBlackBars();
+                TDS_LevelManager.Instance.LocalPlayer.FreezePlayer();
+                break;
+
             // Instantiate a prefab
             case CustomEventType.Instantiate:
                 GameObject _object = Object.Instantiate(prefab, eventTransform.position, eventTransform.rotation);
@@ -187,6 +212,12 @@ public class TDS_Event
             // Triggers a particular quote of the Narrator
             case CustomEventType.Narrator:
                 TDS_UIManager.Instance.ActivateNarratorBox(TDS_GameManager.GetDialog(eventString).Skip(1).ToArray());
+                break;
+
+            // Unfreeze local player
+            case CustomEventType.UnfreezePlayerFromCutscene:
+                TDS_UIManager.Instance.DesactivateCutsceneBlackBars();
+                TDS_LevelManager.Instance.LocalPlayer.UnfreezePlayer();
                 break;
 
             // Just invoke a Unity Event, that's it
@@ -246,6 +277,15 @@ public class TDS_Event
 
                     TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel"), new object[] { });
                 }
+                break;
+
+            // Wait that an object with a particular tag dies
+            case CustomEventType.WaitForObjectDeath:
+                TDS_Damageable.OnDieWithObject += CheckObjectDeath;
+
+                while (IsWaiting) yield return null;
+
+                TDS_Damageable.OnDieWithObject -= CheckObjectDeath;
                 break;
 
             // Nobody here but us chicken

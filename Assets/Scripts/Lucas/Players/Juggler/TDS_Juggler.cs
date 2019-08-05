@@ -650,6 +650,7 @@ public class TDS_Juggler : TDS_Player
         if (!throwable) return false;
 
         throwable = null;
+
         if (CurrentThrowableAmount > 0)
         {
             Throwable = Throwables[0];
@@ -657,7 +658,16 @@ public class TDS_Juggler : TDS_Player
             // Updates juggling informations
             UpdateJuggleParameters(false);
         }
-        if (CurrentThrowableAmount == 0) SetAnim(PlayerAnimState.LostObject);
+        if (CurrentThrowableAmount < MaxThrowableAmount)
+        {
+            // Activates the detection box
+            interactionBox.DisplayInteractionFeedback(true);
+
+            if (CurrentThrowableAmount == 0)
+            {
+                SetAnim(PlayerAnimState.LostObject);
+            }
+        }
 
         return true;
     }
@@ -681,6 +691,12 @@ public class TDS_Juggler : TDS_Player
 
             // Updates juggling informations
             UpdateJuggleParameters(true);
+
+            if (CurrentThrowableAmount == MaxThrowableAmount)
+            {
+                // Desactivates the detection box
+                interactionBox.DisplayInteractionFeedback(false);
+            }
         }
 
         return true;

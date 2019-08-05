@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using Photon;
 
 #pragma warning disable 0414
@@ -41,7 +42,7 @@ public class TDS_Throwable : PunBehaviour
     /// <summary>
     /// Accessor for this throwable attack effect type. Returns <see cref="AttackEffectType.None"/> of the object <see cref="attack"/> is null.
     /// </summary>
-    public AttackEffectType ThrowableAttackType
+    public AttackEffectType ThrowableAttackEffectType
     {
         get
         {
@@ -81,10 +82,16 @@ public class TDS_Throwable : PunBehaviour
     /// <summary>Public accessor for <see cref="sprite"/>.</summary>
     public SpriteRenderer Sprite { get { return sprite; } }
 
+
+    /// <summary>
+    /// Indicates if the throwable has already been held once.
+    /// </summary>
+    [Header("Settings")]
+    private bool hasBeenHeld = false;
+
     /// <summary>
     /// Indicates if the throwable is currently held by someone.
     /// </summary>
-    [Header("Settings")]
     [SerializeField] protected bool isHeld = false;
     public bool IsHeld { get { return isHeld; } }
 
@@ -110,6 +117,11 @@ public class TDS_Throwable : PunBehaviour
 
     /// <summary>Public accessor for <see cref="weight"/>.</summary>
     public int Weight { get { return weight; } }
+
+    /// <summary>
+    /// Unity event called the first time this throwable is grabbed.
+    /// </summary>
+    [SerializeField] private UnityEvent OnGrabbedFirstTime = new UnityEvent();
     #endregion
 
     #region Methods
@@ -230,6 +242,13 @@ public class TDS_Throwable : PunBehaviour
     public virtual bool PickUp(TDS_Character _owner)
     {
         if (isHeld) return false;
+
+        if (!hasBeenHeld)
+        {
+            hasBeenHeld = true;
+            OnGrabbedFirstTime.Invoke();
+        }
+
         isHeld = true;
         owner = _owner;
         owner.SetThrowable(this);

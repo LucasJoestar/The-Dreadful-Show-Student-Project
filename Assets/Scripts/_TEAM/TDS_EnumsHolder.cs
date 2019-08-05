@@ -158,12 +158,15 @@ public enum CustomEventType
     WaitForAction,
     WaitForEveryone,
     UnityEventLocal,
+    WaitForObjectDeath,
     
     // Online Events
     Narrator = 21,
     Instantiate,
     CameraMovement,
-    UnityEventOnline
+    UnityEventOnline,
+    FreezePlayerForCutscene,
+    UnfreezePlayerFromCutscene
 }
 
 /// <summary>
@@ -337,8 +340,7 @@ public enum UIState
 {
     InMainMenu, 
     InRoomSelection,
-    InOnlineCharacterSelection,
-    InLocalCharacterSelection,
+    InCharacterSelection,
     InGame, 
     InPause, 
     InGameOver

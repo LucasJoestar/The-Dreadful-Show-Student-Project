@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3339952328888906788}
   m_Layer: 11
   m_Name: _ThrowableOriginal_
-  m_TagString: Throwable
+  m_TagString: Outline|Throwable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104,12 +104,12 @@ MonoBehaviour:
   shadow: {fileID: 9102226676782451288}
   hitBox: {fileID: 3444907900535000355}
   rigidbody: {fileID: 3357969355024705391}
+  sprite: {fileID: 0}
   isHeld: 0
   bouncePower: 0.5
   bonusDamage: 1
   ObjectDurability: 2
   weight: 2
-  Anchor: {fileID: 0}
 --- !u!54 &3357969355024705391
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -122,10 +122,10 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 48
-  m_CollisionDetection: 1
+  m_CollisionDetection: 3
 --- !u!65 &3365279542923471985
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -152,8 +152,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableOutline: 0
-  color: {r: 0.11173906, g: 0.4356029, b: 0.8773585, a: 1}
-  outlineSize: 1
+  color: {r: 0.10980392, g: 0.8784314, b: 0.14348474, a: 1}
+  outlineSize: 2.5
 --- !u!114 &3339952328888906788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,7 +260,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4865402268584119117
 Transform:
   m_ObjectHideFlags: 0
