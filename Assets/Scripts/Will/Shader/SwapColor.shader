@@ -42,6 +42,7 @@
         ZTest Always
         ZWrite Off  
         Blend SrcAlpha OneMinusSrcAlpha
+        Cull Off
         
         LOD 100
 
