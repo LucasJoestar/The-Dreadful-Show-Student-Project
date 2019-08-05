@@ -513,6 +513,7 @@ public abstract class TDS_Enemy : TDS_Character
                                 //Get the closest throwable
                                 targetedThrowable = _colliders.Select(c => c.GetComponent<TDS_Throwable>()).First();
                                 //Set a new path to the throwable 
+                                Debug.Log("Find Object:"); 
                                 SetEnemyState(EnemyState.ComputingPath);
                                 yield break; 
                             }
@@ -530,10 +531,10 @@ public abstract class TDS_Enemy : TDS_Character
             {
                 yield return new WaitForSeconds(.1f);
                 SetEnemyState(EnemyState.ComputingPath);
-                //Debug.Log($"Distance => {Vector3.Distance(targetLastPosition, playerTarget.transform.position) > GetMaxRange()}\n" +
-                //    $"Too Many enemies => {Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) >= 1}\n" +
-                //    $"Out of camera bounds => {(TDS_Camera.Instance.CurrentBounds.XMax < transform.position.x && agent.Velocity.x > 0) || (TDS_Camera.Instance.CurrentBounds.XMin > transform.position.x && agent.Velocity.x < 0)}"); 
-                //Debug.Log("Recompute from Detection");
+                Debug.Log($"Distance => {Vector3.Distance(targetLastPosition, playerTarget.transform.position) > GetMaxRange()}\n" +
+                    $"Too Many enemies => {Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) >= 1}\n" +
+                    $"Out of camera bounds => {(TDS_Camera.Instance.CurrentBounds.XMax < transform.position.x && agent.Velocity.x > 0) || (TDS_Camera.Instance.CurrentBounds.XMin > transform.position.x && agent.Velocity.x < 0)}"); 
+                Debug.Log("Recompute from Detection");
                 yield break; 
             }
             // if any attack can be casted 
@@ -812,7 +813,7 @@ public abstract class TDS_Enemy : TDS_Character
     public override bool GrabObject(TDS_Throwable _throwable)
     {
         bool _grabobject = base.GrabObject(_throwable);
-        if(_grabobject && canThrow) SetAnimationState((int)EnemyAnimationState.GrabObject);
+        if(_grabobject) SetAnimationState((int)EnemyAnimationState.GrabObject);
         return _grabobject;
         // Does the agent has a different behaviour from the players? 
     }
@@ -984,7 +985,11 @@ public abstract class TDS_Enemy : TDS_Character
         }
 
         targetLastPosition = playerTarget.transform.position;
-        _returnedPosition.x = Mathf.Clamp(_returnedPosition.x, TDS_Camera.Instance.CurrentBounds.XMin, TDS_Camera.Instance.CurrentBounds.XMax);
+        if (_returnedPosition.x > TDS_Camera.Instance.CurrentBounds.XMax || _returnedPosition.x < TDS_Camera.Instance.CurrentBounds.XMin)
+        {
+            if (transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax) _returnedPosition.x = TDS_Camera.Instance.CurrentBounds.XMax - agent.Radius;
+            else _returnedPosition.x = TDS_Camera.Instance.CurrentBounds.XMin + agent.Radius;
+        }
         return _returnedPosition;
     }
 
@@ -1017,6 +1022,7 @@ public abstract class TDS_Enemy : TDS_Character
         }
         _offset.x *= _coeff;
         targetLastPosition = playerTarget.transform.position;
+        Debug.Log("Another truc"); 
         return playerTarget.transform.position + _offset;
     }
     #endregion
@@ -1093,6 +1099,7 @@ public abstract class TDS_Enemy : TDS_Character
             _position = transform.position;
             if (transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax) _position.x = TDS_Camera.Instance.CurrentBounds.XMax - agent.Radius; 
             else _position.x = TDS_Camera.Instance.CurrentBounds.XMin + agent.Radius;
+            Debug.Log("Clamp"); 
         }
         else if (targetedThrowable && canThrow)
         {
