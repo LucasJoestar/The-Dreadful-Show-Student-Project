@@ -1055,6 +1055,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// </summary>
     protected override void Die()
     {
+        Debug.Log("Die");
         base.Die();
 
         if (!photonView.isMine) return;
@@ -2043,6 +2044,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
     protected virtual void OnDestroy()
     {
+        Debug.Log("Destroyed");
         TDS_LevelManager.Instance?.RemoveOnlinePlayer(this);
     }
 
