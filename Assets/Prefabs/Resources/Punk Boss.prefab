@@ -13,22 +13,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnableSwap: 1
-  blinkColor: {r: 1, g: 1, b: 1, a: 0}
-  replacementRed: {r: 1, g: 0, b: 0, a: 0}
+  blinkColor: {r: 0.4056604, g: 0.112896055, b: 0.112896055, a: 0}
+  replacementRed: {r: 1, g: 0.057513747, b: 0, a: 0}
   redTo: 0
-  replacementGreen: {r: 0, g: 1, b: 0, a: 0}
-  greenTo: 0
-  replacementBlue: {r: 0, g: 0, b: 1, a: 0}
-  blueTo: 0
+  replacementGreen: {r: 1, g: 0, b: 0.07060623, a: 0}
+  greenTo: 0.762
+  replacementBlue: {r: 0, g: 0.023826122, b: 1, a: 0}
+  blueTo: 0.85
   replacementCyan: {r: 0, g: 1, b: 1, a: 0}
   cyanTo: 0
   replacementPurple: {r: 1, g: 0, b: 1, a: 0}
   purpleTo: 0
   replacementYellow: {r: 1, g: 1, b: 0, a: 0}
   yellowTo: 0
-  eyedropperCustom: {r: 0, g: 1, b: 0.052033424, a: 0}
-  replacementCustom: {r: 0.8980392, g: 0.19359522, b: 0, a: 0}
-  customTo: 0.857
+  eyedropperCustom: {r: 0.2392157, g: 0.2392157, b: 0.2392157, a: 1}
+  replacementCustom: {r: 0, g: 0.19427729, b: 1, a: 0}
+  customTo: 0
 --- !u!1001 &4821371786782402288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58,15 +58,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4055278686339258, guid: 07d30d07974b21944ad020e637081982, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4055278686339258, guid: 07d30d07974b21944ad020e637081982, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4055278686339258, guid: 07d30d07974b21944ad020e637081982, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4055278686339258, guid: 07d30d07974b21944ad020e637081982, type: 3}
       propertyPath: m_LocalRotation.w
@@ -151,6 +151,23 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d50d7801e2cc950419fab3ac9f287e74, type: 2}
+    - target: {fileID: 212969000241332684, guid: 07d30d07974b21944ad020e637081982,
+        type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332666222786238, guid: 07d30d07974b21944ad020e637081982, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332666222786238, guid: 07d30d07974b21944ad020e637081982, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332666222786238, guid: 07d30d07974b21944ad020e637081982, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07d30d07974b21944ad020e637081982, type: 3}
 --- !u!1 &4822892242383787822 stripped
