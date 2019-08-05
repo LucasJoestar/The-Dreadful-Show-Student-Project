@@ -166,7 +166,8 @@ public enum CustomEventType
     CameraMovement,
     UnityEventOnline,
     FreezePlayerForCutscene,
-    UnfreezePlayerFromCutscene
+    UnfreezePlayerFromCutscene,
+    MovePlayerAroundPoint
 }
 
 /// <summary>
