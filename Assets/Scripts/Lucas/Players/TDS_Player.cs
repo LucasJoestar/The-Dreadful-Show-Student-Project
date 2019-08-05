@@ -293,6 +293,11 @@ public class TDS_Player : TDS_Character, IPunObservable
     protected Coroutine dodgeCoroutine = null;
 
     /// <summary>
+    /// Reference of the current coroutine making the player going around a certain position.
+    /// </summary>
+    protected Coroutine goAroundCoroutine = null;
+
+    /// <summary>
     /// References the coroutine setting player invulnerability after being hit.
     /// </summary>
     protected Coroutine invulnerabilityCoroutine = null;
@@ -1427,8 +1432,53 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (isMoving)
         {
             isMoving = false;
-            SetAnim(PlayerAnimState.Idle);
+            SetAnimOnline(PlayerAnimState.Idle);
         }
+        if (isDodging) StopDodge();
+    }
+
+    /// <summary>
+    /// Makes the player go around a certain position.
+    /// </summary>
+    /// <param name="_position">Where to go.</param>
+    public void GoAround(Vector3 _position)
+    {
+        if (goAroundCoroutine != null) StopCoroutine(goAroundCoroutine);
+        goAroundCoroutine = StartCoroutine(GoAroundCoroutine(_position));
+    }
+
+    /// <summary>
+    /// Coroutine making the player going around a certain position.
+    /// </summary>
+    /// <param name="_position">Where to go.</param>
+    /// <returns></returns>
+    private IEnumerator GoAroundCoroutine(Vector3 _position)
+    {
+        bool _wasPlayable = IsPlayable;
+        IsPlayable = false;
+        speedCoef *= .25f;
+
+        if (Mathf.Sign(_position.x - transform.position.x) != isFacingRight.ToSign()) Flip();
+
+        // Moves around point while not in range enough
+        while (Mathf.Abs((transform.position - _position).magnitude) > 2.5f)
+        {
+            yield return null;
+            MoveInDirection(_position);
+        }
+
+        if (isMoving)
+        {
+            isMoving = false;
+            SetAnimOnline(PlayerAnimState.Idle);
+        }
+
+        if (!isFacingRight) Flip();
+
+        speedCoef /= .25f;
+        IsPlayable = _wasPlayable;
+        goAroundCoroutine = null;
+        yield break;
     }
 
     /// <summary>

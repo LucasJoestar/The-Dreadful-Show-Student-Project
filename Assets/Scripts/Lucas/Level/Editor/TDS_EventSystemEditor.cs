@@ -239,6 +239,10 @@ public class TDS_EventSystemEditor : Editor
                         TDS_EditorUtility.PropertyField("Instantiation transform reference", "Transform to use as reference for position & rotation for the transform of the instantiated object", _event.FindPropertyRelative("eventTransform"));
                         break;
 
+                    case CustomEventType.MovePlayerAroundPoint:
+                        TDS_EditorUtility.PropertyField("Position", "Where to move te player around", _event.FindPropertyRelative("eventTransform"));
+                        break;
+
                     case CustomEventType.Narrator:
                         TDS_EditorUtility.TextField("Text ID", "ID of the text to use for the Narrator", _event.FindPropertyRelative("eventString"));
                         break;

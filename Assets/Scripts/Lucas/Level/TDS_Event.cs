@@ -209,6 +209,11 @@ public class TDS_Event
                 PhotonNetwork.Instantiate(eventString, eventTransform.position, eventTransform.rotation, 0);
                 break;
 
+            // Moves the local player around a point
+            case CustomEventType.MovePlayerAroundPoint:
+                TDS_LevelManager.Instance.LocalPlayer.GoAround(eventTransform.position);
+                break;
+
             // Triggers a particular quote of the Narrator
             case CustomEventType.Narrator:
                 TDS_UIManager.Instance.ActivateNarratorBox(TDS_GameManager.GetDialog(eventString).Skip(1).ToArray());
