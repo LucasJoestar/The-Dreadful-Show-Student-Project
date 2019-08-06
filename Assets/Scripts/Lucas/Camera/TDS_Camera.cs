@@ -92,6 +92,11 @@ public class TDS_Camera : MonoBehaviour
     /// Event called when the camera moves on X with the movement value as parameter.
     /// </summary>
     public event Action<float> OnMoveX = null;
+
+    /// <summary>
+    /// Event called the Bound X minimum value is changed.
+    /// </summary>
+    public event Action OnXMinBoundChanged = null;
     #endregion
 
     #region Fields / Properties
@@ -148,6 +153,8 @@ public class TDS_Camera : MonoBehaviour
             leftBound.transform.position = value.XMinVector;
             rightBound.transform.position = value.XMaxVector;
             bottomBound.transform.position = value.ZMinVector;
+
+            OnXMinBoundChanged?.Invoke();
         }
     }
 
@@ -417,11 +424,11 @@ public class TDS_Camera : MonoBehaviour
         // Clamp position
         if ((_viewport = camera.WorldToViewportPoint(currentBounds.XMaxVector)).x < 1f)
         {
-            _destination.x -= camera.orthographicSize * ((float)Screen.width / Screen.height) * 2 * (1 - _viewport.x);
+            _destination.x -= camera.orthographicSize * (((float)Screen.width / Screen.height) / camera.rect.height) * 2 * (1 - _viewport.x);
         }
         else if ((_viewport = camera.WorldToViewportPoint(currentBounds.XMinVector)).x > 0f)
         {
-            _destination.x += camera.orthographicSize * ((float)Screen.width / Screen.height) * 2 * _viewport.x;
+            _destination.x += camera.orthographicSize * (((float)Screen.width / Screen.height) / camera.rect.height) * 2 * _viewport.x;
         }
 
         if ((_viewport = camera.WorldToViewportPoint(currentBounds.ZMinVector)).y > 0f)
@@ -490,11 +497,11 @@ public class TDS_Camera : MonoBehaviour
             {
                 if (_movement.x < 0)
                 {
-                    _newBound = _destination.x - (camera.orthographicSize * ((float)Screen.width / Screen.height));
+                    _newBound = _destination.x - (camera.orthographicSize * (((float)Screen.width / Screen.height) / camera.rect.height));
 
                     if (_newBound < currentBounds.XMin)
                     {
-                        _destination.x += camera.orthographicSize * ((float)Screen.width / Screen.height) * 2 * camera.WorldToViewportPoint(currentBounds.XMinVector).x;
+                        _destination.x += camera.orthographicSize * (((float)Screen.width / Screen.height) / camera.rect.height) * 2 * camera.WorldToViewportPoint(currentBounds.XMinVector).x;
 
                         // Cancel movement if needed
                         if ((_destination.x - transform.position.x) < .0001f) _destination.x = transform.position.x;
@@ -502,11 +509,11 @@ public class TDS_Camera : MonoBehaviour
                 }
                 else
                 {
-                    _newBound = _destination.x + (camera.orthographicSize * ((float)Screen.width / Screen.height));
+                    _newBound = _destination.x + (camera.orthographicSize * (((float)Screen.width / Screen.height) / camera.rect.height));
 
                     if (_newBound > currentBounds.XMax)
                     {
-                        _destination.x -= camera.orthographicSize * ((float)Screen.width / Screen.height) * 2 * (1 - camera.WorldToViewportPoint(currentBounds.XMaxVector).x);
+                        _destination.x -= camera.orthographicSize * (((float)Screen.width / Screen.height) / camera.rect.height) * 2 * (1 - camera.WorldToViewportPoint(currentBounds.XMaxVector).x);
 
                         // Cancel movement if needed
                         if ((transform.position.x - _destination.x) < .0001f) _destination.x = transform.position.x;
@@ -668,16 +675,17 @@ public class TDS_Camera : MonoBehaviour
         if ((_bounds.x > -999) && (_bounds.x != currentBounds.XMin))
         {
             leftBoundVector = new Vector3(_bounds.x, currentBounds.XMinVector.y, currentBounds.XMinVector.z);
+            OnXMinBoundChanged?.Invoke();
         }
-        if ((_bounds.y > -999) && (_bounds.y > currentBounds.XMax))
+        if ((_bounds.y > -999) && (_bounds.y != currentBounds.XMax))
         {
             rightBoundVector = new Vector3(_bounds.y, currentBounds.XMaxVector.y, currentBounds.XMaxVector.z);
         }
-        if ((_bounds.z > -999) && (_bounds.z > currentBounds.ZMin))
+        if ((_bounds.z > -999) && (_bounds.z != currentBounds.ZMin))
         {
             bottomBoundVector = new Vector3(currentBounds.ZMinVector.x, currentBounds.ZMinVector.y, _bounds.z);
         }
-        if ((_bounds.w > -999) && (_bounds.w > currentBounds.ZMax))
+        if ((_bounds.w > -999) && (_bounds.w != currentBounds.ZMax))
         {
             topBoundVector = new Vector3(currentBounds.ZMaxVector.x, currentBounds.ZMaxVector.y, _bounds.w);
         }
@@ -725,15 +733,19 @@ public class TDS_Camera : MonoBehaviour
                         leftBoundVector = _bounds.XMinVector;
                         _boundsMovement[0] = 0;
 
+                        OnXMinBoundChanged?.Invoke();
+
                         // Set X Min bound value to send online
                         onlineSendingBounds.x = currentBounds.XMin;
                     }
                     else
                     {
-                        _xMin = transform.position.x - (camera.orthographicSize * ((float)Screen.width / Screen.height));
+                        _xMin = transform.position.x - (camera.orthographicSize * (((float)Screen.width / Screen.height) / camera.rect.height));
                         if (_xMin != currentBounds.XMin)
                         {
                             leftBoundVector = new Vector3(_xMin, leftBound.transform.position.y, leftBound.transform.position.z);
+
+                            OnXMinBoundChanged?.Invoke();
 
                             // Set X Min bound value to send online
                             onlineSendingBounds.x = currentBounds.XMin;
@@ -761,7 +773,7 @@ public class TDS_Camera : MonoBehaviour
                     }
                     else
                     {
-                        _xMax = transform.position.x + (camera.orthographicSize * ((float)Screen.width / Screen.height));
+                        _xMax = transform.position.x + (camera.orthographicSize * (((float)Screen.width / Screen.height) / camera.rect.height));
                         if (_xMax != currentBounds.XMax)
                         {
                             rightBoundVector = new Vector3(_xMax, rightBound.transform.position.y, rightBound.transform.position.z);
@@ -775,7 +787,6 @@ public class TDS_Camera : MonoBehaviour
                 {
                     _boundsMovement[1] = 0;
                 }
-
             }
             // Bottom bound move
             if (_boundsMovement[2] != 0)

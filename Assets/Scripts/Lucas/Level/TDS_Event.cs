@@ -120,7 +120,7 @@ public class TDS_Event
     /// <summary>
     /// Check left bound position, and stop waiting if set as expected.
     /// </summary>
-    private void CheckBound(float _xMovement)
+    private void CheckBound()
     {
         if (TDS_Camera.Instance.CurrentBounds.XMin >= eventTransform.position.x) StopWaiting();
     }
@@ -269,18 +269,25 @@ public class TDS_Event
 
             // Wait that everyone is in the zone
             case CustomEventType.WaitForEveryone:
-                if ((TDS_LevelManager.Instance.OtherPlayers.Count > 0) && (TDS_Camera.Instance.CurrentBounds.XMin < eventTransform.position.x))
+                if (TDS_Camera.Instance.CurrentBounds.XMin < eventTransform.position.x)
                 {
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel"), new object[] { });
+                    TDS_Camera.Instance.OnXMinBoundChanged += CheckBound;
 
-                    TDS_Camera.Instance.OnMoveX += CheckBound;
+                    // Switch waiting players panel if playing with your folks
+                    if (TDS_LevelManager.Instance.OtherPlayers.Count > 0)
+                    {
+                        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel"), new object[] { });
 
-                    yield return new WaitForSeconds(.25f);
+                        yield return new WaitForSeconds(.25f);
+                    }
 
                     // Wait patiently
                     while (IsWaiting) yield return null;
 
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel"), new object[] { });
+                    if (TDS_LevelManager.Instance.OtherPlayers.Count > 0)
+                    {
+                        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel"), new object[] { });
+                    }
                 }
                 break;
 
