@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TDS_AnimOutTaunt : StateMachineBehaviour
 {
+    private TDS_Enemy owner = null;  
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
@@ -19,7 +20,9 @@ public class TDS_AnimOutTaunt : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.GetComponent<TDS_Enemy>().ActivateEnemyAfterTaunt();
+        if (!owner) owner = animator.GetComponent<TDS_Enemy>();
+        if (!owner) return; 
+        owner.ActivateEnemyAfterTaunt();
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

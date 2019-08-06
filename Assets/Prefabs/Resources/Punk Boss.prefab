@@ -141,6 +141,16 @@ PrefabInstance:
       propertyPath: healthMax
       value: 500
       objectReference: {fileID: 0}
+    - target: {fileID: 212969000241332684, guid: 07d30d07974b21944ad020e637081982,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d50d7801e2cc950419fab3ac9f287e74, type: 2}
+    - target: {fileID: 212969000241332684, guid: 07d30d07974b21944ad020e637081982,
+        type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4332666222786238, guid: 07d30d07974b21944ad020e637081982, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
@@ -157,16 +167,6 @@ PrefabInstance:
         type: 3}
       propertyPath: BonusDamages
       value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 212969000241332684, guid: 07d30d07974b21944ad020e637081982,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: d50d7801e2cc950419fab3ac9f287e74, type: 2}
-    - target: {fileID: 212969000241332684, guid: 07d30d07974b21944ad020e637081982,
-        type: 3}
-      propertyPath: m_FlipX
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07d30d07974b21944ad020e637081982, type: 3}
