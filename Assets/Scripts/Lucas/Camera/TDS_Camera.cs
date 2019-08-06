@@ -100,6 +100,8 @@ public class TDS_Camera : MonoBehaviour
     #endregion
 
     #region Fields / Properties
+
+    #region Constants
     /// <summary>
     /// Target aspect width used to calculate the camera rect.
     /// </summary>
@@ -119,8 +121,13 @@ public class TDS_Camera : MonoBehaviour
     /// Maximum value of the max bound on z on viewport to be allowed.
     /// </summary>
     public const float VIEWPORT_Y_MAX_BOUND_VALUE = .2f;
+    #endregion
 
+    #region Screen Ratio Size
+    
+    #endregion
 
+    #region Variables
     /// <summary>Backing field for <see cref="IsMoving"/></summary>
     [SerializeField] private bool isMoving = false;
 
@@ -399,6 +406,8 @@ public class TDS_Camera : MonoBehaviour
     /// This field contains bounds values when set, which then need to be send to other players if online (-999 value means bounds hasn't changed).
     /// </summary>
     private Vector4 onlineSendingBounds = new Vector4(-999, -999, -999, -999);
+    #endregion
+
     #endregion
 
     #region Singleton

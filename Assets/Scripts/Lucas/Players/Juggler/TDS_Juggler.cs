@@ -234,6 +234,22 @@ public class TDS_Juggler : TDS_Player
         }
     }
 
+    /// <summary>Backing field for <see cref="aimingSpeedCoef"/>.</summary>
+    [SerializeField] private float aimingSpeedCoef = .35f;
+
+    /// <summary>
+    /// Speed coefficient applied to the character while he's aiming.
+    /// </summary>
+    public float AimingSpeedCoef
+    {
+        get { return aimingSpeedCoef; }
+        set
+        {
+            if (value < 0) value = 0;
+            aimingSpeedCoef = value;
+        }
+    }
+
     /// <summary>
     /// Value to increase <see cref="juggleTransformIdealLocalPosition"/>.y by.
     /// Used to kick-out juggling throwables in the air.
@@ -425,8 +441,8 @@ public class TDS_Juggler : TDS_Player
         Vector2 _newTarget = aimTargetTransform.anchoredPosition;
 
         // Aim with IJKL or the right joystick axis
-        float _xMovement = Input.GetAxis(TDS_InputManager.HORIZONTAL_ALT_AXIS) * 30;
-        float _yMovement = Input.GetAxis(TDS_InputManager.VERTICAL_ALT_AXIS) * 30;
+        float _xMovement = Input.GetAxis(TDS_InputManager.HORIZONTAL_ALT_AXIS) * 50;
+        float _yMovement = Input.GetAxis(TDS_InputManager.VERTICAL_ALT_AXIS) * 50;
 
         // Clamp X target position in screen
         if (_xMovement != 0)
@@ -435,9 +451,15 @@ public class TDS_Juggler : TDS_Player
 
             if (_xMovement > 0)
             {
-                if (_newTarget.x > Screen.currentResolution.width) _newTarget.x = Screen.currentResolution.width;
+                if (_newTarget.x > Screen.currentResolution.width)
+                {
+                    _newTarget.x = Screen.currentResolution.width;
+                }
             }
-            else if (_newTarget.x < 0) _newTarget.x = 0;
+            else if (_newTarget.x < (TDS_Camera.Instance.Camera.rect.x * ((Screen.currentResolution.width) / TDS_Camera.Instance.Camera.rect.width)))
+            {
+                _newTarget.x = TDS_Camera.Instance.Camera.rect.x * ((Screen.currentResolution.width) / TDS_Camera.Instance.Camera.rect.width);
+            }
         }
         // Now clamp Y target position in screen
         if (_yMovement != 0)
@@ -446,9 +468,15 @@ public class TDS_Juggler : TDS_Player
 
             if (_yMovement > 0)
             {
-                if (_newTarget.y > Screen.currentResolution.height) _newTarget.y = Screen.currentResolution.height;
+                if (_newTarget.y > (Screen.currentResolution.height + (TDS_Camera.Instance.Camera.rect.y * (Screen.currentResolution.height / TDS_Camera.Instance.Camera.rect.height))))
+                {
+                    _newTarget.y = Screen.currentResolution.height + (TDS_Camera.Instance.Camera.rect.y * (Screen.currentResolution.height / TDS_Camera.Instance.Camera.rect.height));
+                }
             }
-            else if (_newTarget.y < 0) _newTarget.y = 0;
+            else if (_newTarget.y < (TDS_Camera.Instance.Camera.rect.y * (Screen.currentResolution.height / TDS_Camera.Instance.Camera.rect.height)))
+            {
+                _newTarget.y = TDS_Camera.Instance.Camera.rect.y * (Screen.currentResolution.height / TDS_Camera.Instance.Camera.rect.height);
+            }
         }
 
         // Set new target if different
@@ -466,7 +494,7 @@ public class TDS_Juggler : TDS_Player
             if (targetEnemy != _target) targetEnemy = _target;
 
             // If pressing throw button, lock the enemy !
-            if (TDS_InputManager.GetButtonDown(TDS_InputManager.PARRY_BUTTON))
+            if (TDS_InputManager.GetButton(TDS_InputManager.PARRY_BUTTON))
             {
                 lockCoroutine = StartCoroutine(LockEnemy());
             }
@@ -476,6 +504,20 @@ public class TDS_Juggler : TDS_Player
             targetEnemy = null;
             TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
         }
+    }
+
+    /// <summary>
+    /// Get juggling objects back in hands.
+    /// </summary>
+    private void GetBackJuggle()
+    {
+        // Do that for all other clients too
+        if (photonView.isMine)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "GetBackJuggle"), new object[] { });
+        }
+
+        juggleKickOutHeight = 0;
     }
 
     /// <summary>
@@ -541,7 +583,7 @@ public class TDS_Juggler : TDS_Player
             _theta *= _baseTheta;
 
             Vector3 _newPosition = new Vector3(
-                                   Mathf.Sin(_theta) * throwableDistanceFromCenter, 
+                                   Mathf.Sin(_theta) * throwableDistanceFromCenter,
                                    Mathf.Cos(_theta) * throwableDistanceFromCenter);
             _newPosition.y += throwableDistanceFromCenter;
 
@@ -560,12 +602,30 @@ public class TDS_Juggler : TDS_Player
     /// <summary>
     /// Kicks out juggling objects just above character.
     /// </summary>
-    private void KickOutJuggleLight() => juggleKickOutHeight = 5f;
+    private void KickOutJuggleLight()
+    {
+        // Do that for all other clients too
+        if (photonView.isMine)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "KickOutJuggleLight"), new object[] { });
+        }
+
+        juggleKickOutHeight = 5f;
+    }
 
     /// <summary>
     /// Kicks out juggling objects out of screen.
     /// </summary>
-    private void KickOutJuggleHeavy() => juggleKickOutHeight = 15;
+    private void KickOutJuggleHeavy()
+    {
+        // Do that for all other clients too
+        if (photonView.isMine)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "KickOutJuggleHeavy"), new object[] { });
+        }
+
+        juggleKickOutHeight = 15;
+    }
 
     /// <summary>
     /// Lerps the selected throwable position to the hand transform position.
@@ -623,11 +683,6 @@ public class TDS_Juggler : TDS_Player
     }
 
     /// <summary>
-    /// Get juggling objects back in hands.
-    /// </summary>
-    private void GetBackJuggle() => juggleKickOutHeight = 0;
-
-    /// <summary>
     /// Prepare a throw, if not already preparing one.
     /// </summary>
     /// <returns>Returns true if successfully prepared a throw ; false if one is already, or if cannot do this.</returns>
@@ -636,6 +691,7 @@ public class TDS_Juggler : TDS_Player
         if (isAiming || !throwable) return false;
 
         isAiming = true;
+        speedCoef *= aimingSpeedCoef;
         aimCoroutine = StartCoroutine(Aim());
 
         return true;
@@ -712,6 +768,7 @@ public class TDS_Juggler : TDS_Player
 
         if (isAiming) isAiming = false;
 
+        // Fix all kinds of aiming-related things
         targetEnemy = null;
         if (aimCoroutine != null)
         {
@@ -723,6 +780,9 @@ public class TDS_Juggler : TDS_Player
             StopCoroutine(lockCoroutine);
             lockCoroutine = null;
         }
+
+        // Reset back speed coefficient.
+        speedCoef /= aimingSpeedCoef;
 
         // Desactivate aim target
         TDS_UIManager.Instance.DesctivateJugglerAimTarget();
@@ -736,6 +796,12 @@ public class TDS_Juggler : TDS_Player
     /// <param name="_index">Index of the new selected throwable among <see cref="Throwables"/>.</param>
     public void SwitchThrowable(int _index)
     {
+        // Do that for all other clients too
+        if (photonView.isMine)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SwitchThrowable"), new object[] { _index });
+        }
+
         // Get selected throwable & place the previous one in the juggling list
         TDS_Throwable _selected = null;
         Transform[] _objectAnchors = new Transform[objectAnchors.Length];
@@ -815,9 +881,10 @@ public class TDS_Juggler : TDS_Player
 
         if (Physics.Raycast(_ray, out _info, 100, whatCanAim))
         {
+            Debug.Log("Hit at Point => " + LayerMask.LayerToName(_info.collider.gameObject.layer));
             return ThrowObject(_info.point);
         }
-
+        Debug.Log("I'm in spaaace");
         return ThrowObject(_ray.origin + (_ray.direction * 75));
     }
 
@@ -1002,7 +1069,7 @@ public class TDS_Juggler : TDS_Player
         if (_result != 0) return _result;
 
         // Check throw
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.THROW_BUTTON))
+        if (!isAiming && TDS_InputManager.GetButton(TDS_InputManager.THROW_BUTTON))
         {
             PrepareThrow();
             return -1;
@@ -1115,6 +1182,13 @@ public class TDS_Juggler : TDS_Player
 
         // 3, 2, 1... Let's Jam !
         if (!isDead) Juggle();
+
+        Ray _ray = TDS_Camera.Instance.Camera.ScreenPointToRay(new Vector3(aimTargetTransform.anchoredPosition.x * TDS_Camera.Instance.Camera.rect.height, aimTargetTransform.anchoredPosition.y + (TDS_Camera.Instance.Camera.rect.height * TDS_Camera.Instance.Camera.rect.y)));
+        RaycastHit _info = new RaycastHit();
+
+        Physics.Raycast(_ray, out _info, 100, whatCanAim);
+
+        Debug.DrawRay(_ray.origin, _ray.direction * 100, Color.yellow, .1f, false);
     }
 	#endregion
 

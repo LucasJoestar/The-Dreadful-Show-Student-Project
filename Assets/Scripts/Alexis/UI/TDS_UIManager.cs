@@ -245,7 +245,7 @@ public class TDS_UIManager : PunBehaviour
 
     #region Resources
     [Header("Enemies")]
-    [SerializeField] GameObject lifeBarPrefab = null;
+    [SerializeField] TDS_EnemyLifeBar enemyHealthBar = null;
     [SerializeField] private TDS_BossLifeBar bossHealthBar;
     #endregion
 
@@ -968,9 +968,9 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_enemy"></param>
     public void SetEnemyLifebar(TDS_Enemy _enemy)
     {
-        if (lifeBarPrefab == null || !canvasWorld) return;
+        if (enemyHealthBar == null || !canvasWorld) return;
         Vector3 _offset = (Vector3.up * .2f) - Vector3.forward; 
-        TDS_EnemyLifeBar _healthBar = Instantiate(lifeBarPrefab, _enemy.transform.position + _offset, Quaternion.identity, canvasWorld.transform).GetComponent<TDS_EnemyLifeBar>();
+        TDS_EnemyLifeBar _healthBar = Instantiate(enemyHealthBar, _enemy.transform.position + _offset, Quaternion.identity, canvasWorld.transform).GetComponent<TDS_EnemyLifeBar>();
 
         _healthBar.SetOwner(_enemy, _offset);
         _healthBar.Background.gameObject.SetActive(false); 

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 #pragma warning disable 0649
 
-public abstract class TDS_LifeBar : UnityEngine.MonoBehaviour
+public abstract class TDS_LifeBar : MonoBehaviour
 {
     /* TDS_LifeBar :
 	 *
@@ -47,7 +47,7 @@ public abstract class TDS_LifeBar : UnityEngine.MonoBehaviour
     #endregion
 
     #region Fields and properties
-    protected Image background = null; 
+    [SerializeField] protected Image background = null; 
     public Image Background { get { return background; } }
     [SerializeField] protected Image foregroundFilledImage = null; 
     public Image ForegroundFilledImage { get { return foregroundFilledImage; }}

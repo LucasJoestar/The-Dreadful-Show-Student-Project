@@ -437,8 +437,7 @@ MonoBehaviour:
   dialogBoxText: {fileID: 114351647027826770}
   narratorBoxText: {fileID: 114066093410239440}
   errorBoxText: {fileID: 7679916318928881577}
-  lifeBarPrefab: {fileID: 7569264810949795393, guid: cb56309dbe766e64e8cf68902cd8724c,
-    type: 3}
+  enemyHealthBar: {fileID: 0}
   bossHealthBar: {fileID: 4646570336659563410}
 --- !u!114 &6736605381441817245
 MonoBehaviour:
@@ -5606,7 +5605,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1729248629283481900}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -9178,7 +9177,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3674186261428888912}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: -1, y: -1, z: 1}
   m_Children: []
@@ -10996,6 +10995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a11b973121d870744b70788020109086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  background: {fileID: 0}
   foregroundFilledImage: {fileID: 234680538446570187}
   filledImage: {fileID: 483682811849235010}
   comboCounter: {fileID: 8866660555144262003}
@@ -11434,6 +11434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f2ea3ee7bb53de499b629f6996a310f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  background: {fileID: 0}
   foregroundFilledImage: {fileID: 627353345480708017}
   filledImage: {fileID: 8602957472445374349}
   portraitAnchor: {fileID: 3041605938238986342}
@@ -14299,6 +14300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36d8248ea28185549a959af54daf920e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  background: {fileID: 0}
   foregroundFilledImage: {fileID: 1448209843277214737}
   filledImage: {fileID: 5227878533276720865}
   comboCounter: {fileID: 3116086686117641231}
@@ -17445,6 +17447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55fbf3234ceb2654fbb1dafe4e50494c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  background: {fileID: 0}
   foregroundFilledImage: {fileID: 8432803583392899226}
   filledImage: {fileID: 1645967011163601615}
   comboCounter: {fileID: 8514141000572535387}
@@ -19210,6 +19213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36d8248ea28185549a959af54daf920e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  background: {fileID: 0}
   foregroundFilledImage: {fileID: 4491862709817109581}
   filledImage: {fileID: 6041578075490011768}
   comboCounter: {fileID: 3421032068325938071}

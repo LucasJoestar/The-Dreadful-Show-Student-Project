@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Linq; 
 using UnityEngine;
 using Random  = UnityEngine.Random;
-using Photon;
 
 [RequireComponent(typeof(CustomNavMeshAgent))]
 public abstract class TDS_Enemy : TDS_Character
@@ -1148,6 +1145,8 @@ public abstract class TDS_Enemy : TDS_Character
                 break;
         }
         if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID });
+
+        if (gameObject.HasTag("Boss")) Debug.LogError("State => " + _animationID);
     }
 
     /// <summary>
@@ -1157,7 +1156,7 @@ public abstract class TDS_Enemy : TDS_Character
     public void SetEnemyState(EnemyState _newState)
     {
         enemyState = _newState;
-        switch (enemyState)
+        switch (enemyState) 
         {
             case EnemyState.MakingDecision:
                 animator.SetTrigger("resetBehaviour");
@@ -1173,9 +1172,9 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public void StopAll()
     {
-        agent.StopAgent();
-        StopAttack();
-        if(throwable) DropObject();
+        if (agent.IsMoving) agent.StopAgent();
+        if (isAttacking) StopAttack();
+        if (throwable) DropObject();
     }
 
     /// <summary>
@@ -1275,6 +1274,10 @@ public abstract class TDS_Enemy : TDS_Character
         if (!PhotonNetwork.isMasterClient)
         {
             rigidbody.useGravity = false;
+        }
+        else
+        {
+            if (photonView.owner == null) photonView.TransferOwnership(PhotonNetwork.player);
         }
     }
 

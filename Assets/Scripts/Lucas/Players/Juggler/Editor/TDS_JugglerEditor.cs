@@ -69,6 +69,9 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
     /// <summary>SerializedProperties for <see cref="TDS_Player.isAiming"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isAiming = null;
 
+    /// <summary>SerializedProperty for <see cref="TDS_Juggler.aimingSpeedCoef"/> of type <see cref="float"/>.</summary>
+    private SerializedProperty aimingSpeedCoef = null;
+
     /// <summary>SerializedProperty for <see cref="TDS_Juggler.JuggleSpeed"/> of type <see cref="float"/>.</summary>
     private SerializedProperty juggleSpeed = null;
 
@@ -314,6 +317,12 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
 
         GUILayout.Space(2);
 
+        if (TDS_EditorUtility.FloatSlider("Aiming Speed Coef", "Speed coefficient applied to the character while he's aiming", aimingSpeedCoef, 0f, 2f))
+        {
+            jugglers.ForEach(j => j.AimingSpeedCoef = aimingSpeedCoef.floatValue);
+            serializedObject.Update();
+        }
+
         if (EditorApplication.isPlaying)
         {
             if (TDS_EditorUtility.FloatSlider("Aiming Angle", "Angle used by the Juggler to aim for a throw", aimAngle, 15f, 60f))
@@ -344,6 +353,7 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
         objectAnchors = serializedObject.FindProperty("objectAnchors");
 
         isAiming = serializedObject.FindProperty("isAiming");
+        aimingSpeedCoef = serializedObject.FindProperty("aimingSpeedCoef");
         juggleSpeed = serializedObject.FindProperty("juggleSpeed");
         throwableDistanceFromCenter = serializedObject.FindProperty("throwableDistanceFromCenter");
         whatCanAim = serializedObject.FindProperty("whatCanAim");

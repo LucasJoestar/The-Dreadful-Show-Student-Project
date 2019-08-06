@@ -1848,7 +1848,7 @@ public class TDS_Player : TDS_Character, IPunObservable
             StartDodge();
             return -1;
         }
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.PARRY_BUTTON) && isGrounded)
+        if (TDS_InputManager.GetButton(TDS_InputManager.PARRY_BUTTON) && isGrounded)
         {
             StartCoroutine(Parry());
             return -1;
@@ -2027,7 +2027,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (!photonView.isMine || isDead || !PhotonNetwork.connected) return;
 
         // Checks if the player is grounded or not, and all related elements
-        if (IsPlayable) CheckGrounded();
+        CheckGrounded();
     }
 
     // LateUpdate is called every frame, if the Behaviour is enabled
@@ -2044,7 +2044,6 @@ public class TDS_Player : TDS_Character, IPunObservable
     // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
     protected virtual void OnDestroy()
     {
-        Debug.Log("Destroyed");
         TDS_LevelManager.Instance?.RemoveOnlinePlayer(this);
     }
 

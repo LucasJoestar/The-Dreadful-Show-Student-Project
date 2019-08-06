@@ -96,6 +96,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 1.25
       objectReference: {fileID: 0}
+    - target: {fileID: 114939482661549728, guid: 07d30d07974b21944ad020e637081982,
+        type: 3}
+      propertyPath: viewIdField
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114939482661549728, guid: 07d30d07974b21944ad020e637081982,
+        type: 3}
+      propertyPath: instantiationId
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 114861555710338680, guid: 07d30d07974b21944ad020e637081982,
         type: 3}
       propertyPath: canBeDown
@@ -131,15 +141,17 @@ PrefabInstance:
       propertyPath: healthMax
       value: 500
       objectReference: {fileID: 0}
-    - target: {fileID: 114939482661549728, guid: 07d30d07974b21944ad020e637081982,
-        type: 3}
-      propertyPath: viewIdField
+    - target: {fileID: 4332666222786238, guid: 07d30d07974b21944ad020e637081982, type: 3}
+      propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114939482661549728, guid: 07d30d07974b21944ad020e637081982,
-        type: 3}
-      propertyPath: instantiationId
-      value: -1
+    - target: {fileID: 4332666222786238, guid: 07d30d07974b21944ad020e637081982, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332666222786238, guid: 07d30d07974b21944ad020e637081982, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114523981913157094, guid: 07d30d07974b21944ad020e637081982,
         type: 3}
@@ -154,18 +166,6 @@ PrefabInstance:
     - target: {fileID: 212969000241332684, guid: 07d30d07974b21944ad020e637081982,
         type: 3}
       propertyPath: m_FlipX
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332666222786238, guid: 07d30d07974b21944ad020e637081982, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332666222786238, guid: 07d30d07974b21944ad020e637081982, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332666222786238, guid: 07d30d07974b21944ad020e637081982, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
