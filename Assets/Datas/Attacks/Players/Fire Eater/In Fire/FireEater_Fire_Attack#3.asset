@@ -9,19 +9,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9554a16853e0c2743b24d63e40cbb9bd, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a64db5150bad3f4cac6e9b565d73727, type: 3}
   m_Name: FireEater_Fire_Attack#3
   m_EditorClassIdentifier: 
-  name: 'Fire Eater - Attack #3 (Fire)'
+  attackName: 'Fire Eater - Attack #3 (Fire)'
   Effect:
     EffectType: 1
-    duration: 5
-    percentageHighest: 25
-    percentageLowest: 25
-    damagesMax: 5
-    damagesMin: 3
+    percentageHighest: 60
+    percentageLowest: 50
+    damagesMax: 0
+    damagesMin: 0
   damagesMax: 10
   damagesMin: 8
-  description: 'Third and last attack performed by the in-fire-torch Fire Eater.
-
-    Direct stroke, making feel bad, with a higher chance to burn the enemies.'
+  description: 
+  burnPercentageHighest: 25
+  burnPercentageLowest: 25
+  burnDuration: 5
+  burnDamagesMax: 5
+  burnDamagesMin: 3

@@ -125,6 +125,8 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     private SerializedProperty canBeDown = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.canThrow"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty canThrow = null;
+    /// <summary>SerializedProperty for <see cref="TDS_Enemy.doScaleOnPlayerAmount"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty doScaleOnPlayerAmount = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.throwRange"/> of type <see cref="bool"/>.</summary>
     protected SerializedProperty throwRange = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.wanderingRangeMin"/> of type <see cref="float"/>.</summary>
@@ -132,7 +134,9 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.wanderingRangeMax"/> of type <see cref="float"/>.</summary>
     protected SerializedProperty wanderingRangeMax = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.tauntProbability"/> of type <see cref="float"/>.</summary>
-    private SerializedProperty tauntProbability = null; 
+    private SerializedProperty tauntProbability = null;
+    /// <summary>SerializedProperty for <see cref="TDS_Enemy.healthScalePercent"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty healthScalePercent = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.enemyState"/> of type <see cref="EnemyState"/>.</summary>
     private SerializedProperty enemyState = null;
     /// <summary>SerializedProperty for <see cref="TDS_Enemy.attacks"/> of type <see cref="TDS_EnemyAttack[]"/>.</summary>
@@ -257,6 +261,20 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
         TDS_EditorUtility.FloatSlider("Taunt Probability", "The chance to taunt after wandering", tauntProbability, 0, 100);
         GUILayout.Space(3);
 
+        //Draw a header for the enemy scale up settings
+        EditorGUILayout.LabelField("Scale Up Settings", TDS_EditorUtility.HeaderStyle);
+        TDS_EditorUtility.Toggle("Scale Up", "Should this enemy health scale up depending on player amount", doScaleOnPlayerAmount);
+        if (doScaleOnPlayerAmount.boolValue)
+        {
+            if (TDS_EditorUtility.IntSlider("Health Scale Up Percent", "Percentage by which this enemy health is scaled up for each other player", healthScalePercent, 0, 100))
+            {
+                enemies.ForEach(e => e.HealthScalePercent = healthScalePercent.intValue);
+                serializedObject.Update();
+            }
+        }
+
+        GUILayout.Space(3);
+
         //Draw a header for the enemy down settings
         EditorGUILayout.LabelField("Damages Settings", TDS_EditorUtility.HeaderStyle);
         TDS_EditorUtility.Toggle("Can be grounded", "Is the enemy can be grounded", canBeDown);
@@ -294,10 +312,12 @@ public class TDS_EnemyEditor : TDS_CharacterEditor
 
         canBeDown = serializedObject.FindProperty("canBeDown");
         canThrow = serializedObject.FindProperty("canThrow");
+        doScaleOnPlayerAmount = serializedObject.FindProperty("doScaleOnPlayerAmount");
         throwRange = serializedObject.FindProperty("throwRange"); 
         wanderingRangeMin = serializedObject.FindProperty("wanderingRangeMin");
         wanderingRangeMax = serializedObject.FindProperty("wanderingRangeMax");
-        tauntProbability = serializedObject.FindProperty("tauntProbability"); 
+        tauntProbability = serializedObject.FindProperty("tauntProbability");
+        healthScalePercent = serializedObject.FindProperty("healthScalePercent");
 
         enemyState = serializedObject.FindProperty("enemyState");
 

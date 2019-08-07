@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9554a16853e0c2743b24d63e40cbb9bd, type: 3}
   m_Name: BeardLady_Short_ArcCircle
   m_EditorClassIdentifier: 
-  name: Beard Lady - Arc Circle (Short)
+  attackName: Beard Lady - Arc Circle (Short)
   Effect:
-    EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
+    EffectType: 3
+    percentageHighest: 35
+    percentageLowest: 25
+    damagesMax: 0
+    damagesMin: 0
   damagesMax: 13
   damagesMin: 9
   description: 'One of the many combo final attacks of the short-beard Beard Lady.

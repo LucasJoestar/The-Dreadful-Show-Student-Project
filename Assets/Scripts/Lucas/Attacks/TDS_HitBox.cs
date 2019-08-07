@@ -193,11 +193,8 @@ public class TDS_HitBox : MonoBehaviour
     /// <param name="_target">Target to hit.</param>
     private void InflictDamages(TDS_Damageable _target)
     {
-        int _damages = CurrentAttack.GetDamages + BonusDamages;
-        if (!_target.TakeDamage(_damages, collider.transform.position)) return;
-
-        // Apply attack effect
-        if (!_target.IsDead) CurrentAttack.Effect.ApplyEffect(Owner, _target);
+        // Attack the target
+        if (CurrentAttack.Attack(this, _target) < -1) return;
 
         // Call local method on the character who hit
         if (Owner)

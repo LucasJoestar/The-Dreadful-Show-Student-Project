@@ -12,16 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9554a16853e0c2743b24d63e40cbb9bd, type: 3}
   m_Name: FatLady_Rage_Hammer
   m_EditorClassIdentifier: 
-  name: Fat Lady - Hammer (Berserk)
+  attackName: Fire Lady - Hammer (Rage)
   Effect:
-    EffectType: 0
-    duration: 5
+    EffectType: 1
     percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
-  damagesMax: 25
-  damagesMin: 20
+    percentageLowest: 90
+    damagesMax: 0
+    damagesMin: 0
+  damagesMax: 20
+  damagesMin: 17
   description: 'Last ending combo attack of the berserk Fat Lady.
 
     This is her most powerful stroke, dealing a lot of damages around her.'

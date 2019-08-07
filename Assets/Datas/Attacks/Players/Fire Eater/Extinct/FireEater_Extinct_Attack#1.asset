@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9554a16853e0c2743b24d63e40cbb9bd, type: 3}
   m_Name: FireEater_Extinct_Attack#1
   m_EditorClassIdentifier: 
-  name: 'Fire Eater - Attack #1 (Extinct)'
+  attackName: 'Fire Eater - Attack #1 (Extinct)'
   Effect:
     EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
+    percentageHighest: 0
+    percentageLowest: 0
+    damagesMax: 0
+    damagesMin: 0
   damagesMax: 9
   damagesMin: 8
   description: 'Simple attack of the Fire Eater, with an extinct torch.

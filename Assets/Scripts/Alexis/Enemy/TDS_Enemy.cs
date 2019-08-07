@@ -159,6 +159,11 @@ public abstract class TDS_Enemy : TDS_Character
     }
 
     /// <summary>
+    /// Bool that indicates if enemy life scales up depending on player amount.
+    /// </summary>
+    [SerializeField] protected bool doScaleOnPlayerAmount = false;
+
+    /// <summary>
     /// When this bool is set to true, the enemy has to wait until it turn to false again
     /// </summary>
     protected bool isWaiting = false;
@@ -201,6 +206,22 @@ public abstract class TDS_Enemy : TDS_Character
     /// The maximum value of the wandering range around a player
     /// </summary>
     [SerializeField] protected float wanderingRangeMax = 9;
+
+    /// <summary>Backing field for <see cref="HealthScalePercent"/>.</summary>
+    [SerializeField] protected int healthScalePercent = 50;
+
+    /// <summary>
+    /// Percentage this enemy life is scaled up by for every player in the game.
+    /// </summary>
+    public int HealthScalePercent
+    {
+        get { return healthScalePercent; }
+        set
+        {
+            value = Mathf.Clamp(value, 0, 100);
+            healthScalePercent = value;
+        }
+    }
 
     public TDS_Damageable BringingTarget { get; set; } = null;  
 
@@ -1047,7 +1068,8 @@ public abstract class TDS_Enemy : TDS_Character
             isWaiting = false;
             return;
         }
-        
+
+        SetAnimationState((int)EnemyAnimationState.Idle);
         ActivateEnemy(); 
     }
 
@@ -1145,8 +1167,6 @@ public abstract class TDS_Enemy : TDS_Character
                 break;
         }
         if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID });
-
-        if (gameObject.HasTag("Boss")) Debug.LogError("State => " + _animationID);
     }
 
     /// <summary>
@@ -1278,6 +1298,16 @@ public abstract class TDS_Enemy : TDS_Character
         else
         {
             if (photonView.owner == null) photonView.TransferOwnership(PhotonNetwork.player);
+
+            // Scales up health on player amount
+            if (doScaleOnPlayerAmount)
+            {
+                for (int _i = 0; _i < TDS_LevelManager.Instance.OtherPlayers.Count; _i++)
+                {
+                    HealthMax += healthMax * (healthScalePercent / 100);
+                }
+                HealthCurrent = healthMax;
+            }
         }
     }
 

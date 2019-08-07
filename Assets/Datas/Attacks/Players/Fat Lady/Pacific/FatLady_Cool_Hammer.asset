@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9554a16853e0c2743b24d63e40cbb9bd, type: 3}
   m_Name: FatLady_Cool_Hammer
   m_EditorClassIdentifier: 
-  name: Fat Lady - Hammer (Pacific)
+  attackName: Fire Lady - Hammer (Cool)
   Effect:
-    EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
+    EffectType: 1
+    percentageHighest: 85
+    percentageLowest: 60
+    damagesMax: 0
+    damagesMin: 0
   damagesMax: 17
   damagesMin: 14
   description: 'Second ending combo attack for the not-in-rage Fat Lady.

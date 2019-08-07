@@ -12,16 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9554a16853e0c2743b24d63e40cbb9bd, type: 3}
   m_Name: BeardLady_Long_Turnstile
   m_EditorClassIdentifier: 
-  name: Beard Lady - Turnstile (Long)
+  attackName: Beard Lady - Turnstile (Long)
   Effect:
-    EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
-  damagesMax: 22
-  damagesMin: 15
+    EffectType: 4
+    percentageHighest: 90
+    percentageLowest: 75
+    damagesMax: 0
+    damagesMin: 0
+  damagesMax: 20
+  damagesMin: 17
   description: 'The most powerful ending combo attack of the Beard Lady, with her
     long beard.
 

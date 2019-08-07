@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9554a16853e0c2743b24d63e40cbb9bd, type: 3}
   m_Name: FatLady_Cool_Headbutt
   m_EditorClassIdentifier: 
-  name: Fat Lady - Headbutt (Pacific)
+  attackName: Fire Lady - Headbutt (Cool)
   Effect:
-    EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
+    EffectType: 1
+    percentageHighest: 90
+    percentageLowest: 75
+    damagesMax: 0
+    damagesMin: 0
   damagesMax: 18
   damagesMin: 15
   description: 'First of the two ending combo attacks of the cool Fat Lady.

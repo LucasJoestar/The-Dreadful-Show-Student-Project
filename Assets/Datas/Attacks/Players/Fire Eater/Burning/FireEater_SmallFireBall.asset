@@ -9,19 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9554a16853e0c2743b24d63e40cbb9bd, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a64db5150bad3f4cac6e9b565d73727, type: 3}
   m_Name: FireEater_SmallFireBall
   m_EditorClassIdentifier: 
-  name: Fire Eater - Small Fire Ball
+  attackName: Fire Eater - Fire Ball (Small)
   Effect:
-    EffectType: 1
-    duration: 7
-    percentageHighest: 40
-    percentageLowest: 40
-    damagesMax: 8
-    damagesMin: 5
+    EffectType: 4
+    percentageHighest: 15
+    percentageLowest: 25
+    damagesMax: 0
+    damagesMin: 0
   damagesMax: 13
   damagesMin: 9
   description: 'One of the big show end combo attack from the Fire Eater.
 
     A small fire ball dealing fire damages. Yep.'
+  burnPercentageHighest: 40
+  burnPercentageLowest: 40
+  burnDuration: 5
+  burnDamagesMax: 7
+  burnDamagesMin: 5

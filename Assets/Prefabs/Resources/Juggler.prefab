@@ -857,6 +857,7 @@ MonoBehaviour:
   burnEffect: {fileID: 0}
   collider: {fileID: 2728626678253547198}
   sprite: {fileID: 2867292635500883872}
+  canBeBringedCloser: 1
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
@@ -923,6 +924,7 @@ MonoBehaviour:
   - {fileID: 239036294}
   - {fileID: 2044096473}
   isAiming: 0
+  aimingSpeedCoef: 0.35
   juggleSpeed: 1
   throwableDistanceFromCenter: 1
   whatCanAim:

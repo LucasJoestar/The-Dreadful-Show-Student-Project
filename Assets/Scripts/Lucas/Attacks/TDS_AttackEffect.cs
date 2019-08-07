@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-using Random = UnityEngine.Random;
-
 [Serializable]
 public class TDS_AttackEffect 
 {
@@ -39,24 +37,6 @@ public class TDS_AttackEffect
     /// This attack effect type.
     /// </summary>
     public AttackEffectType EffectType = AttackEffectType.None;
-
-
-    /// <summary>Backing field for <see cref="Duration"/>.</summary>
-    [SerializeField] private float duration = 5;
-
-    /// <summary>
-    /// Duration of the effect.
-    /// </summary>
-    public float Duration
-    {
-        get { return duration; }
-        set
-        {
-            if (value < 0) value = 0;
-            duration = value;
-        }
-    }
-
 
     /// <summary>Backing field for <see cref="PercentageHighest"/>.</summary>
     [SerializeField] private int percentageHighest = 100;
@@ -123,46 +103,4 @@ public class TDS_AttackEffect
         }
     }
     #endregion
-
-    #region Methods
-    /// <summary>
-    /// Apply this attack effect to a specific target.
-    /// </summary>
-    /// <param name="_attacker">Transform of the attacker.</param>
-    /// <param name="_target">Target to apply effect on.</param>
-    public void ApplyEffect(TDS_Character _attacker, TDS_Damageable _target)
-    {
-        int _percent = Random.Range(1, 100);
-
-        if ((_percent > percentageLowest) && ((_percent > percentageHighest) || (_percent > Random.Range(percentageLowest, percentageHighest)))) return;
-
-        switch (EffectType)
-        {
-            case AttackEffectType.None:
-                // Nothing to see here
-                break;
-
-            case AttackEffectType.Burn:
-                _target.Burn(damagesMin, damagesMax, duration);
-                break;
-
-            case AttackEffectType.PutOnTheGround:
-                if (_target is TDS_Character) ((TDS_Character)_target).PutOnTheGround();
-                break;
-
-            case AttackEffectType.BringCloser:
-                _target.BringCloser(_target.transform.position.x - _attacker.transform.position.x);
-                if(_attacker is TDS_Enemy)
-                {
-                    ((TDS_Enemy)_attacker).SetAnimationState((int)EnemyAnimationState.BringTargetCloser);
-                    ((TDS_Enemy)_attacker).BringingTarget = _target; 
-                    _target.OnStopBringingCloser += ((TDS_Enemy)_attacker).TargetBrought; 
-                }
-                break;
-
-            default:
-                break;
-        }
-    }
-	#endregion
 }

@@ -73,7 +73,6 @@
 public enum AttackEffectType
 {
     None,
-    Burn,
     PutOnTheGround,
     BringCloser,
     Knockback,

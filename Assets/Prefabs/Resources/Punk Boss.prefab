@@ -46,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4055278686339258, guid: 07d30d07974b21944ad020e637081982, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.49
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4055278686339258, guid: 07d30d07974b21944ad020e637081982, type: 3}
       propertyPath: m_LocalPosition.y
@@ -54,19 +54,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4055278686339258, guid: 07d30d07974b21944ad020e637081982, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.97
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4055278686339258, guid: 07d30d07974b21944ad020e637081982, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4055278686339258, guid: 07d30d07974b21944ad020e637081982, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4055278686339258, guid: 07d30d07974b21944ad020e637081982, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4055278686339258, guid: 07d30d07974b21944ad020e637081982, type: 3}
       propertyPath: m_LocalRotation.w
@@ -108,22 +108,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114861555710338680, guid: 07d30d07974b21944ad020e637081982,
         type: 3}
-      propertyPath: canBeDown
-      value: 0
+      propertyPath: healthCurrent
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 114861555710338680, guid: 07d30d07974b21944ad020e637081982,
         type: 3}
-      propertyPath: tauntProbability
-      value: 25
+      propertyPath: healthMax
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 114861555710338680, guid: 07d30d07974b21944ad020e637081982,
         type: 3}
       propertyPath: speedMax
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114861555710338680, guid: 07d30d07974b21944ad020e637081982,
-        type: 3}
-      propertyPath: throwBonusDamagesMin
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114861555710338680, guid: 07d30d07974b21944ad020e637081982,
@@ -133,41 +128,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114861555710338680, guid: 07d30d07974b21944ad020e637081982,
         type: 3}
-      propertyPath: healthCurrent
-      value: 500
+      propertyPath: throwBonusDamagesMin
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114861555710338680, guid: 07d30d07974b21944ad020e637081982,
         type: 3}
-      propertyPath: healthMax
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 212969000241332684, guid: 07d30d07974b21944ad020e637081982,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: d50d7801e2cc950419fab3ac9f287e74, type: 2}
-    - target: {fileID: 212969000241332684, guid: 07d30d07974b21944ad020e637081982,
-        type: 3}
-      propertyPath: m_FlipX
+      propertyPath: canBeDown
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4332666222786238, guid: 07d30d07974b21944ad020e637081982, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4332666222786238, guid: 07d30d07974b21944ad020e637081982, type: 3}
-      propertyPath: m_LocalRotation.w
+    - target: {fileID: 114861555710338680, guid: 07d30d07974b21944ad020e637081982,
+        type: 3}
+      propertyPath: doScaleOnPlayerAmount
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4332666222786238, guid: 07d30d07974b21944ad020e637081982, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+    - target: {fileID: 114861555710338680, guid: 07d30d07974b21944ad020e637081982,
+        type: 3}
+      propertyPath: tauntProbability
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 114861555710338680, guid: 07d30d07974b21944ad020e637081982,
+        type: 3}
+      propertyPath: healthScalePercent
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 114523981913157094, guid: 07d30d07974b21944ad020e637081982,
         type: 3}
       propertyPath: BonusDamages
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 212969000241332684, guid: 07d30d07974b21944ad020e637081982,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d50d7801e2cc950419fab3ac9f287e74, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07d30d07974b21944ad020e637081982, type: 3}
 --- !u!1 &4822892242383787822 stripped

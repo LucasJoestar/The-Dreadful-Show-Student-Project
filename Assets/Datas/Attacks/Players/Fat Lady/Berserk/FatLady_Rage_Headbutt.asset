@@ -12,16 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9554a16853e0c2743b24d63e40cbb9bd, type: 3}
   m_Name: FatLady_Rage_Headbutt
   m_EditorClassIdentifier: 
-  name: Fat Lady - Headbutt (Berserk)
+  attackName: Fire Lady - Headbutt (Rage)
   Effect:
-    EffectType: 0
-    duration: 5
+    EffectType: 1
     percentageHighest: 100
     percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
+    damagesMax: 0
+    damagesMin: 0
   damagesMax: 22
-  damagesMin: 19
+  damagesMin: 18
   description: 'First of the two ending combo attacks of the berserk Fat Lady.
 
     An heavy headbutt dealing a lot of damages in front of her.'

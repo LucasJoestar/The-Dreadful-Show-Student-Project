@@ -106,4 +106,65 @@ public class TDS_Attack : ScriptableObject
     /// </summary>
     public string Description { get { return description; } }
     #endregion
+
+    #region Methods
+    /// <summary>
+    /// Attacks the target, by inflicting damages and applying effects.
+    /// </summary>
+    /// <param name="_attacker">The HitBox attacking the target.</param>
+    /// <param name="_target">Target to attack.</param>
+    /// <returns>Returns -2 if target didn't take any damages, -1 if the target is dead, 0 if no effect could be applied, and 1 if everything went good.</returns>
+    public virtual int Attack(TDS_HitBox _attacker, TDS_Damageable _target)
+    {
+        // Roll the dice to know if the attack effect should be applied
+        int _percent = Random.Range(1, 100);
+        bool _noEffect = (_percent > Effect.PercentageLowest) && ((_percent > Effect.PercentageHighest) || (_percent > Random.Range(Effect.PercentageLowest, Effect.PercentageHighest + 1)));
+
+        // Get attack damages
+        int _damages = GetDamages + _attacker.BonusDamages;
+        if (!_noEffect) _damages += Random.Range(Effect.DamagesMin, Effect.DamagesMax + 1);
+
+        // Inflict damages, and return if target don't get hurt, if no effect or if target is dead
+        if (!_target.TakeDamage(_damages, _attacker.Collider.bounds.center)) return -2;
+        if (_target.IsDead) return -1;
+        if (_noEffect) return 0;
+
+        // Apply attack effect
+            switch (Effect.EffectType)
+        {
+            case AttackEffectType.None:
+                // Nothing to see here
+                break;
+
+            // Put target on ground
+            case AttackEffectType.PutOnTheGround:
+                if (_target is TDS_Character) ((TDS_Character)_target).PutOnTheGround();
+                break;
+
+            // Bring target closer
+            case AttackEffectType.BringCloser:
+                _target.BringCloser(_target.transform.position.x - _attacker.transform.position.x);
+                if (_attacker.Owner is TDS_Enemy _enemy)
+                {
+                    _enemy.SetAnimationState((int)EnemyAnimationState.BringTargetCloser);
+                    _enemy.BringingTarget = _target;
+                    _target.OnStopBringingCloser += _enemy.TargetBrought;
+                }
+                break;
+
+            // Apply recoil to target
+            case AttackEffectType.Knockback:
+                break;
+
+            // Project the target in the air
+            case AttackEffectType.Project:
+                break;
+
+            default:
+                break;
+        }
+
+        return 1;
+    }
+    #endregion
 }

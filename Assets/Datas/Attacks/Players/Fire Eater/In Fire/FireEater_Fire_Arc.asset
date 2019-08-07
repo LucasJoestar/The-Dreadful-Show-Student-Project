@@ -9,20 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9554a16853e0c2743b24d63e40cbb9bd, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a64db5150bad3f4cac6e9b565d73727, type: 3}
   m_Name: FireEater_Fire_Arc
   m_EditorClassIdentifier: 
-  name: Fire Eater - Arc Circle (Fire)
+  attackName: Fire Eater - Arc (Fire)
   Effect:
-    EffectType: 1
-    duration: 5
-    percentageHighest: 35
-    percentageLowest: 35
-    damagesMax: 7
-    damagesMin: 5
+    EffectType: 3
+    percentageHighest: 65
+    percentageLowest: 55
+    damagesMax: 0
+    damagesMin: 0
   damagesMax: 13
   damagesMin: 10
   description: 'An end combo attack with big fire.
 
     Making a big arc circle with his torch, this attack hit big and has a good chance
     to burn someone.'
+  burnPercentageHighest: 35
+  burnPercentageLowest: 35
+  burnDuration: 5
+  burnDamagesMax: 5
+  burnDamagesMin: 7

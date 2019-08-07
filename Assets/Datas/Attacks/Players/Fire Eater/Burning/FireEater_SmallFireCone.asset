@@ -9,19 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9554a16853e0c2743b24d63e40cbb9bd, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a64db5150bad3f4cac6e9b565d73727, type: 3}
   m_Name: FireEater_SmallFireCone
   m_EditorClassIdentifier: 
-  name: Fire Eater - Small Fire Cone
+  attackName: Fire Eater - Fire Cone (Small)
   Effect:
     EffectType: 1
-    duration: 7
-    percentageHighest: 50
-    percentageLowest: 50
-    damagesMax: 8
-    damagesMin: 6
+    percentageHighest: 35
+    percentageLowest: 25
+    damagesMax: 0
+    damagesMin: 0
   damagesMax: 15
   damagesMin: 10
   description: 'A good end combo attack.
 
     Call a small fire cone with great fire power.'
+  burnPercentageHighest: 50
+  burnPercentageLowest: 50
+  burnDuration: 5
+  burnDamagesMax: 8
+  burnDamagesMin: 6

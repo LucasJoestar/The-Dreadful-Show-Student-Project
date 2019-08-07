@@ -9,19 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9554a16853e0c2743b24d63e40cbb9bd, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a64db5150bad3f4cac6e9b565d73727, type: 3}
   m_Name: FireEater_UltraFireBall
   m_EditorClassIdentifier: 
-  name: Fire Eater - Ultra Fire Ball
+  attackName: Fire Eater - Fire Ball (Ultra)
   Effect:
-    EffectType: 1
-    duration: 7
-    percentageHighest: 65
-    percentageLowest: 65
-    damagesMax: 8
-    damagesMin: 6
+    EffectType: 4
+    percentageHighest: 75
+    percentageLowest: 50
+    damagesMax: 0
+    damagesMin: 0
   damagesMax: 17
   damagesMin: 12
   description: 'Great end combo attack.
 
     Invoke a great fire ball burning down enemies.'
+  burnPercentageHighest: 65
+  burnPercentageLowest: 65
+  burnDuration: 7
+  burnDamagesMax: 11
+  burnDamagesMin: 8

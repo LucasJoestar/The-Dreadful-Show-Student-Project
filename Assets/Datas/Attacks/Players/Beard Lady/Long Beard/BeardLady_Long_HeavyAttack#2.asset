@@ -12,16 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9554a16853e0c2743b24d63e40cbb9bd, type: 3}
   m_Name: BeardLady_Long_HeavyAttack#2
   m_EditorClassIdentifier: 
-  attackName: New Attack
+  attackName: 'Beard Lady - Heavy Attack #2 (Long)'
   Effect:
-    EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
-  damagesMax: 17
-  damagesMin: 12
+    EffectType: 3
+    percentageHighest: 80
+    percentageLowest: 60
+    damagesMax: 0
+    damagesMin: 0
+  damagesMax: 15
+  damagesMin: 10
   description: 'Second heavy attack used by the Beard Lady, when her beard is at a
     long state.
 

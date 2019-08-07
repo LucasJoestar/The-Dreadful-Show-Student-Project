@@ -169,6 +169,11 @@ public abstract class TDS_Damageable : PunBehaviour
     #endregion
 
     #region Variables
+    /// <summary>
+    /// Indicates if theis damageable can be bringed closer.
+    /// </summary>
+    [SerializeField] protected bool canBeBringedCloser = true;
+
     /// <summary>Backing field for <see cref="isDead"/></summary>
     [SerializeField] protected bool isDead = false;
 
@@ -398,6 +403,9 @@ public abstract class TDS_Damageable : PunBehaviour
     /// <param name="_distance">Distance to browse.</param>
     public virtual bool BringCloser(float _distance)
     {
+        // If can't be bringed closer, just return
+        if (!canBeBringedCloser) return false;
+
         if (bringingCloserCoroutine != null) StopBringingCloser();
 
         bringingCloserCoroutine = StartCoroutine(BringingCloser(_distance));
