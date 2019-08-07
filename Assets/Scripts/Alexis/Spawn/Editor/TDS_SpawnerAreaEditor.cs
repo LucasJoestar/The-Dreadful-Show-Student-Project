@@ -124,6 +124,9 @@ public class TDS_SpawnerAreaEditor : Editor
     /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.waves"/> of type <see cref="List{TDS_Wave}"/>.</summary>
     private SerializedProperty waves = null;
 
+    /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.spawnedEnemies"/> of type <see cref="List{TDS_Enemy}"/>.</summary>
+    private SerializedProperty spawnedEnemies = null; 
+
     /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.OnAreaActivated"/> of type <see cref="UnityEvent"/>.</summary>
     private SerializedProperty eventOnAreaActivated = null;
     /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.OnAreaDesactivated"/> of type <see cref="UnityEvent"/>.</summary>
@@ -202,6 +205,8 @@ public class TDS_SpawnerAreaEditor : Editor
         EditorGUILayout.EndVertical();
         GUILayout.Space(15);
 
+        DrawSpawnedEnemies(); 
+
         // Applies all modified properties on the SerializedObjects
         serializedObject.ApplyModifiedProperties();
 
@@ -276,6 +281,17 @@ public class TDS_SpawnerAreaEditor : Editor
         GUI.backgroundColor = _originalColor;
 
     }
+
+    void DrawSpawnedEnemies()
+    {
+        EditorGUILayout.BeginVertical("Helpbox");
+        EditorGUILayout.LabelField("SpawnedEnemies", TDS_EditorUtility.HeaderStyle);
+        GUILayout.Space(5);
+        TDS_EditorUtility.PropertyField("Spawned Enemies", "Enemies already on the scene in editor", spawnedEnemies);
+        EditorGUILayout.EndVertical();
+        GUILayout.Space(15);
+    }
+
     #endregion
 
     #region Unity Methods
@@ -291,8 +307,8 @@ public class TDS_SpawnerAreaEditor : Editor
         eventOnAreaActivated = serializedObject.FindProperty("OnAreaActivated");
         eventOnAreaDesactivated = serializedObject.FindProperty("OnAreaDesactivated");
         eventOnNextWave = serializedObject.FindProperty("OnNextWave");
-        eventOnStartFight = serializedObject.FindProperty("OnStartFight"); 
-
+        eventOnStartFight = serializedObject.FindProperty("OnStartFight");
+        spawnedEnemies = serializedObject.FindProperty("spawnedEnemies"); 
 
         //Load the editor folded and unfolded values of this class
         areSpawnerAreaComponentsUnfolded = EditorPrefs.GetBool("areSpawnerAreaComponentsUnfolded", areSpawnerAreaComponentsUnfolded);

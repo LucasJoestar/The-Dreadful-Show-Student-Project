@@ -124,7 +124,7 @@ public class TDS_SpawnerArea : PunBehaviour
     /// <summary>
     /// List of enemies belonging to this area
     /// </summary>
-    private List<TDS_Enemy> spawnedEnemies = new List<TDS_Enemy>();
+    [SerializeField] private List<TDS_Enemy> spawnedEnemies = new List<TDS_Enemy>();
 
     [SerializeField] List<TDS_Wave> waves = new List<TDS_Wave>();
     #endregion

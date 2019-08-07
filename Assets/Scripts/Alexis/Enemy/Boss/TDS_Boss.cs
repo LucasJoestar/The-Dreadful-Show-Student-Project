@@ -267,7 +267,6 @@ public abstract class TDS_Boss : TDS_Enemy
     /// <returns>Return a random player within the detection Range</returns>
     protected override TDS_Player GetPlayerTarget()
     {
-        base.GetPlayerTarget(); 
         TDS_Player[] _targets = null;
         if (TDS_LevelManager.Instance)
             _targets = TDS_LevelManager.Instance.AllPlayers.Where(t => !t.IsDead).ToArray();
@@ -303,6 +302,7 @@ public abstract class TDS_Boss : TDS_Enemy
         }
         return _attackingPosition;
     }
+
     #endregion
 
     #endregion

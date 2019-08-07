@@ -8,7 +8,7 @@ using UnityEditor;
 #pragma warning disable 0414
 
 [CustomEditor(typeof(TDS_Punk))]
-public class TDS_PunkEditor : TDS_EnemyEditor 
+public class TDS_PunkEditor : TDS_MinionEditor 
 {
     /* TDS_PunkEditor :
 	 *

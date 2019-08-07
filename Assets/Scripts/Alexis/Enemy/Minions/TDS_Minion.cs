@@ -46,6 +46,13 @@ public abstract class TDS_Minion : TDS_Enemy
 
     #region Fields / Properties
     [SerializeField] protected bool hasEvolved = false;
+
+    protected int ragingCount = 0;
+    [SerializeField] protected int ragingThreshold = 3;
+
+    [SerializeField] protected float resetRageDelay = 1; 
+
+    protected Coroutine resetRagingThreshold = null;
     #endregion
 
     #region Methods
@@ -70,6 +77,48 @@ public abstract class TDS_Minion : TDS_Enemy
         if (Area) Area.RemoveEnemy(this);
     }
 
+    /// <summary>
+    /// Override the ApplyDamagesBehaviour Method
+    /// </summary>
+    /// <param name="_damage"></param>
+    /// <param name="_position"></param>
+    protected override void ApplyDamagesBehaviour(int _damage, Vector3 _position)
+    {
+        if(ragingCount > ragingThreshold)
+        {
+            Debug.Log(ragingCount);
+            return; 
+        }
+        else
+        {
+            base.ApplyDamagesBehaviour(_damage, _position);
+            ragingCount++;
+            if (resetRagingThreshold != null)
+            {
+                StopCoroutine(resetRagingThreshold);
+                resetRagingThreshold = null;
+            }
+            resetRagingThreshold = StartCoroutine(ResetRage());
+        }
+    }
+
+    public override IEnumerator CastAttack()
+    {
+        yield return base.CastAttack();
+        if (resetRagingThreshold != null)
+        {
+            StopCoroutine(resetRagingThreshold);
+            resetRagingThreshold = null;
+        }
+        ragingCount = 0;
+    }
+
+    protected IEnumerator ResetRage()
+    {
+        yield return new WaitForSeconds(resetRageDelay);
+        resetRagingThreshold = null; 
+        ragingCount = 0; 
+    }
     #endregion
 
     #region Overridden Methods

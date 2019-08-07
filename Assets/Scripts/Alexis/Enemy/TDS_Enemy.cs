@@ -470,7 +470,6 @@ public abstract class TDS_Enemy : TDS_Character
         float _cooldown = StartAttack();
         while (IsAttacking)
         {
-
             yield return new WaitForSeconds(.1f);
         }
         yield return new WaitForSeconds(_cooldown);
@@ -1253,7 +1252,6 @@ public abstract class TDS_Enemy : TDS_Character
     protected virtual void ApplyDamagesBehaviour(int _damage, Vector3 _position)
     {
         if (!PhotonNetwork.isMasterClient) return;
-        SetEnemyState(EnemyState.None);
         StartCoroutine(ApplyRecoil(_position));
         if (!isDead && !IsDown)
         {

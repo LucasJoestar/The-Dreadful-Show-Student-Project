@@ -38,8 +38,9 @@ public class TDS_MinionEditor : TDS_EnemyEditor
     /// <summary>SerializedProperty for <see cref="TDS_Minion.hasEvolved"/> of type <see cref="bool"/>.</summary>
     SerializedProperty hasEvolved = null;
 
-    /// <summary>SerializedProperty for <see cref="TDS_Minion.attacks"/> of type <see cref="bool"/>.</summary>
-    SerializedProperty attacks = null;
+    SerializedProperty ragingThreshold = null;
+    SerializedProperty resetRageDelay = null; 
+
     #endregion
 
     #region FoldOut
@@ -82,7 +83,11 @@ public class TDS_MinionEditor : TDS_EnemyEditor
         base.DrawSettings();
 
         EditorGUILayout.LabelField("Evolve", TDS_EditorUtility.HeaderStyle);
-        TDS_EditorUtility.RadioToggle("Has Evolved", "Is the minion evolved", hasEvolved); 
+        TDS_EditorUtility.RadioToggle("Has Evolved", "Is the minion evolved", hasEvolved);
+        GUILayout.Space(5);
+        EditorGUILayout.LabelField("Rage", TDS_EditorUtility.HeaderStyle);
+        TDS_EditorUtility.FloatField("Reset Rage Delay", "Delay to reset the rage", resetRageDelay);
+        TDS_EditorUtility.IntSlider("Reset Rage Threshold", "Count of attacks to ignore the next damages", ragingThreshold, 1, 5); 
     }
 
     #region Unity Methods
@@ -102,6 +107,8 @@ public class TDS_MinionEditor : TDS_EnemyEditor
 
         // Get the property
         hasEvolved = serializedObject.FindProperty("hasEvolved");
+        resetRageDelay = serializedObject.FindProperty("resetRageDelay");
+        ragingThreshold = serializedObject.FindProperty("ragingThreshold"); 
 
         //Get fold bool
         isMinionUnfolded = EditorPrefs.GetBool("isMinionUnfolded", isMinionUnfolded);

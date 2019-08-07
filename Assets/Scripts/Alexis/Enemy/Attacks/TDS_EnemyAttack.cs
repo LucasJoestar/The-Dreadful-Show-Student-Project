@@ -127,6 +127,15 @@ public class TDS_EnemyAttack : TDS_Attack
         }
     }
     #endregion
+
+    #region bool
+    [SerializeField]protected bool canBreakGuard = false; 
+    public bool CanBreakGuard
+    {
+        get { return canBreakGuard;  }
+    }
+    #endregion
+
     #endregion
 
     #region Methods 
