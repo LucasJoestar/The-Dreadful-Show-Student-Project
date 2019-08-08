@@ -32,13 +32,14 @@ public class TDS_DashAttackBehaviour : TDS_EnemyAttack
         {
             _endPosition -= (_caster.IsFacingRight ? Vector3.right : -Vector3.right) * dashingDistance;
         }
-        _caster.IsInvulnerable = true; 
-        while(_caster.IsAttacking && Vector3.Distance(_caster.transform.position, _endPosition) > 0)
+        _endPosition.x = Mathf.Clamp(_endPosition.x, TDS_Camera.Instance.CurrentBounds.XMin + _caster.Agent.Radius, TDS_Camera.Instance.CurrentBounds.XMax - _caster.Agent.Radius);
+        if (_caster is TDS_MightyMan _mightyManIn) _mightyManIn.IsDashing = true; 
+        while (_caster.IsAttacking && Vector3.Distance(_caster.transform.position, _endPosition) > 0)
         {
             _caster.transform.position = Vector3.MoveTowards(_caster.transform.position, _endPosition, Time.deltaTime * dashingSpeed * 10); 
             yield return null; 
         }
-        _caster.IsInvulnerable = false;
+        if (_caster is TDS_MightyMan _mightyManOut) _mightyManOut.IsDashing = false;
         _caster.SetAnimationState((int)EnemyAnimationState.StopDashing);
     }
 }

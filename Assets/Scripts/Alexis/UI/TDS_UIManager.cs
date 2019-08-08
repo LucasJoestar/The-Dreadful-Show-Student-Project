@@ -819,7 +819,7 @@ public class TDS_UIManager : PunBehaviour
     {
         TDS_GameManager.LocalIsReady = _isReady;
 
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.OthersBuffered, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetPlayerReady"), new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady });
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetPlayerReady"), new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady });
         SetPlayerReady(PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady); 
         if (!PhotonNetwork.isMasterClient)
         {
@@ -908,7 +908,7 @@ public class TDS_UIManager : PunBehaviour
     public void SelectCharacter()
     {
         int _newPlayerType = (int)characterSelectionMenu.LocalElement.CurrentSelection.CharacterType; 
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.OthersBuffered, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdatePlayerSelectionInfo"), new object[] { (int)TDS_GameManager.LocalPlayer, _newPlayerType, PhotonNetwork.player.ID });
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdatePlayerSelectionInfo"), new object[] { (int)TDS_GameManager.LocalPlayer, _newPlayerType, PhotonNetwork.player.ID });
 
         TDS_GameManager.LocalPlayer = (PlayerType)_newPlayerType == TDS_GameManager.LocalPlayer ? PlayerType.Unknown : (PlayerType)_newPlayerType;
         OnPlayerReady(TDS_GameManager.LocalPlayer != PlayerType.Unknown); 
@@ -1214,15 +1214,25 @@ public class TDS_UIManager : PunBehaviour
         {
             TDS_GameManager.PlayerListReady[_player] = _isReady;
         }
+        else
+        {
+            Debug.LogError("Player not found in Dico"); 
+        }
         if (uiState == UIState.InCharacterSelection && launchGameButton) launchGameButton.interactable = !TDS_GameManager.PlayerListReady.Any(p => p.Value == false) && TDS_GameManager.LocalIsReady;
         if (uiState == UIState.InGameOver && buttonRestartGame) buttonRestartGame.interactable = !TDS_GameManager.PlayerListReady.Any(p => p.Value == false);
+    }
+
+    public void ReceiveOnConnectionInfo(int _playerID, bool _isReady, int _playerType)
+    {
+        UpdateOnlineCharacterType(_playerID, _playerType);
+        SetPlayerReady(_playerID, _isReady);
+        UpdateReadySettings(_playerID, _isReady);
     }
     #endregion
 
     private void SendInfoToNewPlayer(PhotonPlayer _newPlayer)
     {
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", _newPlayer, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateOnlineCharacterType"), new object[] { PhotonNetwork.player.ID, (int)characterSelectionMenu.LocalElement.CurrentSelection.CharacterType });
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", _newPlayer, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetPlayerReady"), new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady });
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", _newPlayer, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ReceiveOnConnectionInfo"), new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady, (int)characterSelectionMenu.LocalElement.CurrentSelection.CharacterType });
     }
     #endregion
 

@@ -185,7 +185,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         // SET THE TOGGLE
         if (photonPlayer != null && PhotonNetwork.player.ID != photonPlayer.ID)
         {
-            readyToggle.animator.SetTrigger(readyToggle.animationTriggers.pressedTrigger); 
+            TriggerToggle();
             IsLocked = _isPlayerReady; 
         }
     }

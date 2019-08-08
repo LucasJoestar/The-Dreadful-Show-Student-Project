@@ -15,7 +15,6 @@ MonoBehaviour:
   attackName: MightyDash
   Effect:
     EffectType: 0
-    duration: 5
     percentageHighest: 100
     percentageLowest: 100
     damagesMax: 5
@@ -27,7 +26,8 @@ MonoBehaviour:
   cooldown: 2
   maxRange: 25
   minRange: 0
-  probability: 100
+  probability: 25
+  canBreakGuard: 0
   isDashingForward: 1
   dashingDistance: 25
   dashingSpeed: 1

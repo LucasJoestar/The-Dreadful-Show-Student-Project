@@ -151,7 +151,6 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     /// <param name="_newIndex"></param>
     public void UpdateMenuOnline(int _playerID, PlayerType _playerType)
     {
-
         characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).FirstOrDefault().DisplayImageOfType(_playerType);
     }
     #endregion

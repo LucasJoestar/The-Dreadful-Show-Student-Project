@@ -38,7 +38,7 @@ public class TDS_MightyMan : TDS_Minion
     #endregion
 
     #region Fields / Properties
-
+    public bool IsDashing { get; set; }
     #endregion
 
     #region Methods
