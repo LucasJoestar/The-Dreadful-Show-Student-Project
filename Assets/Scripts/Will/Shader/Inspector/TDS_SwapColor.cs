@@ -4,8 +4,8 @@
 public class TDS_SwapColor : MonoBehaviour
 {
     #region Fields / Properties
-    [Space]
-    public bool EnableSwap = true;
+    bool enableSwap = true;
+    [Space] public bool EnableSwap = true;
     [SerializeField, Space, Space, Space]
     Color blinkColor = new Color(1f, 1f, 1f, 0);
     //R
@@ -182,5 +182,14 @@ public class TDS_SwapColor : MonoBehaviour
         }
     }
     #endregion
+
+    private void Update()
+    {
+        if (enableSwap != EnableSwap)
+        {
+            enableSwap = EnableSwap;
+            UpdateColor();
+        }
+    }
     #endregion
 }

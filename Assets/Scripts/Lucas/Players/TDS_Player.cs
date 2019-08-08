@@ -1462,7 +1462,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (Mathf.Sign(_position.x - transform.position.x) != isFacingRight.ToSign()) Flip();
 
         // Moves around point while not in range enough
-        while (Mathf.Abs((transform.position - _position).magnitude) > 2.5f)
+        while (Mathf.Abs((transform.position - _position).magnitude) > 2f)
         {
             yield return null;
             MoveInDirection(_position);

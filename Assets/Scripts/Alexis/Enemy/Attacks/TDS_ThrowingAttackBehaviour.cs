@@ -55,9 +55,9 @@ public class TDS_ThrowingAttackBehaviour : TDS_EnemyAttack
         {
             TDS_Throwable _throwable = _thrownObject.GetComponent<TDS_Throwable>();
              _caster.GrabObject(_throwable);
-             if(_throwable.ThrowableAttackEffectType == AttackEffectType.BringCloser)
+            if (_throwable.ThrowableAttackEffectType == AttackEffectType.BringCloser)
              {
-                 _throwable.ObjectDurability = 1; 
+                _throwable.ObjectDurability = 1; 
                  _throwable.HitBox.OnTouch += () => _caster.SetAnimationState((int)EnemyAnimationState.BringTargetCloser);
                  _throwable.HitBox.OnStopAttack += () => _caster.SetAnimationState((int)EnemyAnimationState.EndBringingTargetCloser);
             }
