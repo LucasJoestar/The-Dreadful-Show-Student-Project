@@ -381,6 +381,7 @@ MonoBehaviour:
   burnEffect: {fileID: 0}
   collider: {fileID: 2085316961524171263}
   sprite: {fileID: 2085316961818940413}
+  canBeBringedCloser: 1
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
@@ -408,11 +409,13 @@ MonoBehaviour:
   throwAimingPoint: {x: 0, y: 0, z: 0}
   canBeDown: 0
   canThrow: 0
+  doScaleOnPlayerAmount: 0
   enemyState: 0
   tauntProbability: 0
   throwRange: 1
   wanderingRangeMin: 3
   wanderingRangeMax: 6
+  healthScalePercent: 50
   attacks:
   - {fileID: 11400000, guid: aeb98e03cbb86514a9f8eca9c4ea4e9e, type: 2}
   - {fileID: 11400000, guid: 8583033c7de9d8b4192a18e78bf848f6, type: 2}

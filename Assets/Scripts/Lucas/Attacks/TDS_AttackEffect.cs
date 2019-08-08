@@ -39,7 +39,7 @@ public class TDS_AttackEffect
     public AttackEffectType EffectType = AttackEffectType.None;
 
     /// <summary>Backing field for <see cref="PercentageHighest"/>.</summary>
-    [SerializeField] private int percentageHighest = 100;
+    [SerializeField] private int percentageHighest = 0;
 
     /// <summary>
     /// Highest percentage for this effect to be applied.
@@ -55,7 +55,7 @@ public class TDS_AttackEffect
     }
 
     /// <summary>Backing field for <see cref="PercentageLowest"/>.</summary>
-    [SerializeField] private int percentageLowest = 100;
+    [SerializeField] private int percentageLowest = 0;
 
     /// <summary>
     /// Lowest percentage for this effect to be applied.
@@ -72,7 +72,7 @@ public class TDS_AttackEffect
 
 
     /// <summary>Backing field for <see cref="DamagesMax"/>.</summary>
-    [SerializeField, ] private int damagesMax = 5;
+    [SerializeField, ] private int damagesMax = 0;
 
     /// <summary>
     /// Maximum damages amount of this effect.
@@ -88,7 +88,7 @@ public class TDS_AttackEffect
     }
 
     /// <summary>Backing field for <see cref="DamagesMin"/>.</summary>
-    [SerializeField] private int damagesMin = 5;
+    [SerializeField] private int damagesMin = 0;
 
     /// <summary>
     /// Minimum damages amount of this effect.

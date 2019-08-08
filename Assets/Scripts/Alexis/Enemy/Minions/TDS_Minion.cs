@@ -86,7 +86,7 @@ public abstract class TDS_Minion : TDS_Enemy
     {
         if(ragingCount > ragingThreshold)
         {
-            Debug.Log(ragingCount);
+            SetAnimationState((int)EnemyAnimationState.LightHit);
             return; 
         }
         else

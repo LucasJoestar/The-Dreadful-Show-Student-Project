@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using UnityEngine;
-using System.Collections; 
 using System.Collections.Generic; 
 
 #pragma warning disable 0414
@@ -50,10 +49,6 @@ public static class TDS_GameManager
 	 *	-----------------------------------
 	*/
 
-    #region Events
-
-    #endregion
-
     #region Fields / Properties
     /// <summary>
     /// Indicates if the game is currently in pause.
@@ -84,20 +79,9 @@ public static class TDS_GameManager
 
     public static int CurrentSceneIndex = 0;
 
-    private static Dictionary<PhotonPlayer, bool> playerListReady = new Dictionary<PhotonPlayer, bool>();
-    public static Dictionary<PhotonPlayer, bool> PlayerListReady
-    {
-        get { return playerListReady; }
-    }
-    private static bool localIsReady = false;
-    public static bool LocalIsReady
-    {
-        get { return localIsReady; }
-        set
-        {
-            localIsReady = value;
-        }
-    }
+    public static Dictionary<PhotonPlayer, bool> PlayerListReady { get; private set; } = new Dictionary<PhotonPlayer, bool>();
+
+    public static bool LocalIsReady = false;
     #endregion
 
     #region Methods

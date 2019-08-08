@@ -239,6 +239,7 @@ MonoBehaviour:
   burnEffect: {fileID: 0}
   collider: {fileID: 4029280704881698364}
   sprite: {fileID: 3888539910000889464}
+  canBeBringedCloser: 1
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
@@ -266,17 +267,21 @@ MonoBehaviour:
   throwAimingPoint: {x: 0, y: 0, z: 0}
   canBeDown: 1
   canThrow: 1
+  doScaleOnPlayerAmount: 0
   enemyState: 0
   tauntProbability: 0
   throwRange: 1
   wanderingRangeMin: 5
   wanderingRangeMax: 9
+  healthScalePercent: 50
   attacks:
   - {fileID: 11400000, guid: 5f3dbe37b66fcb34fbc42804b3b5ef6d, type: 2}
   - {fileID: 11400000, guid: 44b3e5964ca3f9b46aff3692e4f22295, type: 2}
   - {fileID: 11400000, guid: 1a8ac49624f349c4bab1b7c621b15417, type: 2}
   agent: {fileID: 3932927971346318886}
   hasEvolved: 0
+  ragingThreshold: 3
+  resetRageDelay: 1
 --- !u!1 &3964421302987546672
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,7 +394,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9e32ce224446c4746a4f714514e29c74, type: 2}
+  - {fileID: 2100000, guid: 6e1222523e577bc4f96256a2879bc0a0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

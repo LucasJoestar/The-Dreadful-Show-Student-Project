@@ -799,7 +799,7 @@ public class TDS_UIManager : PunBehaviour
         {
             //if (PhotonNetwork.isMasterClient)
               //  TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
-            TDS_SceneManager.Instance?.PrepareOnlineSceneLoading(1, (int)UIState.InGame);
+            TDS_SceneManager.Instance?.PrepareOnlineSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
         }
         else
         {

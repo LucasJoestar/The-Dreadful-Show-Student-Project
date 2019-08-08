@@ -36,10 +36,6 @@ public class TDS_SceneManager : PunBehaviour
 	 *	-----------------------------------
 	*/
 
-    #region Events
-
-    #endregion
-
     #region Fields / Properties
     public static TDS_SceneManager Instance;
     public static Dictionary<PhotonPlayer, bool> PlayerSceneLoaded = new Dictionary<PhotonPlayer, bool>();
@@ -51,7 +47,6 @@ public class TDS_SceneManager : PunBehaviour
     #region Original Methods
 
     #region Online 
-
     /// <summary>
     /// Call this method to load a scene with the loading screen
     /// </summary>
@@ -61,9 +56,18 @@ public class TDS_SceneManager : PunBehaviour
         sceneIsReady = false;
         if (PhotonNetwork.isMasterClient && PlayerSceneLoaded.Count > 0)
         {
-            PlayerSceneLoaded.ToDictionary(p => p.Key, p => false);
+            PlayerSceneLoaded = PlayerSceneLoaded.ToDictionary(p => p.Key, p => false);
         }
         StartCoroutine(LoadSceneOnline(_sceneIndex, _nextUIState));
+    }
+
+    /// <summary>
+    /// Call this method to load a scene with the loading screen
+    /// </summary>
+    /// <param name="_sceneIndex"></param>
+    public void PrepareOnlineSceneLoading(string _sceneName, int _nextUIState)
+    {
+        PrepareOnlineSceneLoading(SceneManager.GetSceneByName(_sceneName).buildIndex, _nextUIState);
     }
 
     /// <summary>
@@ -103,56 +107,6 @@ public class TDS_SceneManager : PunBehaviour
     }
 
     /// <summary>
-    /// Call this method to load a scene with the loading screen
-    /// </summary>
-    /// <param name="_sceneIndex"></param>
-    public void PrepareOnlineSceneLoading(string _sceneName, int _nextUIState)
-    {
-        sceneIsReady = false;
-        if (PhotonNetwork.isMasterClient && PlayerSceneLoaded.Count > 0)
-        {
-            PlayerSceneLoaded.ToDictionary(p => p.Key, p => false);
-        }
-        StartCoroutine(LoadSceneOnline(_sceneName, _nextUIState));
-    }
-
-    /// <summary>
-    /// Load the scene async and display the loading screen during the loading time
-    /// </summary>
-    /// <param name="_sceneIndex">Index of the scene in the build</param>
-    /// <returns></returns>
-    private IEnumerator LoadSceneOnline(string _sceneName, int _nextUIState)
-    {
-        AsyncOperation _async = SceneManager.LoadSceneAsync(_sceneName, LoadSceneMode.Single);
-        TDS_UIManager.Instance?.DisplayLoadingScreen(true);
-        while (!_async.isDone)
-        {
-            yield return null;
-        }
-        TDS_GameManager.CurrentSceneIndex = SceneManager.GetSceneByName(_sceneName).buildIndex;
-        if(PhotonNetwork.connected && PhotonNetwork.isMasterClient && PlayerSceneLoaded.Count > 0)
-        {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "PrepareOnlineSceneLoading"), new object[] { _sceneName, _nextUIState });
-            while (PlayerSceneLoaded.Any(p => p.Value == false))
-            {
-                yield return null; 
-            }
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "OnEverySceneReady"), new object[] { });
-        }
-        else if(PhotonNetwork.connected && !PhotonNetwork.isMasterClient)
-        {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "PlayerHasLoadScene"), new object[] { PhotonNetwork.player.ID });
-            while (!sceneIsReady)
-            {
-                yield return null; 
-            }
-        }
-        //Call OnEveryOneSceneLoaded online
-        OnEveryOneSceneLoaded();
-        TDS_UIManager.Instance.ActivateMenu(_nextUIState);
-    }
-
-    /// <summary>
     /// Called when the scene is loaded
     /// </summary>
     /// <param name="_scene">Scene loaded</param>
@@ -183,7 +137,6 @@ public class TDS_SceneManager : PunBehaviour
             PlayerSceneLoaded[_player] = true; 
         }
     }
-
     #endregion
 
     #region Local

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TDS_PunkBoss : TDS_Boss 
 {
-	/* TDS_PunkBoss :
+    /* TDS_PunkBoss :
 	 *
 	 *	#####################
 	 *	###### PURPOSE ######
@@ -33,22 +33,34 @@ public class TDS_PunkBoss : TDS_Boss
 	 *	-----------------------------------
 	*/
 
-	#region Events
+    #region Events
 
-	#endregion
+    #endregion
 
-	#region Fields / Properties
+    #region Fields / Properties
 
-	#endregion
+    #endregion
 
-	#region Methods
+    #region Methods
 
-	#region Original Methods
+    #region Original Methods
 
-	#endregion
+    #endregion
 
-	#region Unity Methods
-	#endregion
+    #region Overriden Methods
+    /// <summary>
+    /// Set its animation state to its taunt -> It will call the behaviour method
+    /// </summary>
+    public override void ActivateEnemy(bool _hasToTaunt = false)
+    {
+        if (_hasToTaunt)
+            SetAnimationState((int)EnemyAnimationState.Taunt);
+        else base.ActivateEnemy(_hasToTaunt);
+    }
+    #endregion
 
-	#endregion
+    #region Unity Methods
+    #endregion
+
+    #endregion
 }

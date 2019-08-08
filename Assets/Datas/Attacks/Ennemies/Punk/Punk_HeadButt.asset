@@ -15,11 +15,10 @@ MonoBehaviour:
   attackName: HeadButt
   Effect:
     EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
+    percentageHighest: 0
+    percentageLowest: 0
+    damagesMax: 0
+    damagesMin: 0
   damagesMax: 10
   damagesMin: 5
   description: Coup de boule!
@@ -28,3 +27,4 @@ MonoBehaviour:
   maxRange: 1.2
   minRange: 0
   probability: 33
+  canBreakGuard: 0
