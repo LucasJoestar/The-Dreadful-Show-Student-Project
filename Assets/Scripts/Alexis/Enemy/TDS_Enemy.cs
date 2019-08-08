@@ -491,7 +491,7 @@ public abstract class TDS_Enemy : TDS_Character
             //Orientate the agent
             if (isFacingRight && agent.Velocity.x < 0 || !isFacingRight && agent.Velocity.x > 0)
                 Flip();
-
+            
             //Increase the speed if necessary
             if (speedCurrent < speedMax)
             {
@@ -699,9 +699,10 @@ public abstract class TDS_Enemy : TDS_Character
         
         while (Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) >= 1)
         {
-            if(Vector3.Distance(targetLastPosition, playerTarget.transform.position) > agent.Radius)
+            Vector3 _targetedPosition = transform.position + _offset;
+            if (Vector3.Distance(targetLastPosition, playerTarget.transform.position) > agent.Radius && _targetedPosition.x < TDS_Camera.Instance.CurrentBounds.XMax && _targetedPosition.x > TDS_Camera.Instance.CurrentBounds.XMin)
             {
-                agent.SetDestination(transform.position + _offset); 
+                agent.SetDestination(_targetedPosition); 
             }
             else
             {
@@ -1104,6 +1105,11 @@ public abstract class TDS_Enemy : TDS_Character
             _position = GetAttackingPosition(out _hasToWander);
         }
         _position.x = Mathf.Clamp(_position.x, TDS_Camera.Instance.CurrentBounds.XMin + agent.Radius, TDS_Camera.Instance.CurrentBounds.XMax - agent.Radius); 
+        if(Vector3.Distance(_position, transform.position) <= agent.Radius)
+        {
+            SetEnemyState(EnemyState.Waiting);
+            return; 
+        }
         // Debug.Log(_position); 
         _pathComputed = agent.CheckDestination(_position);
         //If the path is computed, reach the end of the path

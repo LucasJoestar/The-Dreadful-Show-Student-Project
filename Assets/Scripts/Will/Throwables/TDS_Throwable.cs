@@ -122,6 +122,7 @@ public class TDS_Throwable : PunBehaviour
     /// Unity event called the first time this throwable is grabbed.
     /// </summary>
     [SerializeField] private UnityEvent OnGrabbedFirstTime = new UnityEvent();
+
     #endregion
 
     #region Methods
@@ -358,6 +359,11 @@ public class TDS_Throwable : PunBehaviour
             LoseDurability();
             owner = null;
         }
+    }
+
+    private void OnDestroy()
+    {
+        hitBox.Desactivate(); 
     }
     #endregion
 
