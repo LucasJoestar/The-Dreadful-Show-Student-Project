@@ -50,16 +50,17 @@ public class TDS_ThrowingAttackBehaviour : TDS_EnemyAttack
         if (thrownObjectName == string.Empty) return;
         GameObject _thrownObject = PhotonNetwork.Instantiate(thrownObjectName, _caster.HandsTransform.position, _caster.transform.rotation, 0);
         //Debug.LogError("Stop!");
-        if (!_thrownObject) return; 
-        if(_thrownObject.GetComponent<TDS_Throwable>())
+        if (!_thrownObject) return;
+
+        TDS_Throwable _throwable = _thrownObject.GetComponent<TDS_Throwable>();
+        if (_throwable)
         {
-            TDS_Throwable _throwable = _thrownObject.GetComponent<TDS_Throwable>();
              _caster.GrabObject(_throwable);
             if (_throwable.ThrowableAttackEffectType == AttackEffectType.BringCloser)
              {
-                _throwable.ObjectDurability = 1; 
-                 _throwable.HitBox.OnTouch += () => _caster.SetAnimationState((int)EnemyAnimationState.BringTargetCloser);
-                 _throwable.HitBox.OnStopAttack += () => _caster.SetAnimationState((int)EnemyAnimationState.EndBringingTargetCloser);
+                _throwable.ObjectDurability = 1;
+                //_throwable.HitBox.OnTouch += () => _caster.SetAnimationState((int)EnemyAnimationState.BringTargetCloser);
+                _throwable.HitBox.OnStopAttack += _caster.NoTargetToBrought;
             }
             _caster.ThrowObject(_caster.PlayerTarget.transform.position);
             if (!_caster.IsFacingRight) _thrownObject.transform.Rotate(Vector3.up, 180);

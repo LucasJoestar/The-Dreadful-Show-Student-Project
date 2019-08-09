@@ -86,6 +86,9 @@ public class TDS_DamageableEditor : Editor
     #endregion
 
     #region Variables
+    /// <summary>SerializedProperty for <see cref="TDS_Damageable.canBeMoved"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty canBeMoved = null;
+
     /// <summary>SerializedProperty for <see cref="TDS_Damageable.isDead"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isDead = null;
 
@@ -368,6 +371,8 @@ public class TDS_DamageableEditor : Editor
 
         TDS_EditorUtility.Toggle("Invulnerable", "When invulnerable, the object cannot take any damage", isInvulnerable);
 
+        TDS_EditorUtility.Toggle("Can be Moved", "If set to true, this damageable can suffer the effects of special attack effect moving opponent", canBeMoved);
+
         GUILayout.Space(3);
     }
     #endregion
@@ -387,6 +392,7 @@ public class TDS_DamageableEditor : Editor
         rigidbody = serializedObject.FindProperty("rigidbody");
         sprite = serializedObject.FindProperty("sprite");
 
+        canBeMoved = serializedObject.FindProperty("canBeMoved");
         isDead = serializedObject.FindProperty("isDead");
         isIndestructible = serializedObject.FindProperty("isIndestructible");
         isInvulnerable = serializedObject.FindProperty("IsInvulnerable");

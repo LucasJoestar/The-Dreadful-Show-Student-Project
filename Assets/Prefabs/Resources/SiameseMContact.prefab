@@ -392,8 +392,9 @@ MonoBehaviour:
   animator: {fileID: 1337013229762858618}
   burnEffect: {fileID: 0}
   collider: {fileID: 1337013229762858619}
+  rigidbody: {fileID: 1337013229762858612}
   sprite: {fileID: 1337013228292665679}
-  canBeBringedCloser: 1
+  canBeMoved: 1
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
@@ -401,12 +402,10 @@ MonoBehaviour:
   healthMax: 50
   hitBox: {fileID: 1337013230161517857}
   healthBar: {fileID: 0}
-  rigidbody: {fileID: 1337013229762858612}
   throwable: {fileID: 0}
   handsTransform: {fileID: 0}
   shadowTransform: {fileID: 1337013229731715419}
   isAttacking: 0
-  IsDown: 0
   isFacingRight: 0
   IsPacific: 0
   IsParalyzed: 0

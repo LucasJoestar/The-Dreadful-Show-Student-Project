@@ -212,8 +212,6 @@ public class TDS_SpawnerArea : PunBehaviour
             waveIndex++;
             OnNextWave?.Invoke();
         }
-
-        Debug.Log("Wave => " + waveIndex);
     }
 
     /// <summary>

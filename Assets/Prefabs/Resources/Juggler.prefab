@@ -856,8 +856,9 @@ MonoBehaviour:
   animator: {fileID: 2624376054273097410}
   burnEffect: {fileID: 0}
   collider: {fileID: 2728626678253547198}
+  rigidbody: {fileID: 2736424129501502712}
   sprite: {fileID: 2867292635500883872}
-  canBeBringedCloser: 1
+  canBeMoved: 1
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
@@ -865,12 +866,10 @@ MonoBehaviour:
   healthMax: 100
   hitBox: {fileID: 2643095751793456050}
   healthBar: {fileID: 0}
-  rigidbody: {fileID: 2736424129501502712}
   throwable: {fileID: 0}
   handsTransform: {fileID: 2681765645444836722}
   shadowTransform: {fileID: 2677940335517114888}
   isAttacking: 0
-  IsDown: 0
   isFacingRight: 1
   IsPacific: 0
   IsParalyzed: 0
@@ -910,7 +909,7 @@ MonoBehaviour:
   JumpForce: 400
   jumpMaximumTime: 1.5
   comboMax: 1
-  nextAttack: 0
+  nextAction: 0
   WhatIsObstacle:
     serializedVersion: 2
     m_Bits: 24577
@@ -924,7 +923,7 @@ MonoBehaviour:
   - {fileID: 239036294}
   - {fileID: 2044096473}
   isAiming: 0
-  aimingSpeedCoef: 0.35
+  aimingSpeedCoef: 0.7
   juggleSpeed: 1
   throwableDistanceFromCenter: 1
   whatCanAim:

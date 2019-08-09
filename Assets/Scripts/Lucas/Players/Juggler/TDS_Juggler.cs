@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -117,6 +118,13 @@ public class TDS_Juggler : TDS_Player
 	 *
 	 *	-----------------------------------
 	*/
+
+    #region Events
+    /// <summary>
+    /// Event called when the player grab an object or loose it.
+    /// </summary>
+    public new event Action<bool> OnHasObject = null;
+    #endregion
 
     #region Fields / Properties
 
@@ -714,6 +722,12 @@ public class TDS_Juggler : TDS_Player
             // Updates juggling informations
             UpdateJuggleParameters(false);
         }
+        else
+        {
+            // Triggers event
+            if (photonView.isMine) OnHasObject?.Invoke(false);
+        }
+
         if (CurrentThrowableAmount < MaxThrowableAmount)
         {
             // Activates the detection box
@@ -754,6 +768,9 @@ public class TDS_Juggler : TDS_Player
                 interactionBox.DisplayInteractionFeedback(false);
             }
         }
+
+        // Triggers event
+        if (photonView.isMine) OnHasObject?.Invoke(true);
 
         return true;
     }

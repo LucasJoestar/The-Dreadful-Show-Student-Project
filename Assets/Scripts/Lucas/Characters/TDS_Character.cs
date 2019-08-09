@@ -393,7 +393,10 @@ public abstract class TDS_Character : TDS_Damageable
     /// Method called when this character hit something.
     /// Override it to implement feedback and other things.
     /// </summary>
-    public virtual void HitCallback()
+    /// <param name="_opponentXCenter">X value of the opponent collider center position.</param>
+    /// <param name="_opponentYMax">Y value of the opponent collider max position.</param>
+    /// <param name="_opponentZ">Z value of the opponent position.</param>
+    public virtual void HitCallback(float _opponentXCenter, float _opponentYMax, float _opponentZ)
     {
     }
 

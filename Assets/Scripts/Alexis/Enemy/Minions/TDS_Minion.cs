@@ -165,6 +165,8 @@ public abstract class TDS_Minion : TDS_Enemy
             IsAttacking = true;
             _attack.ConsecutiveUses++;
             attacks.ToList().Where(a => a != _attack).ToList().ForEach(a => a.ConsecutiveUses = 0);
+
+            if (resetRagingThreshold != null) StopCoroutine(resetRagingThreshold);
             trembleAnimation = StartCoroutine(TrembleAnimation(_attack));
 
             return _attack.Cooldown;

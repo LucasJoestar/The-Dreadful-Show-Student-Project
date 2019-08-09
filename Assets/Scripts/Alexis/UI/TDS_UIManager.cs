@@ -136,10 +136,10 @@ public class TDS_UIManager : PunBehaviour
 
     #region Lifebars
     [Header("Lifebars")]
-    [SerializeField] private TDS_LifeBar beardLadyLifeBar;
-    [SerializeField] private TDS_LifeBar fatLadyLifeBar;
-    [SerializeField] private TDS_LifeBar jugglerLifeBar;
-    [SerializeField] private TDS_LifeBar fireEaterLifeBar;
+    [SerializeField] private TDS_PlayerLifeBar beardLadyLifeBar;
+    [SerializeField] private TDS_PlayerLifeBar fatLadyLifeBar;
+    [SerializeField] private TDS_PlayerLifeBar jugglerLifeBar;
+    [SerializeField] private TDS_PlayerLifeBar fireEaterLifeBar;
 
     #region Hidden Players Images
     [Header("Hidden Player's Images")]
@@ -1010,7 +1010,7 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_player"></param>
     public void SetPlayerLifeBar(TDS_Player _player)
     {
-        TDS_LifeBar _playerLifeBar = null;
+        TDS_PlayerLifeBar _playerLifeBar = null;
         switch (_player.PlayerType)
         {
             case PlayerType.Unknown:
@@ -1034,8 +1034,9 @@ public class TDS_UIManager : PunBehaviour
         _playerLifeBar.gameObject.SetActive(true);
         _playerLifeBar.SetOwner(_player);
         _player.HealthBar = _playerLifeBar;
-        _player.OnTakeDamage += _playerLifeBar.UpdateLifeBar;
-        _player.OnHeal += _playerLifeBar.UpdateLifeBar; 
+        _player.OnHealthChanged += _playerLifeBar.UpdateLifeBar;
+        if (_player is TDS_Juggler _juggler) _juggler.OnHasObject += _playerLifeBar.DisplayThrowObjectInfo;
+        else _player.OnHasObject += _playerLifeBar.DisplayThrowObjectInfo;
         if (_player == TDS_LevelManager.Instance.LocalPlayer && _player.photonView.isMine)
             _playerLifeBar.transform.SetSiblingIndex(0);
     }

@@ -321,7 +321,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &3812852251519213161
 BoxCollider:
@@ -397,8 +397,9 @@ MonoBehaviour:
   animator: {fileID: 3812852251519213160}
   burnEffect: {fileID: 0}
   collider: {fileID: 3812852251519213161}
+  rigidbody: {fileID: 3812852251519213166}
   sprite: {fileID: 3812852250889470823}
-  canBeBringedCloser: 1
+  canBeMoved: 1
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
@@ -406,12 +407,10 @@ MonoBehaviour:
   healthMax: 75
   hitBox: {fileID: 3812852251707248346}
   healthBar: {fileID: 0}
-  rigidbody: {fileID: 3812852251519213166}
   throwable: {fileID: 0}
   handsTransform: {fileID: 3812852250397780257}
   shadowTransform: {fileID: 3812852251016257647}
   isAttacking: 0
-  IsDown: 0
   isFacingRight: 0
   IsPacific: 0
   IsParalyzed: 0

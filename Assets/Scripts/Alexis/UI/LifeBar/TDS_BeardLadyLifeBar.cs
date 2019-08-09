@@ -55,7 +55,7 @@ public class TDS_BeardLadyLifeBar : TDS_PlayerLifeBar
         {
             base.SetOwner(_owner);
             if (!beardStateBar) return; 
-            if(PhotonNetwork.offlineMode || TDS_GameManager.LocalPlayer == PlayerType.BeardLady)
+            if (PhotonNetwork.offlineMode || TDS_GameManager.LocalPlayer == PlayerType.BeardLady)
             {
                 beardStateBar.gameObject.SetActive(true);
                 ((TDS_BeardLady)_owner).OnBeardStateChanged += ChangeBeardState; 
@@ -79,8 +79,10 @@ public class TDS_BeardLadyLifeBar : TDS_PlayerLifeBar
 
     #region Unity Methods
     // Awake is called when the script instance is being loaded
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         if (playerType != PlayerType.BeardLady)
             playerType = PlayerType.BeardLady;
     }

@@ -143,7 +143,7 @@ public class TDS_Attack : ScriptableObject
 
             // Bring target closer
             case AttackEffectType.BringCloser:
-                _target.BringCloser(_target.transform.position.x - _attacker.transform.position.x);
+                _target.BringCloser(_target.transform.position.x - (_attacker.Owner ? _attacker.Owner.transform.position.x : _attacker.transform.position.x));
                 if (_attacker.Owner is TDS_Enemy _enemy)
                 {
                     _enemy.SetAnimationState((int)EnemyAnimationState.BringTargetCloser);

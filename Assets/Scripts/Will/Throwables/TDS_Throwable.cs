@@ -220,7 +220,7 @@ public class TDS_Throwable : PunBehaviour
     protected virtual void LoseDurability()
     {
         ObjectDurability --;
-        if (ObjectDurability <= 0) DestroyThrowableObject();
+        if (ObjectDurability <= 0) Invoke("DestroyThrowableObject", .01f);
     }
 
     /// <summary>

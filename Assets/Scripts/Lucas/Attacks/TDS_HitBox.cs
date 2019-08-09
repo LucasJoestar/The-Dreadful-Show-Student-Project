@@ -65,11 +65,6 @@ public class TDS_HitBox : MonoBehaviour
     /// Called when touched something with an attack.
     /// </summary>
     public event Action OnTouch = null;
-
-    /// <summary>
-    /// Event called if the hit box didn't hit anything.
-    /// </summary>
-    public event Action OnTouchedNothing = null;
     #endregion
 
     #region Fields / Properties
@@ -177,7 +172,6 @@ public class TDS_HitBox : MonoBehaviour
     /// </summary>
     public void Desactivate()
     {
-        if (TouchedObjects.Count == 0) OnTouchedNothing?.Invoke();
         CurrentAttack = null;
         BonusDamages = 0;
         collider.enabled = false;
@@ -202,7 +196,7 @@ public class TDS_HitBox : MonoBehaviour
         // Call local method on the character who hit
         if (Owner)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", Owner.photonView.owner, TDS_RPCManager.GetInfo(Owner.photonView, Owner.GetType(), "HitCallback"), new object[] { });
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", Owner.photonView.owner, TDS_RPCManager.GetInfo(Owner.photonView, Owner.GetType(), "HitCallback"), new object[] { _target.Collider.bounds.center.x, _target.Collider.bounds.max.y, _target.transform.position.z });
         }
 
         // Triggers event

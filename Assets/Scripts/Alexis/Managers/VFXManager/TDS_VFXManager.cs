@@ -38,9 +38,13 @@ public class TDS_VFXManager : PunBehaviour
     #region FXs
     // FXs used during fights and other sweet moments
     [Header("Fight FXs")]
-    [SerializeField] private ParticleSystem[] hitFXs = new ParticleSystem[] { };
-    /// <summary>Fight FXs, used randomly when dealing damages to something or someone.</summary>
-    public ParticleSystem[] HitFXs { get { return hitFXs; } }
+    [SerializeField] private ParticleSystem[] opponentHitFXs = new ParticleSystem[] { };
+    /// <summary>Fight FXs, used randomly when dealing damages to an opponent.</summary>
+    public ParticleSystem[] OpponentHitFXs { get { return opponentHitFXs; } }
+
+    [SerializeField] private ParticleSystem[] playerHitFXs = new ParticleSystem[] { };
+    /// <summary>Fight FXs, used randomly when dealing damages to the local player.</summary>
+    public ParticleSystem[] PlayerHitFXs { get { return playerHitFXs; } }
 
     [SerializeField] private ParticleSystem kaboomFX = null;
     /// <summary>Fight FXs, used for explosions !.</summary>
@@ -182,14 +186,35 @@ public class TDS_VFXManager : PunBehaviour
     }
 
     /// <summary>
-    /// Spawns a random hit effect at a given position.
+    /// Spawns a random opponent hit effect at a given position.
     /// </summary>
     /// <param name="_position">Position where to spawn the FX.</param>
-    public void SpawnHitEffect(Vector3 _position)
+    public void SpawnOpponentHitEffect(Vector3 _position)
     {
-        if (hitFXs.Length > 0)
+        if (opponentHitFXs.Length > 0)
         {
-            Instantiate(hitFXs[Random.Range(0, hitFXs.Length)], _position, Quaternion.identity);
+            Instantiate(opponentHitFXs[Random.Range(0, opponentHitFXs.Length)], _position, Quaternion.identity);
+        }
+    }
+
+    /// <summary>
+    /// Spawns a random opponent hit effect at a given position.
+    /// </summary>
+    /// <param name="_position">Position where to spawn the FX.</param>
+    public void SpawnOpponentHitEffect(float _x, float _y, float _z)
+    {
+        SpawnOpponentHitEffect(new Vector3(_x, _y, _z));
+    }
+
+    /// <summary>
+    /// Spawns a random player hit effect at a given position.
+    /// </summary>
+    /// <param name="_position">Position where to spawn the FX.</param>
+    public void SpawnPlayerHitEffect(Vector3 _position)
+    {
+        if (playerHitFXs.Length > 0)
+        {
+            Instantiate(playerHitFXs[Random.Range(0, playerHitFXs.Length)], _position, Quaternion.identity);
         }
     }
     #endregion

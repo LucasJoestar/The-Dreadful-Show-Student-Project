@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+using Random = UnityEngine.Random;
+
 public class TDS_Player : TDS_Character, IPunObservable
 {
     /* TDS_Player :
@@ -234,15 +236,11 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// </summary>
     public event Action OnJump = null;
 
-    /// <summary>
-    /// Event called when taking an object.
-    /// </summary>
-    public event Action OnGrabObject = null;
 
     /// <summary>
-    /// Event called when throwing an object.
+    /// Event called when the player grab an object or loose it.
     /// </summary>
-    public event Action OnThrow = null;
+    public event Action<bool> OnHasObject = null;
     #endregion
 
     #region Fields / Properties
@@ -430,11 +428,6 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// </summary>
     [SerializeField] protected bool isPreparingAttack = false;
 
-    /// <summary>
-    /// Indicates if this player was invulnerable before starting parrying.
-    /// </summary>
-    protected bool wasInvulnerableBeforeParry = false;
-
     /// <summary>Backing field for <see cref="ComboCurrent"/>.</summary>
     [SerializeField] protected List<bool> comboCurrent = new List<bool>();
 
@@ -511,18 +504,18 @@ public class TDS_Player : TDS_Character, IPunObservable
         }
     }
 
-    /// <summary>Backing field for <see cref="NextAttack"/>.</summary>
-    [SerializeField] private int nextAttack = 0;
+    /// <summary>Backing field for <see cref="NextAction"/>.</summary>
+    [SerializeField] private int nextAction = 0;
 
     /// <summary>
-    /// Used as a buffer for the next player attack ; light attack if positive, hevay one if negative, and none if null.
+    /// Used as a buffer for the next player action ; 1 if light attack, 2 if heavy one, -1 if dodge, and of course, 0 for nothing.
     /// </summary>
-    public int NextAttack
+    public int NextAction
     {
-        get { return nextAttack; }
+        get { return nextAction; }
         set
         {
-            nextAttack = value;
+            nextAction = value;
             CancelInvoke("ResetNextAttack");
 
             if (value != 0)
@@ -612,21 +605,6 @@ public class TDS_Player : TDS_Character, IPunObservable
     }
 
     /// <summary>
-    /// Try to grab a throwable.
-    /// When grabbed, the object follows the character and can be thrown by this one.
-    /// </summary>
-    /// <param name="_throwable">Throwable to try to grab.</param>
-    /// <returns>Returns true if the throwable was successfully grabbed, false either.</returns>
-    public override bool GrabObject(TDS_Throwable _throwable)
-    {
-        if (!base.GrabObject(_throwable)) return false;
-
-        // Triggers event
-        OnGrabObject?.Invoke();
-        return true;
-    }
-
-    /// <summary>
     /// Removes the throwable from the character.
     /// </summary>
     /// <returns>Returns true if successfully removed the throwable, false otherwise.</returns>
@@ -639,6 +617,9 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         // Activates the detection box
         interactionBox.DisplayInteractionFeedback(true);
+
+        // Triggers event
+        if (photonView.isMine) OnHasObject?.Invoke(false);
 
         return true;
     }
@@ -658,19 +639,9 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Desactivates the detection box
         interactionBox.DisplayInteractionFeedback(false);
 
-        return true;
-    }
-
-    /// <summary>
-    /// Throws the weared throwable.
-    /// </summary>
-    /// <param name="_targetPosition">Position where the object should land.</param>
-    public override bool ThrowObject(Vector3 _targetPosition)
-    {
-        if (!base.ThrowObject(_targetPosition)) return false;
-
         // Triggers event
-        OnThrow?.Invoke();
+        if (photonView.isMine) OnHasObject?.Invoke(true);
+
         return true;
     }
     #endregion
@@ -705,8 +676,6 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         IsAttacking = true;
         OnStartAttack?.Invoke();
-
-        if (nextAttack != 0) NextAttack = 0;
 
         // Adds the current combo to the list
         ComboCurrent.Add(_isLight);
@@ -747,8 +716,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // If haven't yet reached the end of the combo, plan to reset it in X seconds if  not attacking before
         if (comboCurrent.Count < comboMax)
         {
-            if (nextAttack != 0) StartPreparingAttack(nextAttack.ToBool());
-            else if (comboCurrent.Count > 0)Invoke("BreakCombo", comboResetTime);
+            if ((nextAction < 1) && (comboCurrent.Count > 0)) Invoke("BreakCombo", comboResetTime);
         }
         else
         {
@@ -758,6 +726,9 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         // Activates the detection box
         interactionBox.DisplayInteractionFeedback(true);
+
+        // Executes next planned action
+        ExecuteNextAction();
     }
 
     /// <summary>
@@ -782,22 +753,17 @@ public class TDS_Player : TDS_Character, IPunObservable
     }
 
     /// <summary>
-    /// Resets the player planned next attack.
-    /// </summary>
-    public void ResetNextAttack() => NextAttack = 0;
-
-    /// <summary>
     /// Makes the player start preparing an attack. This is the method called just before calling the <see cref="PrepareAttack(bool)"/> coroutine.
     /// </summary>
     /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
     public virtual void StartPreparingAttack(bool _isLight)
     {
-        if (isPreparingAttack) return;
+        if (isPreparingAttack || (comboCurrent.Count == comboMax)) return;
 
         // If already attacking, just stock this attack as the next one
-        if (isAttacking)
+        if (isAttacking || isDodging)
         {
-            NextAttack = _isLight.ToSign();
+            NextAction = _isLight ? 1 : 2;
             return;
         }
 
@@ -893,6 +859,19 @@ public class TDS_Player : TDS_Character, IPunObservable
     }
 
     /// <summary>
+    /// Executes the next action.
+    /// </summary>
+    protected void ExecuteNextAction()
+    {
+        if (nextAction == 0) return;
+
+        if (nextAction < 0) StartDodge();
+        else StartPreparingAttack(nextAction == 1);
+
+        NextAction = 0;
+    }
+
+    /// <summary>
     /// Set the player in parry position.
     /// While parrying, the player avoid to take damages.
     /// </summary>
@@ -900,8 +879,6 @@ public class TDS_Player : TDS_Character, IPunObservable
     public virtual IEnumerator Parry()
     {
         // Parry
-        wasInvulnerableBeforeParry = IsInvulnerable;
-
         IsInvulnerable = true;
         isParrying = true;
 
@@ -922,9 +899,23 @@ public class TDS_Player : TDS_Character, IPunObservable
     }
 
     /// <summary>
+    /// Resets the player planned next action.
+    /// </summary>
+    public void ResetNextAction() => NextAction = 0;
+
+    /// <summary>
     /// Make the player dodge.
     /// </summary>
-    public virtual void StartDodge() => dodgeCoroutine = StartCoroutine(Dodge());
+    public virtual void StartDodge()
+    {
+        if (isDodging || isAttacking)
+        {
+            NextAction = -1;
+            return;
+        }
+
+        dodgeCoroutine = StartCoroutine(Dodge());
+    }
 
     /// <summary>
     /// Stops the current dodge if dodging.
@@ -951,6 +942,9 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         OnStopDodgeOneShot?.Invoke();
         OnStopDodgeOneShot = null;
+
+        // Executes next planned action
+        ExecuteNextAction();
     }
 
     /// <summary>
@@ -981,7 +975,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Stop parrying
         SetAnimOnline(PlayerAnimState.NotParrying);
         isParrying = false;
-        IsInvulnerable = wasInvulnerableBeforeParry;
+        IsInvulnerable = false;
 
         // Activates the detection box
         interactionBox.DisplayInteractionFeedback(true);
@@ -1070,7 +1064,6 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// </summary>
     protected override void Die()
     {
-        Debug.Log("Die");
         base.Die();
 
         if (!photonView.isMine) return;
@@ -1089,9 +1082,15 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// Method called when this character hit something.
     /// Override it to implement feedback and other things.
     /// </summary>
-    public override void HitCallback()
+    /// <param name="_opponentXCenter">X value of the opponent collider center position.</param>
+    /// <param name="_opponentYMax">Y value of the opponent collider max position.</param>
+    /// <param name="_opponentZ">Z value of the opponent position.</param>
+    public override void HitCallback(float _opponentXCenter, float _opponentYMax, float _opponentZ)
     {
-        base.HitCallback();
+        base.HitCallback(_opponentXCenter, _opponentYMax, _opponentZ);
+
+        // Instantiate cool FX
+        TDS_VFXManager.Instance.SpawnOpponentHitEffect(new Vector3(_opponentXCenter, _opponentYMax + .25f, _opponentZ) + ((Vector3)Random.insideUnitCircle * .5f));
 
         // Screen shake guy !
         TDS_Camera.Instance.StartScreenShake(comboCurrent.Count < 3 ? .01f : .012f, .125f);
@@ -1138,6 +1137,9 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         if (photonView.isMine)
         {
+            // Spawn hit effect
+            TDS_VFXManager.Instance.SpawnPlayerHitEffect(new Vector3(collider.bounds.center.x, collider.bounds.max.y + .25f, transform.position.z) + ((Vector3)Random.insideUnitCircle * .5f));
+
             // If preparing an attack, stop it
             if (isPreparingAttack) StopPreparingAttack();
 
@@ -1807,16 +1809,16 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <returns>Returns an int indicating at which step the method returned :
     /// 0 if everything went good ;
     /// A negative number if an action has been performed ;
-    /// 1 if dodging, parrying or preparing an attack ;
+    /// 1 if parrying or preparing an attack ;
     /// 2 if having a throwable ;
-    /// and 3 if attacking.</returns>
+    /// 3 if attacking or dodging.</returns>
     public virtual int CheckActionsInputs()
     {
         // If dodging, parrying or attacking, do not perform action, and return 1
-        if (isDodging || isParrying || isPreparingAttack) return 1;
+        if (isParrying || isPreparingAttack) return 1;
 
         // Check non-agressive actions
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.INTERACT_BUTTON) && !isAttacking)
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.INTERACT_BUTTON) && !isAttacking && !isDodging)
         {
             Interact();
             return -1;
@@ -1824,6 +1826,12 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         // If having a throwable, return 2
         if (throwable && (playerType != PlayerType.Juggler)) return 2;
+
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.DODGE_BUTTON) && !IsParalyzed)
+        {
+            StartDodge();
+            return -1;
+        }
 
         // Checks potentially agressives actions
         if (!IsPacific && isGrounded)
@@ -1838,6 +1846,9 @@ public class TDS_Player : TDS_Character, IPunObservable
                 StartPreparingAttack(false);
                 return -1;
             }
+
+            if (isDodging) return 3;
+
             if (TDS_InputManager.GetButtonDown(TDS_InputManager.CATCH_BUTTON))
             {
                 Catch();
@@ -1856,14 +1867,9 @@ public class TDS_Player : TDS_Character, IPunObservable
         }
 
         // If attacking, return 3
-        if (isAttacking) return 3;
+        if (isAttacking || isDodging) return 3;
 
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.DODGE_BUTTON) && !IsParalyzed)
-        {
-            StartDodge();
-            return -1;
-        }
-        if (TDS_InputManager.GetButton(TDS_InputManager.PARRY_BUTTON) && isGrounded)
+        if (TDS_InputManager.GetButton(TDS_InputManager.PARRY_BUTTON) && isGrounded && !IsInvulnerable)
         {
             StartCoroutine(Parry());
             return -1;

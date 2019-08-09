@@ -45,7 +45,7 @@ public class TDS_EnemyLifeBar : TDS_LifeBar
         {
             TDS_UIManager.Instance.StopFilling(this);
         }
-        UnityEngine.Object.Destroy(this.gameObject);
+        Destroy(gameObject);
         owner.OnDie -= DestroyLifeBar;
     }
 
@@ -73,7 +73,7 @@ public class TDS_EnemyLifeBar : TDS_LifeBar
     public void FollowOwner()
     {
         if (!owner) return;
-        transform.position = Vector3.MoveTowards(transform.position, owner.transform.position + offset, Time.deltaTime * 10);
+        transform.position = Vector3.MoveTowards(transform.position, owner.transform.position + offset, Time.deltaTime * 25);
     }
 
     public override void UpdateLifeBar(int _currentHealth)

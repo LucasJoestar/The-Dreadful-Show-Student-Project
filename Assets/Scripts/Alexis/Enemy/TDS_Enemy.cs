@@ -931,7 +931,16 @@ public abstract class TDS_Enemy : TDS_Character
     {
         if (BringingTarget) BringingTarget.OnStopBringingCloser -= TargetBrought;
         BringingTarget = null;
-        SetAnimationState((int)EnemyAnimationState.BringTargetCloser); 
+        SetAnimationState((int)EnemyAnimationState.EndBringingTargetCloser); 
+    }
+
+    /// <summary>
+    /// Called at the end of a bring target attack.
+    /// </summary>
+    public void NoTargetToBrought()
+    {
+        if (BringingTarget) return;
+        SetAnimationState((int)EnemyAnimationState.EndBringingTargetCloser);
     }
 
     #endregion
