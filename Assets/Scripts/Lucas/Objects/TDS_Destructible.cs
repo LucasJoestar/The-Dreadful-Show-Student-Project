@@ -1,4 +1,6 @@
-﻿public class TDS_Destructible : TDS_Damageable
+﻿using UnityEngine;
+
+public class TDS_Destructible : TDS_Damageable
 {
     /* TDS_Damageable :
 	 *
@@ -94,6 +96,24 @@
     public void SetAnimationState(int _state)
     {
         SetAnimationState((DestructibleAnimState)_state);
+    }
+    #endregion
+
+    #region Effects
+    /// <summary>
+    /// Project this damageable in the air.
+    /// </summary>
+    /// <param name="_toRight">Should the damageable be pushed to the right of left.</param>
+    /// <returns>Returns true if successfully projected this damageable in the air, false otherwise.</returns>
+    public override bool Project(bool _toRight)
+    {
+        if (!base.Project(_toRight)) return false;
+
+        if (rigidbody)
+        {
+            rigidbody.AddForce(new Vector3(_toRight.ToSign() * 200, 500, 0));
+        }
+        return true;
     }
     #endregion
 

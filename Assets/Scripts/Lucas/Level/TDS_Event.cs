@@ -158,6 +158,11 @@ public class TDS_Event
 
         switch (eventType)
         {
+            // Activate UI curtains
+            case CustomEventType.ActivateCurtains:
+                TDS_UIManager.Instance.SwitchCurtains(true);
+                break;
+
             // Make a camera movement
             case CustomEventType.CameraMovement:
                 yield return TDS_Camera.Instance.LookTarget(eventTransform.position.x, eventTransform.position.y, eventTransform.position.z, cameraWaitTime, cameraSpeedCoef);
@@ -217,6 +222,18 @@ public class TDS_Event
             // Triggers a particular quote of the Narrator
             case CustomEventType.Narrator:
                 TDS_UIManager.Instance.ActivateNarratorBox(TDS_GameManager.GetDialog(eventString).Skip(1).ToArray());
+                break;
+
+            // Remove UI curtains
+            case CustomEventType.RemoveCurtains:
+                TDS_UIManager.Instance.SwitchCurtains(false);
+                break;
+
+            // Switch UI arrow
+            case CustomEventType.SwitchArrow:
+                TDS_UIManager.Instance.SwitchArrow();
+                yield return new WaitForSeconds(2.5f);
+                TDS_UIManager.Instance.SwitchArrow();
                 break;
 
             // Unfreeze local player

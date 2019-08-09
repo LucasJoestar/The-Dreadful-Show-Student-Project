@@ -78,6 +78,9 @@ public class TDS_DamageableEditor : Editor
     /// <summary>SerializedProperty for <see cref="TDS_Damageable.collider"/> of type <see cref="BoxCollider"/>.</summary>
     private SerializedProperty collider = null;
 
+    /// <summary>SerializedProperty for <see cref="TDS_Character.rigidbody"/> of type <see cref="Rigidbody"/>.</summary>
+    private SerializedProperty rigidbody = null;
+
     /// <summary>SerializedProperty for <see cref="TDS_Damageable.sprite"/> of type <see cref="SpriteRenderer"/>.</summary>
     private SerializedProperty sprite = null;
     #endregion
@@ -193,6 +196,7 @@ public class TDS_DamageableEditor : Editor
     {
         TDS_EditorUtility.ObjectField("Animator", "Animator of this object", animator, typeof(Animator));
         TDS_EditorUtility.ObjectField("Collider", "Non-trigger BoxCollider of this object, used to detect collisions", collider, typeof(BoxCollider));
+        TDS_EditorUtility.ObjectField("Rigidbody", "Rigidbody of this character, used for physic simulation", rigidbody, typeof(Rigidbody));
         TDS_EditorUtility.ObjectField("Sprite", "Main SpriteRenderer used to render this object", sprite, typeof(SpriteRenderer));
 
         GUILayout.Space(3);
@@ -380,6 +384,7 @@ public class TDS_DamageableEditor : Editor
         // Get the serializedProperties from the serializedObject
         animator = serializedObject.FindProperty("animator");
         collider = serializedObject.FindProperty("collider");
+        rigidbody = serializedObject.FindProperty("rigidbody");
         sprite = serializedObject.FindProperty("sprite");
 
         isDead = serializedObject.FindProperty("isDead");

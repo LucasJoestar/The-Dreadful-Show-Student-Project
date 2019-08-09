@@ -135,12 +135,6 @@ public abstract class TDS_Character : TDS_Damageable
         }
     }
 
-    /// <summary>
-    /// Rigidbody of this character.
-    /// Mainly used to project this one in the air.
-    /// </summary>
-    [SerializeField] protected new Rigidbody rigidbody = null;
-
     /// <summary>Backing field for <see cref="Throwable"/>.</summary>
     [SerializeField] protected TDS_Throwable throwable = null;
 
@@ -183,7 +177,7 @@ public abstract class TDS_Character : TDS_Damageable
     /// <summary>
     /// Indicates if the character is down on the ground.
     /// </summary>
-    public bool IsDown = false;
+    public bool IsDown { get; protected set; } = false;
 
     /// <summary>Backing field for <see cref="IsFacingRight"/>.</summary>
     [SerializeField] protected bool isFacingRight = true;
@@ -207,6 +201,11 @@ public abstract class TDS_Character : TDS_Damageable
     /// If paralyzed, the character cannot move.
     /// </summary>
     public bool IsParalyzed = false;
+
+    /// <summary>
+    /// Indicates if this character is currently projected.
+    /// </summary>
+    public bool IsProjected { get; protected set; } = false;
 
     /// <summary>Backing field for <see cref="AimAngle"/>.</summary>
     [SerializeField] protected float aimAngle = 45;
@@ -614,6 +613,30 @@ public abstract class TDS_Character : TDS_Damageable
     public virtual void GetUp()
     {
         IsDown = false;
+    }
+
+    /// <summary>
+    /// Apply knockback on this damageable.
+    /// </summary>
+    /// <param name="_toRight">Should the damageable be pushed to the right of left.</param>
+    /// <returns>Returns true if successfully applied knockback on this damageable, false otherwise.</returns>
+    public override bool Knockback(bool _toRight)
+    {
+        if (IsDown) return false;
+        return base.Knockback(_toRight);
+    }
+
+    /// <summary>
+    /// Project this damageable in the air.
+    /// </summary>
+    /// <param name="_toRight">Should the damageable be pushed to the right of left.</param>
+    /// <returns>Returns true if successfully projected this damageable in the air, false otherwise.</returns>
+    public override bool Project(bool _toRight)
+    {
+        if (IsDown || !base.Project(_toRight)) return false;
+
+        IsDown = true;
+        return true;
     }
 
     /// <summary>

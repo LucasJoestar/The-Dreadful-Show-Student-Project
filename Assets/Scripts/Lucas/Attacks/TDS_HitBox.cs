@@ -182,9 +182,12 @@ public class TDS_HitBox : MonoBehaviour
         BonusDamages = 0;
         collider.enabled = false;
         TouchedObjects.Clear();
-        IsActive = false;
 
-        OnStopAttack?.Invoke();
+        if (IsActive)
+        {
+            IsActive = false;
+            OnStopAttack?.Invoke();
+        }
     }
 
     /// <summary>

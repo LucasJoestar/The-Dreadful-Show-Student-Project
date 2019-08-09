@@ -430,6 +430,11 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// </summary>
     [SerializeField] protected bool isPreparingAttack = false;
 
+    /// <summary>
+    /// Indicates if this player was invulnerable before starting parrying.
+    /// </summary>
+    protected bool wasInvulnerableBeforeParry = false;
+
     /// <summary>Backing field for <see cref="ComboCurrent"/>.</summary>
     [SerializeField] protected List<bool> comboCurrent = new List<bool>();
 
@@ -895,7 +900,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     public virtual IEnumerator Parry()
     {
         // Parry
-        bool _wasInvulnerable = IsInvulnerable;
+        wasInvulnerableBeforeParry = IsInvulnerable;
 
         IsInvulnerable = true;
         isParrying = true;
@@ -913,15 +918,7 @@ public class TDS_Player : TDS_Character, IPunObservable
             yield return null;
         }
 
-        // Stop parrying
-        SetAnimOnline(PlayerAnimState.NotParrying);
-        isParrying = false;
-        IsInvulnerable = _wasInvulnerable;
-
-        // Activates the detection box
-        interactionBox.DisplayInteractionFeedback(true);
-
-        OnStopParry?.Invoke();
+        StopParry();
     }
 
     /// <summary>
@@ -972,6 +969,24 @@ public class TDS_Player : TDS_Character, IPunObservable
 
             rigidbody.velocity = new Vector3(_xVelocity, rigidbody.velocity.y, rigidbody.velocity.z);
         }
+    }
+
+    /// <summary>
+    /// Stops the player from parrying.
+    /// </summary>
+    public void StopParry()
+    {
+        if (!isParrying) return;
+
+        // Stop parrying
+        SetAnimOnline(PlayerAnimState.NotParrying);
+        isParrying = false;
+        IsInvulnerable = wasInvulnerableBeforeParry;
+
+        // Activates the detection box
+        interactionBox.DisplayInteractionFeedback(true);
+
+        OnStopParry?.Invoke();
     }
 
     /// <summary>

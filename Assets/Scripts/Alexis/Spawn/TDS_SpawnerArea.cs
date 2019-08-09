@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events; 
 using Photon;
 
-[RequireComponent(typeof(BoxCollider), typeof(PhotonView))]
+[RequireComponent(typeof(PhotonView))]
 public class TDS_SpawnerArea : PunBehaviour
 {
     /* TDS_SpawnerArea :
@@ -186,7 +186,7 @@ public class TDS_SpawnerArea : PunBehaviour
         if (waveIndex == waves.Count && !isLooping)
         {
             OnAreaDesactivated?.Invoke();
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "CallOnAreaDesactivatedEvent"), new object[] { });
+            TDS_UIManager.Instance.SwitchCurtains(false);
             return;
         }
         else if(waveIndex == waves.Count)
@@ -211,8 +211,9 @@ public class TDS_SpawnerArea : PunBehaviour
         {
             waveIndex++;
             OnNextWave?.Invoke();
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "CallOnNextWaveEvent"), new object[] { });
         }
+
+        Debug.Log("Wave => " + waveIndex);
     }
 
     /// <summary>
@@ -237,8 +238,21 @@ public class TDS_SpawnerArea : PunBehaviour
     {
         if (PhotonNetwork.isMasterClient && isReady && !isActivated)
         {
+            Action _removeEnemies = null;
+            foreach (TDS_Enemy _enemy in spawnedEnemies)
+            {
+                if (_enemy.IsDead)
+                {
+                    _removeEnemies += () => spawnedEnemies.Remove(_enemy);
+                    _removeEnemies += () => deadEnemies.Add(_enemy);
+                }
+                else _enemy.Area = this;
+            }
+
+            _removeEnemies?.Invoke();
+
             OnAreaActivated?.Invoke();
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "CallOnAreaActivatedEvent"), new object[] { });
+            TDS_UIManager.Instance.SwitchCurtains(true);
         }
     }
 
@@ -251,7 +265,6 @@ public class TDS_SpawnerArea : PunBehaviour
         if(waveIndex == 0)
         {
             OnStartFight?.Invoke();
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "CallOnFightStartEvent"), new object[] { });
         }
         spawnedEnemies.ForEach(e => StartCoroutine(WaitAndActivate(e, waves[waveIndex].IsActivatedByEvent)));
     }
@@ -283,18 +296,8 @@ public class TDS_SpawnerArea : PunBehaviour
         {
             waveIndex++;
             OnNextWave?.Invoke();
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "CallOnNextWaveEvent"), new object[] { });
         }
     }
-
-    /// <summary>
-    /// Call the events OnAreaActivated, OnAreaDesactivated and OnNextWave 
-    /// used when online to call the events on non-master clients
-    /// </summary>
-    private void CallOnAreaActivatedEvent() => OnAreaActivated?.Invoke();
-    private void CallOnAreaDesactivatedEvent() => OnAreaDesactivated?.Invoke();
-    private void CallOnNextWaveEvent() => OnNextWave?.Invoke();
-    private void CallOnFightStartEvent() => OnStartFight?.Invoke(); 
     #endregion
 
     #region Unity Methods
@@ -305,18 +308,12 @@ public class TDS_SpawnerArea : PunBehaviour
         if (!PhotonNetwork.isMasterClient) return;
         OnNextWave.AddListener(ActivateWave);
         OnAreaActivated.AddListener(ActivateWave);
-        isReady = true; 
+        isReady = true;
     }
 
     private void Start()
     {
-        OnAreaActivated.AddListener(() => isActivated = true); 
-        if (TDS_UIManager.Instance)
-        {
-            OnStartFight.AddListener(TDS_UIManager.Instance.SwitchCurtains);
-            OnAreaDesactivated.AddListener(TDS_UIManager.Instance.SwitchCurtains);
-        }
-
+        OnAreaActivated.AddListener(() => isActivated = true);
     }
 
     private void OnTriggerEnter(Collider _coll)

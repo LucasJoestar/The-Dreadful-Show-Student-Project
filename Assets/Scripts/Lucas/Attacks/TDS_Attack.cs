@@ -154,10 +154,12 @@ public class TDS_Attack : ScriptableObject
 
             // Apply recoil to target
             case AttackEffectType.Knockback:
+                //_target.Knockback(_target.transform.position.x >= _attacker.transform.position.x);
                 break;
 
             // Project the target in the air
             case AttackEffectType.Project:
+                //_target.Project(_target.transform.position.x >= _attacker.transform.position.x);
                 break;
 
             default:

@@ -314,7 +314,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &224328410374799850
 RectTransform:
   m_ObjectHideFlags: 0
@@ -438,7 +438,8 @@ MonoBehaviour:
   dialogBoxText: {fileID: 114351647027826770}
   narratorBoxText: {fileID: 114066093410239440}
   errorBoxText: {fileID: 7679916318928881577}
-  enemyHealthBar: {fileID: 0}
+  enemyHealthBar: {fileID: 9034453790947018085, guid: cb56309dbe766e64e8cf68902cd8724c,
+    type: 3}
   bossHealthBar: {fileID: 4646570336659563410}
 --- !u!114 &6736605381441817245
 MonoBehaviour:

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Linq; 
 using UnityEngine;
 
@@ -53,18 +51,86 @@ public abstract class TDS_Minion : TDS_Enemy
     [SerializeField] protected float resetRageDelay = 1; 
 
     protected Coroutine resetRagingThreshold = null;
+
+    protected Coroutine trembleAnimation = null;
     #endregion
 
     #region Methods
 
     #region Original Methods
-
     /// <summary>
     /// Set the boolean has Evolved to true
     /// </summary>
     protected virtual void Evolve()
     {
         hasEvolved = true; 
+    }
+
+    protected IEnumerator ResetRage()
+    {
+        yield return new WaitForSeconds(resetRageDelay);
+        resetRagingThreshold = null; 
+        ragingCount = 0; 
+    }
+
+    protected virtual void ResetRageOnAttack()
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+
+        // Reset treshold if needed
+        if (resetRagingThreshold != null)
+        {
+            StopCoroutine(resetRagingThreshold);
+            resetRagingThreshold = null;
+        }
+        ragingCount = 0;
+    }
+
+    protected IEnumerator TrembleAnimation(TDS_EnemyAttack _attack)
+    {
+        transform.position = new Vector3(transform.position.x - .05f, transform.position.y, transform.position.z);
+        yield return new WaitForSeconds(.03f);
+
+        for (int _i = 0; _i < 7; _i++)
+        {
+            transform.position = new Vector3(transform.position.x + .1f, transform.position.y, transform.position.z);
+            yield return new WaitForSeconds(.03f);
+            transform.position = new Vector3(transform.position.x - .1f, transform.position.y, transform.position.z);
+            yield return new WaitForSeconds(.03f);
+        }
+
+        transform.position = new Vector3(transform.position.x + .05f, transform.position.y, transform.position.z);
+
+        SetAnimationState(_attack.AnimationID);
+    }
+    #endregion
+
+    #region Overridden Methods
+    /// <summary>
+    /// Override the ApplyDamagesBehaviour Method
+    /// </summary>
+    /// <param name="_damage"></param>
+    /// <param name="_position"></param>
+    protected override void ApplyDamagesBehaviour(int _damage, Vector3 _position)
+    {
+        if ((ragingCount > ragingThreshold) || IsDown)
+        {
+            SetAnimationState((int)EnemyAnimationState.LightHit);
+            return;
+        }
+        else
+        {
+            base.ApplyDamagesBehaviour(_damage, _position);
+            ragingCount++;
+
+            if (trembleAnimation != null)
+            {
+                StopCoroutine(trembleAnimation);
+                trembleAnimation = null;
+            }
+            if (resetRagingThreshold != null) StopCoroutine(resetRagingThreshold);
+            resetRagingThreshold = StartCoroutine(ResetRage());
+        }
     }
 
     /// <summary>
@@ -77,54 +143,42 @@ public abstract class TDS_Minion : TDS_Enemy
         if (Area) Area.RemoveEnemy(this);
     }
 
-    /// <summary>
-    /// Override the ApplyDamagesBehaviour Method
-    /// </summary>
-    /// <param name="_damage"></param>
-    /// <param name="_position"></param>
-    protected override void ApplyDamagesBehaviour(int _damage, Vector3 _position)
+    public override bool PutOnTheGround()
     {
-        if(ragingCount > ragingThreshold)
+        if ((ragingCount > ragingThreshold) || !base.PutOnTheGround()) return false;
+        SetAnimationState((int)EnemyAnimationState.LightHit);
+
+        return true;
+    }
+
+    protected override float StartAttack()
+    {
+        // If making a counter attack, make the enemy tremble a bit before attacking
+        if (ragingCount > ragingThreshold)
         {
-            SetAnimationState((int)EnemyAnimationState.LightHit);
-            return; 
-        }
-        else
-        {
-            base.ApplyDamagesBehaviour(_damage, _position);
-            ragingCount++;
-            if (resetRagingThreshold != null)
+            TDS_EnemyAttack _attack = GetAttack();
+            if (_attack == null)
             {
-                StopCoroutine(resetRagingThreshold);
-                resetRagingThreshold = null;
+                return 0;
             }
-            resetRagingThreshold = StartCoroutine(ResetRage());
+
+            IsAttacking = true;
+            _attack.ConsecutiveUses++;
+            attacks.ToList().Where(a => a != _attack).ToList().ForEach(a => a.ConsecutiveUses = 0);
+            trembleAnimation = StartCoroutine(TrembleAnimation(_attack));
+
+            return _attack.Cooldown;
         }
+        return base.StartAttack();
     }
-
-    public override IEnumerator CastAttack()
-    {
-        yield return base.CastAttack();
-        if (resetRagingThreshold != null)
-        {
-            StopCoroutine(resetRagingThreshold);
-            resetRagingThreshold = null;
-        }
-        ragingCount = 0;
-    }
-
-    protected IEnumerator ResetRage()
-    {
-        yield return new WaitForSeconds(resetRageDelay);
-        resetRagingThreshold = null; 
-        ragingCount = 0; 
-    }
-    #endregion
-
-    #region Overridden Methods
     #endregion
 
     #region Unity Methods
+    protected override void Awake()
+    {
+        base.Awake();
+        hitBox.OnStopAttack += ResetRageOnAttack;
+    }
     #endregion
 
     #endregion

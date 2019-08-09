@@ -166,7 +166,10 @@ public enum CustomEventType
     UnityEventOnline,
     FreezePlayerForCutscene,
     UnfreezePlayerFromCutscene,
-    MovePlayerAroundPoint
+    MovePlayerAroundPoint,
+    ActivateCurtains,
+    RemoveCurtains,
+    SwitchArrow
 }
 
 /// <summary>

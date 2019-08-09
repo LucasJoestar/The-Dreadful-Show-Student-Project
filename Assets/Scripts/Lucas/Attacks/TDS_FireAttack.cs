@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-
 using Random = UnityEngine.Random;
 
 [CreateAssetMenu(fileName = "Fire Attack", menuName = "Attacks/Fire Attack", order = 1), Serializable]

@@ -1129,10 +1129,10 @@ public class TDS_UIManager : PunBehaviour
     /// <summary>
     /// Display or remove the curtains in the canvas
     /// </summary>
-    public void SwitchCurtains()
+    public void SwitchCurtains(bool _areVisible)
     {
         if (!curtainsAnimator) return;
-        curtainsAnimator.SetTrigger("Switch"); 
+        curtainsAnimator.SetBool("Visible", _areVisible); 
     }
 
     /// <summary>

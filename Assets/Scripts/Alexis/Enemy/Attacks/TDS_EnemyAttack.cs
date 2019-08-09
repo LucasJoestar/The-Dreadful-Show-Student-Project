@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Enemy_Attack", menuName = "Attacks/Enemy Attack", order = 2), Serializable]
@@ -145,6 +143,16 @@ public class TDS_EnemyAttack : TDS_Attack
         // CREATE AN INHERITED CLASS TO IMPLEMENT A NEW BEHAVIOUR
     }
 
-    
+    /// <summary>
+    /// Attacks the target, by inflicting damages and applying effects.
+    /// </summary>
+    /// <param name="_attacker">The HitBox attacking the target.</param>
+    /// <param name="_target">Target to attack.</param>
+    /// <returns>Returns -2 if target didn't take any damages, -1 if the target is dead, 0 if no effect could be applied, and 1 if everything went good.</returns>
+    public override int Attack(TDS_HitBox _attacker, TDS_Damageable _target)
+    {
+        if (canBreakGuard && (_target is TDS_Player _player)) _player.StopParry();
+        return base.Attack(_attacker, _target);
+    }
     #endregion 
 }

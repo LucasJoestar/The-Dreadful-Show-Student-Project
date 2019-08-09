@@ -842,7 +842,7 @@ public abstract class TDS_Enemy : TDS_Character
         if (!canBeDown || isDead || IsDown || !PhotonNetwork.isMasterClient) return false;
         if (!base.PutOnTheGround()) return false;
 
-        //StopAll();
+        StopAll();
         SetEnemyState(EnemyState.None);
         SetAnimationState((int)EnemyAnimationState.Grounded);
 
@@ -929,7 +929,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public void TargetBrought()
     {
-        BringingTarget.OnStopBringingCloser -= TargetBrought;
+        if (BringingTarget) BringingTarget.OnStopBringingCloser -= TargetBrought;
         BringingTarget = null;
         SetAnimationState((int)EnemyAnimationState.BringTargetCloser); 
     }

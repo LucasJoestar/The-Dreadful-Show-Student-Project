@@ -163,6 +163,12 @@ public abstract class TDS_Damageable : PunBehaviour
     public BoxCollider Collider { get { return collider; } }
 
     /// <summary>
+    /// Rigidbody of this damageable.
+    /// Mainly used to project this one in the air.
+    /// </summary>
+    [SerializeField] protected new Rigidbody rigidbody = null;
+
+    /// <summary>
     /// The sprite renderer used to render this object in the scene.
     /// </summary>
     [SerializeField] protected SpriteRenderer sprite = null;
@@ -170,9 +176,9 @@ public abstract class TDS_Damageable : PunBehaviour
 
     #region Variables
     /// <summary>
-    /// Indicates if theis damageable can be bringed closer.
+    /// Indicates if this damageable can be moved by attack effects.
     /// </summary>
-    [SerializeField] protected bool canBeBringedCloser = true;
+    [SerializeField] protected bool canBeMoved = true;
 
     /// <summary>Backing field for <see cref="isDead"/></summary>
     [SerializeField] protected bool isDead = false;
@@ -298,6 +304,11 @@ public abstract class TDS_Damageable : PunBehaviour
     protected Coroutine bringingCloserCoroutine = null;
 
     /// <summary>
+    /// Coroutine used for knockback effect, pushing the damageable backward.
+    /// </summary>
+    protected Coroutine knockbackCoroutine = null;
+
+    /// <summary>
     /// Coroutines for the burning effect.
     /// </summary>
     protected Dictionary<int, Coroutine> burningCoroutines = new Dictionary<int, Coroutine>();
@@ -397,6 +408,8 @@ public abstract class TDS_Damageable : PunBehaviour
     #endregion
 
     #region Effects
+
+    #region Bring Closer
     /// <summary>
     /// Bring this damageable closer from a certain distance.
     /// </summary>
@@ -404,8 +417,9 @@ public abstract class TDS_Damageable : PunBehaviour
     public virtual bool BringCloser(float _distance)
     {
         // If can't be bringed closer, just return
-        if (!canBeBringedCloser) return false;
+        if (!canBeMoved) return false;
 
+        if (knockbackCoroutine != null) StopKnockback();
         if (bringingCloserCoroutine != null) StopBringingCloser();
 
         bringingCloserCoroutine = StartCoroutine(BringingCloser(_distance));
@@ -434,6 +448,21 @@ public abstract class TDS_Damageable : PunBehaviour
         StopBringingCloser();
     }
 
+    /// <summary>
+    /// Method called when stopped being bringed closer.
+    /// </summary>
+    protected virtual void StopBringingCloser()
+    {
+        if (bringingCloserCoroutine != null)
+        {
+            StopCoroutine(bringingCloserCoroutine);
+            bringingCloserCoroutine = null;
+        }
+        OnStopBringingCloser?.Invoke();
+    }
+    #endregion
+
+    #region Burn
     /// <summary>
     /// Make this damageable burn.
     /// </summary>
@@ -513,15 +542,6 @@ public abstract class TDS_Damageable : PunBehaviour
     }
 
     /// <summary>
-    /// Method called when stopped being bringed closer.
-    /// </summary>
-    protected virtual void StopBringingCloser()
-    {
-        if (bringingCloserCoroutine != null) StopCoroutine(bringingCloserCoroutine);
-        OnStopBringingCloser?.Invoke();
-    }
-
-    /// <summary>
     /// Stops this object from burning.
     /// </summary>
     protected virtual void StopBurning()
@@ -537,6 +557,72 @@ public abstract class TDS_Damageable : PunBehaviour
 
         DestroyFireEffect();
     }
+    #endregion
+
+    #region Knockback
+    /// <summary>
+    /// Apply knockback on this damageable.
+    /// </summary>
+    /// <param name="_toRight">Should the damageable be pushed to the right of left.</param>
+    /// <returns>Returns true if successfully applied knockback on this damageable, false otherwise.</returns>
+    public virtual bool Knockback(bool _toRight)
+    {
+        if (!canBeMoved || (bringingCloserCoroutine != null)) return false;
+
+        knockbackCoroutine = StartCoroutine(KnockbackCoroutine(_toRight));
+        return true;
+    }
+
+    /// <summary>
+    /// Apply knockback on this damageable.
+    /// </summary>
+    /// <param name="_toRight">Should the damageable be pushed to the right of left.</param>
+    /// <returns>Returns true if successfully applied knockback on this damageable, false otherwise.</returns>
+    protected virtual IEnumerator KnockbackCoroutine(bool _toRight)
+    {
+        float _direction = _toRight.ToSign() * .05f;
+        float _timer = 0;
+
+        while (_timer < .15f)
+        {
+            transform.position = new Vector3(transform.position.x + _direction, transform.position.y, transform.position.z);
+
+            yield return null;
+            _timer += Time.deltaTime;
+        }
+
+        knockbackCoroutine = null;
+    }
+
+    /// <summary>
+    /// Stops knockback.
+    /// </summary>
+    public virtual void StopKnockback()
+    {
+        if (knockbackCoroutine != null)
+        {
+            StopCoroutine(knockbackCoroutine);
+            knockbackCoroutine = null;
+        }
+    }
+    #endregion
+
+    #region Project
+    /// <summary>
+    /// Project this damageable in the air.
+    /// </summary>
+    /// <param name="_toRight">Should the damageable be pushed to the right of left.</param>
+    /// <returns>Returns true if successfully projected this damageable in the air, false otherwise.</returns>
+    public virtual bool Project(bool _toRight)
+    {
+        if (!canBeMoved) return false;
+
+        if (bringingCloserCoroutine != null) StopBringingCloser();
+
+        return true;
+    }
+    #endregion
+
     #endregion
 
     #endregion
