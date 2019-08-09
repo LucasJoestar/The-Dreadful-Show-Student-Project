@@ -394,7 +394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiState: 0
-  isloadingNextScene: 1
+  isloadingNextScene: 0
   canvasScreen: {fileID: 223353565664060574}
   canvasWorld: {fileID: 223073297202121174}
   mainMenuParent: {fileID: 2075652433212547262}
@@ -405,7 +405,7 @@ MonoBehaviour:
   dialogBoxParent: {fileID: 1981866161474560}
   errorBoxParent: {fileID: 6959399801087439567}
   narratorBoxParent: {fileID: 1205917953095670}
-  loadingScreenParent: {fileID: 1948310997285336671}
+  loadingScreenParent: {fileID: 3743057546027973510}
   gameOverScreenParent: {fileID: 6338402234991283160}
   beardLadyLifeBar: {fileID: 8776489771077698336}
   fatLadyLifeBar: {fileID: 4412605557078002276}
@@ -519,14 +519,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c7ca649391236e49b43b1b27f81463f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitFXs:
-  - {fileID: 7094986414530080138, guid: a89862d7df0a2154fa0b54fc8a849499, type: 3}
-  - {fileID: 7445347248329031590, guid: 9245738a4dedaa74f9844b0e75643799, type: 3}
-  - {fileID: 3016156247356828596, guid: 75ab3b8d3fbc5ea4f876928d02c34bce, type: 3}
-  - {fileID: 5211721441314228817, guid: e206ba083e11258489c1531d6b75089a, type: 3}
-  - {fileID: 8469455672546463900, guid: db235d0311025b44daefdc0c1cfa0855, type: 3}
-  - {fileID: 1811133466299983596, guid: 9ac7926d24395d94fb0c814286a44a57, type: 3}
-  - {fileID: 3446121272505700507, guid: 395b695260094364bba657c179cc918f, type: 3}
+  opponentHitFXs: []
+  playerHitFXs: []
   kaboomFX: {fileID: 7879058467074326629, guid: d5fabea95f68b344682cf1455e3d798f,
     type: 3}
   poofFX: {fileID: 2547923030815362738, guid: e65ae402451c8f944b81b8f19ac820ad, type: 3}
@@ -6520,7 +6514,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3151412083342445920
 RectTransform:
   m_ObjectHideFlags: 0

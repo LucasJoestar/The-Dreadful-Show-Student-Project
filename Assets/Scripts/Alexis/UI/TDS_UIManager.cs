@@ -476,6 +476,27 @@ public class TDS_UIManager : PunBehaviour
         TDS_NetworkManager.Instance.LeaveRoom();
         ActivateMenu((int)UIState.InRoomSelection);
     }
+
+    private IEnumerator PrepareConnectionToPhoton()
+    {
+        DisplayLoadingScreen(true);
+        float _timer = 30; 
+        while (_timer > 0)
+        {
+            if(PhotonNetwork.insideLobby)
+            {
+                yield return new WaitForSeconds(.25f);
+                DisplayLoadingScreen(false);
+                ActivateMenu(UIState.InRoomSelection); 
+                yield break; 
+            }
+            yield return null; 
+            _timer -= Time.deltaTime; 
+        }
+        DisplayLoadingScreen(false);
+        ActivateMenu(UIState.InMainMenu);
+        yield break;
+    }
     #endregion
 
     #region void
@@ -547,6 +568,12 @@ public class TDS_UIManager : PunBehaviour
                 Selectable.allSelectables.FirstOrDefault()?.Select();
                 break;
             case UIState.InRoomSelection:
+                if (!PhotonNetwork.connected)
+                {
+                    StartCoroutine(PrepareConnectionToPhoton());
+                    break; 
+                }
+
                 mainMenuParent.SetActive(false);
                 roomSelectionMenuParent.SetActive(true);
                 characterSelectionMenuParent.SetActive(false);
