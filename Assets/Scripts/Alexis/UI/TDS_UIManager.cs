@@ -194,24 +194,23 @@ public class TDS_UIManager : PunBehaviour
     #endregion
 
     #region Room Selection Menu
-    [Header("RoomSelectionMenu")]
-    [SerializeField] private TDS_RoomSelectionElement[] roomSelectionElements = new TDS_RoomSelectionElement[] { }; 
+    [SerializeField] private TDS_RoomSelectionManager roomSelectionManager = null;
+    public TDS_RoomSelectionManager RoomSelectionManager { get { return roomSelectionManager; } }
     #endregion
 
-    #region CharacterSelectionMenus
-    [Header("Character Selection Menu")]
-    [SerializeField] private TDS_CharacterMenuSelection characterSelectionMenu;
-    public TDS_CharacterMenuSelection CharacterSelectionMenu { get { return characterSelectionMenu; }}
+    #region Character Selection Menu
+    [SerializeField] private TDS_CharacterSelectionManager characterSelectionManager = null;
+    public TDS_CharacterSelectionManager CharacterSelectionManager { get { return characterSelectionManager; } }
+    #endregion
+
+
     #region TextField
-    [SerializeField] private TMP_Text playerNameField;
+        [SerializeField] private TMP_Text playerNameField;
     public TMP_Text PlayerNameField
     {
         get { return playerNameField; }
     }
     [SerializeField] private TMP_Text playerCountText;
-
-
-    #endregion
     #endregion
 
     #region Buttons
@@ -298,9 +297,10 @@ public class TDS_UIManager : PunBehaviour
                 CancelAction = () => ActivateMenu(UIState.InMainMenu); ;
                 break;
             case UIState.InCharacterSelection:
-                CancelAction = CancelInCharacterSelection;
-                SubmitAction = SubmitInCharacterSelection;
-                HorizontalAxisAction = characterSelectionMenu.LocalElement.ChangeImage;
+                if (!characterSelectionManager) break;
+                CancelAction = characterSelectionManager.CancelInCharacterSelection;
+                SubmitAction = characterSelectionManager.SubmitInCharacterSelection;
+                // HorizontalAxisAction = characterSelectionManager.CharacterSelectionMenu.LocalElement.ChangeImage;
                 break;
             case UIState.InGame:
                 break;
@@ -411,37 +411,6 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
-    /// Update the player count when the player is in the room selection Menu
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator UpdatePlayerCount()
-    {
-        while (!PhotonNetwork.connected)
-        {
-            Debug.Log("Not Connected");
-            yield return new WaitForSeconds(1);
-        }
-        RoomInfo[] _infos = new RoomInfo[] { };
-        while (uiState == UIState.InRoomSelection)
-        {
-            if (!PhotonNetwork.connected) yield break;
-            _infos = PhotonNetwork.GetRoomList();
-            roomSelectionElements.ToList().ForEach(e => e.PlayerCount = 0);
-            for (int i = 0; i < _infos.Length; i++)
-            {
-                for (int j = 0; j < roomSelectionElements.Length; j++)
-                {
-                    if (roomSelectionElements[j].RoomName == _infos[i].Name)
-                    {
-                        roomSelectionElements[j].PlayerCount = _infos[i].PlayerCount;
-                    }
-                }
-            }
-            yield return new WaitForSeconds(2);
-        }
-    }
-
-    /// <summary>
     /// Display all quotes in the narrator box
     /// </summary>
     /// <param name="_quotes">Quotes to display</param>
@@ -459,24 +428,7 @@ public class TDS_UIManager : PunBehaviour
         OnNarratorDialogEnded?.Invoke();
         narratorCoroutine = null; 
     }
-
-    private IEnumerator PreapreLeavingRoom()
-    {
-        characterSelectionMenu.LocalElement.ClearToggle();
-        while (characterSelectionMenu.LocalElement.ReadyToggle.animator.IsInTransition(0))
-        {
-            yield return null; 
-        }
-        yield return new WaitForSeconds(.5f);
-
-        characterSelectionMenu.ClearMenu();
-        TDS_GameManager.LocalPlayer = PlayerType.Unknown;
-        yield return null;
-
-        TDS_NetworkManager.Instance.LeaveRoom();
-        ActivateMenu((int)UIState.InRoomSelection);
-    }
-
+    
     private IEnumerator PrepareConnectionToPhoton()
     {
         DisplayLoadingScreen(true);
@@ -582,7 +534,7 @@ public class TDS_UIManager : PunBehaviour
                 gameOverScreenParent.SetActive(false);
                 Selectable.allSelectables.FirstOrDefault()?.Select();
 
-                StartCoroutine(UpdatePlayerCount());
+                if(roomSelectionManager) StartCoroutine(roomSelectionManager.UpdatePlayerCount());
                 if (checkInputCoroutine != null)
                     StopCoroutine(checkInputCoroutine);
                 checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InRoomSelection)); 
@@ -651,22 +603,6 @@ public class TDS_UIManager : PunBehaviour
             StopCoroutine(narratorCoroutine);
         }
         narratorCoroutine = StartCoroutine(PlayNarratorQuotes(_text)); 
-    }
-
-    /// <summary>
-    /// Action called when the player use the cancel button in the character selection menu 
-    /// if the player is ready, unlock its character, else leave the room
-    /// </summary>
-    private void CancelInCharacterSelection()
-    {
-        if (uiState != UIState.InCharacterSelection) return;
-        if(TDS_GameManager.LocalIsReady)
-        {
-            SelectCharacter();
-            characterSelectionMenu.LocalElement.TriggerToggle();
-            return; 
-        }
-        StartLeavingRoom(); 
     }
 
     /// <summary>
@@ -821,7 +757,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void LoadLevel()
     {
-        characterSelectionMenu.LocalElement.ClearToggle(); 
+        characterSelectionManager.CharacterSelectionMenu.LocalElement.ClearToggle(); 
         if (isloadingNextScene)
         {
             //if (PhotonNetwork.isMasterClient)
@@ -835,25 +771,6 @@ public class TDS_UIManager : PunBehaviour
             TDS_LevelManager.Instance.Spawn();
             ActivateMenu(UIState.InGame);
         }
-    }
-
-    /// <summary>
-    /// Called when the toggle is pressed
-    /// Update the ready settings
-    /// If the player has an Unknown PlayerType, the game cannot start
-    /// </summary>
-    public void OnPlayerReady(bool _isReady)
-    {
-        TDS_GameManager.LocalIsReady = _isReady;
-
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetPlayerReady"), new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady });
-        SetPlayerReady(PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady); 
-        if (!PhotonNetwork.isMasterClient)
-        {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady });
-            return; 
-        }
-        UpdateReadySettings(PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady); 
     }
 
     /// <summary>
@@ -926,19 +843,6 @@ public class TDS_UIManager : PunBehaviour
         PhotonPlayer _player = PhotonPlayer.Find(_playerID);
         if (!TDS_GameManager.PlayerListReady.ContainsKey(_player)) return;
         TDS_GameManager.PlayerListReady.Remove(_player); 
-    }
-
-    /// <summary>
-    /// Select a new character (used in UnityEvent)
-    /// </summary>
-    /// <param name="_newPlayerType">Index of the enum PlayerType</param>
-    public void SelectCharacter()
-    {
-        int _newPlayerType = (int)characterSelectionMenu.LocalElement.CurrentSelection.CharacterType; 
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdatePlayerSelectionInfo"), new object[] { (int)TDS_GameManager.LocalPlayer, _newPlayerType, PhotonNetwork.player.ID });
-
-        TDS_GameManager.LocalPlayer = (PlayerType)_newPlayerType == TDS_GameManager.LocalPlayer ? PlayerType.Unknown : (PlayerType)_newPlayerType;
-        OnPlayerReady(TDS_GameManager.LocalPlayer != PlayerType.Unknown); 
     }
 
     /// <summary>
@@ -1017,6 +921,15 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Set the new name of the player (Used in Unity Event)
+    /// </summary>
+    public void SetNewName()
+    {
+        if (playerNameField)
+            TDS_NetworkManager.Instance.PlayerNamePrefKey = playerNameField.text;
+    }
+
+    /// <summary>
     /// Set the game in pause menu
     /// If the player is alone, freeze the time
     /// </summary>
@@ -1068,20 +981,6 @@ public class TDS_UIManager : PunBehaviour
             _playerLifeBar.transform.SetSiblingIndex(0);
     }
 
-    public void SetPlayerReady(int _playerID, bool _isReady)
-    {
-        characterSelectionMenu.LockPlayer(_playerID, _isReady);
-    }
-
-    /// <summary>
-    /// Set the new name of the player (Used in Unity Event)
-    /// </summary>
-    public void SetNewName()
-    {
-        if (playerNameField)
-            TDS_NetworkManager.Instance.PlayerNamePrefKey = playerNameField.text;
-    }
-
     /// <summary>
     /// Set the new name of the player as a string
     /// </summary>
@@ -1094,12 +993,7 @@ public class TDS_UIManager : PunBehaviour
             return; 
         }
         TDS_NetworkManager.Instance.PlayerNamePrefKey = _newName;
-        if (playerNameField) playerNameField.text = _newName; 
-    }
-
-    public void SetRoomInterractable(bool _areInterractable)
-    {
-        roomSelectionElements.ToList().ForEach(e => e.RoomSelectionButton.interactable = _areInterractable);
+        //if (playerNameField) playerNameField.text = _newName; 
     }
 
     public void StartLeavingRoom()
@@ -1108,7 +1002,7 @@ public class TDS_UIManager : PunBehaviour
         {
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "StartLeavingRoom"), new object[] { });
         }
-        StartCoroutine(PreapreLeavingRoom());
+        StartCoroutine(characterSelectionManager.PreapreLeavingRoom());
     }
 
     /// <summary>
@@ -1121,27 +1015,6 @@ public class TDS_UIManager : PunBehaviour
         {
             if(filledImages[_lifeBar] != null) StopCoroutine(filledImages[_lifeBar]);
             filledImages.Remove(_lifeBar);
-        }
-    }
-
-    /// <summary>
-    /// Action called when the player use the submit button in the character selection menu 
-    /// Lock the character when the player is not ready 
-    /// When the player is master client and everyone is ready, launch the game
-    /// </summary>
-    private void SubmitInCharacterSelection()
-    {
-        if (uiState != UIState.InCharacterSelection) return;
-        if (!TDS_GameManager.LocalIsReady)
-        {
-            SelectCharacter();
-            characterSelectionMenu.LocalElement.TriggerToggle(); 
-            return;
-        }
-        if (PhotonNetwork.isMasterClient && launchGameButton && !TDS_GameManager.PlayerListReady.Any(p => p.Value == false) && TDS_GameManager.LocalIsReady)
-        {
-            TDS_NetworkManager.Instance.LockRoom();
-            LoadLevel();
         }
     }
 
@@ -1173,59 +1046,13 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
-    /// Unlock a player on the local client
-    /// Called when a player leave the room
-    /// </summary>
-    /// <param name="_playerType">Type of the player to disconnect</param>
-    public void UnlockPlayerType(PlayerType _playerType)
-    {
-        characterSelectionMenu.UnlockCharacterOnline((PlayerType)_playerType); 
-    }
-
-    /// <summary>
     /// When a player select a new character, display the image of the character on the others players
     /// </summary>
     /// <param name="_player">Updated player</param>
     /// <param name="_newCharacterSelectionIndex">New Index</param>
     public void UpdateLocalCharacterIndex(PhotonPlayer _player, int _newCharacterSelectionIndex)
     {
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateOnlineCharacterIndex"), new object[] { _player.ID, _newCharacterSelectionIndex });
-    }
-
-    /// <summary>
-    /// Used Online, update the selection index on others players
-    /// </summary>
-    /// <param name="_player">id of the updated player</param>
-    /// <param name="_newCharacterSelectionIndex">new Index</param>
-    public void UpdateOnlineCharacterIndex(int _player, int _newCharacterSelectionIndex) => characterSelectionMenu.UpdateMenuOnline(_player, _newCharacterSelectionIndex);
-
-    public void UpdateOnlineCharacterType(int _player, int _newCharacterSelectionType)
-    {
-        characterSelectionMenu.UpdateMenuOnline(_player, (PlayerType)_newCharacterSelectionType);
-    }
-
-    /// <summary>
-    /// Display the number of players in the room and their names
-    /// If the player is the master client, also display the launch button
-    /// </summary>
-    /// <param name="_playerCount">Number of players</param>
-    /// <param name="_displayLaunchButton">LaunchButton</param>
-    public void UpdatePlayerCount(int _playerCount, bool _displayLaunchButton, PhotonPlayer[] _players)
-    {
-        if (uiState != UIState.InCharacterSelection) return;
-        if (playerCountText) playerCountText.text = $"Players : {_playerCount}/4";
-        if (launchGameButton) launchGameButton.gameObject.SetActive(_displayLaunchButton);
-    }
-
-    /// <summary>
-    /// Update the player selection informations 
-    /// Updated each time a player select a character
-    /// </summary>
-    /// <param name="_previousPlayerType"></param>
-    /// <param name="_nextPlayerType"></param>
-    public void UpdatePlayerSelectionInfo(int _previousPlayerType, int _nextPlayerType, int _playerID)
-    {
-        characterSelectionMenu.UpdateOnlineSelection((PlayerType)_previousPlayerType, (PlayerType)_nextPlayerType, _playerID);
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, typeof(TDS_CharacterSelectionManager), "UpdateOnlineCharacterIndex"), new object[] { _player.ID, _newCharacterSelectionIndex });
     }
 
     /// <summary>
@@ -1242,26 +1069,24 @@ public class TDS_UIManager : PunBehaviour
         {
             TDS_GameManager.PlayerListReady[_player] = _isReady;
         }
-        else
-        {
-            Debug.LogError("Player not found in Dico"); 
-        }
         if (uiState == UIState.InCharacterSelection && launchGameButton) launchGameButton.interactable = !TDS_GameManager.PlayerListReady.Any(p => p.Value == false) && TDS_GameManager.LocalIsReady;
         if (uiState == UIState.InGameOver && buttonRestartGame) buttonRestartGame.interactable = !TDS_GameManager.PlayerListReady.Any(p => p.Value == false);
     }
 
-    public void ReceiveOnConnectionInfo(int _playerID, bool _isReady, int _playerType)
+    /// <summary>
+    /// Display the number of players in the room and their names
+    /// If the player is the master client, also display the launch button
+    /// </summary>
+    /// <param name="_playerCount">Number of players</param>
+    /// <param name="_displayLaunchButton">LaunchButton</param>
+    public void UpdatePlayerCount(int _playerCount, bool _displayLaunchButton, PhotonPlayer[] _players)
     {
-        UpdateOnlineCharacterType(_playerID, _playerType);
-        SetPlayerReady(_playerID, _isReady);
-        UpdateReadySettings(_playerID, _isReady);
+        if (uiState != UIState.InCharacterSelection) return;
+        if (playerCountText) playerCountText.text = $"Players : {_playerCount}/4";
+        if (launchGameButton) launchGameButton.gameObject.SetActive(_displayLaunchButton);
     }
     #endregion
 
-    private void SendInfoToNewPlayer(PhotonPlayer _newPlayer)
-    {
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", _newPlayer, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ReceiveOnConnectionInfo"), new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady, (int)characterSelectionMenu.LocalElement.CurrentSelection.CharacterType });
-    }
     #endregion
 
     #region Unity Methods
@@ -1279,6 +1104,7 @@ public class TDS_UIManager : PunBehaviour
             Destroy(gameObject);
             return; 
         }
+        if (!characterSelectionManager) characterSelectionManager = GetComponent<TDS_CharacterSelectionManager>(); 
         uiGameObject = transform.GetChild(0).gameObject;
     }
 
@@ -1296,41 +1122,10 @@ public class TDS_UIManager : PunBehaviour
         ActivateMenu(uiState);
     }
 
-    public override void OnJoinedLobby()
-    {
-        base.OnJoinedLobby();
-        SetRoomInterractable(true);
-    }
-
-    public override void OnDisconnectedFromPhoton()
-    {
-        roomSelectionElements.ToList().ForEach(e => e.RoomSelectionButton.interactable = false);
-    }
-
     public override void OnReceivedRoomListUpdate()
     {
         base.OnReceivedRoomListUpdate(); 
     }
-
-    public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
-    {
-        base.OnPhotonPlayerConnected(newPlayer);
-        characterSelectionMenu.AddNewPlayer(newPlayer);
-        SendInfoToNewPlayer(newPlayer);
-    }
-
-    public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
-    {
-        base.OnPhotonPlayerDisconnected(otherPlayer);
-        characterSelectionMenu.RemovePlayer(otherPlayer); 
-    }
-
-    public override void OnJoinedRoom()
-    {
-        base.OnJoinedRoom();
-        PhotonNetwork.playerList.ToList().ForEach(p => characterSelectionMenu.AddNewPlayer(p)); 
-    }
-
     #endregion
 
     #endregion

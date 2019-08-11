@@ -38,6 +38,8 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
 	*/
 
     #region Fields / Properties
+    private TDS_CharacterSelectionManager characterSelectionManager = null; 
+    
     private PhotonPlayer photonPlayer = null;
     public PhotonPlayer PhotonPlayer { get { return photonPlayer; } }
 
@@ -104,7 +106,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     {
         if(!CurrentSelection.CanBeSelected)
         {
-            TDS_UIManager.Instance.UnlockPlayerType(CurrentSelection.CharacterType); 
+            characterSelectionManager.UnlockPlayerType(CurrentSelection.CharacterType); 
         }
         //LockElement(false); 
         photonPlayer = null;
@@ -233,7 +235,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
 
         }
         readyToggle.interactable = true;
-        readyToggle.onValueChanged.AddListener(delegate { TDS_UIManager.Instance.SelectCharacter(); } );
+        readyToggle.onValueChanged.AddListener(delegate { characterSelectionManager.SelectCharacter(); } );
     }
 
     /// <summary>
@@ -302,5 +304,14 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         readyToggle.GetComponent<Animator>().SetTrigger(readyToggle.animationTriggers.pressedTrigger);
     }
     #endregion
+
+    #region Unity Events 
+    private void Start()
+    {
+        characterSelectionManager = TDS_UIManager.Instance.CharacterSelectionManager; 
+    }
+    #endregion 
+
     #endregion
+
 }

@@ -163,7 +163,7 @@ public class TDS_NetworkManager : PunBehaviour
             return;
         }
 
-        TDS_UIManager.Instance.SetRoomInterractable(false); 
+        TDS_UIManager.Instance.RoomSelectionManager.SetRoomsInterractable(false); 
 
         if (roomName == string.Empty) roomName = "RoomTest";
         PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions() { MaxPlayers = 4 }, null);
@@ -256,7 +256,6 @@ public class TDS_NetworkManager : PunBehaviour
         }
     }
 
-    #if UNITY_EDITOR
     private void OnGUI()
     {
         GUILayout.Box(PhotonNetwork.GetPing().ToString()); 
@@ -265,7 +264,6 @@ public class TDS_NetworkManager : PunBehaviour
         GUILayout.Box(PhotonNetwork.isMasterClient.ToString());
         GUILayout.Box(TDS_GameManager.LocalPlayer.ToString());
     }
-    #endif
 
     void Start ()
     {

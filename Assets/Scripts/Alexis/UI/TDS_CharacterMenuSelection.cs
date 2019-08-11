@@ -111,9 +111,8 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     /// </summary>
     /// <param name="_previousType">Previous Type of the player</param>
     /// <param name="_newType">new Type of the player</param>
-    public void UpdateOnlineSelection(PlayerType _previousType, PlayerType _newType, int _playerID)
+    public void UpdateOnlineSelection(PlayerType _newType, int _playerID)
     {
-        characterSelectionElements.ToList().ForEach(e => e.CharacterSelectionImages.Where(i => i.CharacterType == _previousType).ToList().ForEach(i => i.CanBeSelected = true));
         characterSelectionElements.ToList().ForEach(e => e.CharacterSelectionImages.Where(i => i.CharacterType == _newType).ToList().ForEach(i => i.CanBeSelected = false));
         TDS_CharacterSelectionElement _element = characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).FirstOrDefault(); 
         if(_element)
@@ -124,12 +123,22 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     }
 
     /// <summary>
-    /// Unlick the character when a player leave the game
+    /// Unlock the character when a player leave the game
     /// </summary>
     /// <param name="_playerType">Player type to unlock</param>
     public void UnlockCharacterOnline(PlayerType _playerType)
     {
         characterSelectionElements.ToList().ForEach(e => e.CharacterSelectionImages.Where(i => i.CharacterType == _playerType).ToList().ForEach(i => i.CanBeSelected = true));
+    }
+
+    /// <summary>
+    /// Unlock the character when a player leave the game
+    /// </summary>
+    /// <param name="_playerType">Player type to unlock</param>
+    public void UnlockCharacterOnline(int _playerType)
+    {
+        Debug.LogError("Can be selected => " + _playerType);
+        characterSelectionElements.ToList().ForEach(e => e.CharacterSelectionImages.Where(i => i.CharacterType == (PlayerType)_playerType).ToList().ForEach(i => i.CanBeSelected = true));
     }
 
     /// <summary>
@@ -153,6 +162,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     {
         characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).FirstOrDefault().DisplayImageOfType(_playerType);
     }
+
     #endregion
 
 }
