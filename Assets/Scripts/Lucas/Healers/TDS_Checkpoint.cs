@@ -150,7 +150,7 @@ public class TDS_Checkpoint : PunBehaviour
             SetAnimState(CheckpointAnimState.Resurrect);
 
             if (!_player.IsFacingRight) _player.Flip();
-            _player.transform.position = transform.position + spawnPosition + (Vector3.right * 1);
+            _player.transform.position = spawnPosition;
 
             _player.RespawnPlayer();
 

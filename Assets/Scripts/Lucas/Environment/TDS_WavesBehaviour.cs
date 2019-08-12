@@ -38,7 +38,7 @@ public class TDS_WavesBehaviour : MonoBehaviour
 
         foreach (Animator _animator in _animators)
         {
-            _animator.Play("Waves", 0, Random.Range(.001f, .999f));
+            _animator.Play("Anim", 0, Random.Range(.001f, .999f));
             _animator.SetFloat("Speed", Random.Range(.9f, 1.1f));
         }
 

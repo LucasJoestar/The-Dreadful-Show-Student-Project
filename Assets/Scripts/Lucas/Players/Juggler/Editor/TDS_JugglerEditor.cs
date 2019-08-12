@@ -81,6 +81,9 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
     /// <summary>SerializedProperties for <see cref="TDS_Juggler.whatCanAim"/> of type <see cref="LayerMask"/>.</summary>
     private SerializedProperty whatCanAim = null;
 
+    /// <summary>SerializedProperties for <see cref="TDS_Juggler.aimDetectTags"/> of type <see cref="Tags"/>.</summary>
+    private SerializedProperty aimDetectTags = null;
+
     /// <summary>SerializedProperties for <see cref="TDS_Juggler.juggleTransformIdealLocalPosition"/> of type <see cref="Vector3"/>.</summary>
     private SerializedProperty juggleTransformIdealLocalPosition = null;
     #endregion
@@ -314,6 +317,7 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
         GUILayout.Space(3);
 
         TDS_EditorUtility.PropertyField("What Can Aim", "Indicates what the player can aim at", whatCanAim);
+        TDS_EditorUtility.PropertyField("Aim Detected Tags", "Detected tags as target when freely aiming", aimDetectTags);
 
         GUILayout.Space(2);
 
@@ -357,6 +361,7 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
         juggleSpeed = serializedObject.FindProperty("juggleSpeed");
         throwableDistanceFromCenter = serializedObject.FindProperty("throwableDistanceFromCenter");
         whatCanAim = serializedObject.FindProperty("whatCanAim");
+        aimDetectTags = serializedObject.FindProperty("aimDetectTags");
         juggleTransformIdealLocalPosition = serializedObject.FindProperty("juggleTransformIdealLocalPosition");
 
         // Loads the editor folded & unfolded values of this script

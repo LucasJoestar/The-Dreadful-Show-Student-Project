@@ -1014,6 +1014,7 @@ public class TDS_UIManager : PunBehaviour
     public void SetJugglerAimTargetAnim(JugglerAimTargetAnimState _state)
     {
         jugglerAimTargetAnimator.SetInteger("State", (int)_state);
+        Debug.Log("Set => " + _state);
     }
 
     /// <summary>

@@ -126,6 +126,16 @@ public class TDS_SpawnerArea : PunBehaviour
     /// </summary>
     [SerializeField] private List<TDS_Enemy> spawnedEnemies = new List<TDS_Enemy>();
 
+    /// <summary>
+    /// Get an array of all active enemies for all activated spawn areas.
+    /// </summary>
+    public static TDS_Enemy[] ActiveEnemies { get { return activatedAreas.SelectMany(a => a.spawnedEnemies).ToArray(); } }
+
+    /// <summary>
+    /// List of the currently activated spawn areas.
+    /// </summary>
+    private static List<TDS_SpawnerArea> activatedAreas = new List<TDS_SpawnerArea>();
+
     [SerializeField] List<TDS_Wave> waves = new List<TDS_Wave>();
     #endregion
 
@@ -185,6 +195,8 @@ public class TDS_SpawnerArea : PunBehaviour
         if (!PhotonNetwork.isMasterClient) return;  
         if (waveIndex == waves.Count && !isLooping)
         {
+            activatedAreas.Remove(this);
+
             OnAreaDesactivated?.Invoke();
             TDS_UIManager.Instance.SwitchCurtains(false);
             return;
@@ -249,8 +261,9 @@ public class TDS_SpawnerArea : PunBehaviour
 
             _removeEnemies?.Invoke();
 
+            activatedAreas.Add(this);
+
             OnAreaActivated?.Invoke();
-            TDS_UIManager.Instance.SwitchCurtains(true);
         }
     }
 
@@ -263,6 +276,7 @@ public class TDS_SpawnerArea : PunBehaviour
         if(waveIndex == 0)
         {
             OnStartFight?.Invoke();
+            TDS_UIManager.Instance.SwitchCurtains(true);
         }
         spawnedEnemies.ForEach(e => StartCoroutine(WaitAndActivate(e, waves[waveIndex].IsActivatedByEvent)));
     }

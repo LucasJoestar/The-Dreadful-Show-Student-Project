@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TDS_Juggler : TDS_Player
@@ -129,6 +130,11 @@ public class TDS_Juggler : TDS_Player
     #region Fields / Properties
 
     #region Components & References
+    /// <summary>
+    /// Target object of the Juggler.
+    /// </summary>
+    private Collider targetObject = null;
+
     /// <summary>
     /// Current target enemy of the Juggler.
     /// </summary>
@@ -318,6 +324,21 @@ public class TDS_Juggler : TDS_Player
     [SerializeField] private LayerMask whatCanAim = new LayerMask();
 
     /// <summary>
+    /// Tags detected as target when aiming.
+    /// </summary>
+    [SerializeField] private Tags aimDetectTags = new Tags();
+
+    /// <summary>
+    /// Aiming bounds on the X axis.
+    /// </summary>
+    private Vector2 aimXBounds = new Vector2();
+
+    /// <summary>
+    /// Aiming bounds on the Y axis.
+    /// </summary>
+    private Vector2 aimYBounds = new Vector2();
+
+    /// <summary>
     /// The ideal position of the juggle transform in local space ;
     /// Used to lerp the transform to a new position when moving.
     /// </summary>
@@ -329,11 +350,6 @@ public class TDS_Juggler : TDS_Player
     /// Reference of the current coroutine of the aim method.
     /// </summary>
     private Coroutine aimCoroutine = null;
-
-    /// <summary>
-    /// Reference of the current coroutine of the lock behaviour.
-    /// </summary>
-    private Coroutine lockCoroutine = null;
 
     /// <summary>
     /// Coroutine lerping throwable position to hands transform position.
@@ -412,20 +428,15 @@ public class TDS_Juggler : TDS_Player
         // While holding the throw button, aim a position
         while (TDS_InputManager.GetButton(TDS_InputManager.THROW_BUTTON))
         {
-            // Draws the preview of the projectile trajectory while holding the throw button
-            if (lockCoroutine == null) AimMethod();
+            // Aim while holding the button
+            AimMethod();
 
             yield return null;
 
             if (TDS_InputManager.GetButtonUp(TDS_InputManager.PARRY_BUTTON))
             {
-                targetEnemy = null;
-                // Triggers the throw animation
-                if (lockCoroutine != null)
-                {
-                    StopCoroutine(lockCoroutine);
-                    lockCoroutine = null;
-                }
+                if (targetObject) targetObject = null;
+                if (targetEnemy) targetEnemy = null;
                 TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
 
                 IsPlayable = false;
@@ -445,7 +456,83 @@ public class TDS_Juggler : TDS_Player
     /// </summary>
     protected void AimMethod()
     {
-        // Let the player aim the point he wants, 'cause the juggler can do that. Yep
+        // If having a target, follows it 'til death or getting out of screen
+        if (targetEnemy)
+        {
+            Vector3 _screenPos;
+            if (targetEnemy.IsDead || !TDS_Camera.Instance.Camera.pixelRect.Contains(_screenPos = TDS_Camera.Instance.Camera.WorldToScreenPoint(targetEnemy.Collider.bounds.center)))
+            {
+                targetEnemy = null;
+                TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
+            }
+            else
+            {
+                if (aimTargetTransform.position != _screenPos)
+                {
+                    aimTargetTransform.position = _screenPos;
+                }
+                // Switch target when moving related axis
+                if (TDS_InputManager.GetAxisDown(TDS_InputManager.HORIZONTAL_ALT_AXIS))
+                {
+                    TDS_Enemy[] _enemies = TDS_SpawnerArea.ActiveEnemies;
+                    int _selection = Input.GetAxis(TDS_InputManager.HORIZONTAL_ALT_AXIS) > 0 ? 1 : -1;
+                    int _index = Array.IndexOf(_enemies, targetEnemy);
+
+                    for (int _i = 0; _i < _enemies.Length; _i++)
+                    {
+                        // Increase index
+                        _index += _selection;
+                        if (_index < 0) _index = _enemies.Length - 1;
+                        else if (_index >= _enemies.Length) _index = 0;
+
+                        // Get new available target position ; if on screen, take it
+                        _screenPos = TDS_Camera.Instance.Camera.WorldToScreenPoint(_enemies[_index].Collider.bounds.center);
+
+                        if (TDS_Camera.Instance.Camera.pixelRect.Contains(_screenPos))
+                        {
+                            // Set target enemy
+                            targetEnemy = _enemies[_index];
+                            aimTargetTransform.position = _screenPos;
+                            break;
+                        }
+                    }
+                }
+
+                return;
+            }
+        }
+
+        // Get active enemies and sort them by position relative to the Juggler
+        TDS_Enemy[] _activeEnemies = TDS_SpawnerArea.ActiveEnemies;
+
+        if (_activeEnemies.Length > 0)
+        {
+            _activeEnemies = _activeEnemies.OrderBy(e => Mathf.Abs(e.transform.position.x - transform.position.x)).ToArray();
+            Vector2 _enemyPosOnScreen = new Vector2();
+
+            foreach (TDS_Enemy _enemy in _activeEnemies)
+            {
+                _enemyPosOnScreen = TDS_Camera.Instance.Camera.WorldToScreenPoint(_enemy.Collider.bounds.center);
+                if (TDS_Camera.Instance.Camera.pixelRect.Contains(_enemyPosOnScreen))
+                {
+                    // Nullify target object
+                    if (targetObject) targetObject = null;
+
+                    // Set target enemy
+                    targetEnemy = _enemy;
+
+                    // Set aim target & arrow positions
+                    aimTargetTransform.position = _enemyPosOnScreen;
+                    aimArrowTransform.anchoredPosition = (Vector2)TDS_Camera.Instance.Camera.WorldToScreenPoint(new Vector3(_enemy.Collider.bounds.center.x, _enemy.Collider.bounds.max.y + .1f, _enemy.Collider.bounds.center.z)) - (Vector2)aimTargetTransform.position;
+
+                    // Set lock animation
+                    TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Locked);
+                    return;
+                }
+            }
+        }
+
+        // If no target, just let the player aim the point he wants, 'cause the juggler can do that. Yep
         Vector2 _newTarget = aimTargetTransform.anchoredPosition;
 
         // Aim with IJKL or the right joystick axis
@@ -457,16 +544,16 @@ public class TDS_Juggler : TDS_Player
         {
             _newTarget.x += _xMovement;
 
-            if (_xMovement > 0)
+            if (_xMovement < 0)
             {
-                if (_newTarget.x > Screen.currentResolution.width)
+                if (_newTarget.x < aimXBounds.x)
                 {
-                    _newTarget.x = Screen.currentResolution.width;
+                    _newTarget.x = aimXBounds.x;
                 }
             }
-            else if (_newTarget.x < (TDS_Camera.Instance.Camera.rect.x * ((Screen.currentResolution.width) / TDS_Camera.Instance.Camera.rect.width)))
+            else if (_newTarget.x > aimXBounds.y)
             {
-                _newTarget.x = TDS_Camera.Instance.Camera.rect.x * ((Screen.currentResolution.width) / TDS_Camera.Instance.Camera.rect.width);
+                _newTarget.x = aimXBounds.y;
             }
         }
         // Now clamp Y target position in screen
@@ -474,16 +561,16 @@ public class TDS_Juggler : TDS_Player
         {
             _newTarget.y += _yMovement;
 
-            if (_yMovement > 0)
+            if (_yMovement < 0)
             {
-                if (_newTarget.y > (Screen.currentResolution.height + (TDS_Camera.Instance.Camera.rect.y * (Screen.currentResolution.height / TDS_Camera.Instance.Camera.rect.height))))
+                if (_newTarget.y < aimYBounds.x)
                 {
-                    _newTarget.y = Screen.currentResolution.height + (TDS_Camera.Instance.Camera.rect.y * (Screen.currentResolution.height / TDS_Camera.Instance.Camera.rect.height));
+                    _newTarget.y = aimYBounds.x;
                 }
             }
-            else if (_newTarget.y < (TDS_Camera.Instance.Camera.rect.y * (Screen.currentResolution.height / TDS_Camera.Instance.Camera.rect.height)))
+            else if (_newTarget.y > aimYBounds.y)
             {
-                _newTarget.y = TDS_Camera.Instance.Camera.rect.y * (Screen.currentResolution.height / TDS_Camera.Instance.Camera.rect.height);
+                _newTarget.y = aimYBounds.y;
             }
         }
 
@@ -491,25 +578,17 @@ public class TDS_Juggler : TDS_Player
         if (_newTarget != aimTargetTransform.anchoredPosition) aimTargetTransform.anchoredPosition = _newTarget;
 
         // Check if target is under enemy
-        Ray _ray = TDS_Camera.Instance.Camera.ScreenPointToRay(aimTargetTransform.anchoredPosition);
+        Ray _ray = TDS_Camera.Instance.Camera.ScreenPointToRay(aimTargetTransform.position);
         RaycastHit _hit = new RaycastHit();
 
-        if (Physics.Raycast(_ray, out _hit, 100, whatCanAim) && _hit.collider.gameObject.HasTag("Enemy"))
+        if (Physics.Raycast(_ray, out _hit, 100, whatCanAim) && _hit.collider.gameObject.HasTag(aimDetectTags.ObjectTags))
         {
-            if (!targetEnemy) TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.UnderTarget);
-            TDS_Enemy _target = _hit.collider.GetComponent<TDS_Enemy>();
-
-            if (targetEnemy != _target) targetEnemy = _target;
-
-            // If pressing throw button, lock the enemy !
-            if (TDS_InputManager.GetButton(TDS_InputManager.PARRY_BUTTON))
-            {
-                lockCoroutine = StartCoroutine(LockEnemy());
-            }
+            if (!targetObject) TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.UnderTarget);
+            if (targetObject != _hit.collider) targetObject = _hit.collider;
         }
-        else if (targetEnemy)
+        else if (targetObject)
         {
-            targetEnemy = null;
+            targetObject = null;
             TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
         }
     }
@@ -659,38 +738,6 @@ public class TDS_Juggler : TDS_Player
     }
 
     /// <summary>
-    /// Locks an enemy.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator LockEnemy()
-    {
-        // Wait a few before starting
-        yield return new WaitForSeconds(.1f);
-
-        // Set aim target & arrow positions
-        aimTargetTransform.anchoredPosition = TDS_Camera.Instance.Camera.WorldToScreenPoint(targetEnemy.Collider.bounds.center);
-        aimArrowTransform.anchoredPosition = (Vector2)TDS_Camera.Instance.Camera.WorldToScreenPoint(new Vector3(targetEnemy.Collider.bounds.center.x, targetEnemy.Collider.bounds.max.y + .1f, targetEnemy.Collider.bounds.center.z)) - aimTargetTransform.anchoredPosition;
-
-        // Set lock animation
-        TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Locked);
-
-        // Lock the target enemy !
-        while (targetEnemy && TDS_InputManager.GetButton(TDS_InputManager.PARRY_BUTTON))
-        {
-            Vector2 _newTarget = TDS_Camera.Instance.Camera.WorldToScreenPoint(targetEnemy.Collider.bounds.center);
-
-            if (_newTarget != aimTargetTransform.anchoredPosition)
-            {
-                aimTargetTransform.anchoredPosition = _newTarget;
-            }
-
-            yield return null;
-        }
-
-        lockCoroutine = null;
-    }
-
-    /// <summary>
     /// Prepare a throw, if not already preparing one.
     /// </summary>
     /// <returns>Returns true if successfully prepared a throw ; false if one is already, or if cannot do this.</returns>
@@ -743,6 +790,24 @@ public class TDS_Juggler : TDS_Player
     }
 
     /// <summary>
+    /// Set bounds for aiming position, related to resolution and camera rect.
+    /// </summary>
+    public void SetAimBounds()
+    {
+        aimXBounds = new Vector2()
+        {
+            x = Screen.currentResolution.width * TDS_Camera.Instance.Camera.rect.x,
+            y = Screen.currentResolution.width * (TDS_Camera.Instance.Camera.rect.width + TDS_Camera.Instance.Camera.rect.x)
+        };
+
+        aimYBounds = new Vector2()
+        {
+            x = (Screen.currentResolution.height / TDS_Camera.Instance.Camera.rect.height) * TDS_Camera.Instance.Camera.rect.y,
+            y = (Screen.currentResolution.height + (TDS_Camera.Instance.Camera.rect.y * (Screen.currentResolution.height / TDS_Camera.Instance.Camera.rect.height))) * TDS_Camera.Instance.Camera.rect.width
+        };
+    }
+
+    /// <summary>
     /// Set this character throwable.
     /// </summary>
     /// <param name="_throwable">Throwable to set.</param>
@@ -786,16 +851,12 @@ public class TDS_Juggler : TDS_Player
         if (isAiming) isAiming = false;
 
         // Fix all kinds of aiming-related things
-        targetEnemy = null;
+        if (targetObject) targetObject = null;
+        if (targetEnemy) targetEnemy = null;
         if (aimCoroutine != null)
         {
             StopCoroutine(aimCoroutine);
             aimCoroutine = null;
-        }
-        if (lockCoroutine != null)
-        {
-            StopCoroutine(lockCoroutine);
-            lockCoroutine = null;
         }
 
         // Reset back speed coefficient.
@@ -893,15 +954,14 @@ public class TDS_Juggler : TDS_Player
         if (!photonView.isMine) return false;
 
         // Get the destination point in world space
-        Ray _ray = TDS_Camera.Instance.Camera.ScreenPointToRay(aimTargetTransform.anchoredPosition);
+        Ray _ray = TDS_Camera.Instance.Camera.ScreenPointToRay(aimTargetTransform.position);
         RaycastHit _info = new RaycastHit();
 
         if (Physics.Raycast(_ray, out _info, 100, whatCanAim))
         {
-            Debug.Log("Hit at Point => " + LayerMask.LayerToName(_info.collider.gameObject.layer));
             return ThrowObject(_info.point);
         }
-        Debug.Log("I'm in spaaace");
+
         return ThrowObject(_ray.origin + (_ray.direction * 75));
     }
 
@@ -1189,6 +1249,9 @@ public class TDS_Juggler : TDS_Player
             // Get aim target & arrow RectTransform
             aimTargetTransform = TDS_UIManager.Instance.JugglerAimTargetTransform;
             aimArrowTransform = TDS_UIManager.Instance.JugglerAimArrowTransform;
+
+            // Set aim bounds on X & Y
+            SetAimBounds();
         }
     }
 
@@ -1199,13 +1262,6 @@ public class TDS_Juggler : TDS_Player
 
         // 3, 2, 1... Let's Jam !
         if (!isDead) Juggle();
-
-        Ray _ray = TDS_Camera.Instance.Camera.ScreenPointToRay(new Vector3(aimTargetTransform.anchoredPosition.x * TDS_Camera.Instance.Camera.rect.height, aimTargetTransform.anchoredPosition.y + (TDS_Camera.Instance.Camera.rect.height * TDS_Camera.Instance.Camera.rect.y)));
-        RaycastHit _info = new RaycastHit();
-
-        Physics.Raycast(_ray, out _info, 100, whatCanAim);
-
-        Debug.DrawRay(_ray.origin, _ray.direction * 100, Color.yellow, .1f, false);
     }
 	#endregion
 

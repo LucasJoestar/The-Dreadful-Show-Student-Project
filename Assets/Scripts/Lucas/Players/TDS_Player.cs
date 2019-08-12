@@ -908,7 +908,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// </summary>
     public virtual void StartDodge()
     {
-        if (isDodging || isAttacking)
+        if (isAttacking)
         {
             NextAction = -1;
             return;
@@ -1827,12 +1827,6 @@ public class TDS_Player : TDS_Character, IPunObservable
         // If having a throwable, return 2
         if (throwable && (playerType != PlayerType.Juggler)) return 2;
 
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.DODGE_BUTTON) && !IsParalyzed)
-        {
-            StartDodge();
-            return -1;
-        }
-
         // Checks potentially agressives actions
         if (!IsPacific && isGrounded)
         {
@@ -1868,6 +1862,12 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         // If attacking, return 3
         if (isAttacking || isDodging) return 3;
+
+        if (TDS_InputManager.GetButtonDown(TDS_InputManager.DODGE_BUTTON) && !IsParalyzed)
+        {
+            StartDodge();
+            return -1;
+        }
 
         if (TDS_InputManager.GetButton(TDS_InputManager.PARRY_BUTTON) && isGrounded && !IsInvulnerable)
         {

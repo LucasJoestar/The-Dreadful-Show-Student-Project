@@ -123,8 +123,11 @@ public class TDS_Camera : MonoBehaviour
     public const float VIEWPORT_Y_MAX_BOUND_VALUE = .2f;
     #endregion
 
-    #region Screen Ratio Size
-    
+    #region Screen Ratio
+    /// <summary>
+    /// Camera X ratio used for many calculs related to camera bounds and screen size.
+    /// </summary>
+    private float cameraXRatio = 0;
     #endregion
 
     #region Variables
@@ -433,11 +436,11 @@ public class TDS_Camera : MonoBehaviour
         // Clamp position
         if ((_viewport = camera.WorldToViewportPoint(currentBounds.XMaxVector)).x < 1f)
         {
-            _destination.x -= camera.orthographicSize * (((float)Screen.width / Screen.height) / camera.rect.height) * 2 * (1 - _viewport.x);
+            _destination.x -= cameraXRatio * 2 * (1 - _viewport.x);
         }
         else if ((_viewport = camera.WorldToViewportPoint(currentBounds.XMinVector)).x > 0f)
         {
-            _destination.x += camera.orthographicSize * (((float)Screen.width / Screen.height) / camera.rect.height) * 2 * _viewport.x;
+            _destination.x += cameraXRatio * 2 * _viewport.x;
         }
 
         if ((_viewport = camera.WorldToViewportPoint(currentBounds.ZMinVector)).y > 0f)
@@ -487,14 +490,14 @@ public class TDS_Camera : MonoBehaviour
             }
 
             // Get movement
-            Vector3 _destination = new Vector3();
-
-            _destination.z = Offset.z;
-            _destination.x = Mathf.Lerp(transform.position.x, target.transform.position.x + Offset.x, Time.deltaTime * speedCurrent * speedCoef);
-
             float _yIdealPos = transform.position.y + (-(.5f - camera.WorldToViewportPoint(target.transform.position).y) * camera.orthographicSize * 2 * VIEWPORT_CALCL_Y_COEF) + Offset.y;
 
-            _destination.y = Mathf.Lerp(transform.position.y, _yIdealPos, Time.deltaTime * speedCurrent * speedCoef);
+            Vector3 _destination = new Vector3()
+            {
+                x = Mathf.Lerp(transform.position.x, target.transform.position.x + Offset.x, Time.deltaTime * speedCurrent * speedCoef),
+                y = Mathf.Lerp(transform.position.y, _yIdealPos, Time.deltaTime * speedCurrent * speedCoef),
+                z = Offset.z
+            };
 
             Vector3 _movement = _destination - transform.position;
 
@@ -506,11 +509,11 @@ public class TDS_Camera : MonoBehaviour
             {
                 if (_movement.x < 0)
                 {
-                    _newBound = _destination.x - (camera.orthographicSize * (((float)Screen.width / Screen.height) / camera.rect.height));
+                    _newBound = _destination.x - cameraXRatio;
 
                     if (_newBound < currentBounds.XMin)
                     {
-                        _destination.x += camera.orthographicSize * (((float)Screen.width / Screen.height) / camera.rect.height) * 2 * camera.WorldToViewportPoint(currentBounds.XMinVector).x;
+                        _destination.x += cameraXRatio * 2 * camera.WorldToViewportPoint(currentBounds.XMinVector).x;
 
                         // Cancel movement if needed
                         if ((_destination.x - transform.position.x) < .0001f) _destination.x = transform.position.x;
@@ -518,11 +521,11 @@ public class TDS_Camera : MonoBehaviour
                 }
                 else
                 {
-                    _newBound = _destination.x + (camera.orthographicSize * (((float)Screen.width / Screen.height) / camera.rect.height));
+                    _newBound = _destination.x + cameraXRatio;
 
                     if (_newBound > currentBounds.XMax)
                     {
-                        _destination.x -= camera.orthographicSize * (((float)Screen.width / Screen.height) / camera.rect.height) * 2 * (1 - camera.WorldToViewportPoint(currentBounds.XMaxVector).x);
+                        _destination.x -= cameraXRatio * 2 * (1 - camera.WorldToViewportPoint(currentBounds.XMaxVector).x);
 
                         // Cancel movement if needed
                         if ((transform.position.x - _destination.x) < .0001f) _destination.x = transform.position.x;
@@ -749,7 +752,7 @@ public class TDS_Camera : MonoBehaviour
                     }
                     else
                     {
-                        _xMin = transform.position.x - (camera.orthographicSize * (((float)Screen.width / Screen.height) / camera.rect.height));
+                        _xMin = transform.position.x - cameraXRatio;
                         if (_xMin != currentBounds.XMin)
                         {
                             leftBoundVector = new Vector3(_xMin, leftBound.transform.position.y, leftBound.transform.position.z);
@@ -782,7 +785,7 @@ public class TDS_Camera : MonoBehaviour
                     }
                     else
                     {
-                        _xMax = transform.position.x + (camera.orthographicSize * (((float)Screen.width / Screen.height) / camera.rect.height));
+                        _xMax = transform.position.x + cameraXRatio;
                         if (_xMax != currentBounds.XMax)
                         {
                             rightBoundVector = new Vector3(_xMax, rightBound.transform.position.y, rightBound.transform.position.z);
@@ -873,25 +876,10 @@ public class TDS_Camera : MonoBehaviour
     public void SetCameraAspect()
     {
         // Set aspect ratio in 16/9
-        float _targetAspect = CAMERA_ASPECT_WIDTH / CAMERA_ASPECT_HEIGHT;
-        float _cameraAspect = (float)Screen.width / Screen.height;
+        camera.rect = TDS_GameManager.CameraRect;
 
-        float _heightRatio = _cameraAspect / _targetAspect;
-
-        // If ratio is correct, return
-        if (_heightRatio == 1) return;
-        
-        // If ratio is inferior to one (not large enough), set black bars on top & bottom of the screen
-        if (_heightRatio < 1)
-        {
-            camera.rect = new Rect(0, (1 - _heightRatio) / 2, 1, _heightRatio);
-        }
-        // If superior to one (too large), then set black bars on left & right of the screen
-        else
-        {
-            float _widthRatio = 1 / _heightRatio;
-            camera.rect = new Rect((1 - _widthRatio) / 2, 0, _widthRatio, 1);
-        }
+        // Get X ratio
+        cameraXRatio = camera.orthographicSize * (((float)Screen.width / Screen.height) / (camera.rect.height / camera.rect.width));
     }
 
     /// <summary>
@@ -930,13 +918,20 @@ public class TDS_Camera : MonoBehaviour
     {
         // Set the singleton instance if null
         if (!Instance) Instance = this;
-        else Destroy(this);
+        else
+        {
+            Destroy(this);
+            return;
+        }
 
         // Debug warning is missing bound(s)
         if (!topBound || !leftBound || !rightBound || !bottomBound)
         {
             Debug.LogWarning($"Missing bound(s) for the Camera \"{name}\"");
         }
+
+        // Calculate aspect
+        SetCameraAspect();
     }
 
     // LateUpdate is called every frame, if the Behaviour is enabled
@@ -965,9 +960,6 @@ public class TDS_Camera : MonoBehaviour
     // Use this for initialization
     private void Start ()
     {
-        // Calculate aspect
-        SetCameraAspect();
-
         // Set default level bounds
         levelBounds = new TDS_Bounds(leftBound.transform.position, rightBound.transform.position, bottomBound.transform.position, topBound.transform.position);
         currentBounds = levelBounds;

@@ -50,6 +50,8 @@ public static class TDS_GameManager
 	*/
 
     #region Fields / Properties
+
+    #region Status
     /// <summary>
     /// Indicates if the game is currently in pause.
     /// </summary>
@@ -59,17 +61,9 @@ public static class TDS_GameManager
     /// Indicates if players are currently in game, or in menu.
     /// </summary>
     private static bool isInGame = true;
+    #endregion
 
-    /// <summary>
-    /// Character used to split the text asset.
-    /// </summary>
-    private static char splitCharacter = '#';
-
-    /// <summary>
-    /// Text asset referencing all game dialogs and others.
-    /// </summary>
-    public static TextAsset DialogsAsset { get; private set; }
-
+    #region Players
     public static PlayerType LocalPlayer { get; set; }
 
     public static int PlayerCount
@@ -84,6 +78,32 @@ public static class TDS_GameManager
     public static bool LocalIsReady = false;
     #endregion
 
+    #region Resolution
+    /// <summary>
+    /// Current resolution of the game.
+    /// </summary>
+    public static Resolution CurrentResolution { get; private set; }
+
+    /// <summary>
+    /// Rect of the Camera.
+    /// </summary>
+    public static Rect CameraRect { get; private set; }
+    #endregion
+
+    #region Resources
+    /// <summary>
+    /// Character used to split the text asset.
+    /// </summary>
+    private static char splitCharacter = '#';
+
+    /// <summary>
+    /// Text asset referencing all game dialogs and others.
+    /// </summary>
+    public static TextAsset DialogsAsset { get; private set; }
+    #endregion
+
+    #endregion
+
     #region Methods
     /// <summary>
     /// Get a dialog with a specific ID.
@@ -96,6 +116,23 @@ public static class TDS_GameManager
     }
 
     /// <summary>
+    /// Loads the text asset of the game when a game is loaded.
+    /// </summary>
+    [RuntimeInitializeOnLoadMethod]
+    private static void InitializeGameManager()
+    {
+        // Get dialogs asset
+        if (!DialogsAsset)
+        {
+            DialogsAsset = Resources.Load<TextAsset>("Dialogs");
+            splitCharacter = DialogsAsset.text[0];
+        }
+
+        // Set screen resolution
+        SetResolution(Screen.currentResolution);
+    }
+
+    /// <summary>
     /// Leaves the game, and go back to the menu.
     /// </summary>
     public static void LeaveGame()
@@ -104,14 +141,11 @@ public static class TDS_GameManager
     }
 
     /// <summary>
-    /// Loads the text asset of the game when a game is loaded.
+    /// Quit the game.
     /// </summary>
-    [RuntimeInitializeOnLoadMethod]
-    private static void LoadTextAsset()
+    public static void Quit()
     {
-        if (DialogsAsset) return;
-        DialogsAsset = Resources.Load<TextAsset>("Dialogs");
-        splitCharacter = DialogsAsset.text[0];
+        Application.Quit();
     }
 
     /// <summary>
@@ -124,11 +158,44 @@ public static class TDS_GameManager
     }
 
     /// <summary>
-    /// Quit the game.
+    /// Set the new resolution of the game.
     /// </summary>
-    public static void Quit()
+    /// <param name="_newResolution">New game resolution.</param>
+    public static void SetResolution(Resolution _newResolution)
     {
-        Application.Quit();
+        CurrentResolution = _newResolution;
+
+        // Calculates camera rect for aspect ratio of 16/9
+        float _targetAspect = TDS_Camera.CAMERA_ASPECT_WIDTH / TDS_Camera.CAMERA_ASPECT_HEIGHT;
+        float _cameraAspect = (float)Screen.width / Screen.height;
+
+        float _heightRatio = _cameraAspect / _targetAspect;
+
+        // If ratio is correct, the keep it
+        if (_heightRatio == 1)
+        {
+            CameraRect = new Rect(0, 0, 1, 1);
+        }
+        // If ratio is inferior to one (not large enough), set black bars on top & bottom of the screen
+        else if (_heightRatio < 1)
+        {
+            CameraRect = new Rect(0, (1 - _heightRatio) / 2, 1, _heightRatio);
+        }
+        // If superior to one (too large), then set black bars on left & right of the screen
+        else
+        {
+            float _widthRatio = 1 / _heightRatio;
+            CameraRect = new Rect((1 - _widthRatio) / 2, 0, _widthRatio, 1);
+        }
+
+        // Set camera aspect if needed
+        TDS_Camera.Instance?.SetCameraAspect();
+
+        // Set aim bounds for local player if Juggler
+        if (TDS_LevelManager.Instance?.LocalPlayer?.PlayerType == PlayerType.Juggler)
+        {
+            ((TDS_Juggler)TDS_LevelManager.Instance.LocalPlayer).SetAimBounds();
+        }
     }
 	#endregion
 }
