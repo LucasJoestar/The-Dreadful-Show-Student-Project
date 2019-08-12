@@ -359,6 +359,8 @@ GameObject:
   - component: {fileID: 6339605583579687809}
   - component: {fileID: 4369975036306928352}
   - component: {fileID: 971945464950786522}
+  - component: {fileID: 5166394271037213323}
+  - component: {fileID: 8399911624769167222}
   m_Layer: 0
   m_Name: UIPrefab
   m_TagString: Untagged
@@ -419,13 +421,8 @@ MonoBehaviour:
   jugglerAimTargetAnimator: {fileID: 5741339454471379902}
   jugglerAimTarget: {fileID: 708985264805693112}
   jugglerAimArrow: {fileID: 4640015039592027249}
-  roomSelectionElements:
-  - {fileID: 1744109941320537833}
-  - {fileID: 6944946453043497630}
-  - {fileID: 2944688472088216979}
-  - {fileID: 1782180911485117113}
-  - {fileID: 3141965702855971195}
-  characterSelectionMenu: {fileID: 4771928703284711112}
+  roomSelectionManager: {fileID: 5166394271037213323}
+  characterSelectionManager: {fileID: 8399911624769167222}
   playerNameField: {fileID: 7611962512547235861}
   playerCountText: {fileID: 3858866885572376331}
   launchGameButton: {fileID: 1038550982950668528}
@@ -546,6 +543,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bcf6e551e8ee794e9274fc45c3e9f97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5166394271037213323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1312500720897116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71baad5c03d135241a4c3ce9cffdf804, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomSelectionElements:
+  - {fileID: 1744109941320537833}
+  - {fileID: 6944946453043497630}
+  - {fileID: 2944688472088216979}
+  - {fileID: 1782180911485117113}
+  - {fileID: 3141965702855971195}
+--- !u!114 &8399911624769167222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1312500720897116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d9f82c9ef85ed04c8d28c44188b8439, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterSelectionMenu: {fileID: 4771928703284711112}
 --- !u!1 &1348033205689514
 GameObject:
   m_ObjectHideFlags: 0
@@ -2027,7 +2055,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 184.37498, y: -230}
+  m_AnchoredPosition: {x: 184.37498, y: -248.96307}
   m_SizeDelta: {x: 360, y: 360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1831891121939504070
@@ -2583,7 +2611,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 668.12494, y: -230}
+  m_AnchoredPosition: {x: 668.12494, y: -248.96307}
   m_SizeDelta: {x: 360, y: 360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7120245817315271601
@@ -2606,8 +2634,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de2bb33141ef03e438dfc5daa4d96212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: {fileID: 0}
-  playerNameInputField: {fileID: 0}
+  playerName: {fileID: 1077938587551195081}
+  playerNameInputField: {fileID: 6458598332921364528}
   characterSelectionImages:
   - characterImage: {fileID: 112408043946338144}
     characterType: 1
@@ -6377,7 +6405,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1820, y: 980}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5733931565934349506
 CanvasRenderer:
@@ -7734,7 +7762,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1151.875, y: -230}
+  m_AnchoredPosition: {x: 1151.875, y: -248.96307}
   m_SizeDelta: {x: 360, y: 360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8697014294923977891
@@ -7757,8 +7785,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de2bb33141ef03e438dfc5daa4d96212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: {fileID: 0}
-  playerNameInputField: {fileID: 0}
+  playerName: {fileID: 6680712311160158478}
+  playerNameInputField: {fileID: 3350667108250155465}
   characterSelectionImages:
   - characterImage: {fileID: 6831463191466331323}
     characterType: 1
@@ -9643,10 +9671,10 @@ RectTransform:
   m_Father: {fileID: 224612949018700402}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &491923014644585542
 Animator:
@@ -13686,7 +13714,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1635.6249, y: -230}
+  m_AnchoredPosition: {x: 1635.6249, y: -248.96307}
   m_SizeDelta: {x: 360, y: 360}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1350463558562455096
@@ -13709,8 +13737,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de2bb33141ef03e438dfc5daa4d96212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: {fileID: 0}
-  playerNameInputField: {fileID: 0}
+  playerName: {fileID: 5673006028631400667}
+  playerNameInputField: {fileID: 4914981355533387485}
   characterSelectionImages:
   - characterImage: {fileID: 6455709840066954420}
     characterType: 1
