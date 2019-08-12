@@ -131,7 +131,7 @@ public class TDS_Checkpoint : PunBehaviour
 
         if (_deadPlayers.Length == 0) yield break;
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
 
         TDS_Player _player = null;
 
@@ -142,15 +142,15 @@ public class TDS_Checkpoint : PunBehaviour
             // Make player disappear in smoke
             TDS_VFXManager.Instance.SpawnEffect(FXType.MagicAppear, new Vector3(_player.transform.position.x, _player.transform.position.y + .25f, _player.transform.position.z));
 
-            _player.DisappearBeforeRespawn();
+            Vector3 _newPos = transform.position + spawnPosition;
+            _player.DisappearBeforeRespawn(_newPos.x, _newPos.y, _newPos.z);
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(.5f);
 
             // Trigger curtain animation
             SetAnimState(CheckpointAnimState.Resurrect);
 
             if (!_player.IsFacingRight) _player.Flip();
-            _player.transform.position = spawnPosition;
 
             _player.RespawnPlayer();
 

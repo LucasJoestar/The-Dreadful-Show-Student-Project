@@ -190,6 +190,11 @@ public class TDS_FatLady : TDS_Player
     /// <param name="_health">New health value of the Fat Lady.</param>
     public void CheckHealthStatus(int _health)
     {
+        if (isDead)
+        {
+            if (isAngry) IsAngry = false;
+            return;
+        }
         if (_health > angryHealthStep)
         {
             if (isAngry) IsAngry = false;

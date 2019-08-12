@@ -216,8 +216,7 @@ public abstract class TDS_Damageable : PunBehaviour
 
             if (value == false)
             {
-                OnRevive?.Invoke();
-                gameObject.layer = layerBeforeDeath;
+                Revive();
             }
             else
             {
@@ -264,10 +263,10 @@ public abstract class TDS_Damageable : PunBehaviour
             value = Mathf.Clamp(value, isIndestructible ? 1 : 0, healthMax);
             healthCurrent = value;
 
-            OnHealthChanged?.Invoke(value);
-
             if (value == 0) IsDead = true;
             else if (isDead) IsDead = false;
+
+            OnHealthChanged?.Invoke(value);
         }
     }
 
@@ -364,13 +363,22 @@ public abstract class TDS_Damageable : PunBehaviour
     /// <param name="_heal">Amount of health point to restore.</param>
     public virtual void Heal(int _heal)
     {
-        if(PhotonNetwork.isMasterClient)
+        if (PhotonNetwork.isMasterClient)
         {
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Heal"), new object[] { _heal });
         }
 
         HealthCurrent += _heal;
         OnHeal?.Invoke(_heal);
+    }
+
+    /// <summary>
+    /// Method called when this object gets back from the deads.
+    /// </summary>
+    protected virtual void Revive()
+    {
+        OnRevive?.Invoke();
+        gameObject.layer = layerBeforeDeath;
     }
 
     /// <summary>

@@ -297,7 +297,8 @@ public enum PlayerAnimState
     NotParrying,
     Sliding,
     NotSliding,
-    Down
+    Down,
+    BackFromTheDeads
 }
 
 /// <summary>

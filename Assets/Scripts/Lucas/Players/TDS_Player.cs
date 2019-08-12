@@ -1122,6 +1122,19 @@ public class TDS_Player : TDS_Character, IPunObservable
     }
 
     /// <summary>
+    /// Method called when this object gets back from the deads.
+    /// </summary>
+    protected override void Revive()
+    {
+        base.Revive();
+
+        if (!photonView.isMine) return;
+
+        // Triggers associated animations
+        SetAnimOnline(PlayerAnimState.BackFromTheDeads);
+    }
+
+    /// <summary>
     /// Makes this object take damage and decrease its health if it is not invulnerable.
     /// </summary>
     /// <param name="_damage">Amount of damage this inflect to this object.</param>
@@ -1773,6 +1786,10 @@ public class TDS_Player : TDS_Character, IPunObservable
                 animator.SetTrigger("Down");
                 break;
 
+            case PlayerAnimState.BackFromTheDeads:
+                animator.SetTrigger("REVIVE");
+                break;
+
             default:
                 break;
         }
@@ -1931,22 +1948,26 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <summary>
     /// Makes the player disappear before respawning.
     /// </summary>
-    public void DisappearBeforeRespawn()
+    public void DisappearBeforeRespawn(float _xPos, float _yPos, float _zPos)
     {
         // Call this method for other clients
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "DisappearBeforeRespawn"), new object[] { });
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "DisappearBeforeRespawn"), new object[] { _xPos, _yPos, _zPos });
         }
+
+        sprite.enabled = false;
+        HealthCurrent = healthMax;
 
         if (photonView.isMine)
         {
             rigidbody.isKinematic = true;
             collider.enabled = false;
             IsPlayable = false;
-        }
+            transform.position = new Vector3(_xPos, _yPos, _zPos);
 
-        sprite.enabled = false;
+            TDS_Camera.Instance.Target = transform;
+        }
     }
 
     /// <summary>
@@ -1964,7 +1985,6 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         if (photonView.isMine)
         {
-            Heal(999);
             StartDodge();
             OnStopDodgeOneShot += SetPlayerPlayable;
         }
@@ -2034,7 +2054,6 @@ public class TDS_Player : TDS_Character, IPunObservable
         }
 
         // Set animation on revive
-        OnRevive += () => animator.SetTrigger("REVIVE");
         OnDie += () => StartCoroutine(TDS_LevelManager.Instance.CheckLivingPlayers());
 
         // Add local player tag if it's mine
