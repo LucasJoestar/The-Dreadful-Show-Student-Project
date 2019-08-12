@@ -107,6 +107,7 @@ public class TDS_CharacterSelectionManager : PunBehaviour
             return; 
         }
         int _newPlayerType = (int)characterSelectionMenu.LocalElement.CurrentSelection.CharacterType;
+        TDS_GameManager.LocalPlayer = (PlayerType)_newPlayerType; 
         TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdatePlayerSelectionInfo"), new object[] {_newPlayerType, PhotonNetwork.player.ID });
         OnLocalPlayerReady(true); 
     }
