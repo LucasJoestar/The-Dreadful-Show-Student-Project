@@ -61,9 +61,11 @@ public static class TDS_GameManager
     /// Indicates if players are currently in game, or in menu.
     /// </summary>
     private static bool isInGame = true;
+
+    public static bool IsOnline { get; set; } = false;
     #endregion
 
-    #region Players
+    #region Players Online
     public static PlayerType LocalPlayer { get; set; }
 
     public static int PlayerCount
@@ -77,6 +79,13 @@ public static class TDS_GameManager
 
     public static bool LocalIsReady = false;
     #endregion
+
+    #region Players Local
+    /// <summary>
+    /// Get the id and the ready state of the player
+    /// </summary>
+    public static Dictionary<int, bool> LocalPlayerIDs = new Dictionary<int, bool>(); 
+    #endregion 
 
     #region Resolution
     /// <summary>
