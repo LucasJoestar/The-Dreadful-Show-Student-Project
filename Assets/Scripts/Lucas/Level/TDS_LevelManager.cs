@@ -99,9 +99,7 @@ public class TDS_LevelManager : PunBehaviour
         else
         {
             TDS_GameManager.LocalPlayer = _playerType; 
-            if (_playerType == PlayerType.Juggler)
-                localPlayer = (Instantiate(Resources.Load(_playerType.ToString()), StartSpawnPoints[0], Quaternion.identity) as GameObject).GetComponentInChildren<TDS_Player>();
-            else localPlayer = (Instantiate(Resources.Load(_playerType.ToString()), StartSpawnPoints[0], Quaternion.identity) as GameObject).GetComponent<TDS_Player>();
+            localPlayer = (Instantiate(Resources.Load(_playerType.ToString()), StartSpawnPoints[0], Quaternion.identity) as GameObject).GetComponent<TDS_Player>();
         }
         TDS_Camera.Instance.Target = localPlayer.transform;
 
@@ -113,9 +111,7 @@ public class TDS_LevelManager : PunBehaviour
     public void Spawn()
     {
         if (!PhotonNetwork.connected) return; 
-        if (TDS_GameManager.LocalPlayer == PlayerType.Juggler)
-            localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponentInChildren<TDS_Player>();
-        else localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponent<TDS_Player>();
+        localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponent<TDS_Player>();
         TDS_Camera.Instance.Target = localPlayer.transform;
     }
 
