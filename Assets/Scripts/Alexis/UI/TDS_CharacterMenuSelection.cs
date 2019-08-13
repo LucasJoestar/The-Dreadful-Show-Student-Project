@@ -36,6 +36,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     #region Fields / Properties
     [Header("Character Selection Elements")]
     [SerializeField] private TDS_CharacterSelectionElement[] characterSelectionElements = new TDS_CharacterSelectionElement[] { };
+    public TDS_CharacterSelectionElement[] CharacterSelectionElements { get { return characterSelectionElements; } }
     private TDS_CharacterSelectionElement localElement = null;
     public TDS_CharacterSelectionElement LocalElement
     {
@@ -167,11 +168,23 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     #endregion
 
     #region Local 
-    public void AddNewPlayer()
+    public void AddNewPlayer(int _playerID)
     {
         TDS_CharacterSelectionElement _elem = characterSelectionElements.Where(e => !e.IsUsedLocally).FirstOrDefault();
         if (!_elem) return;
-        _elem.SetPlayerLocalID(); 
+        _elem.SetPlayerLocalID(_playerID); 
+    }
+
+    public void RemoveLocalPlayer(int _playerID)
+    {
+        TDS_CharacterSelectionElement _elem = characterSelectionElements.Where(e => e.LocalPlayerIndex == _playerID && e.IsUsedLocally).FirstOrDefault();
+        if (!_elem) return;
+        _elem.RemovePlayerLocalID(); 
+    }
+
+    public void LockLocalPlayerType(PlayerType _type, bool _isLocked)
+    {
+        characterSelectionElements.ToList().ForEach(e => e.LockLocalPlayerType(_type, _isLocked)); 
     }
     #endregion 
 

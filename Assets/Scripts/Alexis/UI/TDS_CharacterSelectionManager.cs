@@ -214,11 +214,40 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     #endregion
 
     #region Local Methods
-    public void AddNewLocalPlayer()
+    public void AddNewLocalPlayer(int _i)
+    {
+
+        // Add a new player linked to ... ?  
+    }
+
+    public void SubmitInLocalCharacterSelection(int _playerId)
     {
         if (TDS_GameManager.IsOnline) return;
-        characterSelectionMenu.AddNewPlayer(); 
-        // Add a new player linked to ... ?  
+        TDS_CharacterSelectionElement _elem = characterSelectionMenu.CharacterSelectionElements.Where(e => e.LocalPlayerIndex == _playerId && e.IsUsedLocally).FirstOrDefault(); 
+        if (_elem)
+        {
+            if(!_elem.IsLocked)
+                _elem.LockElement(true);  
+            return; 
+        }
+        characterSelectionMenu.AddNewPlayer(_playerId);
+    }
+
+    public void CancelInLocalCharacterSelection(int _playerId)
+    {
+        if (TDS_GameManager.IsOnline) return;
+        if(TDS_GameManager.LocalPlayerIDs.Count == 0)
+        {
+            TDS_UIManager.Instance?.ActivateMenu(UIState.InMainMenu); 
+            return; 
+        }
+        TDS_CharacterSelectionElement _elem = characterSelectionMenu.CharacterSelectionElements.Where(e => e.LocalPlayerIndex == _playerId && e.IsUsedLocally).FirstOrDefault();
+        if (_elem && _elem.IsLocked)
+        {
+            _elem.LockElement(false);
+            return;
+        }
+        characterSelectionMenu.RemoveLocalPlayer(_playerId);
     }
     #endregion 
 

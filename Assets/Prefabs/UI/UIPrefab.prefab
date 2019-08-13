@@ -244,7 +244,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4994975782774276
 Transform:
   m_ObjectHideFlags: 0
@@ -489,8 +489,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c7ca649391236e49b43b1b27f81463f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  opponentHitFXs: []
-  playerHitFXs: []
+  opponentHitFXs:
+  - {fileID: 3016156247356828596, guid: 75ab3b8d3fbc5ea4f876928d02c34bce, type: 3}
+  - {fileID: 5211721441314228817, guid: e206ba083e11258489c1531d6b75089a, type: 3}
+  - {fileID: 8469455672546463900, guid: db235d0311025b44daefdc0c1cfa0855, type: 3}
+  - {fileID: 1811133466299983596, guid: 9ac7926d24395d94fb0c814286a44a57, type: 3}
+  - {fileID: 3446121272505700507, guid: 395b695260094364bba657c179cc918f, type: 3}
+  playerHitFXs:
+  - {fileID: 7094986414530080138, guid: a89862d7df0a2154fa0b54fc8a849499, type: 3}
+  - {fileID: 7445347248329031590, guid: 9245738a4dedaa74f9844b0e75643799, type: 3}
   kaboomFX: {fileID: 7879058467074326629, guid: d5fabea95f68b344682cf1455e3d798f,
     type: 3}
   poofFX: {fileID: 2547923030815362738, guid: e65ae402451c8f944b81b8f19ac820ad, type: 3}
@@ -504,6 +511,7 @@ MonoBehaviour:
     type: 3}
   beardDamagedFX: {fileID: 198742772223849486, guid: ddf429217dbedd241a714e210db0d1a4,
     type: 3}
+  healFX: {fileID: 3932313094713008595, guid: c2fa6937a9c3a5b4d954a6e8d1e0361b, type: 3}
 --- !u!114 &971945464950786522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11299,6 +11307,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 6731702032764320197}
+        m_MethodName: InitDisconect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &4267751621321320981
@@ -12191,13 +12210,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 3602358806553250014}
-    characterCount: 10
+    characterCount: 0
     spriteCount: 0
     spaceCount: 0
-    wordCount: 1
+    wordCount: 0
     linkCount: 0
-    lineCount: 1
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -19796,7 +19815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.07058824, g: 0.07450981, b: 0.07450981, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -20120,17 +20139,6 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 114193037737549190}
-        m_MethodName: SetSelectedGameObject
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 751807456841184226}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -20741,7 +20749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.07058824, g: 0.07450981, b: 0.07450981, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

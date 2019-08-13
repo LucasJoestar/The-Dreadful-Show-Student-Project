@@ -30,6 +30,7 @@ public class TDS_RoomSelectionManager : PunBehaviour
     #region Room Selection Menu
     [Header("RoomSelectionMenu")]
     [SerializeField] private TDS_RoomSelectionElement[] roomSelectionElements = new TDS_RoomSelectionElement[] { };
+    public TDS_RoomSelectionElement[] RoomSelectionElements { get { return roomSelectionElements; } }
     #endregion
 
     #endregion

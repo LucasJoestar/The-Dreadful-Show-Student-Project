@@ -22,6 +22,7 @@ public class TDS_DashAttackBehaviour : TDS_EnemyAttack
     private IEnumerator DashingCoroutine(TDS_Enemy _caster)
     {
         if (!PhotonNetwork.isMasterClient) yield break;
+        _caster.GetComponent<Animator>().ResetTrigger("StopDashing");
         Vector3 _originalPosition = _caster.transform.position;
         Vector3 _endPosition = _originalPosition; 
         if(isDashingForward)
