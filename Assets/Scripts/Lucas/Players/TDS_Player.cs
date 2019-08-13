@@ -281,7 +281,12 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <summary>
     /// Sprite holder, used to display informations relatives to the player sprite.
     /// </summary>
-    [SerializeField] protected TDS_PlayerSpriteHolder spriteHolder; 
+    [SerializeField] protected TDS_PlayerSpriteHolder spriteHolder;
+
+    /// <summary>
+    /// PhotonView of the transform used to spawn fx.
+    /// </summary>
+    [SerializeField] protected PhotonView fxTransformPV = null;
     #endregion
 
     #region Coroutines
@@ -1076,6 +1081,20 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         // Triggers associated animations
         SetAnimOnline(PlayerAnimState.Die);
+    }
+
+    /// <summary>
+    /// Makes this object be healed and restore its health.
+    /// </summary>
+    /// <param name="_heal">Amount of health point to restore.</param>
+    public override void Heal(int _heal)
+    {
+        base.Heal(_heal);
+
+        if (photonView.isMine)
+        {
+            TDS_VFXManager.Instance?.SpawnEffect(FXType.Heal, fxTransformPV.viewID);
+        }
     }
 
     /// <summary>

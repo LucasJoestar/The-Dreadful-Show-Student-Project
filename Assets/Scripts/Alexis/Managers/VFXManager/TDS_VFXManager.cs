@@ -68,8 +68,8 @@ public class TDS_VFXManager : PunBehaviour
     /// <summary>Magic FX, usde to make the rabbit disappaer.</summary>
     public ParticleSystem RabbitMagicPoofFX { get { return rabbitMagicPoofFX; } }
 
-    // Beard Lady related FXs
-    [Header("Beard Lady FXs")]
+    // Players related FXs
+    [Header("Player FXs")]
     [SerializeField] private ParticleSystem beardGrowFX = null;
     /// <summary>FX used when the Beard Lady's beard grows up.</summary>
     public ParticleSystem BeardGrowFX { get { return beardGrowFX; } }
@@ -77,6 +77,10 @@ public class TDS_VFXManager : PunBehaviour
     [SerializeField] private ParticleSystem beardDamagedFX = null;
     /// <summary>FX used when the Beard lady's beard gets damaged.</summary>
     public ParticleSystem BeardDamagedFX { get { return beardDamagedFX; } }
+
+    [SerializeField] private GameObject healFX = null;
+    /// <summary>FX used when the player gets healed.</summary>
+    public GameObject HealFX { get { return healFX; } }
     #endregion
 
     #region Singleton
@@ -96,30 +100,33 @@ public class TDS_VFXManager : PunBehaviour
     /// </summary>
     /// <param name="_fxType">Type of FX to get object from.</param>
     /// <returns>Returns the Particle system associated with the gieven type.</returns>
-    public ParticleSystem GetFX(FXType _fxType)
+    public GameObject GetFX(FXType _fxType)
     {
         switch (_fxType)
         {
             case FXType.Kaboom:
-                return kaboomFX;
+                return kaboomFX.gameObject;
 
             case FXType.Poof:
-                return poofFX;
+                return poofFX.gameObject;
 
             case FXType.MagicAppear:
-                return magicPoofFX;
+                return magicPoofFX.gameObject;
 
             case FXType.MagicDisappear:
-                return disappearMagicPoofFX;
+                return disappearMagicPoofFX.gameObject;
 
             case FXType.RabbitPoof:
-                return rabbitMagicPoofFX;
+                return rabbitMagicPoofFX.gameObject;
 
             case FXType.BeardGrowsUp:
-                return beardGrowFX;
+                return beardGrowFX.gameObject;
 
             case FXType.BeardDamaged:
-                return beardDamagedFX;
+                return beardDamagedFX.gameObject;
+
+            case FXType.Heal:
+                return healFX;
 
             default:
                 // Nothing to see here...
@@ -156,7 +163,7 @@ public class TDS_VFXManager : PunBehaviour
     /// <param name="_z">Z coordinate where to spawn the effect.</param>
     private void SpawnEffect(int _fxType, float _x, float _y, float _z)
     {
-        ParticleSystem _fx = GetFX((FXType)_fxType);
+        GameObject _fx = GetFX((FXType)_fxType);
 
         if (_fx != null) Instantiate(_fx, new Vector3(_x, _y, _z), Quaternion.identity);
         else
@@ -172,7 +179,7 @@ public class TDS_VFXManager : PunBehaviour
     /// <param name="_photonViewID">ID of the photon view of the transform to parent the FX to.</param>
     private void SpawnEffect(int _fxType, int _photonViewID)
     {
-        ParticleSystem _fx = GetFX((FXType)_fxType);
+        GameObject _fx = GetFX((FXType)_fxType);
 
         if (_fx != null)
         {

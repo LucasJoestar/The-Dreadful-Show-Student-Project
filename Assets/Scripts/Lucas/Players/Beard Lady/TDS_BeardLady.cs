@@ -37,13 +37,6 @@ public class TDS_BeardLady : TDS_Player
 
     #region Fields / Properties
 
-    #region Components & References
-    /// <summary>
-    /// Transform used to instantiate the beard FX.
-    /// </summary>
-    [SerializeField] private PhotonView beardFXTransformPhotonView = null;
-    #endregion
-
     #region Variables
     /// <summary>Backing field for <see cref="CurrentBeardState"/>.</summary>
     [SerializeField] private BeardState currentBeardState = BeardState.Normal;
@@ -61,13 +54,13 @@ public class TDS_BeardLady : TDS_Player
 
             if (value > currentBeardState)
             {
-                TDS_VFXManager.Instance.SpawnEffect(FXType.BeardGrowsUp, beardFXTransformPhotonView.viewID);
+                TDS_VFXManager.Instance.SpawnEffect(FXType.BeardGrowsUp, fxTransformPV.viewID);
             }
             else
             {
                 if (value < currentBeardState)
                 {
-                    TDS_VFXManager.Instance.SpawnEffect(FXType.BeardDamaged, beardFXTransformPhotonView.viewID);
+                    TDS_VFXManager.Instance.SpawnEffect(FXType.BeardDamaged, fxTransformPV.viewID);
                 }
 
                 CancelInvokeGrowBeard();

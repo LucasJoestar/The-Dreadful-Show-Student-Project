@@ -93,6 +93,9 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
 
     /// <summary>SerializedProperties for <see cref="TDS_Player.groundDetectionBox"/> of type <see cref="TDS_VirtualBox"/>.</summary>
     private SerializedProperty groundDetectionBox = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_Player.fxTransformPV"/> of type <see cref="PhotonView"/>.</summary>
+    private SerializedProperty fxTransformPV = null;
     #endregion
 
     #region Variables
@@ -245,6 +248,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         GUILayout.Space(5);
 
         TDS_EditorUtility.ObjectField("Interaction Box", "Trigger used to detect the available interactions of the player", interactionBox, typeof(TDS_PlayerInteractionBox));
+        TDS_EditorUtility.ObjectField("FX Transform", "Transform used to spawn all kind of FXs", fxTransformPV, typeof(PhotonView));
         TDS_EditorUtility.ObjectField("Summoner object", "The Summoner the player is actually wearing", summoner, typeof(TDS_Summoner));
     }
 
@@ -432,6 +436,7 @@ public class TDS_PlayerEditor : TDS_CharacterEditor
         summoner = serializedObject.FindProperty("Summoner");
         interactionBox = serializedObject.FindProperty("interactionBox");
         groundDetectionBox = serializedObject.FindProperty("groundDetectionBox");
+        fxTransformPV = serializedObject.FindProperty("fxTransformPV");
 
         attacks = serializedObject.FindProperty("attacks");
         isDodging = serializedObject.FindProperty("isDodging");

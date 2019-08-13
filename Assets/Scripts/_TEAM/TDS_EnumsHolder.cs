@@ -260,6 +260,7 @@ public enum FXType
     RabbitPoof,
     BeardGrowsUp,
     BeardDamaged,
+    Heal
 }
 
 /// <summary>
