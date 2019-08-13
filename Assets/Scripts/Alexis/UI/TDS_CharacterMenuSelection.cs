@@ -139,7 +139,6 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     /// <param name="_playerType">Player type to unlock</param>
     public void UnlockCharacterOnline(int _playerType)
     {
-        Debug.LogError("Can be selected => " + _playerType);
         characterSelectionElements.ToList().ForEach(e => e.CharacterSelectionImages.Where(i => i.CharacterType == (PlayerType)_playerType).ToList().ForEach(i => i.CanBeSelected = true));
     }
 
