@@ -85,7 +85,7 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     {
         TDS_GameManager.LocalIsReady = _isReady;
 
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetPlayerReady"), new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady });
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetOnlinePlayerReady"), new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady });
         if(!_isReady)
         {
             TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UnlockPlayerType"), new object[] { (int)characterSelectionMenu.LocalElement.CurrentSelection.CharacterType });
