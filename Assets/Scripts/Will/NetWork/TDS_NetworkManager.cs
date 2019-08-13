@@ -81,6 +81,7 @@ public class TDS_NetworkManager : PunBehaviour
             PhotonNetwork.autoJoinLobby = true;
             PhotonNetwork.automaticallySyncScene = true;
             PhotonNetwork.ConnectUsingSettings(_tempID.ToString());
+            TDS_GameManager.IsOnline = true; 
         }
     }
 
@@ -218,6 +219,7 @@ public class TDS_NetworkManager : PunBehaviour
     public override void OnDisconnectedFromPhoton()
     {
         InitDisconect();
+        TDS_GameManager.IsOnline = false; 
     }
     public override void OnJoinedRoom()
     {
@@ -270,6 +272,7 @@ public class TDS_NetworkManager : PunBehaviour
         if(!photonView) photonView = GetComponent<PhotonView>();
         InitMulti();
     }
+
     #endregion
     #endregion
 }

@@ -44,12 +44,14 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     #endregion
 
     #region Methods
+
+    #region Online
     /// <summary>
     /// Add a new player within the CharacterSelectionElements
     /// If the added player is the local player, set the element as the local element
     /// </summary>
     /// <param name="_newPlayer">Id of the added player</param>
-    public void AddNewPlayer(PhotonPlayer _newPlayer)
+    public void AddNewPhotonPlayer(PhotonPlayer _newPlayer)
     {
         characterSelectionElements.Where(e => e.PhotonPlayer == null).FirstOrDefault()?.SetPhotonPlayer(_newPlayer);
         if (_newPlayer.ID == PhotonNetwork.player.ID)
@@ -65,11 +67,11 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     /// If the player is'nt connected anymore, clear all the character selection elements
     /// </summary>
     /// <param name="_removedPlayer"></param>
-    public void RemovePlayer(PhotonPlayer _removedPlayer)
+    public void RemovePhotonPlayer(PhotonPlayer _removedPlayer)
     {
         if (PhotonNetwork.room == null || !PhotonNetwork.connected || PhotonNetwork.player == null)
         {
-            ClearMenu(); 
+            ClearOnlineMenu(); 
             return; 
         }
         if (_removedPlayer == PhotonNetwork.player) return;
@@ -84,7 +86,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     /// <summary>
     /// Clear all the character Selection elements 
     /// </summary>
-    public void ClearMenu()
+    public void ClearOnlineMenu()
     {
         characterSelectionElements.ToList().ForEach(e => e.DisconnectPlayer()); 
     }
@@ -94,7 +96,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     /// </summary>
     /// <param name="_playerID">Id of the player to lock</param>
     /// <param name="_playerIsLocked">Does the element has to be locked or unlocked</param>
-    public void LockPlayer(int _playerID, bool _playerIsLocked)
+    public void LockOnlinePlayer(int _playerID, bool _playerIsLocked)
     {
         // SET THE TOGGLE
         if (PhotonNetwork.player.ID == _playerID)
@@ -162,6 +164,17 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     {
         characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).FirstOrDefault().DisplayImageOfType(_playerType);
     }
+
+    #endregion
+
+    #region Local 
+    public void AddNewPlayer()
+    {
+        TDS_CharacterSelectionElement _elem = characterSelectionElements.Where(e => !e.IsUsedLocally).FirstOrDefault();
+        if (!_elem) return;
+        _elem.SetPlayerLocalID(); 
+    }
+    #endregion 
 
     #endregion
 

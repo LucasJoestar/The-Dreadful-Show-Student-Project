@@ -285,27 +285,31 @@ public class TDS_UIManager : PunBehaviour
     private IEnumerator CheckInputMenu(UIState _state)
     {
         if (_state == UIState.InMainMenu || _state == UIState.InGame || _state == UIState.InGameOver) yield break;
-        Action CancelAction = null;
-        Action SubmitAction = null;
-        Action<int> HorizontalAxisAction = null;
+        Action _cancelAction = null;
+        Action _submitAction = null;
+        Action<int> _horizontalAxisAction = null;
 
         switch (_state)
         {
             case UIState.InMainMenu:
                 break;
             case UIState.InRoomSelection:
-                CancelAction = () => ActivateMenu(UIState.InMainMenu); ;
+                _cancelAction = () => ActivateMenu(UIState.InMainMenu); ;
                 break;
             case UIState.InCharacterSelection:
                 if (!characterSelectionManager) break;
-                CancelAction = characterSelectionManager.CancelInCharacterSelection;
-                SubmitAction = characterSelectionManager.SubmitInCharacterSelection;
-                // HorizontalAxisAction = characterSelectionManager.CharacterSelectionMenu.LocalElement.ChangeImage;
+                _cancelAction = characterSelectionManager.CancelInOnlineCharacterSelection;
+                _submitAction = characterSelectionManager.SubmitInOnlineCharacterSelection;
+                while (characterSelectionManager.CharacterSelectionMenu.LocalElement == null)
+                {
+                    yield return null; 
+                }
+                _horizontalAxisAction = characterSelectionManager.CharacterSelectionMenu.LocalElement.ChangeImage;
                 break;
             case UIState.InGame:
                 break;
             case UIState.InPause:
-                CancelAction = () => ActivateMenu(UIState.InGame);
+                _cancelAction = () => ActivateMenu(UIState.InGame);
                 break;
             case UIState.InGameOver:
                 break;
@@ -318,17 +322,17 @@ public class TDS_UIManager : PunBehaviour
             if (TDS_InputManager.GetButtonDown(TDS_InputManager.CANCEL_BUTTON))
             {
                 yield return new WaitForEndOfFrame();
-                CancelAction?.Invoke();
+                _cancelAction?.Invoke();
             }
             else if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUBMIT_BUTTON))
             {
                 yield return new WaitForEndOfFrame();
-                SubmitAction?.Invoke();
+                _submitAction?.Invoke();
             }
             else if (TDS_InputManager.GetAxisDown(TDS_InputManager.HORIZONTAL_AXIS, out _value))
             {
                 yield return new WaitForEndOfFrame();
-                HorizontalAxisAction?.Invoke(_value);
+                _horizontalAxisAction?.Invoke(_value);
             }
             yield return null;
         }
@@ -1044,16 +1048,6 @@ public class TDS_UIManager : PunBehaviour
     {
         if (!waitingPanelAnimator) return;
         waitingPanelAnimator.SetTrigger("SwitchPanel");
-    }
-
-    /// <summary>
-    /// When a player select a new character, display the image of the character on the others players
-    /// </summary>
-    /// <param name="_player">Updated player</param>
-    /// <param name="_newCharacterSelectionIndex">New Index</param>
-    public void UpdateLocalCharacterIndex(PhotonPlayer _player, int _newCharacterSelectionIndex)
-    {
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, typeof(TDS_CharacterSelectionManager), "UpdateOnlineCharacterIndex"), new object[] { _player.ID, _newCharacterSelectionIndex });
     }
 
     /// <summary>

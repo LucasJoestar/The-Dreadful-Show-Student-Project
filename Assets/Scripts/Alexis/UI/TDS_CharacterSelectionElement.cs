@@ -81,6 +81,9 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     {
         get { return characterSelectionImages[currentIndex]; }
     }
+
+    public bool IsUsedLocally = false; 
+    public int LocalPlayerIndex { get; private set; } 
     #endregion
 
     #region Methods
@@ -112,44 +115,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         photonPlayer = null;
         gameObject.SetActive(false);
     }
-    
-    /// <summary>
-    /// Display the next selectable character of the element
-    /// </summary>
-    public void DisplayNextImage()
-    {
-        if (TDS_GameManager.LocalIsReady) return; 
-        if (photonPlayer == null) return; 
-        if (characterSelectionImages.Where(i => i.CanBeSelected).Count() <= 1) return;
-        CurrentSelection.CharacterImage.gameObject.SetActive(false);
-        currentIndex = currentIndex++ == characterSelectionImages.Length -1 ? 0 : currentIndex;
-        if(!characterSelectionImages[currentIndex].CanBeSelected)
-        {
-            DisplayNextImage();
-            return; 
-        }
-        CurrentSelection.CharacterImage.gameObject.SetActive(true);
-        TDS_UIManager.Instance?.UpdateLocalCharacterIndex(photonPlayer, currentIndex);
-    }
 
-    /// <summary>
-    /// Display the previous selectable character of the element
-    /// </summary>
-    public void DisplayPreviousImage()
-    {
-        if (TDS_GameManager.LocalIsReady) return;
-        if (photonPlayer == null) return;
-        if (characterSelectionImages.Where(i => i.CanBeSelected).Count() <= 1) return;
-        CurrentSelection.CharacterImage.gameObject.SetActive(false);
-        currentIndex = currentIndex-- == 0 ? characterSelectionImages.Length -1  : currentIndex;
-        if (!characterSelectionImages[currentIndex].CanBeSelected)
-        {
-            DisplayPreviousImage();
-            return;
-        }
-        CurrentSelection.CharacterImage.gameObject.SetActive(true);
-        TDS_UIManager.Instance?.UpdateLocalCharacterIndex(photonPlayer, currentIndex);
-    }
 
     /// <summary>
     /// Display the selectable element at the selected index 
@@ -235,7 +201,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
 
         }
         readyToggle.interactable = true;
-        readyToggle.onValueChanged.AddListener(delegate { characterSelectionManager.SelectCharacter(); } );
+        readyToggle.onValueChanged.AddListener(delegate { characterSelectionManager.SelectCharacterOnline(); } );
     }
 
     /// <summary>
@@ -305,10 +271,84 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     }
     #endregion
 
-    #region Unity Events 
+    public void SetPlayerLocalID()
+    {
+        LocalPlayerIndex = transform.GetSiblingIndex();
+        Debug.Log(name + " " + LocalPlayerIndex);
+        TDS_GameManager.LocalPlayerIDs.Add(LocalPlayerIndex, false);
+        readyToggle.onValueChanged.AddListener(SelectCharacterLocal);
+        gameObject.SetActive(true); 
+    }
+
+    public void RemovePlayerLocalID()
+    {
+        readyToggle.onValueChanged.RemoveAllListeners();
+        if (TDS_GameManager.LocalPlayerIDs[LocalPlayerIndex])
+            TriggerToggle(); 
+        TDS_GameManager.LocalPlayerIDs.Remove(LocalPlayerIndex);
+        gameObject.SetActive(false);
+        
+    }
+
+    public void SelectCharacterLocal(bool _isLocked)
+    {
+        IsLocked = true; 
+    }
+
+    #region Local and Online
+    /// <summary>
+    /// Display the next selectable character of the element
+    /// </summary>
+    public void DisplayNextImage()
+    {
+        if (TDS_GameManager.IsOnline && TDS_GameManager.LocalIsReady) return;
+        if (TDS_GameManager.IsOnline && photonPlayer == null) return;
+        if (characterSelectionImages.Where(i => i.CanBeSelected).Count() < 1) return;
+        CurrentSelection.CharacterImage.gameObject.SetActive(false);
+        currentIndex++;
+        if (currentIndex >= characterSelectionImages.Length)
+            currentIndex = 0;
+        if (!characterSelectionImages[currentIndex].CanBeSelected)
+        {
+            DisplayNextImage();
+            return;
+        }
+        CurrentSelection.CharacterImage.gameObject.SetActive(true);
+        if (TDS_GameManager.IsOnline)
+        {
+            characterSelectionManager?.UpdateLocalCharacterIndex(photonPlayer, currentIndex);
+        }
+    }
+
+    /// <summary>
+    /// Display the previous selectable character of the element
+    /// </summary>
+    public void DisplayPreviousImage()
+    {
+        if (TDS_GameManager.IsOnline && TDS_GameManager.LocalIsReady) return;
+        if (TDS_GameManager.IsOnline && photonPlayer == null) return;
+        if (characterSelectionImages.Where(i => i.CanBeSelected).Count() < 1) return;
+        CurrentSelection.CharacterImage.gameObject.SetActive(false);
+        currentIndex--;
+        if (currentIndex < 0)
+            currentIndex = characterSelectionImages.Length - 1;
+        if (!characterSelectionImages[currentIndex].CanBeSelected)
+        {
+            DisplayPreviousImage();
+            return;
+        }
+        CurrentSelection.CharacterImage.gameObject.SetActive(true);
+        if (TDS_GameManager.IsOnline)
+        {
+            characterSelectionManager?.UpdateLocalCharacterIndex(photonPlayer, currentIndex);
+        }
+    }
+    #endregion
+
+    #region Unity Methods 
     private void Start()
     {
-        characterSelectionManager = TDS_UIManager.Instance.CharacterSelectionManager; 
+        characterSelectionManager = TDS_UIManager.Instance.CharacterSelectionManager;
     }
     #endregion 
 

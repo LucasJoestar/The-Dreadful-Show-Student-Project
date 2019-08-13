@@ -47,7 +47,7 @@ public class TDS_CharacterSelectionManager : PunBehaviour
         }
         yield return new WaitForSeconds(.5f);
 
-        characterSelectionMenu.ClearMenu();
+        characterSelectionMenu.ClearOnlineMenu();
         TDS_GameManager.LocalPlayer = PlayerType.Unknown;
         yield return null;
 
@@ -57,16 +57,19 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     #endregion
 
     #region void 
+
+    #region Online 
+
     /// <summary>
     /// Action called when the player use the cancel button in the character selection menu 
     /// if the player is ready, unlock its character, else leave the room
     /// </summary>
-    public void CancelInCharacterSelection()
+    public void CancelInOnlineCharacterSelection()
     {
         if (TDS_UIManager.Instance.UIState != UIState.InCharacterSelection) return;
         if (TDS_GameManager.LocalIsReady)
         {
-            SelectCharacter();
+            SelectCharacterOnline();
             characterSelectionMenu.LocalElement.TriggerToggle();
             return;
         }
@@ -78,7 +81,7 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     /// Update the ready settings
     /// If the player has an Unknown PlayerType, the game cannot start
     /// </summary>
-    public void OnLocalPlayerReady(bool _isReady)
+    public void OnLocalPlayerReadyOnline(bool _isReady)
     {
         TDS_GameManager.LocalIsReady = _isReady;
 
@@ -99,22 +102,22 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     /// Select a new character (used in UnityEvent)
     /// </summary>
     /// <param name="_newPlayerType">Index of the enum PlayerType</param>
-    public void SelectCharacter()
+    public void SelectCharacterOnline()
     {
         if(TDS_GameManager.LocalIsReady)
         {
-            OnLocalPlayerReady(false);
+            OnLocalPlayerReadyOnline(false);
             return; 
         }
         int _newPlayerType = (int)characterSelectionMenu.LocalElement.CurrentSelection.CharacterType;
         TDS_GameManager.LocalPlayer = (PlayerType)_newPlayerType; 
         TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdatePlayerSelectionInfo"), new object[] {_newPlayerType, PhotonNetwork.player.ID });
-        OnLocalPlayerReady(true); 
+        OnLocalPlayerReadyOnline(true); 
     }
 
-    public void SetPlayerReady(int _playerID, bool _isReady)
+    public void SetOnlinePlayerReady(int _playerID, bool _isReady)
     {
-        characterSelectionMenu.LockPlayer(_playerID, _isReady);
+        characterSelectionMenu.LockOnlinePlayer(_playerID, _isReady);
     }
 
     /// <summary>
@@ -122,12 +125,12 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     /// Lock the character when the player is not ready 
     /// When the player is master client and everyone is ready, launch the game
     /// </summary>
-    public void SubmitInCharacterSelection()
+    public void SubmitInOnlineCharacterSelection()
     {
         if (TDS_UIManager.Instance.UIState != UIState.InCharacterSelection) return;
         if (!TDS_GameManager.LocalIsReady)
         {
-            SelectCharacter();
+            SelectCharacterOnline();
             characterSelectionMenu.LocalElement.TriggerToggle();
             return;
         }
@@ -145,7 +148,6 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     /// <param name="_playerType">Type of the player to disconnect</param>
     public void UnlockPlayerType(PlayerType _playerType)
     {
-        Debug.LogError("Unlock!");
         characterSelectionMenu.UnlockCharacterOnline(_playerType);
     }
 
@@ -156,7 +158,6 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     /// <param name="_playerType">Type of the player to disconnect</param>
     public void UnlockPlayerType(int _playerType)
     {
-        Debug.LogError("Unlock BIS!");
         characterSelectionMenu.UnlockCharacterOnline(_playerType);
     }
 
@@ -185,15 +186,14 @@ public class TDS_CharacterSelectionManager : PunBehaviour
 
     public void ReceiveOnConnectionInfo(int _playerID, bool _isReady, int _playerType)
     {
-        Debug.LogError(PhotonPlayer.Find(_playerID).NickName + ": Is ready = " + _isReady + " with character of type " + (PlayerType)_playerType);
         ///Update the displayed Image of the player
         UpdateOnlineCharacterType(_playerID, _playerType);
-
         if (_isReady)
         {       
             //Lock the player type if the player is ready
-            SetPlayerReady(_playerID, _isReady);
+            SetOnlinePlayerReady(_playerID, _isReady);
             characterSelectionMenu.LocalElement.CharacterSelectionImages.Where(i => i.CharacterType == (PlayerType)_playerType).FirstOrDefault().CanBeSelected = false;
+            if (characterSelectionMenu.LocalElement.CurrentSelection.CharacterType == (PlayerType)_playerType) characterSelectionMenu.LocalElement.DisplayNextImage(); 
         }
     }
 
@@ -201,6 +201,27 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     {
         TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", _newPlayer, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ReceiveOnConnectionInfo"), new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady, (int)characterSelectionMenu.LocalElement.CurrentSelection.CharacterType });
     }
+
+    /// <summary>
+    /// When a player select a new character, display the image of the character on the others players
+    /// </summary>
+    /// <param name="_player">Updated player</param>
+    /// <param name="_newCharacterSelectionIndex">New Index</param>
+    public void UpdateLocalCharacterIndex(PhotonPlayer _player, int _newCharacterSelectionIndex)
+    {
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateOnlineCharacterIndex"), new object[] { _player.ID, _newCharacterSelectionIndex });
+    }
+    #endregion
+
+    #region Local Methods
+    public void AddNewLocalPlayer()
+    {
+        if (TDS_GameManager.IsOnline) return;
+        characterSelectionMenu.AddNewPlayer(); 
+        // Add a new player linked to ... ?  
+    }
+    #endregion 
+
     #endregion
 
     #endregion
@@ -208,18 +229,18 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     #region Unity Methods
     public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
     {
-        characterSelectionMenu.RemovePlayer(otherPlayer);
+        characterSelectionMenu.RemovePhotonPlayer(otherPlayer);
     }
 
     public override void OnJoinedRoom()
     {
-        PhotonNetwork.playerList.ToList().ForEach(p => characterSelectionMenu.AddNewPlayer(p));
+        PhotonNetwork.playerList.ToList().ForEach(p => characterSelectionMenu.AddNewPhotonPlayer(p));
     }
 
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
         base.OnPhotonPlayerConnected(newPlayer);
-        characterSelectionMenu.AddNewPlayer(newPlayer);
+        characterSelectionMenu.AddNewPhotonPlayer(newPlayer);
         SendInfoToNewPlayer(newPlayer);
     }
     #endregion
