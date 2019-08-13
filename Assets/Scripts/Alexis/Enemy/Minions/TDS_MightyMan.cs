@@ -44,7 +44,15 @@ public class TDS_MightyMan : TDS_Minion
     #region Methods
 
     #region Original Methods
+    protected override void ApplyDamagesBehaviour(int _damage, Vector3 _position)
+    {
+        base.ApplyDamagesBehaviour(_damage, _position);
 
+        if (IsDashing)
+        {
+            StopAttack();
+        }
+    }
     #endregion
 
     #region Unity Methods

@@ -771,7 +771,7 @@ public class TDS_UIManager : PunBehaviour
         else
         {
             if (PhotonNetwork.isMasterClient)
-                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
+                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "LoadLevel"), new object[] { });
             TDS_LevelManager.Instance.Spawn();
             ActivateMenu(UIState.InGame);
         }

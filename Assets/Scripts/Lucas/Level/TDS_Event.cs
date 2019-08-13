@@ -214,6 +214,14 @@ public class TDS_Event
                 PhotonNetwork.Instantiate(eventString, eventTransform.position, eventTransform.rotation, 0);
                 break;
 
+            // Makes a cool fade before displaying loading screen, and loading next level
+            case CustomEventType.LoadNextLevel:
+                yield return new WaitForSeconds(1f);
+
+                TDS_LevelManager.Instance.LocalPlayer.FreezePlayer();
+                if (PhotonNetwork.isMasterClient) TDS_SceneManager.Instance.PrepareOnlineSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
+                break;
+
             // Moves the local player around a point
             case CustomEventType.MovePlayerAroundPoint:
                 TDS_LevelManager.Instance.LocalPlayer.GoAround(eventTransform.position);

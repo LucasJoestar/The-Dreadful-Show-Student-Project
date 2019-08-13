@@ -169,7 +169,8 @@ public enum CustomEventType
     MovePlayerAroundPoint,
     ActivateCurtains,
     RemoveCurtains,
-    SwitchArrow
+    SwitchArrow,
+    LoadNextLevel
 }
 
 /// <summary>

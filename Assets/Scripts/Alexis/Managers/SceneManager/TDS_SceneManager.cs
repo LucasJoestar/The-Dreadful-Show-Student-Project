@@ -76,8 +76,10 @@ public class TDS_SceneManager : PunBehaviour
     /// <returns></returns>
     private IEnumerator LoadSceneOnline(int _sceneIndex, int _nextUIState)
     {
-        AsyncOperation _async = SceneManager.LoadSceneAsync(_sceneIndex, LoadSceneMode.Single);
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PrepareOnlineSceneLoading"), new object[] { _sceneIndex, _nextUIState });
+
         TDS_UIManager.Instance?.DisplayLoadingScreen(true);
+        AsyncOperation _async = SceneManager.LoadSceneAsync(_sceneIndex, LoadSceneMode.Single);
         while (!_async.isDone)
         {
             yield return null;
@@ -85,7 +87,6 @@ public class TDS_SceneManager : PunBehaviour
         TDS_GameManager.CurrentSceneIndex = _sceneIndex;
         if (PhotonNetwork.connected && PhotonNetwork.isMasterClient && PlayerSceneLoaded.Count > 0)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "PrepareOnlineSceneLoading"), new object[] { _sceneIndex, _nextUIState });
             while (PlayerSceneLoaded.Any(p => p.Value == false))
             {
                 yield return null;
@@ -100,7 +101,7 @@ public class TDS_SceneManager : PunBehaviour
                 yield return null;
             }
         }
-        //Call OnEveryOneSceneLoaded online
+        // Call OnEveryOneSceneLoaded online
         OnEveryOneSceneLoaded();
         TDS_UIManager.Instance.ActivateMenu(_nextUIState);
     }
@@ -181,6 +182,8 @@ public class TDS_SceneManager : PunBehaviour
             Destroy(this);
             return; 
         }
+
+        TDS_GameManager.CurrentSceneIndex = SceneManager.GetActiveScene().buildIndex;
     }
 
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
