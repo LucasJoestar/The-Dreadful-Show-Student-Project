@@ -116,7 +116,6 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-
     /// <summary>
     /// Display the selectable element at the selected index 
     /// </summary>
@@ -151,15 +150,16 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void LockElement(bool _isPlayerReady)
     {
         // SET THE TOGGLE
-        if(PhotonNetwork.connected && photonPlayer == null && PhotonNetwork.player.ID == photonPlayer.ID)
+        if(!PhotonNetwork.offlineMode && photonPlayer == null && PhotonNetwork.player.ID == photonPlayer.ID)
         {
             return; 
         }
-        TriggerToggle();
-        IsLocked = _isPlayerReady; 
-        if(!PhotonNetwork.connected)
+        //TriggerToggle();
+        IsLocked = _isPlayerReady;
+        if (PhotonNetwork.offlineMode)
         {
             characterSelectionManager.CharacterSelectionMenu.LockLocalPlayerType(CurrentSelection.CharacterType, _isPlayerReady);
+            TDS_UIManager.Instance?.UpdateReadySettings(LocalPlayerIndex, _isPlayerReady); 
         }
     }
 
@@ -182,7 +182,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         }
         readyToggle.interactable = true;
 
-        if (PhotonNetwork.connected)
+        if (!PhotonNetwork.offlineMode)
         {
             if (localPelletImage) localPelletImage.gameObject.SetActive(true);
             if (playerNameInputField) playerNameInputField.interactable = true;
@@ -241,7 +241,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
             rightArrowButton.gameObject.SetActive(false);
         }
 
-        if (PhotonNetwork.connected)
+        if (!PhotonNetwork.offlineMode)
         {
             if (localPelletImage) localPelletImage.gameObject.SetActive(false);
             if (playerNameInputField) playerNameInputField.interactable = false;
@@ -319,7 +319,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// </summary>
     public void DisplayNextImage()
     {
-        if (TDS_GameManager.IsOnline && TDS_GameManager.LocalIsReady) return;
+        if ((TDS_GameManager.IsOnline && TDS_GameManager.LocalIsReady) || isLocked) return;
         if (TDS_GameManager.IsOnline && photonPlayer == null) return;
         if (characterSelectionImages.Where(i => i.CanBeSelected).Count() < 1) return;
         CurrentSelection.CharacterImage.gameObject.SetActive(false);

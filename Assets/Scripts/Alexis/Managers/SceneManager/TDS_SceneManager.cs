@@ -114,7 +114,7 @@ public class TDS_SceneManager : PunBehaviour
     private void OnEveryOneSceneLoaded()
     {
         TDS_UIManager.Instance?.DisplayLoadingScreen(false);
-        if (TDS_GameManager.LocalPlayer != PlayerType.Unknown && PhotonNetwork.connected)
+        if (TDS_GameManager.LocalPlayer != PlayerType.Unknown && PhotonNetwork.connected && !PhotonNetwork.offlineMode)
         {
             TDS_LevelManager.Instance.Spawn(); 
         }
@@ -147,6 +147,16 @@ public class TDS_SceneManager : PunBehaviour
     public void PrepareSceneLoading(string _sceneName)
     {
         StartCoroutine(LoadScene(_sceneName)); 
+    }
+
+    /// <summary>
+    /// Prepare to load a scene locally
+    /// </summary>
+    /// <param name="_sceneName"></param>
+    public void PrepareSceneLoading(int _sceneIndex)
+    {
+        string _sceneName = SceneManager.GetSceneByBuildIndex(_sceneIndex).name; 
+        StartCoroutine(LoadScene(_sceneName));
     }
 
     /// <summary>

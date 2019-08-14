@@ -303,7 +303,7 @@ public class TDS_UIManager : PunBehaviour
                 break;
             case UIState.InCharacterSelection:
                 if (!characterSelectionManager) break;
-                if(PhotonNetwork.connected)
+                if(!PhotonNetwork.offlineMode)
                 {
                     _cancelAction = characterSelectionManager.CancelInOnlineCharacterSelection;
                     _submitAction = characterSelectionManager.SubmitInOnlineCharacterSelection;
@@ -328,7 +328,7 @@ public class TDS_UIManager : PunBehaviour
                 break;
         }
         int _value = 0;
-        if(PhotonNetwork.connected)
+        if(!PhotonNetwork.offlineMode)
         {
             while (UIState == _state)
             {
@@ -796,20 +796,43 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void LoadLevel()
     {
-        characterSelectionManager.CharacterSelectionMenu.LocalElement.ClearToggle(); 
-        if (isloadingNextScene)
+        if(!PhotonNetwork.offlineMode)
         {
-            //if (PhotonNetwork.isMasterClient)
-              //  TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
-            TDS_SceneManager.Instance?.PrepareOnlineSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
+            characterSelectionManager.CharacterSelectionMenu.LocalElement.ClearToggle();
+            if (isloadingNextScene)
+            {
+                //if (PhotonNetwork.isMasterClient)
+                //  TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
+                TDS_SceneManager.Instance?.PrepareOnlineSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
+            }
+            else
+            {
+                if (PhotonNetwork.isMasterClient)
+                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "LoadLevel"), new object[] { });
+                TDS_LevelManager.Instance.Spawn();
+                ActivateMenu(UIState.InGame);
+            }
+            return; 
+        }
+
+        characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements.ToList().ForEach(e => e.ClearToggle());
+        if(isloadingNextScene)
+        {
+            TDS_SceneManager.Instance?.PrepareSceneLoading(TDS_GameManager.CurrentSceneIndex + 1);
         }
         else
         {
-            if (PhotonNetwork.isMasterClient)
-                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "LoadLevel"), new object[] { });
-            TDS_LevelManager.Instance.Spawn();
-            ActivateMenu(UIState.InGame);
+            for (int i = 0; i < characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements.Length; i++)
+            {
+                TDS_CharacterSelectionElement _elem = characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements[i]; 
+                if (_elem.IsUsedLocally)
+                {
+                    TDS_LevelManager.Instance.LocalSpawn(_elem.LocalPlayerIndex, _elem.CurrentSelection.CharacterType);
+                }
+            }
         }
+        ActivateMenu(UIState.InGame); 
+
     }
 
     /// <summary>
@@ -823,6 +846,11 @@ public class TDS_UIManager : PunBehaviour
         fatLadyLifeBar.ResetLifeBar();
         fireEaterLifeBar.ResetLifeBar();
         jugglerLifeBar.ResetLifeBar();
+        if(PhotonNetwork.offlineMode)
+        {
+            ResetLevel();
+            return; 
+        }
         if (PhotonNetwork.isMasterClient)
         {
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ResetLevel"), new object[] { });
@@ -841,7 +869,12 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void ResetLevel()
     {
-        TDS_SceneManager.Instance.PrepareOnlineSceneLoading(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, (int)UIState.InGame);
+        if(PhotonNetwork.offlineMode)
+        {
+            TDS_SceneManager.Instance.PrepareSceneLoading(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name); 
+        }
+        else
+            TDS_SceneManager.Instance.PrepareOnlineSceneLoading(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, (int)UIState.InGame);
         ActivateMenu(UIState.InGame); 
     }
 
@@ -1100,14 +1133,31 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_isReady"></param>
     public void UpdateReadySettings(int _playerId, bool _isReady)
     {
-        if (!PhotonNetwork.isMasterClient) return; 
-        PhotonPlayer _player = PhotonPlayer.Find(_playerId);
-        if (TDS_GameManager.PlayerListReady.ContainsKey(_player))
+        if(!PhotonNetwork.offlineMode)
         {
-            TDS_GameManager.PlayerListReady[_player] = _isReady;
+            if (!PhotonNetwork.isMasterClient) return;
+            PhotonPlayer _player = PhotonPlayer.Find(_playerId);
+            if (TDS_GameManager.PlayerListReady.ContainsKey(_player))
+            {
+                TDS_GameManager.PlayerListReady[_player] = _isReady;
+            }
         }
-        if (uiState == UIState.InCharacterSelection && launchGameButton) launchGameButton.interactable = !TDS_GameManager.PlayerListReady.Any(p => p.Value == false) && TDS_GameManager.LocalIsReady;
-        if (uiState == UIState.InGameOver && buttonRestartGame) buttonRestartGame.interactable = !TDS_GameManager.PlayerListReady.Any(p => p.Value == false);
+        else
+        {
+            TDS_GameManager.LocalPlayerIDs[_playerId] = _isReady; 
+        }
+        if (uiState == UIState.InCharacterSelection && launchGameButton)
+            launchGameButton.interactable = (!TDS_GameManager.PlayerListReady.Any(p => p.Value == false) && TDS_GameManager.LocalIsReady) || (!TDS_GameManager.LocalPlayerIDs.Any(p => p.Value == false));
+        if (uiState == UIState.InGameOver && buttonRestartGame)
+        {
+            if(PhotonNetwork.offlineMode)
+            {
+                buttonRestartGame.interactable = true;
+                return; 
+            }
+            buttonRestartGame.interactable = !TDS_GameManager.PlayerListReady.Any(p => p.Value == false);
+
+        }
     }
 
     /// <summary>

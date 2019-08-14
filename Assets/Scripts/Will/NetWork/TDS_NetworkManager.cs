@@ -75,7 +75,7 @@ public class TDS_NetworkManager : PunBehaviour
     public void ConnectAtLaunch()
     {
         int _tempID = 1;//Random.Range(0,9999);
-
+        PhotonNetwork.offlineMode = false;
         if (!PhotonNetwork.connected)
         {
             PhotonNetwork.autoJoinLobby = true;
@@ -115,7 +115,7 @@ public class TDS_NetworkManager : PunBehaviour
 
     public void LockRoom()
     {
-        if (!PhotonNetwork.connected) return; 
+        if (!PhotonNetwork.connected || PhotonNetwork.offlineMode) return; 
         PhotonNetwork.room.IsOpen = false;
     }
 
