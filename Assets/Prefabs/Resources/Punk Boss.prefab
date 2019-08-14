@@ -134,7 +134,7 @@ MonoBehaviour:
   collider: {fileID: 3795060625205616094}
   rigidbody: {fileID: 3783301926193705352}
   sprite: {fileID: 3942616193280816538}
-  canBeMoved: 1
+  canBeMoved: 0
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
@@ -154,7 +154,7 @@ MonoBehaviour:
   speedCoef: 1
   speedCurrent: 0
   speedInitial: 1.5
-  speedMax: 3
+  speedMax: 3.25
   throwBonusDamagesMax: 7
   throwBonusDamagesMin: 3
   throwAimingPoint: {x: 0, y: 0, z: 0}
@@ -168,9 +168,9 @@ MonoBehaviour:
   wanderingRangeMax: 5
   healthScalePercent: 35
   attacks:
-  - {fileID: 11400000, guid: 58365662fdbb075468cff94d4fb5030c, type: 2}
-  - {fileID: 11400000, guid: f71bb1e0e61f69c4aaf9ef79d98d963a, type: 2}
-  - {fileID: 11400000, guid: c55c54222873b97488c9a762cc26e5dc, type: 2}
+  - {fileID: 11400000, guid: 7077f69bbd873e841b78941a00627de4, type: 2}
+  - {fileID: 11400000, guid: ef372db5988113d4685ac7ec400eca5d, type: 2}
+  - {fileID: 11400000, guid: 85e92539089678e439fafa46349771a6, type: 2}
   agent: {fileID: 3878922940505882052}
   damagesThreshold: 20
   portrait: {fileID: 0}
@@ -342,7 +342,7 @@ MonoBehaviour:
   HittableTags:
     ObjectTags:
     - Name: Player
-      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
+      Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &3766359823394669960
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,7 +412,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b355d7bbb9a87844eb065235433f15ff, type: 3}
+  m_Sprite: {fileID: 21300008, guid: b355d7bbb9a87844eb065235433f15ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

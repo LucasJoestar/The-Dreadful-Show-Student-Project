@@ -40,7 +40,7 @@ public class TDS_SpinningAttackBehaviour : TDS_EnemyAttack
     /// <summary>
     /// Movement speed of the Siamese during the third attack
     /// </summary>
-    [SerializeField, Range(2, 10)] private float spinningSpeed = 8;
+    [SerializeField, Range(2, 20)] private float spinningSpeed = 8;
     /// <summary>
     /// Index of the spinning position
     /// </summary>

@@ -170,18 +170,18 @@ MonoBehaviour:
   speedCurrent: 0
   speedInitial: 1.5
   speedMax: 3.5
-  throwBonusDamagesMax: 45
-  throwBonusDamagesMin: 45
+  throwBonusDamagesMax: 0
+  throwBonusDamagesMin: 0
   throwAimingPoint: {x: 0, y: 0, z: 0}
   canBeDown: 0
   canThrow: 0
-  doScaleOnPlayerAmount: 0
+  doScaleOnPlayerAmount: 1
   enemyState: 0
   tauntProbability: 0
   throwRange: 1
   wanderingRangeMin: 5
   wanderingRangeMax: 9
-  healthScalePercent: 50
+  healthScalePercent: 15
   attacks:
   - {fileID: 11400000, guid: ec98016ff222938489fa8235f18f7644, type: 2}
   agent: {fileID: 328565752609655537}

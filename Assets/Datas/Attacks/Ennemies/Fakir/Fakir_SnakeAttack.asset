@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Snake Attack
   Effect:
-    EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
+    EffectType: 3
+    percentageHighest: 50
+    percentageLowest: 50
+    damagesMax: 0
+    damagesMin: 0
   damagesMax: 12
-  damagesMin: 18
+  damagesMin: 8
   description: 
   AnimationID: 9
   cooldown: 3
-  maxRange: 1.4
+  maxRange: 1.8
   minRange: 0
-  probability: 12
+  probability: 60
+  canBreakGuard: 0

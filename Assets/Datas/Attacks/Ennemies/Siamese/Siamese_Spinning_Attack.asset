@@ -15,18 +15,18 @@ MonoBehaviour:
   attackName: Spinning Attack
   Effect:
     EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
+    percentageHighest: 0
+    percentageLowest: 0
+    damagesMax: 0
+    damagesMin: 0
   damagesMax: 15
   damagesMin: 12
   description: You spin me round (Like a record)
   AnimationID: 9
-  cooldown: 1
+  cooldown: 1.75
   maxRange: 15
-  minRange: 0
-  probability: 15
-  spinningSpeed: 6
+  minRange: 1.5
+  probability: 20
+  canBreakGuard: 1
+  spinningSpeed: 12
   spinningRadius: 2.5

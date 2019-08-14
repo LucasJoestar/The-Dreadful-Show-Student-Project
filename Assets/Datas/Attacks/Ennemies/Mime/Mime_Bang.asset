@@ -15,17 +15,17 @@ MonoBehaviour:
   attackName: Bang bang
   Effect:
     EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
-  damagesMax: 5
-  damagesMin: 7
+    percentageHighest: 0
+    percentageLowest: 0
+    damagesMax: 0
+    damagesMin: 0
+  damagesMax: 8
+  damagesMin: 5
   description: 
   AnimationID: 6
   cooldown: 1.8
   maxRange: 15
-  minRange: 5
+  minRange: 3
   probability: 35
+  canBreakGuard: 0
   thrownObjectName: Mime_Projectile

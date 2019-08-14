@@ -14,16 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Unicycle Smash
   Effect:
-    EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
-  damagesMax: 10
-  damagesMin: 15
+    EffectType: 3
+    percentageHighest: 40
+    percentageLowest: 40
+    damagesMax: 0
+    damagesMin: 0
+  damagesMax: 15
+  damagesMin: 10
   description: 
   AnimationID: 6
   cooldown: 1
   maxRange: 1.8
+  minRange: 0
   probability: 100
+  canBreakGuard: 0

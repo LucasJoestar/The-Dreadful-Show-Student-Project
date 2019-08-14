@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: MightyHammer!
   Effect:
-    EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
-  damagesMax: 1
-  damagesMin: 1
+    EffectType: 1
+    percentageHighest: 50
+    percentageLowest: 50
+    damagesMax: 3
+    damagesMin: 2
+  damagesMax: 15
+  damagesMin: 10
   description: 
   AnimationID: 8
   cooldown: 1
   maxRange: 3
   minRange: 0
-  probability: 100
+  probability: 40
+  canBreakGuard: 1
