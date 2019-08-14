@@ -695,11 +695,11 @@ public class TDS_Player : TDS_Character, IPunObservable
     }
 
     /// <summary>
-    /// Breaks an on going combo, with animation set and stopping attack if attacking.
+    /// Breaks an on going combo, with animation set.
     /// </summary>
     public virtual void BreakCombo()
     {
-        if ((ComboCurrent.Count > 0) && (ComboCurrent.Count < comboMax)) SetAnimOnline(PlayerAnimState.ComboBreaker);
+        if (ComboCurrent.Count > 0) SetAnimOnline(PlayerAnimState.ComboBreaker);
 
         ComboCurrent = new List<bool>();
         CancelInvoke("BreakCombo");
@@ -915,8 +915,14 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         if (isAttacking)
         {
-            NextAction = -1;
-            return;
+            // And if in combo, reset it
+            if (comboCurrent.Count > 0) BreakCombo();
+            if (IsAttacking) StopAttack();
+
+            // What's better ??
+
+            //NextAction = -1;
+            //return;
         }
 
         dodgeCoroutine = StartCoroutine(Dodge());
@@ -1121,7 +1127,13 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <returns></returns>
     private IEnumerator Invulnerability()
     {
+        yield return null;
+
+        // If down of bringed closer, just return
+        if (IsDown || (bringingCloserCoroutine != null)) yield break;
+
         IsInvulnerable = true;
+
         FreezePlayer();
         Invoke("UnfreezePlayer", INVULNERABILITY_TIME / 2f);
 
@@ -1504,7 +1516,6 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <returns></returns>
     private IEnumerator GoAroundCoroutine(Vector3 _position)
     {
-        bool _wasPlayable = IsPlayable;
         IsPlayable = false;
         speedCoef *= .25f;
 
@@ -1526,7 +1537,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (!isFacingRight) Flip();
 
         speedCoef /= .25f;
-        IsPlayable = _wasPlayable;
+        IsPlayable = true;
         goAroundCoroutine = null;
         yield break;
     }
@@ -1896,14 +1907,17 @@ public class TDS_Player : TDS_Character, IPunObservable
             }
         }
 
-        // If attacking, return 3
-        if (isAttacking || isDodging) return 3;
+        // If dodging, return 3
+        if (isDodging) return 3;
 
         if (TDS_InputManager.GetButtonDown(TDS_InputManager.DODGE_BUTTON) && !IsParalyzed)
         {
             StartDodge();
             return -1;
         }
+
+        // If attacking, return 3
+        if (isAttacking) return 3;
 
         if (TDS_InputManager.GetButton(TDS_InputManager.PARRY_BUTTON) && isGrounded && !IsInvulnerable)
         {

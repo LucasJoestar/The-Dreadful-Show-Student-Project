@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Mighty Smash!
   Effect:
-    EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
-  damagesMax: 1
-  damagesMin: 1
+    EffectType: 3
+    percentageHighest: 25
+    percentageLowest: 25
+    damagesMax: 0
+    damagesMin: 0
+  damagesMax: 13
+  damagesMin: 9
   description: 
   AnimationID: 7
   cooldown: 1
   maxRange: 2.5
   minRange: 0
-  probability: 100
+  probability: 50
+  canBreakGuard: 0

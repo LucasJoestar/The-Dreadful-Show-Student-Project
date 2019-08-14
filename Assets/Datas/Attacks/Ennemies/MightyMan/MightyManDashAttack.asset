@@ -15,19 +15,19 @@ MonoBehaviour:
   attackName: MightyDash
   Effect:
     EffectType: 0
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
-  damagesMax: 1
-  damagesMin: 1
+    percentageHighest: 0
+    percentageLowest: 0
+    damagesMax: 0
+    damagesMin: 0
+  damagesMax: 12
+  damagesMin: 5
   description: 
   AnimationID: 6
   cooldown: 2
   maxRange: 25
-  minRange: 0
+  minRange: 2.5
   probability: 25
   canBreakGuard: 0
   isDashingForward: 1
   dashingDistance: 25
-  dashingSpeed: 1
+  dashingSpeed: 1.5

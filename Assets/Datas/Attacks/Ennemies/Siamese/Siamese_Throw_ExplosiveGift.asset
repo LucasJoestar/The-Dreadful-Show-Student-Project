@@ -15,17 +15,17 @@ MonoBehaviour:
   attackName: Explosive Gift
   Effect:
     EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
-  damagesMax: 0
-  damagesMin: 0
+    percentageHighest: 0
+    percentageLowest: 0
+    damagesMax: 0
+    damagesMin: 0
+  damagesMax: 12
+  damagesMin: 9
   description: Lance un cadeau explosif
   AnimationID: 8
   cooldown: 1
-  maxRange: 12
-  minRange: 6
+  maxRange: 15
+  minRange: 3
   probability: 35
+  canBreakGuard: 0
   thrownObjectName: ExplosiveGift

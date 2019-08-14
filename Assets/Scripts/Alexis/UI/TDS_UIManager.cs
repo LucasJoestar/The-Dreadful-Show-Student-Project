@@ -285,9 +285,14 @@ public class TDS_UIManager : PunBehaviour
     private IEnumerator CheckInputMenu(UIState _state)
     {
         if (_state == UIState.InMainMenu || _state == UIState.InGame || _state == UIState.InGameOver) yield break;
+        //Online
         Action _cancelAction = null;
         Action _submitAction = null;
         Action<int> _horizontalAxisAction = null;
+        //Local
+        Action<int> _cancelActionByPlayer = null;
+        Action<int> _submitActionByPlayer = null;
+        Action<int, int> _horizontalAxisActionByPlayer = null; 
 
         switch (_state)
         {
@@ -298,13 +303,19 @@ public class TDS_UIManager : PunBehaviour
                 break;
             case UIState.InCharacterSelection:
                 if (!characterSelectionManager) break;
-                _cancelAction = characterSelectionManager.CancelInOnlineCharacterSelection;
-                _submitAction = characterSelectionManager.SubmitInOnlineCharacterSelection;
-                while (characterSelectionManager.CharacterSelectionMenu.LocalElement == null)
+                if(PhotonNetwork.connected)
                 {
-                    yield return null; 
+                    _cancelAction = characterSelectionManager.CancelInOnlineCharacterSelection;
+                    _submitAction = characterSelectionManager.SubmitInOnlineCharacterSelection;
+                    while (characterSelectionManager.CharacterSelectionMenu.LocalElement == null)
+                    {
+                        yield return null;
+                    }
+                    _horizontalAxisAction = characterSelectionManager.CharacterSelectionMenu.LocalElement.ChangeImage;
+                    break; 
                 }
-                _horizontalAxisAction = characterSelectionManager.CharacterSelectionMenu.LocalElement.ChangeImage;
+                _submitActionByPlayer = characterSelectionManager.SubmitInLocalCharacterSelection;
+                _cancelActionByPlayer = characterSelectionManager.CancelInLocalCharacterSelection; 
                 break;
             case UIState.InGame:
                 break;
@@ -317,25 +328,49 @@ public class TDS_UIManager : PunBehaviour
                 break;
         }
         int _value = 0;
+        if(PhotonNetwork.connected)
+        {
+            while (UIState == _state)
+            {
+                if (TDS_InputManager.GetButtonDown(TDS_InputManager.CANCEL_BUTTON))
+                {
+                    yield return new WaitForEndOfFrame();
+                    _cancelAction?.Invoke();
+                }
+                else if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUBMIT_BUTTON))
+                {
+                    yield return new WaitForEndOfFrame();
+                    _submitAction?.Invoke();
+                }
+                else if (TDS_InputManager.GetAxisDown(TDS_InputManager.HORIZONTAL_AXIS, out _value))
+                {
+                    yield return new WaitForEndOfFrame();
+                    _horizontalAxisAction?.Invoke(_value);
+                }
+                yield return null;
+            }
+            yield break; 
+        }
         while (UIState == _state)
         {
             if (TDS_InputManager.GetButtonDown(TDS_InputManager.CANCEL_BUTTON))
             {
                 yield return new WaitForEndOfFrame();
-                _cancelAction?.Invoke();
+                _cancelActionByPlayer?.Invoke(0); 
             }
             else if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUBMIT_BUTTON))
             {
                 yield return new WaitForEndOfFrame();
-                _submitAction?.Invoke();
+                _submitActionByPlayer?.Invoke(0); 
             }
             else if (TDS_InputManager.GetAxisDown(TDS_InputManager.HORIZONTAL_AXIS, out _value))
             {
                 yield return new WaitForEndOfFrame();
-                _horizontalAxisAction?.Invoke(_value);
+                _horizontalAxisActionByPlayer?.Invoke(0 , _value);
             }
             yield return null;
         }
+
     }
 
     /// <summary>
@@ -1003,11 +1038,18 @@ public class TDS_UIManager : PunBehaviour
 
     public void StartLeavingRoom()
     {
+        if(!TDS_GameManager.IsOnline)
+        {
+            ActivateMenu(UIState.InMainMenu);
+            Selectable.allSelectables.First().Select(); 
+            return; 
+        }
         if (PhotonNetwork.isMasterClient)
         {
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "StartLeavingRoom"), new object[] { });
         }
         StartCoroutine(characterSelectionManager.PreapreLeavingRoom());
+        roomSelectionManager.RoomSelectionElements.First().RoomSelectionButton.Select(); 
     }
 
     /// <summary>

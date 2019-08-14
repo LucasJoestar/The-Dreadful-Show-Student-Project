@@ -398,8 +398,8 @@ MonoBehaviour:
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 50
-  healthMax: 50
+  healthCurrent: 100
+  healthMax: 100
   hitBox: {fileID: 1337013230161517857}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
@@ -413,20 +413,20 @@ MonoBehaviour:
   speedAccelerationTime: 0.5
   speedCoef: 2
   speedCurrent: 0
-  speedInitial: 2.5
-  speedMax: 5
-  throwBonusDamagesMax: 45
-  throwBonusDamagesMin: 45
+  speedInitial: 5
+  speedMax: 6.5
+  throwBonusDamagesMax: 0
+  throwBonusDamagesMin: 0
   throwAimingPoint: {x: 0, y: 0, z: 0}
   canBeDown: 0
   canThrow: 0
-  doScaleOnPlayerAmount: 0
+  doScaleOnPlayerAmount: 1
   enemyState: 0
   tauntProbability: 0
   throwRange: 1
   wanderingRangeMin: 5
   wanderingRangeMax: 9
-  healthScalePercent: 50
+  healthScalePercent: 10
   attacks:
   - {fileID: 11400000, guid: f7ba4228a86d60c45bc04e5828ee2e18, type: 2}
   agent: {fileID: 1337013229762858613}

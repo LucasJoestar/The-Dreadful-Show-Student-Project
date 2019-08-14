@@ -99,23 +99,9 @@ public class TDS_NetworkManager : PunBehaviour
 
     #region Lobby Methods    
 
-    void InitDisconect()
+    public void InitDisconect()
     {
-        InitMulti();
-        //Application.wantsToQuit -= LeaveGame;
-    }
-
-    void InitMulti()
-    {
-        #region Player
-        /*
-        if (PlayerPrefs.HasKey(PlayerNamePrefKey))
-        {
-            PlayerNamePrefKey = PlayerPrefs.GetString(PlayerNamePrefKey);
-            TDS_UIManager.Instance.PlayerNameField.text = playerNamePrefKey; 
-        }
-        */
-        #endregion
+        PhotonNetwork.Disconnect(); 
     }
 
     /// <summary>
@@ -129,6 +115,7 @@ public class TDS_NetworkManager : PunBehaviour
 
     public void LockRoom()
     {
+        if (!PhotonNetwork.connected) return; 
         PhotonNetwork.room.IsOpen = false;
     }
 
@@ -270,7 +257,6 @@ public class TDS_NetworkManager : PunBehaviour
     void Start ()
     {
         if(!photonView) photonView = GetComponent<PhotonView>();
-        InitMulti();
     }
 
     #endregion

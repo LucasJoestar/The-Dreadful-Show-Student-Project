@@ -151,10 +151,15 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void LockElement(bool _isPlayerReady)
     {
         // SET THE TOGGLE
-        if (photonPlayer != null && PhotonNetwork.player.ID != photonPlayer.ID)
+        if(PhotonNetwork.connected && photonPlayer == null && PhotonNetwork.player.ID == photonPlayer.ID)
         {
-            TriggerToggle();
-            IsLocked = _isPlayerReady; 
+            return; 
+        }
+        TriggerToggle();
+        IsLocked = _isPlayerReady; 
+        if(!PhotonNetwork.connected)
+        {
+            characterSelectionManager.CharacterSelectionMenu.LockLocalPlayerType(CurrentSelection.CharacterType, _isPlayerReady);
         }
     }
 
@@ -163,45 +168,50 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// </summary>
     public void SetPlayerLocal()
     {
-        if (localPelletImage) localPelletImage.gameObject.SetActive(true);
-        if (playerNameInputField) playerNameInputField.interactable = true; 
         if (leftArrowButton)
         {
             leftArrowButton.interactable = true;
             leftArrowButton.onClick.AddListener(DisplayPreviousImage);
-            leftArrowButton.gameObject.SetActive(true); 
+            leftArrowButton.gameObject.SetActive(true);
         }
-        if(rightArrowButton)
+        if (rightArrowButton)
         {
             rightArrowButton.interactable = true;
             rightArrowButton.onClick.AddListener(DisplayNextImage);
-            rightArrowButton.gameObject.SetActive(true); 
-        }      
-
-        Selectable _launchButton = TDS_UIManager.Instance.LaunchGameButton;
-        if(_launchButton != null)
-        {
-            Selectable _returnButton = _launchButton.navigation.selectOnDown;
-
-            Navigation _nav = readyToggle.navigation;
-            _nav.mode = Navigation.Mode.Explicit;
-
-            _nav.selectOnDown = _launchButton;
-            readyToggle.navigation = _nav;
-
-            _nav = _launchButton.navigation; 
-            _nav.selectOnDown = _returnButton;
-            _nav.selectOnUp = readyToggle;
-            _launchButton.navigation = _nav;
-
-            _nav = _returnButton.navigation;
-            _nav.selectOnUp = _launchButton;
-            _nav.selectOnDown = null;
-            _returnButton.navigation = _nav; 
-
+            rightArrowButton.gameObject.SetActive(true);
         }
         readyToggle.interactable = true;
-        readyToggle.onValueChanged.AddListener(delegate { characterSelectionManager.SelectCharacterOnline(); } );
+
+        if (PhotonNetwork.connected)
+        {
+            if (localPelletImage) localPelletImage.gameObject.SetActive(true);
+            if (playerNameInputField) playerNameInputField.interactable = true;
+            Selectable _launchButton = TDS_UIManager.Instance.LaunchGameButton;
+            if (_launchButton != null)
+            {
+                Selectable _returnButton = _launchButton.navigation.selectOnDown;
+
+                Navigation _nav = readyToggle.navigation;
+                _nav.mode = Navigation.Mode.Explicit;
+
+                _nav.selectOnDown = _launchButton;
+                readyToggle.navigation = _nav;
+
+                _nav = _launchButton.navigation;
+                _nav.selectOnDown = _returnButton;
+                _nav.selectOnUp = readyToggle;
+                _launchButton.navigation = _nav;
+
+                _nav = _returnButton.navigation;
+                _nav.selectOnUp = _launchButton;
+                _nav.selectOnDown = null;
+                _returnButton.navigation = _nav;
+
+            }
+            readyToggle.onValueChanged.AddListener(delegate { characterSelectionManager.SelectCharacterOnline(); });
+            return; 
+        }
+        readyToggle.onValueChanged.AddListener(LockElement); 
     }
 
     /// <summary>
@@ -210,9 +220,13 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void ClearToggle()
     {
         readyToggle.onValueChanged.RemoveAllListeners();
-
-        if (localPelletImage) localPelletImage.gameObject.SetActive(false);
-        if (playerNameInputField) playerNameInputField.interactable = false;
+        readyToggle.interactable = false;
+        if (isLocked)
+        {
+            IsLocked = false;
+            TriggerToggle();
+            readyToggle.isOn = false;
+        }
 
         if (leftArrowButton)
         {
@@ -227,34 +241,33 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
             rightArrowButton.gameObject.SetActive(false);
         }
 
-        if (isLocked)
+        if (PhotonNetwork.connected)
         {
-            IsLocked = false; 
-            TriggerToggle();
-            readyToggle.isOn = false;
+            if (localPelletImage) localPelletImage.gameObject.SetActive(false);
+            if (playerNameInputField) playerNameInputField.interactable = false;
+
+            Selectable _launchButton = TDS_UIManager.Instance.LaunchGameButton;
+            if (_launchButton != null)
+            {
+                Selectable _returnButton = _launchButton.navigation.selectOnDown;
+
+                Navigation _nav = readyToggle.navigation;
+
+                _nav.selectOnDown = _returnButton;
+                readyToggle.navigation = _nav;
+
+                _nav.selectOnDown = _returnButton;
+                _nav.selectOnUp = null;
+                _launchButton.navigation = _nav;
+
+                _nav.selectOnUp = _launchButton;
+                _nav.selectOnDown = null;
+                _returnButton.navigation = _nav;
+            }
+            TDS_GameManager.LocalIsReady = false;
+            return;
         }
-
-        readyToggle.interactable = false; 
-
-        Selectable _launchButton = TDS_UIManager.Instance.LaunchGameButton;
-        if (_launchButton != null)
-        {
-            Selectable _returnButton = _launchButton.navigation.selectOnDown;
-
-            Navigation _nav = readyToggle.navigation; 
-
-            _nav.selectOnDown = _returnButton;
-            readyToggle.navigation = _nav;
-
-            _nav.selectOnDown = _returnButton;
-            _nav.selectOnUp = null;
-            _launchButton.navigation = _nav;
-
-            _nav.selectOnUp = _launchButton;
-            _nav.selectOnDown = null;
-            _returnButton.navigation = _nav;
-        }
-        TDS_GameManager.LocalIsReady = false; 
+     
     }
 
     public void ChangeImage(int _axisValue)
@@ -271,28 +284,33 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     }
     #endregion
 
-    public void SetPlayerLocalID()
+    public void SetPlayerLocalID(int _playerID)
     {
-        LocalPlayerIndex = transform.GetSiblingIndex();
+        IsUsedLocally = true;
+        LocalPlayerIndex = _playerID; 
         Debug.Log(name + " " + LocalPlayerIndex);
+        playerName.text = $"Player {LocalPlayerIndex+1}"; 
         TDS_GameManager.LocalPlayerIDs.Add(LocalPlayerIndex, false);
-        readyToggle.onValueChanged.AddListener(SelectCharacterLocal);
+
+        SetPlayerLocal(); 
+
         gameObject.SetActive(true); 
     }
 
     public void RemovePlayerLocalID()
     {
-        readyToggle.onValueChanged.RemoveAllListeners();
+        IsUsedLocally = false; 
         if (TDS_GameManager.LocalPlayerIDs[LocalPlayerIndex])
             TriggerToggle(); 
         TDS_GameManager.LocalPlayerIDs.Remove(LocalPlayerIndex);
+        ClearToggle(); 
         gameObject.SetActive(false);
-        
     }
 
-    public void SelectCharacterLocal(bool _isLocked)
+    public void LockLocalPlayerType(PlayerType _type, bool _isLocked)
     {
-        IsLocked = true; 
+        characterSelectionImages.Where(i => i.CharacterType == _type).FirstOrDefault().CanBeSelected = !_isLocked;
+        if (!CurrentSelection.CanBeSelected && !isLocked) DisplayNextImage(); 
     }
 
     #region Local and Online

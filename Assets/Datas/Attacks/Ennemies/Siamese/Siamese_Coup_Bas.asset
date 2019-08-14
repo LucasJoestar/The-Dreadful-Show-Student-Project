@@ -15,16 +15,16 @@ MonoBehaviour:
   attackName: Low Attack
   Effect:
     EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
-  damagesMax: 13
-  damagesMin: 7
+    percentageHighest: 0
+    percentageLowest: 0
+    damagesMax: 0
+    damagesMin: 0
+  damagesMax: 9
+  damagesMin: 6
   description: 
   AnimationID: 7
-  cooldown: 0.5
+  cooldown: 1
   maxRange: 1.65
   minRange: 0
-  probability: 55
+  probability: 30
+  canBreakGuard: 0

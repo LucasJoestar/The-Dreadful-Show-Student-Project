@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Slap
   Effect:
-    EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
-  damagesMax: 12
-  damagesMin: 8
+    EffectType: 1
+    percentageHighest: 50
+    percentageLowest: 50
+    damagesMax: 0
+    damagesMin: 0
+  damagesMax: 17
+  damagesMin: 13
   description: Coup de baffe
   AnimationID: 6
-  cooldown: 0.5
+  cooldown: 1.5
   maxRange: 2.8
   minRange: 0
-  probability: 60
+  probability: 40
+  canBreakGuard: 1

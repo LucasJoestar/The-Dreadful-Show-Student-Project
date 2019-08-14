@@ -382,12 +382,12 @@ MonoBehaviour:
   collider: {fileID: 2085316961524171263}
   rigidbody: {fileID: 2085316961524171260}
   sprite: {fileID: 2085316961818940413}
-  canBeMoved: 1
+  canBeMoved: 0
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 250
-  healthMax: 250
+  healthCurrent: 350
+  healthMax: 350
   hitBox: {fileID: 2085316961319211533}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
@@ -401,20 +401,20 @@ MonoBehaviour:
   speedAccelerationTime: 1
   speedCoef: 1
   speedCurrent: 0
-  speedInitial: 2
-  speedMax: 5
+  speedInitial: 1.5
+  speedMax: 3.5
   throwBonusDamagesMax: 0
   throwBonusDamagesMin: 0
   throwAimingPoint: {x: 0, y: 0, z: 0}
   canBeDown: 0
   canThrow: 0
-  doScaleOnPlayerAmount: 0
+  doScaleOnPlayerAmount: 1
   enemyState: 0
   tauntProbability: 0
   throwRange: 1
   wanderingRangeMin: 3
   wanderingRangeMax: 6
-  healthScalePercent: 50
+  healthScalePercent: 30
   attacks:
   - {fileID: 11400000, guid: aeb98e03cbb86514a9f8eca9c4ea4e9e, type: 2}
   - {fileID: 11400000, guid: 8583033c7de9d8b4192a18e78bf848f6, type: 2}
@@ -430,7 +430,7 @@ MonoBehaviour:
   - SiameseBrutal
   splitingPosition:
   - {x: -1.2322464, y: 0, z: -0.0033931732}
-  - {x: 1.3651762, y: 0, z: -0.009152412}
+  - {x: 1.3651752, y: 0, z: -0.009152412}
   - {x: 0, y: 0, z: 0.010109901}
   splittingPortrait: {fileID: 6271249838963512715, guid: beb78806c333a1a4c9f8ba84015a4f45,
     type: 3}
@@ -663,7 +663,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 3.29, y: 2.89}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0

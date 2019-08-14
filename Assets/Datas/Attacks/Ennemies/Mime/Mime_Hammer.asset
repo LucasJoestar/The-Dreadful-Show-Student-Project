@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Hammer
   Effect:
-    EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
-  damagesMax: 7
-  damagesMin: 15
+    EffectType: 1
+    percentageHighest: 25
+    percentageLowest: 20
+    damagesMax: 3
+    damagesMin: 2
+  damagesMax: 15
+  damagesMin: 7
   description: 
   AnimationID: 8
   cooldown: 1.2
   maxRange: 2.5
   minRange: 0
   probability: 50
+  canBreakGuard: 0

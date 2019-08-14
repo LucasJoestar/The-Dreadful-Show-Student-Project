@@ -8,7 +8,7 @@ public class TDS_DashAttackBehaviour : TDS_EnemyAttack
 {
     [SerializeField] private bool isDashingForward = true;
     [SerializeField, Range(0, 25)] private float dashingDistance = 1;
-    [SerializeField, Range(0.01f, 2)] private float dashingSpeed = 1;  
+    [SerializeField, Range(0.01f, 5)] private float dashingSpeed = 1;  
 
 
     public override void ApplyAttackBehaviour(TDS_Enemy _caster)
@@ -22,6 +22,7 @@ public class TDS_DashAttackBehaviour : TDS_EnemyAttack
     private IEnumerator DashingCoroutine(TDS_Enemy _caster)
     {
         if (!PhotonNetwork.isMasterClient) yield break;
+        _caster.GetComponent<Animator>().ResetTrigger("StopDashing");
         Vector3 _originalPosition = _caster.transform.position;
         Vector3 _endPosition = _originalPosition; 
         if(isDashingForward)

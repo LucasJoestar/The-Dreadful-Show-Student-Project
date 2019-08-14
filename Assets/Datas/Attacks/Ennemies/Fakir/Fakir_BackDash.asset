@@ -15,19 +15,19 @@ MonoBehaviour:
   attackName: BackDash
   Effect:
     EffectType: 0
-    duration: 5
-    percentageHighest: 100
-    percentageLowest: 100
-    damagesMax: 5
-    damagesMin: 5
-  damagesMax: 5
-  damagesMin: 6
+    percentageHighest: 0
+    percentageLowest: 0
+    damagesMax: 0
+    damagesMin: 0
+  damagesMax: 0
+  damagesMin: 0
   description: 
   AnimationID: 6
   cooldown: 0.8
-  maxRange: 1
+  maxRange: 2
   minRange: 0
-  probability: 25
+  probability: 40
+  canBreakGuard: 0
   isDashingForward: 0
   dashingDistance: 5
   dashingSpeed: 1.5
