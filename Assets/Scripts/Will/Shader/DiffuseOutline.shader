@@ -32,6 +32,7 @@
         Lighting Off
         ZWrite Off
         Blend One OneMinusSrcAlpha
+        ZTest Always        
         
         CGPROGRAM
         #pragma surface surf Lambert vertex:vert nofog nolightmap nodynlightmap keepalpha noinstancing
