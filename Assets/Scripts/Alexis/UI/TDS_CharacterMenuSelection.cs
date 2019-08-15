@@ -37,10 +37,9 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     [Header("Character Selection Elements")]
     [SerializeField] private TDS_CharacterSelectionElement[] characterSelectionElements = new TDS_CharacterSelectionElement[] { };
     public TDS_CharacterSelectionElement[] CharacterSelectionElements { get { return characterSelectionElements; } }
-    private TDS_CharacterSelectionElement localElement = null;
     public TDS_CharacterSelectionElement LocalElement
     {
-        get { return localElement;  }
+        get;  private set; 
     }
     #endregion
 
@@ -52,15 +51,20 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     /// If the added player is the local player, set the element as the local element
     /// </summary>
     /// <param name="_newPlayer">Id of the added player</param>
-    public void AddNewPhotonPlayer(PhotonPlayer _newPlayer)
+    public void AddNewPhotonPlayer(PhotonPlayer _newPlayer, PlayerType _type = PlayerType.Unknown)
     {
-        characterSelectionElements.Where(e => e.PhotonPlayer == null).FirstOrDefault()?.SetPhotonPlayer(_newPlayer);
+        TDS_GameManager.PlayersInfo.Add(new TDS_PlayerInfo(PhotonNetwork.player.ID, null, _newPlayer)); 
+        TDS_CharacterSelectionElement _elem = characterSelectionElements.Where(e => e.PlayerInfo == null).FirstOrDefault();
+        if (!_elem) return; 
+        _elem.SetPhotonPlayer(_newPlayer);
         if (_newPlayer.ID == PhotonNetwork.player.ID)
         {
-            localElement = characterSelectionElements.Where(e => e.PhotonPlayer == _newPlayer).First();
-            localElement.SetPlayerLocal();
+            LocalElement = _elem; 
+            LocalElement.SetPlayerLocal();
             return; 
         }
+        if (_type != PlayerType.Unknown)
+            _elem.DisplayImageOfType(_type);
     }
 
     /// <summary>
@@ -76,7 +80,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
             return; 
         }
         if (_removedPlayer == PhotonNetwork.player) return;
-        TDS_CharacterSelectionElement _cleanedElement = characterSelectionElements.Where(e => e.PhotonPlayer == _removedPlayer).FirstOrDefault();
+        TDS_CharacterSelectionElement _cleanedElement = characterSelectionElements.Where(e => (e.PlayerInfo != null) && (e.PlayerInfo.PhotonPlayer == _removedPlayer)).FirstOrDefault();
         if (_cleanedElement)
         {
             _cleanedElement.DisconnectPlayer();
@@ -102,10 +106,10 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
         // SET THE TOGGLE
         if (PhotonNetwork.player.ID == _playerID)
         {
-            localElement.IsLocked = _playerIsLocked;
+            LocalElement.IsLocked = _playerIsLocked;
             return;
         }
-        characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).First().LockElement(_playerIsLocked);
+        characterSelectionElements.Where(e => (e.PlayerInfo != null) && (e.PlayerInfo.PhotonPlayer.ID == _playerID)).First().LockElement(_playerIsLocked);
     }
 
     /// <summary>
@@ -117,12 +121,13 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     public void UpdateOnlineSelection(PlayerType _newType, int _playerID)
     {
         characterSelectionElements.ToList().ForEach(e => e.CharacterSelectionImages.Where(i => i.CharacterType == _newType).ToList().ForEach(i => i.CanBeSelected = false));
-        TDS_CharacterSelectionElement _element = characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).FirstOrDefault(); 
-        if(_element)
+        TDS_CharacterSelectionElement _element = characterSelectionElements.Where(e => (e.PlayerInfo != null) && (e.PlayerInfo.PhotonPlayer.ID == _playerID)).FirstOrDefault();
+
+        if (_element)
         {
             _element.DisplayImageOfType(_newType); 
         }
-        if (!TDS_GameManager.LocalIsReady && !localElement.CurrentSelection.CanBeSelected) localElement.DisplayNextImage(); 
+        if (!TDS_GameManager.LocalIsReady && !LocalElement.CurrentSelection.CanBeSelected) LocalElement.DisplayNextImage(); 
     }
 
     /// <summary>
@@ -151,18 +156,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     /// <param name="_newIndex"></param>
     public void UpdateMenuOnline(int _playerID, int _newIndex)
     {
-        characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).FirstOrDefault().DisplayImageAtIndex(_newIndex); 
-    }
-
-    /// <summary>
-    /// Update the selection element relative to a player. 
-    /// Used online
-    /// </summary>
-    /// <param name="_player"></param>
-    /// <param name="_newIndex"></param>
-    public void UpdateMenuOnline(int _playerID, PlayerType _playerType)
-    {
-        characterSelectionElements.Where(e => e.PhotonPlayer.ID == _playerID).FirstOrDefault().DisplayImageOfType(_playerType);
+        characterSelectionElements.Where(e => (e.PlayerInfo != null) && (e.PlayerInfo.PhotonPlayer.ID == _playerID)).FirstOrDefault()?.DisplayImageAtIndex(_newIndex); 
     }
 
     #endregion
@@ -170,14 +164,14 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     #region Local 
     public void AddNewPlayer(int _playerID)
     {
-        TDS_CharacterSelectionElement _elem = characterSelectionElements.Where(e => !e.IsUsedLocally).FirstOrDefault();
+        TDS_CharacterSelectionElement _elem = characterSelectionElements.Where(e => (e.PlayerInfo != null) && (!e.IsUsedLocally)).FirstOrDefault();
         if (!_elem) return;
         _elem.SetPlayerLocalID(_playerID); 
     }
 
     public void RemoveLocalPlayer(int _playerID)
     {
-        TDS_CharacterSelectionElement _elem = characterSelectionElements.Where(e => e.LocalPlayerIndex == _playerID && e.IsUsedLocally).FirstOrDefault();
+        TDS_CharacterSelectionElement _elem = characterSelectionElements.Where(e => (e.PlayerInfo != null) && (e.PlayerInfo.PlayerID == _playerID) && (e.IsUsedLocally)).FirstOrDefault();
         if (!_elem) return;
         _elem.RemovePlayerLocalID(); 
     }

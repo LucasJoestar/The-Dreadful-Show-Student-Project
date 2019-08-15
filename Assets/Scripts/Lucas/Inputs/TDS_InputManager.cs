@@ -308,6 +308,7 @@ public class TDS_InputManager : MonoBehaviour
         }
 
         inputs = Resources.Load<TDS_InputSO>(INPUT_ASSET_PATH);
+        inputs.controllers = new TDS_Controller[1] { new TDS_Controller() }; 
     }
 
     // Update is called every frame, if the MonoBehaviour is enabled

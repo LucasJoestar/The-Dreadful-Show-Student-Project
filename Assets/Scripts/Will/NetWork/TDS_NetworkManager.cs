@@ -218,18 +218,10 @@ public class TDS_NetworkManager : PunBehaviour
     }
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
-        if(PhotonNetwork.isMasterClient && TDS_UIManager.Instance && !TDS_GameManager.PlayerListReady.ContainsKey(newPlayer))
-        {
-            TDS_GameManager.PlayerListReady.Add(newPlayer, false); 
-        }
         PlayerCount();
     }
     public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
     {
-        if (PhotonNetwork.isMasterClient && TDS_UIManager.Instance && TDS_GameManager.PlayerListReady.ContainsKey(otherPlayer))
-        {
-            TDS_GameManager.PlayerListReady.Remove(otherPlayer);
-        }
         PlayerCount();
     }
     #endregion

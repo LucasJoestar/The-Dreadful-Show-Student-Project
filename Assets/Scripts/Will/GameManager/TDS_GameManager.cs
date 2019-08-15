@@ -65,6 +65,11 @@ public static class TDS_GameManager
     public static bool IsOnline { get; set; } = false;
     #endregion
 
+
+    #region Player Info
+    public static List<TDS_PlayerInfo> PlayersInfo = new List<TDS_PlayerInfo>(); 
+    #endregion
+
     #region Players Online
     public static PlayerType LocalPlayer { get; set; }
 
@@ -75,17 +80,24 @@ public static class TDS_GameManager
 
     public static int CurrentSceneIndex = 0;
 
-    public static Dictionary<PhotonPlayer, bool> PlayerListReady { get; private set; } = new Dictionary<PhotonPlayer, bool>();
 
-    public static bool LocalIsReady = false;
+    public static bool LocalIsReady
+    {
+        get
+        {
+            if (PhotonNetwork.offlineMode)
+                return !PlayersInfo.Any(i => !i.IsReady);
+            if (PhotonNetwork.connected)
+            {
+                TDS_PlayerInfo _info = PlayersInfo.Where(i => i.PhotonPlayer == PhotonNetwork.player).FirstOrDefault();
+                if (_info == null) return false;
+                return _info.IsReady; 
+            }
+            return false; 
+                 
+        }
+    }
     #endregion
-
-    #region Players Local
-    /// <summary>
-    /// Get the id and the ready state of the player
-    /// </summary>
-    public static Dictionary<int, bool> LocalPlayerIDs = new Dictionary<int, bool>(); 
-    #endregion 
 
     #region Resolution
     /// <summary>

@@ -40,8 +40,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     #region Fields / Properties
     private TDS_CharacterSelectionManager characterSelectionManager = null; 
     
-    private PhotonPlayer photonPlayer = null;
-    public PhotonPlayer PhotonPlayer { get { return photonPlayer; } }
+    public TDS_PlayerInfo PlayerInfo { get; set; }
 
     [SerializeField] private TMP_Text playerName = null;
     [SerializeField] private TMP_InputField playerNameInputField = null; 
@@ -72,8 +71,17 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         set
         {
             isLocked = value;
+            PlayerInfo.IsReady = value; 
             readyToggle.animator.SetBool("IsReady", value);
-            readyToggle.animator.SetTrigger("ReadyChanged"); 
+            readyToggle.animator.SetTrigger("ReadyChanged");
+            if (isLocked)
+            {
+                PlayerInfo.PlayerType = CurrentSelection.CharacterType; 
+            }
+            else
+            {
+                PlayerInfo.PlayerType = PlayerType.Unknown; 
+            } 
         }
     }
 
@@ -83,7 +91,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     }
 
     public bool IsUsedLocally = false; 
-    public int LocalPlayerIndex { get; private set; } 
+    //public int LocalPlayerIndex { get; private set; } 
     #endregion
 
     #region Methods
@@ -95,10 +103,10 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// <param name="_player">Photon player linked to the element</param>
     public void SetPhotonPlayer(PhotonPlayer _player)
     {
-        photonPlayer = _player;
         if (playerName) playerName.text = _player.NickName;
         if (playerNameInputField) playerNameInputField.text = _player.NickName; 
         if (_player.IsMasterClient && ownerCrownImage) ownerCrownImage.gameObject.SetActive(true);
+        PlayerInfo = TDS_GameManager.PlayersInfo.Where(i => i.PhotonPlayer == _player).First();
         gameObject.SetActive(true); 
     }
 
@@ -111,8 +119,9 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         {
             characterSelectionManager.UnlockPlayerType(CurrentSelection.CharacterType); 
         }
-        //LockElement(false); 
-        photonPlayer = null;
+        //LockElement(false);
+        TDS_GameManager.PlayersInfo.Remove(PlayerInfo); 
+        PlayerInfo = null;
         gameObject.SetActive(false);
     }
 
@@ -122,7 +131,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// <param name="_index">Selected Index</param>
     public void DisplayImageAtIndex(int _index)
     {
-        if (photonPlayer == null) return;
+        if (PlayerInfo.PhotonPlayer == null) return;
         if (_index >= characterSelectionImages.Length || !characterSelectionImages[_index].CanBeSelected) return;
         CurrentSelection.CharacterImage.gameObject.SetActive(false);
         currentIndex = _index;
@@ -135,7 +144,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// <param name="_playerType">Type of the character</param>
     public void DisplayImageOfType(PlayerType _playerType)
     {
-        if (photonPlayer == null) return;
+        if (PlayerInfo.PhotonPlayer == null) return;
         CurrentSelection.CharacterImage.gameObject.SetActive(false);
         TDS_CharacterSelectionImage _image = characterSelectionImages.Where(i => i.CharacterType == _playerType).FirstOrDefault();
         if (_image == null) return;
@@ -150,7 +159,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void LockElement(bool _isPlayerReady)
     {
         // SET THE TOGGLE
-        if(!PhotonNetwork.offlineMode && photonPlayer == null && PhotonNetwork.player.ID == photonPlayer.ID)
+        if(!PhotonNetwork.offlineMode && (PlayerInfo.PhotonPlayer == null || PhotonNetwork.player.ID == PlayerInfo.PhotonPlayer.ID))
         {
             return; 
         }
@@ -158,7 +167,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         if (PhotonNetwork.offlineMode)
         {
             characterSelectionManager.CharacterSelectionMenu.LockLocalPlayerType(CurrentSelection.CharacterType, _isPlayerReady);
-            TDS_UIManager.Instance?.UpdateReadySettings(LocalPlayerIndex, _isPlayerReady);
+            TDS_UIManager.Instance?.UpdateReadySettings(PlayerInfo.PlayerID, _isPlayerReady);
             return;
         }
         TriggerToggle();
@@ -265,7 +274,6 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
                 _nav.selectOnDown = null;
                 _returnButton.navigation = _nav;
             }
-            TDS_GameManager.LocalIsReady = false;
             return;
         }
      
@@ -288,10 +296,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void SetPlayerLocalID(int _playerID)
     {
         IsUsedLocally = true;
-        LocalPlayerIndex = _playerID; 
-        Debug.Log(name + " " + LocalPlayerIndex);
-        playerName.text = $"Player {LocalPlayerIndex+1}"; 
-        TDS_GameManager.LocalPlayerIDs.Add(LocalPlayerIndex, false);
+        TDS_GameManager.PlayersInfo.Add(new TDS_PlayerInfo(_playerID, null, PlayerType.Unknown)); 
 
         SetPlayerLocal(); 
 
@@ -300,10 +305,13 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
 
     public void RemovePlayerLocalID()
     {
-        IsUsedLocally = false; 
-        if (TDS_GameManager.LocalPlayerIDs[LocalPlayerIndex])
+        IsUsedLocally = false;
+
+        if (PlayerInfo.IsReady)
             TriggerToggle(); 
-        TDS_GameManager.LocalPlayerIDs.Remove(LocalPlayerIndex);
+
+        TDS_GameManager.PlayersInfo.Remove(PlayerInfo);
+        PlayerInfo = null; 
         ClearToggle(); 
         gameObject.SetActive(false);
     }
@@ -321,7 +329,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void DisplayNextImage()
     {
         if ((TDS_GameManager.IsOnline && TDS_GameManager.LocalIsReady) || isLocked) return;
-        if (TDS_GameManager.IsOnline && photonPlayer == null) return;
+        if (TDS_GameManager.IsOnline && PlayerInfo.PhotonPlayer == null) return;
         if (characterSelectionImages.Where(i => i.CanBeSelected).Count() < 1) return;
         CurrentSelection.CharacterImage.gameObject.SetActive(false);
         currentIndex++;
@@ -335,7 +343,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         CurrentSelection.CharacterImage.gameObject.SetActive(true);
         if (TDS_GameManager.IsOnline)
         {
-            characterSelectionManager?.UpdateLocalCharacterIndex(photonPlayer, currentIndex);
+            characterSelectionManager?.UpdateLocalCharacterIndex(PlayerInfo.PhotonPlayer, currentIndex);
         }
     }
 
@@ -345,7 +353,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void DisplayPreviousImage()
     {
         if (TDS_GameManager.IsOnline && TDS_GameManager.LocalIsReady) return;
-        if (TDS_GameManager.IsOnline && photonPlayer == null) return;
+        if (TDS_GameManager.IsOnline && PlayerInfo.PhotonPlayer == null) return;
         if (characterSelectionImages.Where(i => i.CanBeSelected).Count() < 1) return;
         CurrentSelection.CharacterImage.gameObject.SetActive(false);
         currentIndex--;
@@ -359,7 +367,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         CurrentSelection.CharacterImage.gameObject.SetActive(true);
         if (TDS_GameManager.IsOnline)
         {
-            characterSelectionManager?.UpdateLocalCharacterIndex(photonPlayer, currentIndex);
+            characterSelectionManager?.UpdateLocalCharacterIndex(PlayerInfo.PhotonPlayer, currentIndex);
         }
     }
     #endregion

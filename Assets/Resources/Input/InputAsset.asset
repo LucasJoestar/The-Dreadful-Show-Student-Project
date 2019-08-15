@@ -13,9 +13,101 @@ MonoBehaviour:
   m_Name: InputAsset
   m_EditorClassIdentifier: 
   controllers:
-  - name: 
-    axis: []
-    buttons: []
+  - name: New Controller
+    axis:
+    - axisName: Horizontal
+      lastState: 3
+    - axisName: Vertical
+      lastState: 3
+    - axisName: HorizontalAim
+      lastState: 3
+    - axisName: VerticalAim
+      lastState: 3
+    - axisName: SwitchPlus
+      lastState: 3
+    - axisName: SwitchMinus
+      lastState: 3
+    buttons:
+    - name: Confirm
+      axis:
+        axisName: Unknown Axis
+        lastState: 3
+      keys: 
+    - name: Cancel
+      axis:
+        axisName: Unknown Axis
+        lastState: 3
+      keys: 
+    - name: Up
+      axis:
+        axisName: Unknown Axis
+        lastState: 3
+      keys: 
+    - name: Down
+      axis:
+        axisName: Unknown Axis
+        lastState: 3
+      keys: 
+    - name: Left
+      axis:
+        axisName: Unknown Axis
+        lastState: 3
+      keys: 
+    - name: Right
+      axis:
+        axisName: Unknown Axis
+        lastState: 3
+      keys: 
+    - name: Jump
+      axis:
+        axisName: Unknown Axis
+        lastState: 3
+      keys: 
+    - name: LightAttack
+      axis:
+        axisName: Unknown Axis
+        lastState: 3
+      keys: 
+    - name: HeavyAttack
+      axis:
+        axisName: Unknown Axis
+        lastState: 3
+      keys: 
+    - name: Interact
+      axis:
+        axisName: Unknown Axis
+        lastState: 3
+      keys: 
+    - name: Dodge
+      axis:
+        axisName: Unknown Axis
+        lastState: 3
+      keys: 
+    - name: Parry
+      axis:
+        axisName: Unknown Axis
+        lastState: 3
+      keys: 
+    - name: Pause
+      axis:
+        axisName: Unknown Axis
+        lastState: 3
+      keys: 
+    - name: Aim
+      axis:
+        axisName: Unknown Axis
+        lastState: 3
+      keys: 
+    - name: Shoot
+      axis:
+        axisName: Unknown Axis
+        lastState: 3
+      keys: 
+    - name: Snack
+      axis:
+        axisName: Unknown Axis
+        lastState: 3
+      keys: 
   Axis:
   - axisName: D-Pad X
     lastState: 3
