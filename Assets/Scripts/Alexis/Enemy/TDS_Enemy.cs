@@ -706,7 +706,7 @@ public abstract class TDS_Enemy : TDS_Character
             }
             else
             {
-                isWaiting = (Random.value * 100) <= tauntProbability;
+                isWaiting = (Random.value * 100) < tauntProbability;
                 if (isWaiting)
                 {
                     SetAnimationState((int)EnemyAnimationState.Taunt);

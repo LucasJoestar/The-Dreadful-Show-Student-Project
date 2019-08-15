@@ -154,13 +154,14 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         {
             return; 
         }
-        //TriggerToggle();
         IsLocked = _isPlayerReady;
         if (PhotonNetwork.offlineMode)
         {
             characterSelectionManager.CharacterSelectionMenu.LockLocalPlayerType(CurrentSelection.CharacterType, _isPlayerReady);
-            TDS_UIManager.Instance?.UpdateReadySettings(LocalPlayerIndex, _isPlayerReady); 
+            TDS_UIManager.Instance?.UpdateReadySettings(LocalPlayerIndex, _isPlayerReady);
+            return;
         }
+        TriggerToggle();
     }
 
     /// <summary>

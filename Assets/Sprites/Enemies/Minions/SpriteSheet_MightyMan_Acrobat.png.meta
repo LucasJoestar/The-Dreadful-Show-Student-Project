@@ -48,6 +48,37 @@ TextureImporter:
     21300086: MightyMan_Hammer04
     21300088: MightyMan_GrabObj01
     21300090: MightyMan_GrabObj02
+    21300092: SpriteSheet_MightyMan_Acrobat_0
+    21300094: Acrobat_Idle01
+    21300096: Acrobat_Idle02
+    21300098: Acrobat_IdleObj01
+    21300100: Acrobat_IdleObj02
+    21300102: Acrobat_Run01
+    21300104: Acrobat_Run02
+    21300106: Acrobat_Run03
+    21300108: Acrobat_Run04
+    21300110: Acrobat_RunObj01
+    21300112: Acrobat_RunObj02
+    21300114: Acrobat_RunObj03
+    21300116: Acrobat_RunObj04
+    21300118: Acrobat_GrabObj01
+    21300120: Acrobat_GrabObj02
+    21300122: Acrobat_ThrowObj01
+    21300124: Acrobat_ThrowObj02
+    21300126: Acrobat_JumpKick
+    21300128: Acrobat_RibbonAttack01
+    21300130: Acrobat_RibbonAttack02
+    21300132: Acrobat_BackFlipAttack01
+    21300134: Acrobat_BackFlipAttack02
+    21300136: Acrobat_BackFlipAttack03
+    21300138: Acrobat_BackFlipAttack04
+    21300140: Acrobat_BackFlipAttack05
+    21300142: Acrobat_Hit
+    21300144: Acrobat_Grounded01
+    21300146: Acrobat_Grounded05
+    21300148: Acrobat_Grounded02
+    21300150: Acrobat_Grounded03
+    21300152: Acrobat_Grounded04
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -1067,6 +1098,606 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: ce69448d6ce3fe4469bcc30c6a7a216c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_Idle01
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 964
+        width: 102
+        height: 232
+      alignment: 9
+      pivot: {x: 0.46, y: 0.03}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 804cf9a9ff341614f8d16efd81224036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_Idle02
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 964
+        width: 106
+        height: 208
+      alignment: 9
+      pivot: {x: 0.48, y: 0.028}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed5ed695ddcd86747a73c3a921387237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_IdleObj01
+      rect:
+        serializedVersion: 2
+        x: 582
+        y: 966
+        width: 100
+        height: 227
+      alignment: 9
+      pivot: {x: 0.56, y: 0.022}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9716e915a73b054b99b258f6e6e66c7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_IdleObj02
+      rect:
+        serializedVersion: 2
+        x: 767
+        y: 966
+        width: 104
+        height: 205
+      alignment: 9
+      pivot: {x: 0.57, y: 0.03}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1acad45f5b737640a58da2eac9a0a7c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_Run01
+      rect:
+        serializedVersion: 2
+        x: 1046
+        y: 971
+        width: 102
+        height: 212
+      alignment: 9
+      pivot: {x: 0.45, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2c9ed98488c06914a97afb6717eea3e5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_Run02
+      rect:
+        serializedVersion: 2
+        x: 1268
+        y: 969
+        width: 108
+        height: 220
+      alignment: 9
+      pivot: {x: 0.45, y: 0.025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a354bcb5384850e448cc4abf7857ecdb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_Run03
+      rect:
+        serializedVersion: 2
+        x: 1484
+        y: 968
+        width: 104
+        height: 217
+      alignment: 9
+      pivot: {x: 0.48, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef21bd244b928de4caf20283e6428b19
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_Run04
+      rect:
+        serializedVersion: 2
+        x: 1672
+        y: 968
+        width: 104
+        height: 230
+      alignment: 9
+      pivot: {x: 0.46, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1dace3b13f126642b5201ee7076db02
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_RunObj01
+      rect:
+        serializedVersion: 2
+        x: 1904
+        y: 971
+        width: 101
+        height: 212
+      alignment: 9
+      pivot: {x: 0.55, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 833f7c68190cb0449bd1f5f6feaec399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_RunObj02
+      rect:
+        serializedVersion: 2
+        x: 2104
+        y: 968
+        width: 105
+        height: 220
+      alignment: 9
+      pivot: {x: 0.55, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d21cee9b1f236942a51f5c61cf8a280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_RunObj03
+      rect:
+        serializedVersion: 2
+        x: 2311
+        y: 965
+        width: 96
+        height: 219
+      alignment: 9
+      pivot: {x: 0.57, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1746746c63d1e448ad4012e5c0852cb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_RunObj04
+      rect:
+        serializedVersion: 2
+        x: 2510
+        y: 966
+        width: 101
+        height: 230
+      alignment: 9
+      pivot: {x: 0.55, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08975fd9e0305c043afdc1ca170edca2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_GrabObj01
+      rect:
+        serializedVersion: 2
+        x: 2787
+        y: 968
+        width: 103
+        height: 177
+      alignment: 9
+      pivot: {x: 0.42, y: 0.025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e88f5b92dd1efa044920e994ebfa755b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_GrabObj02
+      rect:
+        serializedVersion: 2
+        x: 2981
+        y: 968
+        width: 107
+        height: 140
+      alignment: 9
+      pivot: {x: 0.47, y: 0.03}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9d84d7bcc004964391b819f610702fb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_ThrowObj01
+      rect:
+        serializedVersion: 2
+        x: 3206
+        y: 967
+        width: 107
+        height: 217
+      alignment: 9
+      pivot: {x: 0.5, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28173a7dc682f7c48a9b672bb5dbc41d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_ThrowObj02
+      rect:
+        serializedVersion: 2
+        x: 3356
+        y: 964
+        width: 134
+        height: 213
+      alignment: 9
+      pivot: {x: 0.7, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5f1c3ef2b7801f46ba9c65d2863c2ca
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_JumpKick
+      rect:
+        serializedVersion: 2
+        x: 3646
+        y: 1027
+        width: 182
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: -0.3}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a54d3d86cfc824f4ba9ca719489f2a99
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_RibbonAttack01
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 623
+        width: 358
+        height: 228
+      alignment: 9
+      pivot: {x: 0.845, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93b8d0fd8af6d4748be8fa74813aef69
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_RibbonAttack02
+      rect:
+        serializedVersion: 2
+        x: 628
+        y: 624
+        width: 368
+        height: 228
+      alignment: 9
+      pivot: {x: 0.848, y: 0.018}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73a7599d047a4ca4bbae6cc8b0e9f3f1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_BackFlipAttack01
+      rect:
+        serializedVersion: 2
+        x: 1213
+        y: 625
+        width: 115
+        height: 186
+      alignment: 9
+      pivot: {x: 0.7, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8d3191b5eec2f24b8488505f5b2e518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_BackFlipAttack02
+      rect:
+        serializedVersion: 2
+        x: 1495
+        y: 664
+        width: 122
+        height: 160
+      alignment: 9
+      pivot: {x: 0.7, y: -0.18}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7b20581ed303e44ca369de8a72b4dca
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_BackFlipAttack03
+      rect:
+        serializedVersion: 2
+        x: 1756
+        y: 753
+        width: 106
+        height: 110
+      alignment: 9
+      pivot: {x: 0.5, y: -1.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c561da385d9bd54989a0c7be566aa8c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_BackFlipAttack04
+      rect:
+        serializedVersion: 2
+        x: 1994
+        y: 677
+        width: 99
+        height: 149
+      alignment: 9
+      pivot: {x: 0.5, y: -0.3}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 441b63dbab1fbe349bf7a1c0a1e188b3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_BackFlipAttack05
+      rect:
+        serializedVersion: 2
+        x: 2234
+        y: 625
+        width: 119
+        height: 213
+      alignment: 9
+      pivot: {x: 0.3, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5074ad56d44b0294792985f38e5e57e5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_Hit
+      rect:
+        serializedVersion: 2
+        x: 2532
+        y: 625
+        width: 128
+        height: 213
+      alignment: 9
+      pivot: {x: 0.45, y: 0.03}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b2b70d2d19fd0d4e9dd4c637ab8c152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_Grounded01
+      rect:
+        serializedVersion: 2
+        x: 2776
+        y: 624
+        width: 166
+        height: 176
+      alignment: 9
+      pivot: {x: 0.5, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba07f37d71e5b9e4286d2cba268c5600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_Grounded05
+      rect:
+        serializedVersion: 2
+        x: 3853
+        y: 620
+        width: 123
+        height: 193
+      alignment: 9
+      pivot: {x: 0.56, y: 0.07}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06260be76c9a4b64da7638140bc57106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_Grounded02
+      rect:
+        serializedVersion: 2
+        x: 3008
+        y: 624
+        width: 216
+        height: 75
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e1bdddc53885c3498a6d59057a2f458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_Grounded03
+      rect:
+        serializedVersion: 2
+        x: 3343
+        y: 623
+        width: 157
+        height: 105
+      alignment: 9
+      pivot: {x: 0.3, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba6b4e38e1014b2498e1a3d5da007727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acrobat_Grounded04
+      rect:
+        serializedVersion: 2
+        x: 3576
+        y: 623
+        width: 197
+        height: 127
+      alignment: 9
+      pivot: {x: 0.5, y: -0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b71b0b1b37111b243abe99099b8194d2
       vertices: []
       indices: 
       edges: []
