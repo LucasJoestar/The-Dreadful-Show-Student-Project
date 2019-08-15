@@ -32,7 +32,6 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     public TDS_CharacterMenuSelection CharacterSelectionMenu { get { return characterSelectionMenu; } }
     #endregion
 
-
     #region Methods 
 
     #region Original Methods

@@ -7,6 +7,11 @@ public class TDS_Controller
 {
     #region Fields & Properties
     /// <summary>
+    /// Name of the controller.
+    /// </summary>
+    [SerializeField] private string name = "New Controller";
+
+    /// <summary>
     /// All axis associated with this controller.
     /// </summary>
     [SerializeField] private TDS_AxisToInput[] axis = new TDS_AxisToInput[] { };
@@ -15,6 +20,32 @@ public class TDS_Controller
     /// All buttons associated with this controller.
     /// </summary>
     [SerializeField] private TDS_Button[] buttons = new TDS_Button[] { };
+    #endregion
+
+    #region Constructor
+    /// <summary>
+    /// Creates a brand new controller.
+    /// </summary>
+    public TDS_Controller()
+    {
+        name = "New Controller";
+
+        AxisType[] _axis = (AxisType[])Enum.GetValues(typeof(AxisType));
+
+        axis = new TDS_AxisToInput[_axis.Length];
+        for (int _i = 0; _i < _axis.Length; _i++)
+        {
+            axis[_i] = new TDS_AxisToInput(_axis[_i].ToString());
+        }
+
+        ButtonType[] _buttons = (ButtonType[])Enum.GetValues(typeof(ButtonType));
+
+        buttons = new TDS_Button[_buttons.Length];
+        for (int _i = 0; _i < _buttons.Length; _i++)
+        {
+            buttons[_i] = new TDS_Button(_buttons[_i].ToString());
+        }
+    }
     #endregion
 
     #region Methods

@@ -263,6 +263,22 @@ public class TDS_Player : TDS_Character, IPunObservable
     #endregion
 
     #region Components & References
+    /// <summary>Backing field for <see cref="Controller"/>.</summary>
+    [SerializeField] protected TDS_Controller controller = new TDS_Controller();
+
+    /// <summary>
+    /// Controller linked to this player.
+    /// </summary>
+    public TDS_Controller Controller
+    {
+        get { return controller; }
+        set
+        {
+            if ((value == null) || (value == default(TDS_Controller))) return;
+            controller = value;
+        }
+    }
+
     /// <summary>
     /// The summoner this player is currently carrying.
     /// </summary>
@@ -2097,7 +2113,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     protected virtual void FixedUpdate()
     {
         // If dead, return
-        if (!photonView.isMine || isDead || !PhotonNetwork.connected) return;
+        if (!photonView.isMine || isDead) return;
 
         // Checks if the player is grounded or not, and all related elements
         CheckGrounded();
@@ -2107,7 +2123,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     private void LateUpdate()
     {
         // If dead, return
-        if (isDead || !PhotonNetwork.connected) return;
+        if (isDead) return;
 
         // At the end of the frame, set the previous position as this one
         previousPosition = transform.position;
