@@ -104,12 +104,17 @@ MonoBehaviour:
   shadow: {fileID: 9102226676782451288}
   hitBox: {fileID: 3444907900535000355}
   rigidbody: {fileID: 3357969355024705391}
-  sprite: {fileID: 0}
+  sprite: {fileID: 4532982596238788323}
   isHeld: 0
   bouncePower: 0.5
   bonusDamage: 1
   ObjectDurability: 2
   weight: 2
+  OnGrabbedFirstTime:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!54 &3357969355024705391
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -254,7 +259,7 @@ GameObject:
   - component: {fileID: 4865402268584119117}
   - component: {fileID: 2747888234947910236}
   - component: {fileID: 462419206051379250}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

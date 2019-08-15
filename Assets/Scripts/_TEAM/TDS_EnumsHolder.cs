@@ -87,7 +87,9 @@ public enum AxisType
     Horizontal,
     Vertical,
     HorizontalAim,
-    VerticalAim
+    VerticalAim,
+    SwitchPlus,
+    SwitchMinus
 }
 
 /// <summary>

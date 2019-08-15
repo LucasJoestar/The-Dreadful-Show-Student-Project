@@ -90,7 +90,7 @@ public class TDS_LevelManager : PunBehaviour
     /// <param name="_playerType"></param>
     public void Spawn(PlayerType _playerType)
     {
-        if(PhotonNetwork.connected)
+        if(!PhotonNetwork.offlineMode)
         {
             if (_playerType == PlayerType.Juggler)
                 localPlayer = PhotonNetwork.Instantiate(_playerType.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponentInChildren<TDS_Player>();
@@ -110,9 +110,16 @@ public class TDS_LevelManager : PunBehaviour
     /// </summary>
     public void Spawn()
     {
-        if (!PhotonNetwork.connected) return; 
         localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponent<TDS_Player>();
         TDS_Camera.Instance.Target = localPlayer.transform;
+    }
+
+    public void LocalSpawn(int _playerID, PlayerType _typeToSpawn)
+    {
+        TDS_Player _player = (Instantiate(Resources.Load(_typeToSpawn.ToString()), StartSpawnPoints[0], Quaternion.identity) as GameObject).GetComponent<TDS_Player>();
+        if (_playerID == 0)
+            TDS_Camera.Instance.Target = _player.transform;
+        //Set the player ID to control it with the controller with the same id
     }
 
     /// <summary>
@@ -144,7 +151,7 @@ public class TDS_LevelManager : PunBehaviour
     /// </summary>
     public IEnumerator CheckLivingPlayers()
     {
-        if (localPlayer.IsDead)
+        if (!PhotonNetwork.offlineMode && localPlayer.IsDead)
         {
             yield return new WaitForSeconds(2f);
 
@@ -154,7 +161,12 @@ public class TDS_LevelManager : PunBehaviour
             {
                 TDS_Camera.Instance.Target = OtherPlayers.Where(p => !p.IsDead).First().transform;
             }
+            yield break; 
         }
+        Debug.LogError("THIS FEATURE IS NOT IMPLEMENTED"); 
+        // TO DO: Store the players in a list
+        // Check if everybody is dead
+        // If so, reset the Level
     }
     #endregion
 

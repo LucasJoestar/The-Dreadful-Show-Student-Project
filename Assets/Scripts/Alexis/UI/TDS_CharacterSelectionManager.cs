@@ -32,7 +32,6 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     public TDS_CharacterMenuSelection CharacterSelectionMenu { get { return characterSelectionMenu; } }
     #endregion
 
-
     #region Methods 
 
     #region Original Methods
@@ -214,20 +213,19 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     #endregion
 
     #region Local Methods
-    public void AddNewLocalPlayer(int _i)
-    {
-
-        // Add a new player linked to ... ?  
-    }
-
     public void SubmitInLocalCharacterSelection(int _playerId)
     {
-        if (TDS_GameManager.IsOnline) return;
+        if (!PhotonNetwork.offlineMode) return;
+        Debug.Log("In"); 
         TDS_CharacterSelectionElement _elem = characterSelectionMenu.CharacterSelectionElements.Where(e => e.LocalPlayerIndex == _playerId && e.IsUsedLocally).FirstOrDefault(); 
         if (_elem)
         {
             if(!_elem.IsLocked)
-                _elem.LockElement(true);  
+            {
+                //_elem.LockElement(true);
+                _elem.ReadyToggle.isOn = true;
+                _elem.TriggerToggle();
+            }
             return; 
         }
         characterSelectionMenu.AddNewPlayer(_playerId);
@@ -235,8 +233,8 @@ public class TDS_CharacterSelectionManager : PunBehaviour
 
     public void CancelInLocalCharacterSelection(int _playerId)
     {
-        if (TDS_GameManager.IsOnline) return;
-        if(TDS_GameManager.LocalPlayerIDs.Count == 0)
+        if (!PhotonNetwork.offlineMode) return;
+        if (TDS_GameManager.LocalPlayerIDs.Count == 0)
         {
             TDS_UIManager.Instance?.ActivateMenu(UIState.InMainMenu); 
             return; 
@@ -244,7 +242,8 @@ public class TDS_CharacterSelectionManager : PunBehaviour
         TDS_CharacterSelectionElement _elem = characterSelectionMenu.CharacterSelectionElements.Where(e => e.LocalPlayerIndex == _playerId && e.IsUsedLocally).FirstOrDefault();
         if (_elem && _elem.IsLocked)
         {
-            _elem.LockElement(false);
+            _elem.ReadyToggle.isOn = false;
+            _elem.TriggerToggle(); 
             return;
         }
         characterSelectionMenu.RemoveLocalPlayer(_playerId);
