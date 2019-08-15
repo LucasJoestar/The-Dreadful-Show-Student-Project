@@ -110,7 +110,6 @@ public class TDS_LevelManager : PunBehaviour
     /// </summary>
     public void Spawn()
     {
-        if (!PhotonNetwork.connected) return; 
         localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponent<TDS_Player>();
         TDS_Camera.Instance.Target = localPlayer.transform;
     }
