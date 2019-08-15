@@ -14858,6 +14858,10 @@ PrefabInstance:
       propertyPath: instantiationId
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 1954198085, guid: 99eb62c10851ec643a1a1236cfc985a6, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3911030566510971952, guid: 99eb62c10851ec643a1a1236cfc985a6,
         type: 3}
       propertyPath: viewIdField
@@ -14867,10 +14871,6 @@ PrefabInstance:
         type: 3}
       propertyPath: instantiationId
       value: 19
-      objectReference: {fileID: 0}
-    - target: {fileID: 1954198085, guid: 99eb62c10851ec643a1a1236cfc985a6, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99eb62c10851ec643a1a1236cfc985a6, type: 3}
@@ -30667,7 +30667,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1781164744
 Transform:
   m_ObjectHideFlags: 0
