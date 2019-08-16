@@ -714,7 +714,7 @@ public abstract class TDS_Enemy : TDS_Character
                     {
                         yield return null;
                     }
-                    yield return new WaitForSeconds(Random.Range(1, 5)); 
+                    yield return new WaitForSeconds(Random.Range(.1f, 2)); 
                 }
             }
             SearchTarget();  
