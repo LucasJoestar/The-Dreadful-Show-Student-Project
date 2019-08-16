@@ -98,6 +98,11 @@ public enum AxisType
     Vertical,
     HorizontalAim,
     VerticalAim,
+<<<<<<< Updated upstream
+=======
+    SwitchPlus,
+    SwitchMinus
+>>>>>>> Stashed changes
 }
 
 /// <summary>

@@ -213,12 +213,17 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     public void SubmitInLocalCharacterSelection(int _playerId)
     {
         if (!PhotonNetwork.offlineMode) return;
+<<<<<<< Updated upstream
         if(!TDS_GameManager.PlayersInfo.Any(i => i.PlayerID == _playerId))
         {
             characterSelectionMenu.AddNewPlayer(_playerId);
             return; 
         }
         TDS_CharacterSelectionElement _elem = characterSelectionMenu.CharacterSelectionElements.Where(e => (e.PlayerInfo != null) && (e.PlayerInfo.PlayerID == _playerId) && (e.IsUsedLocally)).FirstOrDefault(); 
+=======
+        Debug.Log("In"); 
+        TDS_CharacterSelectionElement _elem = characterSelectionMenu.CharacterSelectionElements.Where(e => e.LocalPlayerIndex == _playerId && e.IsUsedLocally).FirstOrDefault(); 
+>>>>>>> Stashed changes
         if (_elem)
         {
             if(!_elem.IsLocked)
@@ -227,13 +232,21 @@ public class TDS_CharacterSelectionManager : PunBehaviour
                 _elem.ReadyToggle.isOn = true;
                 _elem.TriggerToggle();
             }
+<<<<<<< Updated upstream
+=======
+            return; 
+>>>>>>> Stashed changes
         }
     }
 
     public void CancelInLocalCharacterSelection(int _playerId)
     {
         if (!PhotonNetwork.offlineMode) return;
+<<<<<<< Updated upstream
         if (TDS_GameManager.PlayersInfo.Count == 0)
+=======
+        if (TDS_GameManager.LocalPlayerIDs.Count == 0)
+>>>>>>> Stashed changes
         {
             TDS_GameManager.PlayersInfo.Clear(); 
             TDS_UIManager.Instance?.ActivateMenu(UIState.InMainMenu); 

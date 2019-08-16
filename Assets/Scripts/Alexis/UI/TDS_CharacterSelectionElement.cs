@@ -159,16 +159,28 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void LockElement(bool _isPlayerReady)
     {
         // SET THE TOGGLE
+<<<<<<< Updated upstream
         if(!PhotonNetwork.offlineMode && (PlayerInfo.PhotonPlayer == null || PhotonNetwork.player.ID == PlayerInfo.PhotonPlayer.ID))
         {
             return; 
         }
+=======
+        if(!PhotonNetwork.offlineMode && photonPlayer == null && PhotonNetwork.player.ID == photonPlayer.ID)
+        {
+            return; 
+        }
+        //TriggerToggle();
+>>>>>>> Stashed changes
         IsLocked = _isPlayerReady;
         if (PhotonNetwork.offlineMode)
         {
             characterSelectionManager.CharacterSelectionMenu.LockLocalPlayerType(CurrentSelection.CharacterType, _isPlayerReady);
+<<<<<<< Updated upstream
             TDS_UIManager.Instance?.UpdateReadySettings(PlayerInfo.PlayerID, _isPlayerReady);
             return;
+=======
+            TDS_UIManager.Instance?.UpdateReadySettings(LocalPlayerIndex, _isPlayerReady); 
+>>>>>>> Stashed changes
         }
         TriggerToggle();
     }
@@ -329,7 +341,11 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void DisplayNextImage()
     {
         if ((TDS_GameManager.IsOnline && TDS_GameManager.LocalIsReady) || isLocked) return;
+<<<<<<< Updated upstream
         if (TDS_GameManager.IsOnline && PlayerInfo.PhotonPlayer == null) return;
+=======
+        if (TDS_GameManager.IsOnline && photonPlayer == null) return;
+>>>>>>> Stashed changes
         if (characterSelectionImages.Where(i => i.CanBeSelected).Count() < 1) return;
         CurrentSelection.CharacterImage.gameObject.SetActive(false);
         currentIndex++;

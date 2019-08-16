@@ -110,6 +110,11 @@ MonoBehaviour:
   bonusDamage: 1
   ObjectDurability: 2
   weight: 2
+  OnGrabbedFirstTime:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!54 &3357969355024705391
 Rigidbody:
   m_ObjectHideFlags: 0
