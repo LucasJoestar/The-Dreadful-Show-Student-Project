@@ -829,17 +829,10 @@ public class TDS_UIManager : PunBehaviour
         {
             for (int i = 0; i < characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements.Length; i++)
             {
-<<<<<<< Updated upstream
                 TDS_PlayerInfo _info = TDS_GameManager.PlayersInfo[i]; 
                 if (_info != null)
                 {
                     TDS_LevelManager.Instance.LocalSpawn(_info.PlayerID, _info.PlayerType);
-=======
-                TDS_CharacterSelectionElement _elem = characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements[i]; 
-                if (_elem.IsUsedLocally)
-                {
-                    TDS_LevelManager.Instance.LocalSpawn(_elem.LocalPlayerIndex, _elem.CurrentSelection.CharacterType);
->>>>>>> Stashed changes
                 }
             }
         }
@@ -1147,40 +1140,16 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_isReady"></param>
     public void UpdateReadySettings(int _playerId, bool _isReady)
     {
-<<<<<<< Updated upstream
         if (uiState == UIState.InCharacterSelection && launchGameButton)
             launchGameButton.interactable = (!TDS_GameManager.PlayersInfo.Any(p => p.IsReady == false) && TDS_GameManager.LocalIsReady) || (!TDS_GameManager.PlayersInfo.Any(p => p.IsReady == false));
         if (uiState == UIState.InGameOver && buttonRestartGame)
         {
-=======
-        if(!PhotonNetwork.offlineMode)
-        {
-            if (!PhotonNetwork.isMasterClient) return;
-            PhotonPlayer _player = PhotonPlayer.Find(_playerId);
-            if (TDS_GameManager.PlayerListReady.ContainsKey(_player))
-            {
-                TDS_GameManager.PlayerListReady[_player] = _isReady;
-            }
-        }
-        else
-        {
-            TDS_GameManager.LocalPlayerIDs[_playerId] = _isReady; 
-        }
-        if (uiState == UIState.InCharacterSelection && launchGameButton)
-            launchGameButton.interactable = (!TDS_GameManager.PlayerListReady.Any(p => p.Value == false) && TDS_GameManager.LocalIsReady) || (!TDS_GameManager.LocalPlayerIDs.Any(p => p.Value == false));
-        if (uiState == UIState.InGameOver && buttonRestartGame)
-        {
->>>>>>> Stashed changes
             if(PhotonNetwork.offlineMode)
             {
                 buttonRestartGame.interactable = true;
                 return; 
             }
-<<<<<<< Updated upstream
             buttonRestartGame.interactable = !TDS_GameManager.PlayersInfo.Any(p => p.IsReady == false);
-=======
-            buttonRestartGame.interactable = !TDS_GameManager.PlayerListReady.Any(p => p.Value == false);
->>>>>>> Stashed changes
 
         }
     }
