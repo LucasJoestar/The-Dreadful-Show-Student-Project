@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Photon;
 
 #pragma warning disable 0414
@@ -25,6 +26,13 @@ public class TDS_Throwable : PunBehaviour
 	 *
 	 *	-----------------------------------
 	*/
+
+    #region Events
+    /// <summary>
+    /// Event called when the object is destroyed.
+    /// </summary>
+    public event Action OnDestroyed = null;
+    #endregion
 
     #region Fields / Properties
     /// <summary>
@@ -161,8 +169,16 @@ public class TDS_Throwable : PunBehaviour
     /// </summary>
     protected virtual void DestroyThrowableObject()
     {
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "DestroyThrowableObject"), new object[] { });
+            return;
+        }
+
         TDS_VFXManager.Instance.SpawnEffect(FXType.MagicDisappear, transform.position);
         PhotonNetwork.Destroy(gameObject);
+
+        OnDestroyed?.Invoke();
     }
 
     /// <summary>
@@ -345,7 +361,7 @@ public class TDS_Throwable : PunBehaviour
 
     private void OnDestroy()
     {
-        hitBox.Desactivate(); 
+        hitBox.Desactivate();
     }
     #endregion
 

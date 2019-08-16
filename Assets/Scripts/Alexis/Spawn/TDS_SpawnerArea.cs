@@ -86,6 +86,13 @@ public class TDS_SpawnerArea : PunBehaviour
 
     #region Fields / Properties
 
+    #region Constants
+    /// <summary>
+    /// Amount of minimum throwables that need to be linked to this area.
+    /// </summary>
+    public const int MINIMUM_THROWABLES = 2;
+    #endregion
+
     #region Components and references
     #endregion
 
@@ -129,12 +136,20 @@ public class TDS_SpawnerArea : PunBehaviour
     /// <summary>
     /// Get an array of all active enemies for all activated spawn areas.
     /// </summary>
-    public static TDS_Enemy[] ActiveEnemies { get { return activatedAreas.SelectMany(a => a.spawnedEnemies).ToArray(); } }
+    public static TDS_Enemy[] ActiveEnemies { get { return ActivatedAreas.SelectMany(a => a.spawnedEnemies).ToArray(); } }
 
     /// <summary>
     /// List of the currently activated spawn areas.
     /// </summary>
-    private static List<TDS_SpawnerArea> activatedAreas = new List<TDS_SpawnerArea>();
+    public static List<TDS_SpawnerArea> ActivatedAreas { get; private set; } = new List<TDS_SpawnerArea>();
+
+    /// <summary>
+    /// All throwables linked to this area.
+    /// </summary>
+    [SerializeField] private List<TDS_Throwable> areaThrowables = new List<TDS_Throwable>();
+
+    /// <summary>Public accessor for <see cref="areaThrowables"/>.</summary>
+    public List<TDS_Throwable> AreaThrowables { get { return areaThrowables; } }
 
     [SerializeField] List<TDS_Wave> waves = new List<TDS_Wave>();
     #endregion
@@ -195,7 +210,7 @@ public class TDS_SpawnerArea : PunBehaviour
         if (!PhotonNetwork.isMasterClient) return;  
         if (waveIndex == waves.Count && !isLooping)
         {
-            activatedAreas.Remove(this);
+            ActivatedAreas.Remove(this);
 
             OnAreaDesactivated?.Invoke();
             TDS_UIManager.Instance.SwitchCurtains(false);
@@ -261,9 +276,13 @@ public class TDS_SpawnerArea : PunBehaviour
 
             _removeEnemies?.Invoke();
 
-            activatedAreas.Add(this);
+            ActivatedAreas.Add(this);
 
             OnAreaActivated?.Invoke();
+
+            TDS_Player _juggler = TDS_LevelManager.Instance.AllPlayers.Where(p => p.PlayerType == PlayerType.Juggler).FirstOrDefault();
+
+            if (_juggler) ((TDS_Juggler)_juggler).Throwables.ForEach(t => LinkThrowable(t));
         }
     }
 
@@ -310,6 +329,64 @@ public class TDS_SpawnerArea : PunBehaviour
             OnNextWave?.Invoke();
         }
     }
+
+
+    /// <summary>
+    /// Initializes this spawn area.
+    /// </summary>
+    private void Initialize()
+    {
+        OnNextWave.AddListener(ActivateWave);
+        OnAreaActivated.AddListener(ActivateWave);
+        isReady = true;
+
+        // Subscribe linked objects destruction to method
+        foreach (TDS_Throwable _throwable in areaThrowables)
+        {
+            _throwable.OnDestroyed += () => RemoveThrowable(_throwable);
+        }
+        CheckRemainingObjects();
+    }
+
+
+    /// <summary>
+    /// Checks the remaining objects linekd to this area, and executes actions depending on observed result.
+    /// </summary>
+    public void CheckRemainingObjects()
+    {
+        // If remaining not enough throwables and a Juggler is in game, just spawn an object supply box
+        if (((areaThrowables.Count == MINIMUM_THROWABLES) || (areaThrowables.Count == 0)) && TDS_LevelManager.Instance.AllPlayers.Any(p => (p.PlayerType == PlayerType.Juggler) && !p.IsDead))
+        {
+            TDS_LevelManager.Instance.SpawnJugglerSupply();
+        }
+    }
+
+    /// <summary>
+    /// Link a throwable to this area.
+    /// </summary>
+    /// <param name="_throwable">Throwable to link.</param>
+    public void LinkThrowable(TDS_Throwable _throwable)
+    {
+        if (!areaThrowables.Contains(_throwable))
+        {
+            areaThrowables.Add(_throwable);
+            _throwable.OnDestroyed += () => RemoveThrowable(_throwable);
+        }
+    }
+
+    /// <summary>
+    /// Remove a throwable from this area.
+    /// </summary>
+    /// <param name="_throwable">Throwable to remove.</param>
+    public void RemoveThrowable(TDS_Throwable _throwable)
+    {
+        if (areaThrowables.Contains(_throwable))
+        {
+            areaThrowables.Remove(_throwable);
+
+            if (isActivated) CheckRemainingObjects();
+        }
+    }
     #endregion
 
     #region Unity Methods
@@ -317,10 +394,7 @@ public class TDS_SpawnerArea : PunBehaviour
     private void Awake()
     {
         // Call it when the player is connected
-        if (!PhotonNetwork.isMasterClient) return;
-        OnNextWave.AddListener(ActivateWave);
-        OnAreaActivated.AddListener(ActivateWave);
-        isReady = true;
+        if (PhotonNetwork.isMasterClient) Initialize();
     }
 
     private void Start()
@@ -361,10 +435,7 @@ public class TDS_SpawnerArea : PunBehaviour
     /// <param name="newPlayer"></param>
     public override void OnJoinedRoom()
     {
-        if (isReady || !PhotonNetwork.isMasterClient) return;
-        OnNextWave.AddListener(ActivateWave);
-        OnAreaActivated.AddListener(ActivateWave);
-        isReady = true;
+        if (!isReady && PhotonNetwork.isMasterClient) Initialize();
     }
     #endregion
 
