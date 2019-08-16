@@ -78,6 +78,14 @@ public class TDS_Controller
         return axis[(int)_axis].LastState == AxisState.KeyDown;
     }
 
+    public bool GetAxisDown(AxisType _axis, out int _value)
+    {
+
+        _value = (int)Mathf.Sign(Input.GetAxis(axis[(int)_axis].AxisName));
+        return axis[(int)_axis].LastState == AxisState.KeyDown;
+
+    }
+
     /// <summary>
     /// Get if an certain axis is released.
     /// </summary>

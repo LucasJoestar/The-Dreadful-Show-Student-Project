@@ -1071,14 +1071,14 @@ public abstract class TDS_Enemy : TDS_Character
     public void ActivateEnemyAfterTaunt()
     {
         if (!PhotonNetwork.isMasterClient) return;
-        
+
+        SetAnimationState((int)EnemyAnimationState.Idle);
         if (isWaiting)
         {
             isWaiting = false;
             return;
         }
 
-        SetAnimationState((int)EnemyAnimationState.Idle);
         ActivateEnemy(); 
     }
 

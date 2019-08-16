@@ -269,6 +269,7 @@ public class TDS_UIManager : PunBehaviour
     #endregion
 
     #region WorkInProgress
+    private bool isPause = false; 
     #endregion
 
     #endregion
@@ -290,6 +291,7 @@ public class TDS_UIManager : PunBehaviour
         Action _cancelAction = null;
         Action _submitAction = null;
         Action<int> _horizontalAxisAction = null;
+        Action _startAction = null; 
         //Local
         Action<int> _cancelActionByPlayer = null;
         Action<int> _submitActionByPlayer = null;
@@ -317,9 +319,11 @@ public class TDS_UIManager : PunBehaviour
                     break; 
                 }
                 _submitActionByPlayer = characterSelectionManager.SubmitInLocalCharacterSelection;
-                _cancelActionByPlayer = characterSelectionManager.CancelInLocalCharacterSelection; 
+                _cancelActionByPlayer = characterSelectionManager.CancelInLocalCharacterSelection;
+                _horizontalAxisActionByPlayer = characterSelectionManager.ChangeImageAtPlayer; 
                 break;
             case UIState.InGame:
+                _startAction = () => SetPause(!isPause); 
                 break;
             case UIState.InPause:
                 _cancelAction = () => ActivateMenu(UIState.InGame);
@@ -334,41 +338,56 @@ public class TDS_UIManager : PunBehaviour
         {
             while (UIState == _state)
             {
-                if (TDS_InputManager.GetButtonDown(TDS_InputManager.CANCEL_BUTTON))
+                if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Cancel))
                 {
                     yield return new WaitForEndOfFrame();
                     _cancelAction?.Invoke();
                 }
-                else if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUBMIT_BUTTON))
+                else if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Confirm))
                 {
                     yield return new WaitForEndOfFrame();
                     _submitAction?.Invoke();
                 }
-                else if (TDS_InputManager.GetAxisDown(TDS_InputManager.HORIZONTAL_AXIS, out _value))
+                else if (TDS_GameManager.InputsAsset.Controllers[0].GetAxisDown(AxisType.Horizontal, out _value))
+                {
+                    Debug.Log(_value); 
+                    _horizontalAxisAction?.Invoke(_value);
+                }
+                else if(TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Pause))
                 {
                     yield return new WaitForEndOfFrame();
-                    _horizontalAxisAction?.Invoke(_value);
+                    _startAction?.Invoke();
                 }
                 yield return null;
             }
             yield break; 
         }
+        TDS_Controller _controller = null; 
         while (UIState == _state)
         {
-            if (TDS_InputManager.GetButtonDown(TDS_InputManager.CANCEL_BUTTON))
+            for (int _i = 1; _i < TDS_GameManager.InputsAsset.Controllers.Length; _i++)
             {
-                yield return new WaitForEndOfFrame();
-                _cancelActionByPlayer?.Invoke(0); 
+                _controller = TDS_GameManager.InputsAsset.Controllers[_i]; 
+                if (_controller.GetButtonDown(ButtonType.Cancel))
+                {
+                    yield return new WaitForEndOfFrame();
+                    _cancelActionByPlayer?.Invoke(_i);
+                }
+                else if (_controller.GetButtonDown(ButtonType.Confirm))
+                {
+                    yield return new WaitForEndOfFrame();
+                    _submitActionByPlayer?.Invoke(_i);
+                }
+                else if (_controller.GetAxisDown(AxisType.Horizontal, out _value))
+                {
+                    yield return new WaitForEndOfFrame();
+                    _horizontalAxisActionByPlayer?.Invoke(_i, _value);
+                }
             }
-            else if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUBMIT_BUTTON))
+            if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Pause))
             {
                 yield return new WaitForEndOfFrame();
-                _submitActionByPlayer?.Invoke(0); 
-            }
-            else if (TDS_InputManager.GetAxisDown(TDS_InputManager.HORIZONTAL_AXIS, out _value))
-            {
-                yield return new WaitForEndOfFrame();
-                _horizontalAxisActionByPlayer?.Invoke(0 , _value);
+                _startAction?.Invoke();
             }
             yield return null;
         }
@@ -820,7 +839,6 @@ public class TDS_UIManager : PunBehaviour
             return; 
         }
 
-        characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements.ToList().ForEach(e => e.ClearToggle());
         if(isloadingNextScene)
         {
             TDS_SceneManager.Instance?.PrepareSceneLoading(TDS_GameManager.CurrentSceneIndex + 1);
@@ -829,13 +847,14 @@ public class TDS_UIManager : PunBehaviour
         {
             for (int i = 0; i < characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements.Length; i++)
             {
-                TDS_PlayerInfo _info = TDS_GameManager.PlayersInfo[i]; 
+                TDS_PlayerInfo _info = characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements[i].PlayerInfo;
                 if (_info != null)
                 {
                     TDS_LevelManager.Instance.LocalSpawn(_info.PlayerID, _info.PlayerType);
                 }
             }
         }
+        characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements.ToList().ForEach(e => e.ClearToggle());
         ActivateMenu(UIState.InGame); 
 
     }
@@ -1014,7 +1033,8 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_isPaused"></param>
     public void SetPause(bool _isPaused)
     {
-        if (TDS_LevelManager.Instance && TDS_LevelManager.Instance.OtherPlayers.Count == 0)
+        isPause = _isPaused; 
+        if(TDS_LevelManager.Instance?.OtherPlayers.Count == 0 || PhotonNetwork.offlineMode)
         {
             Time.timeScale = _isPaused ? 0 : 1;
         }
@@ -1079,6 +1099,7 @@ public class TDS_UIManager : PunBehaviour
         TDS_GameManager.PlayersInfo.Clear(); 
         if(!TDS_GameManager.IsOnline)
         {
+            PhotonNetwork.offlineMode = false; 
             ActivateMenu(UIState.InMainMenu);
             Selectable.allSelectables.First().Select(); 
             return; 

@@ -164,7 +164,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     #region Local 
     public void AddNewPlayer(int _playerID)
     {
-        TDS_CharacterSelectionElement _elem = characterSelectionElements.Where(e => (e.PlayerInfo != null) && (!e.IsUsedLocally)).FirstOrDefault();
+        TDS_CharacterSelectionElement _elem = characterSelectionElements.Where(e => (e.PlayerInfo == null) && (!e.IsUsedLocally)).FirstOrDefault();
         if (!_elem) return;
         _elem.SetPlayerLocalID(_playerID); 
     }

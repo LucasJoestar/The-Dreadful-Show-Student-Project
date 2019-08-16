@@ -2150,7 +2150,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         base.Start();
 
-        if(!photonView.isMine)
+        if(!photonView.isMine || PhotonNetwork.offlineMode)
         {
             TDS_LevelManager.Instance?.InitOnlinePlayer(this); 
         }

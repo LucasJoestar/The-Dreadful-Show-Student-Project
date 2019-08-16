@@ -284,7 +284,6 @@ public class TDS_InputManager : MonoBehaviour
             if (_button.Axis != default(TDS_AxisToInput))
             {
                 OnUpdate += _button.Axis.UpdateState;
-                Debug.Log("Subscribe Axis => " + _button.Axis.AxisName);
             }
         }
     }
@@ -309,6 +308,13 @@ public class TDS_InputManager : MonoBehaviour
     {
         // Get input asset
         inputs = TDS_GameManager.InputsAsset;
+
+        foreach (TDS_Controller _controller in TDS_GameManager.InputsAsset.Controllers)
+        {
+            SubscribeController(_controller);
+        }
+
+        return;
 
         // Subscribes controllers input update
         if (PhotonNetwork.offlineMode)
