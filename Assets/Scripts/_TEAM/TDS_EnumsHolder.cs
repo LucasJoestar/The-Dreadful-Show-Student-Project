@@ -80,6 +80,16 @@ public enum AttackEffectType
 }
 
 /// <summary>
+/// All possible behaviour for an axis work system.
+/// </summary>
+public enum AxisBehaviour
+{
+    Negative = -1,
+    Both,
+    Positive
+}
+
+/// <summary>
 /// All axis used by game controllers.
 /// </summary>
 public enum AxisType
@@ -88,8 +98,6 @@ public enum AxisType
     Vertical,
     HorizontalAim,
     VerticalAim,
-    SwitchPlus,
-    SwitchMinus
 }
 
 /// <summary>
@@ -121,10 +129,6 @@ public enum ButtonType
 {
     Confirm,
     Cancel,
-    Up,
-    Down,
-    Left,
-    Right,
     Jump,
     LightAttack,
     HeavyAttack,
@@ -134,7 +138,9 @@ public enum ButtonType
     Pause,
     Aim,
     Shoot,
-    Snack
+    Snack,
+    SwitchPlus,
+    SwitchMinus
 }
 
 /// <summary>

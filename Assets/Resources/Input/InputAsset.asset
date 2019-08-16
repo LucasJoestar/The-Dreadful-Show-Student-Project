@@ -12,204 +12,729 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e33cb4e82d6f55419ffd8508de58bbb, type: 3}
   m_Name: InputAsset
   m_EditorClassIdentifier: 
-  controllers:
-  - name: New Controller
+  Controllers:
+  - name: Single Player
     axis:
-    - axisName: Horizontal
+    - axisName: Horizontal SP
+      axisBehaviour: 0
       lastState: 3
-    - axisName: Vertical
+    - axisName: Vertical SP
+      axisBehaviour: 0
       lastState: 3
-    - axisName: HorizontalAim
+    - axisName: HorizontalAim SP
+      axisBehaviour: 0
       lastState: 3
-    - axisName: VerticalAim
-      lastState: 3
-    - axisName: SwitchPlus
-      lastState: 3
-    - axisName: SwitchMinus
+    - axisName: VerticalAim SP
+      axisBehaviour: 0
       lastState: 3
     buttons:
     - name: Confirm
       axis:
         axisName: Unknown Axis
+        axisBehaviour: 0
         lastState: 3
-      keys: 
+      keys: 200000000d0000004a010000
     - name: Cancel
       axis:
         axisName: Unknown Axis
+        axisBehaviour: 0
         lastState: 3
-      keys: 
-    - name: Up
-      axis:
-        axisName: Unknown Axis
-        lastState: 3
-      keys: 
-    - name: Down
-      axis:
-        axisName: Unknown Axis
-        lastState: 3
-      keys: 
-    - name: Left
-      axis:
-        axisName: Unknown Axis
-        lastState: 3
-      keys: 
-    - name: Right
-      axis:
-        axisName: Unknown Axis
-        lastState: 3
-      keys: 
+      keys: 1b0000004b010000
     - name: Jump
       axis:
         axisName: Unknown Axis
+        axisBehaviour: 0
         lastState: 3
-      keys: 
+      keys: 200000004a010000
     - name: LightAttack
       axis:
         axisName: Unknown Axis
+        axisBehaviour: 0
         lastState: 3
-      keys: 
+      keys: 650000004c010000
     - name: HeavyAttack
       axis:
         axisName: Unknown Axis
+        axisBehaviour: 0
         lastState: 3
-      keys: 
+      keys: 610000004d010000
     - name: Interact
       axis:
         axisName: Unknown Axis
+        axisBehaviour: 0
         lastState: 3
-      keys: 
+      keys: 660000004b010000
     - name: Dodge
       axis:
         axisName: Unknown Axis
+        axisBehaviour: 0
         lastState: 3
-      keys: 
+      keys: 630000004f010000
+    - name: Parry
+      axis:
+        axisName: Parry SP
+        axisBehaviour: 0
+        lastState: 3
+      keys: 30010000
+    - name: Pause
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 1b00000051010000
+    - name: Aim
+      axis:
+        axisName: Aim SP
+        axisBehaviour: 0
+        lastState: 3
+      keys: 72000000
+    - name: Shoot
+      axis:
+        axisName: Shoot SP
+        axisBehaviour: 0
+        lastState: 3
+      keys: 30010000
+    - name: Snack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 720000004e010000
+    - name: SwitchPlus
+      axis:
+        axisName: Switch SP
+        axisBehaviour: 1
+        lastState: 3
+      keys: 32000000
+    - name: SwitchMinus
+      axis:
+        axisName: Switch SP
+        axisBehaviour: -1
+        lastState: 3
+      keys: 31000000
+  - name: Keyboard
+    axis:
+    - axisName: Horizontal KB
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: Vertical KB
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: HorizontalAim KB
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: VerticalAim KB
+      axisBehaviour: 0
+      lastState: 3
+    buttons:
+    - name: Confirm
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 200000000d000000
+    - name: Cancel
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 1b000000
+    - name: Jump
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 20000000
+    - name: LightAttack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 65000000
+    - name: HeavyAttack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 61000000
+    - name: Interact
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 66000000
+    - name: Dodge
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 63000000
     - name: Parry
       axis:
         axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 30010000
+    - name: Pause
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 1b000000
+    - name: Aim
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 72000000
+    - name: Shoot
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 30010000
+    - name: Snack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 72000000
+    - name: SwitchPlus
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 32000000
+    - name: SwitchMinus
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 31000000
+  - name: XBox Controller 1
+    axis:
+    - axisName: Horizontal XB1
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: Vertical XB1
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: HorizontalAim XB1
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: VerticalAim XB1
+      axisBehaviour: 0
+      lastState: 3
+    buttons:
+    - name: Confirm
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 5e010000
+    - name: Cancel
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 5f010000
+    - name: Jump
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 5e010000
+    - name: LightAttack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 60010000
+    - name: HeavyAttack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 61010000
+    - name: Interact
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 5f010000
+    - name: Dodge
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 63010000
+    - name: Parry
+      axis:
+        axisName: Parry XB1
+        axisBehaviour: 0
         lastState: 3
       keys: 
     - name: Pause
       axis:
         axisName: Unknown Axis
+        axisBehaviour: 0
         lastState: 3
-      keys: 
+      keys: 65010000
     - name: Aim
       axis:
-        axisName: Unknown Axis
+        axisName: Aim XB1
+        axisBehaviour: 0
         lastState: 3
       keys: 
     - name: Shoot
       axis:
-        axisName: Unknown Axis
+        axisName: Shoot XB1
+        axisBehaviour: 0
         lastState: 3
       keys: 
     - name: Snack
       axis:
         axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 62010000
+    - name: SwitchPlus
+      axis:
+        axisName: Switch XB1
+        axisBehaviour: 1
+        lastState: 3
+      keys: 
+    - name: SwitchMinus
+      axis:
+        axisName: Switch XB1
+        axisBehaviour: -1
+        lastState: 3
+      keys: 
+  - name: XBox Controller 2
+    axis:
+    - axisName: Horizontal XB2
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: Vertical XB2
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: HorizontalAim XB2
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: VerticalAim XB2
+      axisBehaviour: 0
+      lastState: 3
+    buttons:
+    - name: Confirm
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 72010000
+    - name: Cancel
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 73010000
+    - name: Jump
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 72010000
+    - name: LightAttack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 74010000
+    - name: HeavyAttack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 75010000
+    - name: Interact
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 73010000
+    - name: Dodge
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 77010000
+    - name: Parry
+      axis:
+        axisName: Parry XB2
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Pause
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 79010000
+    - name: Aim
+      axis:
+        axisName: Aim XB2
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Shoot
+      axis:
+        axisName: Shoot XB2
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Snack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 76010000
+    - name: SwitchPlus
+      axis:
+        axisName: Switch XB2
+        axisBehaviour: 1
+        lastState: 3
+      keys: 
+    - name: SwitchMinus
+      axis:
+        axisName: Switch XB2
+        axisBehaviour: -1
+        lastState: 3
+      keys: 
+  - name: XBox Controller 3
+    axis:
+    - axisName: Horizontal XB3
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: Vertical XB3
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: HorizontalAim XB3
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: VerticalAim XB3
+      axisBehaviour: 0
+      lastState: 3
+    buttons:
+    - name: Confirm
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 86010000
+    - name: Cancel
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 87010000
+    - name: Jump
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 86010000
+    - name: LightAttack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 88010000
+    - name: HeavyAttack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 89010000
+    - name: Interact
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 87010000
+    - name: Dodge
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 8b010000
+    - name: Parry
+      axis:
+        axisName: Parry XB3
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Pause
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 8d010000
+    - name: Aim
+      axis:
+        axisName: Aim XB3
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Shoot
+      axis:
+        axisName: Shoot XB3
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Snack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 8a010000
+    - name: SwitchPlus
+      axis:
+        axisName: Switch XB3
+        axisBehaviour: 1
+        lastState: 3
+      keys: 
+    - name: SwitchMinus
+      axis:
+        axisName: Switch XB3
+        axisBehaviour: -1
+        lastState: 3
+      keys: 
+  - name: XBox Controller 4
+    axis:
+    - axisName: Horizontal XB4
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: Vertical XB4
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: HorizontalAim XB4
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: VerticalAim XB4
+      axisBehaviour: 0
+      lastState: 3
+    buttons:
+    - name: Confirm
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 9a010000
+    - name: Cancel
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 9b010000
+    - name: Jump
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 9a010000
+    - name: LightAttack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 9c010000
+    - name: HeavyAttack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 9d010000
+    - name: Interact
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 9b010000
+    - name: Dodge
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 9f010000
+    - name: Parry
+      axis:
+        axisName: Parry XB4
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Pause
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: a1010000
+    - name: Aim
+      axis:
+        axisName: Aim XB4
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Shoot
+      axis:
+        axisName: Shoot XB4
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Snack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 9e010000
+    - name: SwitchPlus
+      axis:
+        axisName: Switch XB4
+        axisBehaviour: 1
+        lastState: 3
+      keys: 
+    - name: SwitchMinus
+      axis:
+        axisName: Switch XB4
+        axisBehaviour: -1
         lastState: 3
       keys: 
   Axis:
   - axisName: D-Pad X
+    axisBehaviour: 0
     lastState: 3
   - axisName: D-Pad Y
+    axisBehaviour: 0
     lastState: 3
   - axisName: Horizontal Alt
+    axisBehaviour: 0
     lastState: 3
   - axisName: Vertical Alt
+    axisBehaviour: 0
     lastState: 3
   - axisName: Horizontal
+    axisBehaviour: 0
     lastState: 3
   - axisName: Vertical
+    axisBehaviour: 0
     lastState: 3
   - axisName: Throw
+    axisBehaviour: 0
     lastState: 3
   - axisName: Super Attack
+    axisBehaviour: 0
     lastState: 3
   - axisName: Parry
+    axisBehaviour: 0
     lastState: 3
   Buttons:
   - name: Catch
     axis:
       axisName: Unknown Axis
+      axisBehaviour: 0
       lastState: 3
     keys: 780000004e010000
   - name: Dodge
     axis:
       axisName: Unknown Axis
+      axisBehaviour: 0
       lastState: 3
     keys: 630000004f010000
   - name: Heavy Attack
     axis:
       axisName: Unknown Axis
+      axisBehaviour: 0
       lastState: 3
     keys: 610000004d010000
   - name: Interact
     axis:
       axisName: Unknown Axis
+      axisBehaviour: 0
       lastState: 3
     keys: 660000004b010000
   - name: Jump
     axis:
       axisName: Unknown Axis
+      axisBehaviour: 0
       lastState: 3
     keys: 200000004a010000
   - name: Light Attack
     axis:
       axisName: Unknown Axis
+      axisBehaviour: 0
       lastState: 3
     keys: 650000004c010000
   - name: Parry
     axis:
-      axisName: Unknown Axis
+      axisName: Parry
+      axisBehaviour: 0
       lastState: 3
     keys: 30010000
   - name: Super Attack
     axis:
       axisName: Unknown Axis
+      axisBehaviour: 0
       lastState: 3
     keys: 67000000
   - name: Throw
     axis:
-      axisName: Unknown Axis
+      axisName: Throw
+      axisBehaviour: 0
       lastState: 3
     keys: 32010000
   - name: Use Object
     axis:
       axisName: Unknown Axis
+      axisBehaviour: 0
       lastState: 3
     keys: 7400000050010000
   - name: Snack
     axis:
       axisName: Unknown Axis
+      axisBehaviour: 0
       lastState: 3
     keys: 720000004e010000
   - name: Switch Object Plus
     axis:
       axisName: Unknown Axis
+      axisBehaviour: 0
       lastState: 3
     keys: 6c000000
   - name: Switch Object Minus
     axis:
       axisName: Unknown Axis
+      axisBehaviour: 0
       lastState: 3
     keys: 6a000000
   - name: Incr Aim Angle
     axis:
       axisName: Unknown Axis
+      axisBehaviour: 0
       lastState: 3
     keys: 69000000
   - name: Decr Aim Angle
     axis:
       axisName: Unknown Axis
+      axisBehaviour: 0
       lastState: 3
     keys: 6b000000
   - name: Submit
     axis:
       axisName: Unknown Axis
+      axisBehaviour: 0
       lastState: 3
     keys: 4a01000020000000
   - name: Cancel
     axis:
       axisName: Unknown Axis
+      axisBehaviour: 0
       lastState: 3
     keys: 4b0100001b000000

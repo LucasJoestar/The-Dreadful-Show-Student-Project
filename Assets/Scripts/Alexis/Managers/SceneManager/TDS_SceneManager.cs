@@ -80,6 +80,7 @@ public class TDS_SceneManager : PunBehaviour
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PrepareOnlineSceneLoading"), new object[] { _sceneIndex, _nextUIState });
 
         TDS_UIManager.Instance?.DisplayLoadingScreen(true);
+        yield return new WaitForSeconds(1f);
         AsyncOperation _async = SceneManager.LoadSceneAsync(_sceneIndex, LoadSceneMode.Single);
         while (!_async.isDone)
         {

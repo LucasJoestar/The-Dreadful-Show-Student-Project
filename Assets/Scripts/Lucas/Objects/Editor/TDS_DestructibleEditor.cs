@@ -32,11 +32,57 @@ public class TDS_DestructibleEditor : TDS_DamageableEditor
     #region Fields / Properties
 
     #region SerializedProperties
+    /// <summary>SerializedProperty for <see cref="TDS_Destructible.loot"/> of type <see cref="GameObject"/>[].</summary>
+    private SerializedProperty loot = null;
 
+    /// <summary>SerializedProperty for <see cref="TDS_Destructible.lootChance"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty lootChance = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Destructible.lootMax"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty lootMax = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Destructible.lootMin"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty lootMin = null;
     #endregion
 
     #region Foldouts
-    /// <summary>Backing field for <see cref="IsDestrUnfolded"/></summary>
+    /// <summary>Backing field for <see cref="AreDestrComponentsUnfolded"/></summary>
+    private bool areDestrComponentsUnfolded = false;
+
+    /// <summary>
+    /// Are the components of the Destructible class unfolded for the editor ?
+    /// </summary>
+    public bool AreDestrComponentsUnfolded
+    {
+        get { return areDestrComponentsUnfolded; }
+        set
+        {
+            areDestrComponentsUnfolded = value;
+
+            // Saves this value
+            EditorPrefs.SetBool("areDestrComponentsUnfolded", value);
+        }
+    }
+
+    /// <summary>Backing field for <see cref="AreDestrSettingsUnfolded"/></summary>
+    private bool areDestrSettingsUnfolded = false;
+
+    /// <summary>
+    /// Are the settings of the Destructible class unfolded for the editor ?
+    /// </summary>
+    public bool AreDestrSettingsUnfolded
+    {
+        get { return areDestrSettingsUnfolded; }
+        set
+        {
+            areDestrSettingsUnfolded = value;
+
+            // Saves this value
+            EditorPrefs.SetBool("areDestrSettingsUnfolded", value);
+        }
+    }
+
+    /// <summary>Backing field for <see cref="IsDestrUnfolded"/>.</summary>
     private bool isDestrUnfolded = true;
 
     /// <summary>
@@ -73,6 +119,14 @@ public class TDS_DestructibleEditor : TDS_DamageableEditor
 
     #region Original Methods
     /// <summary>
+    /// Draws the editor for the Destructible class components & references.
+    /// </summary>
+    protected void DrawComponentsAndReferences()
+    {
+        TDS_EditorUtility.PropertyField("Loot", "All available loot for this destructible ; note that once a loot has been dropped, it cannot be dropped again, so add it again if you want multiple instances of it to drop", loot);
+    }
+
+    /// <summary>
     /// Draws the editor for the editing Destructible classes
     /// </summary>
     protected void DrawDestructibleEditor()
@@ -99,8 +153,27 @@ public class TDS_DestructibleEditor : TDS_DamageableEditor
             GUI.backgroundColor = TDS_EditorUtility.BoxLightColor;
             EditorGUILayout.BeginVertical("Box");
 
+            // Button to show or not the Destructible class components
+            if (TDS_EditorUtility.Button("Components & References", "Wrap / unwrap Components & References settings", TDS_EditorUtility.HeaderStyle)) AreDestrComponentsUnfolded = !areDestrComponentsUnfolded;
+
+            // If unfolded, draws the custom editor for the Components & References
+            if (areDestrComponentsUnfolded)
+            {
+                DrawComponentsAndReferences();
+            }
+
+            EditorGUILayout.EndVertical();
+            GUILayout.Space(15);
+            EditorGUILayout.BeginVertical("Box");
+
             // Button to show or not the Destructible class settings
-            if (TDS_EditorUtility.Button("???", "Wrap / unwrap ???", TDS_EditorUtility.HeaderStyle));
+            if (TDS_EditorUtility.Button("Settings", "Wrap / unwrap settings", TDS_EditorUtility.HeaderStyle)) AreDestrSettingsUnfolded = !areDestrSettingsUnfolded;
+
+            // If unfolded, draws the custom editor for the settings
+            if (areDestrSettingsUnfolded)
+            {
+                DrawSettings();
+            }
 
             EditorGUILayout.EndVertical();
 
@@ -110,6 +183,23 @@ public class TDS_DestructibleEditor : TDS_DamageableEditor
 
         EditorGUILayout.EndVertical();
         GUI.backgroundColor = _originalColor;
+    }
+
+    /// <summary>
+    /// Draws the editor for the Destructible class settings.
+    /// </summary>
+    protected void DrawSettings()
+    {
+        TDS_EditorUtility.IntSlider("Loot Chance", "Chance in percentage to have drop on this destructible destruction", lootChance, 0, 100);
+
+        GUILayout.Space(3);
+
+        TDS_EditorUtility.IntSlider("Min Loot", "Minimum amount of loot for this destructible", lootMin, 0, lootMax.intValue);
+        if (TDS_EditorUtility.IntField("Max Loot", "Maximum amount of loot for this destructible", lootMax))
+        {
+            destructibles.ForEach(d => d.LootMax = lootMax.intValue);
+            serializedObject.Update();
+        }
     }
     #endregion
 
@@ -125,10 +215,15 @@ public class TDS_DestructibleEditor : TDS_DamageableEditor
         else isDestrMultiEditing = true;
 
         // Get the serializedProperties from the serializedObject
-
-
+        loot = serializedObject.FindProperty("loot");
+        lootChance = serializedObject.FindProperty("lootChance");
+        lootMax = serializedObject.FindProperty("lootMax");
+        lootMin = serializedObject.FindProperty("lootMin");
+        
         // Loads the editor folded and unfolded values of this class
         isDestrUnfolded = EditorPrefs.GetBool("isDestrUnfolded", isDestrUnfolded);
+        areDestrComponentsUnfolded = EditorPrefs.GetBool("areDestrComponentsUnfolded", areDestrComponentsUnfolded);
+        areDestrSettingsUnfolded = EditorPrefs.GetBool("areDestrSettingsUnfolded", areDestrSettingsUnfolded);
     }
 
     // Implement this function to make a custom inspector

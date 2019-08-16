@@ -1,9 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 public class TDS_InputManager : MonoBehaviour
 {
@@ -52,16 +49,18 @@ public class TDS_InputManager : MonoBehaviour
 	 *	-----------------------------------
 	*/
 
+    #region Events
+    /// <summary>
+    /// Event called on the Input Manager update.
+    /// </summary>
+    public event Action OnUpdate = null;
+    #endregion
+
     #region Fields / Properties
     /// <summary>
     /// Game inputs serialized object.
     /// </summary>
     [SerializeField] private static TDS_InputSO inputs = null;
-
-    /// <summary>
-    /// Path from a resources folder where to find the input asset.
-    /// </summary>
-    private const string INPUT_ASSET_PATH = "Input/InputAsset";
 
 
     /// <summary>
@@ -171,32 +170,6 @@ public class TDS_InputManager : MonoBehaviour
 
     #region Original Methods
 
-    #region Editor
-    #if UNITY_EDITOR
-    /// <summary>
-    /// Creates a input asset if none exist
-    /// </summary>
-    [MenuItem("Tools/Create Input Asset")]
-    public static void CreateInputAsset()
-    {
-        // If an input asset already exist, just return
-        if (Resources.Load(INPUT_ASSET_PATH) != null) return;
-
-        TDS_InputSO _inputAsset = ScriptableObject.CreateInstance<TDS_InputSO>();
-
-        _inputAsset.Axis = new TDS_AxisToInput[] { new TDS_AxisToInput(D_PAD_X_Axis), new TDS_AxisToInput(D_PAD_Y_Axis), new TDS_AxisToInput(HORIZONTAL_AXIS), new TDS_AxisToInput(VERTICAL_AXIS), new TDS_AxisToInput(HORIZONTAL_ALT_AXIS), new TDS_AxisToInput(VERTICAL_ALT_AXIS) };
-
-        _inputAsset.Buttons = new TDS_Button[] { new TDS_Button(CATCH_BUTTON), new TDS_Button(DODGE_BUTTON), new TDS_Button(HEAVY_ATTACK_BUTTON), new TDS_Button(INTERACT_BUTTON), new TDS_Button(JUMP_BUTTON), new TDS_Button(LIGHT_ATTACK_BUTTON), new TDS_Button(PARRY_BUTTON), new TDS_Button(SUPER_ATTACK_BUTTON), new TDS_Button(THROW_BUTTON), new TDS_Button(USE_OBJECT_BUTTON) };
-
-
-        System.IO.Directory.CreateDirectory(System.IO.Path.Combine(Application.dataPath, "Resources", System.IO.Path.GetDirectoryName(INPUT_ASSET_PATH)));
-
-        AssetDatabase.CreateAsset(_inputAsset, System.IO.Path.Combine("Assets/Resources", INPUT_ASSET_PATH) + ".asset");
-        AssetDatabase.SaveAssets();
-    }
-    #endif
-    #endregion
-
     #region Axis
     /// <summary>
     /// Get if an axis with a specified name is held down.
@@ -294,6 +267,29 @@ public class TDS_InputManager : MonoBehaviour
     }
     #endregion
 
+    #region Controller
+    /// <summary>
+    /// Subscribes a controller for axis update to this Input Manager.
+    /// </summary>
+    /// <param name="_controller">Controller to subscribe.</param>
+    public void SubscribeController(TDS_Controller _controller)
+    {
+        foreach (TDS_AxisToInput _axis in _controller.Axis)
+        {
+            OnUpdate += _axis.UpdateState;
+        }
+
+        foreach (TDS_Button _button in _controller.Buttons)
+        {
+            if (_button.Axis != default(TDS_AxisToInput))
+            {
+                OnUpdate += _button.Axis.UpdateState;
+                Debug.Log("Subscribe Axis => " + _button.Axis.AxisName);
+            }
+        }
+    }
+    #endregion
+
     #endregion
 
     #region Unity Methods
@@ -306,9 +302,26 @@ public class TDS_InputManager : MonoBehaviour
             Destroy(this);
             return;
         }
+    }
 
-        inputs = Resources.Load<TDS_InputSO>(INPUT_ASSET_PATH);
-        inputs.controllers = new TDS_Controller[1] { new TDS_Controller() }; 
+    // Use this for initialization
+    private void Start()
+    {
+        // Get input asset
+        inputs = TDS_GameManager.InputsAsset;
+
+        // Subscribes controllers input update
+        if (PhotonNetwork.offlineMode)
+        {
+            foreach (TDS_PlayerInfo _player in TDS_GameManager.PlayersInfo)
+            {
+                SubscribeController(_player.Controller);
+            }
+        }
+        else if (TDS_GameManager.PlayersInfo.Count > 0)
+        {
+            SubscribeController(TDS_GameManager.PlayersInfo[0].Controller);
+        }
     }
 
     // Update is called every frame, if the MonoBehaviour is enabled
@@ -319,6 +332,9 @@ public class TDS_InputManager : MonoBehaviour
         {
             _axis.UpdateState();
         }
+
+        // Calls the OnUpdate event
+        OnUpdate?.Invoke();
     }
     #endregion
 

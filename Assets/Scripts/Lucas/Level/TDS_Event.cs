@@ -216,10 +216,10 @@ public class TDS_Event
 
             // Makes a cool fade before displaying loading screen, and loading next level
             case CustomEventType.LoadNextLevel:
-                yield return new WaitForSeconds(1f);
-
-                TDS_LevelManager.Instance.LocalPlayer.FreezePlayer();
                 if (PhotonNetwork.isMasterClient) TDS_SceneManager.Instance.PrepareOnlineSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
+
+                yield return new WaitForSeconds(1f);
+                TDS_LevelManager.Instance.LocalPlayer.FreezePlayer();
                 break;
 
             // Moves the local player around a point

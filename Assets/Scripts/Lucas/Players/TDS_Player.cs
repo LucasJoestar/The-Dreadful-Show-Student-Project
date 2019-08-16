@@ -2112,8 +2112,8 @@ public class TDS_Player : TDS_Character, IPunObservable
     // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations
     protected virtual void FixedUpdate()
     {
-        // If dead, return
-        if (!photonView.isMine || isDead) return;
+        // If dead or not playable, return
+        if (!photonView.isMine || isDead || !IsPlayable) return;
 
         // Checks if the player is grounded or not, and all related elements
         CheckGrounded();

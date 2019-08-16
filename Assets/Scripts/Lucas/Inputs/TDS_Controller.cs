@@ -11,15 +11,22 @@ public class TDS_Controller
     /// </summary>
     [SerializeField] private string name = "New Controller";
 
+
     /// <summary>
     /// All axis associated with this controller.
     /// </summary>
     [SerializeField] private TDS_AxisToInput[] axis = new TDS_AxisToInput[] { };
 
+    /// <summary>Public accessor for <see cref="axis"/>.</summary>
+    public TDS_AxisToInput[] Axis { get { return axis; } }
+
     /// <summary>
     /// All buttons associated with this controller.
     /// </summary>
     [SerializeField] private TDS_Button[] buttons = new TDS_Button[] { };
+
+    /// <summary>Public accessor for <see cref="buttons"/>.</summary>
+    public TDS_Button[] Buttons { get { return buttons; } }
     #endregion
 
     #region Constructor

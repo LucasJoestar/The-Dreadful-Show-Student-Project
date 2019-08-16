@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 7186568956005477630}
   - component: {fileID: 7014392351545123446}
   - component: {fileID: 9205029719867812479}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Spt Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,6 +314,106 @@ MonoBehaviour:
   throwBonusDamagesMax: 3
   throwBonusDamagesMin: 0
   throwAimingPoint: {x: 7.5, y: 0, z: 0}
+  controller:
+    name: New Controller
+    axis:
+    - axisName: Horizontal
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: Vertical
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: HorizontalAim
+      axisBehaviour: 0
+      lastState: 3
+    - axisName: VerticalAim
+      axisBehaviour: 0
+      lastState: 3
+    buttons:
+    - name: Confirm
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Cancel
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Jump
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: LightAttack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: HeavyAttack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Interact
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Dodge
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Parry
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Pause
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Aim
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Shoot
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: Snack
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: SwitchPlus
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: SwitchMinus
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
   Summoner: {fileID: 0}
   interactionBox: {fileID: 7079423514653110356}
   groundDetectionBox:
@@ -357,7 +457,7 @@ MonoBehaviour:
   nextAction: 0
   WhatIsObstacle:
     serializedVersion: 2
-    m_Bits: 24577
+    m_Bits: 8413185
   playerType: 1
   currentBeardState: 0
   beardGrowInterval: 5

@@ -9,7 +9,6 @@ TagManager:
   - Enemy
   - Boss|Enemy
   - Destructible
-  - Hittable
   - Destructible|Hittable
   - Boss
   - Throwable
@@ -17,6 +16,7 @@ TagManager:
   - Outline
   - Outline|Throwable
   - Object|Outline
+  - Hittable
   layers:
   - Default
   - TransparentFX
@@ -41,7 +41,7 @@ TagManager:
   - WAVES
   - Background
   - Foreground
-  - 
+  - Destructible
   - 
   - 
   - 

@@ -65,7 +65,6 @@ public static class TDS_GameManager
     public static bool IsOnline { get; set; } = false;
     #endregion
 
-
     #region Player Info
     public static List<TDS_PlayerInfo> PlayersInfo = new List<TDS_PlayerInfo>(); 
     #endregion
@@ -113,6 +112,12 @@ public static class TDS_GameManager
 
     #region Resources
     /// <summary>
+    /// Inputs asset referencing all game controllers.
+    /// </summary>
+    public static TDS_InputSO InputsAsset { get; private set; }
+
+
+    /// <summary>
     /// Character used to split the text asset.
     /// </summary>
     private static char splitCharacter = '#';
@@ -147,6 +152,11 @@ public static class TDS_GameManager
         {
             DialogsAsset = Resources.Load<TextAsset>("Dialogs");
             splitCharacter = DialogsAsset.text[0];
+        }
+
+        if (!InputsAsset)
+        {
+            InputsAsset = Resources.Load<TDS_InputSO>(TDS_InputSO.INPUT_ASSET_PATH);
         }
 
         // Set screen resolution

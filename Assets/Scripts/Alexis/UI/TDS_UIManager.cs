@@ -230,6 +230,7 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private Animator curtainsAnimator;
     [SerializeField] private Animator arrowAnimator;
     [SerializeField] private Animator waitingPanelAnimator;
+    [SerializeField] private Animator loadingScreenAnimator;
     #endregion
 
     #region Text
@@ -777,7 +778,8 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_isLoading">Does the scene is loading or not</param>
     public void DisplayLoadingScreen(bool _isLoading)
     {
-        if (loadingScreenParent) loadingScreenParent.SetActive(_isLoading);
+        if (loadingScreenAnimator) loadingScreenAnimator.SetBool("IsLoading", _isLoading);
+        //if (loadingScreenParent) loadingScreenParent.SetActive(_isLoading);
     }
 
     /// <summary>

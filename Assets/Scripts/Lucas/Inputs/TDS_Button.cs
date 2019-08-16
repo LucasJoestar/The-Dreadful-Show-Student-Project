@@ -64,10 +64,19 @@ public class TDS_Button
     public KeyCode[] Keys { get { return keys; } }
     #endregion
 
+    #region Constructor
+    /// <summary>
+    /// Creates a simple new button.
+    /// </summary>
     public TDS_Button() { }
 
+    /// <summary>
+    /// Creates a new button with a given name.
+    /// </summary>
+    /// <param name="_name">Name of the button.</param>
     public TDS_Button(string _name)
     {
         name = _name;
     }
+    #endregion
 }

@@ -333,7 +333,7 @@ public abstract class TDS_Damageable : PunBehaviour
     /// <summary>
     /// Destroys this GameObject.
     /// </summary>
-    public void Destroy() => Destroy(gameObject);
+    public void Destroy() => PhotonNetwork.Destroy(photonView);
 
     /// <summary>
     /// Method called when the object dies.
