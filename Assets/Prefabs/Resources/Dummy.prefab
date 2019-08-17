@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 8209000919409631147}
   m_Layer: 11
   m_Name: Dummy
-  m_TagString: Hittable
+  m_TagString: Destructible|Hittable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -138,6 +138,10 @@ MonoBehaviour:
   IsInvulnerable: 0
   healthCurrent: 99
   healthMax: 99
+  loot: []
+  lootChance: 0
+  lootMin: 0
+  lootMax: 0
 --- !u!65 &8209000919409631142
 BoxCollider:
   m_ObjectHideFlags: 0

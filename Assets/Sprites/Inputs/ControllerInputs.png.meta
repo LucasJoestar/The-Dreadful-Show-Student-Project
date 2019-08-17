@@ -2,24 +2,24 @@ fileFormatVersion: 2
 guid: f624e9bb8c40b6f45a26a49e0c7f5e08
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Ui Bouton Manett(e_0
-    21300002: Ui Bouton Manett(e_3
-    21300004: Ui Bouton Manett(e_6
-    21300006: Ui Bouton Manett(e_7
-    21300008: Ui Bouton Manett(e_13
-    21300010: Ui Bouton Manett(e_15
-    21300012: Ui Bouton Manett(e_16
-    21300014: Ui Bouton Manett(e_17
-    21300016: Ui Bouton Manett(e_20
-    21300018: Ui Bouton Manett(e_24
-    21300020: Ui Bouton Manett(e_26
-    21300022: Ui Bouton Manett(e_37
-    21300024: Ui Bouton Manett(e_45
-    21300026: Ui Bouton Manett(e_46
-    21300028: Ui Bouton Manett(e_47
-    21300030: Ui Bouton Manett(e_48
-    21300032: Ui Bouton Manett(e_49
-    21300034: Ui Bouton Manett(e_50
+    21300000: Controller_VerticalCross
+    21300002: Controller_HorizontalCross
+    21300004: Controller_Joystick
+    21300006: Controller_X
+    21300008: Controller_Y
+    21300010: Controller_LT
+    21300012: Controller_RT
+    21300014: Controller_LB
+    21300016: Controller_B
+    21300018: SoldOut
+    21300020: Controller_RB
+    21300022: Controller_A
+    21300024: Keyboard_Key
+    21300026: Keyboard_Enter
+    21300028: Controller_Select
+    21300030: Keyboard_Maj
+    21300032: Controller_Start
+    21300034: Keyboard_Space
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -124,7 +124,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_0
+      name: Controller_VerticalCross
       rect:
         serializedVersion: 2
         x: 826
@@ -132,7 +132,7 @@ TextureImporter:
         width: 339
         height: 377
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -144,7 +144,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_3
+      name: Controller_HorizontalCross
       rect:
         serializedVersion: 2
         x: 1350
@@ -152,7 +152,7 @@ TextureImporter:
         width: 343
         height: 376
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -164,7 +164,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_6
+      name: Controller_Joystick
       rect:
         serializedVersion: 2
         x: 314
@@ -172,7 +172,7 @@ TextureImporter:
         width: 330
         height: 242
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -184,7 +184,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_7
+      name: Controller_X
       rect:
         serializedVersion: 2
         x: 2019
@@ -192,7 +192,7 @@ TextureImporter:
         width: 300
         height: 273
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -204,7 +204,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_13
+      name: Controller_Y
       rect:
         serializedVersion: 2
         x: 1994
@@ -212,7 +212,7 @@ TextureImporter:
         width: 302
         height: 272
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -224,7 +224,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_15
+      name: Controller_LT
       rect:
         serializedVersion: 2
         x: 278
@@ -232,7 +232,7 @@ TextureImporter:
         width: 309
         height: 377
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -244,7 +244,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_16
+      name: Controller_RT
       rect:
         serializedVersion: 2
         x: 815
@@ -252,7 +252,7 @@ TextureImporter:
         width: 309
         height: 373
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -264,7 +264,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_17
+      name: Controller_LB
       rect:
         serializedVersion: 2
         x: 1335
@@ -272,7 +272,7 @@ TextureImporter:
         width: 421
         height: 184
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -284,7 +284,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_20
+      name: Controller_B
       rect:
         serializedVersion: 2
         x: 2006
@@ -292,7 +292,7 @@ TextureImporter:
         width: 301
         height: 273
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -304,7 +304,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_24
+      name: SoldOut
       rect:
         serializedVersion: 2
         x: 156
@@ -312,7 +312,7 @@ TextureImporter:
         width: 1002
         height: 402
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -324,7 +324,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_26
+      name: Controller_RB
       rect:
         serializedVersion: 2
         x: 1335
@@ -332,7 +332,7 @@ TextureImporter:
         width: 421
         height: 181
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -344,7 +344,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_37
+      name: Controller_A
       rect:
         serializedVersion: 2
         x: 2020
@@ -352,7 +352,7 @@ TextureImporter:
         width: 298
         height: 273
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -364,7 +364,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_45
+      name: Keyboard_Key
       rect:
         serializedVersion: 2
         x: 313
@@ -372,7 +372,7 @@ TextureImporter:
         width: 215
         height: 182
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -384,7 +384,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_46
+      name: Keyboard_Enter
       rect:
         serializedVersion: 2
         x: 674
@@ -392,7 +392,7 @@ TextureImporter:
         width: 286
         height: 323
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -404,7 +404,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_47
+      name: Controller_Select
       rect:
         serializedVersion: 2
         x: 2017
@@ -412,7 +412,7 @@ TextureImporter:
         width: 224
         height: 221
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -424,7 +424,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_48
+      name: Keyboard_Maj
       rect:
         serializedVersion: 2
         x: 301
@@ -432,7 +432,7 @@ TextureImporter:
         width: 384
         height: 169
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -444,7 +444,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_49
+      name: Controller_Start
       rect:
         serializedVersion: 2
         x: 2034
@@ -452,7 +452,7 @@ TextureImporter:
         width: 224
         height: 221
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -464,7 +464,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ui Bouton Manett(e_50
+      name: Keyboard_Space
       rect:
         serializedVersion: 2
         x: 274
@@ -472,7 +472,7 @@ TextureImporter:
         width: 617
         height: 149
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

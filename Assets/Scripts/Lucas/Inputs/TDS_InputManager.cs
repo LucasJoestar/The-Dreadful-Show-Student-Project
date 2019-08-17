@@ -169,7 +169,7 @@ public class TDS_InputManager : MonoBehaviour
     #region Methods
 
     #region Original Methods
-
+    /*
     #region Axis
     /// <summary>
     /// Get if an axis with a specified name is held down.
@@ -266,6 +266,7 @@ public class TDS_InputManager : MonoBehaviour
         else return GetAxisUp(_name);
     }
     #endregion
+    */
 
     #region Controller
     /// <summary>
@@ -281,7 +282,7 @@ public class TDS_InputManager : MonoBehaviour
 
         foreach (TDS_Button _button in _controller.Buttons)
         {
-            if (_button.Axis != default(TDS_AxisToInput))
+            if (!string.IsNullOrEmpty(_button.Axis.AxisName) && (_button.Axis.AxisName != "Unknown Axis"))
             {
                 OnUpdate += _button.Axis.UpdateState;
             }

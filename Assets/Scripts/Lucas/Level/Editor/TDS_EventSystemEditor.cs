@@ -234,7 +234,7 @@ public class TDS_EventSystemEditor : Editor
                         break;
 
                     case CustomEventType.InstantiatePhoton:
-                        TDS_EditorUtility.PropertyField("Prefab Name", "Name of the prefab to instantiate", _event.FindPropertyRelative("eventString"));
+                        TDS_EditorUtility.PropertyField("Prefab", "Prefab to instantiate", _event.FindPropertyRelative("prefab"));
 
                         TDS_EditorUtility.PropertyField("Instantiation transform reference", "Transform to use as reference for position & rotation for the transform of the instantiated object", _event.FindPropertyRelative("eventTransform"));
                         break;

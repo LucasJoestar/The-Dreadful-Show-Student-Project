@@ -1227,7 +1227,6 @@ public abstract class TDS_Enemy : TDS_Character
         if (isDead || !PhotonNetwork.isMasterClient) return;
         if (isAttacking || hitBox.IsActive)
         {
-            Debug.Log("Stop Attack");
             StopAttack();
         }
         if (agent.IsMoving) agent.StopAgent();

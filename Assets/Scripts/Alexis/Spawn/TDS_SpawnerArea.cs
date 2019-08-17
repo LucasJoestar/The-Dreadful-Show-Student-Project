@@ -220,10 +220,11 @@ public class TDS_SpawnerArea : PunBehaviour
         {
             waveIndex = 0;
         }
-        spawnedEnemies.AddRange(waves[waveIndex].GetWaveEnemies(this));
+        List<TDS_Enemy> _spawnedEnemies = waves[waveIndex].GetWaveEnemies(this);
+        spawnedEnemies.AddRange(_spawnedEnemies);
         if (waves[waveIndex].IsActivatedByEvent)
         {
-            foreach (TDS_Enemy e in spawnedEnemies)
+            foreach (TDS_Enemy e in _spawnedEnemies)
             {
                 e.IsPacific = true;
                 e.IsParalyzed = true;
@@ -355,7 +356,7 @@ public class TDS_SpawnerArea : PunBehaviour
     public void CheckRemainingObjects()
     {
         // If remaining not enough throwables and a Juggler is in game, just spawn an object supply box
-        if (((areaThrowables.Count == MINIMUM_THROWABLES) || (areaThrowables.Count == 0)) && TDS_LevelManager.Instance.AllPlayers.Any(p => (p.PlayerType == PlayerType.Juggler) && !p.IsDead))
+        if (((areaThrowables.Count == MINIMUM_THROWABLES) || (areaThrowables.Count == 0)) && TDS_LevelManager.Instance.AllPlayers.Any(p => p && (p.PlayerType == PlayerType.Juggler) && !p.IsDead))
         {
             TDS_LevelManager.Instance.SpawnJugglerSupply();
         }
@@ -393,13 +394,14 @@ public class TDS_SpawnerArea : PunBehaviour
     // Awake is called when the script instance is being loaded
     private void Awake()
     {
-        // Call it when the player is connected
-        if (PhotonNetwork.isMasterClient) Initialize();
     }
 
     private void Start()
     {
         OnAreaActivated.AddListener(() => isActivated = true);
+
+        // Call it when the player is connected
+        if (PhotonNetwork.isMasterClient) Initialize();
     }
 
     private void OnTriggerEnter(Collider _coll)

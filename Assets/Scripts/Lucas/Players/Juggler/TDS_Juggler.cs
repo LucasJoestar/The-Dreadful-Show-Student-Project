@@ -426,14 +426,14 @@ public class TDS_Juggler : TDS_Player
         aimTargetTransform.anchoredPosition = TDS_Camera.Instance.Camera.WorldToScreenPoint(ThrowAimingPoint);
 
         // While holding the throw button, aim a position
-        while (TDS_InputManager.GetButton(TDS_InputManager.THROW_BUTTON))
+        while (Controller.GetButton(ButtonType.Aim))
         {
             // Aim while holding the button
             AimMethod();
 
             yield return null;
 
-            if (TDS_InputManager.GetButtonUp(TDS_InputManager.PARRY_BUTTON))
+            if (Controller.GetButtonDown(ButtonType.Shoot))
             {
                 if (targetObject) targetObject = null;
                 if (targetEnemy) targetEnemy = null;
@@ -472,10 +472,10 @@ public class TDS_Juggler : TDS_Player
                     aimTargetTransform.position = _screenPos;
                 }
                 // Switch target when moving related axis
-                if (TDS_InputManager.GetAxisDown(TDS_InputManager.HORIZONTAL_ALT_AXIS))
+                if (Controller.GetAxisDown(AxisType.HorizontalAim))
                 {
                     TDS_Enemy[] _enemies = TDS_SpawnerArea.ActiveEnemies;
-                    int _selection = Input.GetAxis(TDS_InputManager.HORIZONTAL_ALT_AXIS) > 0 ? 1 : -1;
+                    int _selection = Controller.GetAxis(AxisType.HorizontalAim) > 0 ? 1 : -1;
                     int _index = Array.IndexOf(_enemies, targetEnemy);
 
                     for (int _i = 0; _i < _enemies.Length; _i++)
@@ -536,8 +536,8 @@ public class TDS_Juggler : TDS_Player
         Vector2 _newTarget = aimTargetTransform.anchoredPosition;
 
         // Aim with IJKL or the right joystick axis
-        float _xMovement = Input.GetAxis(TDS_InputManager.HORIZONTAL_ALT_AXIS) * 50;
-        float _yMovement = Input.GetAxis(TDS_InputManager.VERTICAL_ALT_AXIS) * 50;
+        float _xMovement = Controller.GetAxis(AxisType.HorizontalAim) * 50;
+        float _yMovement = Controller.GetAxis(AxisType.VerticalAim) * 50;
 
         // Clamp X target position in screen
         if (_xMovement != 0)
@@ -871,20 +871,20 @@ public class TDS_Juggler : TDS_Player
     /// <summary>
     /// Switch the selected throwable with one among throwables juggling with.
     /// </summary>
-    /// <param name="_index">Index of the new selected throwable among <see cref="Throwables"/>.</param>
-    public void SwitchThrowable(int _index)
+    /// <param name="_doIncrease">Should the new throwable be at the increased index of the current one.</param>
+    public void SwitchThrowable(bool _doIncrease)
     {
         // Do that for all other clients too
         if (photonView.isMine)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SwitchThrowable"), new object[] { _index });
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SwitchThrowable"), new object[] { _doIncrease });
         }
 
         // Get selected throwable & place the previous one in the juggling list
         TDS_Throwable _selected = null;
         Transform[] _objectAnchors = new Transform[objectAnchors.Length];
 
-        if (_index < 0)
+        if (!_doIncrease)
         {
             _selected = Throwables[CurrentThrowableAmount - 1];
             Throwables.RemoveAt(CurrentThrowableAmount - 1);
@@ -1146,16 +1146,24 @@ public class TDS_Juggler : TDS_Player
         if (_result != 0) return _result;
 
         // Check throw
-        if (!isAiming && TDS_InputManager.GetButton(TDS_InputManager.THROW_BUTTON))
+        if (!isAiming && Controller.GetButton(ButtonType.Aim))
         {
             PrepareThrow();
             return -1;
         }
 
-        // Check aiming point / angle changes
-        if (TDS_InputManager.GetAxisDown(TDS_InputManager.D_PAD_X_Axis) && (Throwables.Count > 0))
+        // If no throwable, return 0
+        if (Throwables.Count == 0) return 0;
+
+            // Check aiming point / angle changes
+        if (Controller.GetButtonDown(ButtonType.SwitchPlus))
         {
-            SwitchThrowable((int)Input.GetAxis(TDS_InputManager.D_PAD_X_Axis));
+            SwitchThrowable(true);
+            return -1;
+        }
+        if (Controller.GetButtonDown(ButtonType.SwitchMinus))
+        {
+            SwitchThrowable(false);
             return -1;
         }
 
