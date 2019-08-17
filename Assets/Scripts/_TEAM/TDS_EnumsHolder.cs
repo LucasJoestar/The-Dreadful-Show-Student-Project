@@ -140,7 +140,8 @@ public enum ButtonType
     Shoot,
     Snack,
     SwitchPlus,
-    SwitchMinus
+    SwitchMinus,
+    HowToPlay
 }
 
 /// <summary>

@@ -241,6 +241,11 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// Event called when the player grab an object or loose it.
     /// </summary>
     public event Action<bool> OnHasObject = null;
+
+    /// <summary>
+    /// Event called when the player press the button indicating how to play.
+    /// </summary>
+    public event Action OnTriggerHowToPlay = null;
     #endregion
 
     #region Fields / Properties
@@ -1937,6 +1942,18 @@ public class TDS_Player : TDS_Character, IPunObservable
     }
 
     /// <summary>
+    /// Checks the player menu-related inputs.
+    /// </summary>
+    public virtual void CheckMenuInputs()
+    {
+        // Check how to play related input
+        if (Controller.GetButtonDown(ButtonType.HowToPlay))
+        {
+            OnTriggerHowToPlay?.Invoke();
+        }
+    }
+
+    /// <summary>
     /// Checks inputs for this player's movements.
     /// </summary>
     public virtual void CheckMovementsInputs()
@@ -2180,6 +2197,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Check the player inputs
         CheckMovementsInputs();
         CheckActionsInputs();
+        CheckMenuInputs();
 	}
     #endregion
 

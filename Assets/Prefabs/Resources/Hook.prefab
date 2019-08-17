@@ -78,11 +78,6 @@ MonoBehaviour:
   bonusDamage: 0
   ObjectDurability: 1
   weight: 1
-  OnGrabbedFirstTime:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!65 &4227390829016078275
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -229,7 +224,7 @@ GameObject:
   - component: {fileID: 4227390829565300937}
   - component: {fileID: 4227390829565300939}
   - component: {fileID: 4227390829565300936}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Hook - Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

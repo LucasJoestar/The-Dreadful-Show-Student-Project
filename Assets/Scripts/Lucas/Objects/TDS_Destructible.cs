@@ -125,7 +125,8 @@ public class TDS_Destructible : TDS_Damageable
                                                           sprite.bounds.center.z + (sprite.bounds.extents.z * Random.Range(-.9f, .9f))),
                                   Quaternion.identity, 0);
 
-        _loot.GetComponent<Rigidbody>()?.AddForce(new Vector3(Random.Range(-250, 250), Random.Range(100, 400), Random.Range(-150, 150)));
+        Rigidbody _rigidbody = _loot.GetComponent<Rigidbody>();
+        if (_rigidbody) _rigidbody.AddForce(new Vector3(Random.Range(-250, 250), Random.Range(100, 400), Random.Range(-150, 150)));
 
         _availableLoot.Remove(_loot);
 

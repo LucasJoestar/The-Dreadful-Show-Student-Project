@@ -139,11 +139,6 @@ MonoBehaviour:
   bonusDamage: 2
   ObjectDurability: 2
   weight: 1
-  OnGrabbedFirstTime:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!65 &8462223660539153959
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -180,8 +175,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 19
-  instantiationId: 19
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!1 &8462223661139009156
@@ -271,7 +266,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8462223661869008572}
   - component: {fileID: 8462223661869008575}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Fakir_Sword Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
