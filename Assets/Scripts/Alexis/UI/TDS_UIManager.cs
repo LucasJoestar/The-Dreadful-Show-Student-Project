@@ -952,6 +952,7 @@ public class TDS_UIManager : PunBehaviour
     {
         if (!bossHealthBar) return;
         bossHealthBar.SetOwner(_boss);
+        bossHealthBar.FilledImage.fillAmount = 1;
         bossHealthBar.gameObject.SetActive(true);
 
         _boss.HealthBar = bossHealthBar;

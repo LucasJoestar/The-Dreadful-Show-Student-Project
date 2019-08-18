@@ -207,8 +207,13 @@ public class TDS_SpawnerArea : PunBehaviour
     /// </summary>
     private void ActivateWave()
     {
-        if (!PhotonNetwork.isMasterClient) return;  
-        if (waveIndex == waves.Count && !isLooping)
+        if (!PhotonNetwork.isMasterClient) return; 
+        if (waves.Count == 0)
+        {
+            ActivatedAreas.Add(this);
+            return;
+        }
+        if (waveIndex >= waves.Count && !isLooping)
         {
             ActivatedAreas.Remove(this);
 
@@ -216,7 +221,7 @@ public class TDS_SpawnerArea : PunBehaviour
             TDS_UIManager.Instance.SwitchCurtains(false);
             return;
         }
-        else if(waveIndex == waves.Count)
+        else if(waveIndex >= waves.Count)
         {
             waveIndex = 0;
         }
