@@ -1229,6 +1229,15 @@ public class TDS_Juggler : TDS_Player
         PlayerType = PlayerType.Juggler;
     }
 
+    // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+
+        // Stop aiming on destroy
+        if (isAiming) StopAiming();
+    }
+
     // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
     protected override void OnDrawGizmos()
     {
