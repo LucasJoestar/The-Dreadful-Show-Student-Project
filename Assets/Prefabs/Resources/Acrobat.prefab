@@ -281,7 +281,7 @@ MonoBehaviour:
   handsTransform: {fileID: 1056280773755830313}
   shadowTransform: {fileID: 1060231104429665027}
   isAttacking: 0
-  isFacingRight: 1
+  isFacingRight: 0
   IsPacific: 0
   IsParalyzed: 0
   aimAngle: 45
@@ -302,7 +302,10 @@ MonoBehaviour:
   wanderingRangeMin: 5
   wanderingRangeMax: 9
   healthScalePercent: 10
-  attacks: []
+  attacks:
+  - {fileID: 11400000, guid: bb948e3ca6b9b374995fd8dbc7df65b8, type: 2}
+  - {fileID: 11400000, guid: 07d084e084d8fbc4c94a28bb30c7f95b, type: 2}
+  - {fileID: 11400000, guid: c96c7c9906be62c46a3f1c4714ea5887, type: 2}
   agent: {fileID: 1094014115215686679}
   hasEvolved: 0
   ragingThreshold: 3
@@ -365,12 +368,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 1031561643458911511}
-  Owner: {fileID: 0}
+  Owner: {fileID: 1062355219936869156}
   BonusDamages: 0
   HittableTags:
     ObjectTags:
     - Name: Player
-      Color: {r: 1, g: 1, b: 1, a: 1}
+      Color: {r: 0.097232126, g: 0.8962264, b: 0.6973913, a: 1}
 --- !u!1 &1062506033306977371
 GameObject:
   m_ObjectHideFlags: 0
