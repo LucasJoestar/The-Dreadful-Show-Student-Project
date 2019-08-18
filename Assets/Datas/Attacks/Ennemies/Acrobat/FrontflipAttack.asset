@@ -9,24 +9,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1e1ca2ea0e89464f926dd1ae8da10cd, type: 3}
-  m_Name: Siamese_Spinning_Attack
+  m_Script: {fileID: 11500000, guid: 3560fdbfd2eeecd4bb4787bc3b148eb9, type: 3}
+  m_Name: FrontflipAttack
   m_EditorClassIdentifier: 
-  attackName: Spinning Attack
+  attackName: Frontflip attack
   Effect:
     EffectType: 0
     percentageHighest: 0
     percentageLowest: 0
     damagesMax: 0
     damagesMin: 0
-  damagesMax: 15
-  damagesMin: 12
-  description: You spin me round (Like a record)
-  AnimationID: 9
-  cooldown: 1.75
-  maxRange: 15
-  minRange: 1.5
-  probability: 150
-  canBreakGuard: 1
-  spinningSpeed: 12
-  spinningRadius: 2.5
+  damagesMax: 5
+  damagesMin: 15
+  description: 
+  AnimationID: 7
+  cooldown: 1
+  maxRange: 5
+  minRange: 3
+  probability: 100
+  canBreakGuard: 0
+  isDashingForward: 1
+  dashingDistance: 5
+  dashingSpeed: 1.2

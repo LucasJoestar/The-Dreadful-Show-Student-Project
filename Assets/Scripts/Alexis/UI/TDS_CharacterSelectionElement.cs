@@ -77,7 +77,6 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
             PlayerInfo.IsReady = value;
             if (isLocked)
             {
-                Debug.Log(CurrentSelection.CharacterType); 
                 PlayerInfo.PlayerType = CurrentSelection.CharacterType; 
             }
             else
@@ -257,6 +256,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         if (!PhotonNetwork.offlineMode)
         {
             if (localPelletImage) localPelletImage.gameObject.SetActive(false);
+            if (ownerCrownImage) ownerCrownImage.gameObject.SetActive(false);
             if (playerNameInputField) playerNameInputField.interactable = false;
 
             Selectable _launchButton = TDS_UIManager.Instance.LaunchGameButton;

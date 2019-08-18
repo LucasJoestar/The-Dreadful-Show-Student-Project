@@ -9,24 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1e1ca2ea0e89464f926dd1ae8da10cd, type: 3}
-  m_Name: Siamese_Spinning_Attack
+  m_Script: {fileID: 11500000, guid: f663be0ccd78c234188a9cf5a087f69f, type: 3}
+  m_Name: RibbonAttack
   m_EditorClassIdentifier: 
-  attackName: Spinning Attack
+  attackName: Ribbon Attack
   Effect:
     EffectType: 0
     percentageHighest: 0
     percentageLowest: 0
     damagesMax: 0
     damagesMin: 0
-  damagesMax: 15
-  damagesMin: 12
-  description: You spin me round (Like a record)
-  AnimationID: 9
-  cooldown: 1.75
-  maxRange: 15
-  minRange: 1.5
-  probability: 150
-  canBreakGuard: 1
-  spinningSpeed: 12
-  spinningRadius: 2.5
+  damagesMax: 5
+  damagesMin: 15
+  description: 
+  AnimationID: 8
+  cooldown: 1.1
+  maxRange: 3
+  minRange: 0
+  probability: 100
+  canBreakGuard: 0
