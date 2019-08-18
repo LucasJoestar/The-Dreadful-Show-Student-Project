@@ -80,6 +80,11 @@ public class TDS_LevelManager : PunBehaviour
     /// Juggler supplies available to be dropped in game.
     /// </summary>
     [SerializeField] private TDS_Destructible[] jugglerSupplies = new TDS_Destructible[] { };
+
+    /// <summary>
+    /// Dictionary referencing all scene objects tags with their ID as key and tags as value.
+    /// </summary>
+    public Dictionary<int, Tags> ObjectsTags = new Dictionary<int, Tags>();
     #endregion
 
     #region Singleton

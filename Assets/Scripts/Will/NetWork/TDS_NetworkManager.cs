@@ -1,9 +1,7 @@
 ﻿using System.Linq;
-using System.Collections.Generic; 
 using UnityEngine;
 using UnityEngine.UI;
 using Photon;
-using TMPro;
 
 #pragma warning disable 0414
 [RequireComponent(typeof(PhotonView))]
@@ -236,7 +234,7 @@ public class TDS_NetworkManager : PunBehaviour
             return; 
         }
     }
-
+#if UNITY_EDITOR
     private void OnGUI()
     {
         GUILayout.Box(PhotonNetwork.GetPing().ToString()); 
@@ -245,7 +243,7 @@ public class TDS_NetworkManager : PunBehaviour
         GUILayout.Box(PhotonNetwork.isMasterClient.ToString());
         GUILayout.Box(TDS_GameManager.LocalPlayer.ToString());
     }
-
+#endif
     void Start ()
     {
         if(!photonView) photonView = GetComponent<PhotonView>();

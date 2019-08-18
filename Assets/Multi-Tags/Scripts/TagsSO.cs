@@ -132,7 +132,7 @@ public class TagsSO : ScriptableObject
     {
         RegisterObject(_object);
 
-        objectsTags[_object.GetInstanceID()].AddTag(_newTag);
+        TDS_LevelManager.Instance.ObjectsTags[_object.GetInstanceID()].AddTag(_newTag);
     }
 
     /// <summary>
@@ -144,7 +144,7 @@ public class TagsSO : ScriptableObject
     {
         RegisterObject(_object);
 
-        objectsTags[_object.GetInstanceID()].AddTag(_newTag);
+        TDS_LevelManager.Instance.ObjectsTags[_object.GetInstanceID()].AddTag(_newTag);
     }
 
 
@@ -157,7 +157,7 @@ public class TagsSO : ScriptableObject
     {
         RegisterObject(_object);
 
-        return objectsTags[_object.GetInstanceID()].ObjectTags;
+        return TDS_LevelManager.Instance.ObjectsTags[_object.GetInstanceID()].ObjectTags;
     }
 
 
@@ -169,9 +169,9 @@ public class TagsSO : ScriptableObject
     {
         int _id = _object.GetInstanceID();
 
-        if (!objectsTags.ContainsKey(_id))
+        if (!TDS_LevelManager.Instance.ObjectsTags.ContainsKey(_id))
         {
-            objectsTags.Add(_id, new Tags(MultiTags.GetTags(_object.tag.Split(MultiTags.TAG_SEPARATOR))));
+            TDS_LevelManager.Instance.ObjectsTags.Add(_id, new Tags(MultiTags.GetTags(_object.tag.Split(MultiTags.TAG_SEPARATOR))));
         }
     }
 
@@ -185,7 +185,7 @@ public class TagsSO : ScriptableObject
     {
         RegisterObject(_object);
 
-        objectsTags[_object.GetInstanceID()].RemoveTag(_tag);
+        TDS_LevelManager.Instance.ObjectsTags[_object.GetInstanceID()].RemoveTag(_tag);
     }
 
     /// <summary>
@@ -197,7 +197,7 @@ public class TagsSO : ScriptableObject
     {
         RegisterObject(_object);
 
-        objectsTags[_object.GetInstanceID()].RemoveTag(_tag);
+        TDS_LevelManager.Instance.ObjectsTags[_object.GetInstanceID()].RemoveTag(_tag);
     }
     #endregion
 
