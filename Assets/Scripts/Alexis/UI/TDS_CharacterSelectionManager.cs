@@ -226,8 +226,11 @@ public class TDS_CharacterSelectionManager : PunBehaviour
                 //_elem.LockElement(true);
                 _elem.ReadyToggle.isOn = true;
                 _elem.TriggerToggle();
+                return; 
             }
         }
+        if (TDS_GameManager.PlayersInfo.Any(i => !i.IsReady)) return;
+        TDS_UIManager.Instance?.LoadLevel(); 
     }
 
     public void CancelInLocalCharacterSelection(int _playerId)
