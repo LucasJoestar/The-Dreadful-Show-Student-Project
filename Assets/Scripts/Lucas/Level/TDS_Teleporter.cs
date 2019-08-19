@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public class TDS_Teleporter : MonoBehaviour
 {
     /* TDS_SpawnerArea :

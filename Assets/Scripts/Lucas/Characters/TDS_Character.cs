@@ -686,11 +686,6 @@ public abstract class TDS_Character : TDS_Damageable
         {
             Debug.LogWarning("The Shadow Transform of \"" + name + "\" for script TDS_Character is missing !");
         }
-        if (!photonView.isMine)
-        {
-            rigidbody.isKinematic = true;
-            rigidbody.useGravity = false;
-        }
     }
 
     // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
@@ -700,17 +695,6 @@ public abstract class TDS_Character : TDS_Damageable
         {
             Gizmos.color = IsInvulnerable ? new Color(0, 0, 1, .5f) : isDead ? new Color(0, 0, 0, .5f) : new Color(0, 1, 0, .5f);
             Gizmos.DrawCube(collider.bounds.center, collider.bounds.size);
-        }
-    }
-
-    // Use this for initialization
-    protected override void Start()
-    {
-        base.Start();
-
-        if (!photonView.isMine)
-        {
-            rigidbody.isKinematic = true;
         }
     }
     #endregion

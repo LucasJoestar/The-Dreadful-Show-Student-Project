@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
 using Random  = UnityEngine.Random;
@@ -235,6 +236,13 @@ public abstract class TDS_Enemy : TDS_Character
     /// Return the name of the enemy
     /// </summary>
     public string EnemyName { get { return gameObject.name; } }
+
+
+    /// <summary>
+    /// All enemies actually in game.
+    /// </summary>
+    public static List<TDS_Enemy> AllEnemies = new List<TDS_Enemy>();
+
 
     /// <summary>
     /// The target of the enemy
@@ -787,8 +795,9 @@ public abstract class TDS_Enemy : TDS_Character
             SetEnemyState(EnemyState.None);
             SetAnimationState((int)EnemyAnimationState.Death);
         }
-        base.Die();
 
+        if (AllEnemies.Contains(this)) AllEnemies.Remove(this);
+        base.Die();
     }
 
     /// <summary>
@@ -1296,17 +1305,20 @@ public abstract class TDS_Enemy : TDS_Character
     {
         base.Awake();
         if (!agent) agent = GetComponent<CustomNavMeshAgent>();
-        //if(PhotonNetwork.isMasterClient)
-        //{
-            OnDie += () => StopAllCoroutines();
-        //}
-        InitLifeBar(); 
+        OnDie += () => StopAllCoroutines();
+        InitLifeBar();
+
+        AllEnemies.Add(this);
+    }
+
+    private void OnDestroy()
+    {
+        if (AllEnemies.Contains(this)) AllEnemies.Remove(this);
     }
 
     // Use this for initialization
     protected override void Start()
     {
-        base.Start();
         if (!PhotonNetwork.isMasterClient)
         {
             rigidbody.useGravity = false;
@@ -1325,6 +1337,8 @@ public abstract class TDS_Enemy : TDS_Character
                 HealthCurrent = healthMax;
             }
         }
+
+        base.Start();
     }
 
     protected override void OnDrawGizmos()

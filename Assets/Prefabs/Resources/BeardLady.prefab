@@ -294,8 +294,8 @@ MonoBehaviour:
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 200
-  healthMax: 200
+  healthCurrent: 150
+  healthMax: 150
   hitBox: {fileID: 7078998788060092066}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
@@ -314,7 +314,7 @@ MonoBehaviour:
   throwBonusDamagesMax: 3
   throwBonusDamagesMin: 0
   throwAimingPoint: {x: 7.5, y: 0, z: 0}
-  controller:
+  Controller:
     name: New Controller
     axis:
     - axisName: Horizontal
@@ -414,6 +414,12 @@ MonoBehaviour:
         axisBehaviour: 0
         lastState: 3
       keys: 
+    - name: HowToPlay
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
   Summoner: {fileID: 0}
   interactionBox: {fileID: 7079423514653110356}
   groundDetectionBox:
@@ -460,7 +466,7 @@ MonoBehaviour:
     m_Bits: 24577
   playerType: 1
   currentBeardState: 0
-  beardGrowInterval: 5
+  beardGrowInterval: 7
   beardHealInterval: 5
   beardCurrentLife: 3
   beardMaxLife: 3

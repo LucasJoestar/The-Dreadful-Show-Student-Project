@@ -62,10 +62,9 @@ public class TDS_BeardLady : TDS_Player
                 {
                     TDS_VFXManager.Instance.SpawnEffect(FXType.BeardDamaged, fxTransformPV.viewID);
                 }
-
-                CancelInvokeGrowBeard();
             }
 
+            CancelInvokeGrowBeard();
             currentBeardState = value;
             OnBeardStateChanged?.Invoke(value);
 
@@ -134,9 +133,10 @@ public class TDS_BeardLady : TDS_Player
             }
             else if (value != beardMaxLife)
             {
+                ResetBeardGrow();
                 InvokeHealBeard();
             }
-
+            
             beardCurrentLife = value;
         }
     }

@@ -856,18 +856,29 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         OnStartDodging?.Invoke();
 
+        // Get player movement
+        Vector3 _movement = new Vector3(Mathf.RoundToInt(Controller.GetAxis(AxisType.Horizontal)), 0, Mathf.RoundToInt(Controller.GetAxis(AxisType.Vertical)));
+        if ((_movement == Vector3.zero) || ((_movement.x != 0) && (_movement.z != 0))) _movement = Vector3.right * isFacingRight.ToSign();
+        _movement = _movement.normalized;
+        _movement *= speedMax * speedCoef;
+
         // Adds an little force at the start of the dodge
-        rigidbody.AddForce(Vector3.right * Mathf.Clamp(speedCurrent, speedInitial, speedMax) * speedCoef * isFacingRight.ToSign() * speedMax * (isGrounded ? 10 : 2));
+        rigidbody.AddForce(_movement * Mathf.Clamp(speedCurrent, speedInitial, speedMax) * (isGrounded ? 10 : 2));
 
         // Triggers the associated animation
         SetAnimOnline(PlayerAnimState.Dodge);
 
+        // Get new constant movement
+        _movement *= (isGrounded ? 7 : 2.5f);
+        _movement.y = isGrounded ? 0 : -.35f;
+
+        Vector3 _movementDirection = new Vector3(_movement.x != 0 ? Mathf.Sign(_movement.x) : 0, 0, _movement.z != 0 ? Mathf.Sign(_movement.z) : 0);
+
         // Adds a little force to the player to move him along while dodging
         while (true)
         {
-            float _xForce = isFacingRight.ToSign() * speedCoef * speedMax * (isGrounded ? 7 : 2.5f);
-            rigidbody.AddForce(new Vector3(_xForce, isGrounded ? 0 : -.35f, 0));
-            MoveInDirection(transform.position + (isFacingRight ? Vector3.right : Vector3.left));
+            rigidbody.AddForce(_movement);
+            MoveInDirection(transform.position + _movementDirection);
 
             yield return new WaitForFixedUpdate();
         }
@@ -926,13 +937,13 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (isAttacking)
         {
             // And if in combo, reset it
-            //if (comboCurrent.Count > 0) BreakCombo();
-            //if (IsAttacking) StopAttack();
+            if (comboCurrent.Count > 0) BreakCombo();
+            if (IsAttacking) StopAttack();
 
             // What's better ??
 
-            NextAction = -1;
-            return;
+            //NextAction = -1;
+            //return;
         }
 
         dodgeCoroutine = StartCoroutine(Dodge());
@@ -977,12 +988,15 @@ public class TDS_Player : TDS_Character, IPunObservable
         {
             StopCoroutine(dodgeCoroutine);
 
-            float _xVelocity = 0;
+            Vector3 _velocity = new Vector3(0, rigidbody.velocity.y, 0);
 
-            if (isGrounded) _xVelocity = 0;
-            else _xVelocity = rigidbody.velocity.x * .8f;
+            if (!isGrounded)
+            {
+                _velocity.x = rigidbody.velocity.x * .8f;
+                _velocity.z = rigidbody.velocity.z * .8f;
+            }
 
-            rigidbody.velocity = new Vector3(_xVelocity, rigidbody.velocity.y, rigidbody.velocity.z);
+            rigidbody.velocity = _velocity;
         }
     }
 
@@ -1200,6 +1214,7 @@ public class TDS_Player : TDS_Character, IPunObservable
             // And if in combo, reset it
             if (comboCurrent.Count > 0) BreakCombo();
             if (IsAttacking) StopAttack();
+            if (isDodging) StopDodge();
         }
 
         // If not dead, be just hit
@@ -1440,7 +1455,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         bool _isGrounded = groundDetectionBox.Overlap(transform.position).Length > 0;
 
         // If grounded value changed, updates all necessary things
-        if (_isGrounded != IsGrounded)
+        if (photonView.isMine && (_isGrounded != IsGrounded))
         {
             // Updates value
             IsGrounded = _isGrounded;
@@ -1471,17 +1486,17 @@ public class TDS_Player : TDS_Character, IPunObservable
             {
                 if (animator.GetInteger("GroundState") > -1)
                 {
-                    SetAnimOnline(PlayerAnimState.Falling);
+                    SetAnim(PlayerAnimState.Falling);
                 }
             }
             else if (animator.GetInteger("GroundState") < 1)
             {
-                SetAnimOnline(PlayerAnimState.Jumping);
+                SetAnim(PlayerAnimState.Jumping);
             }
         }
         else if (animator.GetInteger("GroundState") != 0)
         {
-            SetAnimOnline(PlayerAnimState.Grounded);
+            SetAnim(PlayerAnimState.Grounded);
         }
     }
     
@@ -2130,7 +2145,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     protected virtual void FixedUpdate()
     {
         // If dead or not playable, return
-        if (!photonView.isMine || isDead || !IsPlayable) return;
+        if (isDead || !IsPlayable) return;
 
         // Checks if the player is grounded or not, and all related elements
         CheckGrounded();

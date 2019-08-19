@@ -232,11 +232,8 @@ public class TDS_Throwable : PunBehaviour
     /// </summary>
     protected virtual void OnHitSomething()
     {
-        hitBox.Desactivate();
         BounceObject();
-
-        LoseDurability();
-        owner = null;
+        ResetThrowable();
     }
 
     /// <summary> 
@@ -246,7 +243,7 @@ public class TDS_Throwable : PunBehaviour
     /// <returns>Returns true is successfully picked up the object, false if a issue has been encountered.</returns> 
     public virtual bool PickUp(TDS_Character _owner)
     {
-        if (isHeld) return false;
+        if (isHeld || owner) return false;
 
         isHeld = true;
         owner = _owner;
@@ -281,6 +278,17 @@ public class TDS_Throwable : PunBehaviour
         PickUp(_photonView.GetComponent<TDS_Character>());
     }
 
+    /// <summary>
+    /// Resets this throwable parameters, when hitting something or colliding after a throw.
+    /// </summary>
+    protected virtual void ResetThrowable()
+    {
+        LoseDurability();
+        hitBox.Desactivate();
+        owner = null;
+        gameObject.layer = LayerMask.NameToLayer("Object");
+    }
+
     /// <summary> 
     /// Throws the object to a given position by converting the final position to velocity.
     /// </summary> 
@@ -311,8 +319,6 @@ public class TDS_Throwable : PunBehaviour
         isHeld = false;
 
         owner.RemoveThrowable();
-
-        gameObject.layer = LayerMask.NameToLayer("Object");
     }
 
     /// <summary>
@@ -353,9 +359,7 @@ public class TDS_Throwable : PunBehaviour
     {
         if (hitBox.IsActive)
         {
-            hitBox.Desactivate();
-            LoseDurability();
-            owner = null;
+            ResetThrowable();
         }
     }
 

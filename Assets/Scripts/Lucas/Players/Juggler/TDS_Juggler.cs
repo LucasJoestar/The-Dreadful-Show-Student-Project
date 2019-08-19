@@ -233,6 +233,11 @@ public class TDS_Juggler : TDS_Player
     #endregion
 
     #region Variables
+    /// <summary>
+    /// Indicates if the juggler can actually shoot.
+    /// </summary>
+    [SerializeField] private bool canShoot = true;
+
     /// <summary>Backing field for <see cref="IsAiming"/>.</summary>
     [SerializeField] private bool isAiming = false;
 
@@ -299,6 +304,22 @@ public class TDS_Juggler : TDS_Player
         {
             if (value < 0) value = 0;
             throwableDistanceFromCenter = value;
+        }
+    }
+
+    /// <summary>Backing field for <see cref="TimeBetweenShoots"/>.</summary>
+    [SerializeField] private float timeBetweenShoots = 1.5f;
+
+    /// <summary>
+    /// Minimum time to spend between two object shoots.
+    /// </summary>
+    public float TimeBetweenShoots
+    {
+        get { return timeBetweenShoots; }
+        set
+        {
+            if (value < 0) value = 0;
+            timeBetweenShoots = value;
         }
     }
 
@@ -433,13 +454,14 @@ public class TDS_Juggler : TDS_Player
 
             yield return null;
 
-            if (Controller.GetButtonDown(ButtonType.Shoot))
+            if (Controller.GetButtonDown(ButtonType.Shoot) && canShoot)
             {
                 if (targetObject) targetObject = null;
                 if (targetEnemy) targetEnemy = null;
                 TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
 
                 IsPlayable = false;
+                canShoot = false;
                 SetAnimOnline(PlayerAnimState.Throw);
 
                 if (CurrentThrowableAmount == 0) break;
@@ -474,7 +496,7 @@ public class TDS_Juggler : TDS_Player
                 // Switch target when moving related axis
                 if (Controller.GetAxisDown(AxisType.HorizontalAim))
                 {
-                    TDS_Enemy[] _enemies = TDS_SpawnerArea.ActiveEnemies;
+                    TDS_Enemy[] _enemies = TDS_Enemy.AllEnemies.ToArray();
                     int _selection = Controller.GetAxis(AxisType.HorizontalAim) > 0 ? 1 : -1;
                     int _index = Array.IndexOf(_enemies, targetEnemy);
 
@@ -503,7 +525,7 @@ public class TDS_Juggler : TDS_Player
         }
 
         // Get active enemies and sort them by position relative to the Juggler
-        TDS_Enemy[] _activeEnemies = TDS_SpawnerArea.ActiveEnemies;
+        TDS_Enemy[] _activeEnemies = TDS_Enemy.AllEnemies.ToArray();
 
         if (_activeEnemies.Length > 0)
         {
@@ -592,6 +614,11 @@ public class TDS_Juggler : TDS_Player
             TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
         }
     }
+
+    /// <summary>
+    /// Allows back the Juggler to shoot. Yes !
+    /// </summary>
+    private void AllowToShoot() => canShoot = true;
 
     /// <summary>
     /// Get juggling objects back in hands.
@@ -963,6 +990,23 @@ public class TDS_Juggler : TDS_Player
         }
 
         return ThrowObject(_ray.origin + (_ray.direction * 75));
+    }
+
+    /// <summary>
+    /// Throws the weared throwable.
+    /// </summary>
+    /// <param name="_targetPosition">Position where the object should land</param>
+    public override bool ThrowObject(Vector3 _targetPosition)
+    {
+        if (!base.ThrowObject(_targetPosition))
+        {
+            canShoot = true;
+            return false;
+        }
+
+        Invoke("AllowToShoot", timeBetweenShoots);
+
+        return true;
     }
 
     /// <summary>

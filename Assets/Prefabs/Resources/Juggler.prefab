@@ -928,8 +928,8 @@ MonoBehaviour:
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 150
-  healthMax: 150
+  healthCurrent: 100
+  healthMax: 100
   hitBox: {fileID: 2643095751793456050}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
@@ -948,7 +948,7 @@ MonoBehaviour:
   throwBonusDamagesMax: 12
   throwBonusDamagesMin: 5
   throwAimingPoint: {x: 7.5, y: 0, z: 0}
-  controller:
+  Controller:
     name: New Controller
     axis:
     - axisName: Horizontal
@@ -963,12 +963,6 @@ MonoBehaviour:
     - axisName: VerticalAim
       axisBehaviour: 0
       lastState: 3
-    - axisName: SwitchPlus
-      axisBehaviour: 0
-      lastState: 3
-    - axisName: SwitchMinus
-      axisBehaviour: 0
-      lastState: 3
     buttons:
     - name: Confirm
       axis:
@@ -977,30 +971,6 @@ MonoBehaviour:
         lastState: 3
       keys: 
     - name: Cancel
-      axis:
-        axisName: Unknown Axis
-        axisBehaviour: 0
-        lastState: 3
-      keys: 
-    - name: Up
-      axis:
-        axisName: Unknown Axis
-        axisBehaviour: 0
-        lastState: 3
-      keys: 
-    - name: Down
-      axis:
-        axisName: Unknown Axis
-        axisBehaviour: 0
-        lastState: 3
-      keys: 
-    - name: Left
-      axis:
-        axisName: Unknown Axis
-        axisBehaviour: 0
-        lastState: 3
-      keys: 
-    - name: Right
       axis:
         axisName: Unknown Axis
         axisBehaviour: 0
@@ -1066,6 +1036,24 @@ MonoBehaviour:
         axisBehaviour: 0
         lastState: 3
       keys: 
+    - name: SwitchPlus
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: SwitchMinus
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: HowToPlay
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
   Summoner: {fileID: 0}
   interactionBox: {fileID: 2643544521531413244}
   groundDetectionBox:
@@ -1112,10 +1100,12 @@ MonoBehaviour:
   - {fileID: 6967968500153635586}
   - {fileID: 8415653306175187264}
   - {fileID: 8040908100803288075}
+  canShoot: 1
   isAiming: 0
   aimingSpeedCoef: 0.7
   juggleSpeed: 1
   throwableDistanceFromCenter: 1
+  timeBetweenShoots: 0.2
   whatCanAim:
     serializedVersion: 2
     m_Bits: 8494592

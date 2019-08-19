@@ -396,11 +396,6 @@ public class TDS_SpawnerArea : PunBehaviour
     #endregion
 
     #region Unity Methods
-    // Awake is called when the script instance is being loaded
-    private void Awake()
-    {
-    }
-
     private void Start()
     {
         OnAreaActivated.AddListener(() => isActivated = true);

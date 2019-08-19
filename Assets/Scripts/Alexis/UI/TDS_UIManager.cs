@@ -952,7 +952,7 @@ public class TDS_UIManager : PunBehaviour
     {
         if (!bossHealthBar) return;
         bossHealthBar.SetOwner(_boss);
-        bossHealthBar.FilledImage.fillAmount = 1;
+        bossHealthBar.UpdateLifeBar(_boss.HealthCurrent);
         bossHealthBar.gameObject.SetActive(true);
 
         _boss.HealthBar = bossHealthBar;
@@ -1002,6 +1002,7 @@ public class TDS_UIManager : PunBehaviour
         TDS_EnemyLifeBar _healthBar = Instantiate(enemyHealthBar, _enemy.transform.position + _offset, Quaternion.identity, canvasWorld.transform).GetComponent<TDS_EnemyLifeBar>();
 
         _healthBar.SetOwner(_enemy, _offset);
+        _healthBar.UpdateLifeBar(_enemy.HealthCurrent);
         _healthBar.Background.gameObject.SetActive(false); 
         _enemy.HealthBar = _healthBar;
 
@@ -1070,8 +1071,9 @@ public class TDS_UIManager : PunBehaviour
                 break;
         }
         if (!_playerLifeBar) return; 
-        _playerLifeBar.gameObject.SetActive(true);
         _playerLifeBar.SetOwner(_player);
+        _playerLifeBar.UpdateLifeBar(_player.HealthCurrent);
+        _playerLifeBar.gameObject.SetActive(true);
         _player.HealthBar = _playerLifeBar;
         _player.OnHealthChanged += _playerLifeBar.UpdateLifeBar;
         if (_player is TDS_Juggler _juggler) _juggler.OnHasObject += _playerLifeBar.DisplayThrowObjectInfo;

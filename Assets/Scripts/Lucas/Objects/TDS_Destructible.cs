@@ -81,6 +81,8 @@ public class TDS_Destructible : TDS_Damageable
 
     #region Methods
 
+    #region Original Methods
+
     #region Health
     /// <summary>
     /// Method called when the object dies.
@@ -120,12 +122,14 @@ public class TDS_Destructible : TDS_Damageable
     {
         GameObject _loot = _availableLoot[Random.Range(0, _availableLoot.Count)];
 
-        GameObject _instance = PhotonNetwork.Instantiate(_loot.name, new Vector3(sprite.bounds.center.x + (sprite.bounds.extents.x * Random.Range(-.9f, .9f)),
-                                                          sprite.bounds.center.y + (sprite.bounds.extents.y * Random.Range(-.5f, .9f)),
-                                                          sprite.bounds.center.z + (sprite.bounds.extents.z * Random.Range(-.9f, .9f))),
-                                  Quaternion.identity, 0);
-
         Rigidbody _rigidbody = _loot.GetComponent<Rigidbody>();
+
+        GameObject _instance = PhotonNetwork.Instantiate(_loot.name, new Vector3(sprite.bounds.center.x + (sprite.bounds.extents.x * Random.Range(-.9f, .9f)),
+                                                          _rigidbody ? sprite.bounds.center.y + (sprite.bounds.extents.y * Random.Range(-.5f, .9f)) : 0,
+                                                          sprite.bounds.center.z + (sprite.bounds.extents.z * Random.Range(-.9f, .9f))),
+                                                          Quaternion.identity, 0);
+
+
         if (_rigidbody) _rigidbody.AddForce(new Vector3(Random.Range(-250, 250), Random.Range(100, 400), Random.Range(-150, 150)));
 
         _availableLoot.Remove(_loot);
@@ -205,6 +209,18 @@ public class TDS_Destructible : TDS_Damageable
             rigidbody.AddForce(new Vector3(_toRight.ToSign() * 200, 500, 0));
         }
         return true;
+    }
+    #endregion
+
+    #endregion
+
+    #region Unity Methods
+    // Use this for initialization
+    protected override void Start()
+    {
+        if (PhotonNetwork.connected && (photonView.owner == null)) photonView.TransferOwnership(PhotonNetwork.player);
+
+        base.Start();
     }
     #endregion
 

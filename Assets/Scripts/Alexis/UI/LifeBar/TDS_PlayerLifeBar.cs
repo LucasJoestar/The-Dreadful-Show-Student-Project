@@ -35,6 +35,7 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
     #endregion
 
     #region Fields / Properties
+    [SerializeField] protected GameObject howToPlayAnchor= null;
     [SerializeField] protected GameObject howToPlayInfo = null;
     [SerializeField] protected GameObject throwObjectInfo = null;
     [SerializeField] protected TDS_ComboManager comboCounter = null;
@@ -82,6 +83,8 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
                 comboCounter.gameObject.SetActive(false);
             }
         }
+
+        if (owner.photonView.isMine && howToPlayAnchor) howToPlayAnchor.SetActive(true);
     }
     #endregion
 

@@ -657,9 +657,11 @@ public abstract class TDS_Damageable : PunBehaviour
     // Use this for initialization
     protected virtual void Start ()
     {
-        if (!photonView.isMine && !PhotonNetwork.isMasterClient && PhotonNetwork.connected)
+        if (!photonView.isMine)
         {
             collider.enabled = false;
+            rigidbody.isKinematic = true;
+            rigidbody.useGravity = false;
         }
     }
 	
