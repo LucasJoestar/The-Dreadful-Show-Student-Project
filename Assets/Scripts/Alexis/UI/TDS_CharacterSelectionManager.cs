@@ -249,7 +249,7 @@ public class TDS_CharacterSelectionManager : PunBehaviour
         characterSelectionMenu.RemoveLocalPlayer(_playerId);
     }
 
-    public void ChangeImageAtPlayer(int _value, int _playerId)
+    public void ChangeImageAtPlayer(int _playerId, int _value)
     {
         if (!PhotonNetwork.offlineMode || !TDS_GameManager.PlayersInfo.Any(i => i.PlayerID == _playerId)) return;
         TDS_CharacterSelectionElement _elem = characterSelectionMenu.CharacterSelectionElements.Where(e => (e.PlayerInfo != null) && (e.PlayerInfo.PlayerID == _playerId) && (e.IsUsedLocally)).FirstOrDefault();
