@@ -42,5 +42,6 @@ public class TDS_DashAttackBehaviour : TDS_EnemyAttack
         }
         if (_caster is TDS_MightyMan _mightyManOut) _mightyManOut.IsDashing = false;
         _caster.SetAnimationState((int)EnemyAnimationState.StopDashing);
+        if (_caster.IsAttacking) _caster.StopAttack(); 
     }
 }

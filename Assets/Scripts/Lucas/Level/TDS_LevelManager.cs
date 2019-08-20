@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+using Random = UnityEngine.Random;
+
 public class TDS_LevelManager : PunBehaviour 
 {
     /* TDS_LevelManager :
@@ -72,6 +74,17 @@ public class TDS_LevelManager : PunBehaviour
     /// Points where to spawn at game start.
     /// </summary>
     public Vector3[] StartSpawnPoints = new Vector3[] { };
+
+
+    /// <summary>
+    /// Juggler supplies available to be dropped in game.
+    /// </summary>
+    [SerializeField] private TDS_Destructible[] jugglerSupplies = new TDS_Destructible[] { };
+
+    /// <summary>
+    /// Dictionary referencing all scene objects tags with their ID as key and tags as value.
+    /// </summary>
+    public Dictionary<int, Tags> ObjectsTags = new Dictionary<int, Tags>();
     #endregion
 
     #region Singleton
@@ -167,6 +180,20 @@ public class TDS_LevelManager : PunBehaviour
         // TO DO: Store the players in a list
         // Check if everybody is dead
         // If so, reset the Level
+    }
+
+
+    /// <summary>
+    /// Spawns a supply box for the Juggler on the playable zone.
+    /// </summary>
+    public void SpawnJugglerSupply()
+    {
+        if (jugglerSupplies.Length == 0) return;
+
+        // Spawn supply !
+        PhotonNetwork.Instantiate(jugglerSupplies[Random.Range(0, jugglerSupplies.Length)].name, new Vector3(Random.Range(TDS_Camera.Instance.CurrentBounds.XMin + 3, TDS_Camera.Instance.CurrentBounds.XMax - 3), 17.5f, Random.Range(TDS_Camera.Instance.CurrentBounds.ZMin + 2, TDS_Camera.Instance.CurrentBounds.ZMax - 2)), Quaternion.identity, 0);
+
+        TDS_UIManager.Instance.ActivateNarratorBox(TDS_GameManager.GetRandomDialog("JS"));
     }
     #endregion
 

@@ -347,8 +347,8 @@ MonoBehaviour:
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 175
-  healthMax: 175
+  healthCurrent: 125
+  healthMax: 125
   hitBox: {fileID: 114177014032919358}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
@@ -367,7 +367,7 @@ MonoBehaviour:
   throwBonusDamagesMax: 8
   throwBonusDamagesMin: 3
   throwAimingPoint: {x: 7.5, y: 0, z: 0}
-  controller:
+  Controller:
     name: New Controller
     axis:
     - axisName: Horizontal
@@ -510,14 +510,14 @@ MonoBehaviour:
   nextAction: 0
   WhatIsObstacle:
     serializedVersion: 2
-    m_Bits: 8413185
+    m_Bits: 24577
   playerType: 1
   isAngry: 0
   isSnackAvailable: 1
-  angrySpeedCoef: 1.25
+  angrySpeedCoef: 1.5
   snackRestaureTime: 30
-  angryHealthStep: 25
-  snackHealValue: 3
+  angryHealthStep: 75
+  snackHealValue: 50
   snackRestaureTimer: 0
 --- !u!95 &95173227102487408
 Animator:

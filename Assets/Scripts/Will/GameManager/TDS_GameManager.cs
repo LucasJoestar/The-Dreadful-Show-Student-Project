@@ -138,7 +138,24 @@ public static class TDS_GameManager
     /// <returns>Returns all text linked to the specified id.</returns>
     public static string[] GetDialog(string _id)
     {
-        return DialogsAsset.text.Split(splitCharacter).Where(d => d.StartsWith(_id)).FirstOrDefault().Replace(_id + '\n', string.Empty).Split('\n').Select(s => s.Trim()).Where(s => s != string.Empty).ToArray();
+        return DialogsAsset.text.Split(splitCharacter).Where(d => d.StartsWith(_id)).FirstOrDefault()?.Replace(_id + '\n', string.Empty).Split('\n').Select(s => s.Trim()).Where(s => s != string.Empty).ToArray();
+    }
+
+    /// <summary>
+    /// Get random piece of dialog with a specific ID.
+    /// </summary>
+    /// <param name="_id">ID of the dialogs.</param>
+    /// <returns>Returns all text linked to the chosen dialog.</returns>
+    public static string[] GetRandomDialog(string _id)
+    {
+        string[] _match = DialogsAsset.text.Split(splitCharacter).Where(d => d.StartsWith(_id)).ToArray();
+
+        if (_match.Length > 0)
+        {
+            return _match[Random.Range(0, _match.Length)].Replace(_id + '\n', string.Empty).Split('\n').Select(s => s.Trim()).Where(s => s != string.Empty).ToArray();
+        }
+
+        return new string[] { };
     }
 
     /// <summary>

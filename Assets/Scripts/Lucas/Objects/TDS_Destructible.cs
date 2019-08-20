@@ -81,6 +81,8 @@ public class TDS_Destructible : TDS_Damageable
 
     #region Methods
 
+    #region Original Methods
+
     #region Health
     /// <summary>
     /// Method called when the object dies.
@@ -99,31 +101,40 @@ public class TDS_Destructible : TDS_Damageable
         if ((loot.Length > 0) && (LootChance > 0) && (Random.Range(1, 101) <= lootChance))
         {
             List<GameObject> _availableLoot = new List<GameObject>(loot);
-            GameObject _loot = null;
 
             int _lootAmount = Random.Range(lootMin, lootMax + 1);
             for (int _i = 0; _i < _lootAmount; _i++)
             {
-                _loot = _availableLoot[Random.Range(0, _availableLoot.Count)];
-
-                /*Instantiate(_loot, new Vector3(sprite.bounds.center.x + (sprite.bounds.extents.x * Random.Range(-.9f, .9f)),
-                                               sprite.bounds.center.y + (sprite.bounds.extents.y * Random.Range(-.5f, .9f)),
-                                               sprite.bounds.center.z + (sprite.bounds.extents.z * Random.Range(-.9f, .9f))),
-                            Quaternion.identity);*/
-
-                PhotonNetwork.Instantiate(_loot.name, new Vector3(sprite.bounds.center.x + (sprite.bounds.extents.x * Random.Range(-.9f, .9f)),
-                                                                  sprite.bounds.center.y + (sprite.bounds.extents.y * Random.Range(-.5f, .9f)),
-                                                                  sprite.bounds.center.z + (sprite.bounds.extents.z * Random.Range(-.9f, .9f))),
-                                          Quaternion.identity, 0);
-
-                _loot.GetComponent<Rigidbody>()?.AddForce(new Vector3(Random.Range(-250, 250), Random.Range(100, 400), Random.Range(-150, 150)));
-
-                _availableLoot.Remove(_loot);
+                Loot(ref _availableLoot);
                 if (_availableLoot.Count == 0) break;
             }
         }
 
         SetAnimationState(DestructibleAnimState.Destruction);
+    }
+
+    /// <summary>
+    /// Loots a random object from a given list.
+    /// </summary>
+    /// <param name="_availableLoot">List of available objects to loot.</param>
+    /// <returns>Returns the looted object.</returns>
+    protected virtual GameObject Loot(ref List<GameObject> _availableLoot)
+    {
+        GameObject _loot = _availableLoot[Random.Range(0, _availableLoot.Count)];
+
+        Rigidbody _rigidbody = _loot.GetComponent<Rigidbody>();
+
+        GameObject _instance = PhotonNetwork.Instantiate(_loot.name, new Vector3(sprite.bounds.center.x + (sprite.bounds.extents.x * Random.Range(-.9f, .9f)),
+                                                          _rigidbody ? sprite.bounds.center.y + (sprite.bounds.extents.y * Random.Range(-.5f, .9f)) : 0,
+                                                          sprite.bounds.center.z + (sprite.bounds.extents.z * Random.Range(-.9f, .9f))),
+                                                          Quaternion.identity, 0);
+
+
+        if (_rigidbody) _rigidbody.AddForce(new Vector3(Random.Range(-250, 250), Random.Range(100, 400), Random.Range(-150, 150)));
+
+        _availableLoot.Remove(_loot);
+
+        return _instance;
     }
 
     /// <summary>
@@ -198,6 +209,18 @@ public class TDS_Destructible : TDS_Damageable
             rigidbody.AddForce(new Vector3(_toRight.ToSign() * 200, 500, 0));
         }
         return true;
+    }
+    #endregion
+
+    #endregion
+
+    #region Unity Methods
+    // Use this for initialization
+    protected override void Start()
+    {
+        if (PhotonNetwork.connected && (photonView.owner == null)) photonView.TransferOwnership(PhotonNetwork.player);
+
+        base.Start();
     }
     #endregion
 

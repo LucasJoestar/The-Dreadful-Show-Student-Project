@@ -66,6 +66,9 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
     #endregion
 
     #region Variables
+    /// <summary>SerializedProperties for <see cref="TDS_Player.canShoot"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty canShoot = null;
+
     /// <summary>SerializedProperties for <see cref="TDS_Player.isAiming"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isAiming = null;
 
@@ -77,6 +80,9 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
 
     /// <summary>SerializedProperty for <see cref="TDS_Juggler.ThrowableDistanceFromCenter"/> of type <see cref="float"/>.</summary>
     private SerializedProperty throwableDistanceFromCenter = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Juggler.timeBetweenShoots"/> of type <see cref="float"/>.</summary>
+    private SerializedProperty timeBetweenShoots = null;
 
     /// <summary>SerializedProperties for <see cref="TDS_Juggler.whatCanAim"/> of type <see cref="LayerMask"/>.</summary>
     private SerializedProperty whatCanAim = null;
@@ -216,6 +222,7 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
     private void DrawDebugs()
     {
         TDS_EditorUtility.RadioToggle("Aiming", "Is the Juggler currently aiming for a throw or not", isAiming);
+        TDS_EditorUtility.RadioToggle("Can Shoot", "Can the Juggler actually shoot an object at something ?", canShoot);
     }
 
     /// <summary>
@@ -326,6 +333,11 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
             jugglers.ForEach(j => j.AimingSpeedCoef = aimingSpeedCoef.floatValue);
             serializedObject.Update();
         }
+        if (TDS_EditorUtility.FloatField("Time between Shoots", "Minimum time to spend between two object shoots", timeBetweenShoots))
+        {
+            jugglers.ForEach(j => j.TimeBetweenShoots = timeBetweenShoots.floatValue);
+            serializedObject.Update();
+        }
 
         if (EditorApplication.isPlaying)
         {
@@ -356,10 +368,12 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
         juggleTransform = serializedObject.FindProperty("juggleTransform");
         objectAnchors = serializedObject.FindProperty("objectAnchors");
 
+        canShoot = serializedObject.FindProperty("canShoot");
         isAiming = serializedObject.FindProperty("isAiming");
         aimingSpeedCoef = serializedObject.FindProperty("aimingSpeedCoef");
         juggleSpeed = serializedObject.FindProperty("juggleSpeed");
         throwableDistanceFromCenter = serializedObject.FindProperty("throwableDistanceFromCenter");
+        timeBetweenShoots = serializedObject.FindProperty("timeBetweenShoots");
         whatCanAim = serializedObject.FindProperty("whatCanAim");
         aimDetectTags = serializedObject.FindProperty("aimDetectTags");
         juggleTransformIdealLocalPosition = serializedObject.FindProperty("juggleTransformIdealLocalPosition");

@@ -192,9 +192,9 @@ public class TDS_FireEater : TDS_Player
     /// <summary>
     /// Make the mini game fun !
     /// </summary>
-    /// <param name="_isLight">Name of the button to maintain to keep going on in the mini game.</param>
+    /// <param name="_buttonType">Type of the button to held.</param>
     /// <returns></returns>
-    private IEnumerator MiniGame(string _buttonName)
+    private IEnumerator MiniGame(ButtonType _buttonType)
     {
         SetFireEaterAnim(FireEaterAnimState.MiniGame);
 
@@ -205,7 +205,7 @@ public class TDS_FireEater : TDS_Player
         float _timer = .1f;
         while (isInMiniGame && (_timer > 0))
         {
-            if (!TDS_InputManager.GetButton(_buttonName))
+            if (!Controller.GetButton(_buttonType))
             {
                 isInMiniGame = false;
                 break;
@@ -225,7 +225,7 @@ public class TDS_FireEater : TDS_Player
             {
                 yield return null;
 
-                if (!TDS_InputManager.GetButton(_buttonName))
+                if (!Controller.GetButton(_buttonType))
                 {
                     IsInMiniGame = false;
                     break;
@@ -305,12 +305,12 @@ public class TDS_FireEater : TDS_Player
     /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
     protected override IEnumerator PrepareAttack(bool _isLight)
     {
-        string _buttonName = _isLight ? TDS_InputManager.LIGHT_ATTACK_BUTTON : TDS_InputManager.HEAVY_ATTACK_BUTTON;
+        ButtonType _buttonType = _isLight ? ButtonType.LightAttack : ButtonType.HeavyAttack;
         float _timer = TIME_TO_ACTIVATE_MINI_GAME;
 
         if (!isDrunk)
         {
-            while (TDS_InputManager.GetButton(_buttonName))
+            while (Controller.GetButton(_buttonType))
             {
                 if (_timer > 0)
                 {
@@ -319,7 +319,7 @@ public class TDS_FireEater : TDS_Player
                 }
                 else
                 {
-                    StartCoroutine(MiniGame(_buttonName));
+                    StartCoroutine(MiniGame(_buttonType));
                     yield return null;
                     break;
                 }

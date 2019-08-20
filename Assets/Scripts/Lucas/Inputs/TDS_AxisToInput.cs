@@ -88,7 +88,6 @@ public class TDS_AxisToInput
     /// </summary>
     public void UpdateState()
     {
-        // Get the value of this axis
         float _value = Input.GetAxis(axisName);
 
         if (axisBehaviour != AxisBehaviour.Both)

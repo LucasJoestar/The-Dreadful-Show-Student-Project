@@ -103,8 +103,6 @@ public class TDS_HittingWall : MonoBehaviour
         Vector3 _otherColliderCenter = other.bounds.center - other.transform.position;
 
         other.transform.position = new Vector3(_nearestPoint.x + (other.bounds.extents.x * Mathf.Sign(_direction.x)) + _otherColliderCenter.x, other.transform.position.y, _nearestPoint.z + (other.bounds.extents.z * Mathf.Sign(_direction.z)) + _otherColliderCenter.z);
-
-        Debug.Log("Reset => " + other.gameObject.name + " | Pos => " + other.transform.position);
     }
     #endregion
 

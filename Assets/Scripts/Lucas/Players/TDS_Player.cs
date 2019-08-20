@@ -241,6 +241,11 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// Event called when the player grab an object or loose it.
     /// </summary>
     public event Action<bool> OnHasObject = null;
+
+    /// <summary>
+    /// Event called when the player press the button indicating how to play.
+    /// </summary>
+    public event Action OnTriggerHowToPlay = null;
     #endregion
 
     #region Fields / Properties
@@ -263,21 +268,10 @@ public class TDS_Player : TDS_Character, IPunObservable
     #endregion
 
     #region Components & References
-    /// <summary>Backing field for <see cref="Controller"/>.</summary>
-    [SerializeField] protected TDS_Controller controller = new TDS_Controller();
-
     /// <summary>
     /// Controller linked to this player.
     /// </summary>
-    public TDS_Controller Controller
-    {
-        get { return controller; }
-        set
-        {
-            if ((value == null) || (value == default(TDS_Controller))) return;
-            controller = value;
-        }
-    }
+    [SerializeField] protected TDS_Controller Controller = new TDS_Controller();
 
     /// <summary>
     /// The summoner this player is currently carrying.
@@ -601,7 +595,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         float _timer = DROP_OBJECT_TIME;
 
-        while (TDS_InputManager.GetButton(TDS_InputManager.INTERACT_BUTTON))
+        while (Controller.GetButton(ButtonType.Interact))
         {
             yield return null;
             _timer -= Time.deltaTime;
@@ -862,18 +856,29 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         OnStartDodging?.Invoke();
 
+        // Get player movement
+        Vector3 _movement = new Vector3(Mathf.RoundToInt(Controller.GetAxis(AxisType.Horizontal)), 0, Mathf.RoundToInt(Controller.GetAxis(AxisType.Vertical)));
+        if ((_movement == Vector3.zero) || ((_movement.x != 0) && (_movement.z != 0))) _movement = Vector3.right * isFacingRight.ToSign();
+        _movement = _movement.normalized;
+        _movement *= speedMax * speedCoef;
+
         // Adds an little force at the start of the dodge
-        rigidbody.AddForce(Vector3.right * Mathf.Clamp(speedCurrent, speedInitial, speedMax) * speedCoef * isFacingRight.ToSign() * speedMax * (isGrounded ? 10 : 2));
+        rigidbody.AddForce(_movement * Mathf.Clamp(speedCurrent, speedInitial, speedMax) * (isGrounded ? 10 : 2));
 
         // Triggers the associated animation
         SetAnimOnline(PlayerAnimState.Dodge);
 
+        // Get new constant movement
+        _movement *= (isGrounded ? 7 : 2.5f);
+        _movement.y = isGrounded ? 0 : -.35f;
+
+        Vector3 _movementDirection = new Vector3(_movement.x != 0 ? Mathf.Sign(_movement.x) : 0, 0, _movement.z != 0 ? Mathf.Sign(_movement.z) : 0);
+
         // Adds a little force to the player to move him along while dodging
         while (true)
         {
-            float _xForce = isFacingRight.ToSign() * speedCoef * speedMax * (isGrounded ? 7 : 2.5f);
-            rigidbody.AddForce(new Vector3(_xForce, isGrounded ? 0 : -.35f, 0));
-            MoveInDirection(transform.position + (isFacingRight ? Vector3.right : Vector3.left));
+            rigidbody.AddForce(_movement);
+            MoveInDirection(transform.position + _movementDirection);
 
             yield return new WaitForFixedUpdate();
         }
@@ -911,7 +916,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         OnStartParry?.Invoke();
 
         // While holding the parry button, parry attacks
-        while (TDS_InputManager.GetButton(TDS_InputManager.PARRY_BUTTON))
+        while (Controller.GetButton(ButtonType.Parry))
         {
             yield return null;
         }
@@ -983,12 +988,15 @@ public class TDS_Player : TDS_Character, IPunObservable
         {
             StopCoroutine(dodgeCoroutine);
 
-            float _xVelocity = 0;
+            Vector3 _velocity = new Vector3(0, rigidbody.velocity.y, 0);
 
-            if (isGrounded) _xVelocity = 0;
-            else _xVelocity = rigidbody.velocity.x * .8f;
+            if (!isGrounded)
+            {
+                _velocity.x = rigidbody.velocity.x * .8f;
+                _velocity.z = rigidbody.velocity.z * .8f;
+            }
 
-            rigidbody.velocity = new Vector3(_xVelocity, rigidbody.velocity.y, rigidbody.velocity.z);
+            rigidbody.velocity = _velocity;
         }
     }
 
@@ -1206,6 +1214,7 @@ public class TDS_Player : TDS_Character, IPunObservable
             // And if in combo, reset it
             if (comboCurrent.Count > 0) BreakCombo();
             if (IsAttacking) StopAttack();
+            if (isDodging) StopDodge();
         }
 
         // If not dead, be just hit
@@ -1446,7 +1455,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         bool _isGrounded = groundDetectionBox.Overlap(transform.position).Length > 0;
 
         // If grounded value changed, updates all necessary things
-        if (_isGrounded != IsGrounded)
+        if (photonView.isMine && (_isGrounded != IsGrounded))
         {
             // Updates value
             IsGrounded = _isGrounded;
@@ -1477,17 +1486,17 @@ public class TDS_Player : TDS_Character, IPunObservable
             {
                 if (animator.GetInteger("GroundState") > -1)
                 {
-                    SetAnimOnline(PlayerAnimState.Falling);
+                    SetAnim(PlayerAnimState.Falling);
                 }
             }
             else if (animator.GetInteger("GroundState") < 1)
             {
-                SetAnimOnline(PlayerAnimState.Jumping);
+                SetAnim(PlayerAnimState.Jumping);
             }
         }
         else if (animator.GetInteger("GroundState") != 0)
         {
-            SetAnimOnline(PlayerAnimState.Grounded);
+            SetAnim(PlayerAnimState.Grounded);
         }
     }
     
@@ -1519,18 +1528,20 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// Makes the player go around a certain position.
     /// </summary>
     /// <param name="_position">Where to go.</param>
-    public void GoAround(Vector3 _position)
+    /// <param name="_unfreezeAfter">Should the player be unfreezed after move.</param>
+    public void GoAround(Vector3 _position, bool _unfreezeAfter = true)
     {
         if (goAroundCoroutine != null) StopCoroutine(goAroundCoroutine);
-        goAroundCoroutine = StartCoroutine(GoAroundCoroutine(_position));
+        goAroundCoroutine = StartCoroutine(GoAroundCoroutine(_position, _unfreezeAfter));
     }
 
     /// <summary>
     /// Coroutine making the player going around a certain position.
     /// </summary>
     /// <param name="_position">Where to go.</param>
+    /// <param name="_unfreezeAfter">Should the player be unfreezed after move.</param>
     /// <returns></returns>
-    private IEnumerator GoAroundCoroutine(Vector3 _position)
+    private IEnumerator GoAroundCoroutine(Vector3 _position, bool _unfreezeAfter)
     {
         IsPlayable = false;
         speedCoef *= .25f;
@@ -1553,7 +1564,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (!isFacingRight) Flip();
 
         speedCoef /= .25f;
-        IsPlayable = true;
+        if (_unfreezeAfter) IsPlayable = true;
         goAroundCoroutine = null;
         yield break;
     }
@@ -1578,7 +1589,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Adds a base vertical force to the rigidbody to expels the player in the air
         rigidbody.AddForce(Vector3.up * JumpForce);
 
-        while(TDS_InputManager.GetButton(TDS_InputManager.JUMP_BUTTON) && _timer < JumpMaximumTime)
+        while(Controller.GetButton(ButtonType.Jump) && _timer < JumpMaximumTime)
         {
             rigidbody.AddForce(Vector3.up * (JumpForce / JumpMaximumTime) * Time.deltaTime);
             yield return new WaitForFixedUpdate();
@@ -1881,7 +1892,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (isParrying || isPreparingAttack) return 1;
 
         // Check non-agressive actions
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.INTERACT_BUTTON) && !isAttacking && !isDodging)
+        if (Controller.GetButtonDown(ButtonType.Interact) && !isAttacking && !isDodging)
         {
             Interact();
             return -1;
@@ -1893,12 +1904,12 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Checks potentially agressives actions
         if (!IsPacific && isGrounded)
         {
-            if (TDS_InputManager.GetButtonDown(TDS_InputManager.LIGHT_ATTACK_BUTTON))
+            if (Controller.GetButtonDown(ButtonType.LightAttack))
             {
                 StartPreparingAttack(true);
                 return -1;
             }
-            if (TDS_InputManager.GetButtonDown(TDS_InputManager.HEAVY_ATTACK_BUTTON))
+            if (Controller.GetButtonDown(ButtonType.HeavyAttack))
             {
                 StartPreparingAttack(false);
                 return -1;
@@ -1906,27 +1917,27 @@ public class TDS_Player : TDS_Character, IPunObservable
 
             if (isDodging) return 3;
 
-            if (TDS_InputManager.GetButtonDown(TDS_InputManager.CATCH_BUTTON))
+            /*if (TDS_InputManager.GetButtonDown(TDS_InputManager.CATCH_BUTTON))
             {
                 Catch();
                 return -1;
             }
-            /*if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUPER_ATTACK_BUTTON))
+            if (TDS_InputManager.GetButtonDown(TDS_InputManager.SUPER_ATTACK_BUTTON))
             {
                 SuperAttack();
                 return -1;
-            }*/
+            }
             if (TDS_InputManager.GetButtonDown(TDS_InputManager.USE_OBJECT_BUTTON))
             {
                 UseObject();
                 return -1;
-            }
+            }*/
         }
 
         // If dodging, return 3
         if (isDodging) return 3;
 
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.DODGE_BUTTON) && !IsParalyzed)
+        if (Controller.GetButtonDown(ButtonType.Dodge) && !IsParalyzed)
         {
             StartDodge();
             return -1;
@@ -1935,7 +1946,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // If attacking, return 3
         if (isAttacking) return 3;
 
-        if (TDS_InputManager.GetButton(TDS_InputManager.PARRY_BUTTON) && isGrounded && !IsInvulnerable)
+        if (Controller.GetButton(ButtonType.Parry) && isGrounded && !IsInvulnerable)
         {
             StartCoroutine(Parry());
             return -1;
@@ -1943,6 +1954,18 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         // If everything went good, return 0
         return 0;
+    }
+
+    /// <summary>
+    /// Checks the player menu-related inputs.
+    /// </summary>
+    public virtual void CheckMenuInputs()
+    {
+        // Check how to play related input
+        if (Controller.GetButtonDown(ButtonType.HowToPlay))
+        {
+            OnTriggerHowToPlay?.Invoke();
+        }
     }
 
     /// <summary>
@@ -1954,8 +1977,8 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (IsParalyzed || isDodging) return;
 
         // Moves the player on the X & Z axis regarding the the axis pressure.
-        float _horizontal = Input.GetAxis(TDS_InputManager.HORIZONTAL_AXIS);
-        float _vertical = Input.GetAxis(TDS_InputManager.VERTICAL_AXIS) * 2f;
+        float _horizontal = Controller.GetAxis(AxisType.Horizontal);
+        float _vertical = Controller.GetAxis(AxisType.Vertical) * 2f;
 
         if (_horizontal != 0 || _vertical != 0)
         {
@@ -1986,7 +2009,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (isAttacking || isPreparingAttack || isParrying) return;
 
         // When pressing the jump method, check if on ground ; If it's all good, then let's jump
-        if (TDS_InputManager.GetButtonDown(TDS_InputManager.JUMP_BUTTON) && IsGrounded)
+        if (Controller.GetButtonDown(ButtonType.Jump) && IsGrounded)
         {
             StartJump();
         }
@@ -2105,15 +2128,18 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Set animation on revive
         OnDie += () => StartCoroutine(TDS_LevelManager.Instance.CheckLivingPlayers());
 
-        // Add local player tag if it's mine
-        if (photonView.isMine) gameObject.AddTag("Local Player");
+        // Add local player tag if it's mine, and set controller
+        if (photonView.isMine)
+        {
+            gameObject.AddTag("Local Player");
+        }
     }
 
     // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations
     protected virtual void FixedUpdate()
     {
         // If dead or not playable, return
-        if (!photonView.isMine || isDead || !IsPlayable) return;
+        if (isDead || !IsPlayable) return;
 
         // Checks if the player is grounded or not, and all related elements
         CheckGrounded();
@@ -2150,7 +2176,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         base.Start();
 
-        if(!photonView.isMine)
+        if(!photonView.isMine || PhotonNetwork.offlineMode)
         {
             TDS_LevelManager.Instance?.InitOnlinePlayer(this); 
         }
@@ -2161,6 +2187,15 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         //Initialize the player LifeBar
         TDS_UIManager.Instance?.SetPlayerLifeBar(this);
+
+        if (photonView.isMine)
+        {
+            if (!PhotonNetwork.offlineMode || TDS_GameManager.PlayersInfo.Count == 1)
+            {
+                Controller = TDS_GameManager.InputsAsset.Controllers[0];
+            }
+            else Controller = TDS_GameManager.PlayersInfo.Where(p => p.PlayerType == playerType).First().Controller;
+        }
     }
 
     // Update is called once per frame
@@ -2180,6 +2215,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Check the player inputs
         CheckMovementsInputs();
         CheckActionsInputs();
+        CheckMenuInputs();
 	}
     #endregion
 

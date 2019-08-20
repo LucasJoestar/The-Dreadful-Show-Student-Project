@@ -71,9 +71,10 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         set
         {
             isLocked = value;
-            PlayerInfo.IsReady = value; 
             readyToggle.animator.SetBool("IsReady", value);
             readyToggle.animator.SetTrigger("ReadyChanged");
+            if (PlayerInfo == null) return;
+            PlayerInfo.IsReady = value;
             if (isLocked)
             {
                 PlayerInfo.PlayerType = CurrentSelection.CharacterType; 
@@ -231,6 +232,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     {
         readyToggle.onValueChanged.RemoveAllListeners();
         readyToggle.interactable = false;
+        PlayerInfo = null;
         if (isLocked)
         {
             IsLocked = false;
@@ -254,6 +256,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         if (!PhotonNetwork.offlineMode)
         {
             if (localPelletImage) localPelletImage.gameObject.SetActive(false);
+            if (ownerCrownImage) ownerCrownImage.gameObject.SetActive(false);
             if (playerNameInputField) playerNameInputField.interactable = false;
 
             Selectable _launchButton = TDS_UIManager.Instance.LaunchGameButton;
@@ -296,9 +299,9 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void SetPlayerLocalID(int _playerID)
     {
         IsUsedLocally = true;
-        TDS_GameManager.PlayersInfo.Add(new TDS_PlayerInfo(_playerID, null, PlayerType.Unknown)); 
-
-        SetPlayerLocal(); 
+        TDS_GameManager.PlayersInfo.Add(new TDS_PlayerInfo(_playerID, TDS_GameManager.InputsAsset.Controllers[_playerID], PlayerType.Unknown));
+        PlayerInfo = TDS_GameManager.PlayersInfo.Where(i => i.PlayerID == _playerID).First(); 
+        SetPlayerLocal();
 
         gameObject.SetActive(true); 
     }

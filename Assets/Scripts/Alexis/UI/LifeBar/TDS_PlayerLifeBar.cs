@@ -35,6 +35,8 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
     #endregion
 
     #region Fields / Properties
+    [SerializeField] protected GameObject howToPlayAnchor= null;
+    [SerializeField] protected GameObject howToPlayInfo = null;
     [SerializeField] protected GameObject throwObjectInfo = null;
     [SerializeField] protected TDS_ComboManager comboCounter = null;
     [SerializeField] protected PlayerType playerType = PlayerType.Unknown;
@@ -43,6 +45,16 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
     #region Methods
 
     #region Original Methods
+    /// <summary>
+    /// Show or hide the player hide to play infos in UI.
+    /// </summary>
+    public virtual void TriggerHowToPlayInfo()
+    {
+        if (!howToPlayInfo) return;
+
+        howToPlayInfo.SetActive(!howToPlayInfo.activeInHierarchy);
+    }
+
     /// <summary>
     /// Show or hide the player throw obejct info in UI.
     /// </summary>
@@ -71,6 +83,8 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
                 comboCounter.gameObject.SetActive(false);
             }
         }
+
+        if (owner.photonView.isMine && howToPlayAnchor) howToPlayAnchor.SetActive(true);
     }
     #endregion
 

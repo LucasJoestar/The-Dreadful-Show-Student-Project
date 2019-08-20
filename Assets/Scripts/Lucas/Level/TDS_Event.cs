@@ -211,7 +211,7 @@ public class TDS_Event
 
             // Instantiate with Photon
             case CustomEventType.InstantiatePhoton:
-                PhotonNetwork.Instantiate(eventString, eventTransform.position, eventTransform.rotation, 0);
+                PhotonNetwork.Instantiate(prefab.name, eventTransform.position, eventTransform.rotation, 0);
                 break;
 
             // Makes a cool fade before displaying loading screen, and loading next level
@@ -224,12 +224,12 @@ public class TDS_Event
 
             // Moves the local player around a point
             case CustomEventType.MovePlayerAroundPoint:
-                TDS_LevelManager.Instance.LocalPlayer.GoAround(eventTransform.position);
+                TDS_LevelManager.Instance.LocalPlayer.GoAround(eventTransform.position, false);
                 break;
 
             // Triggers a particular quote of the Narrator
             case CustomEventType.Narrator:
-                TDS_UIManager.Instance.ActivateNarratorBox(TDS_GameManager.GetDialog(eventString).Skip(1).ToArray());
+                TDS_UIManager.Instance.ActivateNarratorBox(TDS_GameManager.GetDialog(eventString).ToArray());
                 break;
 
             // Remove UI curtains

@@ -213,7 +213,7 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     public void SubmitInLocalCharacterSelection(int _playerId)
     {
         if (!PhotonNetwork.offlineMode) return;
-        if(!TDS_GameManager.PlayersInfo.Any(i => i.PlayerID == _playerId))
+        if (!TDS_GameManager.PlayersInfo.Any(i => i.PlayerID == _playerId))
         {
             characterSelectionMenu.AddNewPlayer(_playerId);
             return; 
@@ -226,13 +226,16 @@ public class TDS_CharacterSelectionManager : PunBehaviour
                 //_elem.LockElement(true);
                 _elem.ReadyToggle.isOn = true;
                 _elem.TriggerToggle();
+                return; 
             }
         }
+        if (TDS_GameManager.PlayersInfo.Any(i => !i.IsReady)) return;
+        TDS_UIManager.Instance?.LoadLevel(); 
     }
 
     public void CancelInLocalCharacterSelection(int _playerId)
     {
-        if (!PhotonNetwork.offlineMode) return;
+        if (!PhotonNetwork.offlineMode || !TDS_GameManager.PlayersInfo.Any(i => i.PlayerID == _playerId)) return;
         if (TDS_GameManager.PlayersInfo.Count == 0)
         {
             TDS_GameManager.PlayersInfo.Clear(); 
@@ -248,7 +251,20 @@ public class TDS_CharacterSelectionManager : PunBehaviour
         }
         characterSelectionMenu.RemoveLocalPlayer(_playerId);
     }
-    #endregion 
+
+    public void ChangeImageAtPlayer(int _playerId, int _value)
+    {
+        if (!PhotonNetwork.offlineMode || !TDS_GameManager.PlayersInfo.Any(i => i.PlayerID == _playerId)) return;
+        TDS_CharacterSelectionElement _elem = characterSelectionMenu.CharacterSelectionElements.Where(e => (e.PlayerInfo != null) && (e.PlayerInfo.PlayerID == _playerId) && (e.IsUsedLocally)).FirstOrDefault();
+        if (!_elem) return; 
+        if (_value > 0)
+        {
+            _elem.DisplayNextImage();
+            return; 
+        }
+        _elem.DisplayPreviousImage(); 
+    }
+    #endregion
 
     #endregion
 

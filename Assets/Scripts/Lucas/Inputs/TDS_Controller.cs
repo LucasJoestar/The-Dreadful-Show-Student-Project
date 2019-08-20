@@ -59,11 +59,21 @@ public class TDS_Controller
 
     #region Axis
     /// <summary>
+    /// Get the value of a certain axis.
+    /// </summary>
+    /// <param name="_name">Axis to get value.</param>
+    /// <returns>Returns the value of the given axis.</returns>
+    public float GetAxis(AxisType _axis)
+    {
+        return Input.GetAxis(axis[(int)_axis].AxisName);
+    }
+
+    /// <summary>
     /// Get if an certain axis is held down.
     /// </summary>
     /// <param name="_name">Axis to check state.</param>
     /// <returns>Returns true if the axis is held, false otherwise.</returns>
-    public bool GetAxis(AxisType _axis)
+    public bool GetAxisHeld(AxisType _axis)
     {
         return (axis[(int)_axis].LastState == AxisState.Key) || (axis[(int)_axis].LastState == AxisState.KeyDown);
     }
@@ -76,6 +86,19 @@ public class TDS_Controller
     public bool GetAxisDown(AxisType _axis)
     {
         return axis[(int)_axis].LastState == AxisState.KeyDown;
+    }
+
+    /// <summary>
+    /// Get if an certain axis is pressed down.
+    /// </summary>
+    /// <param name="_name">Axis to check state.</param>
+    /// <param name="_value">Int to get axis value.</param>
+    /// <returns>Returns true if the axis is pressed down, false otherwise.</returns>
+    public bool GetAxisDown(AxisType _axis, out int _value)
+    {
+        _value = (int)Mathf.Sign(Input.GetAxis(axis[(int)_axis].AxisName));
+        return axis[(int)_axis].LastState == AxisState.KeyDown;
+
     }
 
     /// <summary>

@@ -125,7 +125,9 @@ public class TDS_SpawnerAreaEditor : Editor
     private SerializedProperty waves = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.spawnedEnemies"/> of type <see cref="List{TDS_Enemy}"/>.</summary>
-    private SerializedProperty spawnedEnemies = null; 
+    private SerializedProperty spawnedEnemies = null;
+    /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.areaThrowables"/> of type <see cref="List{TDS_Throwable}"/>.</summary>
+    private SerializedProperty areaThrowables = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.OnAreaActivated"/> of type <see cref="UnityEvent"/>.</summary>
     private SerializedProperty eventOnAreaActivated = null;
@@ -285,9 +287,11 @@ public class TDS_SpawnerAreaEditor : Editor
     void DrawSpawnedEnemies()
     {
         EditorGUILayout.BeginVertical("Helpbox");
-        EditorGUILayout.LabelField("SpawnedEnemies", TDS_EditorUtility.HeaderStyle);
+        EditorGUILayout.LabelField("Spawned Elements", TDS_EditorUtility.HeaderStyle);
         GUILayout.Space(5);
         TDS_EditorUtility.PropertyField("Spawned Enemies", "Enemies already on the scene in editor", spawnedEnemies);
+        GUILayout.Space(3);
+        TDS_EditorUtility.PropertyField("Linked Throwables", "Throwables linked to this spawn area", areaThrowables);
         EditorGUILayout.EndVertical();
         GUILayout.Space(15);
     }
@@ -308,7 +312,8 @@ public class TDS_SpawnerAreaEditor : Editor
         eventOnAreaDesactivated = serializedObject.FindProperty("OnAreaDesactivated");
         eventOnNextWave = serializedObject.FindProperty("OnNextWave");
         eventOnStartFight = serializedObject.FindProperty("OnStartFight");
-        spawnedEnemies = serializedObject.FindProperty("spawnedEnemies"); 
+        spawnedEnemies = serializedObject.FindProperty("spawnedEnemies");
+        areaThrowables = serializedObject.FindProperty("areaThrowables");
 
         //Load the editor folded and unfolded values of this class
         areSpawnerAreaComponentsUnfolded = EditorPrefs.GetBool("areSpawnerAreaComponentsUnfolded", areSpawnerAreaComponentsUnfolded);
