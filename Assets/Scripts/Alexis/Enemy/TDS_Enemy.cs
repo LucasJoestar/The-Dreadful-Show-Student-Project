@@ -934,24 +934,35 @@ public abstract class TDS_Enemy : TDS_Character
     }
 
     /// <summary>
-    /// Called when the bringing target has stopped
+    /// Overriden method for the knockBack behaviour
+    /// Stop the agent and make it go to the "Brought" Animation State
     /// </summary>
-    public void TargetBrought()
+    /// <param name="_toRight"></param>
+    /// <returns></returns>
+    public override bool Knockback(bool _toRight)
     {
-        if (BringingTarget) BringingTarget.OnStopBringingCloser -= TargetBrought;
-        BringingTarget = null;
-        SetAnimationState((int)EnemyAnimationState.EndBringingTargetCloser); 
+        bool _isKnockedBack = base.Knockback(_toRight);
+        if(_isKnockedBack)
+        {
+            SetEnemyState(EnemyState.None);
+            SetAnimationState((int)EnemyAnimationState.Brought);
+        }
+        return _isKnockedBack; 
     }
 
     /// <summary>
-    /// Called at the end of a bring target attack.
+    /// The Overriden method of the KnockBackCoroutine
+    /// At the end of the Coroutine, set the animation state of the agent to idle, then after .1 second, reset its behaviour
     /// </summary>
-    public void NoTargetToBrought()
+    /// <param name="_toRight"></param>
+    /// <returns></returns>
+    protected override IEnumerator KnockbackCoroutine(bool _toRight)
     {
-        if (BringingTarget) return;
-        SetAnimationState((int)EnemyAnimationState.EndBringingTargetCloser);
+        yield return base.KnockbackCoroutine(_toRight);
+        SetAnimationState((int)EnemyAnimationState.Idle);
+        yield return new WaitForSeconds(.1f);
+        SetEnemyState(EnemyState.MakingDecision);
     }
-
     #endregion
 
     #region Vector3
@@ -1265,6 +1276,25 @@ public abstract class TDS_Enemy : TDS_Character
         {
             SetEnemyState(EnemyState.MakingDecision); 
         }
+    }
+
+    /// <summary>
+    /// Called when the bringing target has stopped
+    /// </summary>
+    public void TargetBrought()
+    {
+        if (BringingTarget) BringingTarget.OnStopBringingCloser -= TargetBrought;
+        BringingTarget = null;
+        SetAnimationState((int)EnemyAnimationState.EndBringingTargetCloser);
+    }
+
+    /// <summary>
+    /// Called at the end of a bring target attack.
+    /// </summary>
+    public void NoTargetToBrought()
+    {
+        if (BringingTarget) return;
+        SetAnimationState((int)EnemyAnimationState.EndBringingTargetCloser);
     }
 
     /// <summary>
