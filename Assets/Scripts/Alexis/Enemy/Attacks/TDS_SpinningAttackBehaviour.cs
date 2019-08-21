@@ -68,10 +68,10 @@ public class TDS_SpinningAttackBehaviour : TDS_EnemyAttack
         casterInitialRadius = caster.Agent.Radius;
         caster.Agent.Radius = spinningRadius;
         TDS_Bounds _bounds = TDS_Camera.Instance.CurrentBounds;
-        spinningPositions = new Vector3[5] {new Vector3(_bounds.XMin, 0, _bounds.ZMax ),
-                                            new Vector3(_bounds.XMin, 0, _bounds.ZMin ),
-                                            new Vector3(_bounds.XMax, 0, _bounds.ZMax ),
-                                            new Vector3(_bounds.XMax, 0, _bounds.ZMin ),
+        spinningPositions = new Vector3[5] {new Vector3(_bounds.XMin + 1, 0, _bounds.ZMax - 1),
+                                            new Vector3(_bounds.XMin + 1, 0, _bounds.ZMin + 1),
+                                            new Vector3(_bounds.XMax - 1, 0, _bounds.ZMax - 1),
+                                            new Vector3(_bounds.XMax  - 1, 0, _bounds.ZMin + 1),
                                             new Vector3((_bounds.XMin + _bounds.XMax) / 2, 0, (_bounds.ZMin + _bounds.ZMax) / 2)};
         caster.Agent.OnDestinationReached += GoNextSpinningPosition;
         GoNextSpinningPosition();

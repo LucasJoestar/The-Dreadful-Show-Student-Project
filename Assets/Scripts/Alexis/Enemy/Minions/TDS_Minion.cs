@@ -179,7 +179,7 @@ public abstract class TDS_Minion : TDS_Enemy
     protected override void Awake()
     {
         base.Awake();
-        if (TDS_LevelManager.Instance.AllPlayers.Length > 1) ragingThreshold = 1;
+        if (TDS_LevelManager.Instance?.AllPlayers?.Length > 1) ragingThreshold = 1;
         hitBox.OnStopAttack += ResetRageOnAttack;
     }
     #endregion
