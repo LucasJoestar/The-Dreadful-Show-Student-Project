@@ -6,6 +6,8 @@ TextureImporter:
     21300002: Title_Pause
     21300004: Button_Big
     21300006: Button_Small
+    21300008: Audio_SliderHandle
+    21300010: Audio_SliderBar
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -185,6 +187,46 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d84a09d3d6c4ee64fa490426254f69a2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Audio_SliderHandle
+      rect:
+        serializedVersion: 2
+        x: 1964
+        y: 2240
+        width: 160
+        height: 296
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e972eef392a8da942802efbdbb500788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Audio_SliderBar
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 706
+        width: 1157
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7b9cab5021577e41b3e9c1d24a16d28
       vertices: []
       indices: 
       edges: []
