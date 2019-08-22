@@ -131,7 +131,7 @@ public class TDS_UIManager : PunBehaviour
     // Parent of the loading screen
     [SerializeField] private GameObject loadingScreenParent;
     // Parent of the Game Over Screen
-    [SerializeField] private GameObject gameOverScreenParent; 
+    [SerializeField] private GameObject gameOverScreenParent;
     #endregion
 
     #region Lifebars
@@ -268,6 +268,11 @@ public class TDS_UIManager : PunBehaviour
     //[SerializeField] private TDS_ComboManager comboManager;
     public TDS_ComboManager ComboManager { get; set; }
     #endregion
+
+    #region OptionMenu
+    [Header("Options Menu")]
+    [SerializeField] private TDS_OptionManager optionManager = null;  
+    #endregion 
 
     #region WorkInProgress
     #endregion
@@ -615,7 +620,6 @@ public class TDS_UIManager : PunBehaviour
                     StartCoroutine(PrepareConnectionToPhoton());
                     break; 
                 }
-
                 mainMenuParent.SetActive(false);
                 roomSelectionMenuParent.SetActive(true);
                 characterSelectionMenuParent.SetActive(false);
@@ -827,6 +831,17 @@ public class TDS_UIManager : PunBehaviour
     {
         if (loadingScreenAnimator) loadingScreenAnimator.SetBool("IsLoading", _isLoading);
         //if (loadingScreenParent) loadingScreenParent.SetActive(_isLoading);
+    }
+
+    /// <summary>
+    /// Display the option menu
+    /// </summary>
+    /// <param name="_isDisplaying"></param>
+    public void DisplayOptions(bool _isDisplaying)
+    {
+        if (!optionManager) return;
+        if (_isDisplaying) optionManager.ResetDisplayedSettings(); 
+        optionManager.gameObject.SetActive(_isDisplaying); 
     }
 
     /// <summary>
