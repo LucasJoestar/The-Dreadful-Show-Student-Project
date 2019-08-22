@@ -130,7 +130,9 @@ public class TDS_OptionManager : MonoBehaviour
 
         if (textResolution) textResolution.text = $"{Screen.currentResolution.width} x {Screen.currentResolution.height}";
         if (toggleFullScreen) toggleFullScreen.isOn = Screen.fullScreen;
-        selectedResolutionIndex = Screen.resolutions.ToList().IndexOf(Screen.currentResolution); 
+        selectedResolutionIndex = Screen.resolutions.ToList().IndexOf(Screen.currentResolution);
+
+        buttonPreviousResolution.Select(); 
     }
     #endregion
     

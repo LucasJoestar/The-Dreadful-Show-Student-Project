@@ -841,7 +841,8 @@ public class TDS_UIManager : PunBehaviour
     {
         if (!optionManager) return;
         if (_isDisplaying) optionManager.ResetDisplayedSettings(); 
-        optionManager.gameObject.SetActive(_isDisplaying); 
+        optionManager.gameObject.SetActive(_isDisplaying);
+        Selectable.allSelectables.First().Select(); 
     }
 
     /// <summary>
