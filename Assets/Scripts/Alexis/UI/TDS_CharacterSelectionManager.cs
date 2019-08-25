@@ -226,19 +226,16 @@ public class TDS_CharacterSelectionManager : PunBehaviour
                 //_elem.LockElement(true);
                 _elem.ReadyToggle.isOn = true;
                 _elem.TriggerToggle();
+                return; 
             }
         }
+        if (TDS_GameManager.PlayersInfo.Any(i => !i.IsReady)) return;
+        TDS_UIManager.Instance?.LoadLevel(); 
     }
 
     public void CancelInLocalCharacterSelection(int _playerId)
     {
         if (!PhotonNetwork.offlineMode || !TDS_GameManager.PlayersInfo.Any(i => i.PlayerID == _playerId)) return;
-        if (TDS_GameManager.PlayersInfo.Count == 0)
-        {
-            TDS_GameManager.PlayersInfo.Clear(); 
-            TDS_UIManager.Instance?.ActivateMenu(UIState.InMainMenu); 
-            return; 
-        }
         TDS_CharacterSelectionElement _elem = characterSelectionMenu.CharacterSelectionElements.Where(e => (e.PlayerInfo != null) && (e.PlayerInfo.PlayerID == _playerId) && (e.IsUsedLocally)).FirstOrDefault();
         if (_elem && _elem.IsLocked)
         {
@@ -247,9 +244,14 @@ public class TDS_CharacterSelectionManager : PunBehaviour
             return;
         }
         characterSelectionMenu.RemoveLocalPlayer(_playerId);
+        if (TDS_GameManager.PlayersInfo.Count == 0)
+        {
+            TDS_GameManager.PlayersInfo.Clear();
+            TDS_UIManager.Instance?.ActivateMenu(UIState.InMainMenu);
+        }
     }
 
-    public void ChangeImageAtPlayer(int _value, int _playerId)
+    public void ChangeImageAtPlayer(int _playerId, int _value)
     {
         if (!PhotonNetwork.offlineMode || !TDS_GameManager.PlayersInfo.Any(i => i.PlayerID == _playerId)) return;
         TDS_CharacterSelectionElement _elem = characterSelectionMenu.CharacterSelectionElements.Where(e => (e.PlayerInfo != null) && (e.PlayerInfo.PlayerID == _playerId) && (e.IsUsedLocally)).FirstOrDefault();

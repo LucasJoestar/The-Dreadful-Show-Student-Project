@@ -50,7 +50,7 @@ public class TDS_PlayerSpriteHolder : MonoBehaviour
     // OnBecameInvisible is called when the renderer is no longer visible by any camera
     private void OnBecameInvisible()
     {
-        if (!Owner || Owner.IsDead || Owner.IsInvulnerable || !PlayerSprite.enabled || !Application.isPlaying ) return; 
+        if (!Owner || Owner.IsDead || Owner.IsInvulnerable || !PlayerSprite.enabled || !Application.isPlaying ) return;
         TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(Owner, true);
     }
 

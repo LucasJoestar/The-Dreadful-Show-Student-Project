@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO; 
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Audio;
+using System.Linq; 
 
 public class TDS_SoundManager : MonoBehaviour 
 {
@@ -41,59 +39,53 @@ public class TDS_SoundManager : MonoBehaviour
     #endregion
 
     #region Fields / Properties
-    public static TDS_SoundManager Instance = null; 
 
-    /// <summary>
-    /// Database of all audioclips stored by names
-    /// </summary>
-    private Dictionary<string, AudioClip> audioClipsByName = new Dictionary<string, AudioClip>(); 
+    #region Constants 
+    public const string MUSIC_GROUP_NAME = "Music";
+    public const string VOICES_GROUP_NAME = "Voices";
+    public const string FX_GROUP_NAME = "FX";
+
+    #endregion
+    public static TDS_SoundManager Instance = null;
+    [SerializeField] private AudioMixer audioMixer = null;
     #endregion
 
     #region Methods
 
     #region Original Methods
     /// <summary>
-    /// Load the sound asset bundle of the audioclips
-    /// Add the audioclips into the Dictionary audioClipByNames
+    /// Get the mixer group of the groupName
+    /// USE THIS METHOD WITH THE CONST MUSIC_GROUP_NAME. VOICES_GROUP_NAME AND FX_GROUP_NAME
     /// </summary>
-    private void LoadAssetBundle()
+    /// <param name="_groupName"></param>
+    /// <returns></returns>
+    public AudioMixerGroup GetMixerGroupOfName(string _groupName)
     {
-        AssetBundle _soundBundle = AssetBundle.LoadFromFile(Path.Combine(Application.persistentDataPath, "AssetBundles", "soundsassetsbundle")); 
-        if(!_soundBundle)
+        if (!audioMixer) return null;
+        return audioMixer.FindMatchingGroups(_groupName).FirstOrDefault(); 
+    }
+
+    /// <summary>
+    /// Play a sound at a position
+    /// </summary>
+    /// <param name="_source">Source that will play the sound</param>
+    /// <param name="_playedClip">Clip taht will be played</param>
+    /// <param name="_position">Position where the clip will be played</param>
+    /// <param name="_groupName">Group of the audioMixer /!\ USE THE CONST IN THE SOUNDMANAGER TO GET THE RIGHT NAME OF THE GROUP /!\ </param>
+    /// <param name="_isLooping">Does the sound has to loop</param>
+    public void PlaySoundAtPosition(AudioSource _source, AudioClip _playedClip, Vector3 _position, string _groupName = "Master", bool _isLooping = false)
+    {
+        _source.transform.position = _position;
+        _source.outputAudioMixerGroup = GetMixerGroupOfName(_groupName);
+        if(_isLooping)
         {
-            Debug.Log("Asset Bundle not found");
+            _source.loop = true;
+            _source.clip = _playedClip;
+            _source.Play();
             return; 
         }
-        AudioClip[] _audioclips = _soundBundle.LoadAllAssets<AudioClip>();
-        for (int i = 0; i < _audioclips.Length; i++)
-        {
-            audioClipsByName.Add(_audioclips[i].name, _audioclips[i]); 
-        }
-    }
-
-    /// <summary>
-    /// Get the audioclip with the specified name
-    /// </summary>
-    /// <param name="_name">Name of the audioclip</param>
-    /// <returns></returns>
-    public AudioClip GetAudioClipByName(string _name)
-    {
-        if (!audioClipsByName.ContainsKey(_name)) return null;
-        return audioClipsByName[_name]; 
-    }
-
-    /// <summary>
-    /// Get the audio clip with the selected name and play it
-    /// </summary>
-    /// <param name="_audioclipName">Name of the audioclip to play</param>
-    public void PlayAudioClipByName(string _audioclipName)
-    {
-        AudioClip _clip = GetAudioClipByName(_audioclipName);
-        if (!_clip) return;
-        /// PLAY THE AUDIO CLIP HERE /// 
-        /// Where do we have to play the clip? 
-        /// Does the clip has to follow something or does it follow the object? The Camera? Anything else?
-        AudioSource.PlayClipAtPoint(_clip, transform.position); 
+        _source.loop = false;
+        _source.PlayOneShot(_playedClip); 
     }
     #endregion
 
@@ -109,7 +101,6 @@ public class TDS_SoundManager : MonoBehaviour
             Destroy(this);
             return; 
         }
-        LoadAssetBundle(); 
     }
     #endregion
 

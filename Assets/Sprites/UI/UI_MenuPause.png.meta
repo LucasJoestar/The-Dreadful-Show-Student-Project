@@ -3,9 +3,16 @@ guid: 4ed2bc001ee62284bb2ed6ed801ea1ea
 TextureImporter:
   fileIDToRecycleName:
     21300000: Background_Pause
-    21300002: Title_Pause
+    21300002: Menu_Header
     21300004: Button_Big
     21300006: Button_Small
+    21300008: Audio_SliderHandle
+    21300010: Audio_SliderBar
+    21300012: CheckBox
+    21300014: CheckMark
+    21300016: Entracte_Texte
+    21300018: Option_Text
+    21300020: White_Bar
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -130,7 +137,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Title_Pause
+      name: Menu_Header
       rect:
         serializedVersion: 2
         x: 238
@@ -185,6 +192,146 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d84a09d3d6c4ee64fa490426254f69a2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Audio_SliderHandle
+      rect:
+        serializedVersion: 2
+        x: 1964
+        y: 2240
+        width: 160
+        height: 296
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e972eef392a8da942802efbdbb500788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Audio_SliderBar
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 706
+        width: 1157
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7b9cab5021577e41b3e9c1d24a16d28
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckBox
+      rect:
+        serializedVersion: 2
+        x: 1703
+        y: 1878
+        width: 160
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: defacb6de23b15e4e886aab6741c0a28
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckMark
+      rect:
+        serializedVersion: 2
+        x: 2110
+        y: 1856
+        width: 222
+        height: 334
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50b29a3e235da534ea1e715bf812b92f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Entracte_Texte
+      rect:
+        serializedVersion: 2
+        x: 1727
+        y: 1573
+        width: 595
+        height: 129
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35ff3048a20fd8e4eba20fbdff1111d3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Option_Text
+      rect:
+        serializedVersion: 2
+        x: 1747
+        y: 1301
+        width: 603
+        height: 147
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 778e74e6a2f048b4696148d7bf5f21e9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: White_Bar
+      rect:
+        serializedVersion: 2
+        x: 266
+        y: 652
+        width: 1143
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9cb2c716378a3542ad8e7f7e8121d86
       vertices: []
       indices: 
       edges: []

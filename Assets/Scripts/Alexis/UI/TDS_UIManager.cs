@@ -131,7 +131,7 @@ public class TDS_UIManager : PunBehaviour
     // Parent of the loading screen
     [SerializeField] private GameObject loadingScreenParent;
     // Parent of the Game Over Screen
-    [SerializeField] private GameObject gameOverScreenParent; 
+    [SerializeField] private GameObject gameOverScreenParent;
     #endregion
 
     #region Lifebars
@@ -205,7 +205,7 @@ public class TDS_UIManager : PunBehaviour
 
 
     #region TextField
-        [SerializeField] private TMP_Text playerNameField;
+    [SerializeField] private TMP_Text playerNameField;
     public TMP_Text PlayerNameField
     {
         get { return playerNameField; }
@@ -228,6 +228,7 @@ public class TDS_UIManager : PunBehaviour
     #region Animator
     [Header("Animator")]
     [SerializeField] private Animator curtainsAnimator;
+    public Animator CurtainsAnimator { get { return curtainsAnimator; } }
     [SerializeField] private Animator arrowAnimator;
     [SerializeField] private Animator waitingPanelAnimator;
     [SerializeField] private Animator loadingScreenAnimator;
@@ -268,8 +269,12 @@ public class TDS_UIManager : PunBehaviour
     public TDS_ComboManager ComboManager { get; set; }
     #endregion
 
+    #region OptionMenu
+    [Header("Options Menu")]
+    [SerializeField] private TDS_OptionManager optionManager = null;  
+    #endregion 
+
     #region WorkInProgress
-    private bool isPause = false; 
     #endregion
 
     #endregion
@@ -286,7 +291,7 @@ public class TDS_UIManager : PunBehaviour
     /// <returns></returns>
     private IEnumerator CheckInputMenu(UIState _state)
     {
-        if (_state == UIState.InMainMenu || _state == UIState.InGame || _state == UIState.InGameOver) yield break;
+        if (_state == UIState.InMainMenu || _state == UIState.InGameOver) yield break;
         //Online
         Action _cancelAction = null;
         Action _submitAction = null;
@@ -295,12 +300,10 @@ public class TDS_UIManager : PunBehaviour
         //Local
         Action<int> _cancelActionByPlayer = null;
         Action<int> _submitActionByPlayer = null;
-        Action<int, int> _horizontalAxisActionByPlayer = null; 
+        Action<int, int> _horizontalAxisActionByPlayer = null;
 
         switch (_state)
         {
-            case UIState.InMainMenu:
-                break;
             case UIState.InRoomSelection:
                 _cancelAction += () => ActivateMenu(UIState.InMainMenu); ;
                 _cancelAction += TDS_NetworkManager.Instance.InitDisconect;  
@@ -323,18 +326,46 @@ public class TDS_UIManager : PunBehaviour
                 _horizontalAxisActionByPlayer = characterSelectionManager.ChangeImageAtPlayer; 
                 break;
             case UIState.InGame:
-                _startAction = () => SetPause(!isPause); 
+                yield return new WaitForEndOfFrame(); 
+                _startAction = () => SetPause(true);
                 break;
             case UIState.InPause:
-                _cancelAction = () => ActivateMenu(UIState.InGame);
-                break;
-            case UIState.InGameOver:
+                yield return new WaitForEndOfFrame(); 
+                _cancelAction = () => SetPause(false);
                 break;
             default:
                 break;
         }
         int _value = 0;
-        if(!PhotonNetwork.offlineMode)
+        if(_state == UIState.InGame)
+        {
+            while (UIState == _state)
+            {
+                if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Pause))
+                {
+                    yield return new WaitForEndOfFrame(); 
+                    _startAction?.Invoke();
+                    yield break; 
+                }
+                yield return null;
+            }
+            yield break; 
+        }
+        if (_state == UIState.InPause)
+        {
+            while (UIState == _state)
+            {
+                if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Pause) || TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Cancel))
+                {
+                    yield return new WaitForEndOfFrame();
+                    _cancelAction?.Invoke();
+                    yield break; 
+                }
+                yield return null;
+            }
+            yield break;
+        }
+        if (!PhotonNetwork.offlineMode)
         {
             while (UIState == _state)
             {
@@ -384,11 +415,7 @@ public class TDS_UIManager : PunBehaviour
                     _horizontalAxisActionByPlayer?.Invoke(_i, _value);
                 }
             }
-            if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Pause))
-            {
-                yield return new WaitForEndOfFrame();
-                _startAction?.Invoke();
-            }
+
             yield return null;
         }
 
@@ -502,6 +529,14 @@ public class TDS_UIManager : PunBehaviour
                 ActivateMenu(UIState.InRoomSelection); 
                 yield break; 
             }
+            if(TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Cancel))
+            {
+                PhotonNetwork.Disconnect();
+                yield return new WaitForEndOfFrame();
+                DisplayLoadingScreen(false);
+                ActivateMenu(UIState.InMainMenu);
+                yield break; 
+            }
             yield return null; 
             _timer -= Time.deltaTime; 
         }
@@ -585,7 +620,6 @@ public class TDS_UIManager : PunBehaviour
                     StartCoroutine(PrepareConnectionToPhoton());
                     break; 
                 }
-
                 mainMenuParent.SetActive(false);
                 roomSelectionMenuParent.SetActive(true);
                 characterSelectionMenuParent.SetActive(false);
@@ -620,14 +654,12 @@ public class TDS_UIManager : PunBehaviour
                 inGameMenuParent.SetActive(true);
                 pauseMenuParent.SetActive(false);
                 gameOverScreenParent.SetActive(false);
+                if (checkInputCoroutine != null)
+                    StopCoroutine(checkInputCoroutine);
+                checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InGame));
                 break;
             case UIState.InPause:
-                mainMenuParent.SetActive(false);
-                roomSelectionMenuParent.SetActive(false);
-                characterSelectionMenuParent.SetActive(false);
-                inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(true);
-                gameOverScreenParent.SetActive(false);
                 Selectable.allSelectables.FirstOrDefault()?.Select();
                 if (checkInputCoroutine != null)
                     StopCoroutine(checkInputCoroutine);
@@ -799,6 +831,18 @@ public class TDS_UIManager : PunBehaviour
     {
         if (loadingScreenAnimator) loadingScreenAnimator.SetBool("IsLoading", _isLoading);
         //if (loadingScreenParent) loadingScreenParent.SetActive(_isLoading);
+    }
+
+    /// <summary>
+    /// Display the option menu
+    /// </summary>
+    /// <param name="_isDisplaying"></param>
+    public void DisplayOptions(bool _isDisplaying)
+    {
+        if (!optionManager) return;
+        if (_isDisplaying) optionManager.ResetDisplayedSettings(); 
+        optionManager.gameObject.SetActive(_isDisplaying);
+        Selectable.allSelectables.First().Select(); 
     }
 
     /// <summary>
@@ -1035,7 +1079,6 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_isPaused"></param>
     public void SetPause(bool _isPaused)
     {
-        isPause = _isPaused; 
         if(TDS_LevelManager.Instance?.OtherPlayers.Count == 0 || PhotonNetwork.offlineMode)
         {
             Time.timeScale = _isPaused ? 0 : 1;

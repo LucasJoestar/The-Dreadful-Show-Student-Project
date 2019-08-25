@@ -2132,12 +2132,6 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (photonView.isMine)
         {
             gameObject.AddTag("Local Player");
-
-            if (!PhotonNetwork.offlineMode || TDS_GameManager.PlayersInfo.Count == 1)
-            {
-                Controller = TDS_GameManager.InputsAsset.Controllers[0];
-            }
-            else Controller = TDS_GameManager.PlayersInfo.Where(p => p.PlayerType == playerType).First().Controller;
         }
     }
 
@@ -2193,6 +2187,15 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         //Initialize the player LifeBar
         TDS_UIManager.Instance?.SetPlayerLifeBar(this);
+
+        if (photonView.isMine)
+        {
+            if (!PhotonNetwork.offlineMode || TDS_GameManager.PlayersInfo.Count == 1)
+            {
+                Controller = TDS_GameManager.InputsAsset.Controllers[0];
+            }
+            else Controller = TDS_GameManager.PlayersInfo.Where(p => p.PlayerType == playerType).First().Controller;
+        }
     }
 
     // Update is called once per frame

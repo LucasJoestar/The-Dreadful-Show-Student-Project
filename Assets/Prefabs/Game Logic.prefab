@@ -280,6 +280,7 @@ Transform:
   m_Children:
   - {fileID: 834876263}
   - {fileID: 8401215423413753206}
+  - {fileID: 4500059293892284105}
   m_Father: {fileID: 46190908}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -672,6 +673,7 @@ Transform:
   m_Children:
   - {fileID: 1493749286}
   - {fileID: 3590412734734439629}
+  - {fileID: 759856057412103774}
   m_Father: {fileID: 46190908}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -749,6 +751,71 @@ MonoBehaviour:
     ObjectTags:
     - Name: Player
       Color: {r: 0.097232126, g: 0.8962264, b: 0.6973913, a: 1}
+--- !u!1 &1784610065672501248
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 759856057412103774}
+  - component: {fileID: 6281494477847102959}
+  - component: {fileID: 6219748355706665345}
+  m_Layer: 14
+  m_Name: LeftCurtain Limit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &759856057412103774
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784610065672501248}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4305771394040259}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6281494477847102959
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784610065672501248}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6219748355706665345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784610065672501248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b50b6bf4ec3d20a4899abcc900b2c794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectedTags:
+    ObjectTags:
+    - Name: Enemy
+      Color: {r: 0.8980392, g: 0.14117648, b: 0.14117648, a: 1}
+    - Name: Local Player
+      Color: {r: 0.6242915, g: 0.14640439, b: 0.8867924, a: 1}
+  curtainsAnimator: {fileID: 0}
+  isLeftLimit: 1
 --- !u!1 &2129319301458604266
 GameObject:
   m_ObjectHideFlags: 0
@@ -961,6 +1028,71 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &3752227775233476426
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4500059293892284105}
+  - component: {fileID: 4660501321270652170}
+  - component: {fileID: 633749003746372164}
+  m_Layer: 14
+  m_Name: RightCurtain Limit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4500059293892284105
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3752227775233476426}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 607912456}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4660501321270652170
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3752227775233476426}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &633749003746372164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3752227775233476426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b50b6bf4ec3d20a4899abcc900b2c794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectedTags:
+    ObjectTags:
+    - Name: Enemy
+      Color: {r: 0.8980392, g: 0.14117648, b: 0.14117648, a: 1}
+    - Name: Local Player
+      Color: {r: 0.6242915, g: 0.14640439, b: 0.8867924, a: 1}
+  curtainsAnimator: {fileID: 0}
+  isLeftLimit: 0
 --- !u!1 &4300436738835299042
 GameObject:
   m_ObjectHideFlags: 0
