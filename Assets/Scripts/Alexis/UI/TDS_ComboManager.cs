@@ -74,7 +74,15 @@ public class TDS_ComboManager : MonoBehaviour
         comboText.text = string.Empty;
         resetComboCoroutine = null;
     }
-	#endregion
+    #endregion
 
-	#endregion
+    #region UnityMethod
+    private void Start()
+    {
+        if (TDS_UIManager.Instance?.ComboManager == null)
+            TDS_UIManager.Instance.ComboManager = this;
+    }
+    #endregion
+
+    #endregion
 }
