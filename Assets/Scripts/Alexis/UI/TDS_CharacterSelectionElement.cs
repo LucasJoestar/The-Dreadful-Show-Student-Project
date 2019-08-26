@@ -277,9 +277,10 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
                 _nav.selectOnDown = null;
                 _returnButton.navigation = _nav;
             }
+            gameObject.SetActive(false);
             return;
         }
-     
+        gameObject.SetActive(false); 
     }
 
     public void ChangeImage(int _axisValue)
