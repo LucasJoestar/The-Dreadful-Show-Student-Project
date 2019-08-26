@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -323,6 +324,11 @@ public class TDS_Camera : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Players to follow for local multiplayer mode.
+    /// </summary>
+    [SerializeField] private List<TDS_Player> players = new List<TDS_Player>();
+
     /// <summary>Backing field for <see cref="Target"/>.</summary>
     [SerializeField] private Transform target = null;
 
@@ -424,6 +430,15 @@ public class TDS_Camera : MonoBehaviour
 
     #region Original Methods
     /// <summary>
+    /// Adds a player to follow.
+    /// </summary>
+    /// <param name="_player">Player to follow.</param>
+    public void AddLocalPlayer(TDS_Player _player)
+    {
+        players.Add(_player);
+    }
+
+    /// <summary>
     /// Clamps the camera position between the bounds
     /// </summary>
     public void ClampInBounds()
@@ -454,6 +469,134 @@ public class TDS_Camera : MonoBehaviour
 
         // Moves the camera
         transform.position = _destination;
+    }
+
+    /// <summary>
+    /// Makes this camera follow the players.
+    /// </summary>
+    private void FollowPlayers()
+    {
+        // If no target, return
+        if ((players.Count == 0) || (lookTargetCoroutine != null)) return;
+
+        TDS_Player[] _playersByX = players.OrderBy(p => p.transform.position.x).ToArray();
+        TDS_Player _mostRightPlayer = _playersByX.Last();
+
+        float _mostLeftPlayerFromView = _playersByX[0].transform.position.x - (transform.position.x - cameraXRatio);
+        bool _isPlayerOutOfScreen = _mostLeftPlayerFromView < 1;
+
+        // Get movement
+        float _xIdealPos = _mostRightPlayer.transform.position.x + Offset.x - (_isPlayerOutOfScreen ? cameraXRatio : _mostLeftPlayerFromView < cameraXRatio ? cameraXRatio - _mostLeftPlayerFromView : 0);
+        float _yIdealPos = transform.position.y + (-(.5f - camera.WorldToViewportPoint(players.OrderBy(p => p.transform.position.z).First().transform.position).y) * camera.orthographicSize * 2 * VIEWPORT_CALCL_Y_COEF) + Offset.y;
+
+        Vector3 _destination = new Vector3()
+        {
+            x = Mathf.Lerp(transform.position.x, _xIdealPos, Time.deltaTime * speedCurrent * speedCoef),
+            y = Mathf.Lerp(transform.position.y, _yIdealPos, Time.deltaTime * speedCurrent * speedCoef),
+            z = Offset.z
+        };
+
+        // If reaching destination, stop moving
+        if ((transform.position - _destination).magnitude < .01f)
+        {
+            if (isMoving)
+            {
+                speedCurrent = 0;
+                isMoving = false;
+            }
+
+            return;
+        }
+        else
+        {
+            // When starting moving, initializes initial speed
+            if (!isMoving)
+            {
+                speedCurrent = speedInitial;
+                isMoving = true;
+            }
+            // If not, increase speed if needed
+            else if (speedCurrent < speedMax)
+            {
+                SpeedCurrent += Time.deltaTime * ((speedMax - speedInitial) / speedAccelerationTime);
+            }
+
+            Vector3 _movement = _destination - transform.position;
+
+            // Clamp position
+            float _newBound;
+
+            // X movement
+            if (_movement.x != 0)
+            {
+                if (_movement.x < 0)
+                {
+                    _newBound = _destination.x - cameraXRatio;
+
+                    if (_newBound < currentBounds.XMin)
+                    {
+                        _destination.x += cameraXRatio * 2 * camera.WorldToViewportPoint(currentBounds.XMinVector).x;
+
+                        // Cancel movement if needed
+                        if ((_destination.x - transform.position.x) < .0001f) _destination.x = transform.position.x;
+                    }
+                }
+                else
+                {
+                    _newBound = _destination.x + cameraXRatio;
+
+                    if (_newBound > currentBounds.XMax)
+                    {
+                        _destination.x -= cameraXRatio * 2 * (1 - camera.WorldToViewportPoint(currentBounds.XMaxVector).x);
+
+                        // Cancel movement if needed
+                        if ((transform.position.x - _destination.x) < .0001f) _destination.x = transform.position.x;
+                    }
+                }
+            }
+            // Y movement
+            if (_movement.y != 0)
+            {
+                if (_movement.y < 0)
+                {
+                    _newBound = camera.WorldToViewportPoint(currentBounds.ZMinVector - _movement).y;
+
+                    if (_newBound > 0)
+                    {
+                        _destination.y += camera.orthographicSize * 2 * VIEWPORT_CALCL_Y_COEF * camera.WorldToViewportPoint(currentBounds.ZMinVector).y;
+
+                        // Cancel movement if needed
+                        if ((_destination.y - transform.position.y) < .0001f) _destination.y = transform.position.y;
+                    }
+                }
+                else
+                {
+                    _newBound = camera.WorldToViewportPoint(currentBounds.ZMaxVector - _movement).y;
+
+                    if (_newBound < VIEWPORT_Y_MAX_BOUND_VALUE)
+                    {
+                        _destination.y -= camera.orthographicSize * 2 * VIEWPORT_CALCL_Y_COEF * (VIEWPORT_Y_MAX_BOUND_VALUE - camera.WorldToViewportPoint(currentBounds.ZMaxVector).y);
+
+                        // Cancel movement if needed
+                        if ((transform.position.y - _destination.y) < .0001f) _destination.y = transform.position.y;
+                    }
+                }
+            }
+
+            // Moves the camera if needed, or stop moving
+            if (transform.position == _destination)
+            {
+                if (isMoving)
+                {
+                    isMoving = false;
+                    SpeedCurrent = 0;
+                }
+            }
+            else
+            {
+                transform.position = _destination;
+            }
+        }
     }
 
     /// <summary>
@@ -646,6 +789,15 @@ public class TDS_Camera : MonoBehaviour
     }
 
     /// <summary>
+    /// Removes a player from following.
+    /// </summary>
+    /// <param name="_player">Player to remove.</param>
+    public void RemoveLocalPlayer(TDS_Player _player)
+    {
+        players.Remove(_player);
+    }
+
+    /// <summary>
     /// Reset the level bounds.
     /// </summary>
     public void ResetBounds() => CurrentBounds = levelBounds;
@@ -728,16 +880,19 @@ public class TDS_Camera : MonoBehaviour
         while (_boundsMovement.Any(m => m != 0))
         {
             // Get all players position
-            _localPlayerPosition = TDS_LevelManager.Instance.LocalPlayer.transform.position;
-            for (int _i = 0; _i < TDS_LevelManager.Instance.OtherPlayers.Count; _i++)
+            if (!PhotonNetwork.offlineMode)
             {
-                _playerPositions[_i] = TDS_LevelManager.Instance.OtherPlayers[_i].transform.position;
+                _localPlayerPosition = TDS_LevelManager.Instance.LocalPlayer.transform.position;
+                for (int _i = 0; _i < TDS_LevelManager.Instance.OtherPlayers.Count; _i++)
+                {
+                    _playerPositions[_i] = TDS_LevelManager.Instance.OtherPlayers[_i].transform.position;
+                }
             }
 
             // Left bound move
             if (_boundsMovement[0] != 0)
             {
-                if ((_playerPositions.Length == 0) || _playerPositions.All(p => p.x > _localPlayerPosition.x))
+                if (PhotonNetwork.offlineMode || (_playerPositions.Length == 0) || _playerPositions.All(p => p.x > _localPlayerPosition.x))
                 {
                     float _xMin = camera.WorldToViewportPoint(_bounds.XMinVector).x;
                     if (_xMin < .0001f)
@@ -772,7 +927,7 @@ public class TDS_Camera : MonoBehaviour
             // Right bound move
             if (_boundsMovement[1] != 0)
             {
-                if ((_playerPositions.Length == 0) || _playerPositions.All(p => p.x < _localPlayerPosition.x))
+                if (PhotonNetwork.offlineMode || (_playerPositions.Length == 0) || _playerPositions.All(p => p.x < _localPlayerPosition.x))
                 {
                     float _xMax = camera.WorldToViewportPoint(_bounds.XMaxVector).x;
                     if (_xMax > .9999f)
@@ -803,7 +958,7 @@ public class TDS_Camera : MonoBehaviour
             // Bottom bound move
             if (_boundsMovement[2] != 0)
             {
-                if ((_playerPositions.Length == 0) || _playerPositions.All(p => p.z > _localPlayerPosition.z))
+                if (PhotonNetwork.offlineMode || (_playerPositions.Length == 0) || _playerPositions.All(p => p.z > _localPlayerPosition.z))
                 {
                     float _zMin = camera.WorldToViewportPoint(_bounds.ZMinVector).y;
                     if (_zMin < .0001f)
@@ -834,10 +989,12 @@ public class TDS_Camera : MonoBehaviour
             // Top bound move
             if (_boundsMovement[3] != 0)
             {
-                if ((_playerPositions.Length == 0) || _playerPositions.All(p => p.z < _localPlayerPosition.z))
+                if (PhotonNetwork.offlineMode || (_playerPositions.Length == 0) || _playerPositions.All(p => p.z < _localPlayerPosition.z))
                 {
+                    float _mostUpPlayer = PhotonNetwork.offlineMode ? players.OrderBy(p => p.transform.position.z).Last().transform.position.z : target.position.z;
+
                     float _zMax = camera.WorldToViewportPoint(_bounds.ZMaxVector).y;
-                    if ((_zMax > (VIEWPORT_Y_MAX_BOUND_VALUE - .0001f)) && (target.transform.position.z + 1 < _bounds.ZMax))
+                    if ((_zMax > (VIEWPORT_Y_MAX_BOUND_VALUE - .0001f)) && (_mostUpPlayer + 1 < _bounds.ZMax))
                     {
                         topBoundVector = _bounds.ZMaxVector;
                         _boundsMovement[3] = 0;
@@ -849,7 +1006,7 @@ public class TDS_Camera : MonoBehaviour
                     {
                         _zMax = topBound.transform.position.z + (camera.orthographicSize * 2 * (VIEWPORT_Y_MAX_BOUND_VALUE - camera.WorldToViewportPoint(currentBounds.ZMaxVector).y) * VIEWPORT_CALCL_Y_COEF);
 
-                        if ((_zMax != currentBounds.ZMax) && (target.transform.position.z + 1 < _zMax))
+                        if ((_zMax != currentBounds.ZMax) && (_mostUpPlayer + 1 < _zMax))
                         {
                             topBoundVector = new Vector3(topBound.transform.position.x, topBound.transform.position.y, _zMax);
 
@@ -880,6 +1037,14 @@ public class TDS_Camera : MonoBehaviour
 
         // Get X ratio
         cameraXRatio = camera.orthographicSize * (((float)Screen.width / Screen.height) / (camera.rect.height / camera.rect.width));
+    }
+
+    /// <summary>
+    /// Set camera settings for local multiplayer.
+    /// </summary>
+    public void SetLocalMultiplayerCamera()
+    {
+        players = TDS_LevelManager.Instance.AllPlayers.ToList();
     }
 
     /// <summary>
@@ -974,7 +1139,8 @@ public class TDS_Camera : MonoBehaviour
 	// Update is called once per frame
 	private void Update ()
     {
-        FollowTarget();
+        if (!PhotonNetwork.offlineMode) FollowTarget();
+        else FollowPlayers();
 	}
 	#endregion
 

@@ -240,9 +240,11 @@ public static class TDS_GameManager
         TDS_Camera.Instance?.SetCameraAspect();
 
         // Set aim bounds for local player if Juggler
-        if (TDS_LevelManager.Instance?.LocalPlayer?.PlayerType == PlayerType.Juggler)
+        TDS_Player _juggler = TDS_LevelManager.Instance?.AllPlayers.Where(p => p.PlayerType == PlayerType.Juggler).FirstOrDefault();
+
+        if (_juggler && _juggler.photonView.isMine)
         {
-            ((TDS_Juggler)TDS_LevelManager.Instance.LocalPlayer).SetAimBounds();
+            ((TDS_Juggler)_juggler).SetAimBounds();
         }
     }
 	#endregion

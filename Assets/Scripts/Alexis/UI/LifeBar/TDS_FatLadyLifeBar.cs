@@ -97,8 +97,10 @@ public class TDS_FatLadyLifeBar : TDS_PlayerLifeBar
     #endregion
 
     #region Unity Methods
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         if (playerType != PlayerType.FatLady)
             playerType = PlayerType.FatLady;
     }

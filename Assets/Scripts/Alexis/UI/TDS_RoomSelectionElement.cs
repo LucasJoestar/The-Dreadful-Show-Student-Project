@@ -35,9 +35,9 @@ public class TDS_RoomSelectionElement : MonoBehaviour
 	*/
 
     #region Fields / Properties
-    [SerializeField] private Button roomSelectionButton;
+    [SerializeField] private Button roomSelectionButton = null;
 
-    [SerializeField] private TMPro.TMP_Text playerCountText; 
+    [SerializeField] private TMPro.TMP_Text playerCountText = null; 
     
     public Button RoomSelectionButton { get { return roomSelectionButton; } }
 

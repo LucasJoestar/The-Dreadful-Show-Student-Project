@@ -41,30 +41,30 @@ public class TDS_EventSystemEditor : Editor
     private SerializedProperty doDesTriggerOnActiv = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doDesObjectOnFinish"/> of type <see cref="bool"/>.</summary>
-    private SerializedProperty doDesObjectOnFinish = null;
+    protected SerializedProperty doDesObjectOnFinish = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.doLoop"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty doLoop = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.isActivated"/> of type <see cref="bool"/>.</summary>
-    private SerializedProperty isActivated = null;
+    protected SerializedProperty isActivated = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.isLocal"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isLocal = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.currentEvent"/> of type <see cref="TDS_Event"/>.</summary>
-    private SerializedProperty currentEvent = null;
+    protected SerializedProperty currentEvent = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.events"/> of type <see cref="TDS_Event"/>[].</summary>
-    private SerializedProperty events = null;
+    protected SerializedProperty events = null;
 
     /// <summary>SerializedProperty for <see cref="TDS_EventsSystem.detectedTags"/> of type <see cref="Tags"/>.</summary>
-    private SerializedProperty detectedTags = null;
+    protected SerializedProperty detectedTags = null;
 
     /// <summary>
     /// Folout booleans for events array.
     /// </summary>
-    [SerializeField] private bool[] foldouts = new bool[] { };
+    [SerializeField] protected bool[] foldouts = new bool[] { };
     #endregion
 
     #region Methods
@@ -73,7 +73,7 @@ public class TDS_EventSystemEditor : Editor
     /// <summary>
     /// Draws the editor of the editing scripts.
     /// </summary>
-    public void DrawEditor()
+    public virtual void DrawEditor()
     {
         // Make a space at the beginning of the editor
         GUILayout.Space(10);
@@ -96,7 +96,7 @@ public class TDS_EventSystemEditor : Editor
         {
             GUILayout.Space(3);
 
-            EditorGUILayout.LabelField(new GUIContent("Current Event", "Current event processing"), new GUIContent(currentEvent.FindPropertyRelative("Name").ToString()));
+            EditorGUILayout.LabelField(new GUIContent("Current Event", "Current event processing"), new GUIContent(currentEvent.FindPropertyRelative("Name").stringValue));
         }
 
         GUILayout.Space(5);
@@ -124,60 +124,76 @@ public class TDS_EventSystemEditor : Editor
 
         GUILayout.Space(5);
 
+        // Draws events
+        DrawEvents(events, ref foldouts);
+
+        // Applies all modified properties on the SerializedObjects
+        serializedObject.ApplyModifiedProperties();
+
+        EditorGUILayout.EndVertical();
+        GUI.backgroundColor = _originalColor;
+        GUI.color = _originalGUIColor;
+    }
+
+    /// <summary>
+    /// Draws the editor for the events.
+    /// </summary>
+    public void DrawEvents(SerializedProperty _events, ref bool[] _foldouts)
+    {
         // Button to add a new event
         GUI.backgroundColor = TDS_EditorUtility.BoxLightColor;
         GUI.color = Color.green;
 
         if (TDS_EditorUtility.Button("+", "Add a new event", EditorStyles.miniButton))
         {
-            events.InsertArrayElementAtIndex(0);
-            events.GetArrayElementAtIndex(0).FindPropertyRelative("Name").stringValue = "New Event";
+            _events.InsertArrayElementAtIndex(0);
+            _events.GetArrayElementAtIndex(0).FindPropertyRelative("Name").stringValue = "New Event";
 
-            bool[] _newFoldouts = new bool[foldouts.Length + 1];
-            Array.Copy(foldouts, 0, _newFoldouts, 1, foldouts.Length);
-            foldouts = _newFoldouts;
+            bool[] _newFoldouts = new bool[_foldouts.Length + 1];
+            Array.Copy(_foldouts, 0, _newFoldouts, 1, _foldouts.Length);
+            _foldouts = _newFoldouts;
         }
 
         GUI.color = Color.white;
         GUI.backgroundColor = TDS_EditorUtility.BoxDarkColor;
 
-        for (int _i = 0; _i < events.arraySize; _i++)
+        for (int _i = 0; _i < _events.arraySize; _i++)
         {
             GUILayout.Space(5);
 
             GUI.backgroundColor = TDS_EditorUtility.BoxLightColor;
             EditorGUILayout.BeginVertical("Box");
 
-            SerializedProperty _event = events.GetArrayElementAtIndex(_i);
+            SerializedProperty _event = _events.GetArrayElementAtIndex(_i);
             SerializedProperty _eventName = _event.FindPropertyRelative("Name");
 
             EditorGUILayout.BeginHorizontal();
 
             // Button to show or not this event
-            if (TDS_EditorUtility.Button(_eventName.stringValue, "Wrap / unwrap this event", TDS_EditorUtility.HeaderStyle)) foldouts[_i] = !foldouts[_i];
+            if (TDS_EditorUtility.Button(_eventName.stringValue, "Wrap / unwrap this event", TDS_EditorUtility.HeaderStyle)) _foldouts[_i] = !_foldouts[_i];
 
             GUILayout.FlexibleSpace();
 
             // BUttons to change the event position in the list
             if ((_i > 0) && TDS_EditorUtility.Button("▲", "Move this element up", EditorStyles.miniButton))
             {
-                events.MoveArrayElement(_i, _i - 1);
+                _events.MoveArrayElement(_i, _i - 1);
             }
-            if ((_i < events.arraySize - 1) && TDS_EditorUtility.Button("▼", "Move this element down", EditorStyles.miniButton))
+            if ((_i < _events.arraySize - 1) && TDS_EditorUtility.Button("▼", "Move this element down", EditorStyles.miniButton))
             {
-                events.MoveArrayElement(_i, _i + 1);
+                _events.MoveArrayElement(_i, _i + 1);
             }
 
             // Button to delete this event
             GUI.color = Color.red;
             if (TDS_EditorUtility.Button("X", "Delete this event", EditorStyles.miniButton))
             {
-                events.DeleteArrayElementAtIndex(_i);
+                _events.DeleteArrayElementAtIndex(_i);
 
-                bool[] _newFoldouts = new bool[foldouts.Length - 1];
-                Array.Copy(foldouts, 0, _newFoldouts, 0, _i);
-                Array.Copy(foldouts, _i + 1, _newFoldouts, _i, foldouts.Length - (_i + 1));
-                foldouts = _newFoldouts;
+                bool[] _newFoldouts = new bool[_foldouts.Length - 1];
+                Array.Copy(_foldouts, 0, _newFoldouts, 0, _i);
+                Array.Copy(_foldouts, _i + 1, _newFoldouts, _i, _foldouts.Length - (_i + 1));
+                _foldouts = _newFoldouts;
                 break;
             }
 
@@ -185,7 +201,7 @@ public class TDS_EventSystemEditor : Editor
             EditorGUILayout.EndHorizontal();
 
             // If unfolded, draws this event
-            if (foldouts[_i])
+            if (_foldouts[_i])
             {
                 SerializedProperty _eventType = _event.FindPropertyRelative("eventType");
                 SerializedProperty _doRequireType = _event.FindPropertyRelative("doRequireSpecificPlayerType");
@@ -278,32 +294,25 @@ public class TDS_EventSystemEditor : Editor
 
                 if (TDS_EditorUtility.Button("+", "Add a new event", EditorStyles.miniButton))
                 {
-                    events.InsertArrayElementAtIndex(_i);
+                    _events.InsertArrayElementAtIndex(_i);
 
-                    bool[] _newFoldouts = new bool[foldouts.Length + 1];
-                    Array.Copy(foldouts, 0, _newFoldouts, 0, _i + 1);
-                    Array.Copy(foldouts, _i + 1, _newFoldouts, _i + 2, foldouts.Length - (_i + 1));
-                    foldouts = _newFoldouts;
+                    bool[] _newFoldouts = new bool[_foldouts.Length + 1];
+                    Array.Copy(_foldouts, 0, _newFoldouts, 0, _i + 1);
+                    Array.Copy(_foldouts, _i + 1, _newFoldouts, _i + 2, _foldouts.Length - (_i + 1));
+                    _foldouts = _newFoldouts;
                 }
 
                 GUI.color = Color.white;
             }
 
-            EditorGUILayout.EndVertical();   
+            EditorGUILayout.EndVertical();
         }
-
-        // Applies all modified properties on the SerializedObjects
-        serializedObject.ApplyModifiedProperties();
-
-        EditorGUILayout.EndVertical();
-        GUI.backgroundColor = _originalColor;
-        GUI.color = _originalGUIColor;
     }
     #endregion
 
     #region Unity Methods
     // This function is called when the object is loaded
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         activationMode = serializedObject.FindProperty("activationMode");
         doDesTriggerOnActiv = serializedObject.FindProperty("doDesTriggerOnActiv");

@@ -116,10 +116,7 @@ public class TDS_SceneManager : PunBehaviour
     private void OnEveryOneSceneLoaded()
     {
         TDS_UIManager.Instance?.DisplayLoadingScreen(false);
-        if (TDS_GameManager.LocalPlayer != PlayerType.Unknown && PhotonNetwork.connected && !PhotonNetwork.offlineMode)
-        {
-            TDS_LevelManager.Instance.Spawn(); 
-        }
+        TDS_LevelManager.Instance?.Spawn();
     }
 
     /// <summary>
@@ -146,19 +143,18 @@ public class TDS_SceneManager : PunBehaviour
     /// Prepare to load a scene locally
     /// </summary>
     /// <param name="_sceneName"></param>
-    public void PrepareSceneLoading(string _sceneName)
+    public void PrepareSceneLoading(string _sceneName, int _nextUIState)
     {
-        StartCoroutine(LoadScene(_sceneName)); 
+        StartCoroutine(LoadScene(SceneManager.GetSceneByName(_sceneName).buildIndex, _nextUIState)); 
     }
 
     /// <summary>
     /// Prepare to load a scene locally
     /// </summary>
     /// <param name="_sceneName"></param>
-    public void PrepareSceneLoading(int _sceneIndex)
+    public void PrepareSceneLoading(int _sceneIndex, int _nextUIState)
     {
-        string _sceneName = SceneManager.GetSceneByBuildIndex(_sceneIndex).name; 
-        StartCoroutine(LoadScene(_sceneName));
+        StartCoroutine(LoadScene(_sceneIndex, _nextUIState));
     }
 
     /// <summary>
@@ -166,16 +162,26 @@ public class TDS_SceneManager : PunBehaviour
     /// </summary>
     /// <param name="_sceneName"></param>
     /// <returns></returns>
-    public IEnumerator LoadScene(string _sceneName)
+    public IEnumerator LoadScene(int _sceneIndex, int _nextUIState)
     {
-        AsyncOperation _async = SceneManager.LoadSceneAsync(_sceneName, LoadSceneMode.Single);
         TDS_UIManager.Instance?.DisplayLoadingScreen(true);
+        if (_sceneIndex != 0) yield return new WaitForSeconds(1f);
+        AsyncOperation _async = SceneManager.LoadSceneAsync(_sceneIndex, LoadSceneMode.Single);
         while (!_async.isDone)
         {
             yield return null;
         }
-        TDS_GameManager.CurrentSceneIndex = SceneManager.GetSceneByName(_sceneName).buildIndex;
+        TDS_GameManager.CurrentSceneIndex = _sceneIndex;
         TDS_UIManager.Instance?.DisplayLoadingScreen(false);
+
+        OnEveryOneSceneLoaded();
+        TDS_UIManager.Instance.ActivateMenu(_nextUIState);
+
+        // Reset score when loading main menu
+        if (_sceneIndex == 0)
+        {
+            TDS_GameManager.PlayersInfo.ForEach(p => p.PlayerScore = new TDS_PlayerScore());
+        }
     }
     #endregion
 
