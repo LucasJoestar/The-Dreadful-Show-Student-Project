@@ -2216,7 +2216,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     protected virtual void FixedUpdate()
     {
         // If dead or not playable, return
-        if (isDead || !IsPlayable) return;
+        if (isDead || !IsPlayable || (Time.timeScale == 0)) return;
 
         // Checks if the player is grounded or not, and all related elements
         CheckGrounded();
@@ -2279,7 +2279,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     protected override void Update ()
     {
         // If dead or not playable, return
-        if (!photonView.isMine || isDead) return;
+        if (!photonView.isMine || isDead || (Time.timeScale == 0)) return;
 
         base.Update();
 
