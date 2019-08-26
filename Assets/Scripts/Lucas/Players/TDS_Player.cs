@@ -882,7 +882,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         _movement *= (isGrounded ? 7 : 2.5f);
         _movement.y = isGrounded ? 0 : -.35f;
 
-        Vector3 _movementDirection = new Vector3(_movement.x != 0 ? Mathf.Sign(_movement.x) : 0, 0, _movement.z != 0 ? Mathf.Sign(_movement.z) : 0);
+        Vector3 _movementDirection = new Vector3(_movement.x != 0 ? Mathf.Sign(_movement.x * (isGrounded ? 1 : .35f)) : 0, 0, _movement.z != 0 ? Mathf.Sign(_movement.z) : 0);
 
         // Adds a little force to the player to move him along while dodging
         while (true)
@@ -1799,7 +1799,8 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// </summary>
     public void StartMovingPlayerInView()
     {
-        if (movePlayerInViewCoroutine != null) return;
+        if ((movePlayerInViewCoroutine != null) || !gameObject.activeInHierarchy) return;
+        movePlayerInViewCoroutine = StartCoroutine(MovePlayerInView());
     }
 
     /// <summary>

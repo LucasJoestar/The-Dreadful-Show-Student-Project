@@ -486,18 +486,11 @@ public class TDS_Camera : MonoBehaviour
         bool _isPlayerOutOfScreen = _mostLeftPlayerFromView < 1;
 
         // Get movement
-        float _xIdealPos = _mostRightPlayer.transform.position.x + Offset.x - (_isPlayerOutOfScreen ? cameraXRatio : _mostLeftPlayerFromView < cameraXRatio ? cameraXRatio - _mostLeftPlayerFromView : 0);
+        float _xIdealPos = _mostRightPlayer.transform.position.x + Offset.x - (_isPlayerOutOfScreen ? cameraXRatio - 2 : _mostLeftPlayerFromView < cameraXRatio ? cameraXRatio - _mostLeftPlayerFromView : 0);
         float _yIdealPos = transform.position.y + (-(.5f - camera.WorldToViewportPoint(players.OrderBy(p => p.transform.position.z).First().transform.position).y) * camera.orthographicSize * 2 * VIEWPORT_CALCL_Y_COEF) + Offset.y;
 
-        Vector3 _destination = new Vector3()
-        {
-            x = Mathf.Lerp(transform.position.x, _xIdealPos, Time.deltaTime * speedCurrent * speedCoef),
-            y = Mathf.Lerp(transform.position.y, _yIdealPos, Time.deltaTime * speedCurrent * speedCoef),
-            z = Offset.z
-        };
-
         // If reaching destination, stop moving
-        if ((transform.position - _destination).magnitude < .01f)
+        if ((transform.position - new Vector3(_xIdealPos, _yIdealPos, Offset.z)).magnitude < .01f)
         {
             if (isMoving)
             {
@@ -520,6 +513,13 @@ public class TDS_Camera : MonoBehaviour
             {
                 SpeedCurrent += Time.deltaTime * ((speedMax - speedInitial) / speedAccelerationTime);
             }
+
+            Vector3 _destination = new Vector3()
+            {
+                x = Mathf.Lerp(transform.position.x, _xIdealPos, Time.deltaTime * speedCurrent * speedCoef),
+                y = Mathf.Lerp(transform.position.y, _yIdealPos, Time.deltaTime * speedCurrent * speedCoef),
+                z = Offset.z
+            };
 
             Vector3 _movement = _destination - transform.position;
 
