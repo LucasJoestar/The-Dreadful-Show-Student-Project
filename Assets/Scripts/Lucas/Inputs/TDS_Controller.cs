@@ -11,6 +11,9 @@ public class TDS_Controller
     /// </summary>
     [SerializeField] private string name = "New Controller";
 
+    /// <summary>Public accessor for <see cref="name"/>.</summary>
+    public string Name { get { return name; } }
+
 
     /// <summary>
     /// All axis associated with this controller.

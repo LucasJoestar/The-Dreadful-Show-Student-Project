@@ -66,7 +66,7 @@ public class TDS_LevelManager : PunBehaviour
     /// </summary>
     public TDS_Player[] AllPlayers
     {
-        get { return otherPlayers.Append(localPlayer).ToArray(); }
+        get { return otherPlayers.Append(localPlayer).Where(p => p != null).ToArray(); }
     }
 
 
@@ -98,41 +98,28 @@ public class TDS_LevelManager : PunBehaviour
 
     #region Original Methods
     /// <summary>
-    /// Make Player which a particulary type spawn and set it as the camera target
-    /// </summary>
-    /// <param name="_playerType"></param>
-    public void Spawn(PlayerType _playerType)
-    {
-        if(!PhotonNetwork.offlineMode)
-        {
-            if (_playerType == PlayerType.Juggler)
-                localPlayer = PhotonNetwork.Instantiate(_playerType.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponentInChildren<TDS_Player>();
-            else localPlayer = PhotonNetwork.Instantiate(_playerType.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponent<TDS_Player>();
-        }
-        else
-        {
-            TDS_GameManager.LocalPlayer = _playerType; 
-            localPlayer = (Instantiate(Resources.Load(_playerType.ToString()), StartSpawnPoints[0], Quaternion.identity) as GameObject).GetComponent<TDS_Player>();
-        }
-        TDS_Camera.Instance.Target = localPlayer.transform;
-
-    }
-
-    /// <summary>
     /// Make the player with the type contained in the GameManager spawn
     /// </summary>
     public void Spawn()
     {
-        localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponent<TDS_Player>();
-        TDS_Camera.Instance.Target = localPlayer.transform;
-    }
+        if (PhotonNetwork.offlineMode)
+        {
+            for (int i = 0; i < TDS_GameManager.PlayersInfo.Count; i++)
+            {
+                TDS_PlayerInfo _info = TDS_GameManager.PlayersInfo[i];
+                if ((_info != null) && (_info.PlayerType != PlayerType.Unknown))
+                {
+                    otherPlayers.Add((Instantiate(Resources.Load(_info.PlayerType.ToString()), StartSpawnPoints[0], Quaternion.identity) as GameObject).GetComponent<TDS_Player>());
+                }
+            }
 
-    public void LocalSpawn(int _playerID, PlayerType _typeToSpawn)
-    {
-        TDS_Player _player = (Instantiate(Resources.Load(_typeToSpawn.ToString()), StartSpawnPoints[0], Quaternion.identity) as GameObject).GetComponent<TDS_Player>();
-        if (_playerID == 0)
-            TDS_Camera.Instance.Target = _player.transform;
-        //Set the player ID to control it with the controller with the same id
+            TDS_Camera.Instance.SetLocalMultiplayerCamera();
+        }
+        else if (TDS_GameManager.LocalPlayer != PlayerType.Unknown)
+        {
+            localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponent<TDS_Player>();
+            TDS_Camera.Instance.Target = localPlayer.transform;
+        }
     }
 
     /// <summary>
@@ -176,12 +163,8 @@ public class TDS_LevelManager : PunBehaviour
             }
             yield break; 
         }
-        Debug.LogError("THIS FEATURE IS NOT IMPLEMENTED"); 
-        // TO DO: Store the players in a list
-        // Check if everybody is dead
-        // If so, reset the Level
+        else if (AllPlayers.All(p => p.IsDead)) TDS_UIManager.Instance.StartCoroutine(TDS_UIManager.Instance.ResetInGameUI());
     }
-
 
     /// <summary>
     /// Spawns a supply box for the Juggler on the playable zone.
@@ -209,8 +192,7 @@ public class TDS_LevelManager : PunBehaviour
             return;
         }
     }
- 
-#endregion
+    #endregion
 
-#endregion
+    #endregion
 }

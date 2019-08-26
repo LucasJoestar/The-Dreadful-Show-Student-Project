@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -126,6 +127,17 @@ public class TDS_Attack : ScriptableObject
 
         // Inflict damages, and return if target don't get hurt, if no effect or if target is dead
         if (!_target.TakeDamage(_damages, _attacker.Collider.bounds.center)) return -2;
+
+        // Increase score
+        if ((_attacker.Owner is TDS_Player _player) && (_target is TDS_Enemy _enemyTarget))
+        {
+            TDS_GameManager.PlayersInfo.First(p => p.PlayerType == _player.PlayerType).PlayerScore.IncreaseInflictedScore(_enemyTarget, _damages);
+        }
+        else if ((_target is TDS_Player _playerTarget) && (_attacker.Owner is TDS_Enemy _enemy))
+        {
+            TDS_GameManager.PlayersInfo.First(p => p.PlayerType == _playerTarget.PlayerType).PlayerScore.IncreaseSuffuredScore(_enemy, _damages);
+        }
+
         if (_target.IsDead) return -1;
         if (_noEffect) return 0;
 

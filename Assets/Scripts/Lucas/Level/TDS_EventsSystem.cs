@@ -1,7 +1,5 @@
 ﻿using Photon;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(PhotonView))]
@@ -44,7 +42,7 @@ public class TDS_EventsSystem : PunBehaviour
     /// <summary>
     /// Indicates if this object should be destroyed when finished.
     /// </summary>
-    [SerializeField] private bool doDesObjectOnFinish = false;
+    [SerializeField] protected bool doDesObjectOnFinish = false;
 
     /// <summary>
     /// Indicates if the event system should loop or not.
@@ -54,7 +52,7 @@ public class TDS_EventsSystem : PunBehaviour
     /// <summary>
     /// Is this event system activated and in process or not ?
     /// </summary>
-    [SerializeField] private bool isActivated = false;
+    [SerializeField] protected bool isActivated = false;
 
     /// <summary>
     /// Is this event system local based or not ?
@@ -69,27 +67,27 @@ public class TDS_EventsSystem : PunBehaviour
     /// <summary>
     /// BoxCollider of the object.
     /// </summary>
-    [SerializeField] private new BoxCollider collider = null;
+    [SerializeField] protected new BoxCollider collider = null;
 
     /// <summary>
     /// Current event of the system.
     /// </summary>
-    private Coroutine currentEventCoroutine = null;
+    protected Coroutine currentEventCoroutine = null;
 
     /// <summary>
     /// Current event processing.
     /// </summary>
-    [SerializeField] private TDS_Event currentEvent = null;
+    [SerializeField] protected TDS_Event currentEvent = null;
 
     /// <summary>
     /// All events to trigger in this events system.
     /// </summary>
-    [SerializeField] private TDS_Event[] events = new TDS_Event[] { };
+    [SerializeField] protected TDS_Event[] events = new TDS_Event[] { };
 
     /// <summary>
     /// Tags detected used to activate this event system.
     /// </summary>
-    [SerializeField] private Tags detectedTags = new Tags(new Tag[] { new Tag("Player") });
+    [SerializeField] protected Tags detectedTags = new Tags(new Tag[] { new Tag("Player") });
 
     /// <summary>
     /// Activation mode used for this event system.
@@ -113,8 +111,10 @@ public class TDS_EventsSystem : PunBehaviour
     /// Main coroutine managing the whole system and triggering the events one after the other.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator EventsSystem()
+    protected virtual IEnumerator EventsSystem()
     {
+        isActivated = true;
+
         for (int _i = 0; _i < events.Length; _i++)
         {
             // Starts the event
@@ -134,9 +134,10 @@ public class TDS_EventsSystem : PunBehaviour
         else
         {
             isActivated = false;
+            currentEventCoroutine = null;
             if (doDesObjectOnFinish) enabled = false;
         }
-
+        
         yield break;
     }
 
@@ -154,7 +155,7 @@ public class TDS_EventsSystem : PunBehaviour
     /// <summary>
     /// Starts this event system !
     /// </summary>
-    public void StartEvents()
+    public virtual void StartEvents()
     {
         if (isActivated) return;
 
@@ -163,7 +164,6 @@ public class TDS_EventsSystem : PunBehaviour
             collider.enabled = false;
         }
 
-        isActivated = true;
         StartCoroutine(EventsSystem());
     }
 
@@ -175,7 +175,11 @@ public class TDS_EventsSystem : PunBehaviour
         if (!isActivated) return;
 
         StopAllCoroutines();
-        if (currentEventCoroutine != null) StopCoroutine(currentEventCoroutine);
+        if (currentEventCoroutine != null)
+        {
+            StopCoroutine(currentEventCoroutine);
+            currentEventCoroutine = null;
+        }
 
         isActivated = false;
 
@@ -185,20 +189,20 @@ public class TDS_EventsSystem : PunBehaviour
 
     #region Unity Methods
     // Awake is called when the script instance is being loaded
-    private void Awake()
+    protected virtual void Awake()
     {
         if (!collider) collider = GetComponent<BoxCollider>();
     }
 
     // OnTriggerEnter is called when the GameObject collides with another GameObject
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (activationMode == TriggerActivationMode.Enter) CheckTriggerValidation(other);
         else if (activationMode == TriggerActivationMode.Traverse) wasActivatedFromRight = other.bounds.center.x > collider.bounds.center.x;
     }
 
     // OnTriggerExit is called when the Collider other has stopped touching the trigger
-    private void OnTriggerExit(Collider other)
+    protected virtual void OnTriggerExit(Collider other)
     {
         if ((activationMode == TriggerActivationMode.Exit) ||
            ((activationMode == TriggerActivationMode.Traverse) &&

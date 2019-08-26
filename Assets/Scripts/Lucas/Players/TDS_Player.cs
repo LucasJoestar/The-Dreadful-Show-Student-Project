@@ -246,6 +246,11 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// Event called when the player press the button indicating how to play.
     /// </summary>
     public event Action OnTriggerHowToPlay = null;
+
+    /// <summary>
+    /// Event called when this player dies, with this script as parameter.
+    /// </summary>
+    public event Action<TDS_Player> OnPlayerDie = null;
     #endregion
 
     #region Fields / Properties
@@ -319,6 +324,11 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// References the current coroutine of the jump method. Null if none is actually running.
     /// </summary>
     protected Coroutine jumpCoroutine = null;
+
+    /// <summary>
+    /// References the current coroutine used to move the player inside the visible zone.
+    /// </summary>
+    protected Coroutine movePlayerInViewCoroutine = null;
 
     /// <summary>Backing field for <see cref="PreparingAttackCoroutine"/>.</summary>
     protected Coroutine preparingAttackCoroutine = null;
@@ -1101,7 +1111,16 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         base.Die();
 
+        OnPlayerDie?.Invoke(this);
+
         if (!photonView.isMine) return;
+
+        // Removes the player to follow for the camera if offline mode
+        if (PhotonNetwork.offlineMode)
+        {
+            TDS_Camera.Instance.RemoveLocalPlayer(this);
+            if (movePlayerInViewCoroutine != null) StopMovingPlayerInView();
+        }
 
         // Drop object if needed
         if (throwable) DropObject();
@@ -1184,6 +1203,13 @@ public class TDS_Player : TDS_Character, IPunObservable
         base.Revive();
 
         if (!photonView.isMine) return;
+
+        // Adds the player to follow for the camera if offline mode
+        if (PhotonNetwork.offlineMode)
+        {
+            TDS_Camera.Instance.AddLocalPlayer(this);
+            if (!sprite.isVisible) StartMovingPlayerInView();
+        }
 
         // Triggers associated animations
         SetAnimOnline(PlayerAnimState.BackFromTheDeads);
@@ -1623,6 +1649,32 @@ public class TDS_Player : TDS_Character, IPunObservable
     }
 
     /// <summary>
+    /// Moves the player inside the visible zone.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator MovePlayerInView()
+    {
+        float _timer = 3;
+        while (_timer > 0)
+        {
+            yield return null;
+            _timer -= Time.deltaTime;
+        }
+
+        rigidbody.isKinematic = true;
+        enabled = false;
+        isMoving = true;
+        SetAnim(PlayerAnimState.Run);
+
+        while (true)
+        {
+            transform.position = Vector3.Lerp(transform.position, new Vector3(TDS_Camera.Instance.CurrentBounds.XMax, transform.position.y, TDS_Camera.Instance.CurrentBounds.ZMax), Time.deltaTime * speedMax);
+
+            yield return null;
+        }
+    }
+
+    /// <summary>
     /// Move directly the player to a new position.
     /// </summary>
     /// <param name="_newPosition">New position to move to.</param>
@@ -1740,6 +1792,31 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
 
         jumpCoroutine = StartCoroutine(Jump());
+    }
+
+    /// <summary>
+    /// Starts Moving the player inside the visible zone.
+    /// </summary>
+    public void StartMovingPlayerInView()
+    {
+        if (movePlayerInViewCoroutine != null) return;
+    }
+
+    /// <summary>
+    /// Stops moving the player inside the visible zone.
+    /// </summary>
+    public void StopMovingPlayerInView()
+    {
+        if (movePlayerInViewCoroutine != null)
+        {
+            StopCoroutine(movePlayerInViewCoroutine);
+            movePlayerInViewCoroutine = null;
+
+            SetAnim(PlayerAnimState.Idle);
+            rigidbody.isKinematic = false;
+            isMoving = false;
+            enabled = true;
+        }
     }
 
     /// <summary>

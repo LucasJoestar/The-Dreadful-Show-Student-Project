@@ -38,6 +38,7 @@ public class TDS_PlayerInfo
     #region Fields / Properties
     public int              PlayerID        { get; private set; }   = 0;
     public PlayerType       PlayerType      { get;  set; }          = PlayerType.Unknown;
+    public TDS_PlayerScore  PlayerScore     { get; set; }           = new TDS_PlayerScore();
     public PhotonPlayer     PhotonPlayer    { get; private set; }   = null;
     public TDS_Controller   Controller      { get; private set; }   = null;
     public bool             IsReady         { get; set; }           = false; 

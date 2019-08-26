@@ -36,7 +36,7 @@ public class TDS_CharacterSelectionImage
 	*/
 
     #region Fields / Properties
-    [SerializeField] private Image characterImage;
+    [SerializeField] private Image characterImage = null;
     public Image CharacterImage { get { return characterImage; } }
     [SerializeField] private PlayerType characterType = PlayerType.Unknown;
     public PlayerType CharacterType { get { return characterType; } }

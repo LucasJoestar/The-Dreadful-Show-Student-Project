@@ -200,7 +200,14 @@ public class TDS_Event
             // Freeze local player
             case CustomEventType.FreezePlayerForCutscene:
                 TDS_UIManager.Instance.ActivateCutsceneBlackBars();
-                TDS_LevelManager.Instance.LocalPlayer.FreezePlayer();
+                if (!PhotonNetwork.offlineMode) TDS_LevelManager.Instance.LocalPlayer.FreezePlayer();
+                else
+                {
+                    foreach (TDS_Player _player in TDS_LevelManager.Instance.AllPlayers)
+                    {
+                        _player.FreezePlayer();
+                    }
+                }
                 break;
 
             // Instantiate a prefab
@@ -216,15 +223,32 @@ public class TDS_Event
 
             // Makes a cool fade before displaying loading screen, and loading next level
             case CustomEventType.LoadNextLevel:
-                if (PhotonNetwork.isMasterClient) TDS_SceneManager.Instance.PrepareOnlineSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
+                if (!PhotonNetwork.isMasterClient) yield break;
+
+                if (!PhotonNetwork.offlineMode) TDS_SceneManager.Instance.PrepareOnlineSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
+                else TDS_SceneManager.Instance.PrepareSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
 
                 yield return new WaitForSeconds(1f);
-                TDS_LevelManager.Instance.LocalPlayer.FreezePlayer();
+                if (!PhotonNetwork.offlineMode) TDS_LevelManager.Instance.LocalPlayer.FreezePlayer();
+                else
+                {
+                    foreach (TDS_Player _player in TDS_LevelManager.Instance.AllPlayers)
+                    {
+                        _player.FreezePlayer();
+                    }
+                }
                 break;
 
             // Moves the local player around a point
             case CustomEventType.MovePlayerAroundPoint:
-                TDS_LevelManager.Instance.LocalPlayer.GoAround(eventTransform.position, false);
+                if (!PhotonNetwork.offlineMode) TDS_LevelManager.Instance.LocalPlayer.GoAround(eventTransform.position, false);
+                else
+                {
+                    foreach (TDS_Player _player in TDS_LevelManager.Instance.AllPlayers)
+                    {
+                        _player.GoAround(eventTransform.position, false);
+                    }
+                }
                 break;
 
             // Triggers a particular quote of the Narrator
@@ -247,7 +271,14 @@ public class TDS_Event
             // Unfreeze local player
             case CustomEventType.UnfreezePlayerFromCutscene:
                 TDS_UIManager.Instance.DesactivateCutsceneBlackBars();
-                TDS_LevelManager.Instance.LocalPlayer.UnfreezePlayer();
+                if (!PhotonNetwork.offlineMode) TDS_LevelManager.Instance.LocalPlayer.UnfreezePlayer();
+                else
+                {
+                    foreach (TDS_Player _player in TDS_LevelManager.Instance.AllPlayers)
+                    {
+                        _player.UnfreezePlayer();
+                    }
+                }
                 break;
 
             // Just invoke a Unity Event, that's it

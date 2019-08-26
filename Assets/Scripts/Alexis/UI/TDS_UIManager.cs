@@ -864,7 +864,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void LoadLevel()
     {
-        if(!PhotonNetwork.offlineMode)
+        if (!PhotonNetwork.offlineMode)
         {
             characterSelectionManager.CharacterSelectionMenu.LocalElement.ClearToggle();
             if (isloadingNextScene)
@@ -885,22 +885,24 @@ public class TDS_UIManager : PunBehaviour
 
         if(isloadingNextScene)
         {
-            TDS_SceneManager.Instance?.PrepareSceneLoading(TDS_GameManager.CurrentSceneIndex + 1);
+            TDS_SceneManager.Instance?.PrepareSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
         }
         else
         {
-            for (int i = 0; i < characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements.Length; i++)
+
+            /*for (int i = 0; i < characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements.Length; i++)
             {
                 TDS_PlayerInfo _info = characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements[i].PlayerInfo;
                 if (_info != null)
                 {
                     TDS_LevelManager.Instance.LocalSpawn(_info.PlayerID, _info.PlayerType);
                 }
-            }
+            }*/
+
+            TDS_LevelManager.Instance?.Spawn();
         }
         characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements.ToList().ForEach(e => e.ClearToggle());
         ActivateMenu(UIState.InGame); 
-
     }
 
     /// <summary>
@@ -939,11 +941,10 @@ public class TDS_UIManager : PunBehaviour
     {
         if(PhotonNetwork.offlineMode)
         {
-            TDS_SceneManager.Instance.PrepareSceneLoading(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name); 
+            TDS_SceneManager.Instance.PrepareSceneLoading(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, (int)UIState.InGame); 
         }
         else
             TDS_SceneManager.Instance.PrepareOnlineSceneLoading(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, (int)UIState.InGame);
-        ActivateMenu(UIState.InGame); 
     }
 
     /// <summary>
