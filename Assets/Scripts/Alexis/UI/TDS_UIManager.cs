@@ -266,7 +266,7 @@ public class TDS_UIManager : PunBehaviour
     #region ComboManager
     //[Header("Combo Manager")]
     //[SerializeField] private TDS_ComboManager comboManager;
-    public TDS_ComboManager ComboManager { get; set; }
+    public TDS_ComboManager ComboManager { get; set; } = null; 
     #endregion
 
     #region OptionMenu
@@ -470,7 +470,7 @@ public class TDS_UIManager : PunBehaviour
         followHiddenPlayerCouroutines.Clear();
         filledImages.Clear();
         curtainsAnimator.SetTrigger("Reset");
-        ComboManager.ResetComboManager();
+        if(ComboManager)ComboManager.ResetComboManager();
         for (int i = 0; i < canvasWorld.transform.childCount; i++)
         {
             Destroy(canvasWorld.transform.GetChild(i).gameObject);
@@ -612,6 +612,8 @@ public class TDS_UIManager : PunBehaviour
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false);
                 gameOverScreenParent.SetActive(false);
+                characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements.ToList().ForEach(e => e.ClearToggle());
+                TDS_GameManager.PlayersInfo.Clear(); 
                 Selectable.allSelectables.FirstOrDefault()?.Select();
                 break;
             case UIState.InRoomSelection:
