@@ -205,7 +205,7 @@ public class TDS_SpawnerArea : PunBehaviour
     /// Make spawn all enemies at every point of the wave index
     /// Increase Wave Index
     /// </summary>
-    private void ActivateWave()
+    public void ActivateWave()
     {
         if (!PhotonNetwork.isMasterClient) return; 
         if (waves.Count == 0)

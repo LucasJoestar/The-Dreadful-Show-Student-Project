@@ -60,6 +60,8 @@ public class TDS_WaveElement
     /// List of enemies and number of enemies linked to this SpawnPoint
     /// </summary>
     [SerializeField] private List<TDS_RandomSpawningInformations> randomSpawningInformations = new List<TDS_RandomSpawningInformations>();
+
+    [SerializeField] private bool resetDecreasingCount = false; 
     #endregion
 
     #region Methods
@@ -89,6 +91,15 @@ public class TDS_WaveElement
         int _randomCount = Random.Range(minRandomSpawn, maxRandomSpawn + 1);
         // if no more enemies to spawn, return the enemies list
         if (_randomCount == 0) return _enemies;
+
+        List<TDS_RandomSpawningInformations> _originalSpawningInfos = new List<TDS_RandomSpawningInformations>();
+        if(resetDecreasingCount)
+        {
+            for (int i = 0; i < randomSpawningInformations.Count; i++)
+            {
+                _originalSpawningInfos.Add(new TDS_RandomSpawningInformations(randomSpawningInformations[i].EnemyResourceName, randomSpawningInformations[i].EnemyCount)); 
+            }
+        }
         int _max = 0;
         int _value = 0;
         int _referenceValue = 0; 
@@ -114,6 +125,10 @@ public class TDS_WaveElement
             }
             //Reset the reference value to 0
             _referenceValue = 0; 
+        }
+        if(resetDecreasingCount)
+        {
+            randomSpawningInformations = _originalSpawningInfos; 
         }
         return _enemies; 
     }

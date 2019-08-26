@@ -67,6 +67,8 @@ public class TDS_WaveElementEditor : PropertyDrawer
             //Create a button to remove the spawning informations
             GUITools.ActionButton("Delete this info", property.FindPropertyRelative($"randomSpawningInformations.Array").DeleteArrayElementAtIndex, i, Color.white, Color.black);
         }
+        GUILayout.Space(5);
+        property.FindPropertyRelative("resetDecreasingCount").boolValue = EditorGUILayout.Toggle("Reset Decreasing Count", property.FindPropertyRelative("resetDecreasingCount").boolValue); 
         GUILayout.EndVertical();
 
     }

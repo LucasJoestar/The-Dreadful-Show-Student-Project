@@ -65,6 +65,17 @@ public class TDS_SpawningInformations
         enemyResourceName = _e.EnemyName;
         enemyCount = new int[4] { 0, 0, 1, 1 };
     }
+
+    /// <summary>
+    /// Constructor of the TDS_SpawningInformation  class
+    /// Set the enemy resources name as the name of the enemy in argument
+    /// </summary>
+    /// <param name="_e">enemy</param>
+    public TDS_SpawningInformations(string _e, int[] _count )
+    {
+        enemyResourceName = _e;
+        enemyCount = _count;
+    }
 }
 
 [Serializable]
@@ -111,5 +122,14 @@ public class TDS_RandomSpawningInformations : TDS_SpawningInformations
     public TDS_RandomSpawningInformations(TDS_Enemy _e) : base(_e)
     {
 
+    }
+
+    /// <summary>
+    /// Constructor of the TDS_SpawningInformation  class
+    /// Set the enemy resources name as the name of the enemy in argument
+    /// </summary>
+    /// <param name="_e">enemy</param>
+    public TDS_RandomSpawningInformations(string _e, int[] _count) : base(_e, _count)
+    {
     }
 }

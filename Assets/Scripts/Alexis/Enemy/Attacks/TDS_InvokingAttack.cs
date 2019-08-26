@@ -43,7 +43,7 @@ public class TDS_InvokingAttack : TDS_EnemyAttack
     #region Original Methods
     public override void ApplyAttackBehaviour(TDS_Enemy _caster)
     {
-        _caster.Area.ActivateEnemies(); 
+        _caster.Area.ActivateWave(); 
 
     }
     #endregion
