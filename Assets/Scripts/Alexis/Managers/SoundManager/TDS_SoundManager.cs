@@ -48,6 +48,9 @@ public class TDS_SoundManager : MonoBehaviour
     #endregion
     public static TDS_SoundManager Instance = null;
     [SerializeField] private AudioMixer audioMixer = null;
+    #region AudioClip
+
+    #endregion
     #endregion
 
     #region Methods
@@ -73,19 +76,20 @@ public class TDS_SoundManager : MonoBehaviour
     /// <param name="_position">Position where the clip will be played</param>
     /// <param name="_groupName">Group of the audioMixer /!\ USE THE CONST IN THE SOUNDMANAGER TO GET THE RIGHT NAME OF THE GROUP /!\ </param>
     /// <param name="_isLooping">Does the sound has to loop</param>
-    public void PlaySoundAtPosition(AudioSource _source, AudioClip _playedClip, Vector3 _position, string _groupName = "Master", bool _isLooping = false)
+    public void PlaySoundAtPosition(AudioSource _source, AudioClip _playedClip, Vector3 _position, string _groupName = "Master", bool _isLooping = false, float _volume = 1f)
     {
         _source.transform.position = _position;
         _source.outputAudioMixerGroup = GetMixerGroupOfName(_groupName);
         if(_isLooping)
         {
             _source.loop = true;
+            _source.volume = _volume;
             _source.clip = _playedClip;
             _source.Play();
             return; 
         }
         _source.loop = false;
-        _source.PlayOneShot(_playedClip); 
+        _source.PlayOneShot(_playedClip, _volume); 
     }
     #endregion
 
