@@ -210,17 +210,19 @@ public class TDS_NetworkManager : PunBehaviour
     public override void OnJoinedRoom()
     {
         Debug.Log("connected to Room there is : " + PhotonNetwork.room.PlayerCount + " player here !!");
-
+        if (PhotonNetwork.offlineMode) return; 
         TDS_UIManager.Instance?.ActivateMenu((int)UIState.InCharacterSelection); 
 
         PlayerCount();
     }
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
+        if (PhotonNetwork.offlineMode) return;
         PlayerCount();
     }
     public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
     {
+        if (PhotonNetwork.offlineMode) return;
         PlayerCount();
     }
     #endregion

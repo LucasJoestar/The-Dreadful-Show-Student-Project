@@ -1150,6 +1150,7 @@ public class TDS_UIManager : PunBehaviour
         TDS_GameManager.PlayersInfo.Clear(); 
         if(!TDS_GameManager.IsOnline)
         {
+            PhotonNetwork.Disconnect(); 
             PhotonNetwork.offlineMode = false; 
             ActivateMenu(UIState.InMainMenu);
             Selectable.allSelectables.First().Select(); 
@@ -1272,11 +1273,6 @@ public class TDS_UIManager : PunBehaviour
         if (uiGameObject)
             uiGameObject.SetActive(true);
         ActivateMenu(uiState);
-    }
-
-    public override void OnReceivedRoomListUpdate()
-    {
-        base.OnReceivedRoomListUpdate(); 
     }
     #endregion
 

@@ -272,17 +272,20 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     #region Unity Methods
     public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
     {
+        if (PhotonNetwork.offlineMode) return;
         characterSelectionMenu.RemovePhotonPlayer(otherPlayer);
     }
 
     public override void OnJoinedRoom()
     {
+        if (PhotonNetwork.offlineMode) return;
         characterSelectionMenu.AddNewPhotonPlayer(PhotonNetwork.player); 
         //PhotonNetwork.playerList.ToList().ForEach(p => characterSelectionMenu.AddNewPhotonPlayer(p));
     }
 
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
+        if (PhotonNetwork.offlineMode) return;
         base.OnPhotonPlayerConnected(newPlayer);
         characterSelectionMenu.AddNewPhotonPlayer(newPlayer);
         SendInfoToNewPlayer(newPlayer);
