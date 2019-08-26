@@ -177,7 +177,7 @@ public class TDS_NetworkManager : PunBehaviour
         TDS_GameManager.LocalPlayer = PlayerType.Unknown;
         PhotonNetwork.Disconnect();
 
-        TDS_SceneManager.Instance.PrepareSceneLoading("MainMenu", (int)UIState.InMainMenu);
+        TDS_SceneManager.Instance.PrepareSceneLoading(0, (int)UIState.InMainMenu);
     }
 
     #region Player   
