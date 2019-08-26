@@ -879,15 +879,15 @@ public class TDS_Player : TDS_Character, IPunObservable
         SetAnimOnline(PlayerAnimState.Dodge);
 
         // Get new constant movement
-        _movement *= (isGrounded ? 7 : 2.5f);
-        _movement.y = isGrounded ? 0 : -.35f;
-
-        Vector3 _movementDirection = new Vector3(_movement.x != 0 ? Mathf.Sign(_movement.x * (isGrounded ? 1 : .35f)) : 0, 0, _movement.z != 0 ? Mathf.Sign(_movement.z) : 0);
+        Vector3 _movementDirection = new Vector3(_movement.x != 0 ? Mathf.Sign(_movement.x) : 0, 0, _movement.z != 0 ? Mathf.Sign(_movement.z) : 0);
 
         // Adds a little force to the player to move him along while dodging
         while (true)
         {
-            rigidbody.AddForce(_movement);
+            Vector3 _thisMovement = _movement * (isGrounded ? 7 : 2.5f);
+            _thisMovement.y = isGrounded ? 0 : -.35f;
+
+            rigidbody.AddForce(_thisMovement);
             MoveInDirection(transform.position + _movementDirection);
 
             yield return new WaitForFixedUpdate();

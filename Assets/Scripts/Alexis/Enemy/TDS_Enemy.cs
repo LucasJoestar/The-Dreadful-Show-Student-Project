@@ -1338,7 +1338,7 @@ public abstract class TDS_Enemy : TDS_Character
         OnDie += () => StopAllCoroutines();
         InitLifeBar();
 
-        AllEnemies.Add(this);
+        if (!AllEnemies.Contains(this)) AllEnemies.Add(this);
     }
 
     private void OnDestroy()
@@ -1369,6 +1369,16 @@ public abstract class TDS_Enemy : TDS_Character
         }
 
         base.Start();
+    }
+
+    private void OnDisable()
+    {
+        if (AllEnemies.Contains(this)) AllEnemies.Remove(this);
+    }
+
+    private void OnEnable()
+    {
+        if (!AllEnemies.Contains(this)) AllEnemies.Add(this);
     }
 
     protected override void OnDrawGizmos()
