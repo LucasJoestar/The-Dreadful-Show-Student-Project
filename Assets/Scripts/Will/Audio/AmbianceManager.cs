@@ -7,7 +7,7 @@ public class AmbianceManager : MonoBehaviour
 {
     #region Fields / Properties
     [SerializeField]
-        AudioClip audioClipName = null;
+        AudioClip soundAmbienceName = null;
     #endregion
 
     #region Methods
