@@ -196,7 +196,14 @@ public class TDS_HitBox : MonoBehaviour
         // Call local method on the character who hit
         if (Owner)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", Owner.photonView.owner, TDS_RPCManager.GetInfo(Owner.photonView, Owner.GetType(), "HitCallback"), new object[] { _target.Collider.bounds.center.x, _target.Collider.bounds.max.y, _target.transform.position.z });
+            if (PhotonNetwork.offlineMode && (Owner is TDS_Player _player))
+            {
+                _player.HitCallback(_target.Collider.bounds.center.x, _target.Collider.bounds.max.y, _target.transform.position.z);
+            }
+            else
+            {
+                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", Owner.photonView.owner, TDS_RPCManager.GetInfo(Owner.photonView, Owner.GetType(), "HitCallback"), new object[] { _target.Collider.bounds.center.x, _target.Collider.bounds.max.y, _target.transform.position.z });
+            }
         }
 
         // Triggers event
