@@ -212,7 +212,9 @@ public enum EnemyAnimationState
     BringTargetCloser, 
     EndBringingTargetCloser, 
     StopDashing, 
-    LightHit
+    LightHit,
+    GetOutOfBattle,
+    GetBackIntoBattle
 }
 
 /// <summary>
@@ -229,7 +231,8 @@ public enum EnemyState
     PickingUpObject, 
     ThrowingObject, 
     Wandering, 
-    Waiting
+    Waiting,
+    OutOfBattle
 }
 
 /// <summary>

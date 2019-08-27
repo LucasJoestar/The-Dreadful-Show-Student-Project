@@ -421,6 +421,21 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4be5ac97586306c4ca9d3c9063f86bbf, type: 2}
   - {fileID: 11400000, guid: 8080ee86b24eeb84dbf4345c7ce581e5, type: 2}
   agent: {fileID: 2085316961524171261}
+  onTwoThirdsHealth:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onHalfHealth:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onOneThirdHealth:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   damagesThreshold: 25
   portrait: {fileID: 8492191770222195799, guid: 08022f0effacd434f86eeee02f5ba47e,
     type: 3}
