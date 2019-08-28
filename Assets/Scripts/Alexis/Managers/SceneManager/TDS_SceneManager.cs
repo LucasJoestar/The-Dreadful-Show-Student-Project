@@ -165,7 +165,12 @@ public class TDS_SceneManager : PunBehaviour
     public IEnumerator LoadScene(int _sceneIndex, int _nextUIState)
     {
         TDS_UIManager.Instance?.DisplayLoadingScreen(true);
-        if (_sceneIndex != 0) yield return new WaitForSeconds(1f);
+        if (_sceneIndex >= SceneManager.sceneCount)
+        {
+            _sceneIndex = 0;
+            _nextUIState = (int)UIState.InMainMenu;
+        }
+        yield return new WaitForSeconds(1.25f);
         AsyncOperation _async = SceneManager.LoadSceneAsync(_sceneIndex, LoadSceneMode.Single);
         while (!_async.isDone)
         {
