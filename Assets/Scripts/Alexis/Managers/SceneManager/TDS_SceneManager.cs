@@ -165,7 +165,7 @@ public class TDS_SceneManager : PunBehaviour
     public IEnumerator LoadScene(int _sceneIndex, int _nextUIState)
     {
         TDS_UIManager.Instance?.DisplayLoadingScreen(true);
-        if (_sceneIndex >= SceneManager.sceneCount)
+        if (_sceneIndex >= SceneManager.sceneCountInBuildSettings)
         {
             _sceneIndex = 0;
             _nextUIState = (int)UIState.InMainMenu;
