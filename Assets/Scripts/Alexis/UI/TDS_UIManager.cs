@@ -612,8 +612,8 @@ public class TDS_UIManager : PunBehaviour
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false);
                 gameOverScreenParent.SetActive(false);
+                TDS_GameManager.PlayersInfo.Clear();
                 characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements.ToList().ForEach(e => e.ClearToggle());
-                TDS_GameManager.PlayersInfo.Clear(); 
                 Selectable.allSelectables.FirstOrDefault()?.Select();
                 break;
             case UIState.InRoomSelection:
@@ -891,16 +891,6 @@ public class TDS_UIManager : PunBehaviour
         }
         else
         {
-
-            /*for (int i = 0; i < characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements.Length; i++)
-            {
-                TDS_PlayerInfo _info = characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements[i].PlayerInfo;
-                if (_info != null)
-                {
-                    TDS_LevelManager.Instance.LocalSpawn(_info.PlayerID, _info.PlayerType);
-                }
-            }*/
-
             TDS_LevelManager.Instance?.Spawn();
         }
         characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements.ToList().ForEach(e => e.ClearToggle());
