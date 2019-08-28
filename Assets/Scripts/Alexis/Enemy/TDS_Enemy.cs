@@ -180,14 +180,6 @@ public abstract class TDS_Enemy : TDS_Character
         get { return EnemyState; }
     }
 
-    /*
-    /// <summary>
-    /// Detection Range of the enemy 
-    /// If a player is within this range, it can be detected
-    /// </summary>
-    [SerializeField] protected float detectionRange = 5;
-    */
-
     /// <summary>
     /// Probability to taunt after wandering
     /// </summary>
@@ -1195,7 +1187,7 @@ public abstract class TDS_Enemy : TDS_Character
                 break;
             case EnemyAnimationState.LightHit:
                 animator.SetTrigger("lightHitTrigger");
-                break; 
+                break;
             default:
                 animator.SetInteger("animationState", _animationID);
                 break;

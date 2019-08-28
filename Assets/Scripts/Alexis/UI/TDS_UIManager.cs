@@ -892,9 +892,9 @@ public class TDS_UIManager : PunBehaviour
         else
         {
             TDS_LevelManager.Instance?.Spawn();
+            ActivateMenu(UIState.InGame);
         }
         characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements.ToList().ForEach(e => e.ClearToggle());
-        ActivateMenu(UIState.InGame); 
     }
 
     /// <summary>

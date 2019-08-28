@@ -40,26 +40,24 @@ public class TDS_MrLoyal : TDS_Boss
 
     #region Fields / Properties
     [SerializeField] private List<TDS_SpawnerArea> linkedArenas = new List<TDS_SpawnerArea>();
-    [SerializeField] private float chargeCatsRate = 5f; 
+    [SerializeField] private float chargeCatsRate = 5f;
     // [SerializeField] private TDS_Cat[] cats = null; 
     // METTRE LE POUR DE TP DANS LE FX MANAGER
 
-	#endregion
+    #endregion
 
-	#region Methods
+    #region Methods
 
-	#region Original Methods
+    #region Original Methods               
     /// <summary>
     /// Make MrLoyal gets out of the battle, then make him call the cats at a rate
     /// </summary>
     /// <returns></returns>
     public IEnumerator GetOutOfBattle()
     {
-
         /// Call the particle here
         /// Then wait some time and teleport Mr Loyal on his plateform
         /// Instantiate again particles on the teleportation spot
-        /// 
         TDS_SpawnerArea _currentArea = linkedArenas.Where(a => !a.IsDesactivated).FirstOrDefault(); 
         if(!_currentArea)
         {
@@ -67,17 +65,10 @@ public class TDS_MrLoyal : TDS_Boss
             yield break; 
         }
         _currentArea.StartSpawnArea();
-        float _timer = 0; 
         while (!_currentArea.IsDesactivated)
         {
-            yield return null;
-            // if both cats are dead -> continue
-            _timer += Time.deltaTime;
-            if(_timer > chargeCatsRate)
-            {
-                _timer = 0; 
-                //Activate cats
-            }
+            yield return new WaitForSeconds(chargeCatsRate);
+            //Activate cats
         }
         GetBackIntoBattle(); 
     }
