@@ -90,9 +90,10 @@ public class TDS_NetworkManager : PunBehaviour
 
     public void EnableOfflineMode()
     {
+        if (PhotonNetwork.connected) PhotonNetwork.Disconnect(); 
         PhotonNetwork.offlineMode = true;
         string _randomID = "LocalRoom" + (int)Random.Range(1, 999); 
-        PhotonNetwork.JoinOrCreateRoom(_randomID, new RoomOptions() { MaxPlayers = 4 }, null);
+        PhotonNetwork.JoinOrCreateRoom(_randomID, new RoomOptions() { MaxPlayers = 1 }, null);
     }
     //♥
     #endregion

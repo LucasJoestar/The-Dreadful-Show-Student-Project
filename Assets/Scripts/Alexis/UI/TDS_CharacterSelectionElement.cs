@@ -233,6 +233,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         readyToggle.onValueChanged.RemoveAllListeners();
         readyToggle.interactable = false;
         PlayerInfo = null;
+        IsUsedLocally = false; 
         if (isLocked)
         {
             IsLocked = false;

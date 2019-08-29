@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
-using System.Linq; 
+using UnityEditor;
 
-public class TDS_InvokingAttack : TDS_EnemyAttack 
+[CustomEditor(typeof(TDS_MrLoyal))]
+public class TDS_MrLoyalEditor : TDS_BossEditor 
 {
-    /* TDS_InvokingAttack :
+    /* TDS_MrLoyalEditor :
 	 *
 	 *	#####################
 	 *	###### PURPOSE ######
@@ -36,37 +37,31 @@ public class TDS_InvokingAttack : TDS_EnemyAttack
     #endregion
 
     #region Fields / Properties
+
     #endregion
 
     #region Methods
 
     #region Original Methods
-    public override void ApplyAttackBehaviour(TDS_Enemy _caster)
-    {
-        _caster.Area.ActivateWave(); 
 
-    }
     #endregion
 
     #region Unity Methods
-    // Awake is called when the script instance is being loaded
-    private void Awake()
+    protected override void OnEnable()
     {
-
+        base.OnEnable();
     }
 
-	// Use this for initialization
-    private void Start()
+    public override void OnInspectorGUI()
     {
-		
+        base.OnInspectorGUI();
     }
-	
-	// Update is called once per frame
-	private void Update()
-    {
-        
-	}
-	#endregion
 
-	#endregion
+    protected override void OnSceneGUI()
+    {
+        base.OnSceneGUI();
+    }
+    #endregion
+
+    #endregion
 }

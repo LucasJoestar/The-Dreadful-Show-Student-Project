@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Linq; 
 using UnityEngine;
-using UnityEngine.UI; 
+using UnityEngine.Events;
 
 public abstract class TDS_Boss : TDS_Enemy
 {
@@ -49,7 +49,9 @@ public abstract class TDS_Boss : TDS_Enemy
 */
 
     #region Events
-
+    [SerializeField] protected UnityEvent onTwoThirdsHealth = null;
+    [SerializeField] protected UnityEvent onHalfHealth = null;
+    [SerializeField] protected UnityEvent onOneThirdHealth = null; 
     #endregion
 
     #region Fields / Properties
@@ -192,6 +194,23 @@ public abstract class TDS_Boss : TDS_Enemy
     protected override void ApplyDamagesBehaviour(int _damage, Vector3 _position)
     {
         if (!PhotonNetwork.isMasterClient) return; 
+
+        if(healthCurrent <= healthMax * (2/3) && onTwoThirdsHealth != null)
+        {
+            onTwoThirdsHealth.Invoke();
+            onTwoThirdsHealth = null; 
+        }
+        else if(healthCurrent <= healthMax * .5f && onHalfHealth != null)
+        {
+            onHalfHealth.Invoke();
+            onHalfHealth = null; 
+        }
+        else if(healthCurrent <= healthMax * (1/3) && onOneThirdHealth != null)
+        {
+            onOneThirdHealth.Invoke();
+            onOneThirdHealth = null; 
+        }
+
         if (!isDead && _damage >= damagesThreshold)
         {
             SetAnimationState((int)EnemyAnimationState.Hit);

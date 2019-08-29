@@ -39,7 +39,12 @@ public class TDS_BossEditor : TDS_EnemyEditor
 
     #region Fields / Properties
     protected SerializedProperty damagesThreshold = null;
-    protected SerializedProperty portrait = null; 
+    protected SerializedProperty portrait = null;
+
+    protected SerializedProperty onTwoThirdsHealth = null;
+    protected SerializedProperty onHalfHealth = null;
+    protected SerializedProperty onOneThirdHealth = null; 
+
     #region FoldOut
     /// <summary>Backing field for <see cref="IsBossUnfolded"/></summary>
     private bool isBossUnfolded = false;
@@ -71,7 +76,12 @@ public class TDS_BossEditor : TDS_EnemyEditor
 
         TDS_EditorUtility.IntSlider("Damages Threshold", "How much damages had to be taken to play the hit animation", damagesThreshold, 1, 50);
 
-        TDS_EditorUtility.ObjectField("Boss Portrait", "Portrait to display next to the boss' lifebar", portrait, typeof(GameObject)); 
+        TDS_EditorUtility.ObjectField("Boss Portrait", "Portrait to display next to the boss' lifebar", portrait, typeof(GameObject));
+
+        EditorGUILayout.LabelField("Health events", TDS_EditorUtility.HeaderStyle); 
+        TDS_EditorUtility.PropertyField("On Two Thirds Health", "Event called when the boss has reached two thirds of his life", onTwoThirdsHealth);
+        TDS_EditorUtility.PropertyField("On Half Health", "Event called when the boss has reached half of his life", onHalfHealth);
+        TDS_EditorUtility.PropertyField("On One Third Health", "Event called when the boss has reached one third of his life", onOneThirdHealth);
     }
     #endregion
 
@@ -80,7 +90,10 @@ public class TDS_BossEditor : TDS_EnemyEditor
     {
         base.OnEnable();
         damagesThreshold = serializedObject.FindProperty("damagesThreshold");
-        portrait = serializedObject.FindProperty("portrait"); 
+        portrait = serializedObject.FindProperty("portrait");
+        onTwoThirdsHealth = serializedObject.FindProperty("onTwoThirdsHealth");
+        onHalfHealth = serializedObject.FindProperty("onHalfHealth");
+        onOneThirdHealth = serializedObject.FindProperty("onOneThirdHealth");
     }
 
     public override void OnInspectorGUI()

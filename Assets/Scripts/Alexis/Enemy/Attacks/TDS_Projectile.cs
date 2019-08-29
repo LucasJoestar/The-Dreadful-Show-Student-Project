@@ -62,12 +62,15 @@ public class TDS_Projectile : PunBehaviour
     private IEnumerator ProjectileMovement(Vector3 _direction)
     {
         if (!PhotonNetwork.isMasterClient) yield break; 
-        Vector3 _destination = transform.position + (_direction * range); 
-
+        Vector3 _destination = transform.position + (_direction * range);
+        float _timer = 0;
         while(Vector3.Distance(transform.position, _destination) > .1f)
         {
             transform.position += _direction * speed * Time.deltaTime;
-            yield return null; 
+            yield return null;
+            _timer += Time.deltaTime;
+            if (_timer > 10)
+                break;
         }
         PrepareDestruction(); 
     }

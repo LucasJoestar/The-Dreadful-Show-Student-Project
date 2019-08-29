@@ -152,6 +152,8 @@ public class TDS_SpawnerArea : PunBehaviour
     public List<TDS_Throwable> AreaThrowables { get { return areaThrowables; } }
 
     [SerializeField] List<TDS_Wave> waves = new List<TDS_Wave>();
+
+    public bool IsDesactivated { get; private set; } = false; 
     #endregion
 
     #endregion
@@ -205,7 +207,7 @@ public class TDS_SpawnerArea : PunBehaviour
     /// Make spawn all enemies at every point of the wave index
     /// Increase Wave Index
     /// </summary>
-    public void ActivateWave()
+    private void ActivateWave()
     {
         if (!PhotonNetwork.isMasterClient) return; 
         if (waves.Count == 0)
@@ -216,7 +218,7 @@ public class TDS_SpawnerArea : PunBehaviour
         if (waveIndex >= waves.Count && !isLooping)
         {
             ActivatedAreas.Remove(this);
-
+            IsDesactivated = true; 
             OnAreaDesactivated?.Invoke();
             TDS_UIManager.Instance.SwitchCurtains(false);
             return;

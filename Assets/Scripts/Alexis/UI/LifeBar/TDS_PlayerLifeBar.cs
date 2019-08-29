@@ -71,12 +71,15 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
         base.SetOwner(_owner);
         if(comboCounter)
         {
-            if (!PhotonNetwork.offlineMode && _owner is TDS_Player && TDS_GameManager.LocalPlayer == playerType)
+            if (_owner is TDS_Player)
             {
-                ((TDS_Player)_owner).HitBox.OnTouch += comboCounter.IncreaseCombo;
-                comboCounter.ResetComboManager(); 
-                comboCounter.gameObject.SetActive(true);
-                TDS_UIManager.Instance.ComboManager = comboCounter;
+                if((!PhotonNetwork.offlineMode && TDS_GameManager.LocalPlayer == playerType) || PhotonNetwork.offlineMode)
+                {
+                    ((TDS_Player)_owner).HitBox.OnTouch += comboCounter.IncreaseCombo;
+                    comboCounter.ResetComboManager();
+                    comboCounter.gameObject.SetActive(true);
+                    TDS_UIManager.Instance.ComboManager = comboCounter;
+                }
             }
             else
             {

@@ -249,7 +249,8 @@ public static class GeometryHelper
     {
         RaycastHit _hit;
         Vector3 _groundedPosition = _position;
-        if (Physics.Raycast(new Ray(_position, Vector3.down), out _hit))
+        LayerMask _mask = LayerMask.NameToLayer("Ground"); 
+        if (Physics.Raycast(new Ray(_position, Vector3.down), out _hit, 1, _mask))
         {
             _groundedPosition = _hit.point;
         }
