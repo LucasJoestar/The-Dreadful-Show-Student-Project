@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor; 
 
-[RequireComponent(typeof(CustomNavMeshAgent))]
-public class TDS_Cat : TDS_Character 
+[CustomEditor(typeof(TDS_Cat))]
+public class TDS_CatEditor : TDS_CharacterEditor 
 {
-    /* TDS_Cat :
+    /* TDS_CatEditor :
 	 *
 	 *	#####################
 	 *	###### PURPOSE ######
@@ -39,29 +40,21 @@ public class TDS_Cat : TDS_Character
     #endregion
 
     #region Fields / Properties
-    [SerializeField] private CustomNavMeshAgent agent = null; 
-	#endregion
 
-	#region Methods
+    #endregion
 
-	#region Original Methods
+    #region Methods
 
-	#endregion
+    #region Original Methods
 
-	#region Unity Methods
-	// Awake is called when the script instance is being loaded
-    protected override void Awake()
+    #endregion
+
+    #region Unity Methods
+    protected override void OnEnable()
     {
-        base.Awake();
-        if (!agent) agent = GetComponent<CustomNavMeshAgent>(); 
+        base.OnEnable();
     }
+    #endregion
 
-    // Use this for initialization
-    protected override void Start()
-    {
-        base.Start(); 
-    }
-	#endregion
-
-	#endregion
+    #endregion
 }
