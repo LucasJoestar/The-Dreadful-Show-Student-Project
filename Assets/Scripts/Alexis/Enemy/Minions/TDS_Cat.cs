@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CustomNavMeshAgent))]
-public class TDS_Cat : TDS_Damageable 
+public class TDS_Cat : TDS_Character 
 {
     /* TDS_Cat :
 	 *
