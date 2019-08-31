@@ -212,9 +212,7 @@ public enum EnemyAnimationState
     BringTargetCloser, 
     EndBringingTargetCloser, 
     StopDashing, 
-    LightHit,
-    GetOutOfBattle,
-    GetBackIntoBattle
+    LightHit
 }
 
 /// <summary>
@@ -272,7 +270,9 @@ public enum FXType
     RabbitPoof,
     BeardGrowsUp,
     BeardDamaged,
-    Heal
+    Heal, 
+    MrLoyalTeleportation, 
+    MrLoyalEndTeleportation
 }
 
 /// <summary>

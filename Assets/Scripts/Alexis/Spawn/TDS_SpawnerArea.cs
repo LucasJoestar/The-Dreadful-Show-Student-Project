@@ -77,7 +77,7 @@ public class TDS_SpawnerArea : PunBehaviour
     /// <summary>
     /// This UnityEvent is called when a wave has to be started
     /// </summary>
-    [SerializeField] private UnityEvent OnNextWave = null;
+    [SerializeField] public UnityEvent OnNextWave = null; 
     /// <summary>
     /// Called when the fight is starting 
     /// </summary>

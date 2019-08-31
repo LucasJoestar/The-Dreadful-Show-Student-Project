@@ -41,14 +41,18 @@ public class TDS_MrLoyal : TDS_Boss
     #region Fields / Properties
     [SerializeField] private List<TDS_SpawnerArea> linkedArenas = new List<TDS_SpawnerArea>();
     [SerializeField] private float chargeCatsRate = 5f;
-    // [SerializeField] private TDS_Cat[] cats = null; 
-    // METTRE LE POUR DE TP DANS LE FX MANAGER
-
+    [SerializeField] private TDS_Cat[] cats = null;
+    [SerializeField] private Vector3 teleportationPosition = Vector3.zero; 
     #endregion
 
     #region Methods
 
-    #region Original Methods               
+    #region Original Methods            
+    private void CallOut()
+    {
+        SetAnimationState((int)EnemyAnimationState.Taunt); 
+    }
+
     /// <summary>
     /// Make MrLoyal gets out of the battle, then make him call the cats at a rate
     /// </summary>
@@ -56,21 +60,30 @@ public class TDS_MrLoyal : TDS_Boss
     public IEnumerator GetOutOfBattle()
     {
         /// Call the particle here
+        TDS_VFXManager.Instance.SpawnEffect(FXType.MrLoyalTeleportation, transform.position); 
         /// Then wait some time and teleport Mr Loyal on his plateform
+        yield return new WaitForSeconds(1.5f);
+        sprite.enabled = false;
+        transform.position = teleportationPosition;
+        TDS_VFXManager.Instance.SpawnEffect(FXType.MrLoyalEndTeleportation, teleportationPosition);
+        yield return null;
+        sprite.enabled = true; 
         /// Instantiate again particles on the teleportation spot
-        TDS_SpawnerArea _currentArea = linkedArenas.Where(a => !a.IsDesactivated).FirstOrDefault(); 
+        TDS_SpawnerArea _currentArea = linkedArenas.Where(a => !a.IsDesactivated).FirstOrDefault();
         if(!_currentArea)
         {
-            GetBackIntoBattle(); 
+            yield return GetBackIntoBattle(); 
             yield break; 
         }
+        _currentArea.OnNextWave.AddListener(CallOut);
         _currentArea.StartSpawnArea();
         while (!_currentArea.IsDesactivated)
         {
             yield return new WaitForSeconds(chargeCatsRate);
+
             //Activate cats
         }
-        GetBackIntoBattle(); 
+        yield return GetBackIntoBattle(); 
     }
 
     /// <summary>
@@ -79,12 +92,31 @@ public class TDS_MrLoyal : TDS_Boss
     private void RemoveFromBattle()
     {
         SetEnemyState(EnemyState.OutOfBattle);
-        SetAnimationState((int)EnemyAnimationState.GetOutOfBattle); 
     }
 
-    private void GetBackIntoBattle()
+    private IEnumerator GetBackIntoBattle()
     {
-        SetAnimationState((int)EnemyAnimationState.GetBackIntoBattle);
+        SetAnimationState((int)EnemyAnimationState.Idle);
+        TDS_Bounds _bounds = TDS_Camera.Instance?.CurrentBounds;
+        Vector3 _pos = Vector3.zero; 
+        if (_bounds == null)
+        {
+            _pos = TDS_LevelManager.Instance.AllPlayers.FirstOrDefault().transform.position; 
+        }
+        else
+        {
+            _pos = new Vector3((_bounds.XMax + _bounds.XMin)/2, 0, (_bounds.ZMin + _bounds.ZMax)/2); 
+        }
+        //Reinstantiate the particle here
+        TDS_VFXManager.Instance.SpawnEffect(FXType.MrLoyalTeleportation, transform.position);
+        yield return new WaitForSeconds(1.5f);
+        sprite.enabled = false;
+        transform.position = _pos;
+        TDS_VFXManager.Instance.SpawnEffect(FXType.MrLoyalEndTeleportation, _pos);
+        yield return null;
+        sprite.enabled = true;
+        yield return null; 
+        SetEnemyState(EnemyState.MakingDecision);
     }
     #endregion
 
@@ -99,14 +131,15 @@ public class TDS_MrLoyal : TDS_Boss
 	// Use this for initialization
     protected override void Start()
     {
-        base.Start(); 
+        base.Start();
     }
-	
-	// Update is called once per frame
-	protected override void Update()
+
+    // Update is called once per frame
+    protected override void Update()
     {
         base.Update(); 
 	}
+
 	#endregion
 
 	#endregion
