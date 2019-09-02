@@ -221,11 +221,6 @@ public class TDS_HitBox : MonoBehaviour
             collider = GetComponent<BoxCollider>();
             if (!collider) Debug.LogWarning("The HitBox " + name + " Collider is missing !");
         }
-        if (!Owner)
-        {
-            Owner = GetComponentInParent<TDS_Character>();
-            if (!Owner) Debug.LogWarning("The HitBox " + name + " Character reference is missing !");
-        }
     }
 
     // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn

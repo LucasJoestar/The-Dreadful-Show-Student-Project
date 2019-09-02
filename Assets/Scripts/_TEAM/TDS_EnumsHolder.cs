@@ -312,7 +312,8 @@ public enum PlayerAnimState
     Sliding,
     NotSliding,
     Down,
-    BackFromTheDeads
+    BackFromTheDeads,
+    JumpAttack
 }
 
 /// <summary>

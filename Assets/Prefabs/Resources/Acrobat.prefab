@@ -273,8 +273,8 @@ MonoBehaviour:
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 150
-  healthMax: 150
+  healthCurrent: 65
+  healthMax: 65
   hitBox: {fileID: 1094013547979872355}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
@@ -285,23 +285,23 @@ MonoBehaviour:
   IsPacific: 0
   IsParalyzed: 0
   aimAngle: 45
-  speedAccelerationTime: 0.5
+  speedAccelerationTime: 1
   speedCoef: 1
   speedCurrent: 0
-  speedInitial: 1
-  speedMax: 2
-  throwBonusDamagesMax: 45
-  throwBonusDamagesMin: 45
+  speedInitial: 1.75
+  speedMax: 3.25
+  throwBonusDamagesMax: 3
+  throwBonusDamagesMin: 0
   throwAimingPoint: {x: 0, y: 0, z: 0}
   canBeDown: 1
   canThrow: 1
   doScaleOnPlayerAmount: 1
   enemyState: 0
   tauntProbability: 0
-  throwRange: 1
+  throwRange: 12
   wanderingRangeMin: 5
   wanderingRangeMax: 9
-  healthScalePercent: 10
+  healthScalePercent: 25
   attacks:
   - {fileID: 11400000, guid: bb948e3ca6b9b374995fd8dbc7df65b8, type: 2}
   - {fileID: 11400000, guid: 07d084e084d8fbc4c94a28bb30c7f95b, type: 2}
@@ -309,7 +309,7 @@ MonoBehaviour:
   agent: {fileID: 1094014115215686679}
   hasEvolved: 0
   ragingThreshold: 3
-  resetRageDelay: 1
+  resetRageDelay: 3
 --- !u!1 &1062388843252701697
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,7 +464,7 @@ GameObject:
   - component: {fileID: 1060231104429665027}
   - component: {fileID: 1067329675523352225}
   - component: {fileID: 1075485330809354619}
-  m_Layer: 17
+  m_Layer: 25
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

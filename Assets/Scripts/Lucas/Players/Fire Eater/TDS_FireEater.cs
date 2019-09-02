@@ -37,6 +37,18 @@ public class TDS_FireEater : TDS_Player
 
     #region Fields / Properties
 
+    #region Components & References
+    /// <summary>
+    /// Sprite of the Fire Eater mini game.
+    /// </summary>
+    [SerializeField] private SpriteRenderer miniGameSprite = null;
+
+    /// <summary>
+    /// Anchor used for the mini game sprites.
+    /// </summary>
+    [SerializeField] private Transform miniGameAnchor = null;
+    #endregion
+
     #region Constants
     /// <summary>
     /// Time used to activate the Fire Eater mini game when pressing the attack button.
@@ -72,7 +84,26 @@ public class TDS_FireEater : TDS_Player
         set
         {
             isInMiniGame = value;
-            if (photonView.isMine) animator.SetBool("IsInMiniGame", value);
+            if (photonView.isMine)
+            {
+                if (value)
+                {
+                    float _xBound = TDS_Camera.Instance.Camera.WorldToViewportPoint(new Vector2(miniGameSprite.bounds.min.x - 2, miniGameSprite.bounds.center.y)).x;
+                    if (_xBound < 0)
+                    {
+                        miniGameAnchor.localPosition = new Vector3((TDS_Camera.Instance.CameraXRatio * 2 * _xBound) * -isFacingRight.ToSign(), miniGameAnchor.localPosition.y, miniGameAnchor.localPosition.z);
+                    }
+                    else if ((_xBound = TDS_Camera.Instance.Camera.WorldToViewportPoint(new Vector2(miniGameSprite.bounds.max.x + 2, miniGameSprite.bounds.center.y)).x) > 1)
+                    {
+                        miniGameAnchor.localPosition = new Vector3((TDS_Camera.Instance.CameraXRatio * 2 * (1 - _xBound)) * isFacingRight.ToSign(), miniGameAnchor.localPosition.y, miniGameAnchor.localPosition.z);
+                    }
+                }
+                else if (miniGameAnchor.localPosition.x != 0)
+                {
+                    miniGameAnchor.localPosition = new Vector3(0, miniGameAnchor.localPosition.y, miniGameAnchor.localPosition.z);
+                }
+                animator.SetBool("IsInMiniGame", value);
+            }
         }
     }
 
@@ -130,11 +161,6 @@ public class TDS_FireEater : TDS_Player
             drunkJumpForce = value;
         }
     }
-
-    /// <summary>
-    /// Anchor used for the mini game sprites.
-    /// </summary>
-    [SerializeField] private Transform miniGameAnchor = null;
     #endregion
 
     #region Memory
@@ -219,7 +245,7 @@ public class TDS_FireEater : TDS_Player
         if (isInMiniGame)
         {
             IsInMiniGame = true;
-            animator.SetFloat("MiniGameSpeed", Random.Range(.45f, .9f));
+            animator.SetFloat("MiniGameSpeed", Random.Range(.5f, 1f));
 
             while (isInMiniGame)
             {
@@ -308,7 +334,7 @@ public class TDS_FireEater : TDS_Player
         ButtonType _buttonType = _isLight ? ButtonType.LightAttack : ButtonType.HeavyAttack;
         float _timer = TIME_TO_ACTIVATE_MINI_GAME;
 
-        if (!isDrunk)
+        if (!isDrunk && isGrounded && !isJumping)
         {
             while (Controller.GetButton(_buttonType))
             {
@@ -353,6 +379,17 @@ public class TDS_FireEater : TDS_Player
 
         _fireBall.GetComponentInChildren<TDS_HitBox>().Activate(attacks[_isUltra == 0 ? 12 : 13], this);
         if (_isUltra != 0) _fireBall.transform.localScale *= 1.15f;
+    }
+
+    /// <summary>
+    /// Makes the player start preparing an attack. This is the method called just before calling the <see cref="PrepareAttack(bool)"/> coroutine.
+    /// </summary>
+    /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
+    public override void StartPreparingAttack(bool _isLight)
+    {
+        if (isDrunk && (isAttacking || !isGrounded || isJumping)) return;
+
+        base.StartPreparingAttack(_isLight);
     }
 
     /// <summary>

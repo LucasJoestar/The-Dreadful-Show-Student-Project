@@ -35,6 +35,16 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
     #region Fields / Properties
 
     #region SerializedProperties
+
+    #region Components & References
+    /// <summary>SerializedProperties for <see cref="TDS_FireEater.miniGameSprite"/> of type <see cref="SpriteRenderer"/>.</summary>
+    private SerializedProperty miniGameSprite = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_FireEater.miniGameAnchor"/> of type <see cref="Transform"/>.</summary>
+    private SerializedProperty miniGameAnchor = null;
+    #endregion
+
+    #region Variables
     /// <summary>SerializedProperties for <see cref="TDS_FireEater.isDrunk"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isDrunk = null;
 
@@ -52,9 +62,8 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
 
     /// <summary>SerializedProperties for <see cref="TDS_FireEater.drunkJumpForce"/> of type <see cref="int"/>.</summary>
     private SerializedProperty drunkJumpForce = null;
+    #endregion
 
-    /// <summary>SerializedProperties for <see cref="TDS_FireEater.miniGameAnchor"/> of type <see cref="Transform"/>.</summary>
-    private SerializedProperty miniGameAnchor = null;
     #endregion
 
     #region Foldouts
@@ -154,6 +163,7 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
     private void DrawComponentsAndReferences()
     {
         TDS_EditorUtility.ObjectField("Mini Game Anchor", "Anchor used for the mini game sprites", miniGameAnchor, typeof(Transform));
+        TDS_EditorUtility.ObjectField("Mini Game Sprite", "Sprite of the mini game wheel", miniGameSprite, typeof(SpriteRenderer));
     }
 
     /// <summary>
@@ -310,14 +320,16 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
         else isFireEaterMultiEditing = true;
 
         // Get the serializedProperties from the serializedObject
+        miniGameSprite = serializedObject.FindProperty("miniGameSprite");
+        miniGameAnchor = serializedObject.FindProperty("miniGameAnchor");
+
         isDrunk = serializedObject.FindProperty("isDrunk");
         drunkSpeedCoef = serializedObject.FindProperty("drunkSpeedCoef");
         soberUpTime = serializedObject.FindProperty("soberUpTime");
         soberUpTimer = serializedObject.FindProperty("soberUpTimer");
         xMovementAfterDrunkenDodge = serializedObject.FindProperty("xMovementAfterDrunkenDodge");
         drunkJumpForce = serializedObject.FindProperty("drunkJumpForce");
-        miniGameAnchor = serializedObject.FindProperty("miniGameAnchor");
-
+        
         // Loads the editor folded & unfolded values of this script
         isFireEaterUnfolded = EditorPrefs.GetBool("isFireEaterUnfolded", isFireEaterUnfolded);
         areFireEaterComponentsUnfolded = EditorPrefs.GetBool("areFireEaterComponentsUnfolded", areFireEaterComponentsUnfolded);

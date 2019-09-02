@@ -773,7 +773,7 @@ public class TDS_Juggler : TDS_Player
         if (isAiming || !throwable) return false;
 
         isAiming = true;
-        speedCoef *= aimingSpeedCoef;
+        SpeedCoef *= aimingSpeedCoef;
         aimCoroutine = StartCoroutine(Aim());
 
         return true;
@@ -887,7 +887,7 @@ public class TDS_Juggler : TDS_Player
         }
 
         // Reset back speed coefficient.
-        speedCoef /= aimingSpeedCoef;
+        SpeedCoef /= aimingSpeedCoef;
 
         // Desactivate aim target
         TDS_UIManager.Instance.DesctivateJugglerAimTarget();
@@ -1230,6 +1230,16 @@ public class TDS_Juggler : TDS_Player
         // Rotates the juggle transform so that it stays at the same location
         juggleTransform.rotation = _baseRotation;
     }
+
+    /// <summary>
+    /// Freezes the player's movements and actions.
+    /// </summary>
+    public override void FreezePlayer()
+    {
+        base.FreezePlayer();
+
+        if (isAiming) StopAiming();
+    }
     #endregion
 
     #region Others
@@ -1299,8 +1309,6 @@ public class TDS_Juggler : TDS_Player
 
         // Set the juggle transform ideal position
         juggleTransformIdealLocalPosition = new Vector3(.3f, .85f, 0);
-
-        base.Start();
 
         if (photonView.isMine)
         {

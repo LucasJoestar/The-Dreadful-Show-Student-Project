@@ -126,7 +126,7 @@ public class TDS_Attack : ScriptableObject
         if (!_noEffect) _damages += Random.Range(Effect.DamagesMin, Effect.DamagesMax + 1);
 
         // Inflict damages, and return if target don't get hurt, if no effect or if target is dead
-        if (!_target.TakeDamage(_damages, _attacker.Collider.bounds.center)) return -2;
+        if ((_damages < 1)  || !_target.TakeDamage(_damages, _attacker.Collider.bounds.center)) return -2;
 
         // Increase score
         if ((_attacker.Owner is TDS_Player _player) && (_target is TDS_Enemy _enemyTarget))

@@ -26,10 +26,10 @@ TextureImporter:
     21300042: Rat_04
     21300044: Rat_05
     21300046: Rat_06
-    21300048: LionCat_#01_Sleep_01
-    21300050: LionCat_#01_Sleep_02
-    21300052: LionCat_#01_Sleep_03
-    21300054: LionCat_#01_Sleep_04
+    21300048: GreyCat_Sleep_01
+    21300050: GreyCat_Sleep_02
+    21300052: GreyCat_Sleep_03
+    21300054: GreyCat_Sleep_04
     21300056: GreyCat_Idle01
     21300058: GreyCat_Idle02
     21300060: GreyCat_Run01
@@ -187,8 +187,8 @@ TextureImporter:
         y: 3728
         width: 216
         height: 185
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.6, y: 0.06}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -347,8 +347,8 @@ TextureImporter:
         y: 3727
         width: 217
         height: 178
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.6, y: 0.03}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -527,8 +527,8 @@ TextureImporter:
         y: 3057
         width: 294
         height: 135
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -547,8 +547,8 @@ TextureImporter:
         y: 3056
         width: 352
         height: 113
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.575, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -567,8 +567,8 @@ TextureImporter:
         y: 3056
         width: 377
         height: 113
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.55, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -587,8 +587,8 @@ TextureImporter:
         y: 3056
         width: 341
         height: 121
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.55, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -607,8 +607,8 @@ TextureImporter:
         y: 3056
         width: 332
         height: 121
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.55, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -627,8 +627,8 @@ TextureImporter:
         y: 3059
         width: 304
         height: 114
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.55, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -640,14 +640,14 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LionCat_#01_Sleep_01
+      name: GreyCat_Sleep_01
       rect:
         serializedVersion: 2
         x: 55
         y: 2704
         width: 601
         height: 152
-      alignment: 7
+      alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -660,15 +660,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LionCat_#01_Sleep_02
+      name: GreyCat_Sleep_02
       rect:
         serializedVersion: 2
         x: 738
-        y: 2704
+        y: 2705
         width: 585
         height: 149
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.4915, y: -0.0025}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -680,15 +680,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LionCat_#01_Sleep_03
+      name: GreyCat_Sleep_03
       rect:
         serializedVersion: 2
         x: 1437
         y: 2704
         width: 522
         height: 192
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.431, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -700,15 +700,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LionCat_#01_Sleep_04
+      name: GreyCat_Sleep_04
       rect:
         serializedVersion: 2
         x: 2061
         y: 2704
         width: 588
         height: 149
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.49, y: -0.0025}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

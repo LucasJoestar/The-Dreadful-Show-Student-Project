@@ -321,6 +321,11 @@ public class TDS_Player : TDS_Character, IPunObservable
     protected Coroutine invulnerabilityCoroutine = null;
 
     /// <summary>
+    /// References the current coroutine used for the jump attack.
+    /// </summary>
+    protected Coroutine jumpAttackCoroutine = null;
+
+    /// <summary>
     /// References the current coroutine of the jump method. Null if none is actually running.
     /// </summary>
     protected Coroutine jumpCoroutine = null;
@@ -688,6 +693,13 @@ public class TDS_Player : TDS_Character, IPunObservable
         }
         #endif
 
+        // Set jump attack bonus damages
+        if (!isGrounded || isJumping)
+        {
+            if (transform.position.y < 2) SetBonusDamages((int)(attacks[_attackIndex].DamagesMin * ((transform.position.y / 2f) - 1)));
+            else SetBonusDamages((attacks[_attackIndex].DamagesMax - attacks[_attackIndex].DamagesMin) / 2);
+        }
+      
         // Activate the hit box
         hitBox.Activate(attacks[_attackIndex]);
         return true;
@@ -704,6 +716,13 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         // Adds the current combo to the list
         ComboCurrent.Add(_isLight);
+
+        if (!isGrounded || isJumping)
+        {
+            SetAnimOnline(PlayerAnimState.JumpAttack);
+            jumpAttackCoroutine = StartCoroutine(JumpAttackMove());
+            return;
+        }
 
         // Set animator
         if (_isLight) SetAnimOnline(PlayerAnimState.LightAttack);
@@ -757,6 +776,50 @@ public class TDS_Player : TDS_Character, IPunObservable
     }
 
     /// <summary>
+    /// Makes the player move forward during the jump attack.
+    /// </summary>
+    /// <returns></returns>
+    protected virtual IEnumerator JumpAttackMove()
+    {
+        rigidbody.isKinematic = true;
+
+        float _movement = 2f;
+        while (!isGrounded)
+        {
+            MoveInDirection(new Vector3(transform.position.x, transform.position.y - _movement, transform.position.z));
+            if (transform.position.y < 0)
+            {
+                transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+                break;
+            }
+
+            _movement *= 1.2f;
+            yield return null;
+        }
+
+        // Screen shake
+        float _force = Mathf.Clamp(_movement / 500, .01f, .025f);
+        TDS_Camera.Instance.StartScreenShake(_force, _force * 10);
+
+        // Make the player bounce
+        for (int _i = 0; _i < 5; _i++)
+        {
+            MoveInDirection(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z));
+            yield return null;
+        }
+        for (int _i = 0; _i < 5; _i++)
+        {
+            MoveInDirection(new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z));
+            yield return null;
+        }
+
+        StopAttack();
+        BreakCombo();
+        rigidbody.isKinematic = false;
+        jumpAttackCoroutine = null;
+    }
+
+    /// <summary>
     /// Makes the player prepare an attack.
     /// By default, the player is supposed to just directly attack ; but for certain situations, the attack might not played directly : that's the goal of this method, to be override to rewrite a pre-attack behaviour.
     /// </summary>
@@ -783,7 +846,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
     public virtual void StartPreparingAttack(bool _isLight)
     {
-        if (isPreparingAttack || (comboCurrent.Count == comboMax)) return;
+        if (isPreparingAttack || (comboCurrent.Count == comboMax) || ((!isGrounded || isJumping) && isAttacking)) return;
 
         // If already attacking, just stock this attack as the next one
         if (isAttacking || isDodging)
@@ -810,6 +873,21 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (hitBox.IsActive) DesactiveHitBox();
 
         if (isAttacking) Invoke("EndAttack", .1f);
+    }
+
+    /// <summary>
+    /// Stops the movement for the jump attack.
+    /// </summary>
+    public virtual void StopJumpAttackMovement()
+    {
+        if (jumpAttackCoroutine == null) return;
+
+        StopCoroutine(jumpAttackCoroutine);
+
+        StopAttack();
+        BreakCombo();
+        rigidbody.isKinematic = false;
+        jumpAttackCoroutine = null;
     }
 
     /// <summary>
@@ -1046,11 +1124,11 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         if (!base.BringCloser(_distance)) return false;
 
+        FreezePlayer();
+        IsInvulnerable = true;
+
         // Set Animation
         SetAnimOnline(PlayerAnimState.Sliding);
-
-        IsPlayable = false;
-        IsInvulnerable = true;
 
         return true;
     }
@@ -1062,7 +1140,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         base.GetUp();
 
-        IsPlayable = true;
+        UnfreezePlayer();
         IsInvulnerable = false;
     }
 
@@ -1073,11 +1151,11 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         if (!base.PutOnTheGround()) return false;
 
+        FreezePlayer();
+        IsInvulnerable = true;
+
         // Set animation
         SetAnimOnline(PlayerAnimState.Down);
-
-        IsPlayable = false;
-        IsInvulnerable = true;
 
         return true;
     }
@@ -1089,14 +1167,14 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         base.StopBringingCloser();
 
-        // Set animation
-        SetAnimOnline(PlayerAnimState.NotSliding);
-
         if (invulnerabilityCoroutine == null)
         {
-            IsPlayable = true;
+            UnfreezePlayer();
             IsInvulnerable = false;
         }
+
+        // Set animation
+        SetAnimOnline(PlayerAnimState.NotSliding);
     }
     #endregion
 
@@ -1161,7 +1239,11 @@ public class TDS_Player : TDS_Character, IPunObservable
         TDS_VFXManager.Instance.SpawnOpponentHitEffect(new Vector3(_opponentXCenter, _opponentYMax + .25f, _opponentZ) + ((Vector3)Random.insideUnitCircle * .5f));
 
         // Screen shake guy !
-        TDS_Camera.Instance.StartScreenShake(comboCurrent.Count < 3 ? .01f : .012f, .125f);
+        if ((comboCurrent.Count > 0) && comboCurrent.Last())
+        {
+            TDS_Camera.Instance.StartScreenShake(.012f, .25f);
+        }
+        else TDS_Camera.Instance.StartScreenShake(.015f, .35f);
     }
 
     /// <summary>
@@ -1225,7 +1307,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Executes base method
         if (!base.TakeDamage(_damage))
         {
-            if (photonView.isMine) TDS_Camera.Instance.StartScreenShake(.01f, .05f);
+            if (photonView.isMine) TDS_Camera.Instance.StartScreenShake(.02f, .2f);
             return false;
         }
 
@@ -1250,7 +1332,7 @@ public class TDS_Player : TDS_Character, IPunObservable
 
             if (photonView.isMine)
             {
-                TDS_Camera.Instance.StartScreenShake(.02f, .15f);
+                TDS_Camera.Instance.StartScreenShake(.02f, .5f);
 
                 // Triggers associated animation
                 if (!IsDown) SetAnimOnline(PlayerAnimState.Hit);
@@ -1258,7 +1340,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         }
         else if (photonView.isMine)
         {
-            TDS_Camera.Instance.StartScreenShake(.05f, .1f);
+            TDS_Camera.Instance.StartScreenShake(.05f, .5f);
         }
         
         return true;
@@ -1539,15 +1621,15 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <summary>
     /// Freezes the player's movements and actions.
     /// </summary>
-    public void FreezePlayer()
+    public virtual void FreezePlayer()
     {
         IsPlayable = false;
+        if (isDodging) StopDodge();
         if (isMoving)
         {
             isMoving = false;
             SetAnimOnline(PlayerAnimState.Idle);
         }
-        if (isDodging) StopDodge();
     }
 
     /// <summary>
@@ -1569,8 +1651,8 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <returns></returns>
     private IEnumerator GoAroundCoroutine(Vector3 _position, bool _unfreezeAfter)
     {
-        IsPlayable = false;
-        speedCoef *= .25f;
+        FreezePlayer();
+        SpeedCoef *= .25f;
 
         if (Mathf.Sign(_position.x - transform.position.x) != isFacingRight.ToSign()) Flip();
 
@@ -1589,8 +1671,8 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         if (!isFacingRight) Flip();
 
-        speedCoef /= .25f;
-        if (_unfreezeAfter) IsPlayable = true;
+        SpeedCoef /= .25f;
+        if (_unfreezeAfter) UnfreezePlayer();
         goAroundCoroutine = null;
         yield break;
     }
@@ -1615,7 +1697,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Adds a base vertical force to the rigidbody to expels the player in the air
         rigidbody.AddForce(Vector3.up * JumpForce);
 
-        while(Controller.GetButton(ButtonType.Jump) && _timer < JumpMaximumTime)
+        while (Controller.GetButton(ButtonType.Jump) && _timer < JumpMaximumTime)
         {
             rigidbody.AddForce(Vector3.up * (JumpForce / JumpMaximumTime) * Time.deltaTime);
             yield return new WaitForFixedUpdate();
@@ -1925,6 +2007,10 @@ public class TDS_Player : TDS_Character, IPunObservable
                 animator.SetTrigger("REVIVE");
                 break;
 
+            case PlayerAnimState.JumpAttack:
+                animator.SetTrigger("JumpAttack");
+                break;
+
             default:
                 break;
         }
@@ -1980,7 +2066,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (throwable && (playerType != PlayerType.Juggler)) return 2;
 
         // Checks potentially agressives actions
-        if (!IsPacific && isGrounded)
+        if (!IsPacific)
         {
             if (Controller.GetButtonDown(ButtonType.LightAttack))
             {
@@ -2254,7 +2340,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         base.Start();
 
-        if(!photonView.isMine || !PhotonNetwork.offlineMode)
+        if(!photonView.isMine)
         {
             TDS_LevelManager.Instance?.InitOnlinePlayer(this); 
         }

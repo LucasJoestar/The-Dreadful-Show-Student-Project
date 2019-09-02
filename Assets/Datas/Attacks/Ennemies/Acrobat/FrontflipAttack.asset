@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Frontflip attack
   Effect:
-    EffectType: 0
-    percentageHighest: 0
-    percentageLowest: 0
+    EffectType: 1
+    percentageHighest: 25
+    percentageLowest: 10
     damagesMax: 0
     damagesMin: 0
   damagesMax: 15
@@ -25,7 +25,7 @@ MonoBehaviour:
   AnimationID: 7
   cooldown: 1.1
   maxRange: 5
-  minRange: 3
+  minRange: 2
   probability: 35
   canBreakGuard: 0
   isDashingForward: 1

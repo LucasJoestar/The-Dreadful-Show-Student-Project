@@ -244,8 +244,8 @@ MonoBehaviour:
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 150
-  healthMax: 150
+  healthCurrent: 175
+  healthMax: 175
   hitBox: {fileID: 3932942832233620050}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
@@ -266,13 +266,13 @@ MonoBehaviour:
   throwAimingPoint: {x: 0, y: 0, z: 0}
   canBeDown: 1
   canThrow: 1
-  doScaleOnPlayerAmount: 0
+  doScaleOnPlayerAmount: 1
   enemyState: 0
   tauntProbability: 0
   throwRange: 1
   wanderingRangeMin: 5
   wanderingRangeMax: 9
-  healthScalePercent: 50
+  healthScalePercent: 35
   attacks:
   - {fileID: 11400000, guid: 5f3dbe37b66fcb34fbc42804b3b5ef6d, type: 2}
   - {fileID: 11400000, guid: 44b3e5964ca3f9b46aff3692e4f22295, type: 2}
@@ -280,7 +280,7 @@ MonoBehaviour:
   agent: {fileID: 3932927971346318886}
   hasEvolved: 0
   ragingThreshold: 3
-  resetRageDelay: 1
+  resetRageDelay: 3
 --- !u!1 &3964421302987546672
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,7 +435,7 @@ GameObject:
   - component: {fileID: 3966716620350656818}
   - component: {fileID: 3996315210833419408}
   - component: {fileID: 3987600024387371850}
-  m_Layer: 17
+  m_Layer: 25
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
