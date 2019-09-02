@@ -244,7 +244,7 @@ public class TDS_HitBox : MonoBehaviour
         if ((Owner && (other.gameObject == Owner.gameObject)) || !other.gameObject.HasTag(HittableTags.ObjectTags)) return;
 
         TDS_Damageable _target = other.GetComponent<TDS_Damageable>();
-        if (!_target) return;
+        if (!_target ) return;
 
         // Deal damages and apply effect
         TouchedObjects.Add(other);

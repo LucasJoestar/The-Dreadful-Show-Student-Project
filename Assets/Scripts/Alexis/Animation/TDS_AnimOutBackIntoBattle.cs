@@ -21,8 +21,9 @@ public class TDS_AnimOutBackIntoBattle : StateMachineBehaviour
     // OnStateExit is called before OnStateExit is called on any state inside this state machine
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        owner.SetEnemyState(EnemyState.MakingDecision);
-        owner.SetAnimationState((int)EnemyAnimationState.Idle); 
+        if(!owner) owner = animator.GetComponent<TDS_MrLoyal>();
+        //owner.SetEnemyState(EnemyState.MakingDecision);
+        //owner.SetAnimationState((int)EnemyAnimationState.Idle); 
     }
 
     // OnStateMove is called before OnStateMove is called on any state inside this state machine
