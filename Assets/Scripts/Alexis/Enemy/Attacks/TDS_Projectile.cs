@@ -55,6 +55,7 @@ public class TDS_Projectile : PunBehaviour
     public TDS_HitBox HitBox { get { return hitBox;  } }
 
     [SerializeField] private AnimationCurve trajectory = new AnimationCurve(); 
+
     #endregion
 
     #region Methods
@@ -114,7 +115,6 @@ public class TDS_Projectile : PunBehaviour
             hitBox = GetComponent<TDS_HitBox>();
             if (!hitBox) Debug.LogWarning("HitBox is missing on Projectile !");
         }
-        hitBox.OnTouch += PrepareDestruction; 
     }
 
 

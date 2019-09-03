@@ -1074,7 +1074,6 @@ public abstract class TDS_Enemy : TDS_Character
         IsPacific = false;
         IsParalyzed = false;
         SetEnemyState(EnemyState.MakingDecision);
-        //behaviourCoroutine = StartCoroutine(Behaviour());
     }
 
     /// <summary>
@@ -1102,21 +1101,28 @@ public abstract class TDS_Enemy : TDS_Character
     public virtual void ComputePath()
     {
         if (isDead || !PhotonNetwork.isMasterClient) return; 
-        if(!playerTarget || playerTarget.IsDead)
-        {
-            SetEnemyState(EnemyState.MakingDecision);
-            return; 
-        }
         if(IsParalyzed)
         {
             SetEnemyState(EnemyState.MakingDecision);
             return; 
         }
-        //Compute the path
-        // Select a position
         bool _pathComputed = false;
         Vector3 _position;
+        if (TDS_Camera.Instance && (transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax || transform.position.x < TDS_Camera.Instance.CurrentBounds.XMin))
+        {
+            _position = new Vector3(transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax ? TDS_Camera.Instance.CurrentBounds.XMax - 1 : TDS_Camera.Instance.CurrentBounds.XMin + 1 , transform.position.y, transform.position.z);
+            agent.SetDestination(_position); 
+            SetEnemyState(EnemyState.Wandering); 
+            return; 
+        }
+        if (!playerTarget || playerTarget.IsDead)
+        {
+            SetEnemyState(EnemyState.MakingDecision);
+            return;
+        }
+        //Compute the path
         bool _hasToWander = false;
+        // Select a position
         if (targetedThrowable && canThrow)
         {
             _position = targetedThrowable.transform.position;
