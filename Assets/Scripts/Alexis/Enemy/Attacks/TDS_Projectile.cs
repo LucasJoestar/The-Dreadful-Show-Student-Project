@@ -54,6 +54,7 @@ public class TDS_Projectile : PunBehaviour
     [SerializeField] private TDS_HitBox hitBox = null;
     public TDS_HitBox HitBox { get { return hitBox;  } }
 
+    [SerializeField] private AnimationCurve trajectory = new AnimationCurve(); 
     #endregion
 
     #region Methods
@@ -61,16 +62,17 @@ public class TDS_Projectile : PunBehaviour
     #region Original Methods
     private IEnumerator ProjectileMovement(Vector3 _direction)
     {
-        if (!PhotonNetwork.isMasterClient) yield break; 
+        if (!PhotonNetwork.isMasterClient) yield break;
+        Vector3 _originalPosition = transform.position;
         Vector3 _destination = transform.position + (_direction * range);
-        float _timer = 0;
-        while(Vector3.Distance(transform.position, _destination) > .1f)
+        float _delta = 0;
+        float _time = range / speed; 
+
+        while(_delta <= _time)
         {
-            transform.position += _direction * speed * Time.deltaTime;
+            transform.position = new Vector3(Mathf.Lerp(_originalPosition.x, _destination.x, _delta / _time), _originalPosition.y + trajectory.Evaluate(_delta / _time), _originalPosition.z);
             yield return null;
-            _timer += Time.deltaTime;
-            if (_timer > 10)
-                break;
+            _delta += Time.deltaTime;
         }
         PrepareDestruction(); 
     }

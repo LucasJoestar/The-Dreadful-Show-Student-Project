@@ -64,6 +64,9 @@ public class TDS_CameraEditor : Editor
     /// <summary>SerializedProperties for <see cref="TDS_Camera.SpeedMax"/> of type <see cref="float"/>.</summary>
     private SerializedProperty speedMax = null;
 
+    /// <summary>SerializedProperties for <see cref="TDS_Camera.ViewportYMacBoundValue"/> of type <see cref="float"/>.</summary>
+    private SerializedProperty ViewportYMaxBoundValue = null;
+
     /// <summary>SerializedProperties for <see cref="TDS_Camera.Target"/> of type <see cref="Transform"/>.</summary>
     private SerializedProperty cTarget = null;
 
@@ -162,6 +165,7 @@ public class TDS_CameraEditor : Editor
         {
             cameras.ForEach(c => c.SpeedAccelerationTime = speedAccelerationTime.floatValue);
         }
+        TDS_EditorUtility.FloatField("Viewport Y Max Bound Value", "This would be too complicated to describe here...", ViewportYMaxBoundValue);
 
         GUILayout.Space(5);
 
@@ -190,6 +194,7 @@ public class TDS_CameraEditor : Editor
         speedCurrent = serializedObject.FindProperty("speedCurrent");
         speedInitial = serializedObject.FindProperty("speedInitial");
         speedMax = serializedObject.FindProperty("speedMax");
+        ViewportYMaxBoundValue = serializedObject.FindProperty("ViewportYMacBoundValue");
         cTarget = serializedObject.FindProperty("target");
         topBound = serializedObject.FindProperty("topBound");
         leftBound = serializedObject.FindProperty("leftBound");

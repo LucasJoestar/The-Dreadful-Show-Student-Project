@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 8326568344640052173}
   - component: {fileID: 8355498879820273263}
   - component: {fileID: 8347350908070857141}
-  m_Layer: 17
+  m_Layer: 25
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -466,13 +466,13 @@ MonoBehaviour:
   throwAimingPoint: {x: 0, y: 0, z: 0}
   canBeDown: 1
   canThrow: 1
-  doScaleOnPlayerAmount: 0
+  doScaleOnPlayerAmount: 1
   enemyState: 0
   tauntProbability: 0
   throwRange: 5
   wanderingRangeMin: 5
   wanderingRangeMax: 9
-  healthScalePercent: 50
+  healthScalePercent: 25
   attacks:
   - {fileID: 11400000, guid: eda2cc5418e908042bfb88957e93f957, type: 2}
   - {fileID: 11400000, guid: b0caef6e7b560334cb81cbcfda2b0d6d, type: 2}
@@ -481,7 +481,7 @@ MonoBehaviour:
   agent: {fileID: 8220726644610976985}
   hasEvolved: 0
   ragingThreshold: 3
-  resetRageDelay: 1
+  resetRageDelay: 3
 --- !u!95 &3088651002119351410
 Animator:
   serializedVersion: 3

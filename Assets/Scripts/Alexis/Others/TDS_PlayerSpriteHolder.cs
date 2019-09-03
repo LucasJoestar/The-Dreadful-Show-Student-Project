@@ -56,9 +56,9 @@ public class TDS_PlayerSpriteHolder : MonoBehaviour
     /// <returns>Returns true if changed out of screen info, false if a problem has been encountered.</returns>
     public bool ShowOutOfScreenInfo(bool _isOutOfScreen)
     {
-        if (!Owner || Owner.IsDead || Owner.IsInvulnerable || !PlayerSprite.enabled || !Application.isPlaying) return false;
 
-        TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(Owner, _isOutOfScreen);
+
+        
         return true;
     }
 
@@ -76,13 +76,19 @@ public class TDS_PlayerSpriteHolder : MonoBehaviour
     // OnBecameInvisible is called when the renderer is no longer visible by any camera
     private void OnBecameInvisible()
     {
-        if (ShowOutOfScreenInfo(true)) Owner.StartMovingPlayerInView();
+        if (!Owner || Owner.IsDead || Owner.IsInvulnerable || !Application.isPlaying) return;
+
+        TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(Owner, true);
+        Owner.StartMovingPlayerInView();
     }
 
     // OnBecameVisible is called when the renderer became visible by any camera
     private void OnBecameVisible()
     {
-        if (ShowOutOfScreenInfo(false)) Owner.StopMovingPlayerInView();
+        if (!Owner || !Application.isPlaying) return;
+
+        TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(Owner, false);
+        Owner.StopMovingPlayerInView();
     }
 
     // Use this for initialization

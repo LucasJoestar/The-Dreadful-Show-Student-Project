@@ -1112,9 +1112,15 @@ public class TDS_UIManager : PunBehaviour
         _playerLifeBar.gameObject.SetActive(true);
         _player.HealthBar = _playerLifeBar;
         _player.OnHealthChanged += _playerLifeBar.UpdateLifeBar;
-        if (_player is TDS_Juggler _juggler) _juggler.OnHasObject += _playerLifeBar.DisplayThrowObjectInfo;
-        else _player.OnHasObject += _playerLifeBar.DisplayThrowObjectInfo;
         _player.OnTriggerHowToPlay += _playerLifeBar.TriggerHowToPlayInfo;
+        if (_player is TDS_Juggler _juggler)
+        {
+            _juggler.OnHasObject += _playerLifeBar.DisplayThrowObjectInfo;
+        }
+        else
+        {
+            _player.OnHasObject += _playerLifeBar.DisplayThrowObjectInfo;
+        }
         if (_player == TDS_LevelManager.Instance.LocalPlayer && _player.photonView.isMine)
             _playerLifeBar.transform.SetSiblingIndex(0);
         

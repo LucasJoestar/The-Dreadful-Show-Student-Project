@@ -153,8 +153,8 @@ MonoBehaviour:
   speedAccelerationTime: 1
   speedCoef: 1
   speedCurrent: 0
-  speedInitial: 1.5
-  speedMax: 3.25
+  speedInitial: 2.5
+  speedMax: 4
   throwBonusDamagesMax: 7
   throwBonusDamagesMin: 3
   throwAimingPoint: {x: 0, y: 0, z: 0}
@@ -172,6 +172,21 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ef372db5988113d4685ac7ec400eca5d, type: 2}
   - {fileID: 11400000, guid: 85e92539089678e439fafa46349771a6, type: 2}
   agent: {fileID: 3878922940505882052}
+  onTwoThirdsHealth:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onHalfHealth:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onOneThirdHealth:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   damagesThreshold: 20
   portrait: {fileID: 8492191770222195799, guid: 0802fcc752ac8dc49b4d31d3c7a1d515,
     type: 3}
@@ -464,7 +479,7 @@ GameObject:
   - component: {fileID: 3768590689913236176}
   - component: {fileID: 3762160974091233138}
   - component: {fileID: 3753451100503423144}
-  m_Layer: 17
+  m_Layer: 25
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

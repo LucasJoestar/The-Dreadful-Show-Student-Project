@@ -212,7 +212,7 @@ public class TDS_EventSystemEditor : Editor
 
                 TDS_EditorUtility.PropertyField("Event Type", "Type of this event", _eventType);
                 CustomEventType _eventTypeValue = (CustomEventType)_eventType.enumValueIndex;
-                if (_eventType.enumValueIndex > 6) _eventTypeValue += 14;
+                if (_eventType.enumValueIndex > 7) _eventTypeValue += 13;
 
                 TDS_EditorUtility.FloatField("Delay", "Delay before starting this event", _event.FindPropertyRelative("delay"));
 
@@ -266,6 +266,10 @@ public class TDS_EventSystemEditor : Editor
                     case CustomEventType.WaitForObjectDeath:
                         TDS_EditorUtility.PropertyField("Object Tag", "Tag waiting for an object with dies", _event.FindPropertyRelative("eventString"));
                         TDS_EditorUtility.PropertyField("Amount", "Amount of object with this tag to wait for death", _event.FindPropertyRelative("eventInt"));
+                        break;
+
+                    case CustomEventType.WaitForSpawnAreaDesactivation:
+                        TDS_EditorUtility.PropertyField("Amount", "Amount of spawn area to wait for desactivation", _event.FindPropertyRelative("eventInt"));
                         break;
 
                     case CustomEventType.UnityEventLocal:

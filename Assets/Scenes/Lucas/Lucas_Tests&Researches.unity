@@ -5371,6 +5371,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 341976748493323499, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: isloadingNextScene
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4943209462918504, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5425,11 +5430,6 @@ PrefabInstance:
       propertyPath: instantiationId
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 341976748493323499, guid: ca57834bf12a62e4f857e7cd35728f26,
-        type: 3}
-      propertyPath: isloadingNextScene
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2075652433212547262, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_IsActive
@@ -5464,6 +5464,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7589075591625718460, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7041112749533560215, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1296127355651276876, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
@@ -41068,12 +41078,18 @@ MonoBehaviour:
   animator: {fileID: 0}
   burnEffect: {fileID: 0}
   collider: {fileID: 0}
+  rigidbody: {fileID: 0}
   sprite: {fileID: 0}
+  canBeMoved: 1
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
   healthCurrent: 0
   healthMax: 1
+  loot: []
+  lootChance: 100
+  lootMin: 1
+  lootMax: 1
 --- !u!114 &1132101760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47696,6 +47712,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114939482661549728, guid: 07d30d07974b21944ad020e637081982,
+        type: 3}
+      propertyPath: viewIdField
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 114939482661549728, guid: 07d30d07974b21944ad020e637081982,
+        type: 3}
+      propertyPath: instantiationId
+      value: 24
+      objectReference: {fileID: 0}
     - target: {fileID: 114861555710338680, guid: 07d30d07974b21944ad020e637081982,
         type: 3}
       propertyPath: IsParalyzed
@@ -47715,16 +47741,6 @@ PrefabInstance:
         type: 3}
       propertyPath: healthMax
       value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 114939482661549728, guid: 07d30d07974b21944ad020e637081982,
-        type: 3}
-      propertyPath: viewIdField
-      value: 24
-      objectReference: {fileID: 0}
-    - target: {fileID: 114939482661549728, guid: 07d30d07974b21944ad020e637081982,
-        type: 3}
-      propertyPath: instantiationId
-      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 1974785203264322, guid: 07d30d07974b21944ad020e637081982, type: 3}
       propertyPath: m_Layer
@@ -61608,12 +61624,22 @@ PrefabInstance:
     - target: {fileID: 1824174745630554882, guid: e670877b6fc0de7449f90a72fbfa7449,
         type: 3}
       propertyPath: viewIdField
-      value: 9
+      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 1824174745630554882, guid: e670877b6fc0de7449f90a72fbfa7449,
         type: 3}
       propertyPath: instantiationId
-      value: 9
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 8461352557610487471, guid: e670877b6fc0de7449f90a72fbfa7449,
+        type: 3}
+      propertyPath: viewIdField
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 8461352557610487471, guid: e670877b6fc0de7449f90a72fbfa7449,
+        type: 3}
+      propertyPath: instantiationId
+      value: 28
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e670877b6fc0de7449f90a72fbfa7449, type: 3}
@@ -63949,12 +63975,22 @@ PrefabInstance:
     - target: {fileID: 114229332749751792, guid: 99eb62c10851ec643a1a1236cfc985a6,
         type: 3}
       propertyPath: viewIdField
-      value: 6
+      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 114229332749751792, guid: 99eb62c10851ec643a1a1236cfc985a6,
         type: 3}
       propertyPath: instantiationId
-      value: 6
+      value: 27
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911030566510971952, guid: 99eb62c10851ec643a1a1236cfc985a6,
+        type: 3}
+      propertyPath: viewIdField
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911030566510971952, guid: 99eb62c10851ec643a1a1236cfc985a6,
+        type: 3}
+      propertyPath: instantiationId
+      value: 26
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99eb62c10851ec643a1a1236cfc985a6, type: 3}
@@ -65704,6 +65740,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 396081861, guid: 1c895cfc780d05045afd37b6f16755cc, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 33689600
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c895cfc780d05045afd37b6f16755cc, type: 3}
@@ -69446,22 +69486,32 @@ PrefabInstance:
     - target: {fileID: 7078619270156273062, guid: d635b766f21f14947a364d7448b4dc2c,
         type: 3}
       propertyPath: viewIdField
-      value: 5
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7078619270156273062, guid: d635b766f21f14947a364d7448b4dc2c,
         type: 3}
       propertyPath: instantiationId
-      value: 5
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 9149536132450758670, guid: d635b766f21f14947a364d7448b4dc2c,
         type: 3}
       propertyPath: viewIdField
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9149536132450758670, guid: d635b766f21f14947a364d7448b4dc2c,
         type: 3}
       propertyPath: instantiationId
-      value: 4
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739176851884149258, guid: d635b766f21f14947a364d7448b4dc2c,
+        type: 3}
+      propertyPath: viewIdField
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739176851884149258, guid: d635b766f21f14947a364d7448b4dc2c,
+        type: 3}
+      propertyPath: instantiationId
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d635b766f21f14947a364d7448b4dc2c, type: 3}
@@ -70590,6 +70640,7 @@ MonoBehaviour:
     delay: 0
     cameraSpeedCoef: 1
     cameraWaitTime: 1
+    eventInt: 1
     prefab: {fileID: 0}
     playerType: 0
     eventString: ID
@@ -70607,6 +70658,7 @@ MonoBehaviour:
     delay: 0
     cameraSpeedCoef: 0
     cameraWaitTime: 0
+    eventInt: 1
     prefab: {fileID: 0}
     playerType: 0
     eventString: 
@@ -74975,19 +75027,29 @@ PrefabInstance:
     - target: {fileID: 2639395425091327318, guid: 131b9c2e9ac901841aa00daa77a82570,
         type: 3}
       propertyPath: viewIdField
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2639395425091327318, guid: 131b9c2e9ac901841aa00daa77a82570,
         type: 3}
       propertyPath: instantiationId
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2682294172803146182, guid: 131b9c2e9ac901841aa00daa77a82570,
         type: 3}
       propertyPath: viewIdField
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2682294172803146182, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 3}
+      propertyPath: instantiationId
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5898625156246470220, guid: 131b9c2e9ac901841aa00daa77a82570,
+        type: 3}
+      propertyPath: viewIdField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5898625156246470220, guid: 131b9c2e9ac901841aa00daa77a82570,
         type: 3}
       propertyPath: instantiationId
       value: 1

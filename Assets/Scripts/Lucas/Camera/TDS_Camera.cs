@@ -117,18 +117,13 @@ public class TDS_Camera : MonoBehaviour
     /// Coefficient used in viewport calculs due to camera rotation ; work for a 17 angle.
     /// </summary>
     public const float VIEWPORT_CALCL_Y_COEF = 1.04569165f;
-
-    /// <summary>
-    /// Maximum value of the max bound on z on viewport to be allowed.
-    /// </summary>
-    public const float VIEWPORT_Y_MAX_BOUND_VALUE = .2f;
     #endregion
 
     #region Screen Ratio
     /// <summary>
     /// Camera X ratio used for many calculs related to camera bounds and screen size.
     /// </summary>
-    private float cameraXRatio = 0;
+    public float CameraXRatio { get; private set; } = 0;
     #endregion
 
     #region Variables
@@ -325,6 +320,11 @@ public class TDS_Camera : MonoBehaviour
     }
 
     /// <summary>
+    /// Maximum value of the max bound on z on viewport to be allowed.
+    /// </summary>
+    public float ViewportYMacBoundValue = .2f;
+
+    /// <summary>
     /// Players to follow for local multiplayer mode.
     /// </summary>
     [SerializeField] private List<TDS_Player> players = new List<TDS_Player>();
@@ -451,20 +451,20 @@ public class TDS_Camera : MonoBehaviour
         // Clamp position
         if ((_viewport = camera.WorldToViewportPoint(currentBounds.XMaxVector)).x < 1f)
         {
-            _destination.x -= cameraXRatio * 2 * (1 - _viewport.x);
+            _destination.x -= CameraXRatio * 2 * (1 - _viewport.x);
         }
         else if ((_viewport = camera.WorldToViewportPoint(currentBounds.XMinVector)).x > 0f)
         {
-            _destination.x += cameraXRatio * 2 * _viewport.x;
+            _destination.x += CameraXRatio * 2 * _viewport.x;
         }
 
         if ((_viewport = camera.WorldToViewportPoint(currentBounds.ZMinVector)).y > 0f)
         {
             _destination.y += camera.orthographicSize * 2 * _viewport.y * VIEWPORT_CALCL_Y_COEF;
         }
-        else if ((_viewport = camera.WorldToViewportPoint(currentBounds.ZMaxVector)).y < VIEWPORT_Y_MAX_BOUND_VALUE)
+        else if ((_viewport = camera.WorldToViewportPoint(currentBounds.ZMaxVector)).y < ViewportYMacBoundValue)
         {
-            _destination.y -= camera.orthographicSize * 2 * (VIEWPORT_Y_MAX_BOUND_VALUE - _viewport.y) * VIEWPORT_CALCL_Y_COEF;
+            _destination.y -= camera.orthographicSize * 2 * (ViewportYMacBoundValue - _viewport.y) * VIEWPORT_CALCL_Y_COEF;
         }
 
         // Moves the camera
@@ -482,11 +482,11 @@ public class TDS_Camera : MonoBehaviour
         TDS_Player[] _playersByX = players.OrderBy(p => p.transform.position.x).ToArray();
         TDS_Player _mostRightPlayer = _playersByX.Last();
 
-        float _mostLeftPlayerFromView = _playersByX[0].transform.position.x - (transform.position.x - cameraXRatio);
+        float _mostLeftPlayerFromView = _playersByX[0].transform.position.x - (transform.position.x - CameraXRatio);
         bool _isPlayerOutOfScreen = _mostLeftPlayerFromView < 1;
 
         // Get movement
-        float _xIdealPos = _mostRightPlayer.transform.position.x + Offset.x - (_isPlayerOutOfScreen ? cameraXRatio - 2 : _mostLeftPlayerFromView < cameraXRatio ? cameraXRatio - _mostLeftPlayerFromView : 0);
+        float _xIdealPos = _mostRightPlayer.transform.position.x + Offset.x - (_isPlayerOutOfScreen ? CameraXRatio - 2 : _mostLeftPlayerFromView < CameraXRatio ? CameraXRatio - _mostLeftPlayerFromView : 0);
         float _yIdealPos = transform.position.y + (-(.5f - camera.WorldToViewportPoint(players.OrderBy(p => p.transform.position.z).First().transform.position).y) * camera.orthographicSize * 2 * VIEWPORT_CALCL_Y_COEF) + Offset.y;
 
         // If reaching destination, stop moving
@@ -531,11 +531,11 @@ public class TDS_Camera : MonoBehaviour
             {
                 if (_movement.x < 0)
                 {
-                    _newBound = _destination.x - cameraXRatio;
+                    _newBound = _destination.x - CameraXRatio;
 
                     if (_newBound < currentBounds.XMin)
                     {
-                        _destination.x += cameraXRatio * 2 * camera.WorldToViewportPoint(currentBounds.XMinVector).x;
+                        _destination.x += CameraXRatio * 2 * camera.WorldToViewportPoint(currentBounds.XMinVector).x;
 
                         // Cancel movement if needed
                         if ((_destination.x - transform.position.x) < .0001f) _destination.x = transform.position.x;
@@ -543,11 +543,11 @@ public class TDS_Camera : MonoBehaviour
                 }
                 else
                 {
-                    _newBound = _destination.x + cameraXRatio;
+                    _newBound = _destination.x + CameraXRatio;
 
                     if (_newBound > currentBounds.XMax)
                     {
-                        _destination.x -= cameraXRatio * 2 * (1 - camera.WorldToViewportPoint(currentBounds.XMaxVector).x);
+                        _destination.x -= CameraXRatio * 2 * (1 - camera.WorldToViewportPoint(currentBounds.XMaxVector).x);
 
                         // Cancel movement if needed
                         if ((transform.position.x - _destination.x) < .0001f) _destination.x = transform.position.x;
@@ -573,9 +573,9 @@ public class TDS_Camera : MonoBehaviour
                 {
                     _newBound = camera.WorldToViewportPoint(currentBounds.ZMaxVector - _movement).y;
 
-                    if (_newBound < VIEWPORT_Y_MAX_BOUND_VALUE)
+                    if (_newBound < ViewportYMacBoundValue)
                     {
-                        _destination.y -= camera.orthographicSize * 2 * VIEWPORT_CALCL_Y_COEF * (VIEWPORT_Y_MAX_BOUND_VALUE - camera.WorldToViewportPoint(currentBounds.ZMaxVector).y);
+                        _destination.y -= camera.orthographicSize * 2 * VIEWPORT_CALCL_Y_COEF * (ViewportYMacBoundValue - camera.WorldToViewportPoint(currentBounds.ZMaxVector).y);
 
                         // Cancel movement if needed
                         if ((transform.position.y - _destination.y) < .0001f) _destination.y = transform.position.y;
@@ -652,11 +652,11 @@ public class TDS_Camera : MonoBehaviour
             {
                 if (_movement.x < 0)
                 {
-                    _newBound = _destination.x - cameraXRatio;
+                    _newBound = _destination.x - CameraXRatio;
 
                     if (_newBound < currentBounds.XMin)
                     {
-                        _destination.x += cameraXRatio * 2 * camera.WorldToViewportPoint(currentBounds.XMinVector).x;
+                        _destination.x += CameraXRatio * 2 * camera.WorldToViewportPoint(currentBounds.XMinVector).x;
 
                         // Cancel movement if needed
                         if ((_destination.x - transform.position.x) < .0001f) _destination.x = transform.position.x;
@@ -664,11 +664,11 @@ public class TDS_Camera : MonoBehaviour
                 }
                 else
                 {
-                    _newBound = _destination.x + cameraXRatio;
+                    _newBound = _destination.x + CameraXRatio;
 
                     if (_newBound > currentBounds.XMax)
                     {
-                        _destination.x -= cameraXRatio * 2 * (1 - camera.WorldToViewportPoint(currentBounds.XMaxVector).x);
+                        _destination.x -= CameraXRatio * 2 * (1 - camera.WorldToViewportPoint(currentBounds.XMaxVector).x);
 
                         // Cancel movement if needed
                         if ((transform.position.x - _destination.x) < .0001f) _destination.x = transform.position.x;
@@ -694,9 +694,9 @@ public class TDS_Camera : MonoBehaviour
                 {
                     _newBound = camera.WorldToViewportPoint(currentBounds.ZMaxVector - _movement).y;
 
-                    if (_newBound < VIEWPORT_Y_MAX_BOUND_VALUE)
+                    if (_newBound < ViewportYMacBoundValue)
                     {
-                        _destination.y -= camera.orthographicSize * 2 * VIEWPORT_CALCL_Y_COEF * (VIEWPORT_Y_MAX_BOUND_VALUE - camera.WorldToViewportPoint(currentBounds.ZMaxVector).y);
+                        _destination.y -= camera.orthographicSize * 2 * VIEWPORT_CALCL_Y_COEF * (ViewportYMacBoundValue - camera.WorldToViewportPoint(currentBounds.ZMaxVector).y);
 
                         // Cancel movement if needed
                         if ((transform.position.y - _destination.y) < .0001f) _destination.y = transform.position.y;
@@ -907,7 +907,7 @@ public class TDS_Camera : MonoBehaviour
                     }
                     else
                     {
-                        _xMin = transform.position.x - cameraXRatio;
+                        _xMin = transform.position.x - CameraXRatio;
                         if (_xMin != currentBounds.XMin)
                         {
                             leftBoundVector = new Vector3(_xMin, leftBound.transform.position.y, leftBound.transform.position.z);
@@ -940,7 +940,7 @@ public class TDS_Camera : MonoBehaviour
                     }
                     else
                     {
-                        _xMax = transform.position.x + cameraXRatio;
+                        _xMax = transform.position.x + CameraXRatio;
                         if (_xMax != currentBounds.XMax)
                         {
                             rightBoundVector = new Vector3(_xMax, rightBound.transform.position.y, rightBound.transform.position.z);
@@ -994,7 +994,7 @@ public class TDS_Camera : MonoBehaviour
                     float _mostUpPlayer = PhotonNetwork.offlineMode ? players.OrderBy(p => p.transform.position.z).Last().transform.position.z : target.position.z;
 
                     float _zMax = camera.WorldToViewportPoint(_bounds.ZMaxVector).y;
-                    if ((_zMax > (VIEWPORT_Y_MAX_BOUND_VALUE - .0001f)) && (_mostUpPlayer + 1 < _bounds.ZMax))
+                    if ((_zMax > (ViewportYMacBoundValue - .0001f)) && (_mostUpPlayer + 1 < _bounds.ZMax))
                     {
                         topBoundVector = _bounds.ZMaxVector;
                         _boundsMovement[3] = 0;
@@ -1004,7 +1004,7 @@ public class TDS_Camera : MonoBehaviour
                     }
                     else
                     {
-                        _zMax = topBound.transform.position.z + (camera.orthographicSize * 2 * (VIEWPORT_Y_MAX_BOUND_VALUE - camera.WorldToViewportPoint(currentBounds.ZMaxVector).y) * VIEWPORT_CALCL_Y_COEF);
+                        _zMax = topBound.transform.position.z + (camera.orthographicSize * 2 * (ViewportYMacBoundValue - camera.WorldToViewportPoint(currentBounds.ZMaxVector).y) * VIEWPORT_CALCL_Y_COEF);
 
                         if ((_zMax != currentBounds.ZMax) && (_mostUpPlayer + 1 < _zMax))
                         {
@@ -1036,7 +1036,7 @@ public class TDS_Camera : MonoBehaviour
         camera.rect = TDS_GameManager.CameraRect;
 
         // Get X ratio
-        cameraXRatio = camera.orthographicSize * (((float)Screen.width / Screen.height) / (camera.rect.height / camera.rect.width));
+        CameraXRatio = camera.orthographicSize * (((float)Screen.width / Screen.height) / (camera.rect.height / camera.rect.width));
     }
 
     /// <summary>

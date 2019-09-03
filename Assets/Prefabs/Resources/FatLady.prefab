@@ -103,7 +103,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1954198082}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1, y: 2, z: 0.1}
+  m_LocalPosition: {x: 1, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1244886482}
@@ -476,7 +476,7 @@ MonoBehaviour:
       m_Bits: 28673
     TriggerInteraction: 1
     LocalPosition: {x: 0, y: 0, z: 0}
-    Size: {x: 1, y: 0.5, z: 1}
+    Size: {x: 1, y: 0.25, z: 1}
   spriteHolder: {fileID: 0}
   fxTransformPV: {fileID: 3911030566510971952}
   attacks:
@@ -494,6 +494,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bf0200cdd655b974cb01f175f5d232e3, type: 2}
   - {fileID: 11400000, guid: 951444b7d1110c749bcbd18a13cf2121, type: 2}
   - {fileID: 11400000, guid: d598a7999ddd49b4e9a8fc7ad6887b51, type: 2}
+  - {fileID: 11400000, guid: 932ea3f9e7331dc4e8fb078c1ea79fde, type: 2}
+  - {fileID: 11400000, guid: b739b64f1a78ace41aa5f15b2473c811, type: 2}
   CanFlip: 1
   isDodging: 0
   isGrounded: 1
@@ -752,7 +754,7 @@ GameObject:
   - component: {fileID: 4965479535070526}
   - component: {fileID: 33509613517596996}
   - component: {fileID: 23502392175266098}
-  m_Layer: 17
+  m_Layer: 25
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1367,7 +1369,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5894258192441660721}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.75, z: 0}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4307840657894174}

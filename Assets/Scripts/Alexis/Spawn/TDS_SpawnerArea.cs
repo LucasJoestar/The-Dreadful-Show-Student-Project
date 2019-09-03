@@ -67,6 +67,11 @@ public class TDS_SpawnerArea : PunBehaviour
 
     #region Events
     /// <summary>
+    /// Static event called each time a spawn area is being desactivated.
+    /// </summary>
+    public static event Action OnOneAreaDesactivated = null;
+
+    /// <summary>
     /// This UnityEvent is called when the area is activated
     /// </summary>
     [SerializeField] private UnityEvent OnAreaActivated = null;
@@ -77,7 +82,7 @@ public class TDS_SpawnerArea : PunBehaviour
     /// <summary>
     /// This UnityEvent is called when a wave has to be started
     /// </summary>
-    [SerializeField] private UnityEvent OnNextWave = null;
+    [SerializeField] public UnityEvent OnNextWave = null; 
     /// <summary>
     /// Called when the fight is starting 
     /// </summary>
@@ -220,6 +225,7 @@ public class TDS_SpawnerArea : PunBehaviour
             ActivatedAreas.Remove(this);
             IsDesactivated = true; 
             OnAreaDesactivated?.Invoke();
+            OnOneAreaDesactivated?.Invoke();
             TDS_UIManager.Instance.SwitchCurtains(false);
             return;
         }

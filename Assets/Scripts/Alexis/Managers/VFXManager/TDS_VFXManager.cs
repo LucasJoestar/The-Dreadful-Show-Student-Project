@@ -81,6 +81,12 @@ public class TDS_VFXManager : PunBehaviour
     [SerializeField] private GameObject healFX = null;
     /// <summary>FX used when the player gets healed.</summary>
     public GameObject HealFX { get { return healFX; } }
+
+    [Header("Enemies FX")]
+    [SerializeField] private GameObject loyalTeleportationFX = null; 
+    public GameObject LoyalTeleportationFX { get { return loyalTeleportationFX; } }
+    [SerializeField] private GameObject loyalEndTeleportationFX = null;
+    public GameObject LoyalEndTeleportationFX { get { return loyalEndTeleportationFX; } }
     #endregion
 
     #region Singleton
@@ -128,6 +134,11 @@ public class TDS_VFXManager : PunBehaviour
             case FXType.Heal:
                 return healFX;
 
+            case FXType.MrLoyalTeleportation:
+                return loyalTeleportationFX;
+
+            case FXType.MrLoyalEndTeleportation:
+                return loyalEndTeleportationFX; 
             default:
                 // Nothing to see here...
                 return null;

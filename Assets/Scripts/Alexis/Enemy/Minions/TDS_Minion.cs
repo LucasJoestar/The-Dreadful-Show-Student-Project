@@ -91,7 +91,7 @@ public abstract class TDS_Minion : TDS_Enemy
         transform.position = new Vector3(transform.position.x - .05f, transform.position.y, transform.position.z);
         yield return new WaitForSeconds(.03f);
 
-        for (int _i = 0; _i < 7; _i++)
+        for (int _i = 0; _i < 5; _i++)
         {
             transform.position = new Vector3(transform.position.x + .1f, transform.position.y, transform.position.z);
             yield return new WaitForSeconds(.03f);

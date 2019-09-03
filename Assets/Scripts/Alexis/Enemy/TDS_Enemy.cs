@@ -1070,7 +1070,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public virtual void ActivateEnemy(bool _hastoTaunt = false)
     {
-        if (!PhotonNetwork.isMasterClient) return;
+        if (!PhotonNetwork.isMasterClient || isDead) return;
         IsPacific = false;
         IsParalyzed = false;
         SetEnemyState(EnemyState.MakingDecision);
@@ -1082,7 +1082,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public void ActivateEnemyAfterTaunt()
     {
-        if (!PhotonNetwork.isMasterClient) return;
+        if (!PhotonNetwork.isMasterClient || isDead) return;
 
         SetAnimationState((int)EnemyAnimationState.Idle);
         if (isWaiting)

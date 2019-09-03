@@ -36,6 +36,11 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
 
     #region SerializedProperties
 
+    #region Components & References
+    /// <summary>SerializedProperties for <see cref="TDS_Player.beardFXTransformPV"/> of type <see cref="PhotonView"/>.</summary>
+    private SerializedProperty beardFXTransformPV = null;
+    #endregion
+
     #region Variables
     /// <summary>SerializedProperties for <see cref="TDS_Player.currentBeardState"/> of type <see cref="BeardState"/>.</summary>
     private SerializedProperty currentBeardState = null;
@@ -157,6 +162,7 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
     /// </summary>
     private void DrawComponentsAndReferences()
     {
+        TDS_EditorUtility.ObjectField("Beard FX Transform PV", "PhotonView of the Transform used for beard related FXs", beardFXTransformPV, typeof(PhotonView));
     }
 
     /// <summary>
@@ -306,6 +312,8 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
         else isBeardLadyMultiEditing = true;
 
         // Get the serializedProperties from the serializedObject
+        beardFXTransformPV = serializedObject.FindProperty("beardFXTransformPV");
+
         currentBeardState = serializedObject.FindProperty("currentBeardState");
         beardGrowInterval = serializedObject.FindProperty("beardGrowInterval");
         beardHealInterval = serializedObject.FindProperty("beardHealInterval");

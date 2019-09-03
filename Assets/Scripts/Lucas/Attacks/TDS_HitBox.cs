@@ -221,11 +221,6 @@ public class TDS_HitBox : MonoBehaviour
             collider = GetComponent<BoxCollider>();
             if (!collider) Debug.LogWarning("The HitBox " + name + " Collider is missing !");
         }
-        if (!Owner)
-        {
-            Owner = GetComponentInParent<TDS_Character>();
-            if (!Owner) Debug.LogWarning("The HitBox " + name + " Character reference is missing !");
-        }
     }
 
     // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
@@ -249,7 +244,7 @@ public class TDS_HitBox : MonoBehaviour
         if ((Owner && (other.gameObject == Owner.gameObject)) || !other.gameObject.HasTag(HittableTags.ObjectTags)) return;
 
         TDS_Damageable _target = other.GetComponent<TDS_Damageable>();
-        if (!_target) return;
+        if (!_target ) return;
 
         // Deal damages and apply effect
         TouchedObjects.Add(other);

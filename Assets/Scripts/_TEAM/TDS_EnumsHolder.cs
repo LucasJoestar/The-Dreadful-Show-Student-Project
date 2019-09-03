@@ -167,6 +167,7 @@ public enum CustomEventType
     WaitForEveryone,
     UnityEventLocal,
     WaitForObjectDeath,
+    WaitForSpawnAreaDesactivation,
     
     // Online Events
     Narrator = 21,
@@ -212,9 +213,7 @@ public enum EnemyAnimationState
     BringTargetCloser, 
     EndBringingTargetCloser, 
     StopDashing, 
-    LightHit,
-    GetOutOfBattle,
-    GetBackIntoBattle
+    LightHit
 }
 
 /// <summary>
@@ -272,7 +271,9 @@ public enum FXType
     RabbitPoof,
     BeardGrowsUp,
     BeardDamaged,
-    Heal
+    Heal, 
+    MrLoyalTeleportation, 
+    MrLoyalEndTeleportation
 }
 
 /// <summary>
@@ -312,7 +313,8 @@ public enum PlayerAnimState
     Sliding,
     NotSliding,
     Down,
-    BackFromTheDeads
+    BackFromTheDeads,
+    JumpAttack
 }
 
 /// <summary>

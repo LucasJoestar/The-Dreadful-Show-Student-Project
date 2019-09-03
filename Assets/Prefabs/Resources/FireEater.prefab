@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 1790036734156944686}
   - component: {fileID: 1779301905576879022}
   - component: {fileID: 1771200961620208438}
-  m_Layer: 17
+  m_Layer: 25
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -592,7 +592,7 @@ MonoBehaviour:
       m_Bits: 28673
     TriggerInteraction: 1
     LocalPosition: {x: 0, y: 0, z: 0}
-    Size: {x: 1, y: 0.5, z: 1}
+    Size: {x: 1, y: 0.25, z: 1}
   spriteHolder: {fileID: 0}
   fxTransformPV: {fileID: 8461352557610487471}
   attacks:
@@ -611,6 +611,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4c5e86c17c2f45c4291b95cd7ce2d522, type: 2}
   - {fileID: 11400000, guid: 2077a8d34f59f1143abd7351f76f0675, type: 2}
   - {fileID: 11400000, guid: 999d214d5bf40ee4d9ee95295a7ff290, type: 2}
+  - {fileID: 11400000, guid: 7c7d15a70174c9a499e5643121118bbf, type: 2}
   CanFlip: 1
   isDodging: 0
   isGrounded: 1
@@ -629,13 +630,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 24577
   playerType: 3
+  miniGameSprite: {fileID: 923575198783802084}
+  miniGameAnchor: {fileID: 312571806793665898}
   isDrunk: 0
   isInMiniGame: 0
   drunkSpeedCoef: 0.7
   soberUpTime: 10
   xMovementAfterDrunkenDodge: 1.5
   drunkJumpForce: 225
-  miniGameAnchor: {fileID: 312571806793665898}
   soberUpTimer: 0
 --- !u!95 &1843503580909251902
 Animator:
@@ -1179,7 +1181,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.18, y: 1.78}
+  m_Size: {x: 3.29, y: 2.89}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -1289,7 +1291,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7761222483020326598}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1785873569712971000}
