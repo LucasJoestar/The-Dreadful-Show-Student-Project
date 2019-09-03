@@ -39,7 +39,7 @@ public class TDS_MrLoyal : TDS_Boss
     #endregion
 
     #region Fields / Properties
-    [SerializeField] private List<TDS_SpawnerArea> linkedArenas = new List<TDS_SpawnerArea>();
+    [SerializeField] private List<TDS_SpawnerArea> linkedAreas = new List<TDS_SpawnerArea>();
     [SerializeField] private float chargeCatsRate = 5f;
     [SerializeField] private TDS_Cat[] cats = null;
     [SerializeField] private Vector3 teleportationPosition = Vector3.zero; 
@@ -69,7 +69,7 @@ public class TDS_MrLoyal : TDS_Boss
         yield return null;
         sprite.enabled = true; 
         /// Instantiate again particles on the teleportation spot
-        TDS_SpawnerArea _currentArea = linkedArenas.Where(a => !a.IsDesactivated).FirstOrDefault();
+        TDS_SpawnerArea _currentArea = linkedAreas.Where(a => !a.IsDesactivated).FirstOrDefault();
         if(!_currentArea)
         {
             yield return GetBackIntoBattle(); 
@@ -140,7 +140,14 @@ public class TDS_MrLoyal : TDS_Boss
         base.Update(); 
 	}
 
-	#endregion
+    protected override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos();
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(teleportationPosition, .25f);
+        Gizmos.DrawLine(transform.position, teleportationPosition);
+    }
+    #endregion
 
-	#endregion
+    #endregion
 }
