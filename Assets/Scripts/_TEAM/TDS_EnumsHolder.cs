@@ -167,6 +167,7 @@ public enum CustomEventType
     WaitForEveryone,
     UnityEventLocal,
     WaitForObjectDeath,
+    WaitForSpawnAreaDesactivation,
     
     // Online Events
     Narrator = 21,

@@ -140,8 +140,18 @@ public class TDS_Event
         {
             eventInt--;
 
-            if (eventInt == 0) StopWaiting();
+            if (eventInt <= 0) StopWaiting();
         }
+    }
+
+    /// <summary>
+    /// Decreases the counter of spawn area to wait for desactivation.
+    /// </summary>
+    public void DeductSpawnArea()
+    {
+        eventInt--;
+
+        if (eventInt <= 0) StopWaiting();
     }
 
     /// <summary>
@@ -355,6 +365,15 @@ public class TDS_Event
                 while (IsWaiting) yield return null;
 
                 TDS_Damageable.OnDieWithObject -= CheckObjectDeath;
+                break;
+
+            // Wait that a certain amount of spawn area are desactivated
+            case CustomEventType.WaitForSpawnAreaDesactivation:
+                TDS_SpawnerArea.OnOneAreaDesactivated += DeductSpawnArea;
+
+                while (IsWaiting) yield return null;
+
+                TDS_SpawnerArea.OnOneAreaDesactivated -= DeductSpawnArea;
                 break;
 
             // Nobody here but us chicken
