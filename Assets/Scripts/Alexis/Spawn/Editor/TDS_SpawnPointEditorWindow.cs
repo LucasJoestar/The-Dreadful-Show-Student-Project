@@ -71,8 +71,13 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
             return;
         }
         //Begin the scroll viex
-        scrollView = EditorGUILayout.BeginScrollView(scrollView, false, true);
+        scrollView = EditorGUILayout.BeginScrollView(scrollView);
         //Display properties and settings of the spawn point
+        if ((property == null) || (property.serializedObject == null))
+        {
+            Close();
+            return;
+        }
         EditorGUILayout.PropertyField(property);
         GUILayout.Space(5);
 
@@ -125,7 +130,7 @@ public class TDS_SpawnPointEditorWindow : EditorWindow
     /// </summary>
     private void OnSelectionChange()
     {
-        Close(); 
+        //Close(); 
     }
     #endregion 
 

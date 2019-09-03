@@ -1167,11 +1167,10 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         base.StopBringingCloser();
 
-        if (invulnerabilityCoroutine == null)
-        {
-            UnfreezePlayer();
-            IsInvulnerable = false;
-        }
+        if (invulnerabilityCoroutine == null) IsInvulnerable = false;
+        else CancelInvoke("UnfreezePlayer");
+
+        UnfreezePlayer();
 
         // Set animation
         SetAnimOnline(PlayerAnimState.NotSliding);
