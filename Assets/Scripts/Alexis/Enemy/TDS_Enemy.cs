@@ -331,6 +331,10 @@ public abstract class TDS_Enemy : TDS_Character
             Debug.Log("No Attack");
             return false; 
         }
+        if (TDS_Camera.Instance && (transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax - 1 || transform.position.x < TDS_Camera.Instance.CurrentBounds.XMin + 1))
+        {
+            return false;
+        }
         float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x);
         return Attacks.Any(a => a != null && a.MaxRange >= _distance &&  a.MinRange <= _distance) && Mathf.Abs(transform.position.z - playerTarget.transform.position.z) <=  collider.size.z;
     }
@@ -498,6 +502,7 @@ public abstract class TDS_Enemy : TDS_Character
                 IncreaseSpeed();
             }
             yield return null;
+            if (!playerTarget) continue; 
 
             //if the target is too far from the destination, recalculate the path
             // OR If there is too much enemy in contact with the target, compute path to wander
@@ -1108,15 +1113,16 @@ public abstract class TDS_Enemy : TDS_Character
         }
         bool _pathComputed = false;
         Vector3 _position;
-        if (TDS_Camera.Instance && (transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax || transform.position.x < TDS_Camera.Instance.CurrentBounds.XMin))
-        {
-            _position = new Vector3(transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax ? TDS_Camera.Instance.CurrentBounds.XMax - 1 : TDS_Camera.Instance.CurrentBounds.XMin + 1 , transform.position.y, transform.position.z);
-            agent.SetDestination(_position); 
-            SetEnemyState(EnemyState.Wandering); 
-            return; 
-        }
+
         if (!playerTarget || playerTarget.IsDead)
         {
+            if (TDS_Camera.Instance && (transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax || transform.position.x < TDS_Camera.Instance.CurrentBounds.XMin))
+            {
+                _position = new Vector3(transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax ? TDS_Camera.Instance.CurrentBounds.XMax - 1 : TDS_Camera.Instance.CurrentBounds.XMin + 1, transform.position.y, transform.position.z);
+                agent.SetDestination(_position);
+                SetEnemyState(EnemyState.GettingInRange);
+                return;
+            }
             SetEnemyState(EnemyState.MakingDecision);
             return;
         }
