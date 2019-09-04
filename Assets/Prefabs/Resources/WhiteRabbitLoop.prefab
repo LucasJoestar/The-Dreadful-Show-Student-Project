@@ -11,16 +11,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WhiteRabbitLoop
       objectReference: {fileID: 0}
-    - target: {fileID: 1725797096084194985, guid: 795e82fe26a179f48921142aca97a866,
-        type: 3}
-      propertyPath: viewIdField
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1725797096084194985, guid: 795e82fe26a179f48921142aca97a866,
-        type: 3}
-      propertyPath: instantiationId
-      value: -1
-      objectReference: {fileID: 0}
     - target: {fileID: 4438476496066494, guid: 795e82fe26a179f48921142aca97a866, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.29
@@ -69,6 +59,16 @@ PrefabInstance:
         type: 3}
       propertyPath: isLooping
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725797096084194985, guid: 795e82fe26a179f48921142aca97a866,
+        type: 3}
+      propertyPath: viewIdField
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725797096084194985, guid: 795e82fe26a179f48921142aca97a866,
+        type: 3}
+      propertyPath: instantiationId
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 795e82fe26a179f48921142aca97a866, type: 3}

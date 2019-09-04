@@ -49,8 +49,8 @@ public class TDS_WhiteRabbit : TDS_Consumable
     #region Fields / Properties
     private bool goRight = true;
     [SerializeField] private bool isLooping = false;
-    [SerializeField, Range(1, 10)] private int healingValueMax;
-    [SerializeField, Range(1,10)] private int healingValueMin;
+    [SerializeField, Range(1, 200)] private int healingValueMax;
+    [SerializeField, Range(1, 200)] private int healingValueMin;
     private int passingCountCurrent = 0;
     [SerializeField] int passingCountMax = 5;
     private float boundLeft;

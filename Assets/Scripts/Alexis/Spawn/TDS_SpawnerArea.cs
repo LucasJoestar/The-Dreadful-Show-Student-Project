@@ -223,10 +223,11 @@ public class TDS_SpawnerArea : PunBehaviour
         if (waveIndex >= waves.Count && !isLooping)
         {
             ActivatedAreas.Remove(this);
-            IsDesactivated = true; 
+            isActivated = false;
+            IsDesactivated = true;
             OnAreaDesactivated?.Invoke();
             OnOneAreaDesactivated?.Invoke();
-            TDS_UIManager.Instance.SwitchCurtains(false);
+            if (ActivatedAreas.Count == 0) TDS_UIManager.Instance.SwitchCurtains(false);
             return;
         }
         else if(waveIndex >= waves.Count)
