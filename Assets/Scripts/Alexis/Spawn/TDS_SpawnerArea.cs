@@ -95,7 +95,7 @@ public class TDS_SpawnerArea : PunBehaviour
     /// <summary>
     /// Amount of minimum throwables that need to be linked to this area.
     /// </summary>
-    public const int MINIMUM_THROWABLES = 2;
+    public const int MINIMUM_THROWABLES = 1;
     #endregion
 
     #region Components and references
@@ -295,9 +295,14 @@ public class TDS_SpawnerArea : PunBehaviour
 
             OnAreaActivated?.Invoke();
 
-            TDS_Player _juggler = TDS_LevelManager.Instance.AllPlayers.Where(p => p.PlayerType == PlayerType.Juggler).FirstOrDefault();
-
-            if (_juggler) ((TDS_Juggler)_juggler).Throwables.ForEach(t => LinkThrowable(t));
+            foreach (TDS_Player _player in TDS_LevelManager.Instance.AllPlayers)
+            {
+                if (_player.Throwable) LinkThrowable(_player.Throwable);
+                if (_player.PlayerType == PlayerType.Juggler)
+                {
+                    ((TDS_Juggler)_player).Throwables.ForEach(t => LinkThrowable(t));
+                }
+            }
         }
     }
 
@@ -307,6 +312,8 @@ public class TDS_SpawnerArea : PunBehaviour
     /// </summary>
     public void ActivateEnemies()
     {
+        if (spawnedEnemies.Count == 0) return;
+
         if(waveIndex == 0)
         {
             OnStartFight?.Invoke();
@@ -370,7 +377,7 @@ public class TDS_SpawnerArea : PunBehaviour
     public void CheckRemainingObjects()
     {
         // If remaining not enough throwables and a Juggler is in game, just spawn an object supply box
-        if (((areaThrowables.Count == MINIMUM_THROWABLES) || (areaThrowables.Count == 0)) && TDS_LevelManager.Instance.AllPlayers.Any(p => p && (p.PlayerType == PlayerType.Juggler) && !p.IsDead))
+        if ((areaThrowables.Count == MINIMUM_THROWABLES) && TDS_LevelManager.Instance.AllPlayers.Any(p => p && (p.PlayerType == PlayerType.Juggler) && !p.IsDead))
         {
             TDS_LevelManager.Instance.SpawnJugglerSupply();
         }

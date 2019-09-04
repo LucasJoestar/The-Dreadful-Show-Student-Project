@@ -48,6 +48,7 @@ public class TDS_SpecialThrowable : TDS_Throwable
         if (!hasBeenHeld)
         {
             hasBeenHeld = true;
+            if (sprite.maskInteraction != SpriteMaskInteraction.None) sprite.maskInteraction = SpriteMaskInteraction.None;
             OnGrabbedFirstTime.Invoke();
         }
 

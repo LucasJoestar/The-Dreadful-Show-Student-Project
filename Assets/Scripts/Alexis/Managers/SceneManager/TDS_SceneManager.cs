@@ -177,6 +177,7 @@ public class TDS_SceneManager : PunBehaviour
             yield return null;
         }
         TDS_GameManager.CurrentSceneIndex = _sceneIndex;
+        TDS_UIManager.Instance.IsloadingNextScene = _sceneIndex == 0;
         TDS_UIManager.Instance?.DisplayLoadingScreen(false);
 
         OnEveryOneSceneLoaded();

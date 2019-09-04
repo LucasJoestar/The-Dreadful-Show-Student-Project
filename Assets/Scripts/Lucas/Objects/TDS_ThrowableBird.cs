@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class TDS_ThrowableBird : TDS_ThrowableAnimal
+public class TDS_ThrowableBird : TDS_FleeingThrowable
 {
     /* TDS_ThrowableBird :
      *
@@ -23,6 +23,13 @@ public class TDS_ThrowableBird : TDS_ThrowableAnimal
      *	-----------------------------------
     */
 
+    #region Fields / Properties
+    /// <summary>
+    /// Speed at which the bird flees.
+    /// </summary>
+    [SerializeField] private float speed = 1.5f;
+    #endregion
+
     #region Methods
     /// <summary>
     /// Makes the animal flee a certain collider.
@@ -36,7 +43,7 @@ public class TDS_ThrowableBird : TDS_ThrowableAnimal
         // Trigger animation
         SetAnimationOnline(1);
 
-        Vector3 _movement = new Vector3(Mathf.Sign(detector.Collider.bounds.center.x - _collider.bounds.center.x), 1.5f, 0);
+        Vector3 _movement = new Vector3(Mathf.Sign(detector.Collider.bounds.center.x - _collider.bounds.center.x), speed, 0);
 
         if (_movement.x != isFacingRight.ToSign())
         {
@@ -44,18 +51,20 @@ public class TDS_ThrowableBird : TDS_ThrowableAnimal
             isFacingRight = !isFacingRight;
         }
 
-        _movement.x *= 1.5f;
+        _movement.x *= speed;
 
-        while (sprite.isVisible)
+        MeshRenderer _shadow = shadow.GetComponent<MeshRenderer>();
+
+        while (sprite.isVisible && _shadow.isVisible)
         {
             transform.position = Vector3.Lerp(transform.position, transform.position + _movement, Time.deltaTime);
-            _movement.y *= 1.0125f;
+            _movement.y *= 1.01f;
             _movement.x *= 1.01f;
 
             yield return null;
         }
 
-        PhotonNetwork.Destroy(gameObject);
+        DestroyThrowableObject();
     }
     #endregion
 }

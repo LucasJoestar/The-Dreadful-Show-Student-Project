@@ -95,7 +95,7 @@ public class TDS_UIManager : PunBehaviour
     #region General Settings
     private GameObject uiGameObject;
     [Header("Loading Settings")]
-    [SerializeField] private bool isloadingNextScene = false;
+    public bool IsloadingNextScene = false;
     #endregion
 
     #region Canvas 
@@ -869,7 +869,7 @@ public class TDS_UIManager : PunBehaviour
         if (!PhotonNetwork.offlineMode)
         {
             characterSelectionManager.CharacterSelectionMenu.LocalElement.ClearToggle();
-            if (isloadingNextScene)
+            if (IsloadingNextScene)
             {
                 //if (PhotonNetwork.isMasterClient)
                 //  TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
@@ -885,7 +885,7 @@ public class TDS_UIManager : PunBehaviour
             return; 
         }
 
-        if(isloadingNextScene)
+        if(IsloadingNextScene)
         {
             TDS_SceneManager.Instance?.PrepareSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
         }
@@ -1253,6 +1253,7 @@ public class TDS_UIManager : PunBehaviour
             Destroy(gameObject);
             return; 
         }
+
         if (!characterSelectionManager) characterSelectionManager = GetComponent<TDS_CharacterSelectionManager>(); 
         uiGameObject = transform.GetChild(0).gameObject;
     }

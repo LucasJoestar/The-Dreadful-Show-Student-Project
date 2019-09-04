@@ -73,7 +73,6 @@ GameObject:
   - component: {fileID: 75978353638052778}
   - component: {fileID: 1275622946919785528}
   - component: {fileID: 74198959308998175}
-  - component: {fileID: 74198959308998174}
   - component: {fileID: 74198959308998173}
   - component: {fileID: 126778904962647476}
   - component: {fileID: 137447759404682922}
@@ -176,37 +175,10 @@ MonoBehaviour:
   ObjectDurability: 2
   weight: 2
   animator: {fileID: 74198959308998173}
-  agent: {fileID: 74198959308998174}
   detector: {fileID: 5932299833329836099}
   isFacingRight: 1
   fleeDelay: 0.5
---- !u!114 &74198959308998174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 74198959308998172}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53bdbd26138585f4aa59027c60557c6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  positionOffset: {x: 0, y: 0.55, z: 0}
-  avoidanceForce: 45
-  baseOffset: 0
-  detectionRange: 5
-  height: 1.1
-  radius: 1
-  pathRadius: 0.5
   speed: 2
-  steerForce: 80
-  agentPriority: 1
-  detectionAccuracy: 5
-  detectionFieldOfView: 90
-  avoidanceLayer:
-    serializedVersion: 2
-    m_Bits: 8192
 --- !u!95 &74198959308998173
 Animator:
   serializedVersion: 3
