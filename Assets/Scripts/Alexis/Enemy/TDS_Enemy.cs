@@ -331,6 +331,10 @@ public abstract class TDS_Enemy : TDS_Character
             Debug.Log("No Attack");
             return false; 
         }
+        if (TDS_Camera.Instance && (transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax - 1 || transform.position.x < TDS_Camera.Instance.CurrentBounds.XMin + 1))
+        {
+            return false;
+        }
         float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x);
         return Attacks.Any(a => a != null && a.MaxRange >= _distance &&  a.MinRange <= _distance) && Mathf.Abs(transform.position.z - playerTarget.transform.position.z) <=  collider.size.z;
     }
@@ -498,6 +502,7 @@ public abstract class TDS_Enemy : TDS_Character
                 IncreaseSpeed();
             }
             yield return null;
+            if (!playerTarget) continue; 
 
             //if the target is too far from the destination, recalculate the path
             // OR If there is too much enemy in contact with the target, compute path to wander
@@ -1070,11 +1075,10 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public virtual void ActivateEnemy(bool _hastoTaunt = false)
     {
-        if (!PhotonNetwork.isMasterClient) return;
+        if (!PhotonNetwork.isMasterClient || isDead) return;
         IsPacific = false;
         IsParalyzed = false;
         SetEnemyState(EnemyState.MakingDecision);
-        //behaviourCoroutine = StartCoroutine(Behaviour());
     }
 
     /// <summary>
@@ -1082,7 +1086,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public void ActivateEnemyAfterTaunt()
     {
-        if (!PhotonNetwork.isMasterClient) return;
+        if (!PhotonNetwork.isMasterClient || isDead) return;
 
         SetAnimationState((int)EnemyAnimationState.Idle);
         if (isWaiting)
@@ -1102,21 +1106,29 @@ public abstract class TDS_Enemy : TDS_Character
     public virtual void ComputePath()
     {
         if (isDead || !PhotonNetwork.isMasterClient) return; 
-        if(!playerTarget || playerTarget.IsDead)
-        {
-            SetEnemyState(EnemyState.MakingDecision);
-            return; 
-        }
         if(IsParalyzed)
         {
             SetEnemyState(EnemyState.MakingDecision);
             return; 
         }
-        //Compute the path
-        // Select a position
         bool _pathComputed = false;
         Vector3 _position;
+
+        if (!playerTarget || playerTarget.IsDead)
+        {
+            if (TDS_Camera.Instance && (transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax || transform.position.x < TDS_Camera.Instance.CurrentBounds.XMin))
+            {
+                _position = new Vector3(transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax ? TDS_Camera.Instance.CurrentBounds.XMax - 1 : TDS_Camera.Instance.CurrentBounds.XMin + 1, transform.position.y, transform.position.z);
+                agent.SetDestination(_position);
+                SetEnemyState(EnemyState.GettingInRange);
+                return;
+            }
+            SetEnemyState(EnemyState.MakingDecision);
+            return;
+        }
+        //Compute the path
         bool _hasToWander = false;
+        // Select a position
         if (targetedThrowable && canThrow)
         {
             _position = targetedThrowable.transform.position;
@@ -1336,6 +1348,7 @@ public abstract class TDS_Enemy : TDS_Character
     private void OnDestroy()
     {
         if (AllEnemies.Contains(this)) AllEnemies.Remove(this);
+        if (PhotonNetwork.isMasterClient) TDS_VFXManager.Instance.SpawnEffect(FXType.Poof, transform.position);
     }
 
     // Use this for initialization
@@ -1366,6 +1379,7 @@ public abstract class TDS_Enemy : TDS_Character
     private void OnDisable()
     {
         if (AllEnemies.Contains(this)) AllEnemies.Remove(this);
+        if (PhotonNetwork.isMasterClient) TDS_VFXManager.Instance.SpawnEffect(FXType.MagicDisappear, transform.position);
     }
 
     private void OnEnable()

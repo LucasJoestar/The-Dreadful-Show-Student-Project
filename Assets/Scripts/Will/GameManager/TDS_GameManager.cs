@@ -74,7 +74,7 @@ public static class TDS_GameManager
 
     public static int PlayerCount
     {
-        get { return PhotonNetwork.room.PlayerCount;  }
+        get { return TDS_LevelManager.Instance.AllPlayers.Length;  }
     }
 
     public static int CurrentSceneIndex = 0;

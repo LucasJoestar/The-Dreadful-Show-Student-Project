@@ -144,6 +144,20 @@ public enum ButtonType
     HowToPlay
 }
 
+public enum CatAnimationState
+{
+    Idle, 
+    Run,
+    Hit, 
+    Jump
+}
+public enum CatState
+{
+    LeftPerch, 
+    Travelling, 
+    RightPerch
+}
+
 /// <summary>
 /// All different states for the checkpoint animator.
 /// </summary>
@@ -167,6 +181,7 @@ public enum CustomEventType
     WaitForEveryone,
     UnityEventLocal,
     WaitForObjectDeath,
+    WaitForSpawnAreaDesactivation,
     
     // Online Events
     Narrator = 21,

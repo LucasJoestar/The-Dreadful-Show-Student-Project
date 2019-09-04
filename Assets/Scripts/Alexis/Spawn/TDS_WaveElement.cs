@@ -45,11 +45,11 @@ public class TDS_WaveElement
     /// <summary>
     /// Minimum number of additional random enemies to spawn
     /// </summary>
-    [SerializeField] private int minRandomSpawn = 0;
+    [SerializeField] private int[] minRandomSpawn = new int[4] { 1,1,1,1 };
     /// <summary>
     /// Maximal number of additional random enemies to spawn
     /// </summary>
-    [SerializeField] private int maxRandomSpawn = 1; 
+    [SerializeField] private int[] maxRandomSpawn = new int[4] { 0, 0, 0, 0 }; 
 
     /// <summary>
     /// List of enemies and number of enemies linked to this SpawnPoint
@@ -87,7 +87,7 @@ public class TDS_WaveElement
         // GET RANDOM ENEMIES
         if (randomSpawningInformations.Count == 0) return _enemies; 
         //Get the count of additional enemies to spawn
-        int _randomCount = Random.Range(minRandomSpawn, maxRandomSpawn + 1);
+        int _randomCount = Random.Range(minRandomSpawn[TDS_GameManager.PlayerCount - 1], maxRandomSpawn[TDS_GameManager.PlayerCount - 1] + 1);
         // if no more enemies to spawn, return the enemies list
         if (_randomCount == 0) return _enemies;
         int _max = 0;
@@ -105,7 +105,7 @@ public class TDS_WaveElement
                 //Reference value is the sum of every previous spawnchance added to the current spawn chance
                 _referenceValue += randomSpawningInformations[j].SpawnChance;
                 //If the value is less than the reference value
-                if (_value <= _referenceValue)
+                if (_value <= _referenceValue && randomSpawningInformations[j].EnemyCount[TDS_GameManager.PlayerCount - 1] > 0)
                 {
                     //Add the enemy name to the list and decrease the enemy count for the selected enemy
                     _enemies.Add(randomSpawningInformations[j].EnemyResourceName);

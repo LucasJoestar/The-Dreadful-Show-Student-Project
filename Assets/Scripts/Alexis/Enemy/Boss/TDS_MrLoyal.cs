@@ -39,7 +39,7 @@ public class TDS_MrLoyal : TDS_Boss
     #endregion
 
     #region Fields / Properties
-    [SerializeField] private List<TDS_SpawnerArea> linkedArenas = new List<TDS_SpawnerArea>();
+    [SerializeField] private List<TDS_SpawnerArea> linkedAreas = new List<TDS_SpawnerArea>();
     [SerializeField] private float chargeCatsRate = 5f;
     [SerializeField] private TDS_Cat[] cats = null;
     [SerializeField] private Vector3 teleportationPosition = Vector3.zero; 
@@ -67,20 +67,22 @@ public class TDS_MrLoyal : TDS_Boss
         transform.position = teleportationPosition;
         TDS_VFXManager.Instance.SpawnEffect(FXType.MrLoyalEndTeleportation, teleportationPosition);
         yield return null;
-        sprite.enabled = true; 
+        sprite.enabled = true;
+        yield return new WaitForSeconds(1f);
         /// Instantiate again particles on the teleportation spot
-        TDS_SpawnerArea _currentArea = linkedArenas.Where(a => !a.IsDesactivated).FirstOrDefault();
+        TDS_SpawnerArea _currentArea = linkedAreas.Where(a => !a.IsDesactivated).FirstOrDefault();
         if(!_currentArea)
         {
             yield return GetBackIntoBattle(); 
             yield break; 
         }
         _currentArea.OnNextWave.AddListener(CallOut);
+        CallOut(); 
         _currentArea.StartSpawnArea();
         while (!_currentArea.IsDesactivated)
         {
             yield return new WaitForSeconds(chargeCatsRate);
-
+            
             //Activate cats
         }
         yield return GetBackIntoBattle(); 
@@ -115,8 +117,17 @@ public class TDS_MrLoyal : TDS_Boss
         TDS_VFXManager.Instance.SpawnEffect(FXType.MrLoyalEndTeleportation, _pos);
         yield return null;
         sprite.enabled = true;
-        yield return null; 
+        yield return null;
+        //ActivateEnemy();
         SetEnemyState(EnemyState.MakingDecision);
+    }
+
+    public override void ActivateEnemy(bool _hastoTaunt = false)
+    {
+        if (!PhotonNetwork.isMasterClient || IsDead) return;
+        IsPacific = false;
+        IsParalyzed = false;
+        RemoveFromBattle(); 
     }
     #endregion
 
@@ -140,7 +151,20 @@ public class TDS_MrLoyal : TDS_Boss
         base.Update(); 
 	}
 
-	#endregion
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
+        ActivateEnemy(); 
+    }
 
-	#endregion
+    protected override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos();
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(teleportationPosition, .25f);
+        Gizmos.DrawLine(transform.position, teleportationPosition);
+    }
+    #endregion
+
+    #endregion
 }
