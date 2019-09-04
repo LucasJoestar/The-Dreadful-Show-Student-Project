@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq; 
@@ -82,7 +82,7 @@ public class TDS_MrLoyal : TDS_Boss
         while (!_currentArea.IsDesactivated)
         {
             yield return new WaitForSeconds(chargeCatsRate);
-            
+            cats.ToList().ForEach(c => c.ActivateCat()); 
             //Activate cats
         }
         yield return GetBackIntoBattle(); 

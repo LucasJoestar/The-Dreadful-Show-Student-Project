@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2815848291034380731}
   - component: {fileID: 2815848291034380725}
   - component: {fileID: 2815848291034380724}
-  m_Layer: 17
+  m_Layer: 25
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2815848291361091845}
   - component: {fileID: 2815848291361091846}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cat - Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,9 +172,9 @@ GameObject:
   - component: {fileID: 2815848292181177533}
   - component: {fileID: 2815848292181177531}
   - component: {fileID: 2815848292181177532}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Grey Cat
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -208,15 +208,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53bdbd26138585f4aa59027c60557c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionOffset: {x: 0, y: 0, z: 0}
+  positionOffset: {x: 0, y: 0.5, z: 0}
   avoidanceForce: 2
   baseOffset: 0
   detectionRange: 2
   height: 1
   radius: 1
   pathRadius: 1
-  speed: 1
-  steerForce: 0.1
+  speed: 8
+  steerForce: 89
   agentPriority: 1
   detectionAccuracy: 3
   detectionFieldOfView: 90
@@ -275,7 +275,8 @@ MonoBehaviour:
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
@@ -370,10 +371,10 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!114 &2815848292181177532
 MonoBehaviour:
@@ -387,24 +388,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fc4c0982c552bd47bd2ef4bde04440b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
+  animator: {fileID: 2815848292181177535}
   burnEffect: {fileID: 0}
-  collider: {fileID: 0}
-  rigidbody: {fileID: 0}
-  sprite: {fileID: 0}
+  collider: {fileID: 2815848292181177528}
+  rigidbody: {fileID: 2815848292181177531}
+  sprite: {fileID: 2815848291361091846}
   canBeMoved: 1
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 0
-  healthMax: 1
-  hitBox: {fileID: 0}
+  healthCurrent: 25
+  healthMax: 25
+  hitBox: {fileID: 2815848292571072837}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
   handsTransform: {fileID: 0}
-  shadowTransform: {fileID: 0}
+  shadowTransform: {fileID: 2815848291034380731}
   isAttacking: 0
-  isFacingRight: 1
+  isFacingRight: 0
   IsPacific: 0
   IsParalyzed: 0
   aimAngle: 45
@@ -417,6 +418,62 @@ MonoBehaviour:
   throwBonusDamagesMin: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
   agent: {fileID: 0}
+  catState: 1
+  leftPerchInfos:
+    perchPosition: {x: 40, y: 8, z: 10}
+    landingPosition: {x: 41.880825, y: 0, z: 0.4643612}
+    landingCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -2.3621533
+        outSlope: -2.3621533
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.058957934
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  rightPerchInfos:
+    perchPosition: {x: 59, y: 7.9, z: 10}
+    landingPosition: {x: 56.68023, y: 0, z: 0.15260315}
+    landingCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -2.3621533
+        outSlope: -2.3621533
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.058957934
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  catAttack: {fileID: 0}
 --- !u!1 &2815848292571072843
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,7 +514,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2815848292571072843}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1.5, z: 1}
@@ -475,7 +532,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 2815848292571072838}
-  Owner: {fileID: 0}
+  Owner: {fileID: 2815848292181177532}
   BonusDamages: 0
   HittableTags:
-    ObjectTags: []
+    ObjectTags:
+    - Name: Player
+      Color: {r: 0.097232126, g: 0.8962264, b: 0.6973913, a: 1}

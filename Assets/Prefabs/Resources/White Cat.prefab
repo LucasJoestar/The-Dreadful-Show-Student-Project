@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 5268511999767807707}
   - component: {fileID: 5268511999767807708}
   - component: {fileID: 5268511999767807709}
-  m_Layer: 0
+  - component: {fileID: 3523898671468239163}
+  m_Layer: 10
   m_Name: White Cat
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,15 +52,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53bdbd26138585f4aa59027c60557c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionOffset: {x: 0, y: 0, z: 0}
+  positionOffset: {x: 0, y: 0.5, z: 0}
   avoidanceForce: 2
   baseOffset: 0
   detectionRange: 2
   height: 1
   radius: 1
   pathRadius: 1
-  speed: 1
-  steerForce: 0.1
+  speed: 8
+  steerForce: 89
   agentPriority: 1
   detectionAccuracy: 3
   detectionFieldOfView: 90
@@ -118,7 +119,8 @@ MonoBehaviour:
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
@@ -214,24 +216,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fc4c0982c552bd47bd2ef4bde04440b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
+  animator: {fileID: 5268511999767807706}
   burnEffect: {fileID: 0}
-  collider: {fileID: 0}
-  rigidbody: {fileID: 0}
-  sprite: {fileID: 0}
+  collider: {fileID: 5268511999767807705}
+  rigidbody: {fileID: 3523898671468239163}
+  sprite: {fileID: 5268512001762362896}
   canBeMoved: 1
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 0
-  healthMax: 1
-  hitBox: {fileID: 0}
+  healthCurrent: 25
+  healthMax: 25
+  hitBox: {fileID: 5268512001663847524}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
   handsTransform: {fileID: 0}
-  shadowTransform: {fileID: 0}
+  shadowTransform: {fileID: 5268512001073152060}
   isAttacking: 0
-  isFacingRight: 1
+  isFacingRight: 0
   IsPacific: 0
   IsParalyzed: 0
   aimAngle: 45
@@ -244,6 +246,78 @@ MonoBehaviour:
   throwBonusDamagesMin: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
   agent: {fileID: 0}
+  catState: 0
+  leftPerchInfos:
+    perchPosition: {x: 40, y: 8, z: 10}
+    landingPosition: {x: 42, y: 0, z: 4.3394647}
+    landingCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -2.3621533
+        outSlope: -2.3621533
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.058957934
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  rightPerchInfos:
+    perchPosition: {x: 59, y: 7.9, z: 10}
+    landingPosition: {x: 56.727196, y: 0, z: 4.145629}
+    landingCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -2.3621533
+        outSlope: -2.3621533
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.058957934
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  catAttack: {fileID: 0}
+--- !u!54 &3523898671468239163
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5268511999767807710}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &5268512001073152061
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,7 +329,7 @@ GameObject:
   - component: {fileID: 5268512001073152060}
   - component: {fileID: 5268512001073152058}
   - component: {fileID: 5268512001073152059}
-  m_Layer: 17
+  m_Layer: 25
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -361,7 +435,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5268512001663847526}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1.5, z: 1}
@@ -379,10 +453,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 5268512001663847523}
-  Owner: {fileID: 0}
+  Owner: {fileID: 5268511999767807709}
   BonusDamages: 0
   HittableTags:
-    ObjectTags: []
+    ObjectTags:
+    - Name: Player
+      Color: {r: 0.097232126, g: 0.8962264, b: 0.6973913, a: 1}
 --- !u!1 &5268512001762362898
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,7 +469,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5268512001762362897}
   - component: {fileID: 5268512001762362896}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cat - Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

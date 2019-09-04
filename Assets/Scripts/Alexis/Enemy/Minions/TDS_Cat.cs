@@ -46,7 +46,9 @@ public class TDS_Cat : TDS_Character
     [SerializeField] private CustomNavMeshAgent agent = null;
     [SerializeField] private CatState catState = CatState.LeftPerch;
     [SerializeField] private PerchInformations leftPerchInfos = null;
-    [SerializeField] private PerchInformations rightPerchInfos = null; 
+    [SerializeField] private PerchInformations rightPerchInfos = null;
+
+    [SerializeField] private TDS_Attack catAttack = null; 
 
     private Coroutine movementCoroutine = null; 
 	#endregion
@@ -56,25 +58,33 @@ public class TDS_Cat : TDS_Character
 	#region Original Methods
     public void ActivateCat()
     {
-        if (!PhotonNetwork.isMasterClient || isDead || !agent || catState == CatState.Travelling) return;
-        movementCoroutine = StartCoroutine(ReachNextPerch()); 
+        if (!PhotonNetwork.isMasterClient || isDead || !agent) return;
+        if (hitBox.IsActive) hitBox.Activate(catAttack, this);
+        movementCoroutine = StartCoroutine(GetDownFromPerch()); 
     }
 
-    private IEnumerator ReachNextPerch()
+    public void RestartMovement()
+    {
+        if(movementCoroutine != null)
+        {
+            StopCoroutine(movementCoroutine);
+            movementCoroutine = null; 
+        }
+        movementCoroutine = StartCoroutine(MoveCat()); 
+    }
+
+    private IEnumerator GetDownFromPerch()
     {
         PerchInformations _infosStart;
-        PerchInformations _infosEnd; 
         switch (catState)
         {
             case CatState.LeftPerch:
                 _infosStart = leftPerchInfos;
-                _infosEnd = rightPerchInfos; 
+                catState = CatState.RightPerch; 
                 break;
-            case CatState.Travelling:
-                yield break; 
             case CatState.RightPerch:
                 _infosStart = rightPerchInfos;
-                _infosEnd = leftPerchInfos;
+                catState = CatState.LeftPerch;
                 break;
             default:
                 yield break;
@@ -83,35 +93,62 @@ public class TDS_Cat : TDS_Character
         yield return new WaitForSeconds(.2f); 
         float _delta = 0;
         float _ratio = 0;
+        float _height = Mathf.Abs(_infosStart.PerchPosition.y - _infosStart.LandingPosition.y); 
         while (_delta < LANDING_TIME)
         {
             _ratio = _delta / LANDING_TIME;
-            transform.position = new Vector3(Mathf.Lerp(_infosStart.perchPosition.x, _infosStart.landingPosition.x, _ratio), _infosStart.landingCurve.Evaluate(_ratio));
+            transform.position = new Vector3(Mathf.Lerp(_infosStart.PerchPosition.x, _infosStart.LandingPosition.x, _ratio), _infosStart.LandingCurve.Evaluate(_ratio) * _height, Mathf.Lerp(_infosStart.PerchPosition.z, _infosStart.LandingPosition.z, _ratio));
             yield return null;
             _delta += Time.deltaTime; 
         }
-        agent.SetDestination(_infosEnd.landingPosition);
-        SetAnimationState((int)CatAnimationState.Run);
-        SetAnimationState((int)CatAnimationState.Jump);
-        while (agent.IsMoving)
+        movementCoroutine = StartCoroutine(MoveCat());
+    }
+
+    private IEnumerator GetOnPerch()
+    {
+        PerchInformations _infosEnd;
+        switch (catState)
         {
-            yield return null;
+            case CatState.LeftPerch:
+                _infosEnd = leftPerchInfos;
+                break;
+            case CatState.RightPerch:
+                _infosEnd = rightPerchInfos;
+                break;
+            default:
+                yield break;
         }
         SetAnimationState((int)CatAnimationState.Jump);
-        yield return new WaitForSeconds(.2f); 
-        _delta = 0;
-        _ratio = 0;
+        //yield return new WaitForSeconds(.2f); 
+        float _delta = 0;
+        float _ratio = 0;
+        float _height = Mathf.Abs(_infosEnd.PerchPosition.y - _infosEnd.LandingPosition.y);
         while (_delta < LANDING_TIME)
         {
             _ratio = _delta / LANDING_TIME;
-            transform.position = new Vector3(Mathf.Lerp(_infosStart.perchPosition.x, _infosStart.landingPosition.x, _ratio), _infosStart.landingCurve.Evaluate(1 - _ratio));
+            transform.position = new Vector3(Mathf.Lerp(_infosEnd.LandingPosition.x, _infosEnd.PerchPosition.x, _ratio), _infosEnd.LandingCurve.Evaluate(1 - _ratio) * _height, Mathf.Lerp(_infosEnd.LandingPosition.z, _infosEnd.PerchPosition.z, _ratio));
             yield return null;
             _delta += Time.deltaTime;
         }
         SetAnimationState((int)CatAnimationState.Idle);
-        SetAnimationState((int)CatAnimationState.Jump);
+        SetAnimationState((int)CatAnimationState.EndJump);
         yield return null;
-        Flip(); 
+        Flip();
+        movementCoroutine = null; 
+    }
+
+    private IEnumerator MoveCat()
+    {
+        rigidbody.useGravity = true; 
+        agent.SetDestination(catState == CatState.RightPerch ? rightPerchInfos.LandingPosition : leftPerchInfos.LandingPosition);
+        SetAnimationState((int)CatAnimationState.Run);
+        SetAnimationState((int)CatAnimationState.EndJump);
+        while (agent.IsMoving)
+        {
+            yield return null;
+        }
+        movementCoroutine = StartCoroutine(GetOnPerch());
+        rigidbody.useGravity = false;
     }
 
     private void SetAnimationState(int _animationID)
@@ -130,11 +167,45 @@ public class TDS_Cat : TDS_Character
             case CatAnimationState.Jump:
                 animator.SetTrigger("JumpTrigger");
                 break;
+            case CatAnimationState.EndJump:
+                animator.SetTrigger("EndJumpTrigger");
+                break;
+            case CatAnimationState.Die:
+                animator.SetBool("isDead", true);
+                break; 
             default:
                 break;
         }
         if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID });
 
+    }
+
+    public override bool TakeDamage(int _damage)
+    {
+        bool _takeDamages = base.TakeDamage(_damage);
+        if(_takeDamages)
+        {
+            if (movementCoroutine != null)
+            {
+                StopCoroutine(movementCoroutine);
+                movementCoroutine = null; 
+            }
+            agent.StopAgent();
+            SetAnimationState((int)CatAnimationState.Hit); 
+        }
+        return _takeDamages; 
+    }
+
+    protected override void Die()
+    {
+        if (movementCoroutine != null)
+        {
+            StopCoroutine(movementCoroutine);
+            movementCoroutine = null;
+        }
+        agent.StopAgent();
+        SetAnimationState((int)CatAnimationState.Die); 
+        base.Die();
     }
     #endregion
 
@@ -151,15 +222,31 @@ public class TDS_Cat : TDS_Character
     {
         base.Start(); 
     }
-	#endregion
 
-	#endregion
+    protected override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos();
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(leftPerchInfos.PerchPosition, .25f); 
+        Gizmos.DrawSphere(rightPerchInfos.PerchPosition, .25f);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(leftPerchInfos.LandingPosition, .25f);
+        Gizmos.DrawSphere(rightPerchInfos.LandingPosition, .25f);
+    }
+    #endregion
+
+    #endregion
 }
 
 [Serializable]
 public class PerchInformations
 {
-    public Vector3 perchPosition { get; set; }
-    public Vector3 landingPosition { get; set; }
-    public AnimationCurve landingCurve { get; set; }
+    [SerializeField] private Vector3 perchPosition = Vector3.zero; 
+    public Vector3 PerchPosition { get { return perchPosition; } }
+    [SerializeField] private Vector3 landingPosition = Vector3.zero;
+    public Vector3 LandingPosition { get { return landingPosition;  } }
+    [SerializeField] private AnimationCurve landingCurve = new AnimationCurve(); 
+    public AnimationCurve LandingCurve { get { return landingCurve; } }
 }

@@ -149,12 +149,13 @@ public enum CatAnimationState
     Idle, 
     Run,
     Hit, 
-    Jump
+    Jump, 
+    EndJump, 
+    Die
 }
 public enum CatState
 {
     LeftPerch, 
-    Travelling, 
     RightPerch
 }
 
