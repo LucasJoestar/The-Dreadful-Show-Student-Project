@@ -8,6 +8,9 @@ public class TDS_DiffuseOutline : MonoBehaviour
     [SerializeField, Space]
     bool enableOutline = true;
 
+    [SerializeField, Space]
+    bool autoChangeMaterial = true;
+
     [SerializeField,Space]
     Color color = Color.white;
 	
@@ -48,6 +51,7 @@ public class TDS_DiffuseOutline : MonoBehaviour
 
     public void DisableOutline()
     {
+        Debug.Log("Disable");
         enableOutline = false;
         MaterialPropertyBlock _mpb = new MaterialPropertyBlock();
         SpriteRenderer.GetPropertyBlock(_mpb);
@@ -81,7 +85,10 @@ public class TDS_DiffuseOutline : MonoBehaviour
     void OnEnable()
     {
 		preMat = SpriteRenderer.sharedMaterial;
-		SpriteRenderer.sharedMaterial = DefaultMaterial;
+        if (autoChangeMaterial)
+        {
+            SpriteRenderer.sharedMaterial = DefaultMaterial;
+        }
 		UpdateOutline();
 	}
 

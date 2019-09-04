@@ -66,7 +66,7 @@ public class TDS_Throwable : PunBehaviour
     /// <summary>
     /// Shadow of the object.
     /// </summary>
-    [SerializeField] private GameObject shadow = null;
+    [SerializeField] protected GameObject shadow = null;
 
     /// <summary>
     /// Hitbox of the throwable, used to to deal damages.

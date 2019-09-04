@@ -88,6 +88,7 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
         }
 
         if (owner.photonView.isMine && howToPlayAnchor) howToPlayAnchor.SetActive(true);
+        if (howToPlayInfo && !howToPlayInfo.activeInHierarchy && (TDS_GameManager.CurrentSceneIndex == 1)) howToPlayInfo.SetActive(true);
     }
     #endregion
 
