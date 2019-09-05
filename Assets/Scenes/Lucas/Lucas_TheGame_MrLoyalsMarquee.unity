@@ -3756,7 +3756,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &432228354
 Transform:
   m_ObjectHideFlags: 0
@@ -8288,6 +8288,27 @@ PrefabInstance:
       propertyPath: instantiationId
       value: 45
       objectReference: {fileID: 0}
+    - target: {fileID: 2815848292181177532, guid: f181514064db6c84d9ec3c731827c02e,
+        type: 3}
+      propertyPath: catAttack
+      value: 
+      objectReference: {fileID: 11400000, guid: 780623a1f46753f459738d6f400fdea3,
+        type: 2}
+    - target: {fileID: 2815848292181177532, guid: f181514064db6c84d9ec3c731827c02e,
+        type: 3}
+      propertyPath: chargeRate
+      value: 10.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2815848292181177532, guid: f181514064db6c84d9ec3c731827c02e,
+        type: 3}
+      propertyPath: healthCurrent
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2815848292181177532, guid: f181514064db6c84d9ec3c731827c02e,
+        type: 3}
+      propertyPath: healthMax
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f181514064db6c84d9ec3c731827c02e, type: 3}
 --- !u!1001 &797658688
@@ -11459,6 +11480,22 @@ PrefabInstance:
         type: 3}
       propertyPath: instantiationId
       value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 5268511999767807709, guid: 18982aaf0ef31e042ba5477ecaca4740,
+        type: 3}
+      propertyPath: catAttack
+      value: 
+      objectReference: {fileID: 11400000, guid: 780623a1f46753f459738d6f400fdea3,
+        type: 2}
+    - target: {fileID: 5268511999767807709, guid: 18982aaf0ef31e042ba5477ecaca4740,
+        type: 3}
+      propertyPath: healthCurrent
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5268511999767807709, guid: 18982aaf0ef31e042ba5477ecaca4740,
+        type: 3}
+      propertyPath: healthMax
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18982aaf0ef31e042ba5477ecaca4740, type: 3}
@@ -14699,6 +14736,21 @@ PrefabInstance:
       propertyPath: throwObjectText
       value: 
       objectReference: {fileID: 368446278}
+    - target: {fileID: 6057777082672345491, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.95000076
+      objectReference: {fileID: 0}
+    - target: {fileID: 6057777082672345491, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.9600067
+      objectReference: {fileID: 0}
+    - target: {fileID: 567179406525598121, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: acd33b0d03b6e7a4ea20afbb4db6a537, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
 --- !u!1 &1373854633

@@ -125,8 +125,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 8714583110042663014}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 49
+  instantiationId: 49
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!65 &6962089747012658501
@@ -155,55 +155,64 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 15
-  speed: 8
+  speed: 10
   hitBox: {fileID: 961427598875844653}
   trajectory:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: -7.606915
-      outSlope: -7.606915
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.18518597
-    - serializedVersion: 3
-      time: 0.11213446
-      value: 0.58919704
-      inSlope: -5.7865696
-      outSlope: -5.7865696
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5
-      value: 0
-      inSlope: 12.518367
-      outSlope: 12.518367
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.1629771
-      outWeight: 0.3437109
-    - serializedVersion: 3
-      time: 0.81797725
-      value: 6.1892824
-      inSlope: 28.894632
-      outSlope: 28.894632
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.11218059
-      outWeight: 0.5110123
-    - serializedVersion: 3
-      time: 1
-      value: 10
+      time: 0.0015144348
+      value: -0.02508545
       inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
+      outWeight: 0.07793148
+    - serializedVersion: 3
+      time: 0.2
+      value: 1
+      inSlope: 0.07097428
+      outSlope: 0.07097428
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.4
+      value: -1
+      inSlope: -1.2946761
+      outSlope: -1.2946761
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.601648
+      value: 0.5
+      inSlope: -2.4825246
+      outSlope: -2.4825246
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.24817501
+      outWeight: 0.1889226
+    - serializedVersion: 3
+      time: 0.8
+      value: -0.5
+      inSlope: 3.096384
+      outSlope: 3.096384
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 10
+      inSlope: 133.47353
+      outSlope: 133.47353
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.064295836
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -484,10 +493,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3120496671812499009}
     m_Modifications:
-    - target: {fileID: 1548626687783702, guid: b21e1b4c273f9b24dba641e1d7ae69c3, type: 3}
-      propertyPath: m_Name
-      value: Projectile_PoufMagique
-      objectReference: {fileID: 0}
     - target: {fileID: 198742772223849486, guid: b21e1b4c273f9b24dba641e1d7ae69c3,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
@@ -507,6 +512,10 @@ PrefabInstance:
         type: 3}
       propertyPath: moveWithTransform
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1548626687783702, guid: b21e1b4c273f9b24dba641e1d7ae69c3, type: 3}
+      propertyPath: m_Name
+      value: Projectile_PoufMagique
       objectReference: {fileID: 0}
     - target: {fileID: 4244029294445326, guid: b21e1b4c273f9b24dba641e1d7ae69c3, type: 3}
       propertyPath: m_LocalPosition.x

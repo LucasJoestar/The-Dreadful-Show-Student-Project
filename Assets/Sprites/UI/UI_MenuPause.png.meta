@@ -13,6 +13,9 @@ TextureImporter:
     21300016: Entracte_Texte
     21300018: Option_Text
     21300020: White_Bar
+    21300022: Small_ButtonV2
+    21300024: UI_MenuPause_1
+    21300026: LargeButtonV2
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -325,13 +328,73 @@ TextureImporter:
         width: 1143
         height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: d9cb2c716378a3542ad8e7f7e8121d86
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Small_ButtonV2
+      rect:
+        serializedVersion: 2
+        x: 1788
+        y: 952
+        width: 364
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b630181af0d99cd4fa807a22fc716334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_MenuPause_1
+      rect:
+        serializedVersion: 2
+        x: 1517
+        y: 726
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8910e1114f92c941b49de3bbe67c16d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeButtonV2
+      rect:
+        serializedVersion: 2
+        x: 1522
+        y: 653
+        width: 943
+        height: 143
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 153e55fc6e1b48e4f82a46907389497d
       vertices: []
       indices: 
       edges: []
