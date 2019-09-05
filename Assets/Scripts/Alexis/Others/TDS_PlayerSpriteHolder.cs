@@ -50,19 +50,6 @@ public class TDS_PlayerSpriteHolder : MonoBehaviour
 
     #region Original Methods
     /// <summary>
-    /// Shows or hides out of screen player information.
-    /// </summary>
-    /// <param name="_isOutOfScreen">Is the player out of screen or not.</param>
-    /// <returns>Returns true if changed out of screen info, false if a problem has been encountered.</returns>
-    public bool ShowOutOfScreenInfo(bool _isOutOfScreen)
-    {
-
-
-        
-        return true;
-    }
-
-    /// <summary>
     /// Shows out of screen player information when he revives.
     /// </summary>
     public void ShowOutOfScreenInfoOnRevive()

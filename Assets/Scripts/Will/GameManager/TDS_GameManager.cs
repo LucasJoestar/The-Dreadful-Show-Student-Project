@@ -138,6 +138,7 @@ public static class TDS_GameManager
     /// <returns>Returns all text linked to the specified id.</returns>
     public static string[] GetDialog(string _id)
     {
+        _id = _id.ToLower();
         return DialogsAsset.text.Split(splitCharacter).Where(d => d.StartsWith(_id)).FirstOrDefault()?.Replace(_id + '\n', string.Empty).Split('\n').Select(s => s.Trim()).Where(s => s != string.Empty).ToArray();
     }
 
@@ -178,14 +179,6 @@ public static class TDS_GameManager
 
         // Set screen resolution
         SetResolution(Screen.currentResolution);
-    }
-
-    /// <summary>
-    /// Leaves the game, and go back to the menu.
-    /// </summary>
-    public static void LeaveGame()
-    {
-
     }
 
     /// <summary>

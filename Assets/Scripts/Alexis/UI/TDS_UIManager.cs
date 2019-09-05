@@ -77,10 +77,6 @@ public class TDS_UIManager : PunBehaviour
 	 *	-----------------------------------
 	*/
 
-    #region Events
-    public event Action OnNarratorDialogEnded; 
-    #endregion
-
     #region Fields / Properties
     /// <summary> Singleton of the class TDS_UIManager </summary>
     public static TDS_UIManager Instance;
@@ -255,8 +251,6 @@ public class TDS_UIManager : PunBehaviour
     /// Dictionary to stock every filling coroutine started
     /// </summary>
     private Dictionary<TDS_LifeBar, Coroutine> filledImages = new Dictionary<TDS_LifeBar, Coroutine>();
-
-    private Coroutine narratorCoroutine;
 
     private Dictionary<PlayerType, Coroutine> followHiddenPlayerCouroutines = new Dictionary<PlayerType, Coroutine>();
 
@@ -466,7 +460,6 @@ public class TDS_UIManager : PunBehaviour
         fireEaterLifeBar.ResetLifeBar();
         bossHealthBar.ResetLifeBar(); 
 
-        narratorCoroutine = null;
         followHiddenPlayerCouroutines.Clear();
         filledImages.Clear();
         curtainsAnimator.SetTrigger("Reset");
@@ -495,25 +488,6 @@ public class TDS_UIManager : PunBehaviour
             yield return new WaitForEndOfFrame();
         }
         filledImages.Remove(_lifebar);
-    }
-
-    /// <summary>
-    /// Display all quotes in the narrator box
-    /// </summary>
-    /// <param name="_quotes">Quotes to display</param>
-    /// <returns></returns>
-    private IEnumerator PlayNarratorQuotes(string[] _quotes)
-    {
-        if (narratorBoxParent == null || narratorBoxText == null) yield break;
-        narratorBoxParent.SetActive(true);
-        foreach (string _quote in _quotes)
-        {
-            narratorBoxText.text = _quote; 
-            yield return new WaitForSeconds(_quote.Length/20);
-        }
-        narratorBoxParent.SetActive(false);
-        OnNarratorDialogEnded?.Invoke();
-        narratorCoroutine = null; 
     }
     
     private IEnumerator PrepareConnectionToPhoton()
@@ -691,14 +665,10 @@ public class TDS_UIManager : PunBehaviour
     /// Set the parent of the dialogbox Active
     /// </summary>
     /// <param name="_text">Text to fill in the text fieldw</param>
-    public void ActivateNarratorBox(string[] _text)
+    public void ActivateNarratorBox(string _text)
     {
-        if (narratorCoroutine != null)
-        {
-            OnNarratorDialogEnded?.Invoke(); 
-            StopCoroutine(narratorCoroutine);
-        }
-        narratorCoroutine = StartCoroutine(PlayNarratorQuotes(_text)); 
+        narratorBoxParent.SetActive(true);
+        narratorBoxText.text = _text;
     }
 
     /// <summary>

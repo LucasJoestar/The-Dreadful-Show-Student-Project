@@ -51,7 +51,6 @@ public class TDS_DiffuseOutline : MonoBehaviour
 
     public void DisableOutline()
     {
-        Debug.Log("Disable");
         enableOutline = false;
         MaterialPropertyBlock _mpb = new MaterialPropertyBlock();
         SpriteRenderer.GetPropertyBlock(_mpb);

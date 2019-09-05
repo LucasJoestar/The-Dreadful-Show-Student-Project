@@ -231,7 +231,7 @@ public class TDS_FireEater : TDS_Player
         float _timer = .1f;
         while (isInMiniGame && (_timer > 0))
         {
-            if (!Controller.GetButton(_buttonType))
+            if (!controller.GetButton(_buttonType))
             {
                 isInMiniGame = false;
                 break;
@@ -251,7 +251,7 @@ public class TDS_FireEater : TDS_Player
             {
                 yield return null;
 
-                if (!Controller.GetButton(_buttonType))
+                if (!controller.GetButton(_buttonType))
                 {
                     IsInMiniGame = false;
                     break;
@@ -336,7 +336,7 @@ public class TDS_FireEater : TDS_Player
 
         if (!isDrunk && isGrounded && !isJumping)
         {
-            while (Controller.GetButton(_buttonType))
+            while (controller.GetButton(_buttonType))
             {
                 if (_timer > 0)
                 {

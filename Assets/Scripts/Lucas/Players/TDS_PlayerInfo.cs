@@ -41,7 +41,8 @@ public class TDS_PlayerInfo
     public TDS_PlayerScore  PlayerScore     { get; set; }           = new TDS_PlayerScore();
     public PhotonPlayer     PhotonPlayer    { get; private set; }   = null;
     public TDS_Controller   Controller      { get; private set; }   = null;
-    public bool             IsReady         { get; set; }           = false; 
+    public bool             IsReady         { get; set; }           = false;
+    public int            Health          { get; set; }           = 0;
     #endregion
 
     #region Constructor

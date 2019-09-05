@@ -270,7 +270,7 @@ public class TDS_FatLady : TDS_Player
             float _littleShake = isAngry ? 350 : 500;
             float _bigShake = isAngry ? .008f : .0075f;
 
-            while (Controller.GetButton(ButtonType.HeavyAttack))
+            while (controller.GetButton(ButtonType.HeavyAttack))
             {
                 // Charge attack while holding attack button down
                 if (_timer > _bigLimit)
@@ -322,7 +322,7 @@ public class TDS_FatLady : TDS_Player
         if (_result != 0) return _result;
 
         // Check if it's snack time
-        if (Controller.GetButtonDown(ButtonType.Snack) && isGrounded)
+        if (controller.GetButtonDown(ButtonType.Snack) && isGrounded)
         {
             StartEatingSnack();
             return -1;

@@ -52,6 +52,18 @@ public class TDS_SceneManager : PunBehaviour
     /// <param name="_sceneIndex"></param>
     public void PrepareOnlineSceneLoading(int _sceneIndex, int _nextUIState)
     {
+        if (_sceneIndex >= SceneManager.sceneCountInBuildSettings)
+        {
+            TDS_NetworkManager.Instance.LeaveGame();
+            return;
+        }
+
+        // Save health
+        foreach (TDS_Player _player in TDS_LevelManager.Instance.AllPlayers)
+        {
+            TDS_GameManager.PlayersInfo.First(p => p.PlayerType == _player.PlayerType).Health = _player.HealthCurrent;
+        }
+
         sceneIsReady = false;
         if (PhotonNetwork.isMasterClient && PlayerSceneLoaded.Count > 0)
         {
@@ -170,6 +182,15 @@ public class TDS_SceneManager : PunBehaviour
             _sceneIndex = 0;
             _nextUIState = (int)UIState.InMainMenu;
         }
+        else
+        {
+            // Save health
+            foreach (TDS_Player _player in TDS_LevelManager.Instance.AllPlayers)
+            {
+                TDS_GameManager.PlayersInfo.First(p => p.PlayerType == _player.PlayerType).Health = _player.HealthCurrent;
+            }
+        }
+
         yield return new WaitForSeconds(1.25f);
         AsyncOperation _async = SceneManager.LoadSceneAsync(_sceneIndex, LoadSceneMode.Single);
         while (!_async.isDone)

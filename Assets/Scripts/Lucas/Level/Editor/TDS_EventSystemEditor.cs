@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -260,7 +262,31 @@ public class TDS_EventSystemEditor : Editor
                         break;
 
                     case CustomEventType.Narrator:
-                        TDS_EditorUtility.TextField("Text ID", "ID of the text to use for the Narrator", _event.FindPropertyRelative("eventString"));
+                        TDS_EditorUtility.PropertyField("Quote", "ID of the text to use for the Narrator", _event.FindPropertyRelative("quote"));
+
+                        GUILayout.BeginHorizontal();
+                        GUILayout.FlexibleSpace();
+
+                        Color _originalColor = GUI.color;
+                        GUI.color = new Color(.7f, .35f, .75f);
+                        if (GUILayout.Button(new GUIContent("Load Quote", "Loads the quote with the ID entered as Text ID"), GUILayout.Width(150)))
+                        {
+                            FieldInfo _fieldInfo = typeof(TDS_Event).GetField("quote", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+                            if (_fieldInfo != null)
+                            {
+                                TDS_NarratorQuote _quote = ((TDS_NarratorManager)Resources.Load(TDS_NarratorManager.FILE_PATH)).Quotes.FirstOrDefault(q => q.Name == _event.FindPropertyRelative("quote").FindPropertyRelative("Name").stringValue);
+
+                                if (_quote != null)
+                                {
+                                    TDS_Event[] _objectEvents = (TDS_Event[])typeof(TDS_EventsSystem).GetField(_events.name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).GetValue(target);
+
+                                    typeof(TDS_Event).GetField("quote", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).SetValue(_objectEvents[_i], _quote);
+                                }
+                            }
+                        }
+
+                        GUI.color = _originalColor;
+                        GUILayout.EndHorizontal();
                         break;
 
                     case CustomEventType.WaitForObjectDeath:

@@ -447,14 +447,14 @@ public class TDS_Juggler : TDS_Player
         aimTargetTransform.anchoredPosition = TDS_Camera.Instance.Camera.WorldToScreenPoint(ThrowAimingPoint);
 
         // While holding the throw button, aim a position
-        while (Controller.GetButton(ButtonType.Aim))
+        while (controller.GetButton(ButtonType.Aim))
         {
             // Aim while holding the button
             AimMethod();
 
             yield return null;
 
-            if (Controller.GetButtonDown(ButtonType.Shoot) && canShoot)
+            if (controller.GetButtonDown(ButtonType.Shoot) && canShoot)
             {
                 if (targetObject) targetObject = null;
                 if (targetEnemy) targetEnemy = null;
@@ -494,10 +494,10 @@ public class TDS_Juggler : TDS_Player
                     aimTargetTransform.position = _screenPos;
                 }
                 // Switch target when moving related axis
-                if (Controller.GetAxisDown(AxisType.HorizontalAim))
+                if (controller.GetAxisDown(AxisType.HorizontalAim))
                 {
                     TDS_Enemy[] _enemies = TDS_Enemy.AllEnemies.ToArray();
-                    int _selection = Controller.GetAxis(AxisType.HorizontalAim) > 0 ? 1 : -1;
+                    int _selection = controller.GetAxis(AxisType.HorizontalAim) > 0 ? 1 : -1;
                     int _index = Array.IndexOf(_enemies, targetEnemy);
 
                     for (int _i = 0; _i < _enemies.Length; _i++)
@@ -558,8 +558,8 @@ public class TDS_Juggler : TDS_Player
         Vector2 _newTarget = aimTargetTransform.anchoredPosition;
 
         // Aim with IJKL or the right joystick axis
-        float _xMovement = Controller.GetAxis(AxisType.HorizontalAim) * 50;
-        float _yMovement = Controller.GetAxis(AxisType.VerticalAim) * 50;
+        float _xMovement = controller.GetAxis(AxisType.HorizontalAim) * 50;
+        float _yMovement = controller.GetAxis(AxisType.VerticalAim) * 50;
 
         // Clamp X target position in screen
         if (_xMovement != 0)
@@ -1190,7 +1190,7 @@ public class TDS_Juggler : TDS_Player
         if (_result != 0) return _result;
 
         // Check throw
-        if (!isAiming && Controller.GetButton(ButtonType.Aim))
+        if (!isAiming && controller.GetButton(ButtonType.Aim))
         {
             PrepareThrow();
             return -1;
@@ -1200,12 +1200,12 @@ public class TDS_Juggler : TDS_Player
         if (Throwables.Count == 0) return 0;
 
             // Check aiming point / angle changes
-        if (Controller.GetButtonDown(ButtonType.SwitchPlus))
+        if (controller.GetButtonDown(ButtonType.SwitchPlus))
         {
             SwitchThrowable(true);
             return -1;
         }
-        if (Controller.GetButtonDown(ButtonType.SwitchMinus))
+        if (controller.GetButtonDown(ButtonType.SwitchMinus))
         {
             SwitchThrowable(false);
             return -1;

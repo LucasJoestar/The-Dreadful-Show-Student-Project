@@ -116,6 +116,8 @@ public class TDS_Event
     [SerializeField] private WaitForAction actionType = WaitForAction.UseRabbit;
     #endregion
 
+    [SerializeField] private TDS_NarratorQuote quote = null;
+
     #region Methods
     /// <summary>
     /// Check left bound position, and stop waiting if set as expected.
@@ -235,7 +237,10 @@ public class TDS_Event
             case CustomEventType.LoadNextLevel:
                 if (!PhotonNetwork.isMasterClient) yield break;
 
-                if (!PhotonNetwork.offlineMode) TDS_SceneManager.Instance.PrepareOnlineSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
+                if (!PhotonNetwork.offlineMode)
+                {
+                    TDS_SceneManager.Instance.PrepareOnlineSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
+                }
                 else TDS_SceneManager.Instance.PrepareSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
 
                 yield return new WaitForSeconds(1f);
@@ -263,7 +268,7 @@ public class TDS_Event
 
             // Triggers a particular quote of the Narrator
             case CustomEventType.Narrator:
-                TDS_UIManager.Instance.ActivateNarratorBox(TDS_GameManager.GetDialog(eventString).ToArray());
+                TDS_LevelManager.Instance.PlayNarratorQuote(quote);
                 break;
 
             // Remove UI curtains

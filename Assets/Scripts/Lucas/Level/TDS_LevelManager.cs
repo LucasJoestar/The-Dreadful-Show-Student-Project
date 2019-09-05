@@ -45,6 +45,8 @@ public class TDS_LevelManager : PunBehaviour
     #endregion
 
     #region Fields / Properties
+
+    #region Variables
     /// <summary>
     /// Local player, the one who play on this machine.
     /// </summary>
@@ -87,6 +89,15 @@ public class TDS_LevelManager : PunBehaviour
     public Dictionary<int, Tags> ObjectsTags = new Dictionary<int, Tags>();
     #endregion
 
+    #region Coroutines
+    /// <summary>
+    /// Current coroutine to play narrator quotes.
+    /// </summary>
+    private Coroutine narratorCoroutine = null;
+    #endregion
+
+    #endregion
+
     #region Singleton
     /// <summary>
     /// Singleton instance of this class.
@@ -97,6 +108,45 @@ public class TDS_LevelManager : PunBehaviour
     #region Methods
 
     #region Original Methods
+
+    #region Narrator
+    /// <summary>
+    /// Plays a quote from the narrator.
+    /// </summary>
+    /// <param name="_quote">Quote to play.</param>
+    public void PlayNarratorQuote(TDS_NarratorQuote _quote)
+    {
+        if (narratorCoroutine != null)
+        {
+            StopCoroutine(narratorCoroutine);
+        }
+
+        narratorCoroutine = StartCoroutine(PlayNarratorQuoteCoroutine(_quote));
+    }
+
+    /// <summary>
+    /// Plays a quote from the narrator.
+    /// </summary>
+    /// <param name="_quote">Quote to play.</param>
+    /// <returns></returns>
+    private IEnumerator PlayNarratorQuoteCoroutine(TDS_NarratorQuote _quote)
+    {
+        TDS_UIManager.Instance.ActivateNarratorBox(_quote.Quote);
+
+        // If an audio track is linked, play it
+        if (_quote.AudioTrack)
+        {
+            TDS_SoundManager.Instance.PlayNarratorQuote(_quote.AudioTrack);
+            yield return new WaitForSeconds(_quote.AudioTrack.length);
+        }
+        else yield return new WaitForSeconds(_quote.Quote.Length / 15);
+
+        TDS_UIManager.Instance.DesactivateNarratorBox();
+
+        narratorCoroutine = null;
+    }
+    #endregion
+
     /// <summary>
     /// Make the player with the type contained in the GameManager spawn
     /// </summary>
@@ -175,8 +225,6 @@ public class TDS_LevelManager : PunBehaviour
 
         // Spawn supply !
         PhotonNetwork.Instantiate(jugglerSupplies[Random.Range(0, jugglerSupplies.Length)].name, new Vector3(Random.Range(TDS_Camera.Instance.CurrentBounds.XMin + 3, TDS_Camera.Instance.CurrentBounds.XMax - 3), 17.5f, Random.Range(TDS_Camera.Instance.CurrentBounds.ZMin + 2, TDS_Camera.Instance.CurrentBounds.ZMax - 2)), Quaternion.identity, 0);
-
-        TDS_UIManager.Instance.ActivateNarratorBox(TDS_GameManager.GetRandomDialog("JS"));
     }
     #endregion
 

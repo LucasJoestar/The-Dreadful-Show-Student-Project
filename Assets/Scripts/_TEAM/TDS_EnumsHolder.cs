@@ -303,6 +303,18 @@ public enum JugglerAimTargetAnimState
 }
 
 /// <summary>
+/// All different musics used in the game.
+/// </summary>
+public enum Music
+{
+    TitleScreen,
+    Intro,
+    Outro,
+    GameTheme,
+    Fight
+}
+
+/// <summary>
 /// All animation states shared by all players.
 /// </summary>
 public enum PlayerAnimState
