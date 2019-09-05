@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 using Object = UnityEngine.Object;
@@ -37,12 +38,14 @@ public class TDS_NarratorManager : ScriptableObject
 
     #region Variables
     /// <summary>
-    /// All quotes of the narrator.
+    /// Al quotes groups.
     /// </summary>
-    [SerializeField] private TDS_NarratorQuote[] quotes = new TDS_NarratorQuote[] { };
+    [SerializeField] private TDS_NarratorQuoteGroup[] quoteGroups = new TDS_NarratorQuoteGroup[] { };
 
-    /// <summary>Public accessor for <see cref="quotes"/>.</summary>
-    public TDS_NarratorQuote[] Quotes { get { return quotes; } }
+    /// <summary>
+    /// Get all narrator quotes from the game
+    /// </summary>
+    public TDS_NarratorQuote[] Quotes { get { return quoteGroups.SelectMany(g => g.Quotes).ToArray(); } }
     #endregion
 
     #endregion
@@ -57,7 +60,7 @@ public class TDS_NarratorManager : ScriptableObject
     public static void CreateNarratorManager()
     {
         Object _file = Resources.Load(FILE_PATH);
-        // If an input asset already exist, just return
+        // If the asset already exist, just return
         if (_file != null)
         {
             Selection.activeObject = _file;
@@ -73,7 +76,43 @@ public class TDS_NarratorManager : ScriptableObject
     }
     #endif
 
-#endregion
+    #endregion
+}
+
+[Serializable]
+public class TDS_NarratorQuoteGroup
+{
+    /* TDS_NarratorQuoteGroup :
+     *
+     *	#####################
+     *	###### PURPOSE ######
+     *	#####################
+     *
+     *	#####################
+     *	### MODIFICATIONS ###
+     *	#####################
+     *	
+     *  Date :			
+     *	Author :		
+     *
+     *	Changes :
+     *
+    */
+
+    #region Fields / Properties
+    /// <summary>
+    /// Name of the group.
+    /// </summary>
+    public string Name = "New Group";
+
+    /// <summary>
+    /// All quotes from the group.
+    /// </summary>
+    [SerializeField] private TDS_NarratorQuote[] quotes = new TDS_NarratorQuote[] { };
+
+    /// <summary>Public accessor for <see cref="quotes"/>.</summary>
+    public TDS_NarratorQuote[] Quotes { get { return quotes; } }
+    #endregion
 }
 
 [Serializable]

@@ -195,7 +195,8 @@ public enum CustomEventType
     ActivateCurtains,
     RemoveCurtains,
     SwitchArrow,
-    LoadNextLevel
+    LoadNextLevel,
+    PlayMusic
 }
 
 /// <summary>
@@ -228,7 +229,8 @@ public enum EnemyAnimationState
     BringTargetCloser, 
     EndBringingTargetCloser, 
     StopDashing, 
-    LightHit
+    LightHit, 
+    Rage
 }
 
 /// <summary>

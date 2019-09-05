@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectedColliders: []
-  nearestObjectFeedback: {fileID: 2990969419023338319}
+  interactText: {fileID: 2030121801486237540}
   DetectedTags:
     ObjectTags:
     - Name: Object
@@ -483,7 +483,7 @@ MonoBehaviour:
   throwBonusDamagesMax: 6
   throwBonusDamagesMin: 2
   throwAimingPoint: {x: 7.5, y: 0, z: 0}
-  Controller:
+  controller:
     name: New Controller
     axis:
     - axisName: Horizontal
@@ -578,6 +578,12 @@ MonoBehaviour:
         lastState: 3
       keys: 
     - name: SwitchMinus
+      axis:
+        axisName: Unknown Axis
+        axisBehaviour: 0
+        lastState: 3
+      keys: 
+    - name: HowToPlay
       axis:
         axisName: Unknown Axis
         axisBehaviour: 0
@@ -924,7 +930,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
+  m_spriteAsset: {fileID: 11400000, guid: dff9e32f2c7660d439dcfa8b0ed06157, type: 2}
   m_tintAllSprites: 0
   m_overrideHtmlColors: 0
   m_faceColor:
@@ -933,8 +939,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 8
-  m_fontSizeBase: 8
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

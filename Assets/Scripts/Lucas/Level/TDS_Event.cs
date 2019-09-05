@@ -70,9 +70,9 @@ public class TDS_Event
     [SerializeField] private float delay = 0;
 
     /// <summary>
-    /// Speed coefficient applied to the camera movement.
+    /// Float associated with this event.
     /// </summary>
-    [SerializeField] private float cameraSpeedCoef = 1;
+    [SerializeField] private float eventFloat = 1;
 
     /// <summary>
     /// Time during which the camera will wait in front of its target before reset.
@@ -88,6 +88,11 @@ public class TDS_Event
     /// Prefab to instantiate.
     /// </summary>
     [SerializeField] private GameObject prefab = null;
+
+    /// <summary>
+    /// Narrator quote linked to the event.
+    /// </summary>
+    [SerializeField] private TDS_NarratorQuote quote = null;
 
     /// <summary>
     /// Player type required to execute this action.
@@ -115,8 +120,6 @@ public class TDS_Event
     /// </summary>
     [SerializeField] private WaitForAction actionType = WaitForAction.UseRabbit;
     #endregion
-
-    [SerializeField] private TDS_NarratorQuote quote = null;
 
     #region Methods
     /// <summary>
@@ -177,7 +180,7 @@ public class TDS_Event
 
             // Make a camera movement
             case CustomEventType.CameraMovement:
-                yield return TDS_Camera.Instance.LookTarget(eventTransform.position.x, eventTransform.position.y, eventTransform.position.z, cameraWaitTime, cameraSpeedCoef);
+                yield return TDS_Camera.Instance.LookTarget(eventTransform.position.x, eventTransform.position.y, eventTransform.position.z, cameraWaitTime, eventFloat);
                 break;
 
             // Desactivate the current information box
@@ -269,6 +272,11 @@ public class TDS_Event
             // Triggers a particular quote of the Narrator
             case CustomEventType.Narrator:
                 TDS_LevelManager.Instance.PlayNarratorQuote(quote);
+                break;
+
+            // Plays a new music !
+            case CustomEventType.PlayMusic:
+                TDS_SoundManager.Instance.PlayMusic((Music)eventInt, eventFloat);
                 break;
 
             // Remove UI curtains

@@ -837,7 +837,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected override void IncreaseSpeed()
     {
         base.IncreaseSpeed();
-        agent.Speed = speedCurrent;
+        agent.Speed = speedCurrent * speedCoef;
     }
 
     /// <summary>
@@ -1200,6 +1200,9 @@ public abstract class TDS_Enemy : TDS_Character
             case EnemyAnimationState.LightHit:
                 animator.SetTrigger("lightHitTrigger");
                 break;
+            case EnemyAnimationState.Rage:
+                animator.SetTrigger("RagingTrigger"); 
+                break; 
             default:
                 animator.SetInteger("animationState", _animationID);
                 break;
@@ -1213,6 +1216,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <param name="_newState">New state</param>
     public void SetEnemyState(EnemyState _newState)
     {
+        if (!PhotonNetwork.isMasterClient) return; 
         enemyState = _newState;
         switch (enemyState) 
         {
@@ -1220,6 +1224,7 @@ public abstract class TDS_Enemy : TDS_Character
                 animator.SetTrigger("resetBehaviour");
                 break; 
             default:
+                animator.ResetTrigger("resetBehaviour"); 
                 break;
         }
         animator.SetInteger("enemyState", (int)enemyState); 

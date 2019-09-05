@@ -580,6 +580,8 @@ public class TDS_UIManager : PunBehaviour
         switch (uiState)
         {
             case UIState.InMainMenu:
+                TDS_SoundManager.Instance.PlayMusic(Music.TitleScreen, 1f);
+
                 mainMenuParent.SetActive(true);
                 roomSelectionMenuParent.SetActive(false);
                 characterSelectionMenuParent.SetActive(false);
@@ -1046,6 +1048,8 @@ public class TDS_UIManager : PunBehaviour
         {
             Time.timeScale = _isPaused ? 0 : 1;
         }
+
+        TDS_SoundManager.Instance.Pause(_isPaused);
         ActivateMenu(_isPaused ? UIState.InPause : UIState.InGame);
     }
 

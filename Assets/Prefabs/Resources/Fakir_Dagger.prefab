@@ -136,8 +136,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 49
+  instantiationId: 49
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!65 &7474967557124278405
@@ -168,6 +168,30 @@ MonoBehaviour:
   range: 15
   speed: 12
   hitBox: {fileID: 7136871224362975264}
+  trajectory:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &6168824451113059196
 GameObject:
   m_ObjectHideFlags: 0

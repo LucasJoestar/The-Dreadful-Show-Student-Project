@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq; 
 using UnityEngine;
 
 public class TDS_MrLoyal : TDS_Boss 
@@ -42,7 +41,20 @@ public class TDS_MrLoyal : TDS_Boss
     [SerializeField] private List<TDS_SpawnerArea> linkedAreas = new List<TDS_SpawnerArea>();
     [SerializeField] private float chargeCatsRate = 5f;
     [SerializeField] private TDS_Cat[] cats = null;
-    [SerializeField] private Vector3 teleportationPosition = Vector3.zero; 
+    [SerializeField] private Vector3 teleportationPosition = Vector3.zero;
+
+    [SerializeField] private AudioClip fakirAudioClip       = null;
+    [SerializeField] private AudioClip mimeAudioClip        = null;
+    [SerializeField] private AudioClip acrobatAudioClip     = null;
+    [SerializeField] private AudioClip mightyManAudioClip   = null;
+    [SerializeField] private AudioClip catAudioClip         = null;
+    [SerializeField] private AudioClip[] tauntAudioClips = null;
+    [SerializeField] private float tauntRateMin = 3;
+    [SerializeField] private float tauntRateMax = 25;
+
+    private bool isEnraged = false;
+    [SerializeField] private int bonusRageDamages = 10;
+    [SerializeField] private float bonusSpeedCoefficient = 1.5f; 
     #endregion
 
     #region Methods
@@ -50,7 +62,71 @@ public class TDS_MrLoyal : TDS_Boss
     #region Original Methods            
     private void CallOut()
     {
-        SetAnimationState((int)EnemyAnimationState.Taunt); 
+        SetAnimationState((int)EnemyAnimationState.Taunt);
+        if (linkedAreas.Where(a => !a.IsDesactivated).FirstOrDefault() == null) return; 
+        string _enemyName = linkedAreas.Where(a => !a.IsDesactivated).FirstOrDefault().GetMaxEnemyType();
+
+        PlayCallOutSound(_enemyName);
+    }
+
+    private void PlayCallOutSound(string _enemyName)
+    {
+        if (!audioSource) return; 
+        AudioClip _clip = null;
+        switch (_enemyName)
+        {
+            case "Fakir":
+                _clip = fakirAudioClip;
+                break;
+            case "Mime":
+                _clip = mimeAudioClip; 
+                break;
+            case "Acrobat":
+                _clip = acrobatAudioClip; 
+                break;
+            case "MightyMan":
+                _clip = mightyManAudioClip; 
+                break;
+            case  "Cat":
+                _clip = catAudioClip;
+                break;
+            default:
+                return;
+        }
+        if (audioSource.isPlaying) audioSource.Stop();
+        audioSource.clip = _clip;
+        audioSource.volume = .25f; 
+        audioSource.Play(); 
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "PlayCallOutSound"), new object[] { _enemyName });
+    }
+
+    private void PlayRandomTaunt()
+    {
+        if (!audioSource || tauntAudioClips == null || tauntAudioClips.Length == 0) return;
+        int _index = (int)Random.Range((int)0, (int)tauntAudioClips.Length); 
+        AudioClip _clip = tauntAudioClips[_index];
+        if (!_clip) return; 
+        if (audioSource.isPlaying) audioSource.Stop();
+        audioSource.clip = _clip;
+        audioSource.volume = .25f;
+        audioSource.Play();
+        if (PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "PlayTaunt"), new object[] { _index });
+            Invoke("PlayRandomTaunt", Random.Range(tauntRateMin, tauntRateMax));
+        }
+
+    }
+
+    private void PlayTaunt(int _index)
+    {
+        if (!audioSource || tauntAudioClips == null || tauntAudioClips.Length == 0) return;
+        AudioClip _clip = tauntAudioClips[_index];
+        if (!_clip) return;
+        if (audioSource.isPlaying) audioSource.Stop();
+        audioSource.clip = _clip;
+        audioSource.volume = .25f;
+        audioSource.Play();
     }
 
     /// <summary>
@@ -77,13 +153,20 @@ public class TDS_MrLoyal : TDS_Boss
             yield break; 
         }
         _currentArea.OnNextWave.AddListener(CallOut);
-        CallOut(); 
         _currentArea.StartSpawnArea();
+        yield return null; 
+        CallOut();
+        float _timer = 0; 
         while (!_currentArea.IsDesactivated)
         {
-            yield return new WaitForSeconds(chargeCatsRate);
-            cats.ToList().ForEach(c => c.ActivateCat()); 
-            //Activate cats
+            yield return null;
+            _timer += Time.deltaTime; 
+            if(_timer > chargeCatsRate)
+            {
+                cats.ToList().ForEach(c => c.ActivateCat());
+                PlayCallOutSound("Cat");
+                _timer = 0; 
+            }
         }
         yield return GetBackIntoBattle(); 
     }
@@ -93,6 +176,7 @@ public class TDS_MrLoyal : TDS_Boss
     /// </summary>
     private void RemoveFromBattle()
     {
+        CancelInvoke("PlayRandomTaunt");
         SetEnemyState(EnemyState.OutOfBattle);
     }
 
@@ -120,6 +204,7 @@ public class TDS_MrLoyal : TDS_Boss
         yield return null;
         //ActivateEnemy();
         SetEnemyState(EnemyState.MakingDecision);
+        Invoke("PlayRandomTaunt", Random.Range(tauntRateMin, tauntRateMax));
     }
 
     public override void ActivateEnemy(bool _hastoTaunt = false)
@@ -129,6 +214,28 @@ public class TDS_MrLoyal : TDS_Boss
         IsParalyzed = false;
         RemoveFromBattle(); 
     }
+
+    protected override void Die()
+    {
+        CancelInvoke("PlayRandomTaunt"); 
+        base.Die();
+    }
+
+    protected override float StartAttack()
+    {
+        if (isEnraged) SetBonusDamages(bonusRageDamages); 
+        return base.StartAttack();
+    }
+
+    private void Enrage()
+    {
+        Debug.Log("Call Rage");
+        if (isEnraged) return; 
+        isEnraged = true;
+        speedCoef *= bonusSpeedCoefficient;
+        SetAnimationState((int)EnemyAnimationState.Rage); 
+    }
+
     #endregion
 
     #region Unity Methods
@@ -136,7 +243,8 @@ public class TDS_MrLoyal : TDS_Boss
     protected override void Awake()
     {
         base.Awake();
-        onHalfHealth.AddListener(RemoveFromBattle); 
+        onHalfHealth.AddListener(RemoveFromBattle);
+        onHalfHealth.AddListener(Enrage); 
     }
 
 	// Use this for initialization

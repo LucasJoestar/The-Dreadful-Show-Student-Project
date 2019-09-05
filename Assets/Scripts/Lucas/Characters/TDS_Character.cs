@@ -156,6 +156,11 @@ public abstract class TDS_Character : TDS_Damageable
     /// Transform of the character's shadow.
     /// </summary>
     [SerializeField] protected Transform shadowTransform = null;
+
+    /// <summary>
+    /// Audio source of the Character
+    /// </summary>
+    [SerializeField] protected AudioSource audioSource = null; 
     #endregion
 
     #region Variables
@@ -660,6 +665,10 @@ public abstract class TDS_Character : TDS_Damageable
     }
     #endregion
 
+    #region PlaySound 
+
+    #endregion
+
     #endregion
 
     #region Unity Methods
@@ -685,6 +694,11 @@ public abstract class TDS_Character : TDS_Damageable
         if (!shadowTransform)
         {
             Debug.LogWarning("The Shadow Transform of \"" + name + "\" for script TDS_Character is missing !");
+        }
+        if(!audioSource)
+        {
+            audioSource = GetComponent<AudioSource>(); 
+            if(!audioSource) Debug.LogWarning("The AudioSource of \"" + name + "\" for script TDS_Character is missing !");
         }
     }
 
