@@ -208,6 +208,34 @@ public class TDS_SpawnerArea : PunBehaviour
         return spawnedEnemies.Where(e => e.Throwable != null).Count(); 
     }
 
+    public string GetMaxEnemyType()
+    {
+
+        int _bestCount = 0;
+        string _name = string.Empty;
+        if (spawnedEnemies.Where(e => e.EnemyName == "MightyMan(Clone)").ToList().Count > _bestCount)
+        {
+            return "MightyMan"; 
+        }
+
+        if (spawnedEnemies.Where(e => e.EnemyName == "Mime(Clone)").ToList().Count > _bestCount)
+        {
+            _name = "Mime";
+            _bestCount = spawnedEnemies.OfType<TDS_Mime>().ToList().Count;
+        }
+        if (spawnedEnemies.Where(e => e.EnemyName == "Fakir(Clone)").ToList().Count > _bestCount)
+        {
+            _name = "Fakir";
+            _bestCount = spawnedEnemies.OfType<TDS_Fakir>().ToList().Count; 
+        }
+        if (spawnedEnemies.Where(e => e.EnemyName == "Acrobat(Clone)").ToList().Count > _bestCount)
+        {
+            _name = "Acrobat";
+            _bestCount = spawnedEnemies.OfType<TDS_Acrobat>().ToList().Count;
+        }
+        return _name;
+    }
+
     /// <summary>
     /// Make spawn all enemies at every point of the wave index
     /// Increase Wave Index

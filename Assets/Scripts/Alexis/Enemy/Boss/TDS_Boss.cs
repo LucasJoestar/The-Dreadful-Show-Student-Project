@@ -200,12 +200,12 @@ public abstract class TDS_Boss : TDS_Enemy
             onTwoThirdsHealth.Invoke();
             onTwoThirdsHealth = null; 
         }
-        else if(healthCurrent <= healthMax * .5f && onHalfHealth != null)
+        if(healthCurrent <= healthMax * .5f && onHalfHealth != null)
         {
             onHalfHealth.Invoke();
             onHalfHealth = null; 
         }
-        else if(healthCurrent <= healthMax * (1/3) && onOneThirdHealth != null)
+        if(healthCurrent <= healthMax * (1/3) && onOneThirdHealth != null)
         {
             onOneThirdHealth.Invoke();
             onOneThirdHealth = null; 
