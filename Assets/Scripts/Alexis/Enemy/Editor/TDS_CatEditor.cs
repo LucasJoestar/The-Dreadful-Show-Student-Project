@@ -43,6 +43,8 @@ public class TDS_CatEditor : TDS_CharacterEditor
     private SerializedProperty catState = null;
     private SerializedProperty leftPerchInfos = null;
     private SerializedProperty rightPerchInfos = null;
+    private SerializedProperty catAttack = null;
+    private SerializedProperty chargeRate = null; 
     #endregion
 
     #region Methods
@@ -56,6 +58,8 @@ public class TDS_CatEditor : TDS_CharacterEditor
         TDS_EditorUtility.PropertyField("Left Perch Infos", "Left perch infos", leftPerchInfos);
         TDS_EditorUtility.PropertyField("Right Perch Infos", "Left perch infos", rightPerchInfos);
 
+        TDS_EditorUtility.PropertyField("Cat Attack", "Attack casted by the cat", catAttack);
+        TDS_EditorUtility.FloatSlider("Charge Rate", "Rate using when the cat is independant", chargeRate, 5, 25); 
         serializedObject.ApplyModifiedProperties(); 
     }
     #endregion
@@ -67,7 +71,8 @@ public class TDS_CatEditor : TDS_CharacterEditor
         catState = serializedObject.FindProperty("catState");
         leftPerchInfos = serializedObject.FindProperty("leftPerchInfos");
         rightPerchInfos = serializedObject.FindProperty("rightPerchInfos");
-
+        catAttack = serializedObject.FindProperty("catAttack");
+        chargeRate = serializedObject.FindProperty("chargeRate"); 
     }
 
     public override void OnInspectorGUI()

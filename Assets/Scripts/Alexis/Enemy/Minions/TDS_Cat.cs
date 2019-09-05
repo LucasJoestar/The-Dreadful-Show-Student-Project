@@ -35,7 +35,6 @@ public class TDS_Cat : TDS_Character
 	*/
 
     #region Events
-
     #endregion
 
     #region Fields / Properties
@@ -48,9 +47,11 @@ public class TDS_Cat : TDS_Character
     [SerializeField] private PerchInformations leftPerchInfos = null;
     [SerializeField] private PerchInformations rightPerchInfos = null;
 
-    [SerializeField] private TDS_Attack catAttack = null; 
+    [SerializeField] private TDS_Attack catAttack = null;
+    [SerializeField] private float chargeRate = 10; 
 
-    private Coroutine movementCoroutine = null; 
+    private Coroutine movementCoroutine = null;
+    private bool isIndependant = false; 
 	#endregion
 
 	#region Methods
@@ -134,7 +135,12 @@ public class TDS_Cat : TDS_Character
         SetAnimationState((int)CatAnimationState.EndJump);
         yield return null;
         Flip();
-        movementCoroutine = null; 
+        if (isIndependant)
+        {
+            yield return new WaitForSeconds(chargeRate);
+            ActivateCat(); 
+        }
+        movementCoroutine = null;
     }
 
     private IEnumerator MoveCat()
@@ -206,6 +212,12 @@ public class TDS_Cat : TDS_Character
         agent.StopAgent();
         SetAnimationState((int)CatAnimationState.Die); 
         base.Die();
+    }
+
+    public void SetCatIndependant()
+    {
+        isIndependant = true;
+        ActivateCat(); 
     }
     #endregion
 

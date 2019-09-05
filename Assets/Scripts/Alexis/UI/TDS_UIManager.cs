@@ -265,7 +265,9 @@ public class TDS_UIManager : PunBehaviour
 
     #region OptionMenu
     [Header("Options Menu")]
-    [SerializeField] private TDS_OptionManager optionManager = null;  
+    [SerializeField] private TDS_OptionManager optionManager = null;
+
+    [SerializeField] private TMP_Text addPlayerText = null; 
     #endregion 
 
     #region WorkInProgress
@@ -614,6 +616,7 @@ public class TDS_UIManager : PunBehaviour
                 checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InRoomSelection)); 
                 break;
             case UIState.InCharacterSelection:
+                if (addPlayerText) addPlayerText.gameObject.SetActive(PhotonNetwork.offlineMode); 
                 mainMenuParent.SetActive(false);
                 roomSelectionMenuParent.SetActive(false);
                 characterSelectionMenuParent.SetActive(true);

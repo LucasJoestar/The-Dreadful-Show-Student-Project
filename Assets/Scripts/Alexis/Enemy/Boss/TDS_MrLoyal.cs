@@ -205,6 +205,7 @@ public class TDS_MrLoyal : TDS_Boss
         //ActivateEnemy();
         SetEnemyState(EnemyState.MakingDecision);
         Invoke("PlayRandomTaunt", Random.Range(tauntRateMin, tauntRateMax));
+        if (isEnraged) cats.ToList().ForEach(c => c.SetCatIndependant()); 
     }
 
     public override void ActivateEnemy(bool _hastoTaunt = false)
