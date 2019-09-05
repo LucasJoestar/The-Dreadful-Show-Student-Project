@@ -195,7 +195,8 @@ public enum CustomEventType
     ActivateCurtains,
     RemoveCurtains,
     SwitchArrow,
-    LoadNextLevel
+    LoadNextLevel,
+    PlayMusic
 }
 
 /// <summary>

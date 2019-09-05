@@ -59,44 +59,11 @@ public class TDS_SoundManager : MonoBehaviour
     /// Audio source used to play narrator quotes.
     /// </summary>
     [SerializeField] private AudioSource narratorSource = null;
-    #endregion
-
-    #region AudioClip
-    /// <summary>
-    /// Music of the title screen.
-    /// </summary>
-    [Header("Musics")]
-    [SerializeField] private AudioClip mTitleScreen = null;
 
     /// <summary>
-    /// Music of the intro cutscene.
+    /// Audio source used to play all kind of UI stuff.
     /// </summary>
-    [SerializeField] private AudioClip mIntro = null;
-
-    /// <summary>
-    /// Music of the outro cutscene.
-    /// </summary>
-    [SerializeField] private AudioClip mOutro = null;
-
-    /// <summary>
-    /// Intro for the fight music.
-    /// </summary>
-    [SerializeField] private AudioClip mFightIntro = null;
-
-    /// <summary>
-    /// Loop of the fight music.
-    /// </summary>
-    [SerializeField] private AudioClip mFightLoop = null;
-
-    /// <summary>
-    /// Intro of the main game theme music.
-    /// </summary>
-    [SerializeField] private AudioClip mThemeIntro = null;
-
-    /// <summary>
-    /// Loop of the main game theme music.
-    /// </summary>
-    [SerializeField] private AudioClip mThemeLoop = null;
+    [SerializeField] private AudioSource uiSource = null;
     #endregion
 
     #region Coroutines
@@ -104,6 +71,11 @@ public class TDS_SoundManager : MonoBehaviour
     /// Current coroutine used to play a new music.
     /// </summary>
     private Coroutine playMusicCoroutine = null;
+
+    /// <summary>
+    /// Current coroutine used to unpause the game.
+    /// </summary>
+    private Coroutine unpauseCoroutine = null;
     #endregion
 
     #region Memory Variables
@@ -111,6 +83,21 @@ public class TDS_SoundManager : MonoBehaviour
     /// Volume used to play music.
     /// </summary>
     private float musicVolume = 1;
+
+    /// <summary>
+    /// Current music playing.
+    /// </summary>
+    private Music currentMusic = 0;
+
+    /// <summary>
+    /// Music playing before setting pause.
+    /// </summary>
+    private AudioClip musicBeforePause = null;
+
+    /// <summary>
+    /// Time at which was playing the music before setting pause.
+    /// </summary>
+    private float musicBeforePauseTime = 0;
     #endregion
 
     #region Singleton
@@ -138,18 +125,50 @@ public class TDS_SoundManager : MonoBehaviour
     }
 
     /// <summary>
+    /// (Un)pause the game.
+    /// </summary>
+    /// <param name="_doPause">Should the game be pause or not.</param>
+    public void Pause(bool _doPause)
+    {
+        AudioListener.pause = _doPause;
+
+        if (_doPause)
+        {
+            musicBeforePause = musicSource.clip;
+            musicBeforePauseTime = musicSource.time;
+
+            if (unpauseCoroutine != null)
+            {
+                StopCoroutine(unpauseCoroutine);
+                unpauseCoroutine = null;
+            }
+
+            musicSource.clip = TDS_GameManager.AudioAsset.M_TitleScreen;
+            musicSource.time = 0;
+            musicSource.Play();
+        }
+        else
+        {
+            unpauseCoroutine = StartCoroutine(Unpause());
+        }
+    }
+
+    /// <summary>
     /// Plays a new music.
     /// </summary>
     /// <param name="_music">Music to play.</param>
     /// <param name="_fadeDuration">Duration during which the previous music fades out before the new one starts.</param>
     public void PlayMusic(Music _music, float _fadeDuration)
     {
+        if (_music == currentMusic) return;
+
         if (playMusicCoroutine != null)
         {
             StopCoroutine(playMusicCoroutine);
         }
         else musicVolume = musicSource.volume;
 
+        currentMusic = _music;
         playMusicCoroutine = StartCoroutine(PlayMusicCoroutine(_music, _fadeDuration));
     }
 
@@ -159,7 +178,7 @@ public class TDS_SoundManager : MonoBehaviour
     /// <param name="_music">Music to play.</param>
     /// <param name="_fadeDuration">Duration during which the previous music fades out before the new one starts.</param>
     /// <returns></returns>
-    public IEnumerator PlayMusicCoroutine(Music _music, float _fadeDuration)
+    private IEnumerator PlayMusicCoroutine(Music _music, float _fadeDuration)
     {
         float _timer = _fadeDuration;
 
@@ -174,38 +193,39 @@ public class TDS_SoundManager : MonoBehaviour
 
         // Set back volume
         musicSource.volume = musicVolume;
+        musicSource.time = 0;
 
         // Get the music to play and executes actions depending on it
         switch (_music)
         {
             case Music.TitleScreen:
-                musicSource.clip = mTitleScreen;
+                musicSource.clip = TDS_GameManager.AudioAsset.M_TitleScreen;
                 break;
 
             case Music.Intro:
-                musicSource.clip = mIntro;
+                musicSource.clip = TDS_GameManager.AudioAsset.M_Intro;
                 break;
 
             case Music.Outro:
-                musicSource.clip = mOutro;
+                musicSource.clip = TDS_GameManager.AudioAsset.M_Outro;
                 break;
 
             case Music.GameTheme:
-                musicSource.clip = mThemeIntro;
+                musicSource.clip = TDS_GameManager.AudioAsset.M_ThemeIntro;
                 musicSource.Play();
 
-                yield return new WaitForSeconds(mThemeIntro.length);
+                yield return new WaitForSeconds(TDS_GameManager.AudioAsset.M_ThemeIntro.length);
 
-                musicSource.clip = mThemeLoop;
+                musicSource.clip = TDS_GameManager.AudioAsset.M_ThemeLoop;
                 break;
 
             case Music.Fight:
-                musicSource.clip = mFightIntro;
+                musicSource.clip = TDS_GameManager.AudioAsset.M_FightIntro;
                 musicSource.Play();
 
-                yield return new WaitForSeconds(mFightIntro.length);
+                yield return new WaitForSeconds(TDS_GameManager.AudioAsset.M_FightIntro.length);
 
-                musicSource.clip = mFightLoop;
+                musicSource.clip = TDS_GameManager.AudioAsset.M_FightLoop;
                 break;
 
             default:
@@ -224,6 +244,28 @@ public class TDS_SoundManager : MonoBehaviour
     {
         narratorSource.clip = _audioTrack;
         narratorSource.Play();
+    }
+
+    /// <summary>
+    /// Unpauses the game with music back.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator Unpause()
+    {
+        float _timer = 0;
+        musicSource.volume = 0;
+        musicSource.clip = musicBeforePause;
+        musicSource.time = musicBeforePauseTime;
+        musicSource.Play();
+
+        // Fade previous music slowly
+        while (_timer < 1)
+        {
+            musicSource.volume = Mathf.Lerp(musicSource.volume, musicVolume, _timer);
+
+            yield return null;
+            _timer += Time.deltaTime;
+        }
     }
 
     /// <summary>
@@ -264,6 +306,9 @@ public class TDS_SoundManager : MonoBehaviour
             Destroy(this);
             return; 
         }
+
+        musicSource.ignoreListenerPause = true;
+        uiSource.ignoreListenerPause = true;
     }
     #endregion
 

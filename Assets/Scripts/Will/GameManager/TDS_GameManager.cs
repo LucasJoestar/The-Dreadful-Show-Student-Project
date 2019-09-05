@@ -116,6 +116,11 @@ public static class TDS_GameManager
     /// </summary>
     public static TDS_InputSO InputsAsset { get; private set; }
 
+    /// <summary>
+    /// Audio asset referencing multi-used audio tracks.
+    /// </summary>
+    public static TDS_AudioSO AudioAsset { get; private set; }
+
 
     /// <summary>
     /// Character used to split the text asset.
@@ -175,6 +180,10 @@ public static class TDS_GameManager
         if (!InputsAsset)
         {
             InputsAsset = Resources.Load<TDS_InputSO>(TDS_InputSO.INPUT_ASSET_PATH);
+        }
+        if (!AudioAsset)
+        {
+            AudioAsset = Resources.Load<TDS_AudioSO>(TDS_AudioSO.FILE_PATH);
         }
 
         // Set screen resolution
