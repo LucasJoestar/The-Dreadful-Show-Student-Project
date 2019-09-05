@@ -50,7 +50,11 @@ public class TDS_MrLoyal : TDS_Boss
     [SerializeField] private AudioClip catAudioClip         = null;
     [SerializeField] private AudioClip[] tauntAudioClips = null;
     [SerializeField] private float tauntRateMin = 3;
-    [SerializeField] private float tauntRateMax = 25;    
+    [SerializeField] private float tauntRateMax = 25;
+
+    private bool isEnraged = false;
+    [SerializeField] private int bonusRageDamages = 10;
+    [SerializeField] private float bonusSpeedCoefficient = 1.5f; 
     #endregion
 
     #region Methods
@@ -216,6 +220,22 @@ public class TDS_MrLoyal : TDS_Boss
         CancelInvoke("PlayRandomTaunt"); 
         base.Die();
     }
+
+    protected override float StartAttack()
+    {
+        if (isEnraged) SetBonusDamages(bonusRageDamages); 
+        return base.StartAttack();
+    }
+
+    private void Enrage()
+    {
+        Debug.Log("Call Rage");
+        if (isEnraged) return; 
+        isEnraged = true;
+        speedCoef *= bonusSpeedCoefficient;
+        SetAnimationState((int)EnemyAnimationState.Rage); 
+    }
+
     #endregion
 
     #region Unity Methods
@@ -223,7 +243,8 @@ public class TDS_MrLoyal : TDS_Boss
     protected override void Awake()
     {
         base.Awake();
-        onHalfHealth.AddListener(RemoveFromBattle); 
+        onHalfHealth.AddListener(RemoveFromBattle);
+        onHalfHealth.AddListener(Enrage); 
     }
 
 	// Use this for initialization
