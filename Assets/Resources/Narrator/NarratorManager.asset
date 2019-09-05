@@ -12,7 +12,278 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6beef1e2fb257a4c97139e57b5fad55, type: 3}
   m_Name: NarratorManager
   m_EditorClassIdentifier: 
-  quotes:
-  - Name: test
-    audioTrack: {fileID: 0}
-    quote: hfhfghgfhfghf
+  quoteGroups:
+  - Name: Intro
+    quotes:
+    - Name: intro_01
+      audioTrack: {fileID: 8300000, guid: e59da7a995f023049958a718f7b736c7, type: 3}
+      quote: "Mesdames et messieurs, approchez approchez, pr\xE9parez-vous et laissez-moi
+        vous conter l'histoire"
+    - Name: intro_02
+      audioTrack: {fileID: 8300000, guid: c3228e0c42e996347a6a832abe2c29dd, type: 3}
+      quote: "Tout commence au Poney qui Tousse, avec notre troupe d'incroyables monstres
+        de foire. Comment, vous ne les connaissez pas ? Eh bien, permettez-moi de
+        vous les pr\xE9senter."
+    - Name: intro_03
+      audioTrack: {fileID: 8300000, guid: f5d0cf97b423e1945b4bc01b952e46a1, type: 3}
+      quote: "Voici Martha, la Grande Dame, dont la d\xE9licatesse n'a d'\xE9gal que
+        sa force exceptionnelle ! Tout comme son tour de taille..."
+    - Name: intro_04
+      audioTrack: {fileID: 8300000, guid: 01cb764775df99640b785370c7397e2b, type: 3}
+      quote: "Sous la table, Willy, l'incroyable, le sensationnel, l'exub\xE9rant,
+        le fantasmagorique... Jongleur \xE0 trois bras !"
+    - Name: intro_05
+      audioTrack: {fileID: 8300000, guid: 411009f29c4d1ab468588dc054b8f0a1, type: 3}
+      quote: "Abby, la malicieuse, petite mais n\xE9anmoins poignante femme \xE0 barbe,
+        aussi veulue que violente !"
+    - Name: intro_06
+      audioTrack: {fileID: 8300000, guid: 97a89906950b36a4ab16a9c8ee09409b, type: 3}
+      quote: "Pour le clou du spectacle, notre extraordinaire cracheur de feu, Archibald,
+        dont le talent est \xE0 vous couper le souffle ! Mhmm hum hum..."
+    - Name: intro_07
+      audioTrack: {fileID: 8300000, guid: 50bb2b60ac1e5fd42b9fbf7a506960a5, type: 3}
+      quote: "Suite \xE0 un malencontreux incident, provoqu\xE9 par un barman malhabile
+        et son pub trop poussi\xE9reux, nos valeureux h\xE9ros se voient contraints
+        de quitter l'endroit."
+  - Name: City_Tuto
+    quotes:
+    - Name: city_tuto_01
+      audioTrack: {fileID: 8300000, guid: d325b9d5958b9af42892c4ec7c50e424, type: 3}
+      quote: "Quel empot\xE9 ! Revenez au Cirque avant qu'il ne fasse nuit noire,
+        et que vous ne puissiez plus diff\xE9rencier un raton laveur de vos chaussures."
+    - Name: city_tuto_02
+      audioTrack: {fileID: 8300000, guid: 18556b58c67c8524fb3a12a3dd385768, type: 3}
+      quote: Ce n'est pas une raison pour regarder vos chaussures !
+    - Name: city_tuto_03
+      audioTrack: {fileID: 8300000, guid: aeaecdefa9c009d4e97cb7ea8291392d, type: 3}
+      quote: "Les habitu\xE9s du bar ont l'air de vite s'emporter... Allez, passez
+        rapidement sous la planche si vous ne voulez pas faire de mauvaise rencontre."
+    - Name: city_tuto_04
+      audioTrack: {fileID: 8300000, guid: 161e1c3fe3c4d0c459d6a47d49b72253, type: 3}
+      quote: "\xC7a suffit ! Inutile de faire dans la dentelle. D\xE9truisez-moi ces
+        tas de d\xE9bris us\xE9s, qu'on en finisse !"
+    - Name: city_tuto_05
+      audioTrack: {fileID: 8300000, guid: 8dc1986b163c47a4b9d319f86361b7ab, type: 3}
+      quote: "Voil\xE0 qui tombe \xE0 pic ! On ne sait jamais quand est-ce qu'il faudra
+        donner un petite repr\xE9sentation."
+    - Name: city_tuto_06
+      audioTrack: {fileID: 8300000, guid: 177147809a9497c4f9ab324d3a6d9512, type: 3}
+      quote: "Alors, on veut en d\xE9coudre ? \"Oh non, on a fait br\xFBler le bar,
+        ahgneugneuh, les punks sont pas contents...\" Frappez-les."
+    - Name: city_tuto_07
+      audioTrack: {fileID: 8300000, guid: 2097370f3eaaf604d88754a85897fe68, type: 3}
+      quote: Aah, bonne chose de faite !
+  - Name: City_Bridge
+    quotes:
+    - Name: city_bridge_01
+      audioTrack: {fileID: 8300000, guid: 55f72c8a3f5bc3442b6dfd56fd066348, type: 3}
+      quote: "C'est qu'ils sont tenaces ces coquins ! Aussi tenaces que la colle sur
+        leur cr\xEAte !"
+    - Name: city_bridge_02
+      audioTrack: {fileID: 8300000, guid: b82e0063c11ccd046b879dcba149f574, type: 3}
+      quote: Mais... c'est mon lapin ?! Vite, attrapez-le ! Mais attrapez-le bon sang
+        !
+    - Name: city_bridge_03
+      audioTrack: {fileID: 8300000, guid: e829986c63eb3564d8bb89cdb0e4ed73, type: 3}
+      quote: "Tu... Tu l'as mang\xE9 ? Je veux dire... Tu as vraiment mang\xE9 mon
+        lapin ?!..."
+    - Name: city_bridge_04
+      audioTrack: {fileID: 8300000, guid: 4864f9c286af0ed409ecd25bc52cafa6, type: 3}
+      quote: "\xC7a... \xC7a ne m'atteint pas ! J'en ai plein d'autres..."
+  - Name: City_Boss
+    quotes:
+    - Name: city_boss_01
+      audioTrack: {fileID: 8300000, guid: 26b6f11e9ffcfe94384c564459f54d01, type: 3}
+      quote: "Cette fois-ci, c'est du s\xE9rieux ! Il y a m\xEAme le chef de la bande.
+        Montrez-lui de quel bois nous nous chauffons."
+    - Name: city_boss_02
+      audioTrack: {fileID: 8300000, guid: 4adf58d550f27aa499d43dbcc81e3d5b, type: 3}
+      quote: "Je ne peux que vous f\xE9liciter, vous avez d\xE9barass\xE9 la ville
+        de cette terrible vermine."
+  - Name: City_BellTower
+    quotes:
+    - Name: city_bell_01
+      audioTrack: {fileID: 8300000, guid: e8c1d00e01b2b4a43a84d8446cfe34d9, type: 3}
+      quote: Tiens, que font les mimes ici ? Ils sont venus vous donner un coup de
+        main... dans votre visage apparemment.
+    - Name: city_bell_02
+      audioTrack: {fileID: 8300000, guid: a597389f8186bfc46acc0077c0cb41b2, type: 3}
+      quote: "Ils se comportent bien \xE9trangement. Il faudrait leur remettre les
+        id\xE9es en place !"
+    - Name: city_bell_03
+      audioTrack: {fileID: 8300000, guid: 4425897dd42c2b34aa7ca2e98d407a08, type: 3}
+      quote: Mais c'est qu'ils sont venus en bande !
+    - Name: city_bell_04
+      audioTrack: {fileID: 8300000, guid: db1bba94e4bd1474b8a2a64e54c65f61, type: 3}
+      quote: "Tout cela est bien \xE9trange. Vos compagnons de tous les jours sont
+        comme ensorcel\xE9s, et n'ont rien trouv\xE9 de mieux que de semer le chaos
+        dans la ville !"
+    - Name: city_bell_05
+      audioTrack: {fileID: 8300000, guid: 6e89b3a0396da5b419927aec548a0591, type: 3}
+      quote: "J'esp\xE8re vraiment que mon Cirque est intact."
+  - Name: City_Park
+    quotes:
+    - Name: city_park_01
+      audioTrack: {fileID: 8300000, guid: 3461aa3082315fe44aee93a88ad0d43f, type: 3}
+      quote: Aaah ah ! *Cri d'effroit* Ooh !
+    - Name: city_park_02
+      audioTrack: {fileID: 8300000, guid: 9168455ccc8daf04caebdafc45cb9d00, type: 3}
+      quote: "Celui-l\xE0 est bien plus costaud que les autres, prenez garde !"
+    - Name: city_park_03
+      audioTrack: {fileID: 8300000, guid: 90da93ea150d2e746a4458c137afabfb, type: 3}
+      quote: "Vous n'y allez pas de main morte... Essayez de vous rappeler que ce
+        sont quand m\xEAme vos camarades."
+    - Name: city_park_04
+      audioTrack: {fileID: 8300000, guid: adf9cd8d66c518c41aadd84eebd839b4, type: 3}
+      quote: "La route vers le Cirque \xE9tait libre, mais qui sait quel genre d'horreur
+        les attendait l\xE0-bas... l\xE0-bas... l\xE0-bas."
+  - Name: Circus_Edge
+    quotes:
+    - Name: circus_edge_01
+      audioTrack: {fileID: 8300000, guid: 0653bba1843dfdb42aa928fbcfa2930d, type: 3}
+      quote: "Bon nombre de rumeurs circulent sur ces bois... On parle de monstruosit\xE9s,
+        de clowns cannibales, de mimes hurleurs, et m\xEAme d'un voltigeur \xE0 trois
+        bras."
+    - Name: circus_edge_02
+      audioTrack: {fileID: 8300000, guid: b8d3dcc0e13a579409aafce26cf96b5b, type: 3}
+      quote: "Huuuh *frissons*, tout \xE7a me d\xE9go\xFBte."
+    - Name: circus_edge_03
+      audioTrack: {fileID: 8300000, guid: fea2feec493c87847bc4dcd0bf47e286, type: 3}
+      quote: "En plus d'\xEAtre un endroit lugubre, il y a de jeunes freluquets pr\xEAts
+        \xE0 en d\xE9coudre ! Ne les faites pas attendre."
+  - Name: Circus_Siameses
+    quotes:
+    - Name: circus_siameses_01
+      audioTrack: {fileID: 8300000, guid: 6b1bbcc96c576c045a996495d4164ea4, type: 3}
+      quote: Fallait-il vraiment que mes meilleurs artistes se retournent les uns
+        contre les autres ?
+    - Name: circus_siameses_02
+      audioTrack: {fileID: 8300000, guid: 335f897cc2a1a3e43b8fe671aceea579, type: 3}
+      quote: "En plus d'\xEAtre une horreur de la nature et d'\xEAtre fort comme trois
+        hommes, c'est un fabuleux ventriloque."
+    - Name: circus_siameses_03
+      audioTrack: {fileID: 8300000, guid: 18a235b0930b70a4b931b253b143e139, type: 3}
+      quote: "Ooh ! Je savais bien que ce clown cachait quelque chose ! Son num\xE9ro
+        de ventriloquer \xE9tait bien trop parfait !"
+    - Name: circus_siameses_04
+      audioTrack: {fileID: 8300000, guid: 02962cdb21a1bb3469c097999dd0d943, type: 3}
+      quote: "Au diable les imposteurs ! C'est vous la v\xE9ritable star de mon cirque
+        ! Enfin... tant que vous me le nettoyez de tous ces affreux mimes."
+  - Name: Circus_Freaks
+    quotes:
+    - Name: circus_freaks_01
+      audioTrack: {fileID: 8300000, guid: 31166cb0407a0454696b2b126f4f2999, type: 3}
+      quote: Avec eux, votre vie risque de couper court.
+    - Name: circus_freaks_02
+      audioTrack: {fileID: 8300000, guid: 72dac513fa989014ab305e0b24175618, type: 3}
+      quote: "Que fait cet abat-jour sur le sol ? Et cette \xE9norme culotte en dentelle
+        ? Ooh, Martha va \xEAtre folle de rage si quelqu'un a encore jou\xE9 avec
+        ses jupons."
+    - Name: circus_freaks_03
+      audioTrack: {fileID: 8300000, guid: b4678fd52f47526499c9f0044d2145e1, type: 3}
+      quote: "Je me demande quand m\xEAme depuis quand nous avons autant de personnel.
+        Peu importe, je ne payerai jamais tout ces gens ! Faites-leur comprendre qu'ils
+        sont vir\xE9s !"
+    - Name: circus_freaks_04
+      audioTrack: {fileID: 8300000, guid: 1c90469223abdc3448d94f911bcd7007, type: 3}
+      quote: "Ils ont os\xE9 amener MON orgue de barbarie en dehors de MON cirque
+        ? Vous savez combien il m'a co\xFBt\xE9 ? NON ! Ces mimes sont vraiment sans
+        piti\xE9 !"
+    - Name: circus_freaks_05
+      audioTrack: {fileID: 8300000, guid: 8a595b3a279f12a45a2399490e8d4022, type: 3}
+      quote: "Malgr\xE9 le boxon que ces mimes ont mis, la zone de repas est rest\xE9e
+        intacte. Ouf !"
+  - Name: Circus_Entrance
+    quotes:
+    - Name: circus_entrance_01
+      audioTrack: {fileID: 8300000, guid: e0d100c1655602749914e7e463fac249, type: 3}
+      quote: "Mhmm hum, n'oubliez pas de laisser un petit pourboir \xE0 l'accueil.
+        On ne travaille pas uniquement pour se donner en spectacle. Humf humf hum
+        hum."
+    - Name: circus_entrance_02
+      audioTrack: {fileID: 8300000, guid: 5208d077841b750409f9c16232128681, type: 3}
+      quote: "Ooh, fallait-il vraiment passer par cet endroit ? J'esp\xE8re que personne
+        n'a touch\xE9 aux miroirs, c'est une v\xE9ritable plaie \xE0 nettoyer."
+    - Name: circus_entrance_03
+      audioTrack: {fileID: 8300000, guid: 6f717446c4f37944b8daa881f2201996, type: 3}
+      quote: "Attention aux acrobates ! Ils r\xE9alisent des figures aussi bien qu'ils
+        les cassent !"
+    - Name: circus_entrance_04
+      audioTrack: {fileID: 8300000, guid: e60433081029d2b489769143b19b1bd1, type: 3}
+      quote: "Faites bien attention \xE0 ne pas casser mes miroirs. Allez plut\xF4t
+        casser du mime !"
+    - Name: circus_entrance_05
+      audioTrack: {fileID: 8300000, guid: 89b20140c488dc24ba6dc5a656a852f3, type: 3}
+      quote: Mais qu'est-ce que c'est que cette horreur ? Oh, ce n'est que vous...
+        Ces miroirs ne vous rendent vraiment pas justice.
+  - Name: Circus_Zoo
+    quotes:
+    - Name: circus_zoo_01
+      audioTrack: {fileID: 8300000, guid: 8e21f6832ad83a24abb3dbed6db34984, type: 3}
+      quote: "Ooh ! Avec un peu de chance, ils n'auront pas d\xE9cha\xEEn\xE9 la fureur
+        d'Attila."
+    - Name: circus_zoo_02
+      audioTrack: {fileID: 8300000, guid: 61abdb9349d52a844ba2a6dabb18375f, type: 3}
+      quote: "Oooh, au moins la terrible b\xEAte est toujours dans sa cage. Coucou
+        toi."
+  - Name: Circus_Alley
+    quotes:
+    - Name: circus_alley_01
+      audioTrack: {fileID: 8300000, guid: b0af766881d114049a49fcdb8cca054c, type: 3}
+      quote: "Vous savez, dans ma jeunesse, j'avais un... Ooh ! Vous n'avez pas le
+        droit d'\xEAtre ici ! Mais... Je vous reconnais, je vous avais cong\xE9di\xE9
+        !"
+    - Name: circus_alley_02
+      audioTrack: {fileID: 8300000, guid: 6551c785a22da1942a10719591682aa2, type: 3}
+      quote: "Vous \xE9tiez un magicien effroyable, vous n'\xE9tiez m\xEAme pas capable
+        de m\xE9langer un paquet de cartes ! Qu'est-ce que vous faites ? Arr\xEAtez,
+        arr\xEAtez !"
+  - Name: MrLoyal_Calls
+    quotes:
+    - Name: loyal_call_acrobats
+      audioTrack: {fileID: 8300000, guid: 5f411c2154de0384fb0c2ec05a5f030d, type: 3}
+      quote: "Tout \xE7a est trop rigide, assouplissez-moi \xE7a !"
+    - Name: loyal_call_cats
+      audioTrack: {fileID: 8300000, guid: fdf7d0e8b910e0044ba595db423cc7de, type: 3}
+      quote: "L\xE2chez les fauves !"
+    - Name: loyal_call_fakhirs
+      audioTrack: {fileID: 8300000, guid: 16c2b0a9f5c3e8a48b199fd6c594d27f, type: 3}
+      quote: Amenez-moi de quoi les picoter !
+    - Name: loyal_call_mightyman
+      audioTrack: {fileID: 8300000, guid: e65288fc492c217438a3693b4170da22, type: 3}
+      quote: "Amenez-moi plus de muscle pour cette repr\xE9sentation !"
+    - Name: loyal_call_mimes
+      audioTrack: {fileID: 8300000, guid: f12b649d01e90994d985edd039583a69, type: 3}
+      quote: De la main d'oeuvre, vite !
+  - Name: MrLoyal_Taunts
+    quotes:
+    - Name: loyal_taunt_01
+      audioTrack: {fileID: 8300000, guid: 68ef4e8365e06c5428d56f934f352d31, type: 3}
+      quote: Revenez ici !
+    - Name: loyal_taunt_02
+      audioTrack: {fileID: 8300000, guid: edff914cf5ccebd46a87ea00d85ee4ab, type: 3}
+      quote: "Vous ne serez pas pay\xE9 ce mois-ci !"
+    - Name: loyal_taunt_03
+      audioTrack: {fileID: 8300000, guid: 3654ee407b01fca4494423afbef574cd, type: 3}
+      quote: Vous pouvez oublier votre augmentation !
+    - Name: loyal_taunt_04
+      audioTrack: {fileID: 8300000, guid: ea57bf9c574356042964ed488a975365, type: 3}
+      quote: N'oubliez pas qui commande ici !
+  - Name: Outro
+    quotes:
+    - Name: loyal_ko
+      audioTrack: {fileID: 8300000, guid: 7132cceb92e1a274b804d8f2d603c8a1, type: 3}
+      quote: "Que, que... Quoi ? Qu'est-ce qui s'est pass\xE9 ?"
+    - Name: outro
+      audioTrack: {fileID: 8300000, guid: 86977b11883549644963be4a994dbd18, type: 3}
+      quote: "Alors, tout s'\xE9claircit pour nos h\xE9ros. Leur ancien compagnon,
+        avide de vengeance, avait ensorcel\xE9 tout le monde. Dans un tentative pour
+        arr\xEAter l'homme, ils se lanc\xE8rent \xE0 sa poursuite. Mais le temps de
+        sortir du chapiteau, il s'\xE9tait d\xE9j\xE0 volatilis\xE9, ne laissant derri\xE8re
+        lui que chaos, confusion, et une \xE9trange note."
+  - Name: Checkpoint
+    quotes:
+    - Name: checkpoint
+      audioTrack: {fileID: 8300000, guid: e96c77f510856b2478b803aaec914d65, type: 3}
+      quote: "Regardez, voici Baba la Voyante. Elle vous soulagera de vos tourments
+        et revigorera vos amis tomb\xE9s au combat."

@@ -235,7 +235,7 @@ public class TDS_EventSystemEditor : Editor
 
                         TDS_EditorUtility.FloatField("Duration", "Time to look at the target", _event.FindPropertyRelative("cameraWaitTime"));
 
-                        TDS_EditorUtility.FloatField("Speed Coef", "Coefficient applied to the speed of the camera.", _event.FindPropertyRelative("cameraSpeedCoef"));
+                        TDS_EditorUtility.FloatField("Speed Coef", "Coefficient applied to the speed of the camera.", _event.FindPropertyRelative("eventFloat"));
                         break;
 
                     case CustomEventType.DesactiveInfoBox:
@@ -262,7 +262,7 @@ public class TDS_EventSystemEditor : Editor
                         break;
 
                     case CustomEventType.Narrator:
-                        TDS_EditorUtility.PropertyField("Quote", "ID of the text to use for the Narrator", _event.FindPropertyRelative("quote"));
+                        TDS_EditorUtility.PropertyField("Quote", "Narrator quote to play", _event.FindPropertyRelative("quote"));
 
                         GUILayout.BeginHorizontal();
                         GUILayout.FlexibleSpace();
@@ -287,6 +287,12 @@ public class TDS_EventSystemEditor : Editor
 
                         GUI.color = _originalColor;
                         GUILayout.EndHorizontal();
+                        break;
+
+                    case CustomEventType.PlayMusic:
+                        _event.FindPropertyRelative("eventInt").intValue = EditorGUILayout.IntPopup("Music", _event.FindPropertyRelative("eventInt").intValue, Enum.GetNames(typeof(Music)), (int[])Enum.GetValues(typeof(Music)));
+
+                        TDS_EditorUtility.FloatField("Fade Duration", "Time during which the previous music will fade out before the new one starts.", _event.FindPropertyRelative("eventFloat"));
                         break;
 
                     case CustomEventType.WaitForObjectDeath:

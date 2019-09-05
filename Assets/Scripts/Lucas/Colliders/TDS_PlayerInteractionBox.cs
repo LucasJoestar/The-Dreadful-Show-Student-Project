@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using TMPro;
 
 [RequireComponent(typeof(BoxCollider))]
 public class TDS_PlayerInteractionBox : MonoBehaviour 
@@ -83,7 +84,10 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
     /// <summary>
     /// Feedback displayed in top of the nearest object to show it to the player.
     /// </summary>
-    [SerializeField] private GameObject nearestObjectFeedback = null;
+    [SerializeField] private TextMeshPro interactText = null;
+
+    /// <summary>Public accessor for <see cref="interactText"/>.</summary>
+    public TextMeshPro InteractText { get { return interactText; } }
 
     /// <summary>
     /// List of all detected tags used to sort colliders detection.
@@ -106,7 +110,7 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
         {
             if (nearestCollider)
             {
-                if (nearestObjectFeedback.activeInHierarchy) nearestObjectFeedback.SetActive(false);
+                if (interactText.gameObject.activeInHierarchy) interactText.gameObject.SetActive(false);
 
                 // If the object has outline tag, desactivate the outline on it
                 if (nearestCollider.gameObject.HasTag("Outline")) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().DisableOutline();
@@ -115,7 +119,7 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
         }
         else if (nearestCollider != null)
         {
-            nearestObjectFeedback.SetActive(true);
+            interactText.gameObject.SetActive(true);
 
             // If the object has outline tag, activate the outline on it
             if (nearestCollider.gameObject.HasTag("Outline")) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().EnableOutline();
@@ -131,7 +135,7 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
         if (detectedColliders.Count == 0)
         {
             // Desactivate feedback if needed
-            if (nearestObjectFeedback.activeInHierarchy) nearestObjectFeedback.SetActive(false);
+            if (interactText.gameObject.activeInHierarchy) interactText.gameObject.SetActive(false);
 
             return;
         }
@@ -170,14 +174,14 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
                 nearestCollider = detectedColliders[0];
 
                 // If feedback should be displayed, display it
-                if (doDisplayFeedback && !nearestObjectFeedback.activeInHierarchy) nearestObjectFeedback.SetActive(true);
+                if (doDisplayFeedback && !interactText.gameObject.activeInHierarchy) interactText.gameObject.SetActive(true);
 
                 // If the object has outline tag, activate the outline on it
                 if (doDisplayFeedback && nearestCollider.gameObject.HasTag("Outline")) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().EnableOutline();
             }
         }
         // Desactivate feedback if needed
-        else if (nearestObjectFeedback.activeInHierarchy) nearestObjectFeedback.SetActive(false);
+        else if (interactText.gameObject.activeInHierarchy) interactText.gameObject.SetActive(false);
     }
     #endregion
 
@@ -186,14 +190,14 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
     private void Awake()
     {
         // Get missing component
-        if (!nearestObjectFeedback)
+        if (!interactText)
         {
-            nearestObjectFeedback = transform.GetChild(1).gameObject;
+            interactText = transform.GetChild(1).GetComponentInChildren<TextMeshPro>();
         }
-        if (nearestObjectFeedback.activeInHierarchy) nearestObjectFeedback.SetActive(false);
+        if (interactText.gameObject.activeInHierarchy) interactText.gameObject.SetActive(false);
 
         // When player flip, reverse flip the feedback
-        GetComponentInParent<TDS_Player>().OnFlip += () => nearestObjectFeedback.transform.Rotate(Vector3.up, -180);
+        GetComponentInParent<TDS_Player>().OnFlip += () => interactText.transform.Rotate(Vector3.up, -180);
     }
 
     // OnTriggerEnter is called when the GameObject collides with another GameObject
@@ -224,7 +228,7 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
                 nearestCollider = null;
 
                 // Desactivate feedback
-                if (nearestObjectFeedback.activeInHierarchy) nearestObjectFeedback.SetActive(false);
+                if (interactText.gameObject.activeInHierarchy) interactText.gameObject.SetActive(false);
             }
         }
     }
@@ -239,9 +243,9 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
     private void Update()
     {
         // Set feedback object position.
-        if ((nearestCollider != null) && (nearestObjectFeedback.transform.position != new Vector3(nearestCollider.bounds.center.x, nearestCollider.bounds.max.y + .5f, nearestCollider.bounds.center.z)))
+        if ((nearestCollider != null) && (interactText.transform.position != new Vector3(nearestCollider.bounds.center.x, nearestCollider.bounds.max.y + .5f, nearestCollider.bounds.center.z)))
         {
-            nearestObjectFeedback.transform.position = new Vector3(nearestCollider.bounds.center.x, nearestCollider.bounds.max.y + .5f, nearestCollider.bounds.center.z);
+            interactText.transform.position = new Vector3(nearestCollider.bounds.center.x, nearestCollider.bounds.max.y + .5f, nearestCollider.bounds.center.z);
         }
     }
     #endregion

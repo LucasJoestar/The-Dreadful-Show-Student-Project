@@ -291,6 +291,9 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// </summary>
     [SerializeField] protected TDS_PlayerInteractionBox interactionBox = null;
 
+    /// <summary>Public accessor for <see cref="interactionBox"/>.</summary>
+    public TDS_PlayerInteractionBox InteractionBox { get { return interactionBox; } }
+
     /// <summary>
     /// Virtual box used to detect if the player is grounded or not.
     /// </summary>
@@ -1632,6 +1635,7 @@ public class TDS_Player : TDS_Character, IPunObservable
             isMoving = false;
             SetAnimOnline(PlayerAnimState.Idle);
         }
+        if (!isGrounded) SetAnimOnline(PlayerAnimState.Grounded);
     }
 
     /// <summary>
@@ -2294,14 +2298,6 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Set animation on revive
         OnDie += () => StartCoroutine(TDS_LevelManager.Instance.CheckLivingPlayers());
 
-        // Set health if needed
-        if (TDS_GameManager.CurrentSceneIndex != 0)
-        {
-            int _health = TDS_GameManager.PlayersInfo.First(p => p.PlayerType == PlayerType).Health;
-
-            if (_health > 0) HealthCurrent = _health;
-        }
-
         // Add local player tag if it's mine, and set controller
         if (photonView.isMine)
         {
@@ -2358,6 +2354,14 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Initializes ground detection box X & Z size based on collider size
         groundDetectionBox.Size.x = collider.size.x - .001f;
         groundDetectionBox.Size.z = collider.size.z - .001f;
+
+        // Set health if needed
+        if (TDS_GameManager.CurrentSceneIndex != 0)
+        {
+            int _health = TDS_GameManager.PlayersInfo.First(p => p.PlayerType == PlayerType).Health;
+
+            if (_health > 0) HealthCurrent = _health;
+        }
 
         if (photonView.isMine)
         {

@@ -93,6 +93,8 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
             }
         }
 
+        if (!_player.photonView.isMine) return;
+
         // Set inputs informations
         if (_player)
         {
@@ -113,7 +115,7 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
                 if (_isController) _info[0] = "Controller_B";
                 else _info[0] = "Keyboard_F";
 
-                throwObjectText.text = string.Format(throwObjectText.text, $"<sprite={_info[0]}>");
+                throwObjectText.text = string.Format(throwObjectText.text, $"<sprite name={_info[0]}>");
             }
             else
             {
@@ -130,11 +132,14 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
                     _info[1] = "Keyboard_Shift";
                 }
 
-                throwObjectText.text = string.Format(throwObjectText.text, $"<sprite={_info[0]}>", $"<sprite={_info[1]}>");
+                throwObjectText.text = string.Format(throwObjectText.text, $"<sprite name={_info[0]}>", $"<sprite name={_info[1]}>");
             }
 
+            // Set interact button
+            _player.InteractionBox.InteractText.text = $"<sprite name={(_isController ? "Controller_B" : "Keyboard_F")}>";
+
             // Set button to show / hide how to play
-            showHowToPlayText.text = string.Format(showHowToPlayText.text, $"<sprite={(_isController ? "Controller_Select" : "Keyboard_Tab")}>");
+            showHowToPlayText.text = string.Format(showHowToPlayText.text, $"<sprite name={(_isController ? "Controller_Select" : "Keyboard_Tab")}>");
 
             // Set how to play infos
             switch (_player.PlayerType)
@@ -157,7 +162,7 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
                         _info[1] = "Keyboard_R";
                     }
 
-                    howToPlayText.text = string.Format(howToPlayText.text, $"<sprite={_info[0]}>", $"<sprite={_info[1]}>");
+                    howToPlayText.text = string.Format(howToPlayText.text, $"<sprite name={_info[0]}>", $"<sprite name={_info[1]}>");
                     break;
 
                     case PlayerType.FireEater:
@@ -174,7 +179,7 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
                         _info[1] = "Keyboard_A";
                     }
 
-                    howToPlayText.text = string.Format(howToPlayText.text, $"<sprite={_info[0]}>", $"<sprite={_info[1]}>");
+                    howToPlayText.text = string.Format(howToPlayText.text, $"<sprite name={_info[0]}>", $"<sprite name={_info[1]}>");
                     break;
 
                     case PlayerType.Juggler:
@@ -201,7 +206,7 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
                         _info[6] = "Keyboard_2";
                     }
 
-                    howToPlayText.text = string.Format(howToPlayText.text, $"<sprite={_info[0]}>", $"<sprite={_info[1]}>", $"<sprite={_info[2]}>", $"<sprite={_info[3]}>", $"<sprite={_info[4]}>", $"<sprite={_info[5]}>", $"<sprite={_info[6]}>");
+                    howToPlayText.text = string.Format(howToPlayText.text, $"<sprite name={_info[0]}>", $"<sprite name={_info[1]}>", $"<sprite name={_info[2]}>", $"<sprite name={_info[3]}>", $"<sprite name={_info[4]}>", $"<sprite name={_info[5]}>", $"<sprite name={_info[6]}>");
                     break;
 
                     default:
@@ -209,7 +214,7 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
                 }
         }
 
-        if (owner.photonView.isMine && howToPlayAnchor) howToPlayAnchor.SetActive(true);
+        if (howToPlayAnchor) howToPlayAnchor.SetActive(true);
         if (howToPlayInfo && !howToPlayInfo.activeInHierarchy && (TDS_GameManager.CurrentSceneIndex == 1)) howToPlayInfo.SetActive(true);
     }
     #endregion
