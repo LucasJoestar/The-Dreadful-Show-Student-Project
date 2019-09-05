@@ -183,30 +183,30 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
                     break;
 
                     case PlayerType.Juggler:
-                    _info = new string[7];
+                    _info = new string[5];
 
                     if (_isController)
                     {
+                        
+
                         _info[0] = "Controller_B";
                         _info[1] = "Controller_LT";
-                        _info[2] = "Controller_JoyLeft";
-                        _info[3] = "Controller_JoyRight";
-                        _info[4] = "Controller_RT";
-                        _info[5] = "Controller_PadLeft";
-                        _info[6] = "Controller_PadRight";
+                        _info[2] = "Controller_Joystick";
+                        _info[3] = "Controller_RT";
+                        _info[4] = "Controller_DPadX";
                     }
                     else
                     {
+                        _info = new string[7];
+
                         _info[0] = "Keyboard_F";
                         _info[1] = "Keyboard_Ctrl";
-                        _info[2] = "Keyboard_J";
-                        _info[3] = "Keyboard_L";
-                        _info[4] = "Keyboard_Shift";
-                        _info[5] = "Keyboard_1";
-                        _info[6] = "Keyboard_2";
+                        _info[2] = "Keyboard_J> & <sprite name=Keyboard_L";
+                        _info[3] = "Keyboard_Shift";
+                        _info[4] = "Keyboard_1> & <sprite name=Keyboard_2";
                     }
 
-                    howToPlayText.text = string.Format(howToPlayText.text, $"<sprite name={_info[0]}>", $"<sprite name={_info[1]}>", $"<sprite name={_info[2]}>", $"<sprite name={_info[3]}>", $"<sprite name={_info[4]}>", $"<sprite name={_info[5]}>", $"<sprite name={_info[6]}>");
+                    howToPlayText.text = string.Format(howToPlayText.text, $"<sprite name={_info[0]}>", $"<sprite name={_info[1]}>", $"<sprite name={_info[2]}>", $"<sprite name={_info[3]}>", $"<sprite name={_info[4]}>");
                     break;
 
                     default:
