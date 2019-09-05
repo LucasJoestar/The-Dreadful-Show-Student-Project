@@ -228,7 +228,8 @@ public enum EnemyAnimationState
     BringTargetCloser, 
     EndBringingTargetCloser, 
     StopDashing, 
-    LightHit
+    LightHit, 
+    Rage
 }
 
 /// <summary>
