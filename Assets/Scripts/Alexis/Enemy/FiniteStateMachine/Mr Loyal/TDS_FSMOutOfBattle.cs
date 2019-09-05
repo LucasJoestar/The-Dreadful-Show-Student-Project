@@ -38,7 +38,6 @@ public class TDS_FSMOutOfBattle : StateMachineBehaviour
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        base.OnStateEnter(animator, stateInfo, layerIndex);
         if (!owner) owner = animator.GetComponent<TDS_MrLoyal>();
         if (!owner) return;
         owner.IsInvulnerable = true; 
@@ -49,11 +48,11 @@ public class TDS_FSMOutOfBattle : StateMachineBehaviour
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        base.OnStateExit(animator, stateInfo, layerIndex); 
         if (outOfBattleCoroutine != null)
         {
             owner.StopCoroutine(outOfBattleCoroutine);
             outOfBattleCoroutine = null;
         }
+        owner.IsInvulnerable = false; 
     }
 }
