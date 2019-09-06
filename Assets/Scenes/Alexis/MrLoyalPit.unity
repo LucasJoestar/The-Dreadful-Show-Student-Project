@@ -6531,7 +6531,7 @@ MonoBehaviour:
   m_OverrideTileSize: 1
   m_TileSize: 64
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.25
+  m_VoxelSize: 0.083333336
   m_BuildHeightMesh: 0
   m_NavMeshData: {fileID: 54886023}
 --- !u!1001 &717599889
@@ -7078,10 +7078,14 @@ MonoBehaviour:
     doRequireSpecificPlayerType: 0
     eventType: 5
     delay: 0
-    cameraSpeedCoef: 1
+    eventFloat: 1
     cameraWaitTime: 1
     eventInt: 1
     prefab: {fileID: 0}
+    quote:
+      Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     playerType: 0
     eventString: ID
     eventTransform: {fileID: 0}
@@ -7091,19 +7095,19 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-    quote:
-      Name: New Quote
-      audioTrack: {fileID: 0}
-      quote: 
   events:
   - Name: Clean Area
     doRequireSpecificPlayerType: 0
     eventType: 5
     delay: 0
-    cameraSpeedCoef: 0
+    eventFloat: 1
     cameraWaitTime: 0
     eventInt: 3
     prefab: {fileID: 0}
+    quote:
+      Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     playerType: 0
     eventString: 
     eventTransform: {fileID: 442936824}
@@ -7146,18 +7150,18 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-    quote:
-      Name: New Quote
-      audioTrack: {fileID: 0}
-      quote: 
   - Name: Unlock Bounds
     doRequireSpecificPlayerType: 0
     eventType: 24
     delay: 0
-    cameraSpeedCoef: 0
+    eventFloat: 1
     cameraWaitTime: 0
     eventInt: 3
     prefab: {fileID: 0}
+    quote:
+      Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     playerType: 0
     eventString: 
     eventTransform: {fileID: 442936824}
@@ -7178,18 +7182,18 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-    quote:
-      Name: New Quote
-      audioTrack: {fileID: 0}
-      quote: 
   - Name: Freeze Players
     doRequireSpecificPlayerType: 0
     eventType: 25
     delay: 0
-    cameraSpeedCoef: 0
+    eventFloat: 1
     cameraWaitTime: 0
     eventInt: 3
     prefab: {fileID: 0}
+    quote:
+      Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     playerType: 0
     eventString: 
     eventTransform: {fileID: 0}
@@ -7199,18 +7203,18 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-    quote:
-      Name: New Quote
-      audioTrack: {fileID: 0}
-      quote: 
   - Name: Move Players to Point
     doRequireSpecificPlayerType: 0
     eventType: 27
     delay: 0
-    cameraSpeedCoef: 0
+    eventFloat: 1
     cameraWaitTime: 0
     eventInt: 3
     prefab: {fileID: 0}
+    quote:
+      Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     playerType: 0
     eventString: 
     eventTransform: {fileID: 575761605}
@@ -7231,18 +7235,18 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-    quote:
-      Name: New Quote
-      audioTrack: {fileID: 0}
-      quote: 
   - Name: Play Cutscene
     doRequireSpecificPlayerType: 0
     eventType: 24
     delay: 0.5
-    cameraSpeedCoef: 0
+    eventFloat: 1
     cameraWaitTime: 0
     eventInt: 3
     prefab: {fileID: 0}
+    quote:
+      Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     playerType: 0
     eventString: 
     eventTransform: {fileID: 575761605}
@@ -7263,18 +7267,18 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-    quote:
-      Name: New Quote
-      audioTrack: {fileID: 0}
-      quote: 
   - Name: Activate Boss
     doRequireSpecificPlayerType: 0
     eventType: 5
     delay: 5
-    cameraSpeedCoef: 0
+    eventFloat: 1
     cameraWaitTime: 0
     eventInt: 3
     prefab: {fileID: 0}
+    quote:
+      Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     playerType: 0
     eventString: 
     eventTransform: {fileID: 575761605}
@@ -7295,18 +7299,18 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-    quote:
-      Name: New Quote
-      audioTrack: {fileID: 0}
-      quote: 
   - Name: Unfreeze Players
     doRequireSpecificPlayerType: 0
     eventType: 26
     delay: 0.5
-    cameraSpeedCoef: 0
+    eventFloat: 1
     cameraWaitTime: 0
     eventInt: 3
     prefab: {fileID: 0}
+    quote:
+      Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     playerType: 0
     eventString: 
     eventTransform: {fileID: 575761605}
@@ -7327,18 +7331,18 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-    quote:
-      Name: New Quote
-      audioTrack: {fileID: 0}
-      quote: 
   - Name: Wait for Boss Death
     doRequireSpecificPlayerType: 0
     eventType: 6
     delay: 0
-    cameraSpeedCoef: 0
+    eventFloat: 1
     cameraWaitTime: 0
     eventInt: 1
     prefab: {fileID: 0}
+    quote:
+      Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     playerType: 0
     eventString: Boss
     eventTransform: {fileID: 575761605}
@@ -7359,18 +7363,18 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-    quote:
-      Name: New Quote
-      audioTrack: {fileID: 0}
-      quote: 
   - Name: Play Ending
     doRequireSpecificPlayerType: 0
     eventType: 24
     delay: 3
-    cameraSpeedCoef: 0
+    eventFloat: 1
     cameraWaitTime: 0
     eventInt: 1
     prefab: {fileID: 0}
+    quote:
+      Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     playerType: 0
     eventString: Boss
     eventTransform: {fileID: 575761605}
@@ -7391,18 +7395,18 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-    quote:
-      Name: New Quote
-      audioTrack: {fileID: 0}
-      quote: 
   - Name: Wait Everyone
     doRequireSpecificPlayerType: 0
     eventType: 4
     delay: 0
-    cameraSpeedCoef: 0
+    eventFloat: 1
     cameraWaitTime: 0
     eventInt: 3
     prefab: {fileID: 0}
+    quote:
+      Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     playerType: 0
     eventString: 
     eventTransform: {fileID: 442936824}
@@ -7412,10 +7416,6 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-    quote:
-      Name: New Quote
-      audioTrack: {fileID: 0}
-      quote: 
   detectedTags:
     ObjectTags:
     - Name: Player
@@ -9678,7 +9678,16 @@ PrefabInstance:
       propertyPath: throwObjectText
       value: 
       objectReference: {fileID: 985798811}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5115281334793816946, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
+    - {fileID: 5873565464258494782, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
+    - {fileID: 8552897991858365246, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
+    - {fileID: 5857054350770654603, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
+    - {fileID: 3451996647864511919, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
+    - {fileID: 3194183868251808925, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
+    - {fileID: 77567806931877528, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
+    - {fileID: 7535651838071168850, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
+    - {fileID: 226548883836799875, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}
 --- !u!95 &985798810 stripped
 Animator:
@@ -20144,10 +20153,14 @@ MonoBehaviour:
     doRequireSpecificPlayerType: 0
     eventType: 5
     delay: 0
-    cameraSpeedCoef: 1
+    eventFloat: 1
     cameraWaitTime: 1
     eventInt: 1
     prefab: {fileID: 0}
+    quote:
+      Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     playerType: 0
     eventString: ID
     eventTransform: {fileID: 0}
@@ -20157,19 +20170,19 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-    quote:
-      Name: New Quote
-      audioTrack: {fileID: 0}
-      quote: 
   events:
   - Name: Set Bounds
     doRequireSpecificPlayerType: 0
     eventType: 24
     delay: 0
-    cameraSpeedCoef: 0
+    eventFloat: 1
     cameraWaitTime: 0
     eventInt: 0
     prefab: {fileID: 0}
+    quote:
+      Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     playerType: 0
     eventString: 
     eventTransform: {fileID: 0}
@@ -20190,18 +20203,18 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-    quote:
-      Name: New Quote
-      audioTrack: {fileID: 0}
-      quote: 
   - Name: Wait for all Areas Desactivation
     doRequireSpecificPlayerType: 0
     eventType: 7
     delay: 0
-    cameraSpeedCoef: 0
+    eventFloat: 1
     cameraWaitTime: 0
     eventInt: 3
     prefab: {fileID: 0}
+    quote:
+      Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     playerType: 0
     eventString: 
     eventTransform: {fileID: 0}
@@ -20211,18 +20224,18 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-    quote:
-      Name: New Quote
-      audioTrack: {fileID: 0}
-      quote: 
   - Name: Arena Bounds
     doRequireSpecificPlayerType: 0
     eventType: 24
     delay: 0
-    cameraSpeedCoef: 0
+    eventFloat: 1
     cameraWaitTime: 0
     eventInt: 3
     prefab: {fileID: 0}
+    quote:
+      Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     playerType: 0
     eventString: 
     eventTransform: {fileID: 0}
@@ -20243,18 +20256,18 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-    quote:
-      Name: New Quote
-      audioTrack: {fileID: 0}
-      quote: 
   - Name: Activate Boss Trigger
     doRequireSpecificPlayerType: 0
     eventType: 5
     delay: 0
-    cameraSpeedCoef: 0
+    eventFloat: 1
     cameraWaitTime: 0
     eventInt: 3
     prefab: {fileID: 0}
+    quote:
+      Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     playerType: 0
     eventString: 
     eventTransform: {fileID: 0}
@@ -20275,10 +20288,6 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-    quote:
-      Name: New Quote
-      audioTrack: {fileID: 0}
-      quote: 
   detectedTags:
     ObjectTags:
     - Name: Player
