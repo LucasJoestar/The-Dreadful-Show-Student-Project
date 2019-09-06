@@ -92,7 +92,7 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
         if (isHeld) owner.DropObject();
 
         PhotonNetwork.Destroy(gameObject);
-
+        CallDestroyEvent(); 
         //OnDestroyed?.Invoke();
     }
 
