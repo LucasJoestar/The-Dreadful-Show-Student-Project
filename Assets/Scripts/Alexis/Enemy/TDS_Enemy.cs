@@ -864,7 +864,11 @@ public abstract class TDS_Enemy : TDS_Character
             _throwable.transform.localPosition = Vector3.zero;
             _throwable.transform.rotation = Quaternion.identity;
 
-            if (!isFacingRight && enemyState != EnemyState.Attacking) _throwable.transform.Rotate(Vector3.up, 180);
+            if (!isFacingRight && enemyState != EnemyState.Attacking)
+            {
+                _throwable.transform.Rotate(Vector3.up, 180);
+                transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z * -1);
+            }
 
             return true;
         }

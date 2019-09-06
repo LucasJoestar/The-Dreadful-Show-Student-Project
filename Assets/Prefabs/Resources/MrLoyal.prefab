@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 1925040483130703253}
   m_Layer: 10
   m_Name: MrLoyal
-  m_TagString: Enemy
+  m_TagString: Boss|Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -478,11 +478,11 @@ MonoBehaviour:
   IsPacific: 0
   IsParalyzed: 0
   aimAngle: 45
-  speedAccelerationTime: 0.5
+  speedAccelerationTime: 0.75
   speedCoef: 1
   speedCurrent: 0
-  speedInitial: 1
-  speedMax: 2
+  speedInitial: 2.5
+  speedMax: 4
   throwBonusDamagesMax: 45
   throwBonusDamagesMin: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
@@ -520,11 +520,12 @@ MonoBehaviour:
     type: 3}
   linkedAreas:
   - {fileID: 0}
+  - {fileID: 0}
   chargeCatsRate: 20
   cats:
   - {fileID: 0}
   - {fileID: 0}
-  teleportationPosition: {x: 50, y: 7.3, z: 8}
+  teleportationPosition: {x: 49.45, y: 6.5, z: 11.5}
   fakirAudioClip: {fileID: 8300000, guid: 16c2b0a9f5c3e8a48b199fd6c594d27f, type: 3}
   mimeAudioClip: {fileID: 8300000, guid: f12b649d01e90994d985edd039583a69, type: 3}
   acrobatAudioClip: {fileID: 8300000, guid: 5f411c2154de0384fb0c2ec05a5f030d, type: 3}

@@ -138,7 +138,7 @@ public class TDS_MrLoyal : TDS_Boss
         /// Call the particle here
         TDS_VFXManager.Instance.SpawnEffect(FXType.MrLoyalTeleportation, transform.position); 
         /// Then wait some time and teleport Mr Loyal on his plateform
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.25f);
         sprite.enabled = false;
         transform.position = teleportationPosition;
         TDS_VFXManager.Instance.SpawnEffect(FXType.MrLoyalEndTeleportation, teleportationPosition);
@@ -195,7 +195,7 @@ public class TDS_MrLoyal : TDS_Boss
         }
         //Reinstantiate the particle here
         TDS_VFXManager.Instance.SpawnEffect(FXType.MrLoyalTeleportation, transform.position);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.25f);
         sprite.enabled = false;
         transform.position = _pos;
         TDS_VFXManager.Instance.SpawnEffect(FXType.MrLoyalEndTeleportation, _pos);

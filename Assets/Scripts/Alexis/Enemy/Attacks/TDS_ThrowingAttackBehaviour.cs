@@ -64,7 +64,12 @@ public class TDS_ThrowingAttackBehaviour : TDS_EnemyAttack
                 _throwable.HitBox.OnStopAttack += _caster.NoTargetToBrought;
             }
             _caster.ThrowObject(_caster.PlayerTarget.transform.position);
-            if (!_caster.IsFacingRight) _thrownObject.transform.Rotate(Vector3.up, 180);
+            if (!_caster.IsFacingRight)
+            {
+                _thrownObject.transform.Rotate(Vector3.up, 180);
+
+                _thrownObject.transform.localScale = new Vector3(_thrownObject.transform.localScale.x, _thrownObject.transform.localScale.y, _thrownObject.transform.localScale.z * -1);
+            }
         }
         else if(_thrownObject.GetComponent<TDS_Projectile>())
         {
