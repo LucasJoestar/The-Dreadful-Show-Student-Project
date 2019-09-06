@@ -228,7 +228,8 @@ public class TDS_SoundManager : MonoBehaviour
                 break;
 
             default:
-                break;
+                musicSource.Stop();
+                yield break;
         }
 
         // Plays the music
@@ -244,6 +245,12 @@ public class TDS_SoundManager : MonoBehaviour
         narratorSource.clip = _audioTrack;
         narratorSource.Play();
     }
+
+    /// <summary>
+    /// Stops the current music.
+    /// </summary>
+    /// <param name="_fadeDuration">Time to fade current music down.</param>
+    public void StopMusic(float _fadeDuration = 0) => PlayMusic((Music)(-1), 1.5f);
 
     /// <summary>
     /// Unpauses the game with music back.

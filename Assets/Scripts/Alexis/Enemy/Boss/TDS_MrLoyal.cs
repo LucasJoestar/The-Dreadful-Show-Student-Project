@@ -218,7 +218,8 @@ public class TDS_MrLoyal : TDS_Boss
 
     protected override void Die()
     {
-        CancelInvoke("PlayRandomTaunt"); 
+        CancelInvoke("PlayRandomTaunt");
+        cats.ToList().ForEach(c => c.DesactivateCat()); 
         base.Die();
     }
 
@@ -230,7 +231,6 @@ public class TDS_MrLoyal : TDS_Boss
 
     private void Enrage()
     {
-        Debug.Log("Call Rage");
         if (isEnraged) return; 
         isEnraged = true;
         speedCoef *= bonusSpeedCoefficient;

@@ -867,7 +867,7 @@ public abstract class TDS_Enemy : TDS_Character
             if (!isFacingRight && enemyState != EnemyState.Attacking)
             {
                 _throwable.transform.Rotate(Vector3.up, 180);
-                transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z * -1);
+                _throwable.transform.localScale = new Vector3(_throwable.transform.localScale.x, _throwable.transform.localScale.y, _throwable.transform.localScale.z * -1);
             }
 
             return true;

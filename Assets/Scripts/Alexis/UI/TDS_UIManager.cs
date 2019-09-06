@@ -455,6 +455,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public IEnumerator ResetInGameUI()
     {
+        TDS_SoundManager.Instance.StopMusic(1.5f);
         yield return new WaitForSeconds(1.5f);
         beardLadyLifeBar.ResetLifeBar(); 
         fatLadyLifeBar.ResetLifeBar();
