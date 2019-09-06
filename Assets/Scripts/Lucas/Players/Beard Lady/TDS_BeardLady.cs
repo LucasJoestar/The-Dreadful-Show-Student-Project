@@ -61,13 +61,13 @@ public class TDS_BeardLady : TDS_Player
 
             if (value > currentBeardState)
             {
-                TDS_VFXManager.Instance?.SpawnEffect(FXType.BeardGrowsUp, beardFXTransformPV.viewID);
+                TDS_VFXManager.Instance?.SpawnEffect(FXType.BeardGrowsUp, beardFXTransformPV);
             }
             else
             {
                 if (value < currentBeardState)
                 {
-                    TDS_VFXManager.Instance?.SpawnEffect(FXType.BeardDamaged, beardFXTransformPV.viewID);
+                    TDS_VFXManager.Instance?.SpawnEffect(FXType.BeardDamaged, beardFXTransformPV);
                 }
             }
 
@@ -306,6 +306,28 @@ public class TDS_BeardLady : TDS_Player
     public void SetBeardAnim(BeardState _state)
     {
         animator.SetFloat("Beard", (int)_state);
+    }
+    #endregion
+
+    #region Movements
+    /// <summary>
+    /// Freezes the player's movements and actions.
+    /// </summary>
+    public override void FreezePlayer()
+    {
+        base.FreezePlayer();
+
+        CancelInvokeGrowBeard();
+    }
+
+    /// <summary>
+    /// Unfreezes the player's movements and actions.
+    /// </summary>
+    public override void UnfreezePlayer()
+    {
+        base.UnfreezePlayer();
+
+        ResetBeardGrow();
     }
     #endregion
 

@@ -1225,7 +1225,7 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         if (photonView.isMine)
         {
-            TDS_VFXManager.Instance?.SpawnEffect(FXType.Heal, fxTransformPV.viewID);
+            TDS_VFXManager.Instance?.SpawnEffect(FXType.Heal, fxTransformPV);
         }
     }
 
@@ -1911,7 +1911,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <summary>
     /// Unfreezes the player's movements and actions.
     /// </summary>
-    public void UnfreezePlayer() => IsPlayable = true;
+    public virtual void UnfreezePlayer() => IsPlayable = true;
     #endregion
 
     #region Animations

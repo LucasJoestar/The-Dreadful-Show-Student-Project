@@ -125,8 +125,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 8714583110042663014}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 49
-  instantiationId: 49
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!65 &6962089747012658501
@@ -493,6 +493,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3120496671812499009}
     m_Modifications:
+    - target: {fileID: 1548626687783702, guid: b21e1b4c273f9b24dba641e1d7ae69c3, type: 3}
+      propertyPath: m_Name
+      value: Projectile_PoufMagique
+      objectReference: {fileID: 0}
     - target: {fileID: 198742772223849486, guid: b21e1b4c273f9b24dba641e1d7ae69c3,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
@@ -512,10 +516,6 @@ PrefabInstance:
         type: 3}
       propertyPath: moveWithTransform
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1548626687783702, guid: b21e1b4c273f9b24dba641e1d7ae69c3, type: 3}
-      propertyPath: m_Name
-      value: Projectile_PoufMagique
       objectReference: {fileID: 0}
     - target: {fileID: 4244029294445326, guid: b21e1b4c273f9b24dba641e1d7ae69c3, type: 3}
       propertyPath: m_LocalPosition.x

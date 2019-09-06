@@ -185,12 +185,11 @@ public class TDS_SoundManager : MonoBehaviour
         // Fade previous music slowly
         while (_timer > 0)
         {
-            musicSource.volume = Mathf.Lerp(musicSource.volume, 0, 1 - (_timer / _fadeDuration));
+            musicSource.volume = Mathf.Lerp(musicSource.volume, 0f, 1f - (_timer / _fadeDuration));
 
             yield return null;
             _timer -= Time.deltaTime;
         }
-
         // Set back volume
         musicSource.volume = musicVolume;
         musicSource.time = 0;

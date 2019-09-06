@@ -1353,7 +1353,6 @@ public abstract class TDS_Enemy : TDS_Character
     private void OnDestroy()
     {
         if (AllEnemies.Contains(this)) AllEnemies.Remove(this);
-        if (PhotonNetwork.isMasterClient) TDS_VFXManager.Instance.SpawnEffect(FXType.MagicDisappear, transform.position);
     }
 
     // Use this for initialization
@@ -1384,7 +1383,6 @@ public abstract class TDS_Enemy : TDS_Character
     private void OnDisable()
     {
         if (AllEnemies.Contains(this)) AllEnemies.Remove(this);
-        if (PhotonNetwork.isMasterClient) TDS_VFXManager.Instance.SpawnEffect(FXType.MagicDisappear, transform.position);
     }
 
     private void OnEnable()

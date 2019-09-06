@@ -4079,6 +4079,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1449842275}
     m_Modifications:
+    - target: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
+      propertyPath: m_Name
+      value: PoufMagic
+      objectReference: {fileID: 0}
+    - target: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 198742772223849486, guid: 71169cd45071ac94ba9fc202ff4188ca,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
@@ -4098,14 +4106,6 @@ PrefabInstance:
         type: 3}
       propertyPath: InitialModule.startSize.scalar
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
-      propertyPath: m_Name
-      value: PoufMagic
-      objectReference: {fileID: 0}
-    - target: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4244029294445326, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14544,6 +14544,56 @@ PrefabInstance:
         type: 3}
       propertyPath: instantiationId
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801963461346411758, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_UpdateMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6614081739763445657, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4994248727095890985, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 149091638658686971, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1359452816659823396, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3137340452918195026, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1130786770639877718, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7332798540181280266, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061542034380481167, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 567179406525598121, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca57834bf12a62e4f857e7cd35728f26, type: 3}

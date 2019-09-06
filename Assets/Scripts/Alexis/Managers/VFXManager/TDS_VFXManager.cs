@@ -158,11 +158,17 @@ public class TDS_VFXManager : PunBehaviour
     /// <summary>
     /// Spawns a specific FX at a given position.
     /// </summary>
-    /// <param name="_fxtype">Type of FX to instantiate.</param>
-    /// <param name="_transformPhoton">ID of the transform used as FX parent.</param>
-    public void SpawnEffect(FXType _fxtype, int _transformPhotonID)
+    /// <param name="_fxRype">Type of FX to instantiate.</param>
+    /// <param name="_transformPhoton">PhotonView of the transform to use as FX parent.</param>
+    public void SpawnEffect(FXType _fxRype, PhotonView _transformPhotonView)
     {
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, GetType(), "SpawnEffect"), new object[] { (int)_fxtype, _transformPhotonID });
+        if (PhotonNetwork.offlineMode)
+        {
+            Instantiate(GetFX((FXType)_fxRype), _transformPhotonView.transform, false);
+            return;
+        }
+
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, GetType(), "SpawnEffect"), new object[] { (int)_fxRype, _transformPhotonView });
     }
 
     /// <summary>
@@ -195,7 +201,10 @@ public class TDS_VFXManager : PunBehaviour
         if (_fx != null)
         {
             PhotonView _photonView = PhotonView.Find(_photonViewID);
-            if (_photonView) Instantiate(_fx, _photonView.transform, false);
+            if (_photonView)
+            {
+                Instantiate(_fx, _photonView.transform, false);
+            }
         }
         else
         {
