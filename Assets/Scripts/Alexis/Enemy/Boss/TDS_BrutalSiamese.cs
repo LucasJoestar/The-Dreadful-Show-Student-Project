@@ -45,7 +45,12 @@ public class TDS_BrutalSiamese : TDS_Enemy
     #region Methods
 
     #region Original Methods
-
+    private IEnumerator WaitSecondsBeforeAttacking(float _waitingSeconds = 2f)
+    {
+        IsPacific = true;
+        yield return new WaitForSeconds(_waitingSeconds);
+        IsPacific = false;
+    }
     #endregion
 
     #region Overriden Methods
@@ -74,7 +79,8 @@ public class TDS_BrutalSiamese : TDS_Enemy
     {
         base.Start();
         canThrow = false;
-        //StartCoroutine(Behaviour());
+
+        StartCoroutine(WaitSecondsBeforeAttacking());
     }
 
     // Update is called once per frame

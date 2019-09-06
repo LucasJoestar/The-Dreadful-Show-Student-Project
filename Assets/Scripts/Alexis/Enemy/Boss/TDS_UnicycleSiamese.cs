@@ -41,14 +41,13 @@ public class TDS_UnicycleSiamese : TDS_Enemy
     #region Fields / Properties
     private bool hasReachedRightBound = false; 
     private TDS_Bounds bounds = null;
-    
+
     #endregion
 
     #region Methods
 
     #region Original Methods
-
-    private IEnumerator ResetAttackCoolDown(float _cooldown)
+    private IEnumerator ResetAttackCoolDown(float _cooldown = 2f)
     {
         IsPacific = true;
         yield return new WaitForSeconds(_cooldown);
@@ -210,7 +209,8 @@ public class TDS_UnicycleSiamese : TDS_Enemy
         bounds = TDS_Camera.Instance?.CurrentBounds;
         hasReachedRightBound = Mathf.Abs(transform.position.x - bounds.XMin) >= Mathf.Abs(transform.position.x - bounds.XMax) ? true : false;
         base.Start();
-        SetEnemyState(EnemyState.MakingDecision); 
+        SetEnemyState(EnemyState.MakingDecision);
+        StartCoroutine(ResetAttackCoolDown()); 
     }
 
     // Update is called once per frame
