@@ -196,23 +196,18 @@ MonoBehaviour:
   - Name: Circus_Entrance
     quotes:
     - Name: circus_entrance_01
-      audioTrack: {fileID: 8300000, guid: e0d100c1655602749914e7e463fac249, type: 3}
-      quote: "Mhmm hum, n'oubliez pas de laisser un petit pourboir \xE0 l'accueil.
-        On ne travaille pas uniquement pour se donner en spectacle. Humf humf hum
-        hum."
-    - Name: circus_entrance_02
-      audioTrack: {fileID: 8300000, guid: 5208d077841b750409f9c16232128681, type: 3}
+      audioTrack: {fileID: 8300000, guid: 6f717446c4f37944b8daa881f2201996, type: 3}
       quote: "Ooh, fallait-il vraiment passer par cet endroit ? J'esp\xE8re que personne
         n'a touch\xE9 aux miroirs, c'est une v\xE9ritable plaie \xE0 nettoyer."
-    - Name: circus_entrance_03
-      audioTrack: {fileID: 8300000, guid: 6f717446c4f37944b8daa881f2201996, type: 3}
+    - Name: circus_entrance_02
+      audioTrack: {fileID: 8300000, guid: e0d100c1655602749914e7e463fac249, type: 3}
       quote: "Attention aux acrobates ! Ils r\xE9alisent des figures aussi bien qu'ils
         les cassent !"
-    - Name: circus_entrance_04
+    - Name: circus_entrance_03
       audioTrack: {fileID: 8300000, guid: e60433081029d2b489769143b19b1bd1, type: 3}
       quote: "Faites bien attention \xE0 ne pas casser mes miroirs. Allez plut\xF4t
         casser du mime !"
-    - Name: circus_entrance_05
+    - Name: circus_entrance_04
       audioTrack: {fileID: 8300000, guid: 89b20140c488dc24ba6dc5a656a852f3, type: 3}
       quote: Mais qu'est-ce que c'est que cette horreur ? Oh, ce n'est que vous...
         Ces miroirs ne vous rendent vraiment pas justice.
@@ -226,13 +221,18 @@ MonoBehaviour:
       audioTrack: {fileID: 8300000, guid: 61abdb9349d52a844ba2a6dabb18375f, type: 3}
       quote: "Oooh, au moins la terrible b\xEAte est toujours dans sa cage. Coucou
         toi."
+  - Name: Circus_Party
+    quotes:
+    - Name: circus_party_01
+      audioTrack: {fileID: 8300000, guid: 5208d077841b750409f9c16232128681, type: 3}
+      quote: "Mhmm hum, n'oubliez pas de laisser un petit pourboir \xE0 l'accueil.
+        On ne travaille pas uniquement pour se donner en spectacle. Humf humf hum
+        hum."
   - Name: Circus_Alley
     quotes:
-    - Name: circus_alley_01
-      audioTrack: {fileID: 8300000, guid: b0af766881d114049a49fcdb8cca054c, type: 3}
-      quote: "Vous savez, dans ma jeunesse, j'avais un... Ooh ! Vous n'avez pas le
-        droit d'\xEAtre ici ! Mais... Je vous reconnais, je vous avais cong\xE9di\xE9
-        !"
+    - Name: New Quote
+      audioTrack: {fileID: 0}
+      quote: 
     - Name: circus_alley_02
       audioTrack: {fileID: 8300000, guid: 6551c785a22da1942a10719591682aa2, type: 3}
       quote: "Vous \xE9tiez un magicien effroyable, vous n'\xE9tiez m\xEAme pas capable
@@ -269,11 +269,16 @@ MonoBehaviour:
     - Name: loyal_taunt_04
       audioTrack: {fileID: 8300000, guid: ea57bf9c574356042964ed488a975365, type: 3}
       quote: N'oubliez pas qui commande ici !
-  - Name: Outro
+  - Name: MrLoyal_KO
     quotes:
-    - Name: loyal_ko
+    - Name: loyal_ko_01
+      audioTrack: {fileID: 8300000, guid: e8b1d2fa649e0d64eaaa0ee1a04d0099, type: 3}
+      quote: Ouorgh...
+    - Name: loyal_ko_02
       audioTrack: {fileID: 8300000, guid: 7132cceb92e1a274b804d8f2d603c8a1, type: 3}
       quote: "Que, que... Quoi ? Qu'est-ce qui s'est pass\xE9 ?"
+  - Name: Outro
+    quotes:
     - Name: outro
       audioTrack: {fileID: 8300000, guid: 86977b11883549644963be4a994dbd18, type: 3}
       quote: "Alors, tout s'\xE9claircit pour nos h\xE9ros. Leur ancien compagnon,

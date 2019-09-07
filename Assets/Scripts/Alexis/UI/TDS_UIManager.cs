@@ -1166,7 +1166,15 @@ public class TDS_UIManager : PunBehaviour
     public void SwitchCurtains(bool _areVisible)
     {
         if (!curtainsAnimator) return;
-        curtainsAnimator.SetBool("Visible", _areVisible); 
+
+        // Play curtains sound
+        if (curtainsAnimator.GetBool("Visible") != _areVisible)
+        {
+            if (_areVisible) TDS_SoundManager.Instance.PlayCurtainsIn();
+            else TDS_SoundManager.Instance.PlayCurtainsOut();
+        }
+
+        curtainsAnimator.SetBool("Visible", _areVisible);
     }
 
     /// <summary>
@@ -1186,6 +1194,10 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_isReady"></param>
     public void UpdateReadySettings(int _playerId, bool _isReady)
     {
+        // Play sound
+        if (_isReady) TDS_SoundManager.Instance.PlayUIReady();
+        else TDS_SoundManager.Instance.PlayUIOver();
+
         if (uiState == UIState.InCharacterSelection && launchGameButton)
             launchGameButton.interactable = (!TDS_GameManager.PlayersInfo.Any(p => p.IsReady == false) && TDS_GameManager.LocalIsReady) || (!TDS_GameManager.PlayersInfo.Any(p => p.IsReady == false));
         if (uiState == UIState.InGameOver && buttonRestartGame)

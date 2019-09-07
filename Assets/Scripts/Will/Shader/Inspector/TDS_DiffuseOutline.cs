@@ -93,7 +93,7 @@ public class TDS_DiffuseOutline : MonoBehaviour
 
 	void OnDisable()
     {
-		SpriteRenderer.sharedMaterial = preMat;
+		if (autoChangeMaterial) SpriteRenderer.sharedMaterial = preMat;
 	}
 
 	void OnValidate()

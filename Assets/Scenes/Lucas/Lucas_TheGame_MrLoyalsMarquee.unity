@@ -6738,7 +6738,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &519634856
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7578,16 +7578,48 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     actionType: 0
-  - Name: Play Audio
+  - Name: 'Narrator KO #1'
     doRequireSpecificPlayerType: 0
     eventType: 21
-    delay: 0.25
+    delay: 0.1
     eventFloat: 1
     cameraWaitTime: 0
     eventInt: 1
     prefab: {fileID: 0}
     quote:
-      Name: loyal_ko
+      Name: loyal_ko_01
+      audioTrack: {fileID: 8300000, guid: e8b1d2fa649e0d64eaaa0ee1a04d0099, type: 3}
+      quote: Ouorgh...
+    playerType: 0
+    eventString: Boss
+    eventTransform: {fileID: 691534422}
+    unityEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_MethodName: Activate
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    actionType: 0
+  - Name: 'Narrator KO #2'
+    doRequireSpecificPlayerType: 0
+    eventType: 21
+    delay: 1.25
+    eventFloat: 1
+    cameraWaitTime: 0
+    eventInt: 1
+    prefab: {fileID: 0}
+    quote:
+      Name: loyal_ko_02
       audioTrack: {fileID: 8300000, guid: 7132cceb92e1a274b804d8f2d603c8a1, type: 3}
       quote: "Que, que... Quoi ? Qu'est-ce qui s'est pass\xE9 ?"
     playerType: 0
@@ -16650,7 +16682,8 @@ MonoBehaviour:
   isActivatedByEvent: 0
   isLooping: 0
   spawnedEnemies: []
-  areaThrowables: []
+  areaThrowables:
+  - {fileID: 1201958350}
   waves:
   - isWaveFoldOut: 1
     debugColor: {r: 0.7800762, g: 0, b: 0.83137256, a: 1}
@@ -17922,7 +17955,8 @@ MonoBehaviour:
   isActivatedByEvent: 0
   isLooping: 0
   spawnedEnemies: []
-  areaThrowables: []
+  areaThrowables:
+  - {fileID: 1201958350}
   waves:
   - isWaveFoldOut: 1
     debugColor: {r: 0.8301887, g: 0.15276764, b: 0, a: 1}
@@ -19662,7 +19696,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1044437232
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26085,6 +26119,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 8.75, y: 10, z: 5}
   m_Center: {x: 0, y: 5, z: 2.5}
+--- !u!114 &1201958350 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4857219580989261455, guid: 34883f71cf9e5a44396d6b9a883709dd,
+    type: 3}
+  m_PrefabInstance: {fileID: 1773513530}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be188c0a9f7e8bd4da47cefd51a3eea1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1203284798
 GameObject:
   m_ObjectHideFlags: 0
@@ -26131,7 +26177,7 @@ ParentConstraint:
   m_TranslationAtRest: {x: 2.9519997, y: 1.2, z: -7.9700003}
   m_RotationAtRest: {x: 0, y: 0, z: 0}
   m_TranslationOffsets:
-  - {x: 0.08200073, y: 1.2, z: 0}
+  - {x: 0.08200073, y: 1.2, z: 0.029999733}
   m_RotationOffsets:
   - {x: 0, y: 0, z: 0}
   m_AffectTranslationX: 0
@@ -32333,6 +32379,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 114966118}
     m_Modifications:
+    - target: {fileID: 2590064954334042218, guid: 94468ff5a91de904ba35a3f04ca685d3,
+        type: 3}
+      propertyPath: m_Name
+      value: playerlight (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 2590064954334042220, guid: 94468ff5a91de904ba35a3f04ca685d3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -32387,11 +32438,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -86.284
-      objectReference: {fileID: 0}
-    - target: {fileID: 2590064954334042218, guid: 94468ff5a91de904ba35a3f04ca685d3,
-        type: 3}
-      propertyPath: m_Name
-      value: playerlight (1)
       objectReference: {fileID: 0}
     - target: {fileID: 2590064954334042221, guid: 94468ff5a91de904ba35a3f04ca685d3,
         type: 3}
@@ -34183,7 +34229,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: 93a3104172e1bcd41a86e29da7aad767, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -35404,7 +35450,8 @@ MonoBehaviour:
   isActivatedByEvent: 0
   isLooping: 0
   spawnedEnemies: []
-  areaThrowables: []
+  areaThrowables:
+  - {fileID: 1201958350}
   waves:
   - isWaveFoldOut: 1
     debugColor: {r: 0.459307, g: 0, b: 0.83137256, a: 1}
@@ -36099,6 +36146,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 114966118}
     m_Modifications:
+    - target: {fileID: 2590064954334042218, guid: 94468ff5a91de904ba35a3f04ca685d3,
+        type: 3}
+      propertyPath: m_Name
+      value: playerlight
+      objectReference: {fileID: 0}
     - target: {fileID: 2590064954334042220, guid: 94468ff5a91de904ba35a3f04ca685d3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -36153,11 +36205,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -86.284
-      objectReference: {fileID: 0}
-    - target: {fileID: 2590064954334042218, guid: 94468ff5a91de904ba35a3f04ca685d3,
-        type: 3}
-      propertyPath: m_Name
-      value: playerlight
       objectReference: {fileID: 0}
     - target: {fileID: 2590064954334042221, guid: 94468ff5a91de904ba35a3f04ca685d3,
         type: 3}
@@ -36758,7 +36805,7 @@ PrefabInstance:
     - target: {fileID: 3566921260780534112, guid: 744727b4dfe7ea845990f23dd81f1aa2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.47
+      value: 0.373
       objectReference: {fileID: 0}
     - target: {fileID: 3566921260780534112, guid: 744727b4dfe7ea845990f23dd81f1aa2,
         type: 3}
@@ -36804,6 +36851,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3566921260780534112, guid: 744727b4dfe7ea845990f23dd81f1aa2,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3566921260780534112, guid: 744727b4dfe7ea845990f23dd81f1aa2,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3566921260780534112, guid: 744727b4dfe7ea845990f23dd81f1aa2,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 3571276504613010485, guid: 744727b4dfe7ea845990f23dd81f1aa2,
         type: 3}

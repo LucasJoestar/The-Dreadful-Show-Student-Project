@@ -64,6 +64,11 @@ public class TDS_SoundManager : MonoBehaviour
     /// Audio source used to play all kind of UI stuff.
     /// </summary>
     [SerializeField] private AudioSource uiSource = null;
+
+    /// <summary>
+    /// Audio source used to play all kind of effects stuff.
+    /// </summary>
+    [SerializeField] private AudioSource effectsSource = null;
     #endregion
 
     #region Coroutines
@@ -125,34 +130,16 @@ public class TDS_SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// (Un)pause the game.
+    /// Returns a random audio clip from an array.
     /// </summary>
-    /// <param name="_doPause">Should the game be pause or not.</param>
-    public void Pause(bool _doPause)
+    /// <param name="_clips">Clips to change one from.</param>
+    /// <returns>Returns a random audio clip.</returns>
+    public static AudioClip GetRandomClip(AudioClip[] _clips)
     {
-        AudioListener.pause = _doPause;
-
-        if (_doPause)
-        {
-            musicBeforePause = musicSource.clip;
-            musicBeforePauseTime = musicSource.time;
-
-            if (unpauseCoroutine != null)
-            {
-                StopCoroutine(unpauseCoroutine);
-                unpauseCoroutine = null;
-            }
-
-            musicSource.clip = TDS_GameManager.AudioAsset.M_TitleScreen;
-            musicSource.time = 0;
-            musicSource.Play();
-        }
-        else
-        {
-            unpauseCoroutine = StartCoroutine(Unpause());
-        }
+        return _clips[Random.Range(0, _clips.Length)];
     }
 
+    #region Music
     /// <summary>
     /// Plays a new music.
     /// </summary>
@@ -251,6 +238,37 @@ public class TDS_SoundManager : MonoBehaviour
     /// </summary>
     /// <param name="_fadeDuration">Time to fade current music down.</param>
     public void StopMusic(float _fadeDuration = 0) => PlayMusic((Music)(-1), 1.5f);
+    #endregion
+
+    #region UI
+    /// <summary>
+    /// (Un)pause the game.
+    /// </summary>
+    /// <param name="_doPause">Should the game be pause or not.</param>
+    public void Pause(bool _doPause)
+    {
+        AudioListener.pause = _doPause;
+
+        if (_doPause)
+        {
+            musicBeforePause = musicSource.clip;
+            musicBeforePauseTime = musicSource.time;
+
+            if (unpauseCoroutine != null)
+            {
+                StopCoroutine(unpauseCoroutine);
+                unpauseCoroutine = null;
+            }
+
+            musicSource.clip = TDS_GameManager.AudioAsset.M_TitleScreen;
+            musicSource.time = 0;
+            musicSource.Play();
+        }
+        else
+        {
+            unpauseCoroutine = StartCoroutine(Unpause());
+        }
+    }
 
     /// <summary>
     /// Unpauses the game with music back.
@@ -273,6 +291,59 @@ public class TDS_SoundManager : MonoBehaviour
             _timer += Time.deltaTime;
         }
     }
+
+
+    /// <summary>
+    /// Plays a UI sound.
+    /// </summary>
+    /// <param name="_clip"></param>
+    public void PlayUISound(AudioClip _clip)
+    {
+        if (!uiSource) return;
+        uiSource.PlayOneShot(_clip);
+    }
+
+    /// <summary>
+    /// Plays a sound for confirm in UI.
+    /// </summary>
+    public void PlayUIConfirm() => PlayUISound(TDS_GameManager.AudioAsset.S_UI_Confirm);
+
+    /// <summary>
+    /// Plays a sound for a big confirm in UI.
+    /// </summary>
+    public void PlayUIBigConfirm() => PlayUISound(TDS_GameManager.AudioAsset.S_UI_BigConfirm);
+
+    /// <summary>
+    /// Plays a sound for "over" effect in UI.
+    /// </summary>
+    public void PlayUIOver() => PlayUISound(TDS_GameManager.AudioAsset.S_UI_Over);
+
+    /// <summary>
+    /// Plays a sound when player is ready.
+    /// </summary>
+    public void PlayUIReady() => PlayUISound(TDS_GameManager.AudioAsset.S_UI_Ready);
+
+    /// <summary>
+    /// Plays sound for curtains riding in.
+    /// </summary>
+    public void PlayCurtainsIn() => PlayUISound(TDS_GameManager.AudioAsset.S_CurtainsIn);
+
+    /// <summary>
+    /// Plays sound for curtains riding out.
+    /// </summary>
+    public void PlayCurtainsOut() => PlayUISound(TDS_GameManager.AudioAsset.S_CurtainsOut);
+    #endregion
+
+    #region Feedback
+    /// <summary>
+    /// Plays sound indicating the player approches death...
+    /// </summary>
+    public void PlayApproachDeath()
+    {
+        if (!effectsSource) return;
+        effectsSource.PlayOneShot(TDS_GameManager.AudioAsset.S_approachDeath);
+    }
+    #endregion
 
     /// <summary>
     /// Play a sound at a position
