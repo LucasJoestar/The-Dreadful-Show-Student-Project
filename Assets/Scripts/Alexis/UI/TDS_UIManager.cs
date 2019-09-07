@@ -397,20 +397,18 @@ public class TDS_UIManager : PunBehaviour
                 _controller = TDS_GameManager.InputsAsset.Controllers[_i]; 
                 if (_controller.GetButtonDown(ButtonType.Cancel))
                 {
-                    yield return new WaitForEndOfFrame();
                     _cancelActionByPlayer?.Invoke(_i);
                 }
                 else if (_controller.GetButtonDown(ButtonType.Confirm))
                 {
-                    yield return new WaitForEndOfFrame();
                     _submitActionByPlayer?.Invoke(_i);
                 }
                 else if (_controller.GetAxisDown(AxisType.Horizontal, out _value))
                 {
-                    yield return new WaitForEndOfFrame();
                     _horizontalAxisActionByPlayer?.Invoke(_i, _value);
                 }
             }
+            yield return new WaitForEndOfFrame();
 
             yield return null;
         }
