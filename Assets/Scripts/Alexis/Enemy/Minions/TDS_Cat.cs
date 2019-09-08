@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CustomNavMeshAgent))]
@@ -60,7 +59,7 @@ public class TDS_Cat : TDS_Character
     public void ActivateCat()
     {
         if (!PhotonNetwork.isMasterClient || isDead || !agent) return;
-        if (hitBox.IsActive) hitBox.Activate(catAttack, this);
+        if (!hitBox.IsActive) hitBox.Activate(catAttack, this);
         movementCoroutine = StartCoroutine(GetDownFromPerch()); 
     }
 
@@ -145,7 +144,7 @@ public class TDS_Cat : TDS_Character
 
     private IEnumerator MoveCat()
     {
-        rigidbody.useGravity = true; 
+        rigidbody.useGravity = true;
         agent.SetDestination(catState == CatState.RightPerch ? rightPerchInfos.LandingPosition : leftPerchInfos.LandingPosition);
         SetAnimationState((int)CatAnimationState.Run);
         SetAnimationState((int)CatAnimationState.EndJump);
@@ -154,7 +153,7 @@ public class TDS_Cat : TDS_Character
             yield return null;
         }
         movementCoroutine = StartCoroutine(GetOnPerch());
-        rigidbody.useGravity = false;
+        rigidbody.useGravity = false; 
     }
 
     private void SetAnimationState(int _animationID)
@@ -218,6 +217,19 @@ public class TDS_Cat : TDS_Character
     {
         isIndependant = true;
         ActivateCat(); 
+    }
+
+    public void DesactivateCat()
+    {
+        if (isDead) return; 
+        isIndependant = false; 
+        if(movementCoroutine == null)
+        {
+            StopCoroutine(movementCoroutine);
+            movementCoroutine = null; 
+        }
+        SetAnimationState((int)CatAnimationState.Idle);
+        hitBox.Desactivate(); 
     }
     #endregion
 

@@ -138,7 +138,7 @@ public class TDS_MrLoyal : TDS_Boss
         /// Call the particle here
         TDS_VFXManager.Instance.SpawnEffect(FXType.MrLoyalTeleportation, transform.position); 
         /// Then wait some time and teleport Mr Loyal on his plateform
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.25f);
         sprite.enabled = false;
         transform.position = teleportationPosition;
         TDS_VFXManager.Instance.SpawnEffect(FXType.MrLoyalEndTeleportation, teleportationPosition);
@@ -195,7 +195,7 @@ public class TDS_MrLoyal : TDS_Boss
         }
         //Reinstantiate the particle here
         TDS_VFXManager.Instance.SpawnEffect(FXType.MrLoyalTeleportation, transform.position);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.25f);
         sprite.enabled = false;
         transform.position = _pos;
         TDS_VFXManager.Instance.SpawnEffect(FXType.MrLoyalEndTeleportation, _pos);
@@ -218,7 +218,8 @@ public class TDS_MrLoyal : TDS_Boss
 
     protected override void Die()
     {
-        CancelInvoke("PlayRandomTaunt"); 
+        CancelInvoke("PlayRandomTaunt");
+        cats.ToList().ForEach(c => c.DesactivateCat()); 
         base.Die();
     }
 
@@ -230,7 +231,6 @@ public class TDS_MrLoyal : TDS_Boss
 
     private void Enrage()
     {
-        Debug.Log("Call Rage");
         if (isEnraged) return; 
         isEnraged = true;
         speedCoef *= bonusSpeedCoefficient;

@@ -48,6 +48,8 @@ public class TDS_ThrowableBird : TDS_FleeingThrowable
         if (_movement.x != isFacingRight.ToSign())
         {
             transform.Rotate(Vector3.up, 180);
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z * -1);
+
             isFacingRight = !isFacingRight;
         }
 

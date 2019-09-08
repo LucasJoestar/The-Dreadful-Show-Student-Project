@@ -172,7 +172,7 @@ MonoBehaviour:
   isHeld: 0
   bouncePower: 0.25
   bonusDamage: 4
-  ObjectDurability: 2
+  ObjectDurability: 1
   weight: 2
   animator: {fileID: 74198959308998173}
   detector: {fileID: 5932299833329836099}
@@ -240,6 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableOutline: 0
+  autoChangeMaterial: 1
   color: {r: 0.10980392, g: 0.8784314, b: 0.14348474, a: 1}
   outlineSize: 2.5
 --- !u!114 &72738306718406399

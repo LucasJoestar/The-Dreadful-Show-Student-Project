@@ -72,6 +72,7 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
         }
         if (isHeld) owner.DropObject();
         TDS_VFXManager.Instance.SpawnEffect(FXType.Kaboom, transform.position + Vector3.up);
+        if (sprite) sprite.enabled = false; 
         hitBox.Activate(attack, owner, _hitableTags.ObjectTags);
 
         if (TDS_VFXManager.Instance.KaboomFX)
@@ -88,8 +89,11 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
     protected override void DestroyThrowableObject()
     {
         hitBox.Desactivate();
-        if (isHeld) owner.DropObject(); 
-        base.DestroyThrowableObject();
+        if (isHeld) owner.DropObject();
+
+        PhotonNetwork.Destroy(gameObject);
+        CallDestroyEvent(); 
+        //OnDestroyed?.Invoke();
     }
 
     /// <summary>

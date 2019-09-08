@@ -78,8 +78,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.8044977, y: 1.35, z: 1}
-  m_Center: {x: -0.12383771, y: 0.675, z: 0}
+  m_Size: {x: 2, y: 1.35, z: 1}
+  m_Center: {x: 0.3, y: 0.675, z: 0}
 --- !u!95 &5268511999767807706
 Animator:
   serializedVersion: 3
@@ -225,8 +225,8 @@ MonoBehaviour:
   isDead: 0
   isIndestructible: 0
   IsInvulnerable: 0
-  healthCurrent: 25
-  healthMax: 25
+  healthCurrent: 50
+  healthMax: 50
   hitBox: {fileID: 5268512001663847524}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
@@ -234,7 +234,7 @@ MonoBehaviour:
   shadowTransform: {fileID: 5268512001073152060}
   audioSource: {fileID: 0}
   isAttacking: 0
-  isFacingRight: 0
+  isFacingRight: 1
   IsPacific: 0
   IsParalyzed: 0
   aimAngle: 45
@@ -302,7 +302,8 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  catAttack: {fileID: 0}
+  catAttack: {fileID: 11400000, guid: 780623a1f46753f459738d6f400fdea3, type: 2}
+  chargeRate: 10
 --- !u!54 &3523898671468239163
 Rigidbody:
   m_ObjectHideFlags: 0

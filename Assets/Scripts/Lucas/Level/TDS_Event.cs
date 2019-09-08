@@ -214,6 +214,7 @@ public class TDS_Event
 
             // Freeze local player
             case CustomEventType.FreezePlayerForCutscene:
+                TDS_GameManager.IsInCutscene = true;
                 TDS_UIManager.Instance.ActivateCutsceneBlackBars();
                 if (!PhotonNetwork.offlineMode) TDS_LevelManager.Instance.LocalPlayer.FreezePlayer();
                 else
@@ -293,6 +294,7 @@ public class TDS_Event
 
             // Unfreeze local player
             case CustomEventType.UnfreezePlayerFromCutscene:
+                TDS_GameManager.IsInCutscene = false;
                 TDS_UIManager.Instance.DesactivateCutsceneBlackBars();
                 if (!PhotonNetwork.offlineMode) TDS_LevelManager.Instance.LocalPlayer.UnfreezePlayer();
                 else

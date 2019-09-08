@@ -30,6 +30,7 @@ Transform:
   - {fileID: 1645326344}
   - {fileID: 1754035966}
   - {fileID: 676773236}
+  - {fileID: 5077109111299091811}
   m_Father: {fileID: 4943209462918504}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7131,6 +7132,7 @@ MonoBehaviour:
   musicSource: {fileID: 1645326345}
   narratorSource: {fileID: 1754035967}
   uiSource: {fileID: 676773237}
+  effectsSource: {fileID: 475439901285472848}
 --- !u!114 &6736605381441817245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7662,6 +7664,7 @@ GameObject:
   - component: {fileID: 222748374444301220}
   - component: {fileID: 114265919440431072}
   - component: {fileID: 114857645521942480}
+  - component: {fileID: 8921457995286261453}
   m_Layer: 5
   m_Name: Quit Pause Button
   m_TagString: Untagged
@@ -7777,8 +7780,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIBigConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &8921457995286261453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623384267493512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1675682917675836
 GameObject:
   m_ObjectHideFlags: 0
@@ -8361,6 +8387,7 @@ GameObject:
   - component: {fileID: 8779356880052497950}
   - component: {fileID: 3141965702855971195}
   - component: {fileID: 4988787045487698572}
+  - component: {fileID: 8742446179140883157}
   m_Layer: 5
   m_Name: FifthRoomButton
   m_TagString: Untagged
@@ -8477,6 +8504,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &3141965702855971195
@@ -8512,6 +8550,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8742446179140883157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11146506968022231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &42623211489260893
 GameObject:
   m_ObjectHideFlags: 0
@@ -9338,6 +9388,7 @@ GameObject:
   - component: {fileID: 2396322465316116321}
   - component: {fileID: 8599686081580353258}
   - component: {fileID: 3641374360283087903}
+  - component: {fileID: 2538181623887079756}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -9453,8 +9504,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIOver
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &2538181623887079756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 174310065723778346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &221205670743130187
 GameObject:
   m_ObjectHideFlags: 0
@@ -10233,6 +10307,7 @@ GameObject:
   - component: {fileID: 6782596110953992520}
   - component: {fileID: 7119384226242043010}
   - component: {fileID: 769711890900832622}
+  - component: {fileID: 3177622878884107472}
   m_Layer: 5
   m_Name: Apply Button
   m_TagString: Untagged
@@ -10336,9 +10411,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7119384226242043010}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIBigConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &3177622878884107472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413137931525335150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &425295102440945507
 GameObject:
   m_ObjectHideFlags: 0
@@ -10875,6 +10973,7 @@ GameObject:
   - component: {fileID: 8403845445316268442}
   - component: {fileID: 1648235485063704855}
   - component: {fileID: 1592689761357339966}
+  - component: {fileID: 6861301016257315076}
   m_Layer: 5
   m_Name: PlayButton - Local
   m_TagString: Untagged
@@ -11001,8 +11100,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &6861301016257315076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 586082628062945398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &594943963536069455
 GameObject:
   m_ObjectHideFlags: 0
@@ -11015,6 +11137,7 @@ GameObject:
   - component: {fileID: 994685928088822153}
   - component: {fileID: 3911481625173276097}
   - component: {fileID: 1038550982950668528}
+  - component: {fileID: 1268616170213880640}
   m_Layer: 5
   m_Name: LaunchGame - Button
   m_TagString: Untagged
@@ -11141,8 +11264,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIBigConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1268616170213880640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594943963536069455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &602432400526803611
 GameObject:
   m_ObjectHideFlags: 0
@@ -11425,6 +11571,7 @@ GameObject:
   - component: {fileID: 744920114272540884}
   - component: {fileID: 1744109941320537833}
   - component: {fileID: 943780043064865522}
+  - component: {fileID: 1712110308913978638}
   m_Layer: 5
   m_Name: FirstRoomButton
   m_TagString: Untagged
@@ -11541,6 +11688,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1744109941320537833
@@ -11576,6 +11734,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1712110308913978638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751807456841184226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &780019205880520700
 GameObject:
   m_ObjectHideFlags: 0
@@ -11624,6 +11794,7 @@ GameObject:
   - component: {fileID: 7170034392092178531}
   - component: {fileID: 3153651342799689087}
   - component: {fileID: 7658989439939895451}
+  - component: {fileID: 5901127281310424070}
   m_Layer: 5
   m_Name: PlayButton - Online
   m_TagString: Untagged
@@ -11761,8 +11932,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &5901127281310424070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791691074296903968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &792951928151451644
 GameObject:
   m_ObjectHideFlags: 0
@@ -11775,6 +11969,7 @@ GameObject:
   - component: {fileID: 5089797776960427379}
   - component: {fileID: 1989198491854748161}
   - component: {fileID: 7209883341111644237}
+  - component: {fileID: 1905607840733179129}
   m_Layer: 5
   m_Name: Controls Button
   m_TagString: Untagged
@@ -11901,8 +12096,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1905607840733179129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 792951928151451644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &805414349540351961
 GameObject:
   m_ObjectHideFlags: 0
@@ -15166,6 +15384,7 @@ GameObject:
   - component: {fileID: 7018871366433087704}
   - component: {fileID: 2041154668085034688}
   - component: {fileID: 814310721015321496}
+  - component: {fileID: 3266937292562597108}
   m_Layer: 5
   m_Name: Options Button
   m_TagString: Untagged
@@ -15292,8 +15511,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &3266937292562597108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546455110141771780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1554466551578496617
 GameObject:
   m_ObjectHideFlags: 0
@@ -15427,6 +15669,7 @@ GameObject:
   - component: {fileID: 7971033058525073400}
   - component: {fileID: 2944688472088216979}
   - component: {fileID: 3249107241539820663}
+  - component: {fileID: 3488896681812402287}
   m_Layer: 5
   m_Name: ThirdRoomButton
   m_TagString: Untagged
@@ -15543,6 +15786,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &2944688472088216979
@@ -15578,6 +15832,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3488896681812402287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1574467347829344974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1601919630831072272
 GameObject:
   m_ObjectHideFlags: 0
@@ -17292,6 +17558,7 @@ GameObject:
   - component: {fileID: 2491553555911208316}
   - component: {fileID: 3611894354013976629}
   - component: {fileID: 6614081739763445657}
+  - component: {fileID: 6830682408890351424}
   m_Layer: 5
   m_Name: Previous Resolution Button
   m_TagString: Untagged
@@ -17394,7 +17661,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2491553555911208316}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!95 &6614081739763445657
@@ -17416,6 +17694,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6830682408890351424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900877630915474895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1901853866278281284
 GameObject:
   m_ObjectHideFlags: 0
@@ -19065,6 +19355,7 @@ GameObject:
   - component: {fileID: 8887001671988227431}
   - component: {fileID: 1935255250453723275}
   - component: {fileID: 5030512833749956367}
+  - component: {fileID: 1553922544746393934}
   m_Layer: 5
   m_Name: RightArrow
   m_TagString: Untagged
@@ -19189,6 +19480,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1553922544746393934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2111261257970709775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2112025608237924551
 GameObject:
   m_ObjectHideFlags: 0
@@ -19830,6 +20133,7 @@ GameObject:
   - component: {fileID: 7885500929465375890}
   - component: {fileID: 3805583624291600542}
   - component: {fileID: 2481402844933968174}
+  - component: {fileID: 210648083700760642}
   m_Layer: 5
   m_Name: RightArrow
   m_TagString: Untagged
@@ -19954,6 +20258,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &210648083700760642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2343957152959283006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2382078755320225666
 GameObject:
   m_ObjectHideFlags: 0
@@ -20611,6 +20927,7 @@ GameObject:
   - component: {fileID: 5837316641515248709}
   - component: {fileID: 2391456483663216478}
   - component: {fileID: 7332798540181280266}
+  - component: {fileID: 3683241493125649203}
   m_Layer: 5
   m_Name: Button_Right
   m_TagString: Untagged
@@ -20747,6 +21064,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!95 &7332798540181280266
@@ -20768,6 +21096,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3683241493125649203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2562145411066343774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2565786990643293419
 GameObject:
   m_ObjectHideFlags: 0
@@ -22651,6 +22991,7 @@ GameObject:
   - component: {fileID: 1589657717567238128}
   - component: {fileID: 723394836744601400}
   - component: {fileID: 4061542034380481167}
+  - component: {fileID: 9170985403172982817}
   m_Layer: 5
   m_Name: Button_Left
   m_TagString: Untagged
@@ -22787,6 +23128,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!95 &4061542034380481167
@@ -22808,6 +23160,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &9170985403172982817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2902291625825148228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2908500325773094452
 GameObject:
   m_ObjectHideFlags: 0
@@ -25478,6 +25842,7 @@ GameObject:
   - component: {fileID: 7536801531712136798}
   - component: {fileID: 4904395199412284359}
   - component: {fileID: 4774932669353204040}
+  - component: {fileID: 6769664721725476860}
   m_Layer: 5
   m_Name: RightArrow
   m_TagString: Untagged
@@ -25602,6 +25967,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6769664721725476860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3297419389771158414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3318821494798915438
 GameObject:
   m_ObjectHideFlags: 0
@@ -25614,6 +25991,7 @@ GameObject:
   - component: {fileID: 3567995896514097380}
   - component: {fileID: 6748007304158361755}
   - component: {fileID: 1406899329772621048}
+  - component: {fileID: 1102267766097490844}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -25740,8 +26118,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIOver
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1102267766097490844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3318821494798915438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3373311421483673561
 GameObject:
   m_ObjectHideFlags: 0
@@ -26734,6 +27135,7 @@ GameObject:
   - component: {fileID: 5774116173459613449}
   - component: {fileID: 6944946453043497630}
   - component: {fileID: 6511226202537408825}
+  - component: {fileID: 6478624530413055037}
   m_Layer: 5
   m_Name: SecondRoomButton
   m_TagString: Untagged
@@ -26850,6 +27252,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &6944946453043497630
@@ -26885,6 +27298,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6478624530413055037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3463362762477360716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3468835437303099019
 GameObject:
   m_ObjectHideFlags: 0
@@ -28311,6 +28736,7 @@ GameObject:
   - component: {fileID: 6523170669072299958}
   - component: {fileID: 7953389876701185328}
   - component: {fileID: 6175790489395440957}
+  - component: {fileID: 4746712953660378784}
   m_Layer: 5
   m_Name: RightArrow
   m_TagString: Untagged
@@ -28435,6 +28861,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4746712953660378784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3856269356491595664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3862561674438974279
 GameObject:
   m_ObjectHideFlags: 0
@@ -29263,6 +29701,7 @@ GameObject:
   - component: {fileID: 4938577251772055075}
   - component: {fileID: 1699034577660419351}
   - component: {fileID: 4631893423326115594}
+  - component: {fileID: 3673055475656477551}
   m_Layer: 5
   m_Name: LeftArrow
   m_TagString: Untagged
@@ -29387,6 +29826,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3673055475656477551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019768873723609485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4021808086377146755
 GameObject:
   m_ObjectHideFlags: 0
@@ -30873,6 +31324,7 @@ GameObject:
   - component: {fileID: 7064172016332145679}
   - component: {fileID: 1452484702722476670}
   - component: {fileID: 2198687658412419813}
+  - component: {fileID: 6875944381809770597}
   m_Layer: 5
   m_Name: Quit Button
   m_TagString: Untagged
@@ -30988,8 +31440,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIOver
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &6875944381809770597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4258878266145510296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4267710378510527194
 GameObject:
   m_ObjectHideFlags: 0
@@ -31002,6 +31477,7 @@ GameObject:
   - component: {fileID: 3362739939334172125}
   - component: {fileID: 4384244587058829625}
   - component: {fileID: 6634360844256957587}
+  - component: {fileID: 2145023760285873983}
   m_Layer: 5
   m_Name: Return Button
   m_TagString: Untagged
@@ -31139,8 +31615,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIOver
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &2145023760285873983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4267710378510527194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4267751621321320981
 GameObject:
   m_ObjectHideFlags: 0
@@ -31607,6 +32106,7 @@ GameObject:
   - component: {fileID: 8691810333102412852}
   - component: {fileID: 7930745341623634364}
   - component: {fileID: 1085103270056044621}
+  - component: {fileID: 2829863685789919387}
   m_Layer: 5
   m_Name: Quit Button
   m_TagString: Untagged
@@ -31710,9 +32210,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7930745341623634364}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIOver
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &2829863685789919387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4367997801238733766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4372197687594233716
 GameObject:
   m_ObjectHideFlags: 0
@@ -32427,6 +32950,7 @@ GameObject:
   - component: {fileID: 2296027135086205942}
   - component: {fileID: 5930920559966071292}
   - component: {fileID: 1871603802095737439}
+  - component: {fileID: 1335419962260036826}
   m_Layer: 5
   m_Name: Options Button
   m_TagString: Untagged
@@ -32542,8 +33066,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1335419962260036826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4581167639114972985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4598726381963097541
 GameObject:
   m_ObjectHideFlags: 0
@@ -35258,6 +35805,7 @@ GameObject:
   - component: {fileID: 6938094294223366779}
   - component: {fileID: 2500750908222068948}
   - component: {fileID: 4372453510532103249}
+  - component: {fileID: 8410790028775787126}
   m_Layer: 5
   m_Name: LeftArrow
   m_TagString: Untagged
@@ -35382,6 +35930,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8410790028775787126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025284690466448804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5053849490804319937
 GameObject:
   m_ObjectHideFlags: 0
@@ -42178,6 +42738,7 @@ GameObject:
   - component: {fileID: 7951994893637415208}
   - component: {fileID: 5980610941472035157}
   - component: {fileID: 5000329042674509424}
+  - component: {fileID: 5635025392421872358}
   m_Layer: 5
   m_Name: ErrorBoxQuitButton
   m_TagString: Untagged
@@ -42295,6 +42856,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &5635025392421872358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6493713717314760890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6494163108112653562
 GameObject:
   m_ObjectHideFlags: 0
@@ -43393,6 +43966,7 @@ GameObject:
   - component: {fileID: 3934755505997720254}
   - component: {fileID: 5483849724530349844}
   - component: {fileID: 9101479159456260671}
+  - component: {fileID: 4771613121951979256}
   m_Layer: 5
   m_Name: Credits Button
   m_TagString: Untagged
@@ -43519,8 +44093,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &4771613121951979256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6736548401789856318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6753362604819311681
 GameObject:
   m_ObjectHideFlags: 0
@@ -44929,6 +45526,7 @@ GameObject:
   - component: {fileID: 8282410081061013389}
   - component: {fileID: 8298588135909313511}
   - component: {fileID: 6948562802419322722}
+  - component: {fileID: 2057270022664955016}
   m_Layer: 5
   m_Name: Restart Button
   m_TagString: Untagged
@@ -45044,8 +45642,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIBigConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &2057270022664955016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7033334633141810731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7040920203307528262
 GameObject:
   m_ObjectHideFlags: 0
@@ -46197,6 +46818,7 @@ GameObject:
   - component: {fileID: 1324384368632841106}
   - component: {fileID: 3547638477086674358}
   - component: {fileID: 719664200190323768}
+  - component: {fileID: 49353834971085524}
   m_Layer: 5
   m_Name: LeftArrow
   m_TagString: Untagged
@@ -46321,6 +46943,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &49353834971085524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7342424498250082173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7347547153973587349
 GameObject:
   m_ObjectHideFlags: 0
@@ -47018,6 +47652,134 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!1 &7472914777652828488
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5077109111299091811}
+  - component: {fileID: 475439901285472848}
+  m_Layer: 0
+  m_Name: Effects Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5077109111299091811
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7472914777652828488}
+  m_LocalRotation: {x: 0.1478094, y: -0, z: -0, w: 0.9890159}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2914808}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &475439901285472848
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7472914777652828488}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.0026169
+      inSlope: -0.0050172373
+      outSlope: -0.0050172373
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9914551
+      value: 0.9976425
+      inSlope: -0.0050172373
+      outSlope: -0.0050172373
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &7537147790733104161
 GameObject:
   m_ObjectHideFlags: 0
@@ -47098,10 +47860,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 5544740453053758516}
   m_HandleRect: {fileID: 7986752997530381930}
   m_Direction: 0
-  m_MinValue: -80
-  m_MaxValue: 20
+  m_MinValue: -50
+  m_MaxValue: 5
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: -10
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -47206,10 +47968,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 116936795138352478}
   m_HandleRect: {fileID: 6844140045024623910}
   m_Direction: 0
-  m_MinValue: -80
-  m_MaxValue: 20
+  m_MinValue: -50
+  m_MaxValue: 5
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: -10
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -48012,7 +48774,18 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
@@ -50246,6 +51019,7 @@ GameObject:
   - component: {fileID: 2484614693713601221}
   - component: {fileID: 1401105676165372937}
   - component: {fileID: 8821758619534082879}
+  - component: {fileID: 5492227697477360749}
   m_Layer: 5
   m_Name: LeftArrow
   m_TagString: Untagged
@@ -50370,6 +51144,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5492227697477360749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8190311463751295420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8196171648306698994
 GameObject:
   m_ObjectHideFlags: 0
@@ -50382,6 +51168,7 @@ GameObject:
   - component: {fileID: 4259606117060035050}
   - component: {fileID: 6238218669146583935}
   - component: {fileID: 3402427021173011396}
+  - component: {fileID: 189211025137639144}
   m_Layer: 5
   m_Name: Quit Game - Pause Button
   m_TagString: Untagged
@@ -50508,8 +51295,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIOver
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &189211025137639144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8196171648306698994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8204676654140769487
 GameObject:
   m_ObjectHideFlags: 0
@@ -50746,6 +51556,7 @@ GameObject:
   - component: {fileID: 1815594880853078749}
   - component: {fileID: 1782180911485117113}
   - component: {fileID: 4370698205118187285}
+  - component: {fileID: 7655154935937700095}
   m_Layer: 5
   m_Name: FourthRoomButton
   m_TagString: Untagged
@@ -50862,6 +51673,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1782180911485117113
@@ -50897,6 +51719,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7655154935937700095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8240108227400939808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8241554923126949088
 GameObject:
   m_ObjectHideFlags: 0
@@ -52368,6 +53202,7 @@ GameObject:
   - component: {fileID: 1133442299728713137}
   - component: {fileID: 3538855958944936060}
   - component: {fileID: 7030937424535371528}
+  - component: {fileID: 1557388342467804499}
   m_Layer: 5
   m_Name: Return Button
   m_TagString: Untagged
@@ -52483,8 +53318,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIOver
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1557388342467804499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8563013793409640883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8565632914576638936
 GameObject:
   m_ObjectHideFlags: 0
@@ -53566,6 +54424,7 @@ GameObject:
   - component: {fileID: 124864597301503954}
   - component: {fileID: 3297150480828560526}
   - component: {fileID: 8210093714794686055}
+  - component: {fileID: 4880603562080831834}
   m_Layer: 5
   m_Name: Back Button
   m_TagString: Untagged
@@ -53692,8 +54551,31 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIOver
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &4880603562080831834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8909140735937199329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8909334862464881916
 GameObject:
   m_ObjectHideFlags: 0
@@ -54358,6 +55240,7 @@ GameObject:
   - component: {fileID: 2495921165060349726}
   - component: {fileID: 5990594929148809992}
   - component: {fileID: 3137340452918195026}
+  - component: {fileID: 7398848436046170027}
   m_Layer: 5
   m_Name: Next Resolution Button
   m_TagString: Untagged
@@ -54460,7 +55343,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2495921165060349726}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1999490156}
+        m_MethodName: PlayUIConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!95 &3137340452918195026
@@ -54482,6 +55376,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7398848436046170027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9053505216820025539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436353b7dde1a444bb88ad9b659b934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9063350787647783252
 GameObject:
   m_ObjectHideFlags: 0
@@ -54562,10 +55468,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 2168007380641741995}
   m_HandleRect: {fileID: 5257879880466736372}
   m_Direction: 0
-  m_MinValue: -80
-  m_MaxValue: 20
+  m_MinValue: -50
+  m_MaxValue: 5
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: -10
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

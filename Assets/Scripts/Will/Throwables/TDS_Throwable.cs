@@ -164,6 +164,8 @@ public class TDS_Throwable : PunBehaviour
         rigidbody.velocity = new Vector3(_xVelo, _yVelo, _zVelo) * bouncePower * -1;
     }
 
+    protected void CallDestroyEvent() => OnDestroyed?.Invoke(); 
+
     /// <summary>
     /// Destroy the gameObject Throwable if the durability is less or equal to zero 
     /// </summary>

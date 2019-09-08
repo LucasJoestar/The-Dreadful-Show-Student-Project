@@ -1328,6 +1328,9 @@ public class TDS_Player : TDS_Character, IPunObservable
             if (comboCurrent.Count > 0) BreakCombo();
             if (IsAttacking) StopAttack();
             if (isDodging) StopDodge();
+
+            // Play feedback sound
+            if (healthCurrent <= ((float)healthMax / 4f)) TDS_SoundManager.Instance.PlayApproachDeath();
         }
 
         // If not dead, be just hit
@@ -1911,7 +1914,12 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <summary>
     /// Unfreezes the player's movements and actions.
     /// </summary>
-    public virtual void UnfreezePlayer() => IsPlayable = true;
+    public virtual void UnfreezePlayer()
+    {
+        if (TDS_GameManager.IsInCutscene) return;
+
+        IsPlayable = true;
+    }
     #endregion
 
     #region Animations

@@ -397,20 +397,18 @@ public class TDS_UIManager : PunBehaviour
                 _controller = TDS_GameManager.InputsAsset.Controllers[_i]; 
                 if (_controller.GetButtonDown(ButtonType.Cancel))
                 {
-                    yield return new WaitForEndOfFrame();
                     _cancelActionByPlayer?.Invoke(_i);
                 }
                 else if (_controller.GetButtonDown(ButtonType.Confirm))
                 {
-                    yield return new WaitForEndOfFrame();
                     _submitActionByPlayer?.Invoke(_i);
                 }
                 else if (_controller.GetAxisDown(AxisType.Horizontal, out _value))
                 {
-                    yield return new WaitForEndOfFrame();
                     _horizontalAxisActionByPlayer?.Invoke(_i, _value);
                 }
             }
+            yield return new WaitForEndOfFrame();
 
             yield return null;
         }
@@ -455,6 +453,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public IEnumerator ResetInGameUI()
     {
+        TDS_SoundManager.Instance.StopMusic(1.5f);
         yield return new WaitForSeconds(1.5f);
         beardLadyLifeBar.ResetLifeBar(); 
         fatLadyLifeBar.ResetLifeBar();
@@ -1165,7 +1164,15 @@ public class TDS_UIManager : PunBehaviour
     public void SwitchCurtains(bool _areVisible)
     {
         if (!curtainsAnimator) return;
-        curtainsAnimator.SetBool("Visible", _areVisible); 
+
+        // Play curtains sound
+        if (curtainsAnimator.GetBool("Visible") != _areVisible)
+        {
+            if (_areVisible) TDS_SoundManager.Instance.PlayCurtainsIn();
+            else TDS_SoundManager.Instance.PlayCurtainsOut();
+        }
+
+        curtainsAnimator.SetBool("Visible", _areVisible);
     }
 
     /// <summary>
@@ -1185,6 +1192,10 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_isReady"></param>
     public void UpdateReadySettings(int _playerId, bool _isReady)
     {
+        // Play sound
+        if (_isReady) TDS_SoundManager.Instance.PlayUIReady();
+        else TDS_SoundManager.Instance.PlayUIOver();
+
         if (uiState == UIState.InCharacterSelection && launchGameButton)
             launchGameButton.interactable = (!TDS_GameManager.PlayersInfo.Any(p => p.IsReady == false) && TDS_GameManager.LocalIsReady) || (!TDS_GameManager.PlayersInfo.Any(p => p.IsReady == false));
         if (uiState == UIState.InGameOver && buttonRestartGame)

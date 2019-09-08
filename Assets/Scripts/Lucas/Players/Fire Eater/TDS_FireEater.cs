@@ -441,6 +441,7 @@ public class TDS_FireEater : TDS_Player
         base.Flip();
 
         miniGameAnchor.Rotate(Vector3.up, 180);
+        miniGameAnchor.localScale = new Vector3(miniGameAnchor.localScale.x, miniGameAnchor.localScale.y, miniGameAnchor.localScale.z * -1);
     }
 
     /// <summary>

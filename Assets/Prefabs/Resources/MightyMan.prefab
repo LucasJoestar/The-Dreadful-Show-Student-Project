@@ -251,6 +251,7 @@ MonoBehaviour:
   throwable: {fileID: 0}
   handsTransform: {fileID: 3968375963929066008}
   shadowTransform: {fileID: 3966716620350656818}
+  audioSource: {fileID: 0}
   isAttacking: 0
   isFacingRight: 0
   IsPacific: 0
@@ -343,8 +344,10 @@ MonoBehaviour:
   BonusDamages: 0
   HittableTags:
     ObjectTags:
+    - Name: Enemy
+      Color: {r: 0.8980392, g: 0.14117648, b: 0.14117648, a: 1}
     - Name: Player
-      Color: {r: 1, g: 1, b: 1, a: 1}
+      Color: {r: 0.097232126, g: 0.8962264, b: 0.6973913, a: 1}
 --- !u!1 &3964556037461311082
 GameObject:
   m_ObjectHideFlags: 0

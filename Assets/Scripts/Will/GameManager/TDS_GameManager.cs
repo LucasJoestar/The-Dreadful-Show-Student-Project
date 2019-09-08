@@ -53,6 +53,11 @@ public static class TDS_GameManager
 
     #region Status
     /// <summary>
+    /// Indicates if the game is currently in cutscene state.
+    /// </summary>
+    public static bool IsInCutscene = false;
+
+    /// <summary>
     /// Indicates if the game is currently in pause.
     /// </summary>
     private static bool isPaused = false;

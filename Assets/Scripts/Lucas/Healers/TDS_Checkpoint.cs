@@ -75,6 +75,11 @@ public class TDS_Checkpoint : PunBehaviour
     /// </summary>
     [SerializeField] private BoxCollider trigger = null;
 
+    /// <summary>
+    /// Audio source of the checkpoint.
+    /// </summary>
+    [SerializeField] private AudioSource audioSource = null;
+
     /// <summary>Backing field for <see cref="IsActivated"/>.</summary>
     [SerializeField] private bool isActivated = false;
 
@@ -114,12 +119,21 @@ public class TDS_Checkpoint : PunBehaviour
 
         // Resurrect dead players
         StartCoroutine(RespawnCoroutine());
+
+        // Plays activation sound for everyone
+        PlayActivationSound();
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PlayActivationSound"), new object[] { });
     }
 
     /// <summary>
     /// Call the event OnPassCheckpoint ; this method is called on a player machine when this one pass a checkpoint.
     /// </summary>
     private void CallOnPassCheckpoint() => OnPassCheckpoint?.Invoke();
+
+    /// <summary>
+    /// Plays checkpoit activation sound.
+    /// </summary>
+    private void PlayActivationSound() => audioSource.PlayOneShot(TDS_GameManager.AudioAsset.S_Checkpoint);
 
     /// <summary>
     /// Make all dead players respawn to this point.
@@ -209,6 +223,11 @@ public class TDS_Checkpoint : PunBehaviour
         {
             trigger = GetComponents<BoxCollider>().Where(b => b.isTrigger).FirstOrDefault();
             if (!trigger) Debug.LogWarning("The Trigger of \"" + name + "\" for script TDS_Checkpoint is missing !");
+        }
+        if (!audioSource)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (!audioSource) Debug.LogWarning("The AudioSource of \"" + name + "\" for script TDS_Checkpoint is missing !");
         }
     }
 

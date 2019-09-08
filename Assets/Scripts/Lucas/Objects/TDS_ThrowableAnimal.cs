@@ -65,6 +65,7 @@ public class TDS_ThrowableAnimal : TDS_FleeingThrowable
                 if (_direction != isFacingRight.ToSign())
                 {
                     transform.Rotate(Vector3.up, 180);
+                    transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z * -1);
                     isFacingRight = !isFacingRight;
                 }
 

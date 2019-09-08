@@ -242,7 +242,7 @@ public class TDS_SpawnerArea : PunBehaviour
     /// </summary>
     private void ActivateWave()
     {
-        if (!PhotonNetwork.isMasterClient) return; 
+        if (!PhotonNetwork.isMasterClient || IsDesactivated) return; 
         if (waves.Count == 0)
         {
             ActivatedAreas.Add(this);

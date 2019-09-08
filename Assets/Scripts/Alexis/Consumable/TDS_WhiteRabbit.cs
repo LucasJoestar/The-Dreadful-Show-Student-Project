@@ -68,6 +68,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
     protected void Flip()
     {
         transform.Rotate(Vector3.up, 180);
+        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z * -1);
     }
 
     /// <summary>

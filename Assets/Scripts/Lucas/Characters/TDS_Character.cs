@@ -388,6 +388,7 @@ public abstract class TDS_Character : TDS_Damageable
     {
         isFacingRight = !isFacingRight;
         transform.Rotate(Vector3.up, 180);
+        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z * -1);
 
         shadowTransform.localPosition = new Vector3(shadowTransform.localPosition.x, shadowTransform.localPosition.y, shadowTransform.localPosition.z * -1);
 
@@ -516,7 +517,11 @@ public abstract class TDS_Character : TDS_Damageable
             _throwable.transform.localPosition = Vector3.zero;
             _throwable.transform.rotation = Quaternion.identity;
 
-            if (!isFacingRight) _throwable.transform.Rotate(Vector3.up, 180);
+            if (!isFacingRight)
+            {
+                _throwable.transform.Rotate(Vector3.up, 180);
+                _throwable.transform.localScale = new Vector3(_throwable.transform.localScale.x, _throwable.transform.localScale.y, _throwable.transform.localScale.z * -1);
+            }
 
             return true;
         }
