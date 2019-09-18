@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 #pragma warning disable 0649
 public class TDS_UIManager : PunBehaviour 
@@ -322,6 +323,7 @@ public class TDS_UIManager : PunBehaviour
                 _horizontalAxisActionByPlayer = characterSelectionManager.ChangeImageAtPlayer; 
                 break;
             case UIState.InGame:
+                yield break; 
                 yield return new WaitForEndOfFrame(); 
                 _startAction = () => SetPause(true);
                 break;
@@ -398,18 +400,19 @@ public class TDS_UIManager : PunBehaviour
                 if (_controller.GetButtonDown(ButtonType.Cancel))
                 {
                     _cancelActionByPlayer?.Invoke(_i);
+                    continue; 
                 }
                 else if (_controller.GetButtonDown(ButtonType.Confirm))
                 {
                     _submitActionByPlayer?.Invoke(_i);
+                    continue; 
                 }
                 else if (_controller.GetAxisDown(AxisType.Horizontal, out _value))
                 {
                     _horizontalAxisActionByPlayer?.Invoke(_i, _value);
+                    continue; 
                 }
             }
-            yield return new WaitForEndOfFrame();
-
             yield return null;
         }
 
@@ -1222,6 +1225,14 @@ public class TDS_UIManager : PunBehaviour
         if (playerCountText) playerCountText.text = $"Players : {_playerCount}/4";
         if (launchGameButton) launchGameButton.gameObject.SetActive(_displayLaunchButton);
     }
+
+    private void RefreshUI(Scene _scene, LoadSceneMode _loadMode)
+    {
+        if (narratorBoxParent.activeInHierarchy) DesactivateNarratorBox();
+        if (curtainsAnimator.GetBool("Visible")) curtainsAnimator.SetBool("Visible", false) ;
+        if (cutsceneBlackBarsAnimator.GetBool("IsActivated")) cutsceneBlackBarsAnimator.SetBool("IsActivated", false);
+        TDS_GameManager.IsInCutscene = false; 
+    }
     #endregion
 
     #endregion
@@ -1234,7 +1245,8 @@ public class TDS_UIManager : PunBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            photonView.viewID = 999; 
+            photonView.viewID = 999;
+            SceneManager.sceneLoaded += RefreshUI; 
         }
         else
         {
@@ -1258,6 +1270,14 @@ public class TDS_UIManager : PunBehaviour
         if (uiGameObject)
             uiGameObject.SetActive(true);
         ActivateMenu(uiState);
+    }
+
+    private void OnDestroy()
+    {
+        if(Instance == this)
+        {
+            SceneManager.sceneLoaded -= RefreshUI;
+        }
     }
     #endregion
 
