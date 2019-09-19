@@ -106,6 +106,8 @@ public class TDS_Attack : ScriptableObject
     /// Short (or long) description of this attack, and what it does.
     /// </summary>
     public string Description { get { return description; } }
+
+    [SerializeField] private AudioClip[] attackClips = new AudioClip[] { }; 
     #endregion
 
     #region Methods
@@ -179,6 +181,13 @@ public class TDS_Attack : ScriptableObject
         }
 
         return 1;
+    }
+
+    public AudioClip GetRandomClip()
+    {
+        if (attackClips.Length == 0) return null; 
+        int _randomIndex = Random.Range((int)0, (int)attackClips.Length);
+        return attackClips[_randomIndex]; 
     }
     #endregion
 }

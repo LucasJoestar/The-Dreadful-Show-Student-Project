@@ -1067,9 +1067,10 @@ public abstract class TDS_Enemy : TDS_Character
     /// <param name="_animationID">Animation ID entered in the animation window</param>
     protected void ActivateAttack(int _animationID)
     {
-        if (!PhotonNetwork.isMasterClient) return; 
         TDS_EnemyAttack _attack = attacks.Where(a => a.AnimationID == _animationID).FirstOrDefault();
         if (_attack == null) return;
+        TDS_SoundManager.Instance.PlaySoundAtPosition(audioSource, _attack.GetRandomClip(), transform.position, TDS_SoundManager.FX_GROUP_NAME, false, 1);
+        if (!PhotonNetwork.isMasterClient) return;
         hitBox.Activate(_attack);
         _attack.ApplyAttackBehaviour(this); 
     }

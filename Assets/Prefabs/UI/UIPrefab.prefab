@@ -4765,6 +4765,12 @@ MonoBehaviour:
   narratorSource: {fileID: 1754035967}
   uiSource: {fileID: 676773237}
   effectsSource: {fileID: 475439901285472848}
+  hitClips:
+  - {fileID: 8300000, guid: e08ffb3c1cd225348825dc356d3fb189, type: 3}
+  - {fileID: 8300000, guid: 20b77282d594ab24b9372ce53f96aaab, type: 3}
+  - {fileID: 8300000, guid: 5a833797acfd5954a8b5ca58f6b1f605, type: 3}
+  - {fileID: 8300000, guid: c064068a80a35e1499f6bb0994953a10, type: 3}
+  - {fileID: 8300000, guid: 4534f0f13da893e45beaede8831b5d1d, type: 3}
 --- !u!114 &6736605381441817245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4788,8 +4794,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 49
-  instantiationId: 49
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!1 &1348033205689514

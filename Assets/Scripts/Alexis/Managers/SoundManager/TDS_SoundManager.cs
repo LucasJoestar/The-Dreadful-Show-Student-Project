@@ -112,6 +112,10 @@ public class TDS_SoundManager : MonoBehaviour
     public static TDS_SoundManager Instance = null;
     #endregion
 
+    #region Common Clips
+    [SerializeField] private AudioClip[] hitClips = new AudioClip[] { };
+    #endregion
+
     #endregion
 
     #region Methods
@@ -343,6 +347,16 @@ public class TDS_SoundManager : MonoBehaviour
         if (!effectsSource) return;
         effectsSource.PlayOneShot(TDS_GameManager.AudioAsset.S_approachDeath);
     }
+
+    public void PlayHitSound(AudioSource _source)
+    {
+        if (!_source || hitClips.Length == 0) return;
+        _source.outputAudioMixerGroup = GetMixerGroupOfName(FX_GROUP_NAME);
+        _source.loop = false;
+        AudioClip _playedClip = hitClips[(int)Random.Range((int)0, (int)hitClips.Length)];
+        if (_playedClip == null) return; 
+        _source.PlayOneShot(_playedClip); 
+    }
     #endregion
 
     /// <summary>
@@ -355,6 +369,7 @@ public class TDS_SoundManager : MonoBehaviour
     /// <param name="_isLooping">Does the sound has to loop</param>
     public void PlaySoundAtPosition(AudioSource _source, AudioClip _playedClip, Vector3 _position, string _groupName = "Master", bool _isLooping = false, float _volume = 1f)
     {
+        if (_source == null || _playedClip == null) return; 
         _source.transform.position = _position;
         _source.outputAudioMixerGroup = GetMixerGroupOfName(_groupName);
         if(_isLooping)
@@ -368,6 +383,8 @@ public class TDS_SoundManager : MonoBehaviour
         _source.loop = false;
         _source.PlayOneShot(_playedClip, _volume); 
     }
+
+
     #endregion
 
     #region Unity Methods

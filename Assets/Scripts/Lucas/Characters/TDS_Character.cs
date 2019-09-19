@@ -596,11 +596,13 @@ public abstract class TDS_Character : TDS_Damageable
     {
         if (base.TakeDamage(_damage))
         {
-            if (photonView.isMine && throwable) DropObject();
-
+            if (photonView.isMine)
+            {
+                if (throwable) DropObject();
+                if (audioSource) TDS_SoundManager.Instance?.PlayHitSound(audioSource);
+            }
             return true;
         }
-
         return false;
     }
     #endregion
@@ -671,7 +673,11 @@ public abstract class TDS_Character : TDS_Damageable
     #endregion
 
     #region PlaySound 
-
+    public void PlayHitSound()
+    {
+        if (!audioSource) return; 
+        TDS_SoundManager.Instance?.PlayHitSound(audioSource); 
+    }
     #endregion
 
     #endregion

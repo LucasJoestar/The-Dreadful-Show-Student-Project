@@ -355,9 +355,10 @@ public class TDS_UIManager : PunBehaviour
                 // KILL ENEMIES TO AVOID SOFT LOCK
                 if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Dodge) && TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Parry))
                 {
+                    SetPause(false);
+                    yield return null; 
                     FindObjectsOfType<TDS_Enemy>().ToList().ForEach(e => e.TakeDamage(999));
-                    yield return null;
-                    continue; 
+                    yield break; 
                 }
                 //
                 if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Pause) || TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Cancel))

@@ -41,7 +41,8 @@ public class TDS_Siamese : TDS_Boss
     #region Fields / Properties
     [SerializeField] private string[] splitingEnemiesNames = new string[] { };
     [SerializeField] private Vector3[] splitingPosition = new Vector3[] { };
-    [SerializeField] private GameObject splittingPortrait = null; 
+    [SerializeField] private GameObject splittingPortrait = null;
+    [SerializeField] private AudioClip tornadoClip = null; 
     #endregion
 
     #region Methods
@@ -70,6 +71,18 @@ public class TDS_Siamese : TDS_Boss
         PhotonNetwork.Destroy(this.gameObject);
     }
 
+    public void PlayTornadoSound()
+    {
+        if (!audioSource || !tornadoClip) return;
+        TDS_SoundManager.Instance.PlaySoundAtPosition(audioSource, tornadoClip, transform.position, TDS_SoundManager.FX_GROUP_NAME, true, 1);
+    }
+
+    public void StopTornadoSound()
+    {
+        if (!audioSource || !audioSource.isPlaying) return;
+        audioSource.Stop();
+        audioSource.clip = null;
+    }
     #region Overriden Methods
     #endregion
 

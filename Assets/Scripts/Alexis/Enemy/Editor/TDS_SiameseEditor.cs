@@ -49,6 +49,8 @@ public class TDS_SiameseEditor : TDS_BossEditor
     SerializedProperty splitingPosition = null;
     /// <summary>SerializedProperty for <see cref="TDS_Siamese.splittingPortrait"/> of type <see cref="GameObject"/>. </summary>
     SerializedProperty splittingPortrait = null;
+    /// <summary>SerializedProperty for <see cref="TDS_Siamese.tornadoClip"/> of type <see cref="AudioClip"/>. </summary>
+    SerializedProperty tornadoClip = null;
 
     /// <summary>Backing field for <see cref="AreSplittingSettingsUnfolded"/></summary>
     private bool areSplittingSettingsUnfolded = false;
@@ -98,6 +100,13 @@ public class TDS_SiameseEditor : TDS_BossEditor
         base.DrawEnemyEditor();
 
         DrawSplittingSettings(); 
+    }
+
+    protected override void DrawSettings()
+    {
+        base.DrawSettings();
+        TDS_EditorUtility.PropertyField("Tornado clip", "Clip played during tornado animation", tornadoClip);
+        serializedObject.ApplyModifiedProperties();
     }
 
     /// <summary>
@@ -163,6 +172,7 @@ public class TDS_SiameseEditor : TDS_BossEditor
         splitingEnemiesNames = serializedObject.FindProperty("splitingEnemiesNames");
         splitingPosition = serializedObject.FindProperty("splitingPosition");
         splittingPortrait = serializedObject.FindProperty("splittingPortrait");
+        tornadoClip = serializedObject.FindProperty("tornadoClip"); 
     }
 
     public override void OnInspectorGUI()
