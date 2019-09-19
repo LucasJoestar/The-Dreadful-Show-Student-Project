@@ -323,7 +323,6 @@ public class TDS_UIManager : PunBehaviour
                 _horizontalAxisActionByPlayer = characterSelectionManager.ChangeImageAtPlayer; 
                 break;
             case UIState.InGame:
-                yield break; 
                 yield return new WaitForEndOfFrame(); 
                 _startAction = () => SetPause(true);
                 break;
@@ -353,6 +352,14 @@ public class TDS_UIManager : PunBehaviour
         {
             while (UIState == _state)
             {
+                // KILL ENEMIES TO AVOID SOFT LOCK
+                if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Dodge) && TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Parry))
+                {
+                    FindObjectsOfType<TDS_Enemy>().ToList().ForEach(e => e.TakeDamage(999));
+                    yield return null;
+                    continue; 
+                }
+                //
                 if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Pause) || TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Cancel))
                 {
                     yield return new WaitForEndOfFrame();
