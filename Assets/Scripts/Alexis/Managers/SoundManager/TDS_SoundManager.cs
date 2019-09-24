@@ -350,6 +350,7 @@ public class TDS_SoundManager : MonoBehaviour
 
     public void PlayHitSound(AudioSource _source)
     {
+        return; 
         if (!_source || hitClips.Length == 0) return;
         _source.outputAudioMixerGroup = GetMixerGroupOfName(FX_GROUP_NAME);
         _source.loop = false;

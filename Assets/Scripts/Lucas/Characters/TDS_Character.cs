@@ -581,7 +581,7 @@ public abstract class TDS_Character : TDS_Damageable
     protected override void Die()
     {
         base.Die();
-
+        if (audioSource) audioSource.enabled = false;
         if (!photonView.isMine) return;
 
         if (IsDown) GetUp();
@@ -599,7 +599,7 @@ public abstract class TDS_Character : TDS_Damageable
             if (photonView.isMine)
             {
                 if (throwable) DropObject();
-                if (audioSource) TDS_SoundManager.Instance?.PlayHitSound(audioSource);
+                //if (audioSource) TDS_SoundManager.Instance?.PlayHitSound(audioSource);
             }
             return true;
         }
@@ -676,7 +676,7 @@ public abstract class TDS_Character : TDS_Damageable
     public void PlayHitSound()
     {
         if (!audioSource) return; 
-        TDS_SoundManager.Instance?.PlayHitSound(audioSource); 
+        //TDS_SoundManager.Instance?.PlayHitSound(audioSource); 
     }
     #endregion
 

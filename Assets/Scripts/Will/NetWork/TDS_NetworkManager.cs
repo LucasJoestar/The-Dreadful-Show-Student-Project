@@ -241,6 +241,7 @@ public class TDS_NetworkManager : PunBehaviour
 #if UNITY_EDITOR
     private void OnGUI()
     {
+        return;
         GUILayout.Box(PhotonNetwork.GetPing().ToString()); 
         GUILayout.Box(PhotonNetwork.connectionStateDetailed.ToString());
         GUILayout.Box($"PLAYER USERNAME: {PhotonNetwork.playerName}\nPLAYER USER ID: {PhotonNetwork.player.UserId}\nID: {PhotonNetwork.player.ID}");
