@@ -71,7 +71,7 @@ public class TDS_ThrowableAnimal : TDS_FleeingThrowable
 
                 // New destination ignored, got to be fixed
                 _actualDestination = _newDestination;
-                Debug.Log(_actualDestination); 
+                //Debug.Log(_actualDestination); 
                 agent.SetDestination(_actualDestination);
 
                 // Set destination for other clients

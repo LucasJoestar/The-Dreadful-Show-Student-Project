@@ -1239,7 +1239,6 @@ public class TDS_UIManager : PunBehaviour
         if (narratorBoxParent.activeInHierarchy) DesactivateNarratorBox();
         if (curtainsAnimator.GetBool("Visible")) curtainsAnimator.SetBool("Visible", false) ;
         if (cutsceneBlackBarsAnimator.GetBool("IsActivated")) cutsceneBlackBarsAnimator.SetBool("IsActivated", false);
-        TDS_GameManager.IsInCutscene = false; 
     }
     #endregion
 

@@ -1309,6 +1309,9 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <returns>Returns true if some damages were inflicted, false if none.</returns>
     public override bool TakeDamage(int _damage)
     {
+        // Cannot hit the player while in cutscene !
+        if (TDS_GameManager.IsInCutscene) return false;
+
         // Executes base method
         if (!base.TakeDamage(_damage))
         {

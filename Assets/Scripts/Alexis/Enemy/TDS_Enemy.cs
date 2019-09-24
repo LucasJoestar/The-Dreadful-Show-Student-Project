@@ -476,6 +476,7 @@ public abstract class TDS_Enemy : TDS_Character
         {
             yield return new WaitForSeconds(.1f);
         }
+        if (IsDead) yield break; 
         yield return new WaitForSeconds(_cooldown);
         SetEnemyState(EnemyState.MakingDecision);
     }
@@ -1123,7 +1124,7 @@ public abstract class TDS_Enemy : TDS_Character
         {
             if (TDS_Camera.Instance && (transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax || transform.position.x < TDS_Camera.Instance.CurrentBounds.XMin))
             {
-                _position = new Vector3(transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax ? TDS_Camera.Instance.CurrentBounds.XMax - 1 : TDS_Camera.Instance.CurrentBounds.XMin + 1, transform.position.y, transform.position.z);
+                _position = new Vector3(transform.position.x > TDS_Camera.Instance.CurrentBounds.XMax ? TDS_Camera.Instance.CurrentBounds.XMax - 1 - agent.Radius : TDS_Camera.Instance.CurrentBounds.XMin + 1 + agent.Radius, transform.position.y, transform.position.z);
                 agent.SetDestination(_position);
                 SetEnemyState(EnemyState.GettingInRange);
                 return;
@@ -1142,7 +1143,7 @@ public abstract class TDS_Enemy : TDS_Character
         {
             _position = GetAttackingPosition(out _hasToWander);
         }
-        _position.x = Mathf.Clamp(_position.x, TDS_Camera.Instance.CurrentBounds.XMin + agent.Radius, TDS_Camera.Instance.CurrentBounds.XMax - agent.Radius); 
+        _position.x = Mathf.Clamp(_position.x, TDS_Camera.Instance.CurrentBounds.XMin + 1 + agent.Radius, TDS_Camera.Instance.CurrentBounds.XMax - 1 - agent.Radius); 
         if(Vector3.Distance(_position, transform.position) <= agent.Radius)
         {
             SetEnemyState(EnemyState.Waiting);

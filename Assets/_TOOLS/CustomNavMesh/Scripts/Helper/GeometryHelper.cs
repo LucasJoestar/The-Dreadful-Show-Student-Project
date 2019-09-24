@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
 
@@ -280,5 +278,25 @@ public static class GeometryHelper
     #endregion
     #endregion
 
+    /// <summary>
+    /// Compare triangles
+    /// if the triangles have more than 1 vertices in common return true
+    /// </summary>
+    /// <param name="_triangle1">First triangle to compare</param>
+    /// <param name="_triangle2">Second triangle to compare</param>
+    /// <returns>If the triangles have more than 1 vertex.ices in common</returns>
+    public static Vertex[] GetVerticesInCommon(Triangle _triangle1, Triangle _triangle2)
+    {
+        List<Vertex> _vertices = new List<Vertex>();
+        for (int i = 0; i < _triangle1.Vertices.Length; i++)
+        {
+            for (int j = 0; j < _triangle2.Vertices.Length; j++)
+            {
+                if (_triangle1.Vertices[i].Position == _triangle2.Vertices[j].Position)
+                    _vertices.Add(_triangle1.Vertices[i]);
+            }
+        }
+        return _vertices.ToArray();
+    }
     #endregion
 }

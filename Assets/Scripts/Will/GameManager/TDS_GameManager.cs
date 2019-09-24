@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic; 
 
 #pragma warning disable 0414
@@ -193,6 +194,18 @@ public static class TDS_GameManager
 
         // Set screen resolution
         SetResolution(Screen.currentResolution);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    /// <summary>
+    /// Method called when any scene is loaded.
+    /// </summary>
+    /// <param name="_scene">Loaded scene.</param>
+    /// <param name="_loadMode">Load scene mode used.</param>
+    private static void OnSceneLoaded(Scene _scene, LoadSceneMode _loadMode)
+    {
+        if (IsInCutscene) IsInCutscene = false;
     }
 
     /// <summary>

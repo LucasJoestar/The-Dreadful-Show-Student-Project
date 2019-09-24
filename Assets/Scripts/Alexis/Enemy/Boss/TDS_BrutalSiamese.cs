@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
-using Random = UnityEngine.Random; 
 
 public class TDS_BrutalSiamese : TDS_Enemy 
 {

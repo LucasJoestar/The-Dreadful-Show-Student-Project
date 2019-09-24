@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq; 
-using UnityEngine;
-using Random = UnityEngine.Random;
-
-public class TDS_Punk : TDS_Minion 
+﻿public class TDS_Punk : TDS_Minion 
 {
     /* TDS_Punk :
 	 *
