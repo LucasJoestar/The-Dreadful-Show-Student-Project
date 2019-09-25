@@ -54,7 +54,7 @@ public class TDS_BeardLadyLifeBar : TDS_PlayerLifeBar
         {
             base.SetOwner(_owner);
             if (!beardStateBar) return; 
-            if (PhotonNetwork.offlineMode || TDS_GameManager.LocalPlayer == PlayerType.BeardLady)
+            if (PhotonNetwork.offlineMode || (TDS_GameManager.LocalPlayer == PlayerType.BeardLady))
             {
                 beardStateBar.gameObject.SetActive(true);
                 ((TDS_BeardLady)_owner).OnBeardStateChanged += ChangeBeardState; 

@@ -1295,7 +1295,6 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (PhotonNetwork.offlineMode)
         {
             TDS_Camera.Instance.AddLocalPlayer(this);
-            if (!sprite.isVisible) StartMovingPlayerInView();
         }
 
         // Triggers associated animations
@@ -1909,6 +1908,7 @@ public class TDS_Player : TDS_Character, IPunObservable
 
             SetAnim(PlayerAnimState.Idle);
             rigidbody.isKinematic = false;
+            Debug.Log("No");
             isMoving = false;
             enabled = true;
         }
@@ -2250,6 +2250,12 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         rigidbody.isKinematic = false;
         collider.enabled = true;
+
+        if (PhotonNetwork.offlineMode && !sprite.isVisible)
+        {
+            StartMovingPlayerInView();
+            return;
+        }
         IsPlayable = true;
     }
     #endregion

@@ -278,7 +278,24 @@ public class TDS_BeardLady : TDS_Player
         base.Die();
 
         // Stop beard from growing
-        CancelInvokeGrowBeard();
+        if (photonView.isMine) CancelInvokeGrowBeard();
+    }
+
+    /// <summary>
+    /// Method called when this character hit something.
+    /// Override it to implement feedback and other things.
+    /// </summary>
+    /// <param name="_opponentXCenter">X value of the opponent collider center position.</param>
+    /// <param name="_opponentYMax">Y value of the opponent collider max position.</param>
+    /// <param name="_opponentZ">Z value of the opponent position.</param>
+    public override void HitCallback(float _opponentXCenter, float _opponentYMax, float _opponentZ)
+    {
+        base.HitCallback(_opponentXCenter, _opponentYMax, _opponentZ);
+
+        if (photonView.isMine)
+        {
+            BeardCurrentLife--;
+        }
     }
 
     /// <summary>
@@ -306,6 +323,17 @@ public class TDS_BeardLady : TDS_Player
     public void SetBeardAnim(BeardState _state)
     {
         animator.SetFloat("Beard", (int)_state);
+
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetBeardAnim"), new object[] { (int)_state });
+    }
+
+    /// <summary>
+    /// Set the Beard Lady's beard animator state.
+    /// </summary>
+    /// <param name="_state">State of the beard.</param>
+    public void SetBeardAnim(int _state)
+    {
+        animator.SetFloat("Beard", _state);
     }
     #endregion
 
@@ -348,14 +376,14 @@ public class TDS_BeardLady : TDS_Player
     {
         base.Start();
 
-        // Let's make this beard grow repeatedly until it reach its maximum value
-        if (currentBeardState != BeardState.VeryVeryLongDude) InvokeGrowBeard();
-        SetBeardAnim(currentBeardState);
+        if (photonView.isMine)
+        {
+            // Let's make this beard grow repeatedly until it reach its maximum value
+            if (currentBeardState != BeardState.VeryVeryLongDude) InvokeGrowBeard();
+            SetBeardAnim(currentBeardState);
 
-        beardCurrentLife = beardMaxLife;
-
-        // Degragde beard when hitting something.
-        hitBox.OnTouch += () => BeardCurrentLife--;
+            beardCurrentLife = beardMaxLife;
+        }
     }
 	
 	// Update is called once per frame
