@@ -49,6 +49,16 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
 
     #region Original Methods
     /// <summary>
+    /// Hide the player hide to play infos in UI.
+    /// </summary>
+    public virtual void HideHowToPlayInfo()
+    {
+        if (!howToPlayInfo) return;
+
+        if (howToPlayInfo.activeInHierarchy) howToPlayInfo.SetActive(false);
+    }
+
+    /// <summary>
     /// Show or hide the player hide to play infos in UI.
     /// </summary>
     public virtual void TriggerHowToPlayInfo()

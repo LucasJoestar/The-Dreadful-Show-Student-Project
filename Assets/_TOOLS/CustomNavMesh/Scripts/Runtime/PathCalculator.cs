@@ -56,14 +56,16 @@ public static class PathCalculator
     /// <returns>Return if the path can be calculated</returns>
     public static bool CalculatePath(Vector3 _origin, Vector3 _destination, CustomNavPath _path, List<Triangle> _trianglesDatas)
     {
-        Vector3 _groundedOrigin = GeometryHelper.GetClosestPosition(_origin, _trianglesDatas);
-        Vector3 _groundedDestination = GeometryHelper.GetClosestPosition(_destination, _trianglesDatas);
+        Vector3 _groundedOrigin = GeometryHelper.GetGroundedPosition(_origin);
+        Vector3 _groundedDestination = GeometryHelper.GetGroundedPosition(_destination);
 
 
         // GET TRIANGLES
         // Get the origin triangle and the destination triangle
-        Triangle _originTriangle = GeometryHelper.GetTriangleContainingPosition(_origin, _trianglesDatas);
-        Triangle _targetedTriangle = GeometryHelper.GetTriangleContainingPosition(_destination, _trianglesDatas);
+        Triangle _originTriangle = GeometryHelper.GetTriangleContainingPosition(_groundedOrigin, _trianglesDatas);
+        Triangle _targetedTriangle = GeometryHelper.GetTriangleContainingPosition(_groundedDestination, _trianglesDatas);
+
+        Debug.Log(_targetedTriangle.CenterPosition);
 
         //Open list that contains all heuristically calculated triangles 
         List<Triangle> _openList = new List<Triangle>();
@@ -182,6 +184,14 @@ public static class PathCalculator
     /// <param name="_pathToBuild">Astar resources</param>
     static void BuildPath(Dictionary<Triangle, Triangle> _pathToBuild, CustomNavPath _path, Vector3 _origin, Vector3 _destination)
     {
+        if(_pathToBuild.Count == 1)
+        {
+            List<Vector3> _pathPoints = new List<Vector3>();
+            _pathPoints.Add(_origin);
+            _pathPoints.Add(_destination);
+            _path.SetPath(_pathPoints);
+            return; 
+        }
         #region BuildingAbsolutePath
         // Building absolute path -> Link all triangle's CenterPosition together
         // Adding _origin and destination to the path

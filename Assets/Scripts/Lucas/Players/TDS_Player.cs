@@ -409,6 +409,11 @@ public class TDS_Player : TDS_Character, IPunObservable
         }
     }
 
+    /// <summary>
+    /// Get if the invulnerability coroutine is in process.
+    /// </summary>
+    public bool IsInInvulnerabilityCoroutine { get { return invulnerabilityCoroutine != null; } }
+
     /// <summary>Backing field for <see cref="IsJumping"/>.</summary>
     [SerializeField] protected bool isJumping = false;
 
@@ -954,7 +959,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         Vector3 _movement = new Vector3(Mathf.RoundToInt(controller.GetAxis(AxisType.Horizontal)), 0, Mathf.RoundToInt(controller.GetAxis(AxisType.Vertical)));
         if ((_movement == Vector3.zero) || ((_movement.x != 0) && (_movement.z != 0))) _movement = Vector3.right * isFacingRight.ToSign();
         _movement = _movement.normalized;
-        _movement *= speedMax * speedCoef;
+        _movement *= speedMax * Mathf.Clamp(speedCoef, 0f, 1f);
 
         // Adds an little force at the start of the dodge
         rigidbody.AddForce(_movement * Mathf.Clamp(speedCurrent, speedInitial, speedMax) * (isGrounded ? 10 : 2));
@@ -2404,13 +2409,14 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Adjust the position of the player for each axis of the rigidbody velocity where a force is exercised
         AdjustPositionOnRigidbody();
 
+        // Check the player inputs
+        CheckMenuInputs();
+
         // If not playable or down, return
         if (!IsPlayable) return;
 
-        // Check the player inputs
         CheckMovementsInputs();
         CheckActionsInputs();
-        CheckMenuInputs();
 	}
     #endregion
 

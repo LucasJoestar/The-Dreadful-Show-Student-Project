@@ -567,6 +567,7 @@ public abstract class TDS_Enemy : TDS_Character
             {
                 yield return null;
             }
+            targetedThrowable = null; 
         }
         yield return null;
         SetEnemyState(EnemyState.MakingDecision);
@@ -703,10 +704,13 @@ public abstract class TDS_Enemy : TDS_Character
     {
         targetLastPosition = playerTarget.transform.position; 
         Vector3 _offset = playerTarget.transform.position - targetLastPosition;
-        
+        TDS_Bounds _currentBounds = TDS_Camera.Instance.CurrentBounds; 
+
         while (Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) >= 1)
         {
             Vector3 _targetedPosition = transform.position + _offset;
+            _targetedPosition.x = Mathf.Clamp(_targetedPosition.x, _currentBounds.XMin + agent.Radius, _currentBounds.XMax - agent.Radius);
+            _targetedPosition.z = Mathf.Clamp(_targetedPosition.z, _currentBounds.ZMin + agent.Radius, _currentBounds.ZMax - agent.Radius);
             if (Vector3.Distance(targetLastPosition, playerTarget.transform.position) > agent.Radius && _targetedPosition.x < TDS_Camera.Instance.CurrentBounds.XMax && _targetedPosition.x > TDS_Camera.Instance.CurrentBounds.XMin)
             {
                 agent.SetDestination(_targetedPosition); 
@@ -724,7 +728,7 @@ public abstract class TDS_Enemy : TDS_Character
                     yield return new WaitForSeconds(Random.Range(.1f, 2)); 
                 }
             }
-            SearchTarget();  
+            //SearchTarget();  
             yield return null;
         }
         yield return null; 
@@ -984,7 +988,7 @@ public abstract class TDS_Enemy : TDS_Character
         _hasToWander = Area && Area.GetEnemyContactCount(playerTarget, wanderingRangeMin, this) > 1;
 
         // If the agent is currently wandering, keep the offset with the target
-        if (agent.IsMoving && playerTarget && _hasToWander)
+        if (agent.IsMoving && playerTarget && _hasToWander && !throwable)
         {
             _offset = playerTarget.transform.position - targetLastPosition;
 
@@ -1139,13 +1143,14 @@ public abstract class TDS_Enemy : TDS_Character
         if (targetedThrowable && canThrow)
         {
             _position = targetedThrowable.transform.position;
+            _hasToWander = true; 
         }
         else
         {
             _position = GetAttackingPosition(out _hasToWander);
         }
         _position.x = Mathf.Clamp(_position.x, TDS_Camera.Instance.CurrentBounds.XMin + 1 + agent.Radius, TDS_Camera.Instance.CurrentBounds.XMax - 1 - agent.Radius); 
-        if(!targetedThrowable && Vector3.Distance(_position, transform.position) <= agent.Radius)
+        if(!targetedThrowable && !throwable && Vector3.Distance(_position, transform.position) <= agent.Radius)
         {
             SetEnemyState(EnemyState.Waiting);
             return; 
@@ -1272,6 +1277,10 @@ public abstract class TDS_Enemy : TDS_Character
         {
             SetEnemyState(EnemyState.ComputingPath);
             return; 
+        }
+        if(targetedThrowable && targetedThrowable.IsHeld)
+        {
+            targetedThrowable = null; 
         }
         // If the target can't be targeted, search for another target
         if (!playerTarget || playerTarget.IsDead)

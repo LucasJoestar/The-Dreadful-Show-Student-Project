@@ -373,6 +373,11 @@ public class TDS_Juggler : TDS_Player
     private Coroutine aimCoroutine = null;
 
     /// <summary>
+    /// Coroutine used to give the Juggler the ability to shoot back again after a shoot.
+    /// </summary>
+    private Coroutine shootCooldownCoroutine = null;
+
+    /// <summary>
     /// Coroutine lerping throwable position to hands transform position.
     /// </summary>
     private Coroutine throwableLerpCoroutine = null;
@@ -461,8 +466,8 @@ public class TDS_Juggler : TDS_Player
                 TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
 
                 IsPlayable = false;
-                canShoot = false;
                 SetAnimOnline(PlayerAnimState.Throw);
+                canShoot = false;
 
                 if (CurrentThrowableAmount == 0) break;
             }
@@ -618,7 +623,21 @@ public class TDS_Juggler : TDS_Player
     /// <summary>
     /// Allows back the Juggler to shoot. Yes !
     /// </summary>
-    private void AllowToShoot() => canShoot = true;
+    private IEnumerator AllowToShootCoroutine()
+    {
+        yield return new WaitForSeconds(timeBetweenShoots);
+
+        canShoot = true;
+        shootCooldownCoroutine = null;
+    }
+
+    /// <summary>
+    /// Allows back the Juggler to shoot. Yes !
+    /// </summary>
+    public void CheckShootAbility()
+    {
+        if (!canShoot && (shootCooldownCoroutine == null)) canShoot = true;
+    }
 
     /// <summary>
     /// Get juggling objects back in hands.
@@ -1004,7 +1023,7 @@ public class TDS_Juggler : TDS_Player
             return false;
         }
 
-        Invoke("AllowToShoot", timeBetweenShoots);
+        shootCooldownCoroutine = StartCoroutine(AllowToShootCoroutine());
 
         return true;
     }

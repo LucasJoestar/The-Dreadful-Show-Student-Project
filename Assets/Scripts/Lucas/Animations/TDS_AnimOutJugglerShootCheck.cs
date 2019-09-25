@@ -1,19 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class TDS_AnimOutTaunt : StateMachineBehaviour
+public class TDS_AnimOutJugglerShootCheck : StateMachineBehaviour
 {
-    private TDS_Enemy owner = null;  
+    /// <summary>
+    /// Juggler associated to this animator.
+    /// </summary>
+    private TDS_Juggler juggler = null;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        if (!owner) owner = animator.GetComponent<TDS_Enemy>();
-        if (!owner) return;
-        if (animator.GetInteger("enemyState") == (int)EnemyState.Waiting) return; 
-        owner.SetEnemyState(0); 
-    }
+    //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    //{
+    //    
+    //}
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -24,9 +22,8 @@ public class TDS_AnimOutTaunt : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (!owner) owner = animator.GetComponent<TDS_Enemy>();
-        if (!owner) return;
-        owner.ActivateEnemyAfterTaunt();
+        if (!juggler) juggler = animator.GetComponent<TDS_Juggler>();
+        juggler.CheckShootAbility();
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

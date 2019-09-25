@@ -1100,6 +1100,7 @@ public class TDS_UIManager : PunBehaviour
         _player.HealthBar = _playerLifeBar;
         _player.OnHealthChanged += _playerLifeBar.UpdateLifeBar;
         _player.OnTriggerHowToPlay += _playerLifeBar.TriggerHowToPlayInfo;
+        _player.OnDie += _playerLifeBar.HideHowToPlayInfo;
         if (_player is TDS_Juggler _juggler)
         {
             _juggler.OnHasObject += _playerLifeBar.DisplayThrowObjectInfo;

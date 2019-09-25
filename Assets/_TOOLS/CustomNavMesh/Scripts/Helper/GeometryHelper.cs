@@ -274,7 +274,18 @@ public static class GeometryHelper
         return _triangle.CenterPosition;
     }
 
-
+    public static Vector3 GetGroundedPosition(Vector3 _position)
+    {
+        RaycastHit _hit;
+        Vector3 _groundedPosition = _position;
+        LayerMask _mask = LayerMask.NameToLayer("Ground");
+        if (Physics.Raycast(new Ray(_position, Vector3.down), out _hit, 1, _mask))
+        {
+            _groundedPosition = _hit.point;
+            return _groundedPosition;
+        }
+        return _position; 
+    }
     #endregion
     #endregion
 
