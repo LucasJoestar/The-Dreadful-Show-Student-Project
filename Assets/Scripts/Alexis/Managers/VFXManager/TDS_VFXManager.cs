@@ -164,11 +164,11 @@ public class TDS_VFXManager : PunBehaviour
     {
         if (PhotonNetwork.offlineMode)
         {
-            Instantiate(GetFX((FXType)_fxRype), _transformPhotonView.transform, false);
+            Instantiate(GetFX(_fxRype), _transformPhotonView.transform, false);
             return;
         }
 
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, GetType(), "SpawnEffect"), new object[] { (int)_fxRype, _transformPhotonView });
+        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, GetType(), "SpawnEffect"), new object[] { (int)_fxRype, _transformPhotonView.viewID });
     }
 
     /// <summary>
