@@ -624,6 +624,7 @@ public abstract class TDS_Enemy : TDS_Character
         agent.AddAvoidanceLayer(new string[] { "Player" });
         Collider[] _colliders;
         Vector3 _closestPosition = targetedThrowable ? targetedThrowable.GetComponent<Collider>().ClosestPoint(transform.position) : Vector3.zero;
+        _closestPosition.y = transform.position.y; 
         while (agent.IsMoving)
         {
             //Orientate the agent
@@ -1144,7 +1145,7 @@ public abstract class TDS_Enemy : TDS_Character
             _position = GetAttackingPosition(out _hasToWander);
         }
         _position.x = Mathf.Clamp(_position.x, TDS_Camera.Instance.CurrentBounds.XMin + 1 + agent.Radius, TDS_Camera.Instance.CurrentBounds.XMax - 1 - agent.Radius); 
-        if(Vector3.Distance(_position, transform.position) <= agent.Radius)
+        if(!targetedThrowable && Vector3.Distance(_position, transform.position) <= agent.Radius)
         {
             SetEnemyState(EnemyState.Waiting);
             return; 

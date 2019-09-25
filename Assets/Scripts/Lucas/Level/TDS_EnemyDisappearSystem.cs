@@ -56,8 +56,8 @@ public class TDS_EnemyDisappearSystem : MonoBehaviour
                 disappearCounter++;
                 continue;
             }
-            _enemy.SetAnimationState((int)EnemyAnimationState.Run);
             _enemy.Agent.SetDestination(new Vector3(collider.bounds.center.x, 0, _enemy.transform.position.z));
+            _enemy.SetEnemyState(EnemyState.GettingInRange);
         }
     }
     #endregion
