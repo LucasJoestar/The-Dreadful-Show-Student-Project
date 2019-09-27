@@ -292,10 +292,8 @@ public class TDS_BeardLady : TDS_Player
     {
         base.HitCallback(_opponentXCenter, _opponentYMax, _opponentZ);
 
-        if (photonView.isMine)
-        {
-            BeardCurrentLife--;
-        }
+        // Reduces beard life on hit
+        BeardCurrentLife--;
     }
 
     /// <summary>

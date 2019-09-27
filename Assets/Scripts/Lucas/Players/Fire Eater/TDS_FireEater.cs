@@ -318,7 +318,7 @@ public class TDS_FireEater : TDS_Player
     /// </summary>
     public override void StartDodge()
     {
-        if (isDrunk && (!isGrounded || isJumping)) return;
+        if (isDrunk && (!isGrounded || isJumping || isAttacking)) return;
         base.StartDodge();
     }
     #endregion
@@ -331,6 +331,23 @@ public class TDS_FireEater : TDS_Player
     /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
     protected override IEnumerator PrepareAttack(bool _isLight)
     {
+        if (isDodging)
+        {
+            while (isDodging)
+            {
+                yield return null;
+
+                if (dodgeTimer > DODGE_MINIMUM_TIMER)
+                {
+                    StopDodge();
+                    SetAnimOnline(PlayerAnimState.Dodge);
+                    break;
+                }
+            }
+
+            yield return null;
+        }
+
         ButtonType _buttonType = _isLight ? ButtonType.LightAttack : ButtonType.HeavyAttack;
         float _timer = TIME_TO_ACTIVATE_MINI_GAME;
 
@@ -353,7 +370,8 @@ public class TDS_FireEater : TDS_Player
         }
 
         // Executes the attack
-        PreparingAttackCoroutine = StartCoroutine(base.PrepareAttack(_isLight));
+        Attack(_isLight);
+        PreparingAttackCoroutine = null;
         yield break;
     }
 

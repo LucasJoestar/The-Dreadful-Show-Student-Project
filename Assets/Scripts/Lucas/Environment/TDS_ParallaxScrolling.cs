@@ -40,6 +40,16 @@ public class TDS_ParallaxScrolling : MonoBehaviour
     /// Scrolling coefficient related to the camera movement used to move the GameObject.
     /// </summary>
     [SerializeField] private float scrollingCoef = 1;
+
+    /// <summary>
+    /// First known X position of the object.
+    /// </summary>
+    private float startPositionX = 0;
+
+    /// <summary>
+    /// X position of the object when stopping scrolling for the first time.
+    /// </summary>
+    private float exitPositionX = 0;
     #endregion
 
     #region Methods
@@ -53,12 +63,23 @@ public class TDS_ParallaxScrolling : MonoBehaviour
     /// <summary>
     /// Change the activation of the parallax scrolling.
     /// </summary>
-    public void ChangeActivation() => isActive = !isActive;
+    public void ChangeActivation()
+    {
+        isActive = !isActive;
+
+        if (!isActive) exitPositionX = transform.position.x;
+    }
 
     /// <summary>
     /// Desactivate this parallax scrolling.
     /// </summary>
-    public void Desactivate() => isActive = false;
+    public void Desactivate()
+    {
+        if (!isActive) return;
+
+        isActive = false;
+        exitPositionX = transform.position.x;
+    }
 
 
     /// <summary>
@@ -69,7 +90,14 @@ public class TDS_ParallaxScrolling : MonoBehaviour
     {
         if (!isActive) return;
 
-        transform.position = new Vector3(transform.position.x + (_cameraMovement * scrollingCoef), transform.position.y, transform.position.z);
+        Vector3 _newPosition = new Vector3(transform.position.x + (_cameraMovement * scrollingCoef), transform.position.y, transform.position.z);
+
+        if (startPositionX != exitPositionX)
+        {
+            _newPosition.x = startPositionX < exitPositionX ? Mathf.Clamp(_newPosition.x, startPositionX, exitPositionX) : Mathf.Clamp(_newPosition.x, exitPositionX, startPositionX);
+        }
+
+        transform.position = _newPosition;
     }
     #endregion
 
@@ -83,6 +111,7 @@ public class TDS_ParallaxScrolling : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
+        startPositionX = transform.position.x;
         TDS_Camera.Instance.OnMoveX += Scroll;
     }
 	#endregion

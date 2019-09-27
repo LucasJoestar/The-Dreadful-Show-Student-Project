@@ -660,7 +660,7 @@ public abstract class TDS_Enemy : TDS_Character
                     _colliders = Physics.OverlapSphere(transform.position, wanderingRangeMax);
                     if (_colliders.Length > 0)
                     {
-                        _colliders = _colliders.Where(c => c.GetComponent<TDS_Throwable>() && IsBetweenEnemyAndTarget(c.transform.position)).OrderBy(c => Vector3.Distance(transform.position, c.transform.position)).ToArray();
+                        _colliders = _colliders.Where(c => c.gameObject.HasTag("Object") && c.GetComponent<TDS_Throwable>() && IsBetweenEnemyAndTarget(c.transform.position)).OrderBy(c => Vector3.Distance(transform.position, c.transform.position)).ToArray();
                         if (_colliders.Length > 0)
                         {
                             if (Vector3.Distance(transform.position, _colliders.First().transform.position) < Vector3.Distance(transform.position, playerTarget.transform.position))
@@ -797,9 +797,11 @@ public abstract class TDS_Enemy : TDS_Character
             //StopAll();
             SetEnemyState(EnemyState.None);
             SetAnimationState((int)EnemyAnimationState.Death);
+            if (this is TDS_MrLoyal) Debug.Log("Dead");
         }
 
         if (AllEnemies.Contains(this)) AllEnemies.Remove(this);
+        if (hitBox.IsActive) hitBox.Desactivate();
         base.Die();
     }
 
@@ -859,27 +861,6 @@ public abstract class TDS_Enemy : TDS_Character
         SetAnimationState((int)EnemyAnimationState.Grounded);
 
         return true;
-    }
-
-    public override bool SetThrowable(TDS_Throwable _throwable)
-    {
-        if (_throwable)
-        {
-            Throwable = _throwable;
-            _throwable.transform.SetParent(handsTransform, true);
-            _throwable.transform.localPosition = Vector3.zero;
-            _throwable.transform.rotation = Quaternion.identity;
-
-            if (!isFacingRight && enemyState != EnemyState.Attacking)
-            {
-                _throwable.transform.Rotate(Vector3.up, 180);
-                _throwable.transform.localScale = new Vector3(_throwable.transform.localScale.x, _throwable.transform.localScale.y, _throwable.transform.localScale.z * -1);
-            }
-
-            return true;
-        }
-
-        return false;
     }
 
     /// <summary>

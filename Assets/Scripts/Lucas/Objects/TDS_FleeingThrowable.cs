@@ -55,6 +55,13 @@ public abstract class TDS_FleeingThrowable : TDS_Throwable
     [SerializeField] protected float fleeDelay = .5f;
     #endregion
 
+    #region Coroutines
+    /// <summary>
+    /// Coroutine used to make the throwable flee after being free by a drop or a throw.
+    /// </summary>
+    protected Coroutine fleeAfterFreeCoroutine = null;
+    #endregion
+
     #endregion
 
     #region Methods
@@ -68,6 +75,31 @@ public abstract class TDS_FleeingThrowable : TDS_Throwable
     /// <param name="_collider">Collider to flee.</param>
     /// <returns></returns>
     protected abstract IEnumerator Flee(Collider _collider);
+
+    /// <summary>
+    /// After being free, wait to get velocity at zero for a certain amount of time, and then flee again.
+    /// </summary>
+    /// <returns></returns>
+    protected virtual IEnumerator FleeAfterFree()
+    {
+        float _timer = 0;
+        while (true)
+        {
+            yield return null;
+            if (rigidbody.velocity.magnitude < .01f)
+            {
+                _timer += Time.deltaTime;
+
+                if (_timer > fleeDelay) break;
+            }
+            else if (_timer > 0) _timer = 0;
+        }
+
+        transform.rotation = Quaternion.Euler(new Vector3(0, transform.rotation.eulerAngles.y, 0));
+        SetAnimationOnline(0);
+        detector.gameObject.SetActive(true);
+        fleeAfterFreeCoroutine = null;
+    }
 
     /// <summary>
     /// Set animal animation.
@@ -101,6 +133,17 @@ public abstract class TDS_FleeingThrowable : TDS_Throwable
     #endregion
 
     #region Throwable
+    /// <summary>
+    /// Drop the object from the character who was carring it. 
+    /// </summary>
+    public override void Drop()
+    {
+        if (!isHeld) return;
+
+        isFacingRight = owner.IsFacingRight;
+        base.Drop();
+    }
+
     /// <summary> 
     /// Let a character pickup the object.
     /// </summary> 
@@ -111,7 +154,7 @@ public abstract class TDS_FleeingThrowable : TDS_Throwable
         if (!base.PickUp(_owner)) return false;
 
         detector.gameObject.SetActive(false);
-
+        
         SetAnimation(2);
 
         if (fleeCoroutine != null)
@@ -119,8 +162,37 @@ public abstract class TDS_FleeingThrowable : TDS_Throwable
             StopCoroutine(fleeCoroutine);
             fleeCoroutine = null;
         }
+        if (fleeAfterFreeCoroutine != null)
+        {
+            StopCoroutine(fleeAfterFreeCoroutine);
+            fleeAfterFreeCoroutine = null;
+        }
 
+        isFacingRight = owner.IsFacingRight;
         return true;
+    }
+
+    /// <summary>
+    /// Set throwable independant by nullifying owner and getting back on Object layer.
+    /// </summary>
+    protected override void SetIndependant()
+    {
+        base.SetIndependant();
+        if (PhotonNetwork.isMasterClient) fleeAfterFreeCoroutine = StartCoroutine(FleeAfterFree());
+    }
+
+    /// <summary> 
+    /// Throws the object to a given position by converting the final position to velocity.
+    /// </summary> 
+    /// <param name="_finalPosition">Final position where the object is supposed to be at the end of the trajectory.</param> 
+    /// <param name="_angle">Throw angle.</param> 
+    /// <param name="_bonusDamage">Bonus damages added to the attack.</param> 
+    public override void Throw(Vector3 _finalPosition, float _angle, int _bonusDamage)
+    {
+        if (!isHeld) return;
+
+        isFacingRight = owner.IsFacingRight;
+        base.Throw(_finalPosition, _angle, _bonusDamage);
     }
     #endregion
 

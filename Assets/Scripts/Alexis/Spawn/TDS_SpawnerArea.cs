@@ -245,7 +245,7 @@ public class TDS_SpawnerArea : PunBehaviour
         if (!PhotonNetwork.isMasterClient || IsDesactivated) return; 
         if (waves.Count == 0)
         {
-            ActivatedAreas.Add(this);
+            ActivatedAreas.Remove(this);
             return;
         }
         if (waveIndex >= waves.Count && !isLooping)
@@ -318,9 +318,7 @@ public class TDS_SpawnerArea : PunBehaviour
             }
 
             _removeEnemies?.Invoke();
-
             ActivatedAreas.Add(this);
-
             OnAreaActivated?.Invoke();
 
             foreach (TDS_Player _player in TDS_LevelManager.Instance.AllPlayers)
@@ -451,10 +449,10 @@ public class TDS_SpawnerArea : PunBehaviour
 
     private void OnTriggerEnter(Collider _coll)
     {
-        if (isActivatedByEvent || isActivated || !isReady) return; 
+        if (isActivatedByEvent || isActivated || !isReady || IsDesactivated) return; 
         // If a player enter in the collider
         // Start the waves and disable the collider
-        if(_coll.GetComponent<TDS_Player>())
+        if (_coll.GetComponent<TDS_Player>())
         {
             StartSpawnArea(); 
         }

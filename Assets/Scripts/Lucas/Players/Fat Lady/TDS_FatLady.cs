@@ -261,7 +261,24 @@ public class TDS_FatLady : TDS_Player
     /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
     protected override IEnumerator PrepareAttack(bool _isLight)
     {
-        if (!_isLight)
+        if (isDodging)
+        {
+            while (isDodging)
+            {
+                yield return null;
+
+                if (dodgeTimer > DODGE_MINIMUM_TIMER)
+                {
+                    StopDodge();
+                    SetAnimOnline(PlayerAnimState.Dodge);
+                    break;
+                }
+            }
+
+            yield return null;
+        }
+
+        if (!_isLight && isGrounded && !isJumping)
         {
             SetFatLadyAnim(FatLadyAnimState.PrepareAttack);
             float _timer = 0;
@@ -288,7 +305,8 @@ public class TDS_FatLady : TDS_Player
         }
 
         // Executes the attack
-        PreparingAttackCoroutine = StartCoroutine(base.PrepareAttack(_isLight));
+        Attack(_isLight);
+        PreparingAttackCoroutine = null;
         yield break;
     }
 

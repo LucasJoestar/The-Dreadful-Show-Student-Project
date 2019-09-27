@@ -195,17 +195,17 @@ public abstract class TDS_Boss : TDS_Enemy
     {
         if (!PhotonNetwork.isMasterClient) return; 
 
-        if(healthCurrent <= healthMax * (2f/3f) && onTwoThirdsHealth != null)
+        if ((healthCurrent <= ((float)healthMax * (2f/3f))) && (onTwoThirdsHealth != null))
         {
             onTwoThirdsHealth.Invoke();
             onTwoThirdsHealth = null; 
         }
-        if(healthCurrent <= healthMax * .5f && onHalfHealth != null)
+        if ((healthCurrent <= ((float)healthMax / 2f)) && (onHalfHealth != null))
         {
             onHalfHealth.Invoke();
             onHalfHealth = null; 
         }
-        if(healthCurrent <= healthMax * (1f/3f) && onOneThirdHealth != null)
+        if ((healthCurrent <= ((float)healthMax * (1f/3f))) && (onOneThirdHealth != null))
         {
             onOneThirdHealth.Invoke();
             onOneThirdHealth = null; 

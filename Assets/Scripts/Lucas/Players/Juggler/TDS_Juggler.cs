@@ -183,7 +183,7 @@ public class TDS_Juggler : TDS_Player
                     // Remove the object
                     Throwables.Remove(value);
                 }
-                value.transform.rotation = Quaternion.identity;
+                value.transform.rotation = Quaternion.Euler(0, value.transform.rotation.eulerAngles.y, 0);
                 value.transform.SetParent(handsTransform, true);
 
                 // Starts position lerp coroutine
@@ -983,7 +983,7 @@ public class TDS_Juggler : TDS_Player
         // Set the new throwable
         
         _selected.transform.SetParent(handsTransform, true);
-        _selected.transform.rotation = Quaternion.identity;
+        _selected.transform.rotation = Quaternion.Euler(0, _selected.transform.transform.rotation.eulerAngles.y, 0);
 
         throwable = _selected;
 
@@ -1092,9 +1092,7 @@ public class TDS_Juggler : TDS_Player
         // If aiming, stop
         if (isAiming) StopAiming();
 
-        yield return null;
-
-        dodgeCoroutine = StartCoroutine(base.Dodge());
+        yield return base.Dodge();
     }
 
     /// <summary>
@@ -1248,6 +1246,7 @@ public class TDS_Juggler : TDS_Player
 
         // Rotates the juggle transform so that it stays at the same location
         juggleTransform.rotation = _baseRotation;
+        juggleTransform.localScale = new Vector3(juggleTransform.localScale.x, juggleTransform.localScale.y, juggleTransform.localScale.z * -1);
     }
 
     /// <summary>

@@ -223,7 +223,7 @@ public class TDS_Cat : TDS_Character
     {
         if (isDead) return; 
         isIndependant = false; 
-        if(movementCoroutine == null)
+        if(movementCoroutine != null)
         {
             StopCoroutine(movementCoroutine);
             movementCoroutine = null; 

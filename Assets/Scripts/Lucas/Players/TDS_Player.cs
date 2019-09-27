@@ -257,6 +257,11 @@ public class TDS_Player : TDS_Character, IPunObservable
 
     #region Constants
     /// <summary>
+    /// Minimum time for a dodge before the player can cancel it and attack.
+    /// </summary>
+    public const float DODGE_MINIMUM_TIMER = .25f;
+
+    /// <summary>
     /// Time to wait to drop object instead of throwing it.
     /// </summary>
     public const float DROP_OBJECT_TIME = .35f;
@@ -589,6 +594,11 @@ public class TDS_Player : TDS_Character, IPunObservable
 
     #region Debug & Script memory Variables
     /// <summary>
+    /// Timer used during dodge, to known for how it long it is processing.
+    /// </summary>
+    protected float dodgeTimer = 0;
+
+    /// <summary>
     /// The position of the player collider at the previous frame
     /// </summary>
     private Vector3 previousColliderPosition = Vector3.zero;
@@ -837,6 +847,23 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <param name="_isLight">Is this a light attack ? Otherwise, it will be heavy.</param>
     protected virtual IEnumerator PrepareAttack(bool _isLight)
     {
+        if (isDodging)
+        {
+            while (isDodging)
+            {
+                yield return null;
+
+                if (dodgeTimer > DODGE_MINIMUM_TIMER)
+                {
+                    StopDodge();
+                    SetAnimOnline(PlayerAnimState.Dodge);
+                    break;
+                }
+            }
+
+            yield return null;
+        }
+
         Attack(_isLight);
         PreparingAttackCoroutine = null;
         yield break;
@@ -860,10 +887,11 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (isPreparingAttack || (comboCurrent.Count == comboMax) || ((!isGrounded || isJumping) && isAttacking)) return;
 
         // If already attacking, just stock this attack as the next one
-        if (isAttacking || isDodging)
+        if (isAttacking)
         {
             NextAction = _isLight ? 1 : 2;
             return;
+            
         }
 
         CancelInvoke("BreakCombo");
@@ -949,6 +977,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Dodge !
         IsInvulnerable = true;
         isDodging = true;
+        dodgeTimer = 0;
 
         // Desactivates the detection box
         interactionBox.DisplayInteractionFeedback(false);
@@ -980,6 +1009,7 @@ public class TDS_Player : TDS_Character, IPunObservable
             MoveInDirection(transform.position + _movementDirection);
 
             yield return new WaitForFixedUpdate();
+            dodgeTimer += Time.fixedDeltaTime;
         }
     }
 
@@ -1064,6 +1094,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Stop dodging
         IsInvulnerable = false;
         isDodging = false;
+        dodgeTimer = 0;
 
         // Activates the detection box
         interactionBox.DisplayInteractionFeedback(true);
@@ -1087,11 +1118,12 @@ public class TDS_Player : TDS_Character, IPunObservable
         {
             StopCoroutine(dodgeCoroutine);
 
-            Vector3 _velocity = new Vector3(0, rigidbody.velocity.y, 0);
+            Vector3 _velocity = Vector3.zero;
 
             if (!isGrounded)
             {
                 _velocity.x = rigidbody.velocity.x * .8f;
+                _velocity.y = rigidbody.velocity.y * 1.5f;
                 _velocity.z = rigidbody.velocity.z * .8f;
             }
 
@@ -1178,9 +1210,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         base.StopBringingCloser();
 
-        if (invulnerabilityCoroutine == null) IsInvulnerable = false;
-        else CancelInvoke("UnfreezePlayer");
-
+        IsInvulnerable = false;
         UnfreezePlayer();
 
         // Set animation
@@ -1764,9 +1794,33 @@ public class TDS_Player : TDS_Character, IPunObservable
         isMoving = true;
         SetAnim(PlayerAnimState.Run);
 
+        TDS_Player _destinationPlayer = TDS_LevelManager.Instance.AllPlayers.FirstOrDefault(p => p.sprite.isVisible && p.enabled);
+
+        if (!_destinationPlayer)
+        {
+            StopMovingPlayerInView();
+            yield break;
+        }
+
+        if (((transform.position.x < _destinationPlayer.transform.position.x) && !isFacingRight) || ((transform.position.x > _destinationPlayer.transform.position.x) && isFacingRight))
+        {
+            Flip();
+        }
+
         while (true)
         {
-            transform.position = Vector3.Lerp(transform.position, new Vector3(TDS_Camera.Instance.CurrentBounds.XMax, transform.position.y, TDS_Camera.Instance.CurrentBounds.ZMax), Time.deltaTime * speedMax);
+            if (_destinationPlayer.sprite.isVisible || _destinationPlayer.enabled)
+            {
+                _destinationPlayer = TDS_LevelManager.Instance.AllPlayers.FirstOrDefault(p => p.sprite.isVisible && p.enabled);
+
+                if (!_destinationPlayer)
+                {
+                    StopMovingPlayerInView();
+                    yield break;
+                }
+            }
+
+            transform.position = Vector3.Lerp(transform.position, _destinationPlayer.transform.position, Time.deltaTime * speedMax);
 
             yield return null;
         }
@@ -1913,7 +1967,7 @@ public class TDS_Player : TDS_Character, IPunObservable
 
             SetAnim(PlayerAnimState.Idle);
             rigidbody.isKinematic = false;
-            Debug.Log("No");
+
             isMoving = false;
             enabled = true;
         }

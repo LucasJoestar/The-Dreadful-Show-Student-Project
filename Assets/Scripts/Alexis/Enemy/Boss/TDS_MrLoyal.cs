@@ -218,9 +218,9 @@ public class TDS_MrLoyal : TDS_Boss
 
     protected override void Die()
     {
+        base.Die();
         CancelInvoke("PlayRandomTaunt");
         cats.ToList().ForEach(c => c.DesactivateCat()); 
-        base.Die();
     }
 
     protected override float StartAttack()

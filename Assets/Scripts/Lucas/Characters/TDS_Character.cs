@@ -515,9 +515,9 @@ public abstract class TDS_Character : TDS_Damageable
             Throwable = _throwable;
             _throwable.transform.SetParent(handsTransform, true);
             _throwable.transform.localPosition = Vector3.zero;
-            _throwable.transform.rotation = Quaternion.identity;
+            _throwable.transform.rotation = Quaternion.Euler(0, _throwable.transform.transform.rotation.eulerAngles.y, 0);
 
-            if (!isFacingRight)
+            if (isFacingRight != (_throwable.transform.lossyScale.z > 0))
             {
                 _throwable.transform.Rotate(Vector3.up, 180);
                 _throwable.transform.localScale = new Vector3(_throwable.transform.localScale.x, _throwable.transform.localScale.y, _throwable.transform.localScale.z * -1);

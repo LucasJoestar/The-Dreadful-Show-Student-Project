@@ -202,9 +202,7 @@ public class TDS_Throwable : PunBehaviour
         isHeld = false;
 
         owner.RemoveThrowable();
-        owner = null;
-
-        gameObject.layer = LayerMask.NameToLayer("Object");
+        SetIndependant();
     }
 
     /// <summary>
@@ -287,6 +285,14 @@ public class TDS_Throwable : PunBehaviour
     {
         LoseDurability();
         hitBox.Desactivate();
+        SetIndependant();
+    }
+
+    /// <summary>
+    /// Set throwable independant by nullifying owner and getting back on Object layer.
+    /// </summary>
+    protected virtual void SetIndependant()
+    {
         owner = null;
         gameObject.layer = LayerMask.NameToLayer("Object");
     }
@@ -367,6 +373,7 @@ public class TDS_Throwable : PunBehaviour
 
     private void OnDestroy()
     {
+        if (owner && PhotonNetwork.connected) owner.DropObject();
         hitBox.Desactivate();
     }
     #endregion

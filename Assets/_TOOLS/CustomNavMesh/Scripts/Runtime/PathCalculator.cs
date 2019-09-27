@@ -59,13 +59,10 @@ public static class PathCalculator
         Vector3 _groundedOrigin = GeometryHelper.GetGroundedPosition(_origin);
         Vector3 _groundedDestination = GeometryHelper.GetGroundedPosition(_destination);
 
-
         // GET TRIANGLES
         // Get the origin triangle and the destination triangle
         Triangle _originTriangle = GeometryHelper.GetTriangleContainingPosition(_groundedOrigin, _trianglesDatas);
         Triangle _targetedTriangle = GeometryHelper.GetTriangleContainingPosition(_groundedDestination, _trianglesDatas);
-
-        Debug.Log(_targetedTriangle.CenterPosition);
 
         //Open list that contains all heuristically calculated triangles 
         List<Triangle> _openList = new List<Triangle>();

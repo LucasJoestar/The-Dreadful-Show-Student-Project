@@ -40,8 +40,11 @@ public class TDS_ThrowableBird : TDS_FleeingThrowable
     {
         yield return new WaitForSeconds(fleeDelay);
 
+        detector.gameObject.SetActive(false);
+
         // Trigger animation
         SetAnimationOnline(1);
+        rigidbody.isKinematic = true;
 
         Vector3 _movement = new Vector3(Mathf.Sign(detector.Collider.bounds.center.x - _collider.bounds.center.x), speed, 0);
 
@@ -57,7 +60,7 @@ public class TDS_ThrowableBird : TDS_FleeingThrowable
 
         MeshRenderer _shadow = shadow.GetComponent<MeshRenderer>();
 
-        while (sprite.isVisible && _shadow.isVisible)
+        while ((transform.position.x < (TDS_Camera.Instance.CurrentBounds.XMax + 2)) && (transform.position.x > (TDS_Camera.Instance.CurrentBounds.XMin - 2)))
         {
             transform.position = Vector3.Lerp(transform.position, transform.position + _movement, Time.deltaTime);
             _movement.y *= 1.01f;

@@ -66,6 +66,7 @@ public class TDS_ThrowableAnimal : TDS_FleeingThrowable
                 {
                     transform.Rotate(Vector3.up, 180);
                     transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z * -1);
+
                     isFacingRight = !isFacingRight;
                 }
 
@@ -117,7 +118,6 @@ public class TDS_ThrowableAnimal : TDS_FleeingThrowable
         base.Awake();
 
         if (!agent) agent = GetComponent<CustomNavMeshAgent>();
-
     }
     #endregion
 

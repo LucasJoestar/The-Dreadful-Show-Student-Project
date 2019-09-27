@@ -127,6 +127,17 @@ public class TDS_Attack : ScriptableObject
         int _damages = GetDamages + _attacker.BonusDamages;
         if (!_noEffect) _damages += Random.Range(Effect.DamagesMin, Effect.DamagesMax + 1);
 
+        bool _doPutOnGround = false;
+
+        // If a player performs an attack from behind, increase damages and try to put on ground
+        if (_attacker.Owner && (_target is TDS_Character _targetC) && (_attacker.transform.parent.gameObject.HasTag("Player") && ((_attacker.transform.position.x > (_target.transform.position.x + .5f)) != _targetC.IsFacingRight)))
+        {
+            _damages = (int)(_damages * 1.5f);
+
+            // Get 1 / 4 chance to put target on ground
+            _doPutOnGround = _noEffect && (Random.Range(1, 100) < 25);
+        }
+
         // Inflict damages, and return if target don't get hurt, if no effect or if target is dead
         if ((_damages < 1)  || !_target.TakeDamage(_damages, _attacker.Collider.bounds.center)) return -2;
 
@@ -141,10 +152,15 @@ public class TDS_Attack : ScriptableObject
         }
 
         if (_target.IsDead) return -1;
+        if (_doPutOnGround)
+        {
+            ((TDS_Character)_target).PutOnTheGround();
+            return 1;
+        }
         if (_noEffect) return 0;
 
         // Apply attack effect
-            switch (Effect.EffectType)
+        switch (Effect.EffectType)
         {
             case AttackEffectType.None:
                 // Nothing to see here

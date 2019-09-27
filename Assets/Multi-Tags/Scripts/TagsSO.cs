@@ -130,6 +130,12 @@ public class TagsSO : ScriptableObject
     /// <param name="_newTag">New Tag to add.</param>
     public void AddTagToObject(GameObject _object, string _newTag)
     {
+        if (!TDS_LevelManager.Instance)
+        {
+            Debug.LogError("There is no LevelManager in the scene (yet) to add tag !");
+            return;
+        }
+
         RegisterObject(_object);
 
         TDS_LevelManager.Instance.ObjectsTags[_object.GetInstanceID()].AddTag(_newTag);
@@ -142,6 +148,12 @@ public class TagsSO : ScriptableObject
     /// <param name="_newTag">New Tag to add.</param>
     public void AddTagToObject(GameObject _object, Tag _newTag)
     {
+        if (!TDS_LevelManager.Instance)
+        {
+            Debug.LogError("There is no LevelManager in the scene (yet) to add tag !");
+            return;
+        }
+
         RegisterObject(_object);
 
         TDS_LevelManager.Instance.ObjectsTags[_object.GetInstanceID()].AddTag(_newTag);
@@ -155,6 +167,11 @@ public class TagsSO : ScriptableObject
     /// <returns>Returns the tags of the object.</returns>
     public Tag[] GetObjectTags(GameObject _object)
     {
+        if (!TDS_LevelManager.Instance)
+        {
+            return MultiTags.GetTags(_object.tag.Split(MultiTags.TAG_SEPARATOR));
+        }
+
         RegisterObject(_object);
 
         return TDS_LevelManager.Instance.ObjectsTags[_object.GetInstanceID()].ObjectTags;
@@ -183,6 +200,12 @@ public class TagsSO : ScriptableObject
     /// <param name="_tag">Tag to remove.</param>
     public void RemoveTagFromObject(GameObject _object, string _tag)
     {
+        if (!TDS_LevelManager.Instance)
+        {
+            Debug.LogError("There is no LevelManager in the scene (yet) to remove tag !");
+            return;
+        }
+
         RegisterObject(_object);
 
         TDS_LevelManager.Instance.ObjectsTags[_object.GetInstanceID()].RemoveTag(_tag);
@@ -195,6 +218,12 @@ public class TagsSO : ScriptableObject
     /// <param name="_tag">Tag to remove.</param>
     public void RemoveTagFromObject(GameObject _object, Tag _tag)
     {
+        if (!TDS_LevelManager.Instance)
+        {
+            Debug.LogError("There is no LevelManager in the scene (yet) to add tag !");
+            return;
+        }
+
         RegisterObject(_object);
 
         TDS_LevelManager.Instance.ObjectsTags[_object.GetInstanceID()].RemoveTag(_tag);
