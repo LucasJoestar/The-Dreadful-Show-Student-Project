@@ -469,7 +469,7 @@ public abstract class TDS_Enemy : TDS_Character
         SetAnimationState((int)EnemyAnimationState.Idle);
         //Orientate the agent
         if (CheckOrientation()) Flip();
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(.15f);
         //Cast Attack
         float _cooldown = StartAttack();
         while (IsAttacking)
@@ -543,7 +543,10 @@ public abstract class TDS_Enemy : TDS_Character
         if (isDead || !PhotonNetwork.isMasterClient) yield break;
         if(targetedThrowable == null || targetedThrowable.IsHeld)
         {
-            if (targetedThrowable) targetedThrowable = null; 
+            if (targetedThrowable)
+            {
+                targetedThrowable = null;
+            }
             SetEnemyState(EnemyState.MakingDecision);
             yield break; 
         }
@@ -567,7 +570,7 @@ public abstract class TDS_Enemy : TDS_Character
             {
                 yield return null;
             }
-            targetedThrowable = null; 
+            targetedThrowable = null;
         }
         yield return null;
         SetEnemyState(EnemyState.MakingDecision);
@@ -645,9 +648,15 @@ public abstract class TDS_Enemy : TDS_Character
             {
                 if (targetedThrowable)
                 {
+                    if(targetedThrowable.IsHeld)
+                    {
+                        targetedThrowable = null;
+                        yield return null; 
+                        continue; 
+                    }
                     //If the targeted throwable is close enough, grab it
 
-                    if (Vector3.Distance(transform.position, _closestPosition) <= collider.size.z)
+                    if (Vector3.Distance(transform.position, _closestPosition) <= (collider.size.z))
                     {
                         if (Vector3.Angle(targetedThrowable.transform.position - transform.position, transform.right) < 90) Flip();
                         SetEnemyState(EnemyState.PickingUpObject);
@@ -660,17 +669,14 @@ public abstract class TDS_Enemy : TDS_Character
                     _colliders = Physics.OverlapSphere(transform.position, wanderingRangeMax);
                     if (_colliders.Length > 0)
                     {
-                        _colliders = _colliders.Where(c => c.gameObject.HasTag("Object") && c.GetComponent<TDS_Throwable>() && IsBetweenEnemyAndTarget(c.transform.position)).OrderBy(c => Vector3.Distance(transform.position, c.transform.position)).ToArray();
+                        _colliders = _colliders.Where(c => c.gameObject.HasTag("Throwable") && c.GetComponent<TDS_Throwable>() && !c.GetComponent<TDS_Throwable>().IsHeld).OrderBy(c => Vector3.Distance(transform.position, c.transform.position)).ToArray();
                         if (_colliders.Length > 0)
                         {
-                            if (Vector3.Distance(transform.position, _colliders.First().transform.position) < Vector3.Distance(transform.position, playerTarget.transform.position))
-                            {
                                 //Get the closest throwable
                                 targetedThrowable = _colliders.Select(c => c.GetComponent<TDS_Throwable>()).First();
                                 //Set a new path to the throwable 
                                 SetEnemyState(EnemyState.ComputingPath);
                                 yield break; 
-                            }
                         }
                     }
                 }
@@ -720,6 +726,7 @@ public abstract class TDS_Enemy : TDS_Character
                 isWaiting = (Random.value * 100) < tauntProbability;
                 if (isWaiting)
                 {
+                    if (agent.IsMoving) agent.StopAgent(); 
                     SetAnimationState((int)EnemyAnimationState.Taunt);
                     while (isWaiting)
                     {
@@ -797,7 +804,6 @@ public abstract class TDS_Enemy : TDS_Character
             //StopAll();
             SetEnemyState(EnemyState.None);
             SetAnimationState((int)EnemyAnimationState.Death);
-            if (this is TDS_MrLoyal) Debug.Log("Dead");
         }
 
         if (AllEnemies.Contains(this)) AllEnemies.Remove(this);
@@ -1215,6 +1221,9 @@ public abstract class TDS_Enemy : TDS_Character
         {
             case EnemyState.MakingDecision:
                 animator.SetTrigger("resetBehaviour");
+                break;
+            case EnemyState.OutOfBattle:
+                animator.SetBool("isOutOfBattle", true); 
                 break; 
             default:
                 animator.ResetTrigger("resetBehaviour"); 

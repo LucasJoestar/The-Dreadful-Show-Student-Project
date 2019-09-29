@@ -80,7 +80,7 @@ public class TDS_UnicycleSiamese : TDS_Enemy
         Vector3 _v = transform.position; 
         if(bounds != null)
         {
-            _v.z = UnityEngine.Random.Range(bounds.ZMin, bounds.ZMax);
+            _v.z = UnityEngine.Random.Range(bounds.ZMin + agent.Radius, bounds.ZMax - agent.Radius);
             _v.x = hasReachedRightBound ? bounds.XMin + agent.Radius : bounds.XMax - agent.Radius; 
         }
         return _v; 

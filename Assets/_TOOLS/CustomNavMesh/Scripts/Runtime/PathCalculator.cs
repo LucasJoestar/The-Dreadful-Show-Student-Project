@@ -57,7 +57,7 @@ public static class PathCalculator
     public static bool CalculatePath(Vector3 _origin, Vector3 _destination, CustomNavPath _path, List<Triangle> _trianglesDatas)
     {
         Vector3 _groundedOrigin = GeometryHelper.GetGroundedPosition(_origin);
-        Vector3 _groundedDestination = GeometryHelper.GetGroundedPosition(_destination);
+        Vector3 _groundedDestination = GeometryHelper.GetClosestPosition(_destination, _trianglesDatas);
 
         // GET TRIANGLES
         // Get the origin triangle and the destination triangle

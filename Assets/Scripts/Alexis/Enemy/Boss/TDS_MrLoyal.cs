@@ -203,6 +203,7 @@ public class TDS_MrLoyal : TDS_Boss
         sprite.enabled = true;
         yield return null;
         //ActivateEnemy();
+        animator.SetBool("isOutOfBattle", false); 
         SetEnemyState(EnemyState.MakingDecision);
         Invoke("PlayRandomTaunt", Random.Range(tauntRateMin, tauntRateMax));
         if (isEnraged) cats.ToList().ForEach(c => c.SetCatIndependant()); 

@@ -153,6 +153,7 @@ public abstract class TDS_Minion : TDS_Enemy
 
     protected override float StartAttack()
     {
+        SetAnimationState((int)EnemyAnimationState.Idle); 
         // If making a counter attack, make the enemy tremble a bit before attacking
         if (ragingCount > ragingThreshold)
         {

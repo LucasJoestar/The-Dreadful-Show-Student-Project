@@ -41,7 +41,6 @@ public class TDS_FSMOutOfBattle : StateMachineBehaviour
         if (!owner) owner = animator.GetComponent<TDS_MrLoyal>();
         if (!owner) return;
         owner.IsInvulnerable = true;
-        Debug.Log("Enter => " + Time.time);
         owner.StopAll();
         owner.SetAnimationState((int)EnemyAnimationState.Idle); 
         outOfBattleCoroutine = owner.StartCoroutine(owner.GetOutOfBattle()); 
@@ -55,6 +54,5 @@ public class TDS_FSMOutOfBattle : StateMachineBehaviour
             outOfBattleCoroutine = null;
         }
         owner.IsInvulnerable = false;
-        Debug.Log("Exit => " + Time.time);
     }
 }
