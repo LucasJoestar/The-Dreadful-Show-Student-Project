@@ -244,7 +244,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <summary>
     /// Accessor of the playerTarget property
     /// </summary>
-    public TDS_Player PlayerTarget { get { return playerTarget; } }
+    public TDS_Player PlayerTarget { get { return playerTarget; } set { playerTarget = value; } }
 
     /// <summary>
     /// Spawner Area from which the enemy comes

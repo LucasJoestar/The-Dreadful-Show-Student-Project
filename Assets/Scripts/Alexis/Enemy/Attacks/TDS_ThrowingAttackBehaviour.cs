@@ -47,7 +47,7 @@ public class TDS_ThrowingAttackBehaviour : TDS_EnemyAttack
     #region Original Methods
     public override void ApplyAttackBehaviour(TDS_Enemy _caster)
     {
-        if (thrownObjectName == string.Empty) return;
+        if (thrownObjectName == string.Empty || !_caster.PlayerTarget) return;
         GameObject _thrownObject = PhotonNetwork.Instantiate(thrownObjectName, _caster.HandsTransform.position, _caster.transform.rotation, 0);
         //Debug.LogError("Stop!");
         if (!_thrownObject) return;

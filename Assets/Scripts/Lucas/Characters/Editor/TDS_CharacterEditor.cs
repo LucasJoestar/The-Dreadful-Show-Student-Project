@@ -132,6 +132,17 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
     protected SerializedProperty throwAimingPoint = null;
     #endregion
 
+    #region Sound
+    /// <summary>SerializedProperty for <see cref="TDS_Character.foostepsConcrete"/> of type <see cref="AudioClip"/>[].</summary>
+    private SerializedProperty foostepsConcrete = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Character.foostepsGrass"/> of type <see cref="AudioClip"/>[].</summary>
+    private SerializedProperty foostepsGrass = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Character.foostepsWood"/> of type <see cref="AudioClip"/>[].</summary>
+    private SerializedProperty foostepsWood = null;
+    #endregion
+
     #endregion
 
     #region Foldouts
@@ -204,6 +215,24 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 
             // Saves this value
             EditorPrefs.SetBool("isCharaUnfolded", value);
+        }
+    }
+
+    /// <summary>Backing field for <see cref="AreCharacterSoundsUnfolded"/></summary>
+    private bool areCharacterSoundsUnfolded = false;
+
+    /// <summary>
+    /// Indicates if the editor for the character sounds is unfolded or not.
+    /// </summary>
+    public bool AreCharacterSoundsUnfolded
+    {
+        get { return areCharacterSoundsUnfolded; }
+        set
+        {
+            areCharacterSoundsUnfolded = value;
+
+            // Saves this value
+            EditorPrefs.SetBool("areCharacterSoundsUnfolded", value);
         }
     }
     #endregion
@@ -442,6 +471,41 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 
         GUILayout.Space(3);
     }
+
+
+    /// <summary>
+    /// Draws the editor for this Character sounds.
+    /// </summary>
+    private void DrawCharacterSounds()
+    {
+        TDS_EditorUtility.PropertyField("Concrete Footsteps", "Array of audio tracks used when the character walks on concrete ground", foostepsConcrete);
+        GUILayout.Space(3);
+        TDS_EditorUtility.PropertyField("Grass Footsteps", "Array of audio tracks used when the character walks on grass", foostepsGrass);
+        GUILayout.Space(3);
+        TDS_EditorUtility.PropertyField("Wood Footsteps", "Array of audio tracks used when the character walks on wood", foostepsWood);
+    }
+
+    /// <summary>
+    /// Here are all elements drawn in the sound editor.
+    /// </summary>
+    protected override void SoundEditor()
+    {
+        base.SoundEditor();
+
+        GUILayout.Space(15);
+        EditorGUILayout.BeginVertical("Box");
+
+        // Button to show or not the character sounds
+        if (TDS_EditorUtility.Button("Character", "Wrap / unwrap Character Sounds", TDS_EditorUtility.HeaderStyle)) AreCharacterSoundsUnfolded = !areCharacterSoundsUnfolded;
+
+        // If unfolded, draws the custom editor for the character sounds
+        if (areCharacterSoundsUnfolded)
+        {
+            DrawCharacterSounds();
+        }
+
+        EditorGUILayout.EndVertical();
+    }
     #endregion
 
     #region Unity Methods
@@ -476,11 +540,17 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
         throwBonusDamagesMin = serializedObject.FindProperty("throwBonusDamagesMin");
         throwAimingPoint = serializedObject.FindProperty("throwAimingPoint");
 
+        foostepsConcrete = serializedObject.FindProperty("foostepsConcrete");
+        foostepsGrass = serializedObject.FindProperty("foostepsGrass");
+        foostepsWood = serializedObject.FindProperty("foostepsWood");
+
         // Loads the editor folded a unfolded values of this class
         isCharaUnfolded = EditorPrefs.GetBool("isCharaUnfolded", isCharaUnfolded);
         areCharaComponentsUnfolded = EditorPrefs.GetBool("areCharaComponentsUnfolded", areCharaComponentsUnfolded);
         areCharaDebugsUnfolded = EditorPrefs.GetBool("areCharaDebugsUnfolded", areCharaDebugsUnfolded);
         areCharaSettingsUnfolded = EditorPrefs.GetBool("areCharaSettingsUnfolded", areCharaSettingsUnfolded);
+
+        areCharacterSoundsUnfolded = EditorPrefs.GetBool("areCharacterSoundsUnfolded", areCharacterSoundsUnfolded);
     }
 
     // Implement this function to make a custom inspector

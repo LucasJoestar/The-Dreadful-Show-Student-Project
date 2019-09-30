@@ -48,6 +48,8 @@ public class TDS_EnemyDisappearSystem : MonoBehaviour
     {
         if (!gameObject.activeInHierarchy) gameObject.SetActive(true);
 
+        if (enemies.Length == 0) enemies = spawnerArea.SpawnedEnemies.ToArray();
+
         // Set the destination of every linked enemy into this collider.
         foreach (TDS_Enemy _enemy in enemies)
         {
@@ -56,6 +58,8 @@ public class TDS_EnemyDisappearSystem : MonoBehaviour
                 disappearCounter++;
                 continue;
             }
+            _enemy.StopAll();
+            _enemy.PlayerTarget = null; 
             _enemy.Agent.SetDestination(new Vector3(collider.bounds.center.x, 0, _enemy.transform.position.z));
             _enemy.SetEnemyState(EnemyState.GettingInRange);
         }

@@ -156,7 +156,7 @@ public class TDS_MrLoyal : TDS_Boss
         _currentArea.StartSpawnArea();
         yield return null; 
         CallOut();
-        float _timer = 0; 
+        float _timer = 0;
         while (!_currentArea.IsDesactivated)
         {
             yield return null;

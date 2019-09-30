@@ -298,8 +298,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 1337013229762858616}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 191
-  instantiationId: 191
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &1337013229762858616
@@ -392,6 +392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f1913d5536b72a4495a0f9f8fef8be5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
   animator: {fileID: 1337013229762858618}
   burnEffect: {fileID: 0}
   collider: {fileID: 1337013229762858619}
@@ -408,7 +409,6 @@ MonoBehaviour:
   throwable: {fileID: 0}
   handsTransform: {fileID: 0}
   shadowTransform: {fileID: 1337013229731715419}
-  audioSource: {fileID: 0}
   isAttacking: 0
   isFacingRight: 0
   IsPacific: 0

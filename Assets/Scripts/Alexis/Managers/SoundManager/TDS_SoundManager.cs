@@ -300,12 +300,13 @@ public class TDS_SoundManager : MonoBehaviour
     /// <summary>
     /// Plays a UI sound.
     /// </summary>
-    /// <param name="_clip"></param>
+    /// <param name="_clip">Clip to play.</param>
     public void PlayUISound(AudioClip _clip)
     {
         if (!uiSource) return;
         uiSource.PlayOneShot(_clip);
     }
+
 
     /// <summary>
     /// Plays a sound for confirm in UI.
@@ -326,37 +327,28 @@ public class TDS_SoundManager : MonoBehaviour
     /// Plays a sound when player is ready.
     /// </summary>
     public void PlayUIReady() => PlayUISound(TDS_GameManager.AudioAsset.S_UI_Ready);
-
-    /// <summary>
-    /// Plays sound for curtains riding in.
-    /// </summary>
-    public void PlayCurtainsIn() => PlayUISound(TDS_GameManager.AudioAsset.S_CurtainsIn);
-
-    /// <summary>
-    /// Plays sound for curtains riding out.
-    /// </summary>
-    public void PlayCurtainsOut() => PlayUISound(TDS_GameManager.AudioAsset.S_CurtainsOut);
     #endregion
 
     #region Feedback
     /// <summary>
-    /// Plays sound indicating the player approches death...
+    /// Plays an effect sound.
     /// </summary>
-    public void PlayApproachDeath()
+    public void PlayEffectSound(AudioClip _clip, AudioSource _source = null)
     {
-        if (!effectsSource) return;
-        effectsSource.PlayOneShot(TDS_GameManager.AudioAsset.S_approachDeath);
+        if (!_source)
+        {
+            if (!effectsSource) return;
+            _source = effectsSource;
+        }
+        _source.PlayOneShot(_clip);
     }
 
-    public void PlayHitSound(AudioSource _source)
+    /// <summary>
+    /// Plays a random effect sound from a given array.
+    /// </summary>
+    public void PlayEffectSound(AudioClip[] _clips, AudioSource _source = null)
     {
-        return; 
-        if (!_source || hitClips.Length == 0) return;
-        _source.outputAudioMixerGroup = GetMixerGroupOfName(FX_GROUP_NAME);
-        _source.loop = false;
-        AudioClip _playedClip = hitClips[(int)Random.Range((int)0, (int)hitClips.Length)];
-        if (_playedClip == null) return; 
-        _source.PlayOneShot(_playedClip); 
+        PlayEffectSound(GetRandomClip(_clips), _source);
     }
     #endregion
 
@@ -384,8 +376,6 @@ public class TDS_SoundManager : MonoBehaviour
         _source.loop = false;
         _source.PlayOneShot(_playedClip, _volume); 
     }
-
-
     #endregion
 
     #region Unity Methods

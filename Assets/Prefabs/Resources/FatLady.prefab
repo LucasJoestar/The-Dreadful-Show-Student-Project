@@ -341,6 +341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f9ea8a4b03907e4fad6628158f781ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
   animator: {fileID: 95173227102487408}
   burnEffect: {fileID: 0}
   collider: {fileID: 65803608366744762}
@@ -352,12 +353,13 @@ MonoBehaviour:
   IsInvulnerable: 0
   healthCurrent: 125
   healthMax: 125
+  hitSounds: []
+  deathSounds: []
   hitBox: {fileID: 114177014032919358}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
   handsTransform: {fileID: 4790306354836658}
   shadowTransform: {fileID: 4965479535070526}
-  audioSource: {fileID: 0}
   isAttacking: 0
   isFacingRight: 1
   IsPacific: 0
@@ -371,6 +373,24 @@ MonoBehaviour:
   throwBonusDamagesMax: 8
   throwBonusDamagesMin: 3
   throwAimingPoint: {x: 7.5, y: 0, z: 0}
+  foostepsConcrete:
+  - {fileID: 8300000, guid: 2bc604625e17d924f9514a7d9d9d4efe, type: 3}
+  - {fileID: 8300000, guid: 7c367fd5425af81409504d040642eb59, type: 3}
+  - {fileID: 8300000, guid: f290535d8adbb9946a1b46fbced9e561, type: 3}
+  - {fileID: 8300000, guid: 5b30aa12d42fbfc4d9e14fc87caa333f, type: 3}
+  - {fileID: 8300000, guid: a26e54f6011afa649a6f0873ba33b30f, type: 3}
+  foostepsGrass:
+  - {fileID: 8300000, guid: 5e7134105390f174d96ec8384dfc7a3b, type: 3}
+  - {fileID: 8300000, guid: bbc8d10e2e98c21438400601b90eb11b, type: 3}
+  - {fileID: 8300000, guid: 162204c841b7e50488401d2b040cb3ba, type: 3}
+  - {fileID: 8300000, guid: d2d4c44225b10c0428095188e0771901, type: 3}
+  - {fileID: 8300000, guid: 3aff501b835e810408e775f49019666a, type: 3}
+  foostepsWood:
+  - {fileID: 8300000, guid: 0e414625e69344a46b9cd7cb0912d6b5, type: 3}
+  - {fileID: 8300000, guid: f3af1417c983948429437d68b49fa766, type: 3}
+  - {fileID: 8300000, guid: 5c4f66e2199e0f245b38968a616217f4, type: 3}
+  - {fileID: 8300000, guid: 33096dc6f7608504892ffd2d8308d491, type: 3}
+  - {fileID: 8300000, guid: 99d0b072c8bc4984fa2df6221982a81e, type: 3}
   controller:
     name: New Controller
     axis:

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Photon; 
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public abstract class TDS_Consumable : PunBehaviour 
+public abstract class TDS_Consumable : TDS_Object 
 {
     /* TDS_Consumable :
 	 *

@@ -310,6 +310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 139708c3e198ea14bb164ae18780343e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
   animator: {fileID: 6001032701779981359}
   burnEffect: {fileID: 0}
   collider: {fileID: 5979583609481578487}
@@ -321,12 +322,13 @@ MonoBehaviour:
   IsInvulnerable: 0
   healthCurrent: 400
   healthMax: 400
+  hitSounds: []
+  deathSounds: []
   hitBox: {fileID: 6018427877423235993}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
   handsTransform: {fileID: 5909811255943257043}
   shadowTransform: {fileID: 5917102434996023545}
-  audioSource: {fileID: 0}
   isAttacking: 0
   isFacingRight: 0
   IsPacific: 0
@@ -340,6 +342,9 @@ MonoBehaviour:
   throwBonusDamagesMax: 0
   throwBonusDamagesMin: 0
   throwAimingPoint: {x: 0, y: 0, z: 0}
+  foostepsConcrete: []
+  foostepsGrass: []
+  foostepsWood: []
   canBeDown: 0
   canThrow: 0
   doScaleOnPlayerAmount: 1
@@ -348,7 +353,7 @@ MonoBehaviour:
   throwRange: 10
   wanderingRangeMin: 5
   wanderingRangeMax: 9
-  healthScalePercent: 35
+  healthScalePercent: 50
   attacks:
   - {fileID: 11400000, guid: a780f7eb2c449c74ab3cb608e0cbc02c, type: 2}
   - {fileID: 11400000, guid: b68b4cbcdf2508941ae73362f60dcc63, type: 2}
@@ -363,13 +368,13 @@ MonoBehaviour:
   onOneThirdHealth:
     m_PersistentCalls:
       m_Calls: []
-  damagesThreshold: 15
+  damagesThreshold: 20
   portrait: {fileID: 8911844725363635370, guid: 8fda93e2c75dbf5469aa55a843d14ed3,
     type: 3}
   linkedAreas:
   - {fileID: 0}
   - {fileID: 0}
-  chargeCatsRate: 20
+  chargeCatsRate: 7
   cats:
   - {fileID: 0}
   - {fileID: 0}
@@ -551,8 +556,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 6018240800928163787}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 50
-  instantiationId: 50
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &6018240800928163787

@@ -829,7 +829,7 @@ public class TDS_UIManager : PunBehaviour
         if (!optionManager) return;
         if (_isDisplaying) optionManager.ResetDisplayedSettings(); 
         optionManager.gameObject.SetActive(_isDisplaying);
-        Selectable.allSelectables.First().Select(); 
+        Selectable.allSelectablesArray.FirstOrDefault()?.Select(); 
     }
 
     /// <summary>
@@ -1180,8 +1180,8 @@ public class TDS_UIManager : PunBehaviour
         // Play curtains sound
         if (curtainsAnimator.GetBool("Visible") != _areVisible)
         {
-            if (_areVisible) TDS_SoundManager.Instance.PlayCurtainsIn();
-            else TDS_SoundManager.Instance.PlayCurtainsOut();
+            if (_areVisible) TDS_SoundManager.Instance.PlayUISound(TDS_GameManager.AudioAsset.S_CurtainsIn);
+            else TDS_SoundManager.Instance.PlayUISound(TDS_GameManager.AudioAsset.S_CurtainsOut);
         }
 
         curtainsAnimator.SetBool("Visible", _areVisible);

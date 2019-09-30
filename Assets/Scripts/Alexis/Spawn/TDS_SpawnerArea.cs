@@ -122,6 +122,13 @@ public class TDS_SpawnerArea : PunBehaviour
     /// </summary>
     [SerializeField] protected bool isLooping = false;
 
+    public bool IsLooping { get { return isLooping; } }
+
+    /// <summary>
+    /// Interval at which the area reactive itself if looping. 
+    /// </summary>
+    [SerializeField] private int loopInterval = 0;
+
     /// <summary>
     /// Current index of the area
     /// Increase this value when  
@@ -137,6 +144,8 @@ public class TDS_SpawnerArea : PunBehaviour
     /// List of enemies belonging to this area
     /// </summary>
     [SerializeField] private List<TDS_Enemy> spawnedEnemies = new List<TDS_Enemy>();
+
+    public List<TDS_Enemy> SpawnedEnemies { get { return spawnedEnemies; } }
 
     /// <summary>
     /// Get an array of all active enemies for all activated spawn areas.
@@ -261,6 +270,8 @@ public class TDS_SpawnerArea : PunBehaviour
         else if(waveIndex >= waves.Count)
         {
             waveIndex = 0;
+            Invoke("ActivateWave", loopInterval);
+            return;
         }
         List<TDS_Enemy> _spawnedEnemies = waves[waveIndex].GetWaveEnemies(this);
         spawnedEnemies.AddRange(_spawnedEnemies);
@@ -435,6 +446,15 @@ public class TDS_SpawnerArea : PunBehaviour
 
             if (isActivated) CheckRemainingObjects();
         }
+    }
+
+    /// <summary>
+    /// Stops the area.
+    /// </summary>
+    public void StopArea()
+    {
+        if (isLooping) isLooping = false;
+        waveIndex = waves.Count;
     }
     #endregion
 

@@ -156,11 +156,6 @@ public abstract class TDS_Character : TDS_Damageable
     /// Transform of the character's shadow.
     /// </summary>
     [SerializeField] protected Transform shadowTransform = null;
-
-    /// <summary>
-    /// Audio source of the Character
-    /// </summary>
-    [SerializeField] protected AudioSource audioSource = null; 
     #endregion
 
     #region Variables
@@ -372,6 +367,23 @@ public abstract class TDS_Character : TDS_Damageable
             return transform.position + new Vector3(throwAimingPoint.x * isFacingRight.ToSign(), throwAimingPoint.y, throwAimingPoint.z);
         }
     }
+    #endregion
+
+    #region Sound
+    /// <summary>
+    /// All this character's foosteps audio track for concrete ground.
+    /// </summary>
+    [SerializeField] protected AudioClip[] foostepsConcrete = new AudioClip[] { };
+
+    /// <summary>
+    /// All this character's foosteps audio track for grass.
+    /// </summary>
+    [SerializeField] protected AudioClip[] foostepsGrass = new AudioClip[] { };
+
+    /// <summary>
+    /// All this character's foosteps audio track for wood.
+    /// </summary>
+    [SerializeField] protected AudioClip[] foostepsWood = new AudioClip[] { };
     #endregion
 
     #endregion
@@ -599,7 +611,6 @@ public abstract class TDS_Character : TDS_Damageable
             if (photonView.isMine)
             {
                 if (throwable) DropObject();
-                //if (audioSource) TDS_SoundManager.Instance?.PlayHitSound(audioSource);
             }
             return true;
         }
@@ -672,11 +683,55 @@ public abstract class TDS_Character : TDS_Damageable
     }
     #endregion
 
-    #region PlaySound 
-    public void PlayHitSound()
+    #region Sound
+    /// <summary>
+    /// Plays sound for a big strike blow.
+    /// </summary>
+    protected void PlayBlowBig() => TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_BlowBig, audioSource);
+
+    /// <summary>
+    /// Plays sound for a small strike blow.
+    /// </summary>
+    protected void PlayBlowSmall() => TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_BlowSmall, audioSource);
+
+    /// <summary>
+    /// Plays sound for when this character's body fall down.
+    /// </summary>
+    protected void PlayBodyFall() => TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_BodyFall, audioSource);
+
+    /// <summary>
+    /// Plays sound for when this character's body fall down.
+    /// </summary>
+    protected void PlaySlide() => TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Slide, audioSource);
+
+    /// <summary>
+    /// Plays sound for this character's footsteps.
+    /// </summary>
+    protected void PlayFootsteps()
     {
-        if (!audioSource) return; 
-        //TDS_SoundManager.Instance?.PlayHitSound(audioSource); 
+        RaycastHit _hit = new RaycastHit();
+
+        if (!Physics.Raycast(new Vector3(collider.bounds.center.x, collider.bounds.min.y + .025f, collider.bounds.center.z), Vector3.down, out _hit, .1f)) return;
+
+        AudioClip _foostep = null;
+
+        switch (_hit.collider.gameObject.tag)
+        {
+            case "Grass":
+                _foostep = TDS_SoundManager.GetRandomClip(foostepsGrass);
+                break;
+
+            case "Wood":
+                _foostep = TDS_SoundManager.GetRandomClip(foostepsWood);
+                break;
+
+            default:
+                _foostep = TDS_SoundManager.GetRandomClip(foostepsConcrete);
+                break;
+        }
+
+        if (!_foostep) return;
+        TDS_SoundManager.Instance.PlayEffectSound(_foostep, audioSource);
     }
     #endregion
 

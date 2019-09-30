@@ -1,13 +1,12 @@
-﻿using Photon;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(BoxCollider), typeof(Animator), typeof(PhotonView)), RequireComponent(typeof(PhotonTransformView))]
-public abstract class TDS_Damageable : PunBehaviour
+[RequireComponent(typeof(BoxCollider), typeof(Animator), typeof(PhotonTransformView))]
+public abstract class TDS_Damageable : TDS_Object
 {
     /* TDS_Damageable :
 	 *
@@ -210,9 +209,9 @@ public abstract class TDS_Damageable : PunBehaviour
             }
             isDead = value;
 
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             if (!UnityEditor.EditorApplication.isPlaying) return;
-            #endif
+#endif
 
             if (value == false)
             {
@@ -256,7 +255,7 @@ public abstract class TDS_Damageable : PunBehaviour
     /// Its value cannot be less than zero or exceed <see cref="HealthMax"/>.
     /// </summary>
     public int HealthCurrent
-    {      
+    {
         get { return healthCurrent; }
         set
         {
@@ -313,14 +312,16 @@ public abstract class TDS_Damageable : PunBehaviour
     protected Dictionary<int, Coroutine> burningCoroutines = new Dictionary<int, Coroutine>();
     #endregion
 
-    #region Photon
+    #region Sound
     /// <summary>
-    /// Get the view ID of this object photon view.
+    /// Audio tracks to play when the damageable gets hit.
     /// </summary>
-    public int PhotonID
-    {
-        get { return photonView.viewID; }
-    }
+    [SerializeField] protected AudioClip[] hitSounds = new AudioClip[] { };
+
+    /// <summary>
+    /// Audio tracks to play when the damageable die.
+    /// </summary>
+    [SerializeField] protected AudioClip[] deathSounds = new AudioClip[] { };
     #endregion
 
     #endregion
@@ -330,11 +331,6 @@ public abstract class TDS_Damageable : PunBehaviour
     #region Original Methods
 
     #region Health
-    /// <summary>
-    /// Destroys this GameObject.
-    /// </summary>
-    public void Destroy() => PhotonNetwork.Destroy(photonView);
-
     /// <summary>
     /// Method called when the object dies.
     /// Override this to implement code for a specific object.
@@ -355,6 +351,9 @@ public abstract class TDS_Damageable : PunBehaviour
         // Change object layer to avoid problems
         layerBeforeDeath = gameObject.layer;
         gameObject.layer = LayerMask.NameToLayer("Dead");
+
+        // Play sound
+        if (deathSounds.Length > 0) TDS_SoundManager.Instance.PlayEffectSound(deathSounds, audioSource);
     }
 
     /// <summary>
@@ -397,6 +396,11 @@ public abstract class TDS_Damageable : PunBehaviour
 
         HealthCurrent -= _damage;
         OnTakeDamage?.Invoke(_damage);
+
+        // Play hit sound
+        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Hit, audioSource);
+
+        if (hitSounds.Length > 0) TDS_SoundManager.Instance.PlayEffectSound(hitSounds, audioSource);
 
         return true;
     }
@@ -541,7 +545,7 @@ public abstract class TDS_Damageable : PunBehaviour
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "InstantiateFireEffect"), new object[] { });
         }
 
-        burnEffect = ((GameObject)Instantiate(Resources.Load("Fire"), new Vector3(transform.position.x, transform.position.y, transform.position.z - .05f), Quaternion.identity)).GetComponent<Animator>();
+        burnEffect = ((GameObject)Instantiate(Resources.Load("FireBurn"), new Vector3(transform.position.x, transform.position.y, transform.position.z - .05f), Quaternion.identity)).GetComponent<Animator>();
 
         burnEffect.transform.SetParent(transform, true);
     }
@@ -634,8 +638,10 @@ public abstract class TDS_Damageable : PunBehaviour
 
     #region Unity Methods
     // Awake is called when the script instance is being loaded
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         // Try yo get components references of they are missing
         if (!animator)
         {

@@ -1350,6 +1350,9 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (!base.TakeDamage(_damage))
         {
             if (photonView.isMine) TDS_Camera.Instance.StartScreenShake(.02f, .2f);
+
+            // Play parry sound
+            if (isParrying) TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Parry, audioSource);
             return false;
         }
 
@@ -1367,7 +1370,7 @@ public class TDS_Player : TDS_Character, IPunObservable
             if (isDodging) StopDodge();
 
             // Play feedback sound
-            if (healthCurrent <= ((float)healthMax / 4f)) TDS_SoundManager.Instance.PlayApproachDeath();
+            if (healthCurrent <= ((float)healthMax / 4f)) TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_approachDeath);
         }
 
         // If not dead, be just hit
@@ -1629,6 +1632,9 @@ public class TDS_Player : TDS_Character, IPunObservable
 
                 // Activates event
                 OnGetOnGround?.Invoke();
+
+                // Plays land sound
+                TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Land, audioSource);
             }
         }
 
@@ -1742,6 +1748,9 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         // Adds a base vertical force to the rigidbody to expels the player in the air
         rigidbody.AddForce(Vector3.up * JumpForce);
+
+        // Plays jump sound
+        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.J_Jump, audioSource);
 
         while (controller.GetButton(ButtonType.Jump) && _timer < JumpMaximumTime)
         {
@@ -2254,6 +2263,13 @@ public class TDS_Player : TDS_Character, IPunObservable
             StartJump();
         }
     }
+    #endregion
+
+    #region Sound
+    /// <summary>
+    /// Plays dodge sound.
+    /// </summary>
+    protected void PlayDodge() => TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Dodge, audioSource);
     #endregion
 
     #region Others

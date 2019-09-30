@@ -26,5 +26,10 @@ public class TDS_SupplyDestructible : TDS_Destructible
 
         return _loot;
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Supplies, audioSource);
+    }
     #endregion
 }

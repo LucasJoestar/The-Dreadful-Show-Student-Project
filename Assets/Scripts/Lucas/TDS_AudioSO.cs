@@ -164,13 +164,21 @@ public class TDS_AudioSO : ScriptableObject
     public AudioClip S_Land { get { return TDS_SoundManager.GetRandomClip(s_Land); } }
 
 
-    /// <summary>Backing field for <see cref="s_Hit"/>.</summary>
+    /// <summary>Backing field for <see cref="S_Hit"/>.</summary>
     [SerializeField] private AudioClip[] s_hit = new AudioClip[] { };
 
     /// <summary>
     /// Returns a random hitting stroke sound.
     /// </summary>
-    public AudioClip s_Hit { get { return TDS_SoundManager.GetRandomClip(s_hit); } }
+    public AudioClip S_Hit { get { return TDS_SoundManager.GetRandomClip(s_hit); } }
+
+    /// <summary>Backing field for <see cref="S_Slide"/>.</summary>
+    [SerializeField] private AudioClip[] s_slide = new AudioClip[] { };
+
+    /// <summary>
+    /// Returns a random sliding sound.
+    /// </summary>
+    public AudioClip S_Slide { get { return TDS_SoundManager.GetRandomClip(s_slide); } }
 
 
     /// <summary>Backing field for <see cref="S_BodyFall"/>.</summary>
@@ -183,32 +191,39 @@ public class TDS_AudioSO : ScriptableObject
     #endregion
 
     #region Objects
-    /// <summary>
-    /// Sound whe picking an object.
-    /// </summary>
+    /// <summary>Backing field for <see cref="S_Pickup"/>.</summary>
     [Header("Objects")]
     [SerializeField] private AudioClip s_Pickup = null;
 
     /// <summary>
+    /// Sound when picking an object.
+    /// </summary>
+    public AudioClip S_Pickup { get { return s_Pickup; } }
+
+    /// <summary>Backing field for <see cref="S_Throw"/>.</summary>
+    [SerializeField] private AudioClip s_Throw = null;
+
+    /// <summary>
     /// Sound whe throwing an object.
     /// </summary>
-    [SerializeField] private AudioClip s_Throw = null;
+    public AudioClip S_Throw { get { return s_Throw; } }
+
+    /// <summary>Backing field for <see cref="S_Drop"/>.</summary>
+    [SerializeField] private AudioClip s_Drop = null;
 
     /// <summary>
     /// Sound whe dropping an object.
     /// </summary>
-    [SerializeField] private AudioClip s_Drop = null;
+    public AudioClip S_Drop { get { return s_Drop; } }
 
+
+    /// <summary>Backing field for <see cref="S_Supplies"/>.</summary>
+    [SerializeField] private AudioClip s_Supplies = null;
 
     /// <summary>
     /// Sound when some supplies land on ground.
     /// </summary>
-    [SerializeField] private AudioClip s_Supplies = null;
-
-    /// <summary>
-    /// Sound of a crate being destroyed
-    /// </summary>
-    [SerializeField] private AudioClip s_CrateDestroyed = null;
+    public AudioClip S_Supplies { get { return s_Supplies; } }
     #endregion
 
     #region Feedbacks
@@ -228,6 +243,14 @@ public class TDS_AudioSO : ScriptableObject
     /// Sound when a magic poof pops on the screen.
     /// </summary>
     public AudioClip S_MagicPoof { get { return s_MagicPoof; } }
+
+    /// <summary>Backing field for <see cref="S_RabbitPoof"/>.</summary>
+    [SerializeField] private AudioClip s_RabbitPoof = null;
+
+    /// <summary>
+    /// Sound when a rabbit gets used.
+    /// </summary>
+    public AudioClip S_RabbitPoof { get { return s_RabbitPoof; } }
 
     /// <summary>Backing field for <see cref="S_Checkpoint"/>.</summary>
     [SerializeField] private AudioClip s_Checkpoint = null;

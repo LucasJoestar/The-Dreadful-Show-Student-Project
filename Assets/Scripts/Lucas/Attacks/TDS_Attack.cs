@@ -130,7 +130,7 @@ public class TDS_Attack : ScriptableObject
         bool _doPutOnGround = false;
 
         // If a player performs an attack from behind, increase damages and try to put on ground
-        if (_attacker.Owner && (_target is TDS_Character _targetC) && (_attacker.transform.parent.gameObject.HasTag("Player") && ((_attacker.transform.position.x > (_target.transform.position.x + .5f)) != _targetC.IsFacingRight)))
+        if (_attacker.Owner && (_target is TDS_Character _targetC) && _attacker.transform.parent && (_attacker.transform.parent.gameObject.HasTag("Player") && ((_attacker.transform.position.x > (_target.transform.position.x + .5f)) != _targetC.IsFacingRight)))
         {
             _damages = (int)(_damages * 1.5f);
 

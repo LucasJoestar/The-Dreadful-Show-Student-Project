@@ -75,6 +75,9 @@ public class TDS_DamageableEditor : Editor
     /// <summary>SerializedProperty for <see cref="TDS_Damageable.animator"/> of type <see cref="Animator"/>.</summary>
     private SerializedProperty animator = null;
 
+    /// <summary>SerializedProperty for <see cref="TDS_Object.audioSource"/> of type <see cref="AudioSource"/>.</summary>
+    private SerializedProperty audioSource = null;
+
     /// <summary>SerializedProperty for <see cref="TDS_Damageable.collider"/> of type <see cref="BoxCollider"/>.</summary>
     private SerializedProperty collider = null;
 
@@ -103,6 +106,14 @@ public class TDS_DamageableEditor : Editor
 
     /// <summary>SerializedProperty for <see cref="TDS_Damageable.healthMax"/> of type <see cref="int"/>.</summary>
     private SerializedProperty healthMax = null;
+    #endregion
+
+    #region Sound
+    /// <summary>SerializedProperty for <see cref="TDS_Damageable.hitSounds"/> of type <see cref="AudioClip"/>[].</summary>
+    private SerializedProperty hitSounds = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Damageable.deathSounds"/> of type <see cref="AudioClip"/>[].</summary>
+    private SerializedProperty deathSounds = null;
     #endregion
 
     #endregion
@@ -161,6 +172,43 @@ public class TDS_DamageableEditor : Editor
             EditorPrefs.SetBool("isDamagUnfolded", value);
         }
     }
+
+
+    /// <summary>Backing field for <see cref="AreSoundsUnfolded"/></summary>
+    private bool areSoundsUnfolded = false;
+
+    /// <summary>
+    /// Indicates if the editor for the sounds is unfolded or not.
+    /// </summary>
+    public bool AreSoundsUnfolded
+    {
+        get { return areSoundsUnfolded; }
+        set
+        {
+            areSoundsUnfolded = value;
+
+            // Saves this value
+            EditorPrefs.SetBool("areSoundsUnfolded", value);
+        }
+    }
+
+    /// <summary>Backing field for <see cref="AreDamagSoundsUnfolded"/></summary>
+    private bool areDamagSoundsUnfolded = false;
+
+    /// <summary>
+    /// Indicates if the editor for the damageable sounds is unfolded or not.
+    /// </summary>
+    public bool AreDamagSoundsUnfolded
+    {
+        get { return areDamagSoundsUnfolded; }
+        set
+        {
+            areDamagSoundsUnfolded = value;
+
+            // Saves this value
+            EditorPrefs.SetBool("areDamagSoundsUnfolded", value);
+        }
+    }
     #endregion
 
     #region Editor Variables
@@ -198,6 +246,7 @@ public class TDS_DamageableEditor : Editor
     private void DrawComponentsAndReferences()
     {
         TDS_EditorUtility.ObjectField("Animator", "Animator of this object", animator, typeof(Animator));
+        TDS_EditorUtility.ObjectField("Audio Source", "Audio Source of this object", audioSource, typeof(AudioSource));
         TDS_EditorUtility.ObjectField("Collider", "Non-trigger BoxCollider of this object, used to detect collisions", collider, typeof(BoxCollider));
         TDS_EditorUtility.ObjectField("Rigidbody", "Rigidbody of this character, used for physic simulation", rigidbody, typeof(Rigidbody));
         TDS_EditorUtility.ObjectField("Sprite", "Main SpriteRenderer used to render this object", sprite, typeof(SpriteRenderer));
@@ -375,6 +424,71 @@ public class TDS_DamageableEditor : Editor
 
         GUILayout.Space(3);
     }
+
+
+    /// <summary>
+    /// Draws editor for all object sounds.
+    /// </summary>
+    private void DrawSoundEditor()
+    {
+        // Make a space at the beginning of the editor
+        GUILayout.Space(10);
+        Color _originalColor = GUI.backgroundColor;
+
+        GUI.backgroundColor = TDS_EditorUtility.BoxDarkColor;
+        EditorGUILayout.BeginVertical("HelpBox");
+
+        // Button to show or not the sounds settings
+        if (TDS_EditorUtility.Button("Sounds", "Wrap / unwrap Sounds settings", TDS_EditorUtility.HeaderStyle)) AreSoundsUnfolded = !areSoundsUnfolded;
+
+        // If unfolded, draws the custom editor for the sounds
+        if (areSoundsUnfolded)
+        {
+            // Records any changements on the editing objects to allow undo
+            Undo.RecordObjects(targets, "Damageable Sounds script(s) settings");
+
+            // Updates the SerializedProperties to get the latest values
+            serializedObject.Update();
+
+            GUI.backgroundColor = TDS_EditorUtility.BoxLightColor;
+            SoundEditor();
+
+            // Applies all modified properties on the SerializedObjects
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        EditorGUILayout.EndVertical();
+        GUI.backgroundColor = _originalColor;
+    }
+
+    /// <summary>
+    /// Draws editor for the editing Damageable sounds.
+    /// </summary>
+    private void DrawDamagSoundsEditor()
+    {
+        TDS_EditorUtility.PropertyField("Hit Sounds", "Sounds to play when the damageable gets hit", hitSounds);
+        GUILayout.Space(3);
+        TDS_EditorUtility.PropertyField("Death Sounds", "Sounds to play when the damageable die", deathSounds);
+    }
+
+    /// <summary>
+    /// Here are all elements drawn in the sound editor.
+    /// </summary>
+    protected virtual void SoundEditor()
+    {
+        EditorGUILayout.BeginVertical("Box");
+
+        // Button to show or not the damageable sounds
+        if (TDS_EditorUtility.Button("Damageable", "Wrap / unwrap Damageable Sounds", TDS_EditorUtility.HeaderStyle)) AreDamagSoundsUnfolded = !areDamagSoundsUnfolded;
+
+        // If unfolded, draws the custom editor for the damageable sounds
+        if (areDamagSoundsUnfolded)
+        {
+            DrawDamagSoundsEditor();
+        }
+
+        EditorGUILayout.EndVertical();
+    }
     #endregion
 
     #region Unity Methods
@@ -388,6 +502,7 @@ public class TDS_DamageableEditor : Editor
 
         // Get the serializedProperties from the serializedObject
         animator = serializedObject.FindProperty("animator");
+        audioSource = serializedObject.FindProperty("audioSource");
         collider = serializedObject.FindProperty("collider");
         rigidbody = serializedObject.FindProperty("rigidbody");
         sprite = serializedObject.FindProperty("sprite");
@@ -399,10 +514,15 @@ public class TDS_DamageableEditor : Editor
         healthCurrent = serializedObject.FindProperty("healthCurrent");
         healthMax = serializedObject.FindProperty("healthMax");
 
+        hitSounds = serializedObject.FindProperty("hitSounds");
+        deathSounds = serializedObject.FindProperty("deathSounds");
+
         // Loads the editor folded and unfolded values of this class
         isDamagUnfolded = EditorPrefs.GetBool("isDamagUnfolded", isDamagUnfolded);
         areDamagComponentsUnfolded = EditorPrefs.GetBool("areDamagComponentsUnfolded", areDamagComponentsUnfolded);
         areDamagSettingsUnfolded = EditorPrefs.GetBool("areDamagSettingsUnfolded", areDamagSettingsUnfolded);
+
+        areSoundsUnfolded = EditorPrefs.GetBool("areSoundsUnfolded", areSoundsUnfolded);
     }
 
     // Implement this function to make a custom inspector
@@ -410,6 +530,9 @@ public class TDS_DamageableEditor : Editor
     {
         // Draws the inspector for the Damageable class
         DrawDamageableEditor();
+
+        // Draws sounds editor
+        DrawSoundEditor();
     }
     #endregion
 

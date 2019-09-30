@@ -1,9 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using Photon;
 
 #pragma warning disable 0414
-public class TDS_Throwable : PunBehaviour
+public class TDS_Throwable : TDS_Object
 {
     /* TDS_Throwable :
 	 *
@@ -59,6 +58,11 @@ public class TDS_Throwable : PunBehaviour
     }
 
     /// <summary>
+    /// Sound to play when this object hits something.
+    /// </summary>
+    [SerializeField] protected AudioClip hitSound = null;
+
+    /// <summary>
     /// Collider of the object.
     /// </summary>
     [SerializeField] protected new BoxCollider collider = null;
@@ -77,6 +81,11 @@ public class TDS_Throwable : PunBehaviour
     public TDS_HitBox HitBox { get { return hitBox; } }
 
     /// <summary>
+    /// Photon view of the object used for feedback purpose.
+    /// </summary>
+    [SerializeField] private PhotonView feedbackPV;
+
+    /// <summary>
     /// Rigidbody of the object.
     /// </summary>
     [SerializeField] protected new Rigidbody rigidbody = null;
@@ -91,6 +100,11 @@ public class TDS_Throwable : PunBehaviour
 
 
     [Header("Settings")]
+    /// <summary>
+    /// Indicates if the throwable is desactivated or not.
+    /// </summary>
+    private bool isDesactivated = false;
+
     /// <summary>
     /// Indicates if the throwable is currently held by someone.
     /// </summary>
@@ -164,23 +178,49 @@ public class TDS_Throwable : PunBehaviour
         rigidbody.velocity = new Vector3(_xVelo, _yVelo, _zVelo) * bouncePower * -1;
     }
 
-    protected void CallDestroyEvent() => OnDestroyed?.Invoke(); 
+    protected void CallDestroyEvent() => OnDestroyed?.Invoke();
+
+    /// <summary>
+    /// Destroys this object.
+    /// </summary>
+    public override void Destroy()
+    {
+        if (feedbackPV) PhotonNetwork.Destroy(feedbackPV);
+        base.Destroy();
+    }
 
     /// <summary>
     /// Destroy the gameObject Throwable if the durability is less or equal to zero 
     /// </summary>
     protected virtual void DestroyThrowableObject()
     {
+        if (isDesactivated) return;
         if (!PhotonNetwork.isMasterClient)
         {
             TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "DestroyThrowableObject"), new object[] { });
             return;
         }
 
-        TDS_VFXManager.Instance.SpawnEffect(FXType.MagicDisappear, transform.position);
-        PhotonNetwork.Destroy(gameObject);
-
         OnDestroyed?.Invoke();
+
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "DestroyFeedback"), new object[] { });
+
+        DestroyFeedback();
+        Invoke("Destroy", 2);
+    }
+
+    /// <summary>
+    /// Plays feedback for when the throwable gets destroyed.
+    /// </summary>
+    protected virtual void DestroyFeedback()
+    {
+        isDesactivated = true;
+        gameObject.SetActive(true);
+
+        if (!feedbackPV) return;
+
+        feedbackPV.transform.SetParent(null);
+        feedbackPV.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -224,7 +264,7 @@ public class TDS_Throwable : PunBehaviour
     protected virtual void LoseDurability()
     {
         ObjectDurability --;
-        if (ObjectDurability <= 0) Invoke("DestroyThrowableObject", .01f);
+        if (ObjectDurability <= 0) DestroyThrowableObject();
     }
 
     /// <summary>
@@ -234,6 +274,9 @@ public class TDS_Throwable : PunBehaviour
     {
         BounceObject();
         ResetThrowable();
+
+        // Play sound
+        TDS_SoundManager.Instance.PlayEffectSound(hitSound, audioSource);
     }
 
     /// <summary> 
@@ -262,6 +305,9 @@ public class TDS_Throwable : PunBehaviour
         if (shadow && !shadow.activeInHierarchy) shadow.SetActive(true);
         rigidbody.isKinematic = true;
         collider.enabled = false;
+
+        // Play sound
+        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Pickup, audioSource);
 
         return true;
     }
@@ -327,6 +373,9 @@ public class TDS_Throwable : PunBehaviour
         isHeld = false;
 
         owner.RemoveThrowable();
+
+        // Play sound
+        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Throw, audioSource);
     }
 
     /// <summary>
@@ -349,8 +398,10 @@ public class TDS_Throwable : PunBehaviour
 
     #region Unity Methods
     // Awake is called when the script instance is being loaded
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         // Get missing references
         if (!rigidbody) rigidbody = GetComponentInChildren<Rigidbody>();
         if (!collider) collider = GetComponentInChildren<BoxCollider>();
@@ -369,6 +420,9 @@ public class TDS_Throwable : PunBehaviour
         {
             ResetThrowable();
         }
+
+        // Play sound
+        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Drop, audioSource);
     }
 
     private void OnDestroy()

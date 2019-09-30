@@ -141,7 +141,7 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
         }
 
         // Get element(s) to remove
-        Collider[] _toRemove = new List<Collider>(detectedColliders).Where(d => (d == null) || (d.enabled == false)).ToArray();
+        Collider[] _toRemove = new List<Collider>(detectedColliders).Where(d => (d == null) || !d.enabled || !d.gameObject.activeInHierarchy).ToArray();
 
         if (_toRemove.Length > 0)
         {

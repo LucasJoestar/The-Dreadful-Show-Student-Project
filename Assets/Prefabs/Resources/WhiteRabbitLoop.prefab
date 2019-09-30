@@ -60,6 +60,16 @@ PrefabInstance:
       propertyPath: isLooping
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114191116785294032, guid: 795e82fe26a179f48921142aca97a866,
+        type: 3}
+      propertyPath: feedbackParent
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114191116785294032, guid: 795e82fe26a179f48921142aca97a866,
+        type: 3}
+      propertyPath: agent
+      value: 
+      objectReference: {fileID: 3968897883018500839}
     - target: {fileID: 1725797096084194985, guid: 795e82fe26a179f48921142aca97a866,
         type: 3}
       propertyPath: viewIdField
@@ -72,3 +82,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 795e82fe26a179f48921142aca97a866, type: 3}
+--- !u!114 &3968897883018500839 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114626884268571782, guid: 795e82fe26a179f48921142aca97a866,
+    type: 3}
+  m_PrefabInstance: {fileID: 3928096633674770017}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53bdbd26138585f4aa59027c60557c6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

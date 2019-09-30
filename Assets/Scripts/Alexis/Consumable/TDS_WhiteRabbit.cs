@@ -48,6 +48,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
 
     #region Fields / Properties
     private bool goRight = true;
+    private bool isDesactivated = false;
     [SerializeField] private bool isLooping = false;
     [SerializeField, Range(1, 200)] private int healingValueMax;
     [SerializeField, Range(1, 200)] private int healingValueMin;
@@ -56,12 +57,22 @@ public class TDS_WhiteRabbit : TDS_Consumable
     private float boundLeft;
     private float boundRight; 
     [SerializeField, Range(1,10)] private float speed;
-    private CustomNavMeshAgent agent;
+    [SerializeField] private CustomNavMeshAgent agent;
+    [SerializeField] private PhotonView feedbackPV;
     #endregion
 
     #region Methods
 
     #region Original Methods
+    /// <summary>
+    /// Destroys this object.
+    /// </summary>
+    public override void Destroy()
+    {
+        if (feedbackPV) PhotonNetwork.Destroy(feedbackPV);
+        base.Destroy();
+    }
+
     /// <summary>
     /// Rotate the rabbit (Local and online)
     /// </summary>
@@ -96,7 +107,8 @@ public class TDS_WhiteRabbit : TDS_Consumable
     /// <param name="_player"></param>
     public override void Use(TDS_Player _player)
     {
-        if(!PhotonNetwork.isMasterClient)
+        if (isDesactivated) return;
+        if (!PhotonNetwork.isMasterClient)
         {
             TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "UseOnline"), new object[] { _player.PhotonID });
             return; 
@@ -105,8 +117,25 @@ public class TDS_WhiteRabbit : TDS_Consumable
         _player.Heal(_healingValue);
 
         OnUseRabbit?.Invoke();
-        TDS_VFXManager.Instance.SpawnEffect(FXType.RabbitPoof, transform.position + Vector3.up);
-        PhotonNetwork.Destroy(gameObject);
+
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "UseFeedback"), new object[] { });
+
+        UseFeedback();
+        Invoke("Destroy", 2);
+    }
+
+    /// <summary>
+    /// Plays feedback for when using the rabbit
+    /// </summary>
+    private void UseFeedback()
+    {
+        isDesactivated = true;
+        gameObject.SetActive(false);
+
+        if (!feedbackPV) return;
+
+        feedbackPV.transform.SetParent(null);
+        feedbackPV.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -141,9 +170,12 @@ public class TDS_WhiteRabbit : TDS_Consumable
     // Use this for initialization
     private void Start()
     {
-        if (!PhotonNetwork.isMasterClient) return; 
-        agent = GetComponent<CustomNavMeshAgent>();
-        if (!agent) return;
+        if (!PhotonNetwork.isMasterClient) return;
+        if (!agent)
+        {
+            agent = GetComponent<CustomNavMeshAgent>();
+            if (!agent) return;
+        }
         agent.Speed = speed;
         agent.OnDestinationReached += IncreasePassingCount;
         boundLeft = TDS_Camera.Instance.CurrentBounds.XMin - 1;

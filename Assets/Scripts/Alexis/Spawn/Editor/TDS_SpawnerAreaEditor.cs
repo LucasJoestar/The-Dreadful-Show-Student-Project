@@ -121,6 +121,9 @@ public class TDS_SpawnerAreaEditor : Editor
     /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.isActivatedByEvent"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isActivatedByEvent = null;
 
+    /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.loopInterval"/> of type <see cref="int"/>.</summary>
+    private SerializedProperty loopInterval = null;
+
     /// <summary>SerializedProperty for <see cref="TDS_SpawnerArea.waves"/> of type <see cref="List{TDS_Wave}"/>.</summary>
     private SerializedProperty waves = null;
 
@@ -223,6 +226,10 @@ public class TDS_SpawnerAreaEditor : Editor
         // Draw a header for the Spawner Area global settings
         EditorGUILayout.LabelField("Global settings", TDS_EditorUtility.HeaderStyle);
         TDS_EditorUtility.Toggle("is Looping", "Is the area start again when all the waves are cleared.", isLooping);
+        if (isLooping.boolValue)
+        {
+            TDS_EditorUtility.IntSlider("Loop Interval", "Interval at which the area is reactivated (in seconds)", loopInterval, 0, 60);
+        }
         TDS_EditorUtility.Toggle("Is Activated by event", "Does the area start by event or by trigger.", isActivatedByEvent);
         GUILayout.Space(10);
 
@@ -306,7 +313,8 @@ public class TDS_SpawnerAreaEditor : Editor
         isReady = serializedObject.FindProperty("isReady");
         isActivated = serializedObject.FindProperty("isActivated");
         isLooping = serializedObject.FindProperty("isLooping");
-        isActivatedByEvent = serializedObject.FindProperty("isActivatedByEvent"); 
+        isActivatedByEvent = serializedObject.FindProperty("isActivatedByEvent");
+        loopInterval = serializedObject.FindProperty("loopInterval");
         waves = serializedObject.FindProperty("waves");
         eventOnAreaActivated = serializedObject.FindProperty("OnAreaActivated");
         eventOnAreaDesactivated = serializedObject.FindProperty("OnAreaDesactivated");
