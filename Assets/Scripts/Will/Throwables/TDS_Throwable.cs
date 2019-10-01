@@ -437,8 +437,11 @@ public class TDS_Throwable : TDS_Object
 
     private void OnDestroy()
     {
-        if (owner && PhotonNetwork.connected) owner.DropObject();
-        hitBox.Desactivate();
+        if (owner && PhotonNetwork.connected && gameObject.activeInHierarchy && !isDesactivated)
+        {
+            owner.DropObject();
+        }
+        if (hitBox.IsActive) hitBox.Desactivate();
     }
     #endregion
 
