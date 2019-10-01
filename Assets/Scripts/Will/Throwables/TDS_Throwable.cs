@@ -185,6 +185,8 @@ public class TDS_Throwable : TDS_Object
     /// </summary>
     public override void Destroy()
     {
+        if (!PhotonNetwork.isMasterClient) return;
+
         if (feedbackPV) PhotonNetwork.Destroy(feedbackPV);
         base.Destroy();
     }
@@ -286,7 +288,7 @@ public class TDS_Throwable : TDS_Object
     /// <returns>Returns true is successfully picked up the object, false if a issue has been encountered.</returns> 
     public virtual bool PickUp(TDS_Character _owner)
     {
-        if (isHeld || owner) return false;
+        if (isHeld) return false;
 
         isHeld = true;
         owner = _owner;
@@ -331,8 +333,12 @@ public class TDS_Throwable : TDS_Object
     {
         hitBox.Desactivate();
         LoseDurability();
-        
-        if (!isDesactivated) SetIndependant();
+
+        if (!isDesactivated)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetIndependant"), new object[] { });
+            SetIndependant();
+        }
     }
 
     /// <summary>

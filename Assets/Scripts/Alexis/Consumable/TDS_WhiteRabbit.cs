@@ -69,6 +69,8 @@ public class TDS_WhiteRabbit : TDS_Consumable
     /// </summary>
     public override void Destroy()
     {
+        if (!PhotonNetwork.isMasterClient) return;
+
         if (feedbackPV) PhotonNetwork.Destroy(feedbackPV);
         base.Destroy();
     }

@@ -31,7 +31,12 @@ public class TDS_Object : PunBehaviour
     /// <summary>
     /// Destroys this object.
     /// </summary>
-    public virtual void Destroy() => PhotonNetwork.Destroy(photonView);
+    public virtual void Destroy()
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+
+        PhotonNetwork.Destroy(photonView);
+    }
     #endregion
 
     #region Unity Methods
