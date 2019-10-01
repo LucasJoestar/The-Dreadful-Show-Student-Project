@@ -222,10 +222,22 @@ public class TDS_Destructible : TDS_Damageable
     // Use this for initialization
     protected override void Start()
     {
-        if (PhotonNetwork.connected && (photonView.owner == null)) photonView.TransferOwnership(PhotonNetwork.player);
+        if ((photonView.owner == null) && PhotonNetwork.connected && PhotonNetwork.isMasterClient) photonView.TransferOwnership(PhotonNetwork.masterClient);
 
         base.Start();
     }
+
+    #region Editor
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
+
+        if (Time.timeSinceLevelLoad > .1f)
+        {
+            if ((photonView.owner == null) && PhotonNetwork.connected && PhotonNetwork.isMasterClient) photonView.TransferOwnership(PhotonNetwork.masterClient);
+        }
+    }
+    #endregion
     #endregion
 
     #endregion

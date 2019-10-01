@@ -1370,7 +1370,7 @@ public abstract class TDS_Enemy : TDS_Character
         }
         else
         {
-            if (photonView.owner == null) photonView.TransferOwnership(PhotonNetwork.player);
+            if (photonView.owner == null) photonView.TransferOwnership(PhotonNetwork.masterClient);
 
             // Scales up health on player amount
             if (doScaleOnPlayerAmount)
@@ -1405,6 +1405,18 @@ public abstract class TDS_Enemy : TDS_Character
             Gizmos.DrawLine(transform.position, playerTarget.transform.position);
         }
     }
+
+    #region Editor
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
+
+        if (Time.timeSinceLevelLoad > .1f)
+        {
+            if (PhotonNetwork.isMasterClient && photonView.owner == null) photonView.TransferOwnership(PhotonNetwork.masterClient);
+        }
+    }
+    #endregion
     #endregion
 
     #endregion
