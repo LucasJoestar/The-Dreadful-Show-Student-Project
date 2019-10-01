@@ -909,6 +909,16 @@ public class TDS_UIManager : PunBehaviour
         }
     }
 
+    /// <summary>
+    /// Plays sound for when the curtains gets in.
+    /// </summary>
+    public void PlayCurtainsIn() => TDS_SoundManager.Instance.PlayUISound(TDS_GameManager.AudioAsset.S_CurtainsIn);
+
+    /// <summary>
+    /// Plays sound for when the curtains gets out.
+    /// </summary>
+    public void PlayCurtainsOut() => TDS_SoundManager.Instance.PlayUISound(TDS_GameManager.AudioAsset.S_CurtainsOut);
+
     public void QuitGame() => Application.Quit();
 
     /// <summary>
@@ -1137,7 +1147,7 @@ public class TDS_UIManager : PunBehaviour
             PhotonNetwork.Disconnect(); 
             PhotonNetwork.offlineMode = false; 
             ActivateMenu(UIState.InMainMenu);
-            Selectable.allSelectables.First().Select(); 
+            Selectable.allSelectablesArray.First().Select(); 
             return; 
         }
         if (PhotonNetwork.isMasterClient)
@@ -1180,11 +1190,11 @@ public class TDS_UIManager : PunBehaviour
         // Play curtains sound
         if (curtainsAnimator.GetBool("Visible") != _areVisible)
         {
-            if (_areVisible) TDS_SoundManager.Instance.PlayUISound(TDS_GameManager.AudioAsset.S_CurtainsIn);
-            else TDS_SoundManager.Instance.PlayUISound(TDS_GameManager.AudioAsset.S_CurtainsOut);
-        }
+            if (_areVisible) Invoke("PlayCurtainsIn", .1f);
+            else PlayCurtainsOut();
 
-        curtainsAnimator.SetBool("Visible", _areVisible);
+            curtainsAnimator.SetBool("Visible", _areVisible);
+        }
     }
 
     /// <summary>

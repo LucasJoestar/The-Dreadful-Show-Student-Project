@@ -142,6 +142,8 @@ MonoBehaviour:
   IsInvulnerable: 0
   healthCurrent: 300
   healthMax: 300
+  hitSounds: []
+  deathSounds: []
   hitBox: {fileID: 3878932235109849520}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
@@ -160,6 +162,9 @@ MonoBehaviour:
   throwBonusDamagesMax: 7
   throwBonusDamagesMin: 3
   throwAimingPoint: {x: 0, y: 0, z: 0}
+  foostepsConcrete: []
+  foostepsGrass: []
+  foostepsWood: []
   canBeDown: 0
   canThrow: 0
   doScaleOnPlayerAmount: 1
@@ -377,7 +382,8 @@ AudioSource:
   m_GameObject: {fileID: 3766194183301806836}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

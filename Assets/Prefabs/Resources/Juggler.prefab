@@ -1141,6 +1141,7 @@ MonoBehaviour:
     - Name: Hittable
       Color: {r: 0.8773585, g: 0.6957892, b: 0.16140087, a: 1}
   juggleTransformIdealLocalPosition: {x: 0, y: 1, z: 0}
+  lockSound: {fileID: 8300000, guid: f79bc32bb66928441b767b2981468f0e, type: 3}
 --- !u!95 &2624376054273097410
 Animator:
   serializedVersion: 3
@@ -1304,12 +1305,13 @@ AudioSource:
   m_GameObject: {fileID: 2684015748255461392}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: a237815c58fc010439bb4713cf367b99, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

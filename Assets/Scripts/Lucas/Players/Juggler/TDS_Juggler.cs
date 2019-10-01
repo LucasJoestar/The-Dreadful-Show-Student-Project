@@ -390,6 +390,13 @@ public class TDS_Juggler : TDS_Player
     private float jugglerCounter = 0;
     #endregion
 
+    #region Sounds
+    /// <summary>
+    /// Sound to play when locking an enemy
+    /// </summary>
+    [SerializeField] private AudioClip lockSound = null;
+    #endregion
+
     #endregion
 
     #region Methods
@@ -461,8 +468,6 @@ public class TDS_Juggler : TDS_Player
 
             if (controller.GetButtonDown(ButtonType.Shoot) && canShoot)
             {
-                if (targetObject) targetObject = null;
-                if (targetEnemy) targetEnemy = null;
                 TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
 
                 IsPlayable = false;
@@ -515,11 +520,14 @@ public class TDS_Juggler : TDS_Player
                         // Get new available target position ; if on screen, take it
                         _screenPos = TDS_Camera.Instance.Camera.WorldToScreenPoint(_enemies[_index].Collider.bounds.center);
 
-                        if (TDS_Camera.Instance.Camera.pixelRect.Contains(_screenPos))
+                        if (TDS_Camera.Instance.Camera.pixelRect.Contains(_screenPos) && (targetEnemy != _enemies[_index]))
                         {
                             // Set target enemy
                             targetEnemy = _enemies[_index];
                             aimTargetTransform.position = _screenPos;
+
+                            // Play sound
+                            PlayLock();
                             break;
                         }
                     }
@@ -547,6 +555,9 @@ public class TDS_Juggler : TDS_Player
 
                     // Set target enemy
                     targetEnemy = _enemy;
+
+                    // Play sound
+                    PlayLock();
 
                     // Set aim target & arrow positions
                     aimTargetTransform.position = _enemyPosOnScreen;
@@ -829,6 +840,7 @@ public class TDS_Juggler : TDS_Player
             if (CurrentThrowableAmount == 0)
             {
                 SetAnim(PlayerAnimState.LostObject);
+                audioSource.Stop();
             }
         }
 
@@ -868,7 +880,13 @@ public class TDS_Juggler : TDS_Player
 
         if (CurrentThrowableAmount > 0)
         {
-            if (!_wasJuggling) SetAnim(PlayerAnimState.HasObject);
+            if (!_wasJuggling)
+            {
+                SetAnim(PlayerAnimState.HasObject);
+
+                audioSource.time = 0;
+                audioSource.Play();
+            }
 
             // Updates juggling informations
             UpdateJuggleParameters(true);
@@ -1258,6 +1276,13 @@ public class TDS_Juggler : TDS_Player
 
         if (isAiming) StopAiming();
     }
+    #endregion
+
+    #region Sounds
+    /// <summary>
+    /// Plays sound for when locking an enemy.
+    /// </summary>
+    protected void PlayLock() => TDS_SoundManager.Instance.PlayEffectSound(lockSound, audioSource);
     #endregion
 
     #region Others

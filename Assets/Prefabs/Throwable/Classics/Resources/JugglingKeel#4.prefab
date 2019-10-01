@@ -15,7 +15,7 @@ PrefabInstance:
     - target: {fileID: 755291283191851892, guid: 39bd4535d3d220c4d9bb83b78dee8623,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.0189953
+      value: 6.105009
       objectReference: {fileID: 0}
     - target: {fileID: 755291283191851892, guid: 39bd4535d3d220c4d9bb83b78dee8623,
         type: 3}
@@ -75,6 +75,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 856618232250444330, guid: 39bd4535d3d220c4d9bb83b78dee8623,
         type: 3}
+      propertyPath: hitSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 0cf16d85e3992844fa1d1dc73d092faf, type: 3}
+    - target: {fileID: 856618232250444330, guid: 39bd4535d3d220c4d9bb83b78dee8623,
+        type: 3}
       propertyPath: bonusDamage
       value: 4
       objectReference: {fileID: 0}
@@ -94,6 +99,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 753459694482091553, guid: 39bd4535d3d220c4d9bb83b78dee8623,
+        type: 3}
+      propertyPath: instantiationId
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346084189961818458, guid: 39bd4535d3d220c4d9bb83b78dee8623,
+        type: 3}
+      propertyPath: viewIdField
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346084189961818458, guid: 39bd4535d3d220c4d9bb83b78dee8623,
         type: 3}
       propertyPath: instantiationId
       value: -1

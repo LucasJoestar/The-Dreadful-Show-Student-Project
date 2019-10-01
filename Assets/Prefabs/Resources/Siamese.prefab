@@ -65,6 +65,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -378,6 +379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67a41a41c548bf84c974e9ed712dc63a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
   animator: {fileID: 2085316961524171262}
   burnEffect: {fileID: 0}
   collider: {fileID: 2085316961524171263}
@@ -389,12 +391,13 @@ MonoBehaviour:
   IsInvulnerable: 0
   healthCurrent: 350
   healthMax: 350
+  hitSounds: []
+  deathSounds: []
   hitBox: {fileID: 2085316961319211533}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
   handsTransform: {fileID: 3193193236961257252}
   shadowTransform: {fileID: 419458095}
-  audioSource: {fileID: 0}
   isAttacking: 0
   isFacingRight: 0
   IsPacific: 0
@@ -408,6 +411,9 @@ MonoBehaviour:
   throwBonusDamagesMax: 0
   throwBonusDamagesMin: 0
   throwAimingPoint: {x: 0, y: 0, z: 0}
+  foostepsConcrete: []
+  foostepsGrass: []
+  foostepsWood: []
   canBeDown: 0
   canThrow: 0
   doScaleOnPlayerAmount: 1
@@ -426,18 +432,12 @@ MonoBehaviour:
   onTwoThirdsHealth:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   onHalfHealth:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   onOneThirdHealth:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   damagesThreshold: 25
   portrait: {fileID: 8492191770222195799, guid: 08022f0effacd434f86eeee02f5ba47e,
     type: 3}
@@ -461,7 +461,8 @@ AudioSource:
   m_GameObject: {fileID: 2085316961524171253}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -604,6 +605,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -692,6 +694,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -760,6 +763,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -878,6 +882,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

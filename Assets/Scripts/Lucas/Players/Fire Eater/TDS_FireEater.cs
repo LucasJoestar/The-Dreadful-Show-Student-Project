@@ -170,6 +170,49 @@ public class TDS_FireEater : TDS_Player
     [SerializeField] private float soberUpTimer = 0;
     #endregion
 
+    #region Sounds
+    /// <summary>
+    /// Audio track to play when crashing.
+    /// </summary>
+    [SerializeField] private AudioClip crashSound = null;
+
+    /// <summary>
+    /// Audio track to play when drinking.
+    /// </summary>
+    [SerializeField] private AudioClip drinkSound = null;
+
+    /// <summary>
+    /// Audio track to play when spitting fire.
+    /// </summary>
+    [SerializeField] private AudioClip fireBreathSound = null;
+
+    /// <summary>
+    /// Audio track to play when puking.
+    /// </summary>
+    [SerializeField] private AudioClip pukeSound = null;
+
+    /// <summary>
+    /// Audio track to play when spitting a fire ball.
+    /// </summary>
+    [SerializeField] private AudioClip spitFireBallSound = null;
+
+    /// <summary>
+    /// Audio track to play when spitting alcohol.
+    /// </summary>
+    [SerializeField] private AudioClip spitSound = null;
+
+
+    /// <summary>
+    /// Audio track to play when hitting damageable with extinct torch.
+    /// </summary>
+    [SerializeField] private AudioClip[] attackExtinctHit = null;
+
+    /// <summary>
+    /// Audio track to play when hitting damageable with lighting torch.
+    /// </summary>
+    [SerializeField] private AudioClip[] attackFiretHit = null;
+    #endregion
+
     #endregion
 
     #region Methods
@@ -496,10 +539,13 @@ public class TDS_FireEater : TDS_Player
         {
             case FireEaterAnimState.Sober:
                 animator.SetBool("IsDrunk", false);
+                audioSource.Stop();
                 break;
 
             case FireEaterAnimState.Drunk:
                 animator.SetBool("IsDrunk", true);
+                audioSource.time = 0;
+                audioSource.Play();
                 break;
 
             case FireEaterAnimState.MiniGame:
@@ -553,6 +599,49 @@ public class TDS_FireEater : TDS_Player
 
         return base.Interact();
     }
+    #endregion
+
+    #region Sounds
+    /// <summary>
+    /// Plays sound for when crashing on the floor.
+    /// </summary>
+    protected void PlayCrash() => TDS_SoundManager.Instance.PlayEffectSound(crashSound, audioSource);
+
+    /// <summary>
+    /// Plays sound for when drinking.
+    /// </summary>
+    protected void PlayDrink() => TDS_SoundManager.Instance.PlayEffectSound(drinkSound, audioSource);
+
+    /// <summary>
+    /// Plays sound for when spitting fire.
+    /// </summary>
+    protected void PlayFireBreath() => TDS_SoundManager.Instance.PlayEffectSound(fireBreathSound, audioSource);
+
+    /// <summary>
+    /// Plays sound for when puking.
+    /// </summary>
+    protected void PlayPuke() => TDS_SoundManager.Instance.PlayEffectSound(pukeSound, audioSource);
+
+    /// <summary>
+    /// Plays sound for when spitting fire ball.
+    /// </summary>
+    protected void PlaySpitFireBall() => TDS_SoundManager.Instance.PlayEffectSound(spitFireBallSound, audioSource);
+
+    /// <summary>
+    /// Plays sound for when spitting alcohol.
+    /// </summary>
+    protected void PlaySpit() => TDS_SoundManager.Instance.PlayEffectSound(spitSound, audioSource);
+
+
+    /// <summary>
+    /// Plays sound for when hitting something with an extinct torch.
+    /// </summary>
+    protected void PlayExtinctAttack() => TDS_SoundManager.Instance.PlayEffectSound(attackExtinctHit, audioSource);
+
+    /// <summary>
+    /// Plays sound for when hitting something with a lighting torch.
+    /// </summary>
+    protected void PlayFireAttack() => TDS_SoundManager.Instance.PlayEffectSound(attackFiretHit, audioSource);
     #endregion
 
     #endregion

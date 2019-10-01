@@ -15,7 +15,7 @@ PrefabInstance:
     - target: {fileID: 3338963929045791089, guid: cbcb09eb06b2069448219913fc1ed493,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -31.941006
+      value: -31.83
       objectReference: {fileID: 0}
     - target: {fileID: 3338963929045791089, guid: cbcb09eb06b2069448219913fc1ed493,
         type: 3}
@@ -105,6 +105,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 3444803831096782895, guid: cbcb09eb06b2069448219913fc1ed493,
         type: 3}
+      propertyPath: hitSound
+      value: 
+      objectReference: {fileID: 8300000, guid: f8aa91fcc3b1e6441986fd44129b813b, type: 3}
+    - target: {fileID: 3444803831096782895, guid: cbcb09eb06b2069448219913fc1ed493,
+        type: 3}
       propertyPath: bouncePower
       value: 0.4
       objectReference: {fileID: 0}
@@ -172,6 +177,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Center.y
       value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 739323423422745439, guid: cbcb09eb06b2069448219913fc1ed493,
+        type: 3}
+      propertyPath: viewIdField
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 739323423422745439, guid: cbcb09eb06b2069448219913fc1ed493,
+        type: 3}
+      propertyPath: instantiationId
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cbcb09eb06b2069448219913fc1ed493, type: 3}

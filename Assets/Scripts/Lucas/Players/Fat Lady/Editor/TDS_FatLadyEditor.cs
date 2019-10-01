@@ -35,6 +35,8 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
     #region Fields / Properties
 
     #region SerializedProperties
+
+    #region Variables
     /// <summary>SerializedProperties for <see cref="TDS_FatLady.isAngry"/> of type <see cref="bool"/>.</summary>
     private SerializedProperty isAngry = null;
 
@@ -55,6 +57,13 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
 
     /// <summary>SerializedProperties for <see cref="TDS_FatLady.snackHealValue"/> of type <see cref="int"/>.</summary>
     private SerializedProperty snackHealValue = null;
+    #endregion
+
+    #region Sounds
+    /// <summary>SerializedProperties for <see cref="TDS_FatLady.eatSound"/> of type <see cref="AudioClip"/>.</summary>
+    private SerializedProperty eatSound = null;
+    #endregion
+
     #endregion
 
     #region Foldouts
@@ -91,6 +100,24 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
 
             // Save this value
             EditorPrefs.SetBool("areFatLadySettingsUnfolded", value);
+        }
+    }
+
+    /// <summary>Backing field for <see cref="AreFatLadySoundsUnfolded"/>.</summary>
+    private bool areFatLadySoundsUnfolded = false;
+
+    /// <summary>
+    /// Indicates if the editor for the Fat Lady sounds is unfolded.
+    /// </summary>
+    public bool AreFatLadySoundsUnfolded
+    {
+        get { return areFatLadySoundsUnfolded; }
+        set
+        {
+            areFatLadySoundsUnfolded = value;
+
+            // Save this value
+            EditorPrefs.SetBool("areFatLadySoundsUnfolded", value);
         }
     }
 
@@ -251,6 +278,37 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
             serializedObject.Update();
         }
     }
+
+
+    /// <summary>
+    /// Draws edtiro for the Fat Lady sounds.
+    /// </summary>
+    private void DrawFatLadySounds()
+    {
+        TDS_EditorUtility.PropertyField("Eat", "Sound to play when eating food", eatSound);
+    }
+
+    /// <summary>
+    /// Here are all elements drawn in the sound editor.
+    /// </summary>
+    protected override void SoundEditor()
+    {
+        base.SoundEditor();
+
+        GUILayout.Space(15);
+        EditorGUILayout.BeginVertical("Box");
+
+        // Button to show or not the Fat Lady sounds
+        if (TDS_EditorUtility.Button("Fat Lady", "Wrap / unwrap Fat Lady Sounds", TDS_EditorUtility.HeaderStyle)) AreFatLadySoundsUnfolded = !areFatLadySoundsUnfolded;
+
+        // If unfolded, draws the custom editor for the Fat Lady sounds
+        if (areFatLadySoundsUnfolded)
+        {
+            DrawFatLadySounds();
+        }
+
+        EditorGUILayout.EndVertical();
+    }
     #endregion
 
     #region Unity Methods
@@ -273,10 +331,14 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
         angryHealthStep = serializedObject.FindProperty("angryHealthStep");
         snackHealValue = serializedObject.FindProperty("snackHealValue");
 
+        eatSound = serializedObject.FindProperty("eatSound");
+
         // Loads the editor folded & unfolded values of this script
         isFatLadyUnfolded = EditorPrefs.GetBool("isFatLadyUnfolded", isFatLadyUnfolded);
         areFatLadyComponentsUnfolded = EditorPrefs.GetBool("areFatLadyComponentsUnfolded", areFatLadyComponentsUnfolded);
         areFatLadySettingsUnfolded = EditorPrefs.GetBool("areFatLadySettingsUnfolded", areFatLadySettingsUnfolded);
+
+        areFatLadySoundsUnfolded = EditorPrefs.GetBool("areFatLadySoundsUnfolded", areFatLadySoundsUnfolded);
     }
 
     // Implement this function to make a custom inspector

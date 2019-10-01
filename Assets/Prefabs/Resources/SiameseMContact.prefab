@@ -404,6 +404,8 @@ MonoBehaviour:
   IsInvulnerable: 0
   healthCurrent: 100
   healthMax: 100
+  hitSounds: []
+  deathSounds: []
   hitBox: {fileID: 1337013230161517857}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
@@ -422,6 +424,9 @@ MonoBehaviour:
   throwBonusDamagesMax: 0
   throwBonusDamagesMin: 0
   throwAimingPoint: {x: 0, y: 0, z: 0}
+  foostepsConcrete: []
+  foostepsGrass: []
+  foostepsWood: []
   canBeDown: 0
   canThrow: 0
   doScaleOnPlayerAmount: 1

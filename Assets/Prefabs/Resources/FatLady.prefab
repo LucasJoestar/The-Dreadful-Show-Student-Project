@@ -551,6 +551,10 @@ MonoBehaviour:
   angryHealthStep: 75
   snackHealValue: 50
   snackRestaureTimer: 0
+  eatSound: {fileID: 8300000, guid: f76900db99c35574c9c766f741612b3b, type: 3}
+  brutalHit:
+  - {fileID: 8300000, guid: f76900db99c35574c9c766f741612b3b, type: 3}
+  - {fileID: 8300000, guid: 624b06019dc420b40a4093a4897bb57d, type: 3}
 --- !u!95 &95173227102487408
 Animator:
   serializedVersion: 3
@@ -714,7 +718,8 @@ AudioSource:
   m_GameObject: {fileID: 1366139620063678}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1

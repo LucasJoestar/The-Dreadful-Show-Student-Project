@@ -669,6 +669,24 @@ MonoBehaviour:
   xMovementAfterDrunkenDodge: 1.5
   drunkJumpForce: 225
   soberUpTimer: 0
+  crashSound: {fileID: 8300000, guid: 0a3d7bbc19e9c4b4aac0fb5748cbdb58, type: 3}
+  drinkSound: {fileID: 8300000, guid: 2906f1615219677489019ef73b09c433, type: 3}
+  fireBreathSound: {fileID: 8300000, guid: d823e6c579177624c85afb8f1e3ba9d2, type: 3}
+  pukeSound: {fileID: 8300000, guid: d7b257bf1947dcc4aaa027afe444a6e6, type: 3}
+  spitFireBallSound: {fileID: 8300000, guid: 5a2d4c138842ceb429e03fdf485060ed, type: 3}
+  spitSound: {fileID: 8300000, guid: 443bf1a2857f4ed46b609f280998b50c, type: 3}
+  attackExtinctHit:
+  - {fileID: 8300000, guid: 9ad43bc4a987a3347ab5c5f80adbf16b, type: 3}
+  - {fileID: 8300000, guid: 6b376a9c871632642b54452ca60bae6c, type: 3}
+  - {fileID: 8300000, guid: c012f049b8a594a4e9d59618403a3b76, type: 3}
+  - {fileID: 8300000, guid: dd0084af3c8a23140a8a57f4371b3f23, type: 3}
+  - {fileID: 8300000, guid: bc058d0b831d3ac4c91786d58a896096, type: 3}
+  attackFiretHit:
+  - {fileID: 8300000, guid: 8381a5968f162614491dcbaa518f1cce, type: 3}
+  - {fileID: 8300000, guid: 8c9c39c0cf827764382f6d801ed7c386, type: 3}
+  - {fileID: 8300000, guid: 4e7ada10adba2e0478e6368dd5d98036, type: 3}
+  - {fileID: 8300000, guid: ad105c08b07cb9147948c1aab7ba8323, type: 3}
+  - {fileID: 8300000, guid: e8a2be16a29578244bd92e3f32b713b1, type: 3}
 --- !u!95 &1843503580909251902
 Animator:
   serializedVersion: 3
@@ -832,12 +850,13 @@ AudioSource:
   m_GameObject: {fileID: 1785089289656064482}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: 533dc2f0f7415f145bc525eb6511b857, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

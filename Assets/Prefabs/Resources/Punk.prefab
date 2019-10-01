@@ -224,6 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67bfa55da9dd26649b9ddf234e621c2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
   animator: {fileID: 95962912165042768}
   burnEffect: {fileID: 0}
   collider: {fileID: 65479407158520200}
@@ -235,12 +236,13 @@ MonoBehaviour:
   IsInvulnerable: 0
   healthCurrent: 75
   healthMax: 75
+  hitSounds: []
+  deathSounds: []
   hitBox: {fileID: 114523981913157094}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
   handsTransform: {fileID: 4715489829254572}
   shadowTransform: {fileID: 4182407236673158}
-  audioSource: {fileID: 0}
   isAttacking: 0
   isFacingRight: 0
   IsPacific: 0
@@ -254,6 +256,9 @@ MonoBehaviour:
   throwBonusDamagesMax: 3
   throwBonusDamagesMin: 0
   throwAimingPoint: {x: 0, y: 0, z: 0}
+  foostepsConcrete: []
+  foostepsGrass: []
+  foostepsWood: []
   canBeDown: 1
   canThrow: 1
   doScaleOnPlayerAmount: 1
@@ -385,7 +390,8 @@ AudioSource:
   m_GameObject: {fileID: 1784521387282082}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1

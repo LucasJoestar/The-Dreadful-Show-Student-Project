@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class TDS_FireBall : MonoBehaviour 
+public class TDS_FireBall : TDS_Object 
 {
     /* TDS_FireBall :
 	 *
@@ -38,6 +38,11 @@ public class TDS_FireBall : MonoBehaviour
     [SerializeField] private Animator animator = null;
 
     /// <summary>
+    /// Audio track to play when the fire ball gets destroyed.
+    /// </summary>
+    [SerializeField] private AudioClip destroySound = null;
+
+    /// <summary>
     /// Indicates if the fire ball is actually destroying itself.
     /// </summary>
     [SerializeField] private bool isDestroying = false;
@@ -56,11 +61,6 @@ public class TDS_FireBall : MonoBehaviour
     /// Hit box of the fire ball.
     /// </summary>
     [SerializeField] private TDS_HitBox hitBox = null;
-
-    /// <summary>
-    /// Photon view of the fire ball.
-    /// </summary>
-    [SerializeField] private PhotonView photonView = null;
 	#endregion
 
 	#region Methods
@@ -75,17 +75,14 @@ public class TDS_FireBall : MonoBehaviour
     }
 
     /// <summary>
-    /// Destroys the fire ball.
-    /// </summary>
-    public void Destroy() => Destroy(gameObject);
-
-    /// <summary>
     /// Make the fire ball explode.
     /// </summary>
     private void Explode()
     {
-        hitBox.Desactivate();
+        if (hitBox.IsActive) hitBox.Desactivate();
         animator.SetTrigger("Explosion");
+
+        TDS_SoundManager.Instance.PlayEffectSound(destroySound, audioSource);
     }
 
     /// <summary>
@@ -128,11 +125,6 @@ public class TDS_FireBall : MonoBehaviour
         {
             hitBox = GetComponent<TDS_HitBox>();
             if (!hitBox) Debug.LogWarning("HitBox is missing on Fire Ball !");
-        }
-        if (!photonView)
-        {
-            photonView = GetComponent<PhotonView>();
-            if (!photonView) Debug.LogWarning("PhotonView is missing on Fire Ball !");
         }
     }
 

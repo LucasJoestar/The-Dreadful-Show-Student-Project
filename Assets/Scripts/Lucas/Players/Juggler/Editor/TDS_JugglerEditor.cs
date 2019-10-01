@@ -94,6 +94,11 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
     private SerializedProperty juggleTransformIdealLocalPosition = null;
     #endregion
 
+    #region Sounds
+    /// <summary>SerializedProperties for <see cref="TDS_Juggler.lockSound"/> of type <see cref="AudioClip"/>.</summary>
+    private SerializedProperty lockSound = null;
+    #endregion
+
     #endregion
 
     #region Foldouts
@@ -148,6 +153,24 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
 
             // Save this value
             EditorPrefs.SetBool("areJugglerSettingsUnfolded", value);
+        }
+    }
+
+    /// <summary>Backing field for <see cref="AreJugglerSoundsUnfolded"/>.</summary>
+    private bool areJugglerSoundsUnfolded = false;
+
+    /// <summary>
+    /// Indicates if the editor for the Juggler sounds is unfolded.
+    /// </summary>
+    public bool AreJugglerSoundsUnfolded
+    {
+        get { return areJugglerSoundsUnfolded; }
+        set
+        {
+            areJugglerSoundsUnfolded = value;
+
+            // Save this value
+            EditorPrefs.SetBool("areJugglerSoundsUnfolded", value);
         }
     }
 
@@ -350,6 +373,37 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
             TDS_EditorUtility.Vector3Field("Throw Aiming Point", "Position to aim when preparing a throw (in local space)", throwAimingPoint);
         }
     }
+
+
+    /// <summary>
+    /// Draws editor for the Juggler sounds.
+    /// </summary>
+    private void DrawJugglerSounds()
+    {
+        TDS_EditorUtility.PropertyField("Lock", "Sound to play when locking an enemy", lockSound);
+    }
+
+    /// <summary>
+    /// Here are all elements drawn in the sound editor.
+    /// </summary>
+    protected override void SoundEditor()
+    {
+        base.SoundEditor();
+
+        GUILayout.Space(15);
+        EditorGUILayout.BeginVertical("Box");
+
+        // Button to show or not the Juggler sounds
+        if (TDS_EditorUtility.Button("Juggler", "Wrap / unwrap Juggler Sounds", TDS_EditorUtility.HeaderStyle)) AreJugglerSoundsUnfolded = !areJugglerSoundsUnfolded;
+
+        // If unfolded, draws the custom editor for the Juggler sounds
+        if (areJugglerSoundsUnfolded)
+        {
+            DrawJugglerSounds();
+        }
+
+        EditorGUILayout.EndVertical();
+    }
     #endregion
 
     #region Unity Methods
@@ -378,11 +432,15 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
         aimDetectTags = serializedObject.FindProperty("aimDetectTags");
         juggleTransformIdealLocalPosition = serializedObject.FindProperty("juggleTransformIdealLocalPosition");
 
+        lockSound = serializedObject.FindProperty("lockSound");
+
         // Loads the editor folded & unfolded values of this script
         isJugglerUnfolded = EditorPrefs.GetBool("isJugglerUnfolded", isJugglerUnfolded);
         areJugglerDebugsUnfolded = EditorPrefs.GetBool("areJugglerDebugsUnfolded", areJugglerDebugsUnfolded);
         areJugglerComponentsUnfolded = EditorPrefs.GetBool("areJugglerComponentsUnfolded", areJugglerComponentsUnfolded);
         areJugglerSettingsUnfolded = EditorPrefs.GetBool("areJugglerSettingsUnfolded", areJugglerSettingsUnfolded);
+
+        areJugglerSoundsUnfolded = EditorPrefs.GetBool("areJugglerSoundsUnfolded", areJugglerSoundsUnfolded);
     }
 
     // Implement this function to make a custom inspector

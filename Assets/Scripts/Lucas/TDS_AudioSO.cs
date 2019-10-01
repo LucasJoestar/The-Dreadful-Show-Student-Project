@@ -136,6 +136,14 @@ public class TDS_AudioSO : ScriptableObject
     /// </summary>
     public AudioClip S_BlowSmall { get { return TDS_SoundManager.GetRandomClip(s_BlowSmall); } }
 
+    /// <summary>Backing field for <see cref="S_BrutalHit"/>.</summary>
+    [SerializeField] private AudioClip[] s_BrutalHit = new AudioClip[] { };
+
+    /// <summary>
+    /// Returns a random brutal hit.
+    /// </summary>
+    public AudioClip S_BrutalHit { get { return TDS_SoundManager.GetRandomClip(s_BrutalHit); } }
+
 
     /// <summary>Backing field for <see cref="S_Parry"/>.</summary>
     [SerializeField] private AudioClip[] s_Parry = new AudioClip[] { };

@@ -398,7 +398,7 @@ public abstract class TDS_Damageable : TDS_Object
         OnTakeDamage?.Invoke(_damage);
 
         // Play hit sound
-        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Hit, audioSource);
+        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Hit, .75f, audioSource);
 
         if (hitSounds.Length > 0) TDS_SoundManager.Instance.PlayEffectSound(hitSounds, audioSource);
 

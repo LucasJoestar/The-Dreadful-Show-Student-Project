@@ -64,6 +64,32 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
     private SerializedProperty drunkJumpForce = null;
     #endregion
 
+    #region Sounds
+    /// <summary>SerializedProperties for <see cref="TDS_FireEater.crashSound"/> of type <see cref="AudioClip"/>.</summary>
+    private SerializedProperty crashSound = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_FireEater.drinkSound"/> of type <see cref="AudioClip"/>.</summary>
+    private SerializedProperty drinkSound = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_FireEater.fireBreathSound"/> of type <see cref="AudioClip"/>.</summary>
+    private SerializedProperty fireBreathSound = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_FireEater.pukeSound"/> of type <see cref="AudioClip"/>.</summary>
+    private SerializedProperty pukeSound = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_FireEater.spitSound"/> of type <see cref="AudioClip"/>.</summary>
+    private SerializedProperty spitSound = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_FireEater.spitFireBallSound"/> of type <see cref="AudioClip"/>.</summary>
+    private SerializedProperty spitFireBallSound = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_FireEater.attackExtinctHit"/> of type <see cref="AudioClip"/>[].</summary>
+    private SerializedProperty attackExtinctHit = null;
+
+    /// <summary>SerializedProperties for <see cref="TDS_FireEater.attackFiretHit"/> of type <see cref="AudioClip"/>[].</summary>
+    private SerializedProperty attackFiretHit = null;
+    #endregion
+
     #endregion
 
     #region Foldouts
@@ -118,6 +144,24 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
 
             // Save this value
             EditorPrefs.SetBool("areFireEaterSettingsUnfolded", value);
+        }
+    }
+
+    /// <summary>Backing field for <see cref="AreFireEaterSoundsUnfolded"/>.</summary>
+    private bool areFireEaterSoundsUnfolded = false;
+
+    /// <summary>
+    /// Indicates if the editor of the Fire Eater sounds.
+    /// </summary>
+    public bool AreFireEaterSoundsUnfolded
+    {
+        get { return areFireEaterSoundsUnfolded; }
+        set
+        {
+            areFireEaterSoundsUnfolded = value;
+
+            // Save this value
+            EditorPrefs.SetBool("areFireEaterSoundsUnfolded", value);
         }
     }
 
@@ -306,6 +350,47 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
 
         GUILayout.Space(3);
     }
+
+
+    /// <summary>
+    /// Draws editor for the fire eater sounds.
+    /// </summary>
+    private void DrawFireEaterSounds()
+    {
+        TDS_EditorUtility.PropertyField("Crash", "Sound to play when crashing on the floor", crashSound);
+        TDS_EditorUtility.PropertyField("Drink", "Sound to play when drinking", drinkSound);
+        TDS_EditorUtility.PropertyField("Fire Breath", "Sound to play when spitting fire", fireBreathSound);
+        TDS_EditorUtility.PropertyField("Puke", "Sound to play when puking, pukeSound", pukeSound);
+        TDS_EditorUtility.PropertyField("Spit Fire Ball", "Sound to play when spitting fire ball", spitFireBallSound);
+        TDS_EditorUtility.PropertyField("Spit Alcohol", "Sound to play when spitting alcohol", spitSound);
+
+        GUILayout.Space(5);
+
+        TDS_EditorUtility.PropertyField("Extinct Attack", "Sound to play when hitting something with an extinct torch", attackExtinctHit);
+        TDS_EditorUtility.PropertyField("Fire Attack", "Sound to play when hitting something with a lighting torch", attackFiretHit);
+    }
+
+    /// <summary>
+    /// Here are all elements drawn in the sound editor.
+    /// </summary>
+    protected override void SoundEditor()
+    {
+        base.SoundEditor();
+
+        GUILayout.Space(15);
+        EditorGUILayout.BeginVertical("Box");
+
+        // Button to show or not the fire eater sounds
+        if (TDS_EditorUtility.Button("Fire Eater", "Wrap / unwrap Fire Eater Sounds", TDS_EditorUtility.HeaderStyle)) AreFireEaterSoundsUnfolded = !areFireEaterSoundsUnfolded;
+
+        // If unfolded, draws the custom editor for the fire eater sounds
+        if (areFireEaterSoundsUnfolded)
+        {
+            DrawFireEaterSounds();
+        }
+
+        EditorGUILayout.EndVertical();
+    }
     #endregion
 
     #region Unity Methods
@@ -329,7 +414,16 @@ public class TDS_FireEaterEditor : TDS_PlayerEditor
         soberUpTimer = serializedObject.FindProperty("soberUpTimer");
         xMovementAfterDrunkenDodge = serializedObject.FindProperty("xMovementAfterDrunkenDodge");
         drunkJumpForce = serializedObject.FindProperty("drunkJumpForce");
-        
+
+        crashSound = serializedObject.FindProperty("crashSound");
+        drinkSound = serializedObject.FindProperty("drinkSound");
+        fireBreathSound = serializedObject.FindProperty("fireBreathSound");
+        pukeSound = serializedObject.FindProperty("pukeSound");
+        spitFireBallSound = serializedObject.FindProperty("spitFireBallSound");
+        spitSound = serializedObject.FindProperty("spitSound");
+        attackExtinctHit = serializedObject.FindProperty("attackExtinctHit");
+        attackFiretHit = serializedObject.FindProperty("attackFiretHit");
+
         // Loads the editor folded & unfolded values of this script
         isFireEaterUnfolded = EditorPrefs.GetBool("isFireEaterUnfolded", isFireEaterUnfolded);
         areFireEaterComponentsUnfolded = EditorPrefs.GetBool("areFireEaterComponentsUnfolded", areFireEaterComponentsUnfolded);

@@ -705,6 +705,11 @@ public abstract class TDS_Character : TDS_Damageable
     protected void PlaySlide() => TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Slide, audioSource);
 
     /// <summary>
+    /// Plays sound for when hitting something brutally.
+    /// </summary>
+    protected void PlayBrutalHit() => TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_BrutalHit, audioSource);
+
+    /// <summary>
     /// Plays sound for this character's footsteps.
     /// </summary>
     protected void PlayFootsteps()

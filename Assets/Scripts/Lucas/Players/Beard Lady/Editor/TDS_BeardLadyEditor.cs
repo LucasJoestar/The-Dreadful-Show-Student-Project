@@ -37,31 +37,36 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
     #region SerializedProperties
 
     #region Components & References
-    /// <summary>SerializedProperties for <see cref="TDS_Player.beardFXTransformPV"/> of type <see cref="PhotonView"/>.</summary>
+    /// <summary>SerializedProperties for <see cref="TDS_BeardLady.beardFXTransformPV"/> of type <see cref="PhotonView"/>.</summary>
     private SerializedProperty beardFXTransformPV = null;
     #endregion
 
     #region Variables
-    /// <summary>SerializedProperties for <see cref="TDS_Player.currentBeardState"/> of type <see cref="BeardState"/>.</summary>
+    /// <summary>SerializedProperties for <see cref="TDS_BeardLady.currentBeardState"/> of type <see cref="BeardState"/>.</summary>
     private SerializedProperty currentBeardState = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Player.beardGrowInterval"/> of type <see cref="float"/>.</summary>
+    /// <summary>SerializedProperties for <see cref="TDS_BeardLady.beardGrowInterval"/> of type <see cref="float"/>.</summary>
     private SerializedProperty beardGrowInterval = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Player.beardHealInterval"/> of type <see cref="float"/>.</summary>
+    /// <summary>SerializedProperties for <see cref="TDS_BeardLady.beardHealInterval"/> of type <see cref="float"/>.</summary>
     private SerializedProperty beardHealInterval = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Player.growBeardTimer"/> of type <see cref="float"/>.</summary>
+    /// <summary>SerializedProperties for <see cref="TDS_BeardLady.growBeardTimer"/> of type <see cref="float"/>.</summary>
     private SerializedProperty growBeardTimer = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Player.healBeardTimer"/> of type <see cref="float"/>.</summary>
+    /// <summary>SerializedProperties for <see cref="TDS_BeardLady.healBeardTimer"/> of type <see cref="float"/>.</summary>
     private SerializedProperty healBeardTimer = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Player.beardCurrentLife"/> of type <see cref="int"/>.</summary>
+    /// <summary>SerializedProperties for <see cref="TDS_BeardLady.beardCurrentLife"/> of type <see cref="int"/>.</summary>
     private SerializedProperty beardCurrentLife = null;
 
-    /// <summary>SerializedProperties for <see cref="TDS_Player.beardMaxLife"/> of type <see cref="int"/>.</summary>
+    /// <summary>SerializedProperties for <see cref="TDS_BeardLady.beardMaxLife"/> of type <see cref="int"/>.</summary>
     private SerializedProperty beardMaxLife = null;
+    #endregion
+
+    #region Sound
+    /// <summary>SerializedProperties for <see cref="TDS_BeardLady.tornadoSound"/> of type <see cref="AudioClip"/>.</summary>
+    private SerializedProperty tornadoSound = null;
     #endregion
 
     #endregion
@@ -118,6 +123,24 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
 
             // Save this value
             EditorPrefs.SetBool("areBeardLadySettingsUnfolded", value);
+        }
+    }
+
+    /// <summary>Backing field for <see cref="AreBeardLadySoundsUnfolded"/>.</summary>
+    private bool areBeardLadySoundsUnfolded = false;
+
+    /// <summary>
+    /// Indicates if the editor of the Beard Lady is unfolded.
+    /// </summary>
+    public bool AreBeardLadySoundsUnfolded
+    {
+        get { return areBeardLadySoundsUnfolded; }
+        set
+        {
+            areBeardLadySoundsUnfolded = value;
+
+            // Save this value
+            EditorPrefs.SetBool("areBeardLadySoundsUnfolded", value);
         }
     }
 
@@ -298,6 +321,37 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
             serializedObject.Update();
         }
     }
+
+
+    /// <summary>
+    /// Draws editor for the Beard Lady sounds.
+    /// </summary>
+    private void DrawBeardLadySounds()
+    {
+        TDS_EditorUtility.PropertyField("Tornado", "Audio track for tornado attack", tornadoSound);
+    }
+
+    /// <summary>
+    /// Here are all elements drawn in the sound editor.
+    /// </summary>
+    protected override void SoundEditor()
+    {
+        base.SoundEditor();
+
+        GUILayout.Space(15);
+        EditorGUILayout.BeginVertical("Box");
+
+        // Button to show or not the character sounds
+        if (TDS_EditorUtility.Button("Beard Lady", "Wrap / unwrap Beard Lady Sounds", TDS_EditorUtility.HeaderStyle)) AreBeardLadySoundsUnfolded = !areBeardLadySoundsUnfolded;
+
+        // If unfolded, draws the custom editor for the character sounds
+        if (areBeardLadySoundsUnfolded)
+        {
+            DrawBeardLadySounds();
+        }
+
+        EditorGUILayout.EndVertical();
+    }
     #endregion
 
     #region Unity Methods
@@ -322,11 +376,15 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
         beardCurrentLife = serializedObject.FindProperty("beardCurrentLife");
         beardMaxLife = serializedObject.FindProperty("beardMaxLife");
 
+        tornadoSound = serializedObject.FindProperty("tornadoSound");
+
         // Loads the editor folded & unfolded values of this script
         isBeardLadyUnfolded = EditorPrefs.GetBool("isBeardLadyUnfolded", isBeardLadyUnfolded);
         areBeardLadyComponentsUnfolded = EditorPrefs.GetBool("areBeardLadyComponentsUnfolded", areBeardLadyComponentsUnfolded);
         areBeardLadyDebugsUnfolded = EditorPrefs.GetBool("areBeardLadyDebugsUnfolded", areBeardLadyDebugsUnfolded);
         areBeardLadySettingsUnfolded = EditorPrefs.GetBool("areBeardLadySettingsUnfolded", areBeardLadySettingsUnfolded);
+
+        areBeardLadySoundsUnfolded = EditorPrefs.GetBool("areBeardLadySoundsUnfolded", areBeardLadySoundsUnfolded);
     }
 
     // Implement this function to make a custom inspector

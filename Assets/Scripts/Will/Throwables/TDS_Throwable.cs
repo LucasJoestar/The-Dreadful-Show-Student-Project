@@ -215,7 +215,7 @@ public class TDS_Throwable : TDS_Object
     protected virtual void DestroyFeedback()
     {
         isDesactivated = true;
-        gameObject.SetActive(true);
+        gameObject.SetActive(false);
 
         if (!feedbackPV) return;
 
@@ -329,9 +329,10 @@ public class TDS_Throwable : TDS_Object
     /// </summary>
     protected virtual void ResetThrowable()
     {
-        LoseDurability();
         hitBox.Desactivate();
-        SetIndependant();
+        LoseDurability();
+        
+        if (!isDesactivated) SetIndependant();
     }
 
     /// <summary>
@@ -416,13 +417,16 @@ public class TDS_Throwable : TDS_Object
     // OnCollisionEnter is called when this collider/rigidbody has begun touching another rigidbody/collider
     protected virtual void OnCollisionEnter(Collision other)
     {
-        if (hitBox.IsActive)
+        if (Time.timeSinceLevelLoad > .1f)
         {
-            ResetThrowable();
-        }
+            if (hitBox.IsActive)
+            {
+                ResetThrowable();
+            }
 
-        // Play sound
-        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Drop, audioSource);
+            // Play sound
+            TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Drop, audioSource);
+        }
     }
 
     private void OnDestroy()

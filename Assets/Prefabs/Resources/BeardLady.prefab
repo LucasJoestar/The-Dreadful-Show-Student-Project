@@ -500,6 +500,7 @@ MonoBehaviour:
   beardMaxLife: 3
   growBeardTimer: 0
   healBeardTimer: 0
+  tornadoSound: {fileID: 8300000, guid: 649e6f5a68a88d84c8c185109e662312, type: 3}
 --- !u!95 &7132007744230118298
 Animator:
   serializedVersion: 3
@@ -663,7 +664,8 @@ AudioSource:
   m_GameObject: {fileID: 7181379643535501126}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1

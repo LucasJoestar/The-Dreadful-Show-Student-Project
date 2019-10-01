@@ -329,26 +329,52 @@ public class TDS_SoundManager : MonoBehaviour
     public void PlayUIReady() => PlayUISound(TDS_GameManager.AudioAsset.S_UI_Ready);
     #endregion
 
-    #region Feedback
+    #region Effects
     /// <summary>
     /// Plays an effect sound.
     /// </summary>
+    /// <param name="_clip">Clip to play.</param>
+    /// <param name="_source">Audio source to use.</param>
     public void PlayEffectSound(AudioClip _clip, AudioSource _source = null)
+    {
+        PlayEffectSound(_clip, 1, _source);
+    }
+
+    /// <summary>
+    /// Plays an effect sound.
+    /// </summary>
+    /// <param name="_clip">Clip to play.</param>
+    /// <param name="_volumeScale">Volume scale of the sound(between 0 & 1).</param>
+    /// <param name="_source">Audio source to use.</param>
+    public void PlayEffectSound(AudioClip _clip, float _volumeScale, AudioSource _source = null)
     {
         if (!_source)
         {
             if (!effectsSource) return;
             _source = effectsSource;
         }
-        _source.PlayOneShot(_clip);
+        _source.PlayOneShot(_clip, _volumeScale);
     }
 
     /// <summary>
     /// Plays a random effect sound from a given array.
     /// </summary>
+    /// <param name="_clips">Clips to play one from randomly.</param>
+    /// <param name="_source">Audio source to use.</param>
     public void PlayEffectSound(AudioClip[] _clips, AudioSource _source = null)
     {
-        PlayEffectSound(GetRandomClip(_clips), _source);
+        PlayEffectSound(_clips, 1, _source);
+    }
+
+    /// <summary>
+    /// Plays a random effect sound from a given array.
+    /// </summary>
+    /// <param name="_clips">Clips to play one from randomly.</param>
+    /// <param name="_volumeScale">Volume scale of the sound(between 0 & 1).</param>
+    /// <param name="_source">Audio source to use.</param>
+    public void PlayEffectSound(AudioClip[] _clips, float _volumeScale, AudioSource _source = null)
+    {
+        PlayEffectSound(GetRandomClip(_clips), _volumeScale, _source);
     }
     #endregion
 

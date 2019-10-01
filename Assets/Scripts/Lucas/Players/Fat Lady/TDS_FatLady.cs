@@ -177,6 +177,13 @@ public class TDS_FatLady : TDS_Player
     [SerializeField] private float snackRestaureTimer = 0;
     #endregion
 
+    #region Sounds
+    /// <summary>
+    /// Sound to play for when eating food.
+    /// </summary>
+    [SerializeField] private AudioClip eatSound = null;
+    #endregion
+
     #endregion
 
     #region Methods
@@ -394,6 +401,13 @@ public class TDS_FatLady : TDS_Player
     {
         SetFatLadyAnim((FatLadyAnimState)_state);
     }
+    #endregion
+
+    #region Sounds
+    /// <summary>
+    /// Plays sound for when eating food.
+    /// </summary>
+    protected void PlayEat() => TDS_SoundManager.Instance.PlayEffectSound(eatSound, audioSource);
     #endregion
 
     #endregion

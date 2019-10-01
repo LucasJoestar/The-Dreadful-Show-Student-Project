@@ -264,6 +264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f1913d5536b72a4495a0f9f8fef8be5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
   animator: {fileID: 9130136411102570085}
   burnEffect: {fileID: 0}
   collider: {fileID: 9130136411102570086}
@@ -275,12 +276,13 @@ MonoBehaviour:
   IsInvulnerable: 0
   healthCurrent: 100
   healthMax: 100
+  hitSounds: []
+  deathSounds: []
   hitBox: {fileID: 9130136411807208502}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
   handsTransform: {fileID: 9130136410516421846}
   shadowTransform: {fileID: 9130136412106016834}
-  audioSource: {fileID: 0}
   isAttacking: 0
   isFacingRight: 0
   IsPacific: 0
@@ -294,6 +296,9 @@ MonoBehaviour:
   throwBonusDamagesMax: 5
   throwBonusDamagesMin: 2
   throwAimingPoint: {x: 0, y: 0, z: 0}
+  foostepsConcrete: []
+  foostepsGrass: []
+  foostepsWood: []
   canBeDown: 0
   canThrow: 0
   doScaleOnPlayerAmount: 1
@@ -523,6 +528,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -611,6 +617,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

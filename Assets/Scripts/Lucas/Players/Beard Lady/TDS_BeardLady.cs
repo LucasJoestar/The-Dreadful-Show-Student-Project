@@ -189,6 +189,13 @@ public class TDS_BeardLady : TDS_Player
     [SerializeField] private float healBeardTimer = 0;
     #endregion
 
+    #region Sounds
+    /// <summary>
+    /// Audio clip for when the beard lady make a tornado attack.
+    /// </summary>
+    [SerializeField] private AudioClip tornadoSound = null;
+    #endregion
+
     #endregion
 
     #region Methods
@@ -355,6 +362,13 @@ public class TDS_BeardLady : TDS_Player
 
         ResetBeardGrow();
     }
+    #endregion
+
+    #region Sounds
+    /// <summary>
+    /// Plays sound for tornado effect.
+    /// </summary>
+    protected void PlayTornado() => TDS_SoundManager.Instance.PlayEffectSound(tornadoSound, audioSource);
     #endregion
 
     #endregion
