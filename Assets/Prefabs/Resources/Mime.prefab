@@ -406,7 +406,7 @@ MonoBehaviour:
   sprite: {fileID: 3812852250889470823}
   canBeMoved: 1
   isDead: 0
-  isIndestructible: 1
+  isIndestructible: 0
   IsInvulnerable: 0
   healthCurrent: 75
   healthMax: 75
@@ -419,8 +419,8 @@ MonoBehaviour:
   shadowTransform: {fileID: 3812852251016257647}
   isAttacking: 0
   isFacingRight: 0
-  IsPacific: 1
-  IsParalyzed: 1
+  IsPacific: 0
+  IsParalyzed: 0
   aimAngle: 45
   speedAccelerationTime: 1
   speedCoef: 1

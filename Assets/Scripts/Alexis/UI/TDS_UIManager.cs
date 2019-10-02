@@ -387,7 +387,6 @@ public class TDS_UIManager : PunBehaviour
                 }
                 else if (TDS_GameManager.InputsAsset.Controllers[0].GetAxisDown(AxisType.Horizontal, out _value))
                 {
-                    Debug.Log(_value); 
                     _horizontalAxisAction?.Invoke(_value);
                 }
                 else if(TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Pause))

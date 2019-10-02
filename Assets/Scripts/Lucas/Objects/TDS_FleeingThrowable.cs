@@ -103,6 +103,17 @@ public abstract class TDS_FleeingThrowable : TDS_Throwable
     }
 
     /// <summary>
+    /// Flips the object.
+    /// </summary>
+    public void Flip()
+    {
+        transform.Rotate(Vector3.up, 180);
+        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z * -1);
+
+        isFacingRight = !isFacingRight;
+    }
+
+    /// <summary>
     /// Set animal animation.
     /// </summary>
     /// <param name="_animationID">ID of the new animation.</param>

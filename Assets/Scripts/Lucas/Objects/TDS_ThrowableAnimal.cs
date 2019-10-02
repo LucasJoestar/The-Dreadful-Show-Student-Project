@@ -64,10 +64,7 @@ public class TDS_ThrowableAnimal : TDS_FleeingThrowable
             {
                 if (_direction != isFacingRight.ToSign())
                 {
-                    transform.Rotate(Vector3.up, 180);
-                    transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z * -1);
-
-                    isFacingRight = !isFacingRight;
+                    Flip();
                 }
 
                 // New destination ignored, got to be fixed
@@ -107,7 +104,12 @@ public class TDS_ThrowableAnimal : TDS_FleeingThrowable
     /// <param name="_z">Z coordinate.</param>
     public void SetDestination(float _x, float _y, float _z)
     {
-        agent.SetDestination(new Vector3(_x, _y, _z));
+        Vector3 _destination = new Vector3(_x, _y, _z);
+        if (Mathf.Sign(_destination.x - transform.position.x) != isFacingRight.ToSign())
+        {
+            Flip();
+        }
+        agent.SetDestination(_destination);
     }
     #endregion
 
