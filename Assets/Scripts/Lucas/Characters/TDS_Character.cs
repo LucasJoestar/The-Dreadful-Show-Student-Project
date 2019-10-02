@@ -480,11 +480,18 @@ public abstract class TDS_Character : TDS_Damageable
         if (!PhotonNetwork.isMasterClient)
         {
             TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "GrabObject"), new object[] { _throwable.photonView.viewID });
+
+            if (!throwable.IsHeld) SetThrowable(_throwable);
             return false;
         }
 
         // Take the object if possible
-        if (throwable || !_throwable.PickUp(this)) return false;
+        if (throwable) return false;
+        if (!_throwable.PickUp(this))
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "RemoveThrowable"), new object[] { });
+            return false;
+        }
 
         return true;
     }

@@ -81,9 +81,9 @@ public class TDS_Throwable : TDS_Object
     public TDS_HitBox HitBox { get { return hitBox; } }
 
     /// <summary>
-    /// Photon view of the object used for feedback purpose.
+    /// FX used for feedback purpose.
     /// </summary>
-    [SerializeField] private PhotonView feedbackPV;
+    [SerializeField] private GameObject feedbackFX;
 
     /// <summary>
     /// Rigidbody of the object.
@@ -101,9 +101,9 @@ public class TDS_Throwable : TDS_Object
 
     [Header("Settings")]
     /// <summary>
-    /// Indicates if the throwable is desactivated or not.
+    /// Indicates if the throwable is destroyed or not.
     /// </summary>
-    private bool isDesactivated = false;
+    private bool isDestroyed = false;
 
     /// <summary>
     /// Indicates if the throwable is currently held by someone.
@@ -157,10 +157,9 @@ public class TDS_Throwable : TDS_Object
     /// </summary>
     protected virtual void BounceObject()
     {
-        // Bounce the object from other players.
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "BounceObject"), new object[] { transform.position.x, transform.position.y, transform.position.z, rigidbody.velocity.x, rigidbody.velocity.y, rigidbody.velocity.z });
-
         rigidbody.velocity *= bouncePower * -1;
+
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "BounceObject"), new object[] { transform.position.x, transform.position.y, transform.position.z, rigidbody.velocity.x, rigidbody.velocity.y, rigidbody.velocity.z });
     }
 
     /// <summary>
@@ -175,33 +174,17 @@ public class TDS_Throwable : TDS_Object
     protected virtual void BounceObject(float _xPos, float _yPos, float _zPos, float _xVelo, float _yVelo, float _zVelo)
     {
         transform.position = new Vector3(_xPos, _yPos, _zPos);
-        rigidbody.velocity = new Vector3(_xVelo, _yVelo, _zVelo) * bouncePower * -1;
+        rigidbody.velocity = new Vector3(_xVelo, _yVelo, _zVelo);
     }
 
     protected void CallDestroyEvent() => OnDestroyed?.Invoke();
-
-    /// <summary>
-    /// Destroys this object.
-    /// </summary>
-    public override void Destroy()
-    {
-        if (!PhotonNetwork.isMasterClient) return;
-
-        if (feedbackPV) PhotonNetwork.Destroy(feedbackPV);
-        base.Destroy();
-    }
 
     /// <summary>
     /// Destroy the gameObject Throwable if the durability is less or equal to zero 
     /// </summary>
     protected virtual void DestroyThrowableObject()
     {
-        if (isDesactivated) return;
-        if (!PhotonNetwork.isMasterClient)
-        {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "DestroyThrowableObject"), new object[] { });
-            return;
-        }
+        if (isDestroyed || !PhotonNetwork.isMasterClient) return;
 
         OnDestroyed?.Invoke();
 
@@ -216,13 +199,20 @@ public class TDS_Throwable : TDS_Object
     /// </summary>
     protected virtual void DestroyFeedback()
     {
-        isDesactivated = true;
-        gameObject.SetActive(false);
+        if (isDestroyed) return;
 
-        if (!feedbackPV) return;
+        isDestroyed = true;
 
-        feedbackPV.transform.SetParent(null);
-        feedbackPV.gameObject.SetActive(true);
+        rigidbody.isKinematic = true;
+        collider.enabled = false;
+        sprite.enabled = false;
+        shadow.SetActive(false);
+
+        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_MagicPoof, audioSource);
+
+        if (!feedbackFX) return;
+
+        feedbackFX.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -274,7 +264,7 @@ public class TDS_Throwable : TDS_Object
     /// </summary>
     protected virtual void OnHitSomething()
     {
-        BounceObject();
+        if (PhotonNetwork.isMasterClient) BounceObject();
         ResetThrowable();
 
         // Play sound
@@ -294,10 +284,10 @@ public class TDS_Throwable : TDS_Object
         owner = _owner;
         owner.SetThrowable(this);
 
+        if (hitBox.IsActive) hitBox.Desactivate();
+
         if (PhotonNetwork.isMasterClient)
         {
-            if (hitBox.IsActive) hitBox.Desactivate();
-
             // Pickup the throwable for other players
             TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PickUp"), new object[] { _owner.PhotonID });
         }
@@ -331,13 +321,18 @@ public class TDS_Throwable : TDS_Object
     /// </summary>
     protected virtual void ResetThrowable()
     {
-        hitBox.Desactivate();
-        LoseDurability();
+        SetIndependant();
 
-        if (!isDesactivated)
+        if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetIndependant"), new object[] { });
-            SetIndependant();
+            LoseDurability();
+
+            if (!isDestroyed) TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "LoseDurability"), new object[] { });
+            
+        }
+        else
+        {
+            if (ObjectDurability == 1) DestroyFeedback();
         }
     }
 
@@ -346,6 +341,9 @@ public class TDS_Throwable : TDS_Object
     /// </summary>
     protected virtual void SetIndependant()
     {
+        if (hitBox.IsActive) hitBox.Desactivate();
+        if (!owner) return;
+
         owner = null;
         gameObject.layer = LayerMask.NameToLayer("Object");
     }
@@ -366,10 +364,7 @@ public class TDS_Throwable : TDS_Object
             TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Throw"), new object[] { transform.position.x, transform.position.y, transform.position.z, _finalPosition.x, _finalPosition.y, _finalPosition.z, _angle, _bonusDamage });
         }
 
-        if (PhotonNetwork.isMasterClient)
-        {
-            ActivateHitbox(_bonusDamage);
-        }
+        ActivateHitbox(_bonusDamage);
 
         transform.SetParent(null, true);
 
@@ -437,7 +432,7 @@ public class TDS_Throwable : TDS_Object
 
     private void OnDestroy()
     {
-        if (owner && PhotonNetwork.connected && gameObject.activeInHierarchy && !isDesactivated)
+        if (owner && PhotonNetwork.connected && gameObject.activeInHierarchy && !isDestroyed)
         {
             owner.DropObject();
         }

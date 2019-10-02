@@ -34,7 +34,6 @@ public class TDS_Object : PunBehaviour
     public virtual void Destroy()
     {
         if (!PhotonNetwork.isMasterClient) return;
-
         PhotonNetwork.Destroy(photonView);
     }
     #endregion

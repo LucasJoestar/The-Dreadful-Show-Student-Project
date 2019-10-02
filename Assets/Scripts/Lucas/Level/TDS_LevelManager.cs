@@ -73,9 +73,9 @@ public class TDS_LevelManager : PunBehaviour
 
 
     /// <summary>
-    /// Points where to spawn at game start.
+    /// Point where to spawn at game start.
     /// </summary>
-    public Vector3[] StartSpawnPoints = new Vector3[] { };
+    public Vector3 StartSpawnPoint = new Vector3();
 
 
     /// <summary>
@@ -152,14 +152,18 @@ public class TDS_LevelManager : PunBehaviour
     /// </summary>
     public void Spawn()
     {
+        Vector2 _randomPos = new Vector2();
+
         if (PhotonNetwork.offlineMode)
         {
             for (int i = 0; i < TDS_GameManager.PlayersInfo.Count; i++)
             {
+                _randomPos = Random.insideUnitCircle;
+
                 TDS_PlayerInfo _info = TDS_GameManager.PlayersInfo[i];
                 if ((_info != null) && (_info.PlayerType != PlayerType.Unknown))
                 {
-                    otherPlayers.Add((Instantiate(Resources.Load(_info.PlayerType.ToString()), StartSpawnPoints[0], Quaternion.identity) as GameObject).GetComponent<TDS_Player>());
+                    otherPlayers.Add((Instantiate(Resources.Load(_info.PlayerType.ToString()), new Vector3(StartSpawnPoint.x + _randomPos.x, StartSpawnPoint.y, StartSpawnPoint.z + _randomPos.y), Quaternion.identity) as GameObject).GetComponent<TDS_Player>());
                 }
             }
 
@@ -167,7 +171,9 @@ public class TDS_LevelManager : PunBehaviour
         }
         else if (TDS_GameManager.LocalPlayer != PlayerType.Unknown)
         {
-            localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), StartSpawnPoints[0], Quaternion.identity, 0).GetComponent<TDS_Player>();
+            _randomPos = Random.insideUnitCircle;
+
+            localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), new Vector3(StartSpawnPoint.x + _randomPos.x, StartSpawnPoint.y, StartSpawnPoint.z + _randomPos.y), Quaternion.identity, 0).GetComponent<TDS_Player>();
             TDS_Camera.Instance.Target = localPlayer.transform;
         }
     }

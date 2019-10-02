@@ -189,8 +189,11 @@ public class TDS_HitBox : MonoBehaviour
     /// <param name="_target">Target to hit.</param>
     private void InflictDamages(TDS_Damageable _target)
     {
+        // Triggers event
+        OnTouch?.Invoke();
+
         // Attack the target
-        if (CurrentAttack.Attack(this, _target) < -1) return;
+        if (!PhotonNetwork.isMasterClient || (CurrentAttack.Attack(this, _target) < -1)) return;
 
         // Call local method on the character who hit
         if (Owner)
@@ -204,9 +207,6 @@ public class TDS_HitBox : MonoBehaviour
                 TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", Owner.photonView.owner, TDS_RPCManager.GetInfo(Owner.photonView, Owner.GetType(), "HitCallback"), new object[] { _target.Collider.bounds.center.x, _target.Collider.bounds.max.y, _target.transform.position.z });
             }
         }
-
-        // Triggers event
-        OnTouch?.Invoke();
     }
     #endregion
 

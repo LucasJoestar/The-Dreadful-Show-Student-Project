@@ -58,23 +58,15 @@ public class TDS_WhiteRabbit : TDS_Consumable
     private float boundRight; 
     [SerializeField, Range(1,10)] private float speed;
     [SerializeField] private CustomNavMeshAgent agent;
-    [SerializeField] private PhotonView feedbackPV;
+    [SerializeField] private new BoxCollider collider;
+    [SerializeField] private SpriteRenderer sprite;
+    [SerializeField] private GameObject shadow;
+    [SerializeField] private ParticleSystem feedbackFX;
     #endregion
 
     #region Methods
 
     #region Original Methods
-    /// <summary>
-    /// Destroys this object.
-    /// </summary>
-    public override void Destroy()
-    {
-        if (!PhotonNetwork.isMasterClient) return;
-
-        if (feedbackPV) PhotonNetwork.Destroy(feedbackPV);
-        base.Destroy();
-    }
-
     /// <summary>
     /// Rotate the rabbit (Local and online)
     /// </summary>
@@ -132,12 +124,16 @@ public class TDS_WhiteRabbit : TDS_Consumable
     private void UseFeedback()
     {
         isDesactivated = true;
-        gameObject.SetActive(false);
 
-        if (!feedbackPV) return;
+        collider.enabled = false;
+        sprite.enabled = false;
+        if (shadow) shadow.SetActive(false);
 
-        feedbackPV.transform.SetParent(null);
-        feedbackPV.gameObject.SetActive(true);
+        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_RabbitPoof, audioSource);
+
+        if (!feedbackFX) return;
+
+        feedbackFX.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -173,6 +169,8 @@ public class TDS_WhiteRabbit : TDS_Consumable
     private void Start()
     {
         if (!PhotonNetwork.isMasterClient) return;
+        if (!collider) collider = GetComponent<BoxCollider>();
+        if (!sprite) sprite = GetComponent<SpriteRenderer>();
         if (!agent)
         {
             agent = GetComponent<CustomNavMeshAgent>();

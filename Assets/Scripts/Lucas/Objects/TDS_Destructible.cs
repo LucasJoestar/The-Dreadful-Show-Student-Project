@@ -130,7 +130,6 @@ public class TDS_Destructible : TDS_Damageable
 
         GameObject _instance = PhotonNetwork.Instantiate(_loot.name, _position, Quaternion.identity, 0);
 
-
         if (_rigidbody)
         {
             _rigidbody.AddForce(new Vector3(Random.Range(-250, 250), Random.Range(100, 400), Random.Range(-150, 150)));
