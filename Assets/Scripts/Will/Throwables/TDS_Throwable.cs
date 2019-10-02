@@ -39,6 +39,8 @@ public class TDS_Throwable : TDS_Object
     /// </summary>
     [Header("Owner"), SerializeField] protected TDS_Character owner = null;
 
+    public TDS_Character Owner { get { return owner; } }
+
     /// <summary>
     /// Attack scriptable object used by this throwable to deal damages.
     /// </summary>
@@ -229,7 +231,6 @@ public class TDS_Throwable : TDS_Object
         }
 
         rigidbody.isKinematic = false;
-        transform.SetParent(null, true);
         collider.enabled = true;
         isHeld = false;
 
@@ -366,15 +367,13 @@ public class TDS_Throwable : TDS_Object
 
         ActivateHitbox(_bonusDamage);
 
-        transform.SetParent(null, true);
+        owner.RemoveThrowable();
 
         rigidbody.isKinematic = false;
         rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position,_finalPosition,_angle);
 
         collider.enabled = true;
         isHeld = false;
-
-        owner.RemoveThrowable();
 
         // Play sound
         TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Throw, audioSource);

@@ -52,7 +52,7 @@ public class TDS_UnicycleSiamese : TDS_Enemy
         IsPacific = false; 
     }
 
-    #region OverridenMethods
+    #region OverridenMethod
     /// <summary>
     /// Check if the distance between the player and its target on the x axis is smaller than the minimum attack range
     /// Then check if the distance between the player and its target on the z axis is smaller than the agent's radius  
@@ -127,6 +127,12 @@ public class TDS_UnicycleSiamese : TDS_Enemy
         SetAnimationState((int)EnemyAnimationState.Run);
         while (agent.IsMoving)
         {
+            // If the agent has to go to Vector3.zero, recompute the path
+            if(agent.CurrentPath.PathPoints.Contains(Vector3.zero))
+            {
+                SetEnemyState(EnemyState.ComputingPath);
+                yield break; 
+            }
             //Orientate the agent
             if (isFacingRight && agent.Velocity.x < 0 || !isFacingRight && agent.Velocity.x > 0)
                 Flip();

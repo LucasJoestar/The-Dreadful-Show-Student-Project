@@ -665,7 +665,6 @@ public abstract class TDS_Damageable : TDS_Object
     {
         if (!photonView.isMine && PhotonNetwork.connected)
         {
-            collider.enabled = false;
             if (rigidbody)
             {
                 rigidbody.isKinematic = true;

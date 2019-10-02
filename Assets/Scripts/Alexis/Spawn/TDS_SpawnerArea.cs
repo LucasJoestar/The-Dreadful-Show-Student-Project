@@ -264,7 +264,12 @@ public class TDS_SpawnerArea : PunBehaviour
             IsDesactivated = true;
             OnAreaDesactivated?.Invoke();
             OnOneAreaDesactivated?.Invoke();
-            if (ActivatedAreas.Count == 0) TDS_UIManager.Instance.SwitchCurtains(false);
+            if (ActivatedAreas.Count == 0)
+            {
+                TDS_UIManager.Instance.SwitchCurtains(false);
+
+                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, GetType(), "SwitchCurtains"), new object[] { false });
+            }
             return;
         }
         else if(waveIndex >= waves.Count)
@@ -351,10 +356,12 @@ public class TDS_SpawnerArea : PunBehaviour
     {
         if (spawnedEnemies.Count == 0) return;
 
-        if(waveIndex == 0)
+        if (waveIndex == 0)
         {
             OnStartFight?.Invoke();
             TDS_UIManager.Instance.SwitchCurtains(true);
+
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, GetType(), "SwitchCurtains"), new object[] { true });
         }
         spawnedEnemies.ForEach(e => StartCoroutine(WaitAndActivate(e, waves[waveIndex].IsActivatedByEvent)));
     }

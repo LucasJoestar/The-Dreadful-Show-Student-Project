@@ -399,12 +399,23 @@ public abstract class TDS_Character : TDS_Damageable
     public virtual void Flip()
     {
         isFacingRight = !isFacingRight;
+
+        if (photonView.isMine) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Flip"), new object[] { isFacingRight });
+
         transform.Rotate(Vector3.up, 180);
         transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z * -1);
 
         shadowTransform.localPosition = new Vector3(shadowTransform.localPosition.x, shadowTransform.localPosition.y, shadowTransform.localPosition.z * -1);
 
         OnFlip?.Invoke();
+    }
+
+    /// <summary>
+    /// Flips this character to have they looking at the opposite side.
+    /// </summary>
+    private void Flip(bool _isFacingRight)
+    {
+        if (isFacingRight != _isFacingRight) Flip();
     }
 
     /// <summary>
@@ -461,7 +472,7 @@ public abstract class TDS_Character : TDS_Damageable
         }
 
         // If no throwable, return
-        if (!throwable) return false;
+        if (!throwable || !throwable.IsHeld) return false;
 
         // Drooop
         throwable.Drop();
@@ -481,7 +492,7 @@ public abstract class TDS_Character : TDS_Damageable
         {
             TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "GrabObject"), new object[] { _throwable.photonView.viewID });
 
-            if (!throwable.IsHeld) SetThrowable(_throwable);
+            if (!_throwable.IsHeld) SetThrowable(_throwable);
             return false;
         }
 
@@ -517,6 +528,7 @@ public abstract class TDS_Character : TDS_Damageable
     public virtual bool RemoveThrowable()
     {
         if (!throwable) return false;
+        if (!throwable.IsHeld || (throwable.Owner == this)) throwable.transform.SetParent(null, true);
 
         throwable = null;
         return true;
@@ -584,7 +596,7 @@ public abstract class TDS_Character : TDS_Damageable
         }
 
         // Return false if no throwable
-        if (!throwable) return false;
+        if (!throwable || !throwable.IsHeld) return false;
 
         // Alright, then throw it !
         throwable.Throw(_targetPosition, aimAngle, RandomThrowBonusDamages);

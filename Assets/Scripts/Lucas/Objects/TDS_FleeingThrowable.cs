@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(PhotonTransformView))]
 public abstract class TDS_FleeingThrowable : TDS_Throwable
 {
     /* TDS_ThrowableAnimal :

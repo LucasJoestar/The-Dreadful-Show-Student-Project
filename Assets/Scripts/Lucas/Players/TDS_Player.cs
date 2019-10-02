@@ -1660,16 +1660,6 @@ public class TDS_Player : TDS_Character, IPunObservable
     }
     
     /// <summary>
-    /// Flips this character to have they looking at the opposite side.
-    /// </summary>
-    public override void Flip()
-    {
-        base.Flip();
-
-        if (photonView.isMine) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Flip"), new object[] { });
-    }
-
-    /// <summary>
     /// Freezes the player's movements and actions.
     /// </summary>
     public virtual void FreezePlayer()

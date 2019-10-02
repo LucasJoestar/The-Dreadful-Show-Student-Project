@@ -98,7 +98,7 @@ Transform:
   - {fileID: 7138674074528583078}
   - {fileID: 541950941584291392}
   - {fileID: 3162573478924041362}
-  - {fileID: 3521597560572892585}
+  - {fileID: 3517357207770849270}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -422,6 +422,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -510,6 +511,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -611,7 +613,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b21e1b4c273f9b24dba641e1d7ae69c3, type: 3}
---- !u!4 &3521597560572892585 stripped
+--- !u!4 &3517357207770849270 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4244029294445326, guid: b21e1b4c273f9b24dba641e1d7ae69c3,
     type: 3}

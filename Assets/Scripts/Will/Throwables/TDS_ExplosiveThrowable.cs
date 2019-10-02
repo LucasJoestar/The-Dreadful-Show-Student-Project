@@ -121,15 +121,13 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
             TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Throw"), new object[] { transform.position.x, transform.position.y, transform.position.z, _finalPosition.x, _finalPosition.y, _finalPosition.z, _angle, _bonusDamage });
         }
 
-        transform.SetParent(null, true);
+        owner.RemoveThrowable();
 
         rigidbody.isKinematic = false;
         rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position, _finalPosition, _angle);
 
         collider.enabled = true;
-
-        owner.RemoveThrowable();
-
+        
         gameObject.layer = LayerMask.NameToLayer("Object");
 
         if (hitBox.IsActive)

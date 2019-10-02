@@ -104,6 +104,7 @@ public class TDS_EventsSystem : PunBehaviour
     /// <param name="other"></param>
     private void CheckTriggerValidation(Collider other)
     {
+        Debug.Log("Local => " + isLocal + " | Master => " + PhotonNetwork.isMasterClient + " | Activated => " + isActivated + " | Has Tag => " + other.gameObject.HasTag(detectedTags.ObjectTags) + " | Object => " + other.gameObject.name);
         if ((isLocal || PhotonNetwork.isMasterClient) && !isActivated && other.gameObject.HasTag(detectedTags.ObjectTags)) StartEvents();
     }
 
@@ -113,6 +114,7 @@ public class TDS_EventsSystem : PunBehaviour
     /// <returns></returns>
     protected virtual IEnumerator EventsSystem()
     {
+        Debug.Log("Start");
         isActivated = true;
 
         for (int _i = 0; _i < events.Length; _i++)

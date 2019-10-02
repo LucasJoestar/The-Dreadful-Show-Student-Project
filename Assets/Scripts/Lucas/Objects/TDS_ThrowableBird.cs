@@ -44,7 +44,6 @@ public class TDS_ThrowableBird : TDS_FleeingThrowable
 
         // Trigger animation
         SetAnimationOnline(1);
-        rigidbody.isKinematic = true;
 
         Vector3 _movement = new Vector3(Mathf.Sign(detector.Collider.bounds.center.x - _collider.bounds.center.x), speed, 0);
 
@@ -70,6 +69,16 @@ public class TDS_ThrowableBird : TDS_FleeingThrowable
         }
 
         DestroyThrowableObject();
+    }
+
+    /// <summary>
+    /// Set animal animation.
+    /// </summary>
+    /// <param name="_animationID">ID of the new animation.</param>
+    public override void SetAnimation(int _animationID)
+    {
+        base.SetAnimation(_animationID);
+        if (_animationID == 1) rigidbody.isKinematic = true;
     }
     #endregion
 }

@@ -193,7 +193,7 @@ public class TDS_HitBox : MonoBehaviour
         OnTouch?.Invoke();
 
         // Attack the target
-        if (!PhotonNetwork.isMasterClient || (CurrentAttack.Attack(this, _target) < -1)) return;
+        if (!PhotonNetwork.isMasterClient || !CurrentAttack|| (CurrentAttack.Attack(this, _target) < -1)) return;
 
         // Call local method on the character who hit
         if (Owner)

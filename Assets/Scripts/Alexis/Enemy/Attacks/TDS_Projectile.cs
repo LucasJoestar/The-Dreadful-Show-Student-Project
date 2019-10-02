@@ -2,8 +2,8 @@
 using UnityEngine;
 using Photon; 
 
-[RequireComponent(typeof(PhotonView), typeof(BoxCollider), typeof(Rigidbody))]
-public class TDS_Projectile : PunBehaviour 
+[RequireComponent(typeof(BoxCollider))]
+public class TDS_Projectile : TDS_Object 
 {
     /* TDS_Projectile :
 	 *
@@ -54,8 +54,12 @@ public class TDS_Projectile : PunBehaviour
     [SerializeField] private TDS_HitBox hitBox = null;
     public TDS_HitBox HitBox { get { return hitBox;  } }
 
-    [SerializeField] private AnimationCurve trajectory = new AnimationCurve(); 
+    [SerializeField] private AnimationCurve trajectory = new AnimationCurve();
 
+    [SerializeField] private new BoxCollider collider = null;
+    [SerializeField] private SpriteRenderer sprite = null;
+    [SerializeField] private GameObject shadow = null;
+    [SerializeField] private ParticleSystem feedbackFX = null;
     #endregion
 
     #region Methods
@@ -79,6 +83,22 @@ public class TDS_Projectile : PunBehaviour
     }
 
     /// <summary>
+    /// Plays feedback for when the throwable gets destroyed.
+    /// </summary>
+    protected virtual void DestroyFeedback()
+    {
+        collider.enabled = false;
+        sprite.enabled = false;
+        shadow.SetActive(false);
+
+        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_MagicPoof, audioSource);
+
+        if (!feedbackFX) return;
+
+        feedbackFX.gameObject.SetActive(true);
+    }
+
+    /// <summary>
     /// Destroy the gameObject
     /// </summary>
     private void CallDestruction()
@@ -86,8 +106,11 @@ public class TDS_Projectile : PunBehaviour
         if (!PhotonNetwork.isMasterClient) return;
         StopAllCoroutines(); 
         hitBox.Desactivate();
-        TDS_VFXManager.Instance.SpawnEffect(FXType.MagicDisappear, transform.position); 
-        PhotonNetwork.Destroy(gameObject);
+
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "DestroyFeedback"), new object[] { });
+
+        DestroyFeedback();
+        Invoke("Destroy", 2);
     }
 
     public void StartProjectileMovement(Vector3 _direction, float _range)
@@ -108,13 +131,17 @@ public class TDS_Projectile : PunBehaviour
 
     #region Unity Methods
     // Awake is called when the script instance is being loaded
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         if (!hitBox)
         {
             hitBox = GetComponent<TDS_HitBox>();
             if (!hitBox) Debug.LogWarning("HitBox is missing on Projectile !");
         }
+        if (!collider) collider = GetComponent<BoxCollider>();
+        if (!sprite) sprite = GetComponentInChildren<SpriteRenderer>();
     }
 
 
