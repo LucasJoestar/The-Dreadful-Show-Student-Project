@@ -1658,7 +1658,7 @@ public class TDS_Player : TDS_Character, IPunObservable
             SetAnim(PlayerAnimState.Grounded);
         }
     }
-    
+
     /// <summary>
     /// Freezes the player's movements and actions.
     /// </summary>

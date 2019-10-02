@@ -189,11 +189,17 @@ public class TDS_HitBox : MonoBehaviour
     /// <param name="_target">Target to hit.</param>
     private void InflictDamages(TDS_Damageable _target)
     {
+        bool _continue = false;
+        if (PhotonNetwork.isMasterClient)
+        {
+            // Attack the target
+            _continue = (CurrentAttack != null) && (CurrentAttack.Attack(this, _target) > -2);
+        }
+
         // Triggers event
         OnTouch?.Invoke();
 
-        // Attack the target
-        if (!PhotonNetwork.isMasterClient || !CurrentAttack|| (CurrentAttack.Attack(this, _target) < -1)) return;
+        if (!_continue) return;
 
         // Call local method on the character who hit
         if (Owner)

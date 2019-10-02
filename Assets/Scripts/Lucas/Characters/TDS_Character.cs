@@ -400,7 +400,10 @@ public abstract class TDS_Character : TDS_Damageable
     {
         isFacingRight = !isFacingRight;
 
-        if (photonView.isMine) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Flip"), new object[] { isFacingRight });
+        if (photonView.isMine)
+        {
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Flip"), new object[] { isFacingRight });
+        }
 
         transform.Rotate(Vector3.up, 180);
         transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z * -1);
@@ -413,7 +416,7 @@ public abstract class TDS_Character : TDS_Damageable
     /// <summary>
     /// Flips this character to have they looking at the opposite side.
     /// </summary>
-    private void Flip(bool _isFacingRight)
+    public void Flip(bool _isFacingRight)
     {
         if (isFacingRight != _isFacingRight) Flip();
     }
