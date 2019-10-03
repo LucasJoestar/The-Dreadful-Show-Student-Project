@@ -94,7 +94,7 @@ public class TDS_ParallaxScrolling : MonoBehaviour
 
         if (startPositionX != exitPositionX)
         {
-            _newPosition.x = startPositionX < exitPositionX ? Mathf.Clamp(_newPosition.x, startPositionX, exitPositionX) : Mathf.Clamp(_newPosition.x, exitPositionX, startPositionX);
+            //_newPosition.x = startPositionX < exitPositionX ? Mathf.Clamp(_newPosition.x, startPositionX, exitPositionX) : Mathf.Clamp(_newPosition.x, exitPositionX, startPositionX);
         }
 
         transform.position = _newPosition;
