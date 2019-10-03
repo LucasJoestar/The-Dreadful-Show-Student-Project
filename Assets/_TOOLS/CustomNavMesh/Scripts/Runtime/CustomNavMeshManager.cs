@@ -53,7 +53,10 @@ public static class CustomNavMeshManager
     public static void LoadDatas(Scene scene, LoadSceneMode _mode)
     {
         CustomNavDataSaver _loader = new CustomNavDataSaver();
-        CustomNavData _datas = _loader.LoadFile(Path.Combine(Application.dataPath, "Resources", ResourcesPath), scene.name);
+        //CustomNavData _datas = _loader.LoadFile(Path.Combine(Application.dataPath, "Resources", ResourcesPath), scene.name);
+        TextAsset _text = (Resources.Load(Path.Combine(ResourcesPath, "CustomNavData_" + scene.name))) as TextAsset; 
+        if(_text == null) return; 
+        CustomNavData _datas = JsonUtility.FromJson<CustomNavData>(_text.text); 
         triangles = _datas.TrianglesInfos;
         foreach (Triangle triangle in triangles)
         {

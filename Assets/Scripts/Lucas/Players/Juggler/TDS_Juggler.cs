@@ -471,6 +471,8 @@ public class TDS_Juggler : TDS_Player
                 TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
 
                 IsPlayable = false;
+                if (targetEnemy) targetEnemy = null;
+                if (targetObject) targetObject = null;
                 SetAnimOnline(PlayerAnimState.Throw);
                 canShoot = false;
 
@@ -817,8 +819,10 @@ public class TDS_Juggler : TDS_Player
     {
         if (!throwable) return false;
 
-        throwable = null;
+        if (!throwable.IsHeld || (throwable.Owner == this)) throwable.transform.SetParent(null, true);
 
+        throwable = null;
+        
         if (CurrentThrowableAmount > 0)
         {
             Throwable = Throwables[0];

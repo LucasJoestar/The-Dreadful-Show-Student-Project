@@ -745,14 +745,17 @@ public abstract class TDS_Character : TDS_Damageable
         switch (_hit.collider.gameObject.tag)
         {
             case "Grass":
+                if (foostepsGrass.Length == 0) return;
                 _foostep = TDS_SoundManager.GetRandomClip(foostepsGrass);
                 break;
 
             case "Wood":
+                if (foostepsWood.Length == 0) return;
                 _foostep = TDS_SoundManager.GetRandomClip(foostepsWood);
                 break;
 
             default:
+                if (foostepsConcrete.Length == 0) return;
                 _foostep = TDS_SoundManager.GetRandomClip(foostepsConcrete);
                 break;
         }

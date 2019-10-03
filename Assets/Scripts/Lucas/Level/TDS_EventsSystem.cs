@@ -113,7 +113,6 @@ public class TDS_EventsSystem : PunBehaviour
     /// <returns></returns>
     protected virtual IEnumerator EventsSystem()
     {
-        Debug.Log("Start");
         isActivated = true;
 
         for (int _i = 0; _i < events.Length; _i++)
