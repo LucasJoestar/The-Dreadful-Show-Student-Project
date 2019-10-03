@@ -719,7 +719,9 @@ public abstract class TDS_Enemy : TDS_Character
             _targetedPosition.z = Mathf.Clamp(_targetedPosition.z, _currentBounds.ZMin + agent.Radius, _currentBounds.ZMax - agent.Radius);
             if (Vector3.Distance(targetLastPosition, playerTarget.transform.position) > agent.Radius && _targetedPosition.x < TDS_Camera.Instance.CurrentBounds.XMax && _targetedPosition.x > TDS_Camera.Instance.CurrentBounds.XMin)
             {
-                agent.SetDestination(_targetedPosition); 
+                agent.SetDestination(_targetedPosition);
+                SetEnemyState(EnemyState.Wandering);
+                yield break; 
             }
             else
             {

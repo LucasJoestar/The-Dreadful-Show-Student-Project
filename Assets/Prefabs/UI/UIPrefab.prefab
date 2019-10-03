@@ -6483,8 +6483,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 55, y: -75}
-  m_SizeDelta: {x: 400, y: -100}
+  m_AnchoredPosition: {x: 115, y: 27.5}
+  m_SizeDelta: {x: 400, y: 105}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &112946126509768664
 GameObject:
@@ -7187,6 +7187,7 @@ GameObject:
   - component: {fileID: 7221824176637286453}
   - component: {fileID: 7357795465441740732}
   - component: {fileID: 4296891516604190176}
+  - component: {fileID: 4822375880890083969}
   m_Layer: 5
   m_Name: Input Info
   m_TagString: Untagged
@@ -7211,7 +7212,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 130, y: 0}
+  m_AnchoredPosition: {x: 230, y: 0}
   m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &7357795465441740732
@@ -7240,7 +7241,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '{0} How to Play'
+  m_text: '{0} to show how to play'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 22214856346f9714d8c7e523433db564, type: 2}
   m_sharedMaterial: {fileID: 21723550100612620, guid: 22214856346f9714d8c7e523433db564,
@@ -7276,7 +7277,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_textAlignment: 513
+  m_textAlignment: 516
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -7307,13 +7308,13 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 8.5, y: 8.5, z: 8.5, w: 8.5}
+  m_margin: {x: -100, y: 10, z: -100, w: 0}
   m_textInfo:
     textComponent: {fileID: 4296891516604190176}
-    characterCount: 15
+    characterCount: 23
     spriteCount: 0
-    spaceCount: 3
-    wordCount: 4
+    spaceCount: 5
+    wordCount: 6
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -7333,6 +7334,25 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!95 &4822375880890083969
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238814969019258854}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a537e9cb01605914396c534df28bbaf2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &249969775765804926
 GameObject:
   m_ObjectHideFlags: 0
@@ -7440,7 +7460,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -132.5}
+  m_AnchoredPosition: {x: 0, y: -125}
   m_SizeDelta: {x: 465, y: 237.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &339531197283549525
@@ -9322,8 +9342,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 85, y: -75}
-  m_SizeDelta: {x: 400, y: -100}
+  m_AnchoredPosition: {x: 115, y: 27.5}
+  m_SizeDelta: {x: 400, y: 105}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &791691074296903968
 GameObject:
@@ -9806,7 +9826,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -132.5}
+  m_AnchoredPosition: {x: 0, y: -125}
   m_SizeDelta: {x: 465, y: 237.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &820323844573847775
@@ -10571,6 +10591,7 @@ GameObject:
   - component: {fileID: 5354254877397352903}
   - component: {fileID: 7535951886020682545}
   - component: {fileID: 1284741661971335288}
+  - component: {fileID: 21961413615786567}
   m_Layer: 5
   m_Name: Input Info
   m_TagString: Untagged
@@ -10595,7 +10616,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 130, y: 0}
+  m_AnchoredPosition: {x: 230, y: 0}
   m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &7535951886020682545
@@ -10624,7 +10645,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '{0} How to Play'
+  m_text: '{0} to show how to play'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 22214856346f9714d8c7e523433db564, type: 2}
   m_sharedMaterial: {fileID: 21723550100612620, guid: 22214856346f9714d8c7e523433db564,
@@ -10660,7 +10681,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_textAlignment: 513
+  m_textAlignment: 516
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -10691,13 +10712,13 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 8.5, y: 8.5, z: 8.5, w: 8.5}
+  m_margin: {x: -100, y: 10, z: -100, w: 0}
   m_textInfo:
     textComponent: {fileID: 1284741661971335288}
-    characterCount: 15
+    characterCount: 23
     spriteCount: 0
-    spaceCount: 3
-    wordCount: 4
+    spaceCount: 5
+    wordCount: 6
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -10717,6 +10738,25 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!95 &21961413615786567
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031426288056319916}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a537e9cb01605914396c534df28bbaf2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1046205172024837016
 GameObject:
   m_ObjectHideFlags: 0
@@ -13977,7 +14017,7 @@ MonoBehaviour:
     Maintain {1} to <color=red>aim</color>, move target with {2}. Press {3} to <color=red>throw</color>
     the object !
 
-    Change your <color=green>selected</color> object with {4}.'
+    <color=green>Change</color> your selected object with {4}.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6fa3f6b4f5b8dc94b893c67cbbe660fd, type: 2}
   m_sharedMaterial: {fileID: 21921804882835926, guid: 6fa3f6b4f5b8dc94b893c67cbbe660fd,
@@ -14058,7 +14098,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_subTextObjects:
   - {fileID: 0}
   - {fileID: 275667405245740605}
@@ -16236,7 +16276,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3329774041120732960
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16594,7 +16634,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3151412083342445920
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19450,7 +19490,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6910491598361746069
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22128,9 +22168,9 @@ MonoBehaviour:
   m_text: '<b><u>Fire Eater</b> :</u>
 
 
-    Your heavy attacks have some chances to <color=red>burn</color> down enemies!
+    Your heavy attacks have some chances to <color=red>burn</color> down enemies !
 
-    You can also <color=red>charge</color> a fire attack by holding {0} or {1} and
+    You can also chargea fire attack by <color=red>holding</color>  {0} or {1} and
     realeasing the button when the cursor is in the <color=green>green</color> zone
     ! But be aware of the <color=red>red</color> one...'
   m_isRightToLeft: 0
@@ -22178,7 +22218,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 198
+  m_firstOverflowCharacterIndex: 188
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -22202,10 +22242,10 @@ MonoBehaviour:
   m_margin: {x: 16.768433, y: 10.899414, z: 15.091553, w: 10.899475}
   m_textInfo:
     textComponent: {fileID: 7869457211909773852}
-    characterCount: 224
+    characterCount: 225
     spriteCount: 0
-    spaceCount: 45
-    wordCount: 43
+    spaceCount: 46
+    wordCount: 42
     linkCount: 0
     lineCount: 8
     pageCount: 1
@@ -22707,7 +22747,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_textAlignment: 514
+  m_textAlignment: 513
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -31517,7 +31557,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -132.5}
+  m_AnchoredPosition: {x: 0, y: -125}
   m_SizeDelta: {x: 465, y: 237.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4749452262366939004
@@ -31735,6 +31775,7 @@ MonoBehaviour:
   filledImage: {fileID: 483682811849235010}
   howToPlayAnchor: {fileID: 808439891588116176}
   howToPlayInfo: {fileID: 2041740054896140663}
+  howToPlayTextAnimator: {fileID: 753779416137862529}
   howToPlayText: {fileID: 6558619222634194618}
   showHowToPlayText: {fileID: 3556445335626562198}
   throwObjectText: {fileID: 5494243190870752269}
@@ -34257,7 +34298,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8203035936498550850
 RectTransform:
   m_ObjectHideFlags: 0
@@ -34267,7 +34308,7 @@ RectTransform:
   m_GameObject: {fileID: 5373160836356375037}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_Children:
   - {fileID: 1006446399905217753}
   m_Father: {fileID: 2362477090727930402}
@@ -34275,7 +34316,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -98.6, y: -86.14}
+  m_AnchoredPosition: {x: -110.7, y: -74.5}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4825965857032808491
@@ -34696,7 +34737,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7693922540059218278
 RectTransform:
   m_ObjectHideFlags: 0
@@ -35569,7 +35610,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &870336053321771990
 RectTransform:
   m_ObjectHideFlags: 0
@@ -36668,7 +36709,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_textAlignment: 514
+  m_textAlignment: 513
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -37160,7 +37201,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &222425936993531113
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37284,6 +37325,7 @@ GameObject:
   - component: {fileID: 18375201177261635}
   - component: {fileID: 8243329647728754463}
   - component: {fileID: 3556445335626562198}
+  - component: {fileID: 753779416137862529}
   m_Layer: 5
   m_Name: Input Info
   m_TagString: Untagged
@@ -37308,7 +37350,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 130, y: 0}
+  m_AnchoredPosition: {x: 230, y: 0}
   m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &8243329647728754463
@@ -37337,7 +37379,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '{0} How to Play'
+  m_text: '{0} to show how to play'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 22214856346f9714d8c7e523433db564, type: 2}
   m_sharedMaterial: {fileID: 21723550100612620, guid: 22214856346f9714d8c7e523433db564,
@@ -37373,7 +37415,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_textAlignment: 513
+  m_textAlignment: 516
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -37404,13 +37446,13 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 8.5, y: 8.5, z: 8.5, w: 8.5}
+  m_margin: {x: -100, y: 10, z: -100, w: 0}
   m_textInfo:
     textComponent: {fileID: 3556445335626562198}
-    characterCount: 15
+    characterCount: 23
     spriteCount: 0
-    spaceCount: 3
-    wordCount: 4
+    spaceCount: 5
+    wordCount: 6
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -37430,6 +37472,25 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!95 &753779416137862529
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6037477611414804447}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a537e9cb01605914396c534df28bbaf2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6053449136550101313
 GameObject:
   m_ObjectHideFlags: 0
@@ -40232,7 +40293,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 233.75, y: -87.5}
+  m_AnchoredPosition: {x: 1636.25, y: -87.5}
   m_SizeDelta: {x: 467.5, y: 226.28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2531654845889410858
@@ -40260,6 +40321,7 @@ MonoBehaviour:
   filledImage: {fileID: 5227878533276720865}
   howToPlayAnchor: {fileID: 4744662117622138706}
   howToPlayInfo: {fileID: 5679262307818264092}
+  howToPlayTextAnimator: {fileID: 21961413615786567}
   howToPlayText: {fileID: 5646103282312770848}
   showHowToPlayText: {fileID: 1284741661971335288}
   throwObjectText: {fileID: 194082705938398212}
@@ -40900,7 +40962,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_textAlignment: 514
+  m_textAlignment: 513
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -41066,7 +41128,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -132.5}
+  m_AnchoredPosition: {x: 0, y: -125}
   m_SizeDelta: {x: 465, y: 237.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6736548401789856318
@@ -44169,10 +44231,10 @@ MonoBehaviour:
   m_text: '<b><u>Beard Lady</b> :</u>
 
 
-    While not attacking, your beard <color=green>grows up</color> ! Its state can
-    be seen in the bar above this.
+    While <color=red>not attacking</color>, your beard <color=green>grows up</color>
+    ! Its state can be seen in the bar above this.
 
-    Watch out, your beard will be <color=red>damaged</color> when attacking !
+    But it gets <color=red>damaged</color> when <color=red>attacking</color> !
 
     The more it grows, the <color=red>longer and harder</color> you hit !'
   m_isRightToLeft: 0
@@ -44220,7 +44282,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 198
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -44244,12 +44306,12 @@ MonoBehaviour:
   m_margin: {x: 16.768433, y: 10.899414, z: 15.091553, w: 10.899475}
   m_textInfo:
     textComponent: {fileID: 4566910848075156373}
-    characterCount: 207
+    characterCount: 189
     spriteCount: 0
-    spaceCount: 42
-    wordCount: 38
+    spaceCount: 39
+    wordCount: 35
     linkCount: 0
-    lineCount: 8
+    lineCount: 7
     pageCount: 1
     materialCount: 2
   m_isUsingLegacyAnimationComponent: 0
@@ -45579,11 +45641,12 @@ MonoBehaviour:
   m_text: '<b><u>Grande Dame</b> :</u>
 
 
-    You can hold {0} to charge a <color=red>devastating</color> heavy attack !
+    <color=red>Hold</color> {0} to charge a devastating heavy attack !
 
-    When running out of life, you will enter into a Rage mode that makes you move
-    <color=red>faster</color> and hit <color=red>harder</color> ! Take a snack break
-    with {1} to <color=green>restaure</color> your health.'
+    When running out of life, you''ll enter into the <color=red>Rage</color> mode,
+    making you move <color=red>faster</color> and hit <color=red>harder</color> !
+    Eat some of your favourite cake with {1} to <color=green>restaure</color> your
+    health.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6fa3f6b4f5b8dc94b893c67cbbe660fd, type: 2}
   m_sharedMaterial: {fileID: 21921804882835926, guid: 6fa3f6b4f5b8dc94b893c67cbbe660fd,
@@ -45629,7 +45692,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 197
+  m_firstOverflowCharacterIndex: 189
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -45653,10 +45716,10 @@ MonoBehaviour:
   m_margin: {x: 16.768433, y: 10.899414, z: 15.091553, w: 10.899475}
   m_textInfo:
     textComponent: {fileID: 6558619222634194618}
-    characterCount: 225
+    characterCount: 227
     spriteCount: 0
-    spaceCount: 45
-    wordCount: 42
+    spaceCount: 43
+    wordCount: 40
     linkCount: 0
     lineCount: 8
     pageCount: 1
@@ -47861,6 +47924,7 @@ MonoBehaviour:
   filledImage: {fileID: 1645967011163601615}
   howToPlayAnchor: {fileID: 6710995891056243529}
   howToPlayInfo: {fileID: 5996004973881016274}
+  howToPlayTextAnimator: {fileID: 4822375880890083969}
   howToPlayText: {fileID: 4566910848075156373}
   showHowToPlayText: {fileID: 4296891516604190176}
   throwObjectText: {fileID: 2254370369382509508}
@@ -49137,8 +49201,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 85, y: -75}
-  m_SizeDelta: {x: 400, y: -100}
+  m_AnchoredPosition: {x: 115, y: 27.5}
+  m_SizeDelta: {x: 400, y: 105}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8372013539406091944
 GameObject:
@@ -49770,8 +49834,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 85, y: -97.5}
-  m_SizeDelta: {x: 400, y: -145}
+  m_AnchoredPosition: {x: 115, y: 27.5}
+  m_SizeDelta: {x: 400, y: 105}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8483699009492416406
 GameObject:
@@ -50041,6 +50105,7 @@ GameObject:
   - component: {fileID: 922122931692431652}
   - component: {fileID: 1807139937945675744}
   - component: {fileID: 55073229917645882}
+  - component: {fileID: 542361497891582459}
   m_Layer: 5
   m_Name: Input Info
   m_TagString: Untagged
@@ -50065,7 +50130,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 130, y: 0}
+  m_AnchoredPosition: {x: 230, y: 0}
   m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &1807139937945675744
@@ -50094,7 +50159,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '{0} How to Play'
+  m_text: '{0} to show how to play'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 22214856346f9714d8c7e523433db564, type: 2}
   m_sharedMaterial: {fileID: 21723550100612620, guid: 22214856346f9714d8c7e523433db564,
@@ -50130,7 +50195,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_textAlignment: 513
+  m_textAlignment: 516
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -50161,13 +50226,13 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 8.5, y: 8.5, z: 8.5, w: 8.5}
+  m_margin: {x: -100, y: 10, z: -100, w: 0}
   m_textInfo:
     textComponent: {fileID: 55073229917645882}
-    characterCount: 15
+    characterCount: 23
     spriteCount: 0
-    spaceCount: 3
-    wordCount: 4
+    spaceCount: 5
+    wordCount: 6
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -50187,6 +50252,25 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!95 &542361497891582459
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8537470906535358729}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a537e9cb01605914396c534df28bbaf2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8563013793409640883
 GameObject:
   m_ObjectHideFlags: 0
@@ -50971,7 +51055,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_textAlignment: 514
+  m_textAlignment: 513
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -51626,6 +51710,7 @@ MonoBehaviour:
   filledImage: {fileID: 6041578075490011768}
   howToPlayAnchor: {fileID: 294182517463021314}
   howToPlayInfo: {fileID: 2751705926898266194}
+  howToPlayTextAnimator: {fileID: 542361497891582459}
   howToPlayText: {fileID: 7869457211909773852}
   showHowToPlayText: {fileID: 55073229917645882}
   throwObjectText: {fileID: 7553598848817735237}

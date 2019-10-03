@@ -254,8 +254,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5, y: 3, z: 5}
-  m_Center: {x: 0, y: 1.5, z: 0}
+  m_Size: {x: 5, y: 3.5, z: 5}
+  m_Center: {x: 0, y: 1.25, z: 0}
 --- !u!1 &1260163616517116
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,9 +552,6 @@ MonoBehaviour:
   snackHealValue: 50
   snackRestaureTimer: 0
   eatSound: {fileID: 8300000, guid: f76900db99c35574c9c766f741612b3b, type: 3}
-  brutalHit:
-  - {fileID: 8300000, guid: f76900db99c35574c9c766f741612b3b, type: 3}
-  - {fileID: 8300000, guid: 624b06019dc420b40a4093a4897bb57d, type: 3}
 --- !u!95 &95173227102487408
 Animator:
   serializedVersion: 3

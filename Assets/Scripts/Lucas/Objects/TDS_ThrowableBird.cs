@@ -28,6 +28,11 @@ public class TDS_ThrowableBird : TDS_FleeingThrowable
     /// Speed at which the bird flees.
     /// </summary>
     [SerializeField] private float speed = 1.5f;
+
+    /// <summary>
+    /// Coroutine for fleeing online.
+    /// </summary>
+    private Coroutine fleeOnlineCoroutine = null;
     #endregion
 
     #region Methods
@@ -41,7 +46,7 @@ public class TDS_ThrowableBird : TDS_FleeingThrowable
         yield return new WaitForSeconds(fleeDelay);
 
         detector.gameObject.SetActive(false);
-
+        
         // Trigger animation
         SetAnimationOnline(1);
 
@@ -49,11 +54,10 @@ public class TDS_ThrowableBird : TDS_FleeingThrowable
 
         if (_movement.x != isFacingRight.ToSign())
         {
-            transform.Rotate(Vector3.up, 180);
-            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z * -1);
-
-            isFacingRight = !isFacingRight;
+            Flip();
         }
+
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "StartFleeOnline"), new object[] { isFacingRight });
 
         _movement.x *= speed;
 
@@ -68,7 +72,51 @@ public class TDS_ThrowableBird : TDS_FleeingThrowable
             yield return null;
         }
 
-        DestroyThrowableObject();
+        if (PhotonNetwork.isMasterClient) DestroyThrowableObject();
+    }
+
+    /// <summary>
+    /// Flee for online clients.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator FleeOnline()
+    {
+        Vector3 _movement = new Vector3(isFacingRight.ToSign(), speed, 0);
+    
+        while (true)
+        {
+            transform.position = Vector3.Lerp(transform.position, transform.position + _movement, Time.deltaTime);
+            _movement.y *= 1.01f;
+            _movement.x *= 1.01f;
+
+            yield return null;
+        }
+    }
+
+    /// <summary> 
+    /// Let a character pickup the object.
+    /// </summary> 
+    /// <param name="_owner">Character attempting to pick up the object.</param> 
+    /// <returns>Returns true is successfully picked up the object, false if a issue has been encountered.</returns> 
+    public override bool PickUp(TDS_Character _owner)
+    {
+        if (!base.PickUp(_owner)) return false;
+
+        if (fleeOnlineCoroutine != null) StopCoroutine(fleeOnlineCoroutine);
+        return true;
+    }
+
+    /// <summary>
+    /// Start fleeing for online clients.
+    /// </summary>
+    /// <param name="_isFacingRight">Indicates if the object should face right side or not.</param>
+    private void StartFleeOnline(bool _isFacingRight)
+    {
+        if (fleeOnlineCoroutine != null) StopCoroutine(fleeOnlineCoroutine);
+
+        if (isFacingRight != _isFacingRight) Flip();
+        fleeOnlineCoroutine = StartCoroutine(FleeOnline());
+
     }
 
     /// <summary>

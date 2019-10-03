@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 2531816460339152144}
   m_Layer: 10
   m_Name: White Cat
-  m_TagString: Enemy
+  m_TagString: Enemy|LionCat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -217,6 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fc4c0982c552bd47bd2ef4bde04440b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
   animator: {fileID: 5268511999767807706}
   burnEffect: {fileID: 0}
   collider: {fileID: 5268511999767807705}
@@ -228,12 +229,13 @@ MonoBehaviour:
   IsInvulnerable: 0
   healthCurrent: 50
   healthMax: 50
+  hitSounds: []
+  deathSounds: []
   hitBox: {fileID: 5268512001663847524}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
   handsTransform: {fileID: 0}
   shadowTransform: {fileID: 5268512001073152060}
-  audioSource: {fileID: 0}
   isAttacking: 0
   isFacingRight: 1
   IsPacific: 0
@@ -247,6 +249,9 @@ MonoBehaviour:
   throwBonusDamagesMax: 45
   throwBonusDamagesMin: 45
   throwAimingPoint: {x: 0, y: 0, z: 0}
+  foostepsConcrete: []
+  foostepsGrass: []
+  foostepsWood: []
   agent: {fileID: 0}
   catState: 0
   leftPerchInfos:
@@ -482,6 +487,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -614,6 +620,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

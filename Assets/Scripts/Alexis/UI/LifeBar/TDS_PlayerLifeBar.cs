@@ -38,11 +38,14 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
     #region Fields / Properties
     [SerializeField] protected GameObject howToPlayAnchor= null;
     [SerializeField] protected GameObject howToPlayInfo = null;
+    [SerializeField] protected Animator howToPlayTextAnimator = null;
     [SerializeField] protected TextMeshProUGUI howToPlayText = null;
     [SerializeField] protected TextMeshProUGUI showHowToPlayText = null;
     [SerializeField] protected TextMeshProUGUI throwObjectText = null;
     [SerializeField] protected TDS_ComboManager comboCounter = null;
     [SerializeField] protected PlayerType playerType = PlayerType.Unknown;
+
+    private bool isController = false;
     #endregion
 
     #region Methods
@@ -53,9 +56,7 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
     /// </summary>
     public virtual void HideHowToPlayInfo()
     {
-        if (!howToPlayInfo) return;
-
-        if (howToPlayInfo.activeInHierarchy) howToPlayInfo.SetActive(false);
+        if (howToPlayInfo && howToPlayInfo.activeInHierarchy) TriggerHowToPlayInfo();
     }
 
     /// <summary>
@@ -65,7 +66,13 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
     {
         if (!howToPlayInfo) return;
 
-        howToPlayInfo.SetActive(!howToPlayInfo.activeInHierarchy);
+        bool _areHideInfos = !howToPlayInfo.activeInHierarchy;
+        howToPlayInfo.SetActive(_areHideInfos);
+
+        string _controllerInput = isController ? "Controller_Select" : "Keyboard_Tab";
+        showHowToPlayText.text = _areHideInfos ? $"Press <sprite name={_controllerInput}> to Hide" : $"<sprite name={ _controllerInput}> How to Play";
+
+        if (howToPlayTextAnimator) howToPlayTextAnimator.SetBool("DisplayHideInfos", _areHideInfos);
     }
 
     /// <summary>
@@ -108,12 +115,13 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
         // Set inputs informations
         if (_player)
         {
-            bool _isController = true;
-
-            if ((_player.Controller == TDS_GameManager.InputsAsset.Controllers[1]) || ((_player.Controller == TDS_GameManager.InputsAsset.Controllers[0]) && Input.GetJoystickNames().Length == 0))
+            if (((_player.Controller == TDS_GameManager.InputsAsset.Controllers[0]) && Input.GetJoystickNames().Length > 0) || (_player.Controller != TDS_GameManager.InputsAsset.Controllers[1]))
             {
-                _isController = false;
+                isController = true;
             }
+
+            // Show how to play infos
+            TriggerHowToPlayInfo();
 
             // Set throw infos
             string[] _info = null;
@@ -122,7 +130,7 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
             {
                 _info = new string[1];
 
-                if (_isController) _info[0] = "Controller_B";
+                if (isController) _info[0] = "Controller_B";
                 else _info[0] = "Keyboard_F";
 
                 throwObjectText.text = string.Format(throwObjectText.text, $"<sprite name={_info[0]}>");
@@ -131,7 +139,7 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
             {
                 _info = new string[2];
 
-                if (_isController)
+                if (isController)
                 {
                     _info[0] = "Controller_LT";
                     _info[1] = "Controller_RT";
@@ -146,10 +154,7 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
             }
 
             // Set interact button
-            _player.InteractionBox.InteractText.text = $"<sprite name={(_isController ? "Controller_B" : "Keyboard_F")}>";
-
-            // Set button to show / hide how to play
-            showHowToPlayText.text = string.Format(showHowToPlayText.text, $"<sprite name={(_isController ? "Controller_Select" : "Keyboard_Tab")}>");
+            _player.InteractionBox.InteractText.text = $"<sprite name={(isController ? "Controller_B" : "Keyboard_F")}>";
 
             // Set how to play infos
             switch (_player.PlayerType)
@@ -161,7 +166,7 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
                     case PlayerType.FatLady:
                     _info = new string[2];
 
-                    if (_isController)
+                    if (isController)
                     {
                         _info[0] = "Controller_Y";
                         _info[1] = "Controller_LB";
@@ -178,7 +183,7 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
                     case PlayerType.FireEater:
                     _info = new string[2];
 
-                    if (_isController)
+                    if (isController)
                     {
                         _info[0] = "Controller_X";
                         _info[1] = "Controller_Y";
@@ -195,7 +200,7 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
                     case PlayerType.Juggler:
                     _info = new string[5];
 
-                    if (_isController)
+                    if (isController)
                     {
                         
 

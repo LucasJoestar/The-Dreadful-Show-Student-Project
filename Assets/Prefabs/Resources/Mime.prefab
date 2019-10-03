@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 8521216833802530653}
   m_Layer: 10
   m_Name: Mime
-  m_TagString: Enemy
+  m_TagString: Enemy|Mime
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -406,7 +406,7 @@ MonoBehaviour:
   sprite: {fileID: 3812852250889470823}
   canBeMoved: 1
   isDead: 0
-  isIndestructible: 0
+  isIndestructible: 1
   IsInvulnerable: 0
   healthCurrent: 75
   healthMax: 75
@@ -419,8 +419,8 @@ MonoBehaviour:
   shadowTransform: {fileID: 3812852251016257647}
   isAttacking: 0
   isFacingRight: 0
-  IsPacific: 0
-  IsParalyzed: 0
+  IsPacific: 1
+  IsParalyzed: 1
   aimAngle: 45
   speedAccelerationTime: 1
   speedCoef: 1

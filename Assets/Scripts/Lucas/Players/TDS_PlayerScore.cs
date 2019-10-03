@@ -37,7 +37,7 @@ public class TDS_PlayerScore
     /// <summary>
     /// Detected tags for enemies used to increase score.
     /// </summary>
-    private static string[] enemiesTags = new string[] { "Punk", "Mime", "MightyMan", "Fakhir", "Acrobat", "PunkBoss", "Siamese", "MrLoyal" };
+    private static string[] enemiesTags = new string[] { "Punk", "Mime", "MightyMan", "Fakhir", "Acrobat", "PunkBoss", "Siamese", "BrutalSiamese", "DistantSiamese", "ContactSiamese", "MrLoyal", "LionCat" };
 
 
     /// <summary>
@@ -49,7 +49,7 @@ public class TDS_PlayerScore
     /// <summary>
     /// Amount of knockout enemies.
     /// </summary>
-    public int KnockoutEnemiesAmount = 0;
+    public Dictionary<string, int> KnockoutEnemiesAmount = new Dictionary<string, int>();
 
 
     /// <summary>
@@ -71,6 +71,7 @@ public class TDS_PlayerScore
     {
         foreach (string _enemy in enemiesTags)
         {
+            KnockoutEnemiesAmount.Add(_enemy, 0);
             EnemiesInflictedDmgs.Add(_enemy, 0);
             EnemiesSuffuredDmgs.Add(_enemy, 0);
         }
@@ -90,7 +91,7 @@ public class TDS_PlayerScore
         foreach (string _tag in _enemyTags)
         {
             EnemiesInflictedDmgs[_tag] += _damages;
-            if (_enemy.IsDead) KnockoutEnemiesAmount++;
+            if (_enemy.IsDead) KnockoutEnemiesAmount[_tag]++;
         }
     }
 

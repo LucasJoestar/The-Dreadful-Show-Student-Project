@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
@@ -34,6 +35,13 @@ public class TDS_SceneManager : PunBehaviour
 	 *
 	 *	-----------------------------------
 	*/
+
+    #region Events
+    /// <summary>
+    /// Event called each time a scene is loaded, with its build index as parameter.
+    /// </summary>
+    public static event Action<int> OnLoadScene = null;
+    #endregion
 
     #region Fields / Properties
     public static TDS_SceneManager Instance;
@@ -98,6 +106,7 @@ public class TDS_SceneManager : PunBehaviour
         {
             yield return null;
         }
+        OnLoadScene?.Invoke(_sceneIndex);
         TDS_GameManager.CurrentSceneIndex = _sceneIndex;
         if (PhotonNetwork.connected && PhotonNetwork.isMasterClient && PlayerSceneLoaded.Count > 0)
         {
@@ -197,6 +206,7 @@ public class TDS_SceneManager : PunBehaviour
         {
             yield return null;
         }
+        OnLoadScene?.Invoke(_sceneIndex);
         TDS_GameManager.CurrentSceneIndex = _sceneIndex;
         TDS_UIManager.Instance.IsloadingNextScene = _sceneIndex == 0;
         TDS_UIManager.Instance?.DisplayLoadingScreen(false);
