@@ -140,6 +140,7 @@ public class TDS_SoundManager : MonoBehaviour
     /// <returns>Returns a random audio clip.</returns>
     public static AudioClip GetRandomClip(AudioClip[] _clips)
     {
+        if (_clips.Length == 0) return null;
         return _clips[Random.Range(0, _clips.Length)];
     }
 

@@ -37,7 +37,7 @@ public class TDS_PlayerScore
     /// <summary>
     /// Detected tags for enemies used to increase score.
     /// </summary>
-    private static string[] enemiesTags = new string[] { "Punk", "Mime", "MightyMan", "Fakhir", "Acrobat", "PunkBoss", "Siamese", "BrutalSiamese", "DistantSiamese", "ContactSiamese", "MrLoyal", "LionCat" };
+    private static string[] enemiesTags = new string[] { "Punk", "Mime", "Mighty Man", "Fakir", "Acrobat", "Punk Boss", "Siamese", "Mr Loyal" };
 
 
     /// <summary>
@@ -55,12 +55,18 @@ public class TDS_PlayerScore
     /// <summary>
     /// All amount of damages inflicted to enemies.
     /// </summary>
-    public Dictionary<string, int> EnemiesInflictedDmgs = new Dictionary<string, int>();
+    public Dictionary<string, int> InflictedDmgsToEnemies = new Dictionary<string, int>();
+
 
     /// <summary>
     /// All amount of damages suffured by enemies.
     /// </summary>
-    public Dictionary<string, int> EnemiesSuffuredDmgs = new Dictionary<string, int>();
+    public Dictionary<string, int> SuffuredDmgsFromEnemies = new Dictionary<string, int>();
+
+    /// <summary>
+    /// Amount of time the player has been knockout by enemies.
+    /// </summary>
+    public Dictionary<string, int> KnockoutAmountFromEnemies = new Dictionary<string, int>();
     #endregion
 
     #region Constructor
@@ -72,8 +78,9 @@ public class TDS_PlayerScore
         foreach (string _enemy in enemiesTags)
         {
             KnockoutEnemiesAmount.Add(_enemy, 0);
-            EnemiesInflictedDmgs.Add(_enemy, 0);
-            EnemiesSuffuredDmgs.Add(_enemy, 0);
+            InflictedDmgsToEnemies.Add(_enemy, 0);
+            SuffuredDmgsFromEnemies.Add(_enemy, 0);
+            KnockoutAmountFromEnemies.Add(_enemy, 0);
         }
     }
     #endregion
@@ -90,7 +97,7 @@ public class TDS_PlayerScore
 
         foreach (string _tag in _enemyTags)
         {
-            EnemiesInflictedDmgs[_tag] += _damages;
+            InflictedDmgsToEnemies[_tag] += _damages;
             if (_enemy.IsDead) KnockoutEnemiesAmount[_tag]++;
         }
     }
@@ -100,13 +107,15 @@ public class TDS_PlayerScore
     /// </summary>
     /// <param name="_enemy">Enemy inflicting damages.</param>
     /// <param name="_damages">Amount of suffured damages.</param>
-    public void IncreaseSuffuredScore(TDS_Enemy _enemy, int _damages)
+    /// <param name="_isPlayerDead">Indicates if the player died from the attack or not.</param>
+    public void IncreaseSuffuredScore(TDS_Enemy _enemy, int _damages, bool _isPlayerDead)
     {
         string[] _enemyTags = _enemy.gameObject.GetTagNames().Intersect(enemiesTags).ToArray();
 
         foreach (string _tag in _enemyTags)
         {
-            EnemiesSuffuredDmgs[_tag] += _damages;
+            SuffuredDmgsFromEnemies[_tag] += _damages;
+            if (_isPlayerDead) KnockoutAmountFromEnemies[_tag] ++;
         }
     }
     #endregion

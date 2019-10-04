@@ -89,7 +89,7 @@ public class TDS_Projectile : TDS_Object
     {
         collider.enabled = false;
         sprite.enabled = false;
-        shadow.SetActive(false);
+        if (shadow) shadow.SetActive(false);
 
         TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_MagicPoof, audioSource);
 

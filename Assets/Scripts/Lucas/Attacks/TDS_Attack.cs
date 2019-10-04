@@ -148,7 +148,7 @@ public class TDS_Attack : ScriptableObject
         }
         else if ((_target is TDS_Player _playerTarget) && (_attacker.Owner is TDS_Enemy _enemy))
         {
-            TDS_GameManager.PlayersInfo.First(p => p.PlayerType == _playerTarget.PlayerType).PlayerScore.IncreaseSuffuredScore(_enemy, _damages);
+            TDS_GameManager.PlayersInfo.First(p => p.PlayerType == _playerTarget.PlayerType).PlayerScore.IncreaseSuffuredScore(_enemy, _damages, _playerTarget.IsDead);
         }
 
         if (_target.IsDead) return -1;
