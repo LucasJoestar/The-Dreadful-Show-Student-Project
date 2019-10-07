@@ -59,9 +59,9 @@ public static class TDS_GameManager
     public static bool IsInCutscene = false;
 
     /// <summary>
-    /// Indicates if the game is currently in pause.
+    /// Get if the game is paused or not
     /// </summary>
-    private static bool isPaused = false;
+    public static bool IsPaused { get; private set; }
 
     /// <summary>
     /// Indicates if players are currently in game, or in menu.
@@ -222,7 +222,8 @@ public static class TDS_GameManager
     /// <param name="_doPause">Should the game be paused or resumed</param>
     public static void SetPause(bool _doPause)
     {
-        isPaused = _doPause;
+        IsPaused = _doPause;
+        TDS_UIManager.Instance?.SetPause(_doPause);
     }
 
     /// <summary>

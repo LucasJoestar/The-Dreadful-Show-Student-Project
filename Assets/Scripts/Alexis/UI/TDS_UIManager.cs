@@ -324,7 +324,7 @@ public class TDS_UIManager : PunBehaviour
                 break;
             case UIState.InGame:
                 yield return new WaitForEndOfFrame(); 
-                _startAction = () => SetPause(true);
+                //_startAction = () => SetPause(true);
                 break;
             case UIState.InPause:
                 yield return new WaitForEndOfFrame(); 

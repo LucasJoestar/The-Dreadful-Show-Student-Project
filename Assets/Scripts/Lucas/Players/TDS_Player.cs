@@ -2200,6 +2200,21 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// </summary>
     public virtual void CheckMenuInputs()
     {
+        // Check pause input
+        if (controller.GetButtonDown(ButtonType.Pause))
+        {
+            if (TDS_GameManager.IsInCutscene)
+            {
+                // Skip it
+            }
+            else
+            {
+                TDS_GameManager.SetPause(!TDS_GameManager.IsPaused);
+            }
+        }
+
+        if (TDS_GameManager.IsInCutscene) return;
+
         // Check how to play related input
         if (controller.GetButtonDown(ButtonType.HowToPlay))
         {
@@ -2462,19 +2477,22 @@ public class TDS_Player : TDS_Character, IPunObservable
     protected override void Update ()
     {
         // If dead or not playable, return
-        if (!photonView.isMine || isDead || (Time.timeScale == 0)) return;
+        if (!photonView.isMine) return;
+
+        // Check menu-related inputs
+        CheckMenuInputs();
+
+        if (isDead || (Time.timeScale == 0) || TDS_GameManager.IsInCutscene) return;
 
         base.Update();
 
         // Adjust the position of the player for each axis of the rigidbody velocity where a force is exercised
         AdjustPositionOnRigidbody();
-
-        // Check the player inputs
-        CheckMenuInputs();
-
+        
         // If not playable or down, return
         if (!IsPlayable) return;
 
+        // Check the player inputs
         CheckMovementsInputs();
         CheckActionsInputs();
 	}
