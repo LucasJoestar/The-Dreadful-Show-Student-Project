@@ -35,7 +35,7 @@ Transform:
   m_Children:
   - {fileID: 4458971643463101260}
   - {fileID: 2298384262453440700}
-  - {fileID: 8710950117521231218}
+  - {fileID: 8713498905440093996}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -74,7 +74,7 @@ MonoBehaviour:
   collider: {fileID: 4458971642939108422}
   shadow: {fileID: 7992838211602191232}
   hitBox: {fileID: 4458971643463101261}
-  feedbackFX: {fileID: 8710950117521228745}
+  feedbackFX: {fileID: 8711653334020093748}
   rigidbody: {fileID: 4458971642939108420}
   sprite: {fileID: 4458971642939108426}
   isHeld: 0
@@ -415,14 +415,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4458971642939108421}
     m_Modifications:
-    - target: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
-      propertyPath: m_Name
-      value: PoufMagic
-      objectReference: {fileID: 0}
-    - target: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4244029294445326, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -479,6 +471,14 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
+      propertyPath: m_Name
+      value: PoufMagic
+      objectReference: {fileID: 0}
+    - target: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 198742772223849486, guid: 71169cd45071ac94ba9fc202ff4188ca,
         type: 3}
       propertyPath: stopAction
@@ -501,13 +501,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
---- !u!1 &8710950117521228745 stripped
+--- !u!1 &8711653334020093748 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca,
     type: 3}
   m_PrefabInstance: {fileID: 8710950117521228834}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &8710950117521231218 stripped
+--- !u!4 &8713498905440093996 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4244029294445326, guid: 71169cd45071ac94ba9fc202ff4188ca,
     type: 3}

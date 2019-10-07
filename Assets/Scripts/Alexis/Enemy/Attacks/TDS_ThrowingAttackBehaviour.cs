@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Throwing_Attack", menuName = "Attacks/Throwing Attack", order = 3), Serializable]
@@ -55,7 +53,7 @@ public class TDS_ThrowingAttackBehaviour : TDS_EnemyAttack
         TDS_Throwable _throwable = _thrownObject.GetComponent<TDS_Throwable>();
         if (_throwable)
         {
-            _throwable.HitBox.HittableTags = _caster.HitBox.HittableTags; 
+            _throwable.HitBox.HittableTags = new Tags(_caster.HitBox.HittableTags.ObjectTags); 
              _caster.GrabObject(_throwable);
             if (_throwable.ThrowableAttackEffectType == AttackEffectType.BringCloser)
              {
@@ -75,7 +73,7 @@ public class TDS_ThrowingAttackBehaviour : TDS_EnemyAttack
         {
             Vector3 _dir = _caster.IsFacingRight ? Vector3.right : Vector3.left;
             TDS_Projectile _proj = _thrownObject.GetComponent<TDS_Projectile>();
-            _proj.HitBox.HittableTags = _caster.HitBox.HittableTags; 
+            _proj.HitBox.HittableTags = new Tags(_caster.HitBox.HittableTags.ObjectTags); 
             _proj.HitBox.Activate(this, _caster);
             _proj.StartProjectileMovement(_dir, MaxRange); 
         }

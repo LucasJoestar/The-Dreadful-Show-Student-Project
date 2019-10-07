@@ -1666,6 +1666,8 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         IsPlayable = false;
         if (isDodging) StopDodge();
+        if (isPreparingAttack) StopPreparingAttack();
+        if (isAttacking) StopAttack();
         if (isMoving)
         {
             isMoving = false;

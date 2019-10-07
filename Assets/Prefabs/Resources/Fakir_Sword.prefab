@@ -97,7 +97,7 @@ Transform:
   - {fileID: 8462223661869008572}
   - {fileID: 8462223660036227106}
   - {fileID: 8462223661139009177}
-  - {fileID: 1960785348838147528}
+  - {fileID: 1961607972220751766}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -136,7 +136,7 @@ MonoBehaviour:
   collider: {fileID: 8462223660539153959}
   shadow: {fileID: 8462223661139009156}
   hitBox: {fileID: 8462223660036227109}
-  feedbackFX: {fileID: 1960785348838148979}
+  feedbackFX: {fileID: 1960081328864280462}
   rigidbody: {fileID: 8462223660539153977}
   sprite: {fileID: 8462223661869008575}
   isHeld: 0
@@ -384,7 +384,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8462223661869008573}
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.55, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8462223660539153976}
@@ -431,7 +431,7 @@ SpriteRenderer:
   m_Sprite: {fileID: 21300250, guid: b355d7bbb9a87844eb065235433f15ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
-  m_FlipY: 0
+  m_FlipY: 1
   m_DrawMode: 0
   m_Size: {x: 0.28, y: 1.78}
   m_AdaptiveModeThreshold: 0.5
@@ -446,14 +446,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8462223660539153976}
     m_Modifications:
-    - target: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
-      propertyPath: m_Name
-      value: PoufMagic
-      objectReference: {fileID: 0}
-    - target: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4244029294445326, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -510,6 +502,14 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
+      propertyPath: m_Name
+      value: PoufMagic
+      objectReference: {fileID: 0}
+    - target: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 198742772223849486, guid: 71169cd45071ac94ba9fc202ff4188ca,
         type: 3}
       propertyPath: stopAction
@@ -532,13 +532,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
---- !u!1 &1960785348838148979 stripped
+--- !u!1 &1960081328864280462 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca,
     type: 3}
   m_PrefabInstance: {fileID: 1960785348838149272}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1960785348838147528 stripped
+--- !u!4 &1961607972220751766 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4244029294445326, guid: 71169cd45071ac94ba9fc202ff4188ca,
     type: 3}

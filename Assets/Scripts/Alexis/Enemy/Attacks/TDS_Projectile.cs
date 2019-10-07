@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using Photon; 
 
 [RequireComponent(typeof(BoxCollider))]
 public class TDS_Projectile : TDS_Object 
@@ -67,7 +66,6 @@ public class TDS_Projectile : TDS_Object
     #region Original Methods
     private IEnumerator ProjectileMovement(Vector3 _direction)
     {
-        if (!PhotonNetwork.isMasterClient) yield break;
         Vector3 _originalPosition = transform.position;
         Vector3 _destination = transform.position + (_direction * range);
         float _delta = 0;
@@ -115,9 +113,17 @@ public class TDS_Projectile : TDS_Object
 
     public void StartProjectileMovement(Vector3 _direction, float _range)
     {
-        if (!PhotonNetwork.isMasterClient) return;
+        if (PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "StartProjectileMovement"), new object[] { _direction.x, _direction.y, _direction.z, _range });
+        }
         range = _range;
         StartCoroutine(ProjectileMovement(_direction));
+    }
+
+    public void StartProjectileMovement(float _xDirection, float _yDirection, float _zDirection, float _range)
+    {
+        StartProjectileMovement(new Vector3(_xDirection, _yDirection, _zDirection), _range);
     }
 
     private void PrepareDestruction()

@@ -134,7 +134,7 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
         {
             hitBox.Desactivate();
         }
-        Tags _hitableTags = owner.HitBox.HittableTags;
+        Tags _hitableTags = new Tags(owner.HitBox.HittableTags.ObjectTags);
         if (owner is TDS_Enemy)
         {
             _hitableTags.AddTag("Enemy");
