@@ -1036,7 +1036,7 @@ public class TDS_Camera : MonoBehaviour
         camera.rect = TDS_GameManager.CameraRect;
 
         // Get X ratio
-        CameraXRatio = camera.orthographicSize * (((float)Screen.width / Screen.height) / (camera.rect.height / camera.rect.width));
+        CameraXRatio = camera.orthographicSize * (((float)TDS_GameManager.CurrentResolution.width / TDS_GameManager.CurrentResolution.height) / (camera.rect.height / camera.rect.width));
     }
 
     /// <summary>

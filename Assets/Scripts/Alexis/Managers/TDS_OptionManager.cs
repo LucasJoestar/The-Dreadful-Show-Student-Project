@@ -101,7 +101,7 @@ public class TDS_OptionManager : MonoBehaviour
     {
         Resolution _newResolution = Screen.resolutions[selectedResolutionIndex];
         Screen.SetResolution(_newResolution.width, _newResolution.height, toggleFullScreen ? toggleFullScreen.isOn : true);
-        TDS_GameManager.SetResolution(_newResolution); 
+        TDS_GameManager.SetResolution(_newResolution);
     }
     #endregion
 

@@ -193,7 +193,11 @@ public static class TDS_GameManager
         }
 
         // Set screen resolution
-        SetResolution(Screen.currentResolution);
+        Resolution _resolution = new Resolution();
+        _resolution.width = Screen.width;
+        _resolution.height = Screen.height;
+
+        SetResolution(_resolution);
 
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -236,7 +240,7 @@ public static class TDS_GameManager
 
         // Calculates camera rect for aspect ratio of 16/9
         float _targetAspect = TDS_Camera.CAMERA_ASPECT_WIDTH / TDS_Camera.CAMERA_ASPECT_HEIGHT;
-        float _cameraAspect = (float)Screen.width / Screen.height;
+        float _cameraAspect = (float)_newResolution.width / _newResolution.height;
 
         float _heightRatio = _cameraAspect / _targetAspect;
 
