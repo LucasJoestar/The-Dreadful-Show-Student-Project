@@ -36,7 +36,7 @@ Transform:
   - {fileID: 4227390829565300937}
   - {fileID: 8736000230497363250}
   - {fileID: 6398986606133069048}
-  - {fileID: 8465882094352069433}
+  - {fileID: 8463329148921903463}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -75,7 +75,7 @@ MonoBehaviour:
   collider: {fileID: 4227390829016078275}
   shadow: {fileID: 6453753117036512213}
   hitBox: {fileID: 4227390829565300936}
-  feedbackFX: {fileID: 8465882094352072066}
+  feedbackFX: {fileID: 8464896611949775231}
   rigidbody: {fileID: 4227390829016078273}
   sprite: {fileID: 5567838549940672978}
   isHeld: 0
@@ -94,8 +94,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.4, y: 0.45, z: 0.4}
-  m_Center: {x: 0.28, y: 0, z: 0}
+  m_Size: {x: 0.6145114, y: 0.45, z: 0.4}
+  m_Center: {x: -0.23866542, y: 0, z: 0}
 --- !u!114 &3089288065593283196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,8 +119,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 0
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 51
+  instantiationId: 51
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!96 &1269694687186753519
@@ -358,8 +358,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5, z: 0.5}
-  m_Center: {x: 0.28, y: 0, z: 0}
+  m_Size: {x: 0.6655786, y: 0.5, z: 0.5}
+  m_Center: {x: -0.2642349, y: 0, z: 0}
 --- !u!114 &4227390829565300936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,7 +527,7 @@ SpriteRenderer:
   m_Sprite: {fileID: 21300172, guid: b355d7bbb9a87844eb065235433f15ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
-  m_FlipY: 0
+  m_FlipY: 1
   m_DrawMode: 0
   m_Size: {x: 0.44, y: 0.42}
   m_AdaptiveModeThreshold: 0.5
@@ -628,13 +628,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
---- !u!1 &8465882094352072066 stripped
+--- !u!1 &8464896611949775231 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca,
     type: 3}
   m_PrefabInstance: {fileID: 8465882094352071273}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &8465882094352069433 stripped
+--- !u!4 &8463329148921903463 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4244029294445326, guid: 71169cd45071ac94ba9fc202ff4188ca,
     type: 3}

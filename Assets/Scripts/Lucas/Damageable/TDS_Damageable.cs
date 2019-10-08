@@ -460,7 +460,7 @@ public abstract class TDS_Damageable : TDS_Object
     /// <summary>
     /// Method called when stopped being bringed closer.
     /// </summary>
-    protected virtual void StopBringingCloser()
+    public virtual void StopBringingCloser()
     {
         if (bringingCloserCoroutine != null)
         {
