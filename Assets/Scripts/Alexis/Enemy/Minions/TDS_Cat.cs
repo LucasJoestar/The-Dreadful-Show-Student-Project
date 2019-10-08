@@ -60,7 +60,7 @@ public class TDS_Cat : TDS_Character
     {
         if (!PhotonNetwork.isMasterClient || isDead || !agent) return;
         if (!hitBox.IsActive) hitBox.Activate(catAttack, this);
-        movementCoroutine = StartCoroutine(GetDownFromPerch()); 
+        movementCoroutine = StartCoroutine(GetDownFromPerch());
     }
 
     public void RestartMovement()
@@ -70,6 +70,7 @@ public class TDS_Cat : TDS_Character
             StopCoroutine(movementCoroutine);
             movementCoroutine = null; 
         }
+        if (IsDead) return; 
         movementCoroutine = StartCoroutine(MoveCat()); 
     }
 
@@ -209,6 +210,7 @@ public class TDS_Cat : TDS_Character
             movementCoroutine = null;
         }
         agent.StopAgent();
+        hitBox.Desactivate(); 
         SetAnimationState((int)CatAnimationState.Die); 
         base.Die();
     }

@@ -877,7 +877,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <summary>
     /// Method called when stopped being bringed closer.
     /// </summary>
-    protected override void StopBringingCloser()
+    public override void StopBringingCloser()
     {
         base.StopBringingCloser();
 
@@ -1316,6 +1316,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected virtual void ApplyDamagesBehaviour(int _damage, Vector3 _position)
     {
         if (!PhotonNetwork.isMasterClient) return;
+        if (BringingTarget) BringingTarget.StopBringingCloser(); 
         StartCoroutine(ApplyRecoil(_position));
         if (!isDead && !IsDown)
         {

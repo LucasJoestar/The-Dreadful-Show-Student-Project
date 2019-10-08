@@ -281,6 +281,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
             gameObject.SetActive(false);
             return;
         }
+        characterSelectionImages.ToList().ForEach(c => c.Reset()); 
         gameObject.SetActive(false); 
     }
 

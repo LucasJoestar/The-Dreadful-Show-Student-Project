@@ -47,5 +47,13 @@ public class TDS_CharacterSelectionImage
         set { canBeSelected = value; }
     }
 
-	#endregion
+    #endregion
+
+    #region Void 
+    public void Reset()
+    {
+        characterType = PlayerType.Unknown;
+        canBeSelected = true; 
+    }
+    #endregion
 }

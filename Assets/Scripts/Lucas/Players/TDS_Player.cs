@@ -1206,7 +1206,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <summary>
     /// Method called when stopped being bringed closer.
     /// </summary>
-    protected override void StopBringingCloser()
+    public override void StopBringingCloser()
     {
         base.StopBringingCloser();
 
