@@ -325,8 +325,8 @@ public class TDS_FatLady : TDS_Player
     {
         if (!base.StopPreparingAttack()) return false;
 
-        // If combo at zero, reset animation manually (automatically set if stopping a combo)
-        if (comboCurrent.Count == 0) SetAnimOnline(PlayerAnimState.ComboBreaker);
+        // Reset animation
+        SetAnimOnline(PlayerAnimState.ComboBreaker);
         return true;
     }
     #endregion
