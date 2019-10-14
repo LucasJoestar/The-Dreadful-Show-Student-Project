@@ -210,6 +210,13 @@ public class TDS_Throwable : TDS_Object
         sprite.enabled = false;
         shadow.SetActive(false);
 
+        if (owner)
+        {
+            owner.RemoveThrowable();
+            isHeld = false;
+            SetIndependant();
+        }
+
         TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_MagicPoof, audioSource);
 
         if (!feedbackFX) return;
@@ -279,7 +286,7 @@ public class TDS_Throwable : TDS_Object
     /// <returns>Returns true is successfully picked up the object, false if a issue has been encountered.</returns> 
     public virtual bool PickUp(TDS_Character _owner)
     {
-        if (isHeld) return false;
+        if (isHeld || isDestroyed) return false;
 
         isHeld = true;
         owner = _owner;

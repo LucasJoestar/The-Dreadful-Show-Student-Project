@@ -1105,7 +1105,6 @@ public class TDS_UIManager : PunBehaviour
         if (!_playerLifeBar) return; 
         _playerLifeBar.SetOwner(_player);
         _playerLifeBar.UpdateLifeBar(_player.HealthCurrent);
-        _playerLifeBar.gameObject.SetActive(true);
         _player.HealthBar = _playerLifeBar;
         _player.OnHealthChanged += _playerLifeBar.UpdateLifeBar;
         _player.OnTriggerHowToPlay += _playerLifeBar.TriggerHowToPlayInfo;

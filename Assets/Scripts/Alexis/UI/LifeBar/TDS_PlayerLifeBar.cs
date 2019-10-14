@@ -120,9 +120,6 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
                 isController = true;
             }
 
-            // Show how to play infos
-            TriggerHowToPlayInfo();
-
             // Set throw infos
             string[] _info = null;
 
@@ -229,8 +226,9 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
                 }
         }
 
+        gameObject.SetActive(true);
         if (howToPlayAnchor) howToPlayAnchor.SetActive(true);
-        if (howToPlayInfo && !howToPlayInfo.activeInHierarchy && (TDS_GameManager.CurrentSceneIndex == 1)) howToPlayInfo.SetActive(true);
+        HideHowToPlayInfo();
     }
     #endregion
 
