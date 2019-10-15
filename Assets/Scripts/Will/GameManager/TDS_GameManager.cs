@@ -61,7 +61,7 @@ public static class TDS_GameManager
     /// <summary>
     /// Get if the game is paused or not
     /// </summary>
-    public static bool IsPaused { get; private set; }
+    public static bool IsPaused { get; set; }
 
     /// <summary>
     /// Indicates if players are currently in game, or in menu.

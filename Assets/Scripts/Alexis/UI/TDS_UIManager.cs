@@ -129,6 +129,11 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private GameObject loadingScreenParent;
     // Parent of the Game Over Screen
     [SerializeField] private GameObject gameOverScreenParent;
+    //Parent of the Main Menu Credits
+    [SerializeField] private GameObject creditsParent;
+    //Parent of the Controls
+    [SerializeField] private GameObject controlsParent;
+    
     #endregion
 
     #region Lifebars
@@ -212,14 +217,14 @@ public class TDS_UIManager : PunBehaviour
 
     #region Buttons
     [Header("Buttons")]
-    [SerializeField] private UnityEngine.UI.Button launchGameButton;
+    [SerializeField] private Button launchGameButton;
     public Button LaunchGameButton
     {
         get { return launchGameButton;  }
     }
-    [SerializeField] private UnityEngine.UI.Button buttonQuitPause;
-    [SerializeField] private UnityEngine.UI.Button buttonQuitGame;
-    [SerializeField] private UnityEngine.UI.Button buttonRestartGame; 
+    [SerializeField] private Button buttonQuitPause;
+    [SerializeField] private Button buttonQuitGame;
+    [SerializeField] private Button buttonRestartGame; 
     #endregion
 
     #region Animator
@@ -316,6 +321,11 @@ public class TDS_UIManager : PunBehaviour
                         yield return null;
                     }
                     _horizontalAxisAction = characterSelectionManager.CharacterSelectionMenu.LocalElement.ChangeImage;
+                    while (!PhotonNetwork.inRoom)
+                    {
+                        yield return null; 
+                    }
+                    yield return null;
                     break; 
                 }
                 _submitActionByPlayer = characterSelectionManager.SubmitInLocalCharacterSelection;
@@ -324,11 +334,7 @@ public class TDS_UIManager : PunBehaviour
                 break;
             case UIState.InGame:
                 yield return new WaitForEndOfFrame(); 
-                //_startAction = () => SetPause(true);
-                break;
-            case UIState.InPause:
-                yield return new WaitForEndOfFrame(); 
-                //_cancelAction = () => SetPause(false);
+                _startAction = () => SetPause(true);
                 break;
             default:
                 break;
@@ -347,29 +353,6 @@ public class TDS_UIManager : PunBehaviour
                 yield return null;
             }
             yield break; 
-        }
-        if (_state == UIState.InPause)
-        {
-            while (UIState == _state)
-            {
-                // KILL ENEMIES TO AVOID SOFT LOCK
-                if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Dodge) && TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Parry))
-                {
-                    //SetPause(false);
-                    yield return null; 
-                    FindObjectsOfType<TDS_Enemy>().ToList().ForEach(e => e.TakeDamage(999));
-                    yield break; 
-                }
-                //
-                if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Pause) || TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Cancel))
-                {
-                    yield return new WaitForEndOfFrame();
-                    _cancelAction?.Invoke();
-                    yield break; 
-                }
-                yield return null;
-            }
-            yield break;
         }
         if (!PhotonNetwork.offlineMode)
         {
@@ -422,7 +405,22 @@ public class TDS_UIManager : PunBehaviour
             }
             yield return null;
         }
+    }
 
+    private IEnumerator CheckInputInMainMenu()
+    {
+        while (UIState == UIState.InMainMenu)
+        {
+            if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Cancel))
+            {
+                yield return new WaitForEndOfFrame();
+                if(optionManager) optionManager.gameObject.SetActive(false);
+                if(creditsParent) creditsParent.gameObject.SetActive(false);
+                Selectable.allSelectablesArray.FirstOrDefault()?.Select();
+            }
+            yield return null;
+        }
+        checkInputCoroutine = null;
     }
 
     /// <summary>
@@ -587,12 +585,16 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_state">State</param>
     public void ActivateMenu(UIState _state)
     {
+        if(checkInputCoroutine != null)
+        {
+            StopCoroutine(checkInputCoroutine);
+            checkInputCoroutine = null; 
+        }
         uiState = _state;
         switch (uiState)
         {
             case UIState.InMainMenu:
                 TDS_SoundManager.Instance.PlayMusic(Music.TitleScreen, 1f);
-
                 mainMenuParent.SetActive(true);
                 roomSelectionMenuParent.SetActive(false);
                 characterSelectionMenuParent.SetActive(false);
@@ -601,7 +603,7 @@ public class TDS_UIManager : PunBehaviour
                 gameOverScreenParent.SetActive(false);
                 TDS_GameManager.PlayersInfo.Clear();
                 characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements.ToList().ForEach(e => e.ClearToggle());
-                Selectable.allSelectables.FirstOrDefault()?.Select();
+                checkInputCoroutine = StartCoroutine(CheckInputInMainMenu());
                 break;
             case UIState.InRoomSelection:
                 if (!PhotonNetwork.connected)
@@ -615,13 +617,7 @@ public class TDS_UIManager : PunBehaviour
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false);
                 gameOverScreenParent.SetActive(false);
-                Selectable.allSelectables.FirstOrDefault()?.Select();
-
                 if(roomSelectionManager) StartCoroutine(roomSelectionManager.UpdatePlayerCount());
-                if (checkInputCoroutine != null)
-                {
-                    StopCoroutine(checkInputCoroutine);
-                }
                 checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InRoomSelection)); 
                 break;
             case UIState.InCharacterSelection:
@@ -632,9 +628,6 @@ public class TDS_UIManager : PunBehaviour
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false);
                 gameOverScreenParent.SetActive(false);
-
-                if (checkInputCoroutine != null)
-                    StopCoroutine(checkInputCoroutine);
                 checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InCharacterSelection));
                 break;
             case UIState.InGame:
@@ -644,16 +637,10 @@ public class TDS_UIManager : PunBehaviour
                 inGameMenuParent.SetActive(true);
                 pauseMenuParent.SetActive(false);
                 gameOverScreenParent.SetActive(false);
-                if (checkInputCoroutine != null)
-                    StopCoroutine(checkInputCoroutine);
                 checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InGame));
                 break;
             case UIState.InPause:
                 pauseMenuParent.SetActive(true);
-                Selectable.allSelectables.FirstOrDefault()?.Select();
-                if (checkInputCoroutine != null)
-                    StopCoroutine(checkInputCoroutine);
-                checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InPause));
                 break;
             case UIState.InGameOver:
                 mainMenuParent.SetActive(false);
@@ -662,7 +649,6 @@ public class TDS_UIManager : PunBehaviour
                 inGameMenuParent.SetActive(false);
                 pauseMenuParent.SetActive(false);
                 gameOverScreenParent.SetActive(true);
-                Selectable.allSelectables.FirstOrDefault()?.Select();
                 StopAllCoroutines();
                 if (!PhotonNetwork.isMasterClient)
                 {
@@ -672,6 +658,7 @@ public class TDS_UIManager : PunBehaviour
             default:
                 break;
         }
+        Selectable.allSelectablesArray.LastOrDefault()?.Select();
     }
 
     /// <summary>
@@ -826,7 +813,10 @@ public class TDS_UIManager : PunBehaviour
     public void DisplayOptions(bool _isDisplaying)
     {
         if (!optionManager) return;
-        if (_isDisplaying) optionManager.ResetDisplayedSettings(); 
+        if (_isDisplaying)
+        {
+            optionManager.ResetDisplayedSettings();
+        }
         optionManager.gameObject.SetActive(_isDisplaying);
         Selectable.allSelectablesArray.FirstOrDefault()?.Select(); 
     }
@@ -1066,7 +1056,21 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_isPaused"></param>
     public void SetPause(bool _isPaused)
     {
-        if(TDS_LevelManager.Instance?.OtherPlayers.Count == 0 || PhotonNetwork.offlineMode)
+        if(optionManager && optionManager.gameObject.activeInHierarchy)
+        {
+            DisplayOptions(false);
+            TDS_GameManager.IsPaused = true;
+            Selectable.allSelectablesArray.FirstOrDefault()?.Select(); 
+            return; 
+        }
+        if (controlsParent && controlsParent.gameObject.activeInHierarchy)
+        {
+            controlsParent.gameObject.SetActive(false);
+            TDS_GameManager.IsPaused = true;
+            Selectable.allSelectablesArray.FirstOrDefault()?.Select();
+            return;
+        }
+        if (TDS_LevelManager.Instance?.OtherPlayers.Count == 0 || PhotonNetwork.offlineMode)
         {
             Time.timeScale = _isPaused ? 0 : 1;
         }
