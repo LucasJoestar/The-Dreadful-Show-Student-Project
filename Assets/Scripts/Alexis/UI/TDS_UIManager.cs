@@ -817,7 +817,6 @@ public class TDS_UIManager : PunBehaviour
             optionManager.ResetDisplayedSettings();
         }
         optionManager.gameObject.SetActive(_isDisplaying);
-        Selectable.allSelectablesArray.FirstOrDefault()?.Select(); 
     }
 
     /// <summary>
@@ -844,8 +843,6 @@ public class TDS_UIManager : PunBehaviour
             characterSelectionManager.CharacterSelectionMenu.LocalElement.ClearToggle();
             if (IsloadingNextScene)
             {
-                //if (PhotonNetwork.isMasterClient)
-                //  TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LoadLevel"), new object[] { });
                 TDS_SceneManager.Instance?.PrepareOnlineSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
             }
             else
@@ -1148,7 +1145,7 @@ public class TDS_UIManager : PunBehaviour
             PhotonNetwork.Disconnect(); 
             PhotonNetwork.offlineMode = false; 
             ActivateMenu(UIState.InMainMenu);
-            Selectable.allSelectablesArray.First().Select(); 
+            Selectable.allSelectablesArray.FirstOrDefault()?.Select();
             return; 
         }
         if (PhotonNetwork.isMasterClient)

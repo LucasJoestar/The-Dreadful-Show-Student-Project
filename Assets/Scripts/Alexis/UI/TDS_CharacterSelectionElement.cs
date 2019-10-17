@@ -334,7 +334,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// </summary>
     public void DisplayNextImage()
     {
-        if ((TDS_GameManager.IsOnline && TDS_GameManager.LocalIsReady) || isLocked) return;
+        if ((TDS_GameManager.IsOnline && TDS_GameManager.LocalIsReady) || isLocked || PlayerInfo == null) return;
         if (TDS_GameManager.IsOnline && PlayerInfo.PhotonPlayer == null) return;
         if (characterSelectionImages.Where(i => i.CanBeSelected).Count() < 1) return;
         CurrentSelection.CharacterImage.gameObject.SetActive(false);
@@ -358,7 +358,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// </summary>
     public void DisplayPreviousImage()
     {
-        if (TDS_GameManager.IsOnline && TDS_GameManager.LocalIsReady || IsLocked) return;
+        if (TDS_GameManager.IsOnline && TDS_GameManager.LocalIsReady || IsLocked || PlayerInfo == null) return;
         if (TDS_GameManager.IsOnline && PlayerInfo.PhotonPlayer == null) return;
         if (characterSelectionImages.Where(i => i.CanBeSelected).Count() < 1) return;
         CurrentSelection.CharacterImage.gameObject.SetActive(false);

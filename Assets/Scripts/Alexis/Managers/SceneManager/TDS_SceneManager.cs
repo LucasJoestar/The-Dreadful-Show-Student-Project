@@ -137,6 +137,7 @@ public class TDS_SceneManager : PunBehaviour
     private void OnEveryOneSceneLoaded()
     {
         TDS_UIManager.Instance?.DisplayLoadingScreen(false);
+        if (SceneManager.GetActiveScene().buildIndex == 0) return; 
         TDS_LevelManager.Instance?.Spawn();
     }
 
