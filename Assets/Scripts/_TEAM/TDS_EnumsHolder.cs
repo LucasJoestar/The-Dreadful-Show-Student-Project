@@ -196,7 +196,9 @@ public enum CustomEventType
     RemoveCurtains,
     SwitchArrow,
     LoadNextLevel,
-    PlayMusic
+    PlayMusic,
+    PlayCutscene,
+    WaitEndOfCutscene
 }
 
 /// <summary>

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Playables;
 
 using Random = UnityEngine.Random;
 
@@ -42,11 +43,21 @@ public class TDS_LevelManager : PunBehaviour
     /// Event called when a new checkpoint is set.
     /// </summary>
     public static Action<TDS_Checkpoint> OnCheckpointActivated = null;
+
+    /// <summary>
+    /// Event called when the current cutscene ends.
+    /// </summary>
+    public static event Action OnCutsceneEnds = null;
     #endregion
 
     #region Fields / Properties
 
     #region Variables
+    /// <summary>
+    /// Current playing cutscene.
+    /// </summary>
+    private PlayableDirector currentCutscene = null;
+
     /// <summary>
     /// Local player, the one who play on this machine.
     /// </summary>
@@ -185,6 +196,28 @@ public class TDS_LevelManager : PunBehaviour
     public void InitOnlinePlayer(TDS_Player _onlinePlayer)
     {
         otherPlayers.Add(_onlinePlayer);
+    }
+
+    /// <summary>
+    /// Plays a cutscene and call the <see cref="OnCutsceneEnds"/> event when it ends.
+    /// </summary>
+    /// <param name="_cutscene">PlayableDirector to play.</param>
+    public void PlayCutscene(PlayableDirector _cutscene)
+    {
+        if (_cutscene.time == 0) _cutscene.Play();
+        _cutscene.stopped += OnCutsceneStopeed;
+    }
+
+    /// <summary>
+    /// Called when the current cutscene is stopped.
+    /// </summary>
+    /// <param name="_cutscene">Cutscene that stopped.</param>
+    private void OnCutsceneStopeed(PlayableDirector _cutscene)
+    {
+        if (_cutscene != currentCutscene) return;
+        currentCutscene = null;
+        _cutscene.stopped -= OnCutsceneStopeed;
+        OnCutsceneEnds?.Invoke();
     }
 
     /// <summary>
