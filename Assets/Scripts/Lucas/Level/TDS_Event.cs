@@ -254,10 +254,10 @@ public class TDS_Event
                 else TDS_SceneManager.Instance.PrepareSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
 
                 yield return new WaitForSeconds(1f);
-                if (!PhotonNetwork.offlineMode) TDS_LevelManager.Instance.LocalPlayer.FreezePlayer();
+                if (!PhotonNetwork.offlineMode) TDS_LevelManager.Instance?.LocalPlayer.FreezePlayer();
                 else
                 {
-                    foreach (TDS_Player _player in TDS_LevelManager.Instance.AllPlayers)
+                    foreach (TDS_Player _player in TDS_LevelManager.Instance?.AllPlayers)
                     {
                         _player.FreezePlayer();
                     }

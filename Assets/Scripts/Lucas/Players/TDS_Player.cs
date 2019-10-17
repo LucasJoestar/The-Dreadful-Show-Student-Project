@@ -1762,6 +1762,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     public void MoveInDirection(Vector3 _newPosition)
     {
         if (!photonView.isMine) return; 
+
         // Increases speed if needed
         if (speedCurrent < SpeedMax)
         {
@@ -2129,6 +2130,10 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// 3 if attacking or dodging.</returns>
     public virtual int CheckActionsInputs()
     {
+        #if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.M)) OnStartAttack += () => SetBonusDamages(200);
+        #endif
+
         // If dodging, parrying or attacking, do not perform action, and return 1
         if (isParrying || isPreparingAttack) return 1;
 
@@ -2499,7 +2504,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         CheckMovementsInputs();
         CheckActionsInputs();
 	}
-    #endregion
+#endregion
 
-    #endregion
+#endregion
 }

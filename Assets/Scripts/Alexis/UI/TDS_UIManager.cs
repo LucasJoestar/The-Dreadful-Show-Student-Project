@@ -298,7 +298,6 @@ public class TDS_UIManager : PunBehaviour
         Action _cancelAction = null;
         Action _submitAction = null;
         Action<int> _horizontalAxisAction = null;
-        Action _startAction = null; 
         //Local
         Action<int> _cancelActionByPlayer = null;
         Action<int> _submitActionByPlayer = null;
@@ -332,28 +331,10 @@ public class TDS_UIManager : PunBehaviour
                 _cancelActionByPlayer = characterSelectionManager.CancelInLocalCharacterSelection;
                 _horizontalAxisActionByPlayer = characterSelectionManager.ChangeImageAtPlayer; 
                 break;
-            case UIState.InGame:
-                yield return new WaitForEndOfFrame(); 
-                _startAction = () => SetPause(true);
-                break;
             default:
                 break;
         }
         int _value = 0;
-        if(_state == UIState.InGame)
-        {
-            while (UIState == _state)
-            {
-                if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Pause) && !TDS_GameManager.IsInCutscene)
-                {
-                    yield return new WaitForEndOfFrame(); 
-                    _startAction?.Invoke();
-                    yield break; 
-                }
-                yield return null;
-            }
-            yield break; 
-        }
         if (!PhotonNetwork.offlineMode)
         {
             while (UIState == _state)
@@ -371,11 +352,6 @@ public class TDS_UIManager : PunBehaviour
                 else if (TDS_GameManager.InputsAsset.Controllers[0].GetAxisDown(AxisType.Horizontal, out _value))
                 {
                     _horizontalAxisAction?.Invoke(_value);
-                }
-                else if(TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Pause))
-                {
-                    yield return new WaitForEndOfFrame();
-                    _startAction?.Invoke();
                 }
                 yield return null;
             }
@@ -1052,6 +1028,7 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_isPaused"></param>
     public void SetPause(bool _isPaused)
     {
+        Debug.Log("Pause => " + _isPaused);
         if(optionManager && optionManager.gameObject.activeInHierarchy)
         {
             DisplayOptions(false);

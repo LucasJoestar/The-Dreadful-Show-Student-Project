@@ -204,6 +204,7 @@ public class TDS_LevelManager : PunBehaviour
     /// <param name="_cutscene">PlayableDirector to play.</param>
     public void PlayCutscene(PlayableDirector _cutscene)
     {
+        TDS_GameManager.IsInCutscene = true;
         currentCutscene = _cutscene;
         if (_cutscene.time == 0) _cutscene.Play();
         _cutscene.stopped += OnCutsceneStopeed;
@@ -263,6 +264,9 @@ public class TDS_LevelManager : PunBehaviour
     {
         if (!currentCutscene) return;
         currentCutscene.Stop();
+        TDS_GameManager.IsInCutscene = false;
+
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SkipCutscene"), new object[] { });
     }
 
     /// <summary>
