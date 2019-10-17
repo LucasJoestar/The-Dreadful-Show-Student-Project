@@ -658,7 +658,6 @@ public class TDS_UIManager : PunBehaviour
             default:
                 break;
         }
-        Selectable.allSelectablesArray.LastOrDefault()?.Select();
     }
 
     /// <summary>
