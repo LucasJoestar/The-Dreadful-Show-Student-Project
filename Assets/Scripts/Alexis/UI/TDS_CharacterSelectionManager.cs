@@ -246,8 +246,7 @@ public class TDS_CharacterSelectionManager : PunBehaviour
         characterSelectionMenu.RemoveLocalPlayer(_playerId);
         if (TDS_GameManager.PlayersInfo.Count == 0)
         {
-            TDS_GameManager.PlayersInfo.Clear();
-            TDS_UIManager.Instance?.ActivateMenu(UIState.InMainMenu);
+            TDS_UIManager.Instance?.StartLeavingRoom(); 
         }
     }
 
