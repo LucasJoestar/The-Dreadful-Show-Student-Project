@@ -669,7 +669,7 @@ public abstract class TDS_Enemy : TDS_Character
                     _colliders = Physics.OverlapSphere(transform.position, wanderingRangeMax);
                     if (_colliders.Length > 0)
                     {
-                        _colliders = _colliders.Where(c => c.gameObject.HasTag("Throwable") && c.GetComponent<TDS_Throwable>() && !c.GetComponent<TDS_Throwable>().IsHeld).OrderBy(c => Vector3.Distance(transform.position, c.transform.position)).ToArray();
+                        _colliders = _colliders.Where(c => c.gameObject.HasTag("Throwable") && c.GetComponent<TDS_Throwable>() && !c.GetComponent<TDS_Throwable>().IsHeld && c.GetComponent<TDS_Throwable>().CanBeGrabbedByEnemies).OrderBy(c => Vector3.Distance(transform.position, c.transform.position)).ToArray();
                         if (_colliders.Length > 0)
                         {
                                 //Get the closest throwable
