@@ -183,7 +183,8 @@ public enum CustomEventType
     UnityEventLocal,
     WaitForObjectDeath,
     WaitForSpawnAreaDesactivation,
-    
+    WaitEndOfCutscene,
+
     // Online Events
     Narrator = 21,
     Instantiate,
@@ -196,7 +197,8 @@ public enum CustomEventType
     RemoveCurtains,
     SwitchArrow,
     LoadNextLevel,
-    PlayMusic
+    PlayMusic,
+    PlayCutscene,
 }
 
 /// <summary>

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Playables;
 
 using Random = UnityEngine.Random;
 
@@ -42,11 +43,21 @@ public class TDS_LevelManager : PunBehaviour
     /// Event called when a new checkpoint is set.
     /// </summary>
     public static Action<TDS_Checkpoint> OnCheckpointActivated = null;
+
+    /// <summary>
+    /// Event called when the current cutscene ends.
+    /// </summary>
+    public static event Action OnCutsceneEnds = null;
     #endregion
 
     #region Fields / Properties
 
     #region Variables
+    /// <summary>
+    /// Current playing cutscene.
+    /// </summary>
+    private PlayableDirector currentCutscene = null;
+
     /// <summary>
     /// Local player, the one who play on this machine.
     /// </summary>
@@ -188,6 +199,29 @@ public class TDS_LevelManager : PunBehaviour
     }
 
     /// <summary>
+    /// Plays a cutscene and call the <see cref="OnCutsceneEnds"/> event when it ends.
+    /// </summary>
+    /// <param name="_cutscene">PlayableDirector to play.</param>
+    public void PlayCutscene(PlayableDirector _cutscene)
+    {
+        currentCutscene = _cutscene;
+        if (_cutscene.time == 0) _cutscene.Play();
+        _cutscene.stopped += OnCutsceneStopeed;
+    }
+
+    /// <summary>
+    /// Called when the current cutscene is stopped.
+    /// </summary>
+    /// <param name="_cutscene">Cutscene that stopped.</param>
+    private void OnCutsceneStopeed(PlayableDirector _cutscene)
+    {
+        if (_cutscene != currentCutscene) return;
+        currentCutscene = null;
+        _cutscene.stopped -= OnCutsceneStopeed;
+        OnCutsceneEnds?.Invoke();
+    }
+
+    /// <summary>
     /// Remove the player with the selected id from the onlinePlayers list
     /// </summary>
     /// <param name="_playerId">Id of the removed player</param>
@@ -220,6 +254,15 @@ public class TDS_LevelManager : PunBehaviour
             yield break; 
         }
         else if (AllPlayers.All(p => p.IsDead)) TDS_UIManager.Instance.StartCoroutine(TDS_UIManager.Instance.ResetInGameUI());
+    }
+
+    /// <summary>
+    /// Skips the current cutscene.
+    /// </summary>
+    public void SkipCutscene()
+    {
+        if (!currentCutscene) return;
+        currentCutscene.Stop();
     }
 
     /// <summary>

@@ -189,8 +189,8 @@ public class TDS_SceneManager : PunBehaviour
         TDS_UIManager.Instance?.DisplayLoadingScreen(true);
         if (_sceneIndex >= SceneManager.sceneCountInBuildSettings)
         {
-            _sceneIndex = 0;
-            _nextUIState = (int)UIState.InMainMenu;
+            TDS_NetworkManager.Instance.LeaveGame();
+            yield break;
         }
         else
         {
