@@ -135,6 +135,8 @@ public class TDS_Throwable : TDS_Object
 
     /// <summary>Public accessor for <see cref="weight"/>.</summary>
     public int Weight { get { return weight; } }
+
+    public bool CanBeGrabbedByEnemies { get; private set; }
     #endregion
 
     #region Methods
@@ -419,6 +421,15 @@ public class TDS_Throwable : TDS_Object
 
         // Set event on hitbox hit
         hitBox.OnTouch += OnHitSomething;
+    }
+
+    protected virtual void Start()
+    {
+        RaycastHit _groundPointInfo;
+        if (Physics.Raycast(new Ray(transform.position, Vector3.down), out _groundPointInfo, 2))
+        {
+            CanBeGrabbedByEnemies = GeometryHelper.IsInAnyTriangle(_groundPointInfo.point, CustomNavMeshManager.Triangles);
+        }
     }
 
     // OnCollisionEnter is called when this collider/rigidbody has begun touching another rigidbody/collider
