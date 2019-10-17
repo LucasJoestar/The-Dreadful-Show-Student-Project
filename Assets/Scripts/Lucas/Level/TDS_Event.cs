@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Playables;
 
 using Object = UnityEngine.Object;
 
@@ -93,6 +94,11 @@ public class TDS_Event
     /// Narrator quote linked to the event.
     /// </summary>
     [SerializeField] private TDS_NarratorQuote quote = null;
+
+    /// <summary>
+    /// Cutscene to play during this event.
+    /// </summary>
+    [SerializeField] private PlayableDirector cutscene = null;
 
     /// <summary>
     /// Player type required to execute this action.
@@ -272,34 +278,39 @@ public class TDS_Event
 
             // Triggers a particular quote of the Narrator
             case CustomEventType.Narrator:
-                TDS_LevelManager.Instance.PlayNarratorQuote(quote);
+                TDS_LevelManager.Instance?.PlayNarratorQuote(quote);
+                break;
+
+            // Plays a cutscene
+            case CustomEventType.PlayCutscene:
+                TDS_LevelManager.Instance?.PlayCutscene(cutscene);
                 break;
 
             // Plays a new music !
             case CustomEventType.PlayMusic:
-                TDS_SoundManager.Instance.PlayMusic((Music)eventInt, eventFloat);
+                TDS_SoundManager.Instance?.PlayMusic((Music)eventInt, eventFloat);
                 break;
 
             // Remove UI curtains
             case CustomEventType.RemoveCurtains:
-                TDS_UIManager.Instance.SwitchCurtains(false);
+                TDS_UIManager.Instance?.SwitchCurtains(false);
                 break;
 
             // Switch UI arrow
             case CustomEventType.SwitchArrow:
-                TDS_UIManager.Instance.SwitchArrow();
+                TDS_UIManager.Instance?.SwitchArrow();
                 yield return new WaitForSeconds(2.5f);
-                TDS_UIManager.Instance.SwitchArrow();
+                TDS_UIManager.Instance?.SwitchArrow();
                 break;
 
             // Unfreeze local player
             case CustomEventType.UnfreezePlayerFromCutscene:
                 TDS_GameManager.IsInCutscene = false;
-                TDS_UIManager.Instance.DesactivateCutsceneBlackBars();
-                if (!PhotonNetwork.offlineMode) TDS_LevelManager.Instance.LocalPlayer.UnfreezePlayer();
+                TDS_UIManager.Instance?.DesactivateCutsceneBlackBars();
+                if (!PhotonNetwork.offlineMode) TDS_LevelManager.Instance?.LocalPlayer.UnfreezePlayer();
                 else
                 {
-                    foreach (TDS_Player _player in TDS_LevelManager.Instance.AllPlayers)
+                    foreach (TDS_Player _player in TDS_LevelManager.Instance?.AllPlayers)
                     {
                         _player.UnfreezePlayer();
                     }
@@ -314,6 +325,16 @@ public class TDS_Event
             // Just invoke a Unity Event, that's it
             case CustomEventType.UnityEventOnline:
                 unityEvent.Invoke();
+                break;
+
+            // Wait until end of cutscene
+            case CustomEventType.WaitEndOfCutscene:
+                TDS_LevelManager.OnCutsceneEnds += StopWaiting;
+
+                while (IsWaiting) yield return null;
+
+                TDS_LevelManager.OnCutsceneEnds -= StopWaiting;
+                IsWaiting = true;
                 break;
 
             // Wait for an action of the local player
@@ -350,7 +371,7 @@ public class TDS_Event
 
             // Wait that everyone is in the zone
             case CustomEventType.WaitForEveryone:
-                if (TDS_Camera.Instance.CurrentBounds.XMin < eventTransform.position.x)
+                if (TDS_Camera.Instance?.CurrentBounds.XMin < eventTransform.position.x)
                 {
                     TDS_Camera.Instance.OnXMinBoundChanged += CheckBound;
                     bool _doSwitch = TDS_LevelManager.Instance.AllPlayers.Length > 1;
@@ -368,7 +389,7 @@ public class TDS_Event
 
                     if (_doSwitch)
                     {
-                       TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel"), new object[] { });
+                       TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance?.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel"), new object[] { });
                     }
                 }
                 break;

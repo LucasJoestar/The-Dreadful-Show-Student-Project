@@ -2208,6 +2208,7 @@ public class TDS_Player : TDS_Character, IPunObservable
             if (TDS_GameManager.IsInCutscene)
             {
                 // Skip it
+                TDS_LevelManager.Instance?.SkipCutscene();
             }
             else
             {

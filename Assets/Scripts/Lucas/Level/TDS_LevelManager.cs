@@ -204,6 +204,7 @@ public class TDS_LevelManager : PunBehaviour
     /// <param name="_cutscene">PlayableDirector to play.</param>
     public void PlayCutscene(PlayableDirector _cutscene)
     {
+        currentCutscene = _cutscene;
         if (_cutscene.time == 0) _cutscene.Play();
         _cutscene.stopped += OnCutsceneStopeed;
     }
@@ -253,6 +254,15 @@ public class TDS_LevelManager : PunBehaviour
             yield break; 
         }
         else if (AllPlayers.All(p => p.IsDead)) TDS_UIManager.Instance.StartCoroutine(TDS_UIManager.Instance.ResetInGameUI());
+    }
+
+    /// <summary>
+    /// Skips the current cutscene.
+    /// </summary>
+    public void SkipCutscene()
+    {
+        if (!currentCutscene) return;
+        currentCutscene.Stop();
     }
 
     /// <summary>

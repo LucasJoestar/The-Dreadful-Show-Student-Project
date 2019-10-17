@@ -214,7 +214,7 @@ public class TDS_EventSystemEditor : Editor
 
                 TDS_EditorUtility.PropertyField("Event Type", "Type of this event", _eventType);
                 CustomEventType _eventTypeValue = (CustomEventType)_eventType.enumValueIndex;
-                if (_eventType.enumValueIndex > 7) _eventTypeValue += 13;
+                if (_eventType.enumValueIndex > 8) _eventTypeValue += 12;
 
                 TDS_EditorUtility.FloatField("Delay", "Delay before starting this event", _event.FindPropertyRelative("delay"));
 
@@ -287,6 +287,10 @@ public class TDS_EventSystemEditor : Editor
 
                         GUI.color = _originalColor;
                         GUILayout.EndHorizontal();
+                        break;
+
+                    case CustomEventType.PlayCutscene:
+                        TDS_EditorUtility.PropertyField("Cutscene", "Cutscene to play during this event.", _event.FindPropertyRelative("cutscene"));
                         break;
 
                     case CustomEventType.PlayMusic:

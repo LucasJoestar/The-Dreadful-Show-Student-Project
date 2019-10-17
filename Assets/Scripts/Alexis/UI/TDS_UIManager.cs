@@ -344,7 +344,7 @@ public class TDS_UIManager : PunBehaviour
         {
             while (UIState == _state)
             {
-                if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Pause))
+                if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Pause) && !TDS_GameManager.IsInCutscene)
                 {
                     yield return new WaitForEndOfFrame(); 
                     _startAction?.Invoke();
