@@ -60,6 +60,11 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
     }
 
     /// <summary>
+    /// Hide how to play infos after a certain delay.
+    /// </summary>
+    private void HideHTPDelayed() => Invoke("HideHowToPlayInfo", 13);
+
+    /// <summary>
     /// Show or hide the player hide to play infos in UI.
     /// </summary>
     public virtual void TriggerHowToPlayInfo()
@@ -228,7 +233,12 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
 
         gameObject.SetActive(true);
         if (howToPlayAnchor) howToPlayAnchor.SetActive(true);
-        HideHowToPlayInfo();
+        if (TDS_GameManager.CurrentSceneIndex == 1)
+        {
+            TriggerHowToPlayInfo();
+            TDS_LevelManager.OnCutsceneEnds += HideHTPDelayed;
+        }
+        else HideHowToPlayInfo();
     }
     #endregion
 

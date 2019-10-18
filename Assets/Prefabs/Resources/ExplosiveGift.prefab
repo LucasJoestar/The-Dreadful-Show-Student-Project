@@ -257,7 +257,7 @@ Transform:
   - {fileID: 7593376260666890944}
   - {fileID: 5567213240096567352}
   - {fileID: 1478611772284803223}
-  - {fileID: 5940987122782237894}
+  - {fileID: 5944104598780903064}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -296,7 +296,7 @@ MonoBehaviour:
   collider: {fileID: 7593376261498355137}
   shadow: {fileID: 686166241511664065}
   hitBox: {fileID: 7593376260666890815}
-  feedbackFX: {fileID: 5940987122782239357}
+  feedbackFX: {fileID: 5942253658279743104}
   rigidbody: {fileID: 7593376261498355140}
   sprite: {fileID: 1074697609443874531}
   isHeld: 0
@@ -304,7 +304,7 @@ MonoBehaviour:
   bonusDamage: 0
   ObjectDurability: 2
   weight: 2
-  explodingDelay: 5
+  explodingDelay: 1.75
   animator: {fileID: 2557665236746908573}
   animationSpeedMin: 0.5
   animationSpeedMax: 3.5
@@ -344,8 +344,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 9136283519379038369}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 44
+  instantiationId: 44
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &9136283519379038369
@@ -456,7 +456,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
     type: 2}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 1724221eb6f21ef47a1c0707d7749df0, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -621,27 +621,32 @@ PrefabInstance:
     - target: {fileID: 198742772223849486, guid: 71169cd45071ac94ba9fc202ff4188ca,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
-      value: 1
+      value: 0.45490196
       objectReference: {fileID: 0}
     - target: {fileID: 198742772223849486, guid: 71169cd45071ac94ba9fc202ff4188ca,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.9686275
+      value: 0.45167318
       objectReference: {fileID: 0}
     - target: {fileID: 198742772223849486, guid: 71169cd45071ac94ba9fc202ff4188ca,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
-      value: 0.7411765
+      value: 0.45167318
+      objectReference: {fileID: 0}
+    - target: {fileID: 198742772223849486, guid: 71169cd45071ac94ba9fc202ff4188ca,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
---- !u!1 &5940987122782239357 stripped
+--- !u!1 &5942253658279743104 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca,
     type: 3}
   m_PrefabInstance: {fileID: 5940987122782240150}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &5940987122782237894 stripped
+--- !u!4 &5944104598780903064 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4244029294445326, guid: 71169cd45071ac94ba9fc202ff4188ca,
     type: 3}

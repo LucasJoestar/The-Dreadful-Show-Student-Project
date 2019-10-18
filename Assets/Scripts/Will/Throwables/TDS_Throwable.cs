@@ -186,7 +186,7 @@ public class TDS_Throwable : TDS_Object
     /// <summary>
     /// Destroy the gameObject Throwable if the durability is less or equal to zero 
     /// </summary>
-    protected virtual void DestroyThrowableObject()
+    protected virtual void DestroyThrowableObject(float _destroyingTime = 2)
     {
         if (isDestroyed || !PhotonNetwork.isMasterClient) return;
 
@@ -195,7 +195,7 @@ public class TDS_Throwable : TDS_Object
         TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "DestroyFeedback"), new object[] { });
 
         DestroyFeedback();
-        Invoke("Destroy", 2);
+        Invoke("Destroy", _destroyingTime);
     }
 
     /// <summary>
@@ -338,7 +338,6 @@ public class TDS_Throwable : TDS_Object
             LoseDurability();
 
             if (!isDestroyed) TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "LoseDurability"), new object[] { });
-            
         }
         else
         {
