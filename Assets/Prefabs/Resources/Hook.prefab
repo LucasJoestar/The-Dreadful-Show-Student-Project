@@ -119,8 +119,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 0
-  viewIdField: 51
-  instantiationId: 51
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!96 &1269694687186753519
@@ -228,7 +228,8 @@ AudioSource:
   m_GameObject: {fileID: 4227390829016078284}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

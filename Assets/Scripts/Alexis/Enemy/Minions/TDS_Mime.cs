@@ -45,7 +45,9 @@ public class TDS_Mime : TDS_Minion
     public void PlayFishingRodSound()
     {
         if (!audioSource || !fishingRodClip) return;
-        TDS_SoundManager.Instance.PlaySoundAtPosition(audioSource, fishingRodClip, transform.position, TDS_SoundManager.FX_GROUP_NAME, true, 1); 
+        audioSource.clip = fishingRodClip;
+        audioSource.Play();
+        //TDS_SoundManager.Instance.PlaySoundAtPosition(audioSource, fishingRodClip, transform.position, TDS_SoundManager.FX_GROUP_NAME, true, 1); 
     }
 
     public void StopFishingRodSound()

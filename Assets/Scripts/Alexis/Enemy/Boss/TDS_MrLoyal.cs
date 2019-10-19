@@ -93,10 +93,7 @@ public class TDS_MrLoyal : TDS_Boss
             default:
                 return;
         }
-        if (audioSource.isPlaying) audioSource.Stop();
-        audioSource.clip = _clip;
-        audioSource.volume = .25f; 
-        audioSource.Play(); 
+        TDS_SoundManager.Instance?.PlayNarratorQuote(_clip); 
         if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "PlayCallOutSound"), new object[] { _enemyName });
     }
 

@@ -249,14 +249,17 @@ public class TDS_CreditsManager : PunBehaviour
                 break;
 
             case "Punk Boss":
+                _icon.transform.localScale = new Vector3(_icon.transform.localScale.x * -1, _icon.transform.localScale.y, _icon.transform.localScale.z);
                 _icon.runtimeAnimatorController = punkBossIcon;
                 break;
 
             case "Siamese":
+                _icon.transform.localScale = new Vector3(_icon.transform.localScale.x * -1, _icon.transform.localScale.y, _icon.transform.localScale.z);
                 _icon.runtimeAnimatorController = siamesesIcon;
                 break;
 
             case "Mr Loyal":
+                _icon.transform.localScale = new Vector3(_icon.transform.localScale.x * -1, _icon.transform.localScale.y, _icon.transform.localScale.z);
                 _icon.runtimeAnimatorController = mrLoyalIcon;
                 break;
 

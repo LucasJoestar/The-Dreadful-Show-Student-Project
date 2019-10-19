@@ -74,7 +74,9 @@ public class TDS_Siamese : TDS_Boss
     public void PlayTornadoSound()
     {
         if (!audioSource || !tornadoClip) return;
-        TDS_SoundManager.Instance.PlaySoundAtPosition(audioSource, tornadoClip, transform.position, TDS_SoundManager.FX_GROUP_NAME, true, 1);
+        audioSource.clip = tornadoClip;
+        audioSource.Play();
+        //TDS_SoundManager.Instance.PlaySoundAtPosition(audioSource, tornadoClip, transform.position, TDS_SoundManager.FX_GROUP_NAME, true, 1);
     }
 
     public void StopTornadoSound()

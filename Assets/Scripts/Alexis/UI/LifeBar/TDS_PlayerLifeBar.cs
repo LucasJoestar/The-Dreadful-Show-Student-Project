@@ -56,7 +56,9 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
     /// </summary>
     public virtual void HideHowToPlayInfo()
     {
-        if (howToPlayInfo && howToPlayInfo.activeInHierarchy) TriggerHowToPlayInfo();
+        if (!howToPlayInfo) return;
+        if (!howToPlayInfo.activeInHierarchy) howToPlayInfo.SetActive(true);
+        TriggerHowToPlayInfo();
     }
 
     /// <summary>
@@ -120,10 +122,11 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
         // Set inputs informations
         if (_player)
         {
-            if (((_player.Controller == TDS_GameManager.InputsAsset.Controllers[0]) && Input.GetJoystickNames().Length > 0) || (_player.Controller != TDS_GameManager.InputsAsset.Controllers[1]))
+            if (((_player.Controller == TDS_GameManager.InputsAsset.Controllers[0]) && (Input.GetJoystickNames().Length == 0)) || (_player.Controller == TDS_GameManager.InputsAsset.Controllers[1]))
             {
-                isController = true;
+                isController = false;
             }
+            else isController = true;
 
             // Set throw infos
             string[] _info = null;

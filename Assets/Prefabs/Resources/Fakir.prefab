@@ -470,9 +470,24 @@ MonoBehaviour:
   throwBonusDamagesMax: 5
   throwBonusDamagesMin: 2
   throwAimingPoint: {x: 0, y: 0, z: 0}
-  foostepsConcrete: []
-  foostepsGrass: []
-  foostepsWood: []
+  foostepsConcrete:
+  - {fileID: 8300000, guid: 6cec7ee85aa04054c83f32bb5b9c700b, type: 3}
+  - {fileID: 8300000, guid: f91833bb068843046922681919e4f1f7, type: 3}
+  - {fileID: 8300000, guid: ff1cf12ac0313204babfab1d38299747, type: 3}
+  - {fileID: 8300000, guid: 20a7277c2d2d52449b130ee6a12442d6, type: 3}
+  - {fileID: 8300000, guid: 59af498678b128543a68bdf34270b923, type: 3}
+  foostepsGrass:
+  - {fileID: 8300000, guid: c2b60e7979d499540a0b50aa5e218e69, type: 3}
+  - {fileID: 8300000, guid: 38fce040bcf4f47468b04297e0d6932f, type: 3}
+  - {fileID: 8300000, guid: 4704754b63bb62f41bdc1c1354b9ede9, type: 3}
+  - {fileID: 8300000, guid: ba4b8afe4834d474bbb55cfab3777b1a, type: 3}
+  - {fileID: 8300000, guid: a509118bd05a28e4187d01b2b18ada9b, type: 3}
+  foostepsWood:
+  - {fileID: 8300000, guid: 24c5a1ac845e8b04da02db682fc3f974, type: 3}
+  - {fileID: 8300000, guid: 1225a77dad1db214ab467cdc7eb828ab, type: 3}
+  - {fileID: 8300000, guid: 4593c48e8438b1d4589bb3090cc68c3e, type: 3}
+  - {fileID: 8300000, guid: ffc71ec3999e35e4ebabf3b849e255a3, type: 3}
+  - {fileID: 8300000, guid: e1aaac343f82e40469aff803f75a7b5e, type: 3}
   canBeDown: 1
   canThrow: 1
   doScaleOnPlayerAmount: 1

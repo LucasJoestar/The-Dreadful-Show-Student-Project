@@ -132,7 +132,7 @@ public class TDS_Attack : ScriptableObject
         // If a player performs an attack from behind, increase damages and try to put on ground
         if (_attacker.Owner && (_target is TDS_Character _targetC) && _attacker.transform.parent && (_attacker.transform.parent.gameObject.HasTag("Player") && ((_attacker.transform.position.x > (_target.transform.position.x + .5f)) != _targetC.IsFacingRight)))
         {
-            _damages = (int)(_damages * 1.5f);
+            _damages = (int)(_damages * 2f);
 
             // Get 1 / 4 chance to put target on ground
             _doPutOnGround = _noEffect && (Random.Range(1, 100) < 25);
@@ -202,7 +202,7 @@ public class TDS_Attack : ScriptableObject
     public AudioClip GetRandomClip()
     {
         if (attackClips.Length == 0) return null; 
-        int _randomIndex = Random.Range((int)0, (int)attackClips.Length);
+        int _randomIndex = Random.Range(0, attackClips.Length);
         return attackClips[_randomIndex]; 
     }
     #endregion
