@@ -580,6 +580,7 @@ public class TDS_UIManager : PunBehaviour
                 TDS_GameManager.PlayersInfo.Clear();
                 characterSelectionManager.CharacterSelectionMenu.CharacterSelectionElements.ToList().ForEach(e => e.ClearToggle());
                 checkInputCoroutine = StartCoroutine(CheckInputInMainMenu());
+                Selectable.allSelectablesArray.FirstOrDefault()?.Select(); 
                 break;
             case UIState.InRoomSelection:
                 if (!PhotonNetwork.connected)
@@ -617,6 +618,7 @@ public class TDS_UIManager : PunBehaviour
                 break;
             case UIState.InPause:
                 pauseMenuParent.SetActive(true);
+                buttonQuitPause.Select(); 
                 break;
             case UIState.InGameOver:
                 mainMenuParent.SetActive(false);
@@ -630,6 +632,7 @@ public class TDS_UIManager : PunBehaviour
                 {
                     TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, false });
                 }
+                buttonRestartGame.Select(); 
                 break; 
             default:
                 break;
