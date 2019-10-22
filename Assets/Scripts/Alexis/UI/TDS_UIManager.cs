@@ -1031,7 +1031,6 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_isPaused"></param>
     public void SetPause(bool _isPaused)
     {
-        Debug.Log("Pause => " + _isPaused);
         if(optionManager && optionManager.gameObject.activeInHierarchy)
         {
             DisplayOptions(false);

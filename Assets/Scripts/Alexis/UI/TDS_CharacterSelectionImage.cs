@@ -50,10 +50,6 @@ public class TDS_CharacterSelectionImage
     #endregion
 
     #region Void 
-    public void Reset()
-    {
-        characterType = PlayerType.Unknown;
-        canBeSelected = true; 
-    }
+    public void Reset() => canBeSelected = true; 
     #endregion
 }
