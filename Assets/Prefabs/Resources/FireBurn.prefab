@@ -109,6 +109,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FireBurn
       objectReference: {fileID: 0}
+    - target: {fileID: 3061476508601266251, guid: 11c90d4226c72a7448f83b169f57f8db,
+        type: 3}
+      propertyPath: m_Layer
+      value: 27
+      objectReference: {fileID: 0}
     - target: {fileID: 3061476508601266244, guid: 11c90d4226c72a7448f83b169f57f8db,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -173,6 +178,31 @@ PrefabInstance:
         type: 3}
       propertyPath: instantiationId
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3061476509234644715, guid: 11c90d4226c72a7448f83b169f57f8db,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3061476509234644715, guid: 11c90d4226c72a7448f83b169f57f8db,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3061476509234644712, guid: 11c90d4226c72a7448f83b169f57f8db,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3061476509234644714, guid: 11c90d4226c72a7448f83b169f57f8db,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 3061476509234644714, guid: 11c90d4226c72a7448f83b169f57f8db,
+        type: 3}
+      propertyPath: m_Range
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11c90d4226c72a7448f83b169f57f8db, type: 3}

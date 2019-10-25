@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3061476508601266245}
   - component: {fileID: 3061476508601266250}
   - component: {fileID: 3061476508601266247}
-  m_Layer: 0
+  m_Layer: 27
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,7 +154,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3061476509234644712}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.309, z: -3.32}
+  m_LocalPosition: {x: 0, y: 1, z: -1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3061476508601266244}
@@ -171,8 +171,8 @@ Light:
   serializedVersion: 9
   m_Type: 2
   m_Color: {r: 0.81960785, g: 0.5320783, b: 0.18039216, a: 1}
-  m_Intensity: 2.5
-  m_Range: 5
+  m_Intensity: 5
+  m_Range: 3
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -208,7 +208,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 262144
+    m_Bits: 4294967295
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
