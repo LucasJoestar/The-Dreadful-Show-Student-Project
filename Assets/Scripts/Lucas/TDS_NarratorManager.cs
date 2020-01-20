@@ -150,11 +150,16 @@ public class TDS_NarratorQuote
     public AudioClip AudioTrack { get { return audioTrack; } }
 
     /// <summary>
-    /// Quote, as text.
+    /// Quote, as text in French.
     /// </summary>
-    [SerializeField] private string quote = string.Empty;
+    [SerializeField] private string quote_fr = string.Empty;
 
-    /// <summary>Public accessor for <see cref="quote"/>.</summary>
-    public string Quote { get { return quote; } }
+    /// <summary>
+    /// Quote, as text in English
+    /// </summary>
+    [SerializeField] private string quote_en = string.Empty; 
+
+    /// <summary>Public accessor for <see cref="quote_fr"/>.</summary>
+    public string Quote { get { return TDS_GameManager.LocalisationIsEnglish ? quote_en : quote_fr; } }
     #endregion
 }

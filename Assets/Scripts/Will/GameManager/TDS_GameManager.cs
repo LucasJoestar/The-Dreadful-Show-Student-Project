@@ -69,6 +69,8 @@ public static class TDS_GameManager
     private static bool isInGame = true;
 
     public static bool IsOnline { get; set; } = false;
+
+    public static bool LocalisationIsEnglish { get; set; } = true;
     #endregion
 
     #region Player Info

@@ -598,6 +598,8 @@ public class TDS_UIManager : PunBehaviour
                 checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InRoomSelection)); 
                 break;
             case UIState.InCharacterSelection:
+                TDS_GameManager.PlayersInfo.Clear();
+                launchGameButton.interactable = false;
                 if (addPlayerText) addPlayerText.gameObject.SetActive(PhotonNetwork.offlineMode); 
                 mainMenuParent.SetActive(false);
                 roomSelectionMenuParent.SetActive(false);
@@ -1013,6 +1015,15 @@ public class TDS_UIManager : PunBehaviour
     public void SetJugglerAimTargetAnim(JugglerAimTargetAnimState _state)
     {
         jugglerAimTargetAnimator.SetInteger("State", (int)_state);
+    }
+
+    /// <summary>
+    /// Set the localisation as English of as French
+    /// </summary>
+    /// <param name="_isEnglish">Does the Localisation has to switch to english?</param>
+    public void SetLocalisation(bool _isEnglish)
+    {
+        TDS_GameManager.LocalisationIsEnglish = _isEnglish; 
     }
 
     /// <summary>
