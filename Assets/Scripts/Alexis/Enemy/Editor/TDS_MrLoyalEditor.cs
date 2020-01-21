@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System.Reflection;
+using System.Linq; 
 
 [CustomEditor(typeof(TDS_MrLoyal))]
 public class TDS_MrLoyalEditor : TDS_BossEditor 
@@ -42,12 +44,12 @@ public class TDS_MrLoyalEditor : TDS_BossEditor
     private SerializedProperty chargeCatsRate = null;
     private SerializedProperty teleportationPosition = null;
     private SerializedProperty audioSourceTaunt = null;
-    private SerializedProperty  fakirAudioClip = null;
-    private SerializedProperty  mimeAudioClip = null;
-    private SerializedProperty  acrobatAudioClip = null;
-    private SerializedProperty  mightyManAudioClip = null;
-    private SerializedProperty  catAudioClip = null;
-    private SerializedProperty tauntAudioClips = null; 
+    private SerializedProperty fakirQuote = null;
+    private SerializedProperty mimeQuote = null;
+    private SerializedProperty acrobatQuote = null;
+    private SerializedProperty mightyQuote = null;
+    private SerializedProperty catQuote = null;
+    private SerializedProperty tauntQuote = null; 
 
     private SerializedProperty tauntRateMin = null;
     private SerializedProperty tauntRateMax = null; 
@@ -56,7 +58,51 @@ public class TDS_MrLoyalEditor : TDS_BossEditor
     #region Methods
 
     #region Original Methods
+    private void DrawLoadQuoteButton(SerializedProperty _quoteProperty)
+    {
+        Color _originalColor = GUI.color;
+        GUI.color = new Color(.7f, .35f, .75f);
+        if (GUILayout.Button(new GUIContent("Load Quote", "Loads the quote with the ID entered as Text ID"), GUILayout.Width(150)))
+        {
+            string _fieldInfo = _quoteProperty.FindPropertyRelative("Name").stringValue;
+            if (_fieldInfo != string.Empty)
+            {
+                TDS_NarratorQuote _quote = ((TDS_NarratorManager)Resources.Load(TDS_NarratorManager.FILE_PATH)).Quotes.FirstOrDefault(q => q.Name == _fieldInfo);
+                if (_quote != null)
+                {
+                    _quoteProperty.FindPropertyRelative("audioTrack").objectReferenceValue = _quote.AudioTrack;
+                    _quoteProperty.FindPropertyRelative("quote_fr").stringValue = _quote.QuoteFr;
+                    _quoteProperty.FindPropertyRelative("quote_en").stringValue = _quote.QuoteEn;
+                }
+            }
+        }
 
+        GUI.color = _originalColor;
+    }
+
+    private void DrawLoadQuotesButton(SerializedProperty _quotesProperty)
+    {
+        Color _originalColor = GUI.color;
+        GUI.color = new Color(.7f, .35f, .75f);
+        if (GUILayout.Button(new GUIContent("Load Quotes", "Loads the quote with the ID entered as Text ID"), GUILayout.Width(150)))
+        {
+            for (int i = 0; i < _quotesProperty.arraySize; i++)
+            {
+                string _fieldInfo = _quotesProperty.GetArrayElementAtIndex(i).FindPropertyRelative("Name").stringValue;
+                if (_fieldInfo != string.Empty)
+                {
+                    TDS_NarratorQuote _quote = ((TDS_NarratorManager)Resources.Load(TDS_NarratorManager.FILE_PATH)).Quotes.FirstOrDefault(q => q.Name == _fieldInfo);
+                    if (_quote != null)
+                    {
+                        _quotesProperty.GetArrayElementAtIndex(i).FindPropertyRelative("audioTrack").objectReferenceValue = _quote.AudioTrack;
+                        _quotesProperty.GetArrayElementAtIndex(i).FindPropertyRelative("quote_fr").stringValue = _quote.QuoteFr;
+                        _quotesProperty.GetArrayElementAtIndex(i).FindPropertyRelative("quote_en").stringValue = _quote.QuoteEn;
+                    }
+                }
+            }            
+        }
+        GUI.color = _originalColor;
+    }
     #endregion
 
     #region Unity Methods
@@ -67,14 +113,14 @@ public class TDS_MrLoyalEditor : TDS_BossEditor
         cats = serializedObject.FindProperty("cats");
         chargeCatsRate = serializedObject.FindProperty("chargeCatsRate");
         teleportationPosition = serializedObject.FindProperty("teleportationPosition");
-        fakirAudioClip = serializedObject.FindProperty("fakirAudioClip");
-        mimeAudioClip = serializedObject.FindProperty("mimeAudioClip");
-        acrobatAudioClip = serializedObject.FindProperty("acrobatAudioClip");
-        mightyManAudioClip = serializedObject.FindProperty("mightyManAudioClip");
-        catAudioClip = serializedObject.FindProperty("catAudioClip");
+        fakirQuote = serializedObject.FindProperty("fakirQuote");
+        mimeQuote = serializedObject.FindProperty("mimeQuote");
+        acrobatQuote = serializedObject.FindProperty("acrobatQuote");
+        mightyQuote = serializedObject.FindProperty("mightyManQuote");
+        catQuote = serializedObject.FindProperty("catQuote");
         tauntRateMin = serializedObject.FindProperty("tauntRateMin");
         tauntRateMax = serializedObject.FindProperty("tauntRateMax");
-        tauntAudioClips = serializedObject.FindProperty("tauntAudioClips"); 
+        tauntQuote = serializedObject.FindProperty("tauntQuotes"); 
     }
 
     protected override void DrawSettings()
@@ -87,12 +133,19 @@ public class TDS_MrLoyalEditor : TDS_BossEditor
         TDS_EditorUtility.Vector3Field("Teleportation Position", "Position where Mr Loyal's will teleport himself", teleportationPosition);
 
         EditorGUILayout.LabelField("SOUNDS", TDS_EditorUtility.HeaderStyle);
-        TDS_EditorUtility.PropertyField("Callout Fakir Sound", "", fakirAudioClip);
-        TDS_EditorUtility.PropertyField("Callout Mime Sound", "", mimeAudioClip);
-        TDS_EditorUtility.PropertyField("Callout Acrobat Sound", "", acrobatAudioClip);
-        TDS_EditorUtility.PropertyField("Callout MightyMan Sound", "", mightyManAudioClip);
-        TDS_EditorUtility.PropertyField("Callout Cat Sound", "", catAudioClip);
-        TDS_EditorUtility.PropertyField("Taunt audio clips", "", tauntAudioClips); 
+        TDS_EditorUtility.PropertyField("Callout Fakir Quote", "", fakirQuote);
+        DrawLoadQuoteButton(fakirQuote); 
+        TDS_EditorUtility.PropertyField("Callout Mime Quote", "", mimeQuote);
+        DrawLoadQuoteButton(mimeQuote);
+        TDS_EditorUtility.PropertyField("Callout Acrobat Quote", "", acrobatQuote);
+        DrawLoadQuoteButton(acrobatQuote);
+        TDS_EditorUtility.PropertyField("Callout MightyMan Quote", "", mightyQuote);
+        DrawLoadQuoteButton(mightyQuote);
+        TDS_EditorUtility.PropertyField("Callout Cat Quote", "", catQuote);
+        DrawLoadQuoteButton(catQuote);
+        TDS_EditorUtility.PropertyField("Taunt Quotes", "", tauntQuote);
+        DrawLoadQuotesButton(tauntQuote);
+
 
         TDS_EditorUtility.FloatSlider("Main Taunt rate", "", tauntRateMin, 3, tauntRateMax.floatValue);
         TDS_EditorUtility.FloatSlider("Max Taunt rate", "", tauntRateMax, tauntRateMin.floatValue, 25);

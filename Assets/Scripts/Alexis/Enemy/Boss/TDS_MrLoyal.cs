@@ -43,12 +43,13 @@ public class TDS_MrLoyal : TDS_Boss
     [SerializeField] private TDS_Cat[] cats = null;
     [SerializeField] private Vector3 teleportationPosition = Vector3.zero;
 
-    [SerializeField] private AudioClip fakirAudioClip       = null;
-    [SerializeField] private AudioClip mimeAudioClip        = null;
-    [SerializeField] private AudioClip acrobatAudioClip     = null;
-    [SerializeField] private AudioClip mightyManAudioClip   = null;
-    [SerializeField] private AudioClip catAudioClip         = null;
-    [SerializeField] private AudioClip[] tauntAudioClips = null;
+
+    [SerializeField] private TDS_NarratorQuote fakirQuote       = null;
+    [SerializeField] private TDS_NarratorQuote mimeQuote        = null;
+    [SerializeField] private TDS_NarratorQuote acrobatQuote     = null;
+    [SerializeField] private TDS_NarratorQuote mightyManQuote   = null;
+    [SerializeField] private TDS_NarratorQuote catQuote         = null;
+    [SerializeField] private TDS_NarratorQuote[] tauntQuotes    = null;
     [SerializeField] private float tauntRateMin = 3;
     [SerializeField] private float tauntRateMax = 25;
 
@@ -72,58 +73,47 @@ public class TDS_MrLoyal : TDS_Boss
     private void PlayCallOutSound(string _enemyName)
     {
         if (!audioSource) return; 
-        AudioClip _clip = null;
+        TDS_NarratorQuote _quote = null; 
         switch (_enemyName)
         {
             case "Fakir":
-                _clip = fakirAudioClip;
+                _quote = fakirQuote; 
                 break;
             case "Mime":
-                _clip = mimeAudioClip; 
+                _quote = mimeQuote; 
                 break;
             case "Acrobat":
-                _clip = acrobatAudioClip; 
+                _quote = acrobatQuote; 
                 break;
             case "MightyMan":
-                _clip = mightyManAudioClip; 
+                _quote = mightyManQuote; 
                 break;
             case  "Cat":
-                _clip = catAudioClip;
+                _quote = catQuote; 
                 break;
             default:
                 return;
         }
-        TDS_SoundManager.Instance?.PlayNarratorQuote(_clip); 
+        TDS_LevelManager.Instance?.PlayNarratorQuote(_quote); 
         if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "PlayCallOutSound"), new object[] { _enemyName });
     }
 
     private void PlayRandomTaunt()
     {
-        if (!audioSource || tauntAudioClips == null || tauntAudioClips.Length == 0) return;
-        int _index = (int)Random.Range((int)0, (int)tauntAudioClips.Length); 
-        AudioClip _clip = tauntAudioClips[_index];
-        if (!_clip) return; 
-        if (audioSource.isPlaying) audioSource.Stop();
-        audioSource.clip = _clip;
-        audioSource.volume = .25f;
-        audioSource.Play();
-        if (PhotonNetwork.isMasterClient)
-        {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "PlayTaunt"), new object[] { _index });
-            Invoke("PlayRandomTaunt", Random.Range(tauntRateMin, tauntRateMax));
-        }
-
+        if (!audioSource || tauntQuotes == null || tauntQuotes.Length == 0) return;
+        int _index = (int)Random.Range((int)0, (int)tauntQuotes.Length); 
+        TDS_NarratorQuote _quote = tauntQuotes[_index];
+        if (_quote == null) return;
+        TDS_LevelManager.Instance?.PlayNarratorQuote(_quote);
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "PlayTaunt"), new object[] { _index });
     }
 
     private void PlayTaunt(int _index)
     {
-        if (!audioSource || tauntAudioClips == null || tauntAudioClips.Length == 0) return;
-        AudioClip _clip = tauntAudioClips[_index];
-        if (!_clip) return;
-        if (audioSource.isPlaying) audioSource.Stop();
-        audioSource.clip = _clip;
-        audioSource.volume = .25f;
-        audioSource.Play();
+        if (!audioSource || tauntQuotes == null || tauntQuotes.Length == 0) return;
+        TDS_NarratorQuote _quote = tauntQuotes[_index];
+        if (_quote == null) return;
+        TDS_LevelManager.Instance?.PlayNarratorQuote(_quote);
     }
 
     /// <summary>

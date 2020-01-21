@@ -153,11 +153,19 @@ public class TDS_NarratorQuote
     /// Quote, as text in French.
     /// </summary>
     [SerializeField] private string quote_fr = string.Empty;
+    public string QuoteFr
+    {
+        get { return quote_fr; }
+    }
 
     /// <summary>
     /// Quote, as text in English
     /// </summary>
     [SerializeField] private string quote_en = string.Empty; 
+    public string QuoteEn
+    {
+        get { return quote_en;  }
+    }
 
     /// <summary>Public accessor for <see cref="quote_fr"/>.</summary>
     public string Quote { get { return TDS_GameManager.LocalisationIsEnglish ? quote_en : quote_fr; } }
