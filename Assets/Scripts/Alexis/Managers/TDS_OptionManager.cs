@@ -55,6 +55,10 @@ public class TDS_OptionManager : MonoBehaviour
     [SerializeField] private Button buttonNextResolution = null;
     private int selectedResolutionIndex = 0;
 
+    [Header("Subtitles")]
+    [SerializeField] private Button frenchButton = null;
+    [SerializeField] private Button englishButton = null;
+
     [Header("Buttons")]
     [SerializeField] private Button applyButton = null;
     [SerializeField] private Button backButton = null;
@@ -135,11 +139,41 @@ public class TDS_OptionManager : MonoBehaviour
         buttonPreviousResolution.Select(); 
     }
     #endregion
-    
+
+    /// <summary>
+    /// Set the localisation and the state for the buttons
+    /// </summary>
+    /// <param name="_isLocalisationEnglish"></param>
+    public void SetLocalisation(bool _isLocalisationEnglish)
+    {
+        if (_isLocalisationEnglish == TDS_GameManager.LocalisationIsEnglish) return;
+        TDS_GameManager.LocalisationIsEnglish = _isLocalisationEnglish; 
+        englishButton.GetComponent<Animator>().SetBool("IsSelected", _isLocalisationEnglish);
+        frenchButton.GetComponent<Animator>().SetBool("IsSelected", !_isLocalisationEnglish);
+    }
+
+    /// <summary>
+    /// Reset the button animator
+    /// </summary>
+    private void ResetLocalisation()
+    {
+        if (frenchButton && englishButton)
+        {
+            if (TDS_GameManager.LocalisationIsEnglish)
+            {
+                frenchButton.GetComponent<Animator>().SetBool("IsSelected", false);
+                englishButton.GetComponent<Animator>().SetBool("IsSelected", true);
+            }
+            else
+            {
+                frenchButton.GetComponent<Animator>().SetBool("IsSelected", true);
+                englishButton.GetComponent<Animator>().SetBool("IsSelected", false);
+            }
+        }
+    }
     #endregion
 
     #region Unity Methods
-
     private void Start()
     {
         ResetDisplayedSettings();
@@ -153,7 +187,12 @@ public class TDS_OptionManager : MonoBehaviour
         if (applyButton) applyButton.onClick.AddListener(ApplyNewResolution);
         if (backButton) backButton.onClick.AddListener(() => TDS_UIManager.Instance?.DisplayOptions(false)); 
     }
-	#endregion
 
-	#endregion
+    private void OnEnable()
+    {
+        ResetLocalisation();
+    }
+    #endregion
+
+    #endregion
 }

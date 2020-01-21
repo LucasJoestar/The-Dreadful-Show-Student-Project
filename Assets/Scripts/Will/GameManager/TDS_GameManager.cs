@@ -70,7 +70,19 @@ public static class TDS_GameManager
 
     public static bool IsOnline { get; set; } = false;
 
-    public static bool LocalisationIsEnglish { get; set; } = true;
+    private static bool localisationIsEnglish = true; 
+    public static bool LocalisationIsEnglish
+    {
+        get
+        {
+            return localisationIsEnglish; 
+        }
+        set
+        {
+            PlayerPrefs.SetInt("LocalisationIsEnglish", value ? 1 : 0);
+            localisationIsEnglish = value; 
+        } 
+    }
     #endregion
 
     #region Player Info

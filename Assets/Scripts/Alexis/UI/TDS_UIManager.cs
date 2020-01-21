@@ -814,6 +814,17 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
+    /// Init the player pref key for the english localisation
+    /// </summary>
+    private void InitLicalisation()
+    {
+        if(!PlayerPrefs.HasKey("LocalisationIsEnglish"))
+            SetLocalisation(true); 
+        else 
+            SetLocalisation(PlayerPrefs.GetInt("LocalisationIsEnglish") == 1);
+    }
+
+    /// <summary>
     /// Load the next level 
     /// If Master client, send the information to the other players
     /// </summary>
@@ -1267,6 +1278,7 @@ public class TDS_UIManager : PunBehaviour
     // Use this for initialization
     private void Start()
     {
+        InitLicalisation(); 
         if (playerNameField)
         {
             string _name = $"Guest {(int)UnityEngine.Random.Range(0, 999)}";
