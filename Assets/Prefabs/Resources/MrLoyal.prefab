@@ -394,16 +394,48 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   teleportationPosition: {x: 49.45, y: 6.5, z: 11.5}
-  fakirAudioClip: {fileID: 8300000, guid: 16c2b0a9f5c3e8a48b199fd6c594d27f, type: 3}
-  mimeAudioClip: {fileID: 8300000, guid: f12b649d01e90994d985edd039583a69, type: 3}
-  acrobatAudioClip: {fileID: 8300000, guid: 5f411c2154de0384fb0c2ec05a5f030d, type: 3}
-  mightyManAudioClip: {fileID: 8300000, guid: e65288fc492c217438a3693b4170da22, type: 3}
-  catAudioClip: {fileID: 8300000, guid: fdf7d0e8b910e0044ba595db423cc7de, type: 3}
-  tauntAudioClips:
-  - {fileID: 8300000, guid: 68ef4e8365e06c5428d56f934f352d31, type: 3}
-  - {fileID: 8300000, guid: edff914cf5ccebd46a87ea00d85ee4ab, type: 3}
-  - {fileID: 8300000, guid: 3654ee407b01fca4494423afbef574cd, type: 3}
-  - {fileID: 8300000, guid: ea57bf9c574356042964ed488a975365, type: 3}
+  fakirQuote:
+    Name: loyal_call_fakhirs
+    audioTrack: {fileID: 8300000, guid: 16c2b0a9f5c3e8a48b199fd6c594d27f, type: 3}
+    quote_fr: 
+    quote_en: 
+  mimeQuote:
+    Name: loyal_call_mimes
+    audioTrack: {fileID: 8300000, guid: f12b649d01e90994d985edd039583a69, type: 3}
+    quote_fr: 
+    quote_en: 
+  acrobatQuote:
+    Name: loyal_call_acrobats
+    audioTrack: {fileID: 8300000, guid: 5f411c2154de0384fb0c2ec05a5f030d, type: 3}
+    quote_fr: 
+    quote_en: 
+  mightyManQuote:
+    Name: loyal_call_mightyman
+    audioTrack: {fileID: 8300000, guid: e65288fc492c217438a3693b4170da22, type: 3}
+    quote_fr: 
+    quote_en: 
+  catQuote:
+    Name: loyal_call_cats
+    audioTrack: {fileID: 8300000, guid: fdf7d0e8b910e0044ba595db423cc7de, type: 3}
+    quote_fr: 
+    quote_en: 
+  tauntQuotes:
+  - Name: loyal_taunt_01
+    audioTrack: {fileID: 8300000, guid: 68ef4e8365e06c5428d56f934f352d31, type: 3}
+    quote_fr: 
+    quote_en: 
+  - Name: loyal_taunt_02
+    audioTrack: {fileID: 8300000, guid: edff914cf5ccebd46a87ea00d85ee4ab, type: 3}
+    quote_fr: 
+    quote_en: 
+  - Name: loyal_taunt_03
+    audioTrack: {fileID: 8300000, guid: 3654ee407b01fca4494423afbef574cd, type: 3}
+    quote_fr: 
+    quote_en: 
+  - Name: loyal_taunt_04
+    audioTrack: {fileID: 8300000, guid: ea57bf9c574356042964ed488a975365, type: 3}
+    quote_fr: 
+    quote_en: 
   tauntRateMin: 5
   tauntRateMax: 20
   bonusRageDamages: 10
