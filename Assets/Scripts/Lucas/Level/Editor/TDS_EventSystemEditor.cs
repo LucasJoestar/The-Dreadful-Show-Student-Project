@@ -299,6 +299,10 @@ public class TDS_EventSystemEditor : Editor
                         TDS_EditorUtility.FloatField("Fade Duration", "Time during which the previous music will fade out before the new one starts.", _event.FindPropertyRelative("eventFloat"));
                         break;
 
+                    case CustomEventType.SetUIQuotes:
+                        TDS_EditorUtility.PropertyField("UI Quotes", "All UI Quotes to set", _event.FindPropertyRelative("uiQuotes"));
+                        break;
+
                     case CustomEventType.WaitForObjectDeath:
                         TDS_EditorUtility.PropertyField("Object Tag", "Tag waiting for an object with dies", _event.FindPropertyRelative("eventString"));
                         TDS_EditorUtility.PropertyField("Amount", "Amount of object with this tag to wait for death", _event.FindPropertyRelative("eventInt"));

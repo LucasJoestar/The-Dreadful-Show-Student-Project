@@ -117,6 +117,11 @@ public class TDS_Event
     [SerializeField] private Transform eventTransform = null;
 
     /// <summary>
+    /// UI Quotes to set.
+    /// </summary>
+    [SerializeField] private TDS_UIQuote[] uiQuotes = null;
+
+    /// <summary>
     /// Unity event to invoke.
     /// </summary>
     [SerializeField] private UnityEvent unityEvent;
@@ -298,6 +303,14 @@ public class TDS_Event
                 TDS_UIManager.Instance?.SwitchCurtains(false);
                 break;
 
+            // Set all listed ui texts
+            case CustomEventType.SetUIQuotes:
+                foreach (TDS_UIQuote _quote in uiQuotes)
+                {
+                    _quote.Text.text = _quote.Quote.Quote;
+                }
+                break;
+
             // Switch UI arrow
             case CustomEventType.SwitchArrow:
                 TDS_UIManager.Instance?.SwitchArrow();
@@ -422,4 +435,24 @@ public class TDS_Event
         yield break;
     }
 	#endregion
+}
+
+[Serializable]
+public class TDS_UIQuote
+{
+    /// <summary>Backing field for <see cref="Text"/>.</summary>
+    [SerializeField] private TMPro.TextMeshProUGUI text = null;
+
+    /// <summary>
+    /// UI Text to set value.
+    /// </summary>
+    public TMPro.TextMeshProUGUI Text { get { return text; } }
+
+    /// <summary>Backing field for <see cref="Quote"/>.</summary>
+    [SerializeField] private TDS_NarratorQuote quote = null;
+
+    /// <summary>
+    /// Quote to set text from.
+    /// </summary>
+    public TDS_NarratorQuote Quote { get { return quote; } }
 }
