@@ -129,6 +129,11 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     public void SubmitInOnlineCharacterSelection()
     {
         if (TDS_UIManager.Instance.UIState != UIState.InCharacterSelection) return;
+        if(!characterSelectionMenu.LocalElement.CurrentSelection.CanBeSelected)
+        {
+            characterSelectionMenu.LocalElement.DisplayNextImage();
+            return; 
+        }
         if (!TDS_GameManager.LocalIsReady)
         {
             SelectCharacterOnline();
@@ -188,8 +193,8 @@ public class TDS_CharacterSelectionManager : PunBehaviour
         {       
             //Lock the player type if the player is ready
             SetOnlinePlayerReady(_playerID, _isReady);
-            characterSelectionMenu.LocalElement.CharacterSelectionImages.Where(i => i.CharacterType == (PlayerType)_playerType).FirstOrDefault().CanBeSelected = false;
-            if (characterSelectionMenu.LocalElement.CurrentSelection.CharacterType == (PlayerType)_playerType) characterSelectionMenu.LocalElement.DisplayNextImage(); 
+            //characterSelectionMenu.LocalElement.CharacterSelectionImages.Where(i => i.CharacterType == (PlayerType)_playerType).FirstOrDefault().CanBeSelected = false;
+            //if (characterSelectionMenu.LocalElement.CurrentSelection.CharacterType == (PlayerType)_playerType) characterSelectionMenu.LocalElement.DisplayNextImage(); 
         }
     }
 

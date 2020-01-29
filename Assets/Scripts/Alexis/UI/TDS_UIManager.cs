@@ -598,7 +598,7 @@ public class TDS_UIManager : PunBehaviour
                 checkInputCoroutine = StartCoroutine(CheckInputMenu(UIState.InRoomSelection)); 
                 break;
             case UIState.InCharacterSelection:
-                TDS_GameManager.PlayersInfo.Clear();
+                if(PhotonNetwork.offlineMode) TDS_GameManager.PlayersInfo.Clear();
                 launchGameButton.interactable = false;
                 if (addPlayerText) addPlayerText.gameObject.SetActive(PhotonNetwork.offlineMode); 
                 mainMenuParent.SetActive(false);
