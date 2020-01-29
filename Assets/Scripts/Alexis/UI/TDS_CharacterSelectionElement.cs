@@ -281,7 +281,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
             gameObject.SetActive(false);
             return;
         }
-        characterSelectionImages.ToList().ForEach(c => c.Reset()); 
+        //characterSelectionImages.ToList().ForEach(c => c.Reset()); 
         gameObject.SetActive(false); 
     }
 
@@ -305,7 +305,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         TDS_GameManager.PlayersInfo.Add(new TDS_PlayerInfo(_playerID, TDS_GameManager.InputsAsset.Controllers[_playerID], PlayerType.Unknown));
         PlayerInfo = TDS_GameManager.PlayersInfo.Where(i => i.PlayerID == _playerID).First(); 
         SetPlayerLocal();
-
+        if (!CurrentSelection.CanBeSelected) DisplayNextImage(); 
         gameObject.SetActive(true); 
     }
 
@@ -324,7 +324,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
 
     public void LockLocalPlayerType(PlayerType _type, bool _isLocked)
     {
-        characterSelectionImages.Where(i => i.CharacterType == _type).FirstOrDefault().CanBeSelected = !_isLocked;
+        //characterSelectionImages.Where(i => i.CharacterType == _type).FirstOrDefault().CanBeSelected = !_isLocked;
         if (!CurrentSelection.CanBeSelected && !isLocked) DisplayNextImage(); 
     }
 

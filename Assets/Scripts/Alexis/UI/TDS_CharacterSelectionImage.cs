@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq; 
 using UnityEngine;
 using UnityEngine.UI; 
 
@@ -40,16 +41,16 @@ public class TDS_CharacterSelectionImage
     public Image CharacterImage { get { return characterImage; } }
     [SerializeField] private PlayerType characterType = PlayerType.Unknown;
     public PlayerType CharacterType { get { return characterType; } }
-    private bool canBeSelected = true; 
     public bool CanBeSelected
     {
-        get { return canBeSelected; }
-        set { canBeSelected = value; }
+        get 
+        {
+            return !TDS_GameManager.PlayersInfo.Any(p => p.PlayerType == characterType);
+        }
     }
 
     #endregion
 
     #region Void 
-    public void Reset() => canBeSelected = true; 
     #endregion
 }
