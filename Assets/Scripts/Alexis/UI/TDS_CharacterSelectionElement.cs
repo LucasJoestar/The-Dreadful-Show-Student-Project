@@ -105,8 +105,9 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void SetPhotonPlayer(PhotonPlayer _player)
     {
         if (playerName) playerName.text = _player.NickName;
-        if (playerNameInputField) playerNameInputField.text = _player.NickName; 
+        if (playerNameInputField) playerNameInputField.text = _player.NickName;
         if (_player.IsMasterClient && ownerCrownImage) ownerCrownImage.gameObject.SetActive(true);
+        else if (!_player.IsMasterClient && ownerCrownImage) ownerCrownImage.gameObject.SetActive(false); 
         PlayerInfo = TDS_GameManager.PlayersInfo.Where(i => i.PhotonPlayer == _player).First();
         gameObject.SetActive(true); 
     }

@@ -129,6 +129,11 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     public void SubmitInOnlineCharacterSelection()
     {
         if (TDS_UIManager.Instance.UIState != UIState.InCharacterSelection) return;
+        if(!characterSelectionMenu.LocalElement.CurrentSelection.CanBeSelected)
+        {
+            characterSelectionMenu.LocalElement.DisplayNextImage();
+            return; 
+        }
         if (!TDS_GameManager.LocalIsReady)
         {
             SelectCharacterOnline();
