@@ -503,6 +503,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1060331611404354363}
   - component: {fileID: 886355216250860617}
+  - component: {fileID: 2604487559307924256}
   m_Layer: 10
   m_Name: Acrobat - Sprite
   m_TagString: Untagged
@@ -573,6 +574,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!114 &2604487559307924256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062506033306977371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 549f49610ea263143831f468274499ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteOwner: {fileID: 1062355219936869156}
+  spriteRenderer: {fileID: 886355216250860617}
 --- !u!1 &1062688418111172295
 GameObject:
   m_ObjectHideFlags: 0

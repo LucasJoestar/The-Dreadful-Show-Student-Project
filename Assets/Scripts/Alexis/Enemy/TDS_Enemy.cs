@@ -1166,6 +1166,14 @@ public abstract class TDS_Enemy : TDS_Character
     }
 
     /// <summary>
+    /// Force the Dying Methods of the enemy
+    /// </summary>
+    protected void KillEnemy()
+    {
+        TakeDamage(999); 
+    }
+
+    /// <summary>
     /// Set the animation of the enemy to the animationID
     /// </summary>
     /// <param name="_animationID"></param>
@@ -1398,6 +1406,18 @@ public abstract class TDS_Enemy : TDS_Character
             Gizmos.color = Vector3.Distance(playerTarget.transform.position, transform.position) <= GetMaxRange() ? Color.red : Color.cyan;
             Gizmos.DrawLine(transform.position, playerTarget.transform.position);
         }
+    }
+
+    public void OnBecameInvisibleCallBack()
+    {
+        if(PhotonNetwork.isMasterClient)
+            Invoke("KillEnemy", 20.0f); 
+    }
+
+    public void OnBecameVisibleCallBack()
+    {
+        if (PhotonNetwork.isMasterClient) 
+            CancelInvoke("KillEnemy");
     }
 
     #region Editor
