@@ -63,6 +63,10 @@ public abstract class TDS_FleeingThrowable : TDS_Throwable
     protected Coroutine fleeAfterFreeCoroutine = null;
     #endregion
 
+    #region Animator
+    private static readonly int state_Hash = Animator.StringToHash("State");
+    #endregion
+
     #endregion
 
     #region Methods
@@ -119,7 +123,7 @@ public abstract class TDS_FleeingThrowable : TDS_Throwable
     /// <param name="_animationID">ID of the new animation.</param>
     public virtual void SetAnimation(int _animationID)
     {
-        animator.SetInteger("State", _animationID);
+        animator.SetInteger(state_Hash, _animationID);
     }
 
     /// <summary>

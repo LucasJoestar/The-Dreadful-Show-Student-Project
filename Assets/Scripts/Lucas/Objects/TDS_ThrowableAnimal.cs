@@ -55,7 +55,7 @@ public class TDS_ThrowableAnimal : TDS_FleeingThrowable
         float _direction = 0;
 
         // Move while in range
-        while ((Mathf.Abs(_direction = (detector.Collider.bounds.center.x - _collider.bounds.center.x)) < _xMinDistance) && (Mathf.Abs(_collider.bounds.center.z - detector.Collider.bounds.center.z) < _zMinDistance))
+        while (_collider && (Mathf.Abs(_direction = (detector.Collider.bounds.center.x - _collider.bounds.center.x)) < _xMinDistance) && (Mathf.Abs(_collider.bounds.center.z - detector.Collider.bounds.center.z) < _zMinDistance))
         {
             _direction = Mathf.Sign(_direction);
             _newDestination = new Vector3(_collider.bounds.center.x + (_xMinDistance * 1.5f * _direction), transform.position.y, transform.position.z);
@@ -69,7 +69,6 @@ public class TDS_ThrowableAnimal : TDS_FleeingThrowable
 
                 // New destination ignored, got to be fixed
                 _actualDestination = _newDestination;
-                //Debug.Log(_actualDestination); 
                 agent.SetDestination(_actualDestination);
 
                 // Set destination for other clients
@@ -104,12 +103,11 @@ public class TDS_ThrowableAnimal : TDS_FleeingThrowable
     /// <param name="_z">Z coordinate.</param>
     public void SetDestination(float _x, float _y, float _z)
     {
-        Vector3 _destination = new Vector3(_x, _y, _z);
-        if (Mathf.Sign(_destination.x - transform.position.x) != isFacingRight.ToSign())
+        if (Mathf.Sign(_x - transform.position.x) != isFacingRight.ToSign())
         {
             Flip();
         }
-        agent.SetDestination(_destination);
+        agent.SetDestination(new Vector3(_x, _y, _z));
     }
     #endregion
 

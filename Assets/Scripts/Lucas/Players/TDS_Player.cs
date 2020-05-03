@@ -614,6 +614,24 @@ public class TDS_Player : TDS_Character, IPunObservable
     protected Vector3 throwVelocity = Vector3.zero;
     #endregion
 
+    #region Animator
+    private static readonly int comboBreaker_Hash = Animator.StringToHash("ComboBreaker");
+    private static readonly int die_Hash = Animator.StringToHash("Die");
+    private static readonly int dodge_Hash = Animator.StringToHash("Dodge");
+    private static readonly int down_Hash = Animator.StringToHash("Down");
+    private static readonly int groundState_Hash = Animator.StringToHash("GroundState");
+    private static readonly int hasObject_Hash = Animator.StringToHash("HasObject");
+    private static readonly int heavyAttack_Hash = Animator.StringToHash("HeavyAttack");
+    private static readonly int hit_Hash = Animator.StringToHash("Hit");
+    private static readonly int isMoving_Hash = Animator.StringToHash("IsMoving");
+    private static readonly int isParrying_Hash = Animator.StringToHash("IsParrying");
+    private static readonly int isSliding_Hash = Animator.StringToHash("IsSliding");
+    private static readonly int jumpAttack_Hash = Animator.StringToHash("JumpAttack");
+    private static readonly int lightAttack_Hash = Animator.StringToHash("LightAttack");
+    private static readonly int revive_Hash = Animator.StringToHash("REVIVE");
+    private static readonly int throw_Hash = Animator.StringToHash("Throw");
+    #endregion
+
     #endregion
 
     #region Methods
@@ -1008,8 +1026,8 @@ public class TDS_Player : TDS_Character, IPunObservable
             rigidbody.AddForce(_thisMovement);
             MoveInDirection(transform.position + _movementDirection);
 
-            yield return new WaitForFixedUpdate();
-            dodgeTimer += Time.fixedDeltaTime;
+            yield return null;
+            dodgeTimer += Time.deltaTime;
         }
     }
 
@@ -1454,6 +1472,9 @@ public class TDS_Player : TDS_Character, IPunObservable
     #endregion
 
     #region Movements
+    static Collider[] touchedColliders = new Collider[4];
+    static int touchedCollidersAmount = 0;
+
     /// <summary>
     /// Adjusts the position of the player on the axis where a force is exercised on the rigidbody velocity.
     /// </summary>
@@ -1464,9 +1485,8 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (rigidbody.velocity == Vector3.zero) return;
 
         // Get all touching colliders ; if none, return
-        Collider[] _touchedColliders = Physics.OverlapBox(collider.bounds.center, collider.bounds.extents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore);
-
-        if (_touchedColliders.Length == 0) return;
+        if (Physics.OverlapBoxNonAlloc(collider.bounds.center, collider.bounds.extents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore) == 0)
+            return;
 
         // For each axis where the player rigidbody velocity is non null, adjust the player position if it is in another collider
         // To do this, use the previous position and overlap from this in the actual position for each axis where the velocity is not null
@@ -1490,24 +1510,28 @@ public class TDS_Player : TDS_Character, IPunObservable
 
             // Overlap in the zone where the player would be from the previous position after the movement on the X axis.
             // If something is touched, then adjust the position of the player against it
-            _touchedColliders = Physics.OverlapBox(_overlapCenter, _overlapExtents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore);
-
-            if (_touchedColliders.Length > 0)
+            if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(_overlapCenter, _overlapExtents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
             {
-                //Debug.Log("Get back in X");
-
                 float _xLimit = 0;
-
+                
                 // Get the X position of the nearest collider limit, and set the position of the player against it
                 if (_movementVector.x > 0)
                 {
-                    _xLimit = _touchedColliders.Select(c => c.bounds.center.x - c.bounds.extents.x).OrderBy(c => c).First();
+                    _xLimit = touchedColliders[0].bounds.center.x - touchedColliders[0].bounds.extents.x;
+                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
+                    {
+                        _xLimit = Mathf.Min(_xLimit, touchedColliders[_i].bounds.center.x - touchedColliders[_i].bounds.extents.x);
+                    }
 
                     _newPosition.x = _xLimit - (_colliderExtents.x - _colliderCenter.x) - .001f;
                 }
                 else
                 {
-                    _xLimit = _touchedColliders.Select(c => c.bounds.center.x + c.bounds.extents.x).OrderBy(c => c).Last();
+                    _xLimit = touchedColliders[0].bounds.center.x + touchedColliders[0].bounds.extents.x;
+                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
+                    {
+                        _xLimit = Mathf.Max(_xLimit, touchedColliders[_i].bounds.center.x + touchedColliders[_i].bounds.extents.x);
+                    }
 
                     _newPosition.x = _xLimit + (_colliderExtents.x - _colliderCenter.x) + .001f;
                 }
@@ -1529,24 +1553,28 @@ public class TDS_Player : TDS_Character, IPunObservable
 
             // Overlap in the zone where the player would be from the previous position after the movement on the Y axis.
             // If something is touched, then adjust the position of the player against it
-            _touchedColliders = Physics.OverlapBox(_overlapCenter, _overlapExtents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore);
-
-            if (_touchedColliders.Length > 0)
+            if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(_overlapCenter, _overlapExtents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
             {
-                //Debug.Log("Get back in Y");
-
                 float _yLimit = 0;
 
                 // Get the Y position of the nearest collider limit, and set the position of the player against it
                 if (_movementVector.y > 0)
                 {
-                    _yLimit = _touchedColliders.Select(c => c.bounds.center.y - c.bounds.extents.y).OrderBy(c => c).First();
+                    _yLimit = touchedColliders[0].bounds.center.y - touchedColliders[0].bounds.extents.y;
+                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
+                    {
+                        _yLimit = Mathf.Min(_yLimit, touchedColliders[_i].bounds.center.y - touchedColliders[_i].bounds.extents.y);
+                    }
 
                     _newPosition.y = _yLimit - (_colliderExtents.y - _colliderCenter.y) - .001f;
                 }
                 else
                 {
-                    _yLimit = _touchedColliders.Select(c => c.bounds.center.y + c.bounds.extents.y).OrderBy(c => c).Last();
+                    _yLimit = touchedColliders[0].bounds.center.y + touchedColliders[0].bounds.extents.y;
+                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
+                    {
+                        _yLimit = Mathf.Max(_yLimit, touchedColliders[_i].bounds.center.y + touchedColliders[_i].bounds.extents.y);
+                    }
 
                     _newPosition.y = _yLimit + (_colliderExtents.y - _colliderCenter.y) + .001f;
                 }
@@ -1568,24 +1596,28 @@ public class TDS_Player : TDS_Character, IPunObservable
 
             // Overlap in the zone where the player would be from the previous position after the movement on the Z axis.
             // If something is touched, then adjust the position of the player against it
-            _touchedColliders = Physics.OverlapBox(_overlapCenter, _overlapExtents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore);
-
-            if (_touchedColliders.Length > 0)
+            if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(_overlapCenter, _overlapExtents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
             {
-                //Debug.Log("Get back in Z");
-
                 float _zLimit = 0;
 
                 // Get the Z position of the nearest collider limit, and set the position of the player against it
                 if (_movementVector.z > 0)
                 {
-                    _zLimit = _touchedColliders.Select(c => c.bounds.center.z - c.bounds.extents.z).OrderBy(c => c).First();
+                    _zLimit = touchedColliders[0].bounds.center.z - touchedColliders[0].bounds.extents.z;
+                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
+                    {
+                        _zLimit = Mathf.Min(_zLimit, touchedColliders[_i].bounds.center.z - touchedColliders[_i].bounds.extents.z);
+                    }
 
                     _newPosition.z = _zLimit - (_colliderExtents.z - _colliderCenter.z) - .001f;
                 }
                 else
                 {
-                    _zLimit = _touchedColliders.Select(c => c.bounds.center.z + c.bounds.extents.z).OrderBy(c => c).Last();
+                    _zLimit = touchedColliders[0].bounds.center.z + touchedColliders[0].bounds.extents.z;
+                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
+                    {
+                        _zLimit = Mathf.Max(_zLimit, touchedColliders[_i].bounds.center.z + touchedColliders[_i].bounds.extents.z);
+                    }
 
                     _newPosition.z = _zLimit + (_colliderExtents.z - _colliderCenter.z) + .001f;
                 }
@@ -1643,17 +1675,17 @@ public class TDS_Player : TDS_Character, IPunObservable
         {
             if (rigidbody.velocity.y < 0)
             {
-                if (animator.GetInteger("GroundState") > -1)
+                if (animator.GetInteger(groundState_Hash) > -1)
                 {
                     SetAnim(PlayerAnimState.Falling);
                 }
             }
-            else if (animator.GetInteger("GroundState") < 1)
+            else if (animator.GetInteger(groundState_Hash) < 1)
             {
                 SetAnim(PlayerAnimState.Jumping);
             }
         }
-        else if (animator.GetInteger("GroundState") != 0)
+        else if (animator.GetInteger(groundState_Hash) != 0)
         {
             SetAnim(PlayerAnimState.Grounded);
         }
@@ -1747,9 +1779,9 @@ public class TDS_Player : TDS_Character, IPunObservable
         while (controller.GetButton(ButtonType.Jump) && _timer < JumpMaximumTime)
         {
             rigidbody.AddForce(Vector3.up * (JumpForce / JumpMaximumTime) * Time.deltaTime);
-            yield return new WaitForFixedUpdate();
+            yield return null;
 
-            _timer += Time.fixedDeltaTime;
+            _timer += Time.deltaTime;
         }
 
         IsJumping = false;
@@ -1843,7 +1875,6 @@ public class TDS_Player : TDS_Character, IPunObservable
         Vector3 _colliderExtents = collider.bounds.extents - (Vector3.one * .0001f);
         Vector3 _overlapCenter = Vector3.zero;
         Vector3 _overlapExtents = Vector3.one;
-        Collider[] _touchedColliders = new Collider[] { };
 
         // X axis movement test
         if (_movementVector.x != 0)
@@ -1855,25 +1886,28 @@ public class TDS_Player : TDS_Character, IPunObservable
 
             // Overlaps in the position where the player would be after the X movement ;
             // If nothing is touched, then the player can move in X
-            _touchedColliders = Physics.OverlapBox(_overlapCenter, _overlapExtents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore);
-
-            // If the player cannot move in X, set its position against the nearest collider
-            if (_touchedColliders.Length > 0)
+            if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(_overlapCenter, _overlapExtents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
             {
-                //Debug.Log("Back in X !");
-
                 float _xLimit = 0;
 
                 // Get the X position of the nearest collider limit, and set the position of the player against it
                 if (_movementVector.x > 0)
                 {
-                    _xLimit = _touchedColliders.Select(c => c.bounds.center.x - c.bounds.extents.x).OrderBy(c => c).First();
+                    _xLimit = touchedColliders[0].bounds.center.x - touchedColliders[0].bounds.extents.x;
+                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
+                    {
+                        _xLimit = Mathf.Min(_xLimit, touchedColliders[_i].bounds.center.x - touchedColliders[_i].bounds.extents.x);
+                    }
 
                     _newPosition.x = _xLimit - (_colliderExtents.x + _colliderCenter.x) - .001f;
                 }
                 else
                 {
-                    _xLimit = _touchedColliders.Select(c => c.bounds.center.x + c.bounds.extents.x).OrderBy(c => c).Last();
+                    _xLimit = touchedColliders[0].bounds.center.x + touchedColliders[0].bounds.extents.x;
+                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
+                    {
+                        _xLimit = Mathf.Max(_xLimit, touchedColliders[_i].bounds.center.x + touchedColliders[_i].bounds.extents.x);
+                    }
 
                     _newPosition.x = _xLimit + (_colliderExtents.x + _colliderCenter.x) + .001f;
                 }
@@ -1893,25 +1927,28 @@ public class TDS_Player : TDS_Character, IPunObservable
 
             // Overlaps in the position where the player would be after the Z movement ;
             // If nothing is touched, then the player can move in Z
-            _touchedColliders = Physics.OverlapBox(_overlapCenter, _overlapExtents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore);
-
-            // If the player cannot move in Z, set its position against the nearest collider
-            if (_touchedColliders.Length > 0)
+            if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(_overlapCenter, _overlapExtents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
             {
-                //Debug.Log("Back in Z !");
-
                 float _zLimit = 0;
 
                 // Get the Z position of the nearest collider limit, and set the position of the player against it
                 if (_movementVector.z > 0)
                 {
-                    _zLimit = _touchedColliders.Select(c => c.bounds.center.z - c.bounds.extents.z).OrderBy(c => c).First();
+                    _zLimit = touchedColliders[0].bounds.center.z - touchedColliders[0].bounds.extents.z;
+                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
+                    {
+                        _zLimit = Mathf.Min(_zLimit, touchedColliders[_i].bounds.center.z - touchedColliders[_i].bounds.extents.z);
+                    }
 
                     _newPosition.z = _zLimit - (_colliderExtents.z + _colliderCenter.z) - .001f;
                 }
                 else
                 {
-                    _zLimit = _touchedColliders.Select(c => c.bounds.center.z + c.bounds.extents.z).OrderBy(c => c).Last();
+                    _zLimit = touchedColliders[0].bounds.center.z + touchedColliders[0].bounds.extents.z;
+                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
+                    {
+                        _zLimit = Mathf.Max(_zLimit, touchedColliders[_i].bounds.center.z + touchedColliders[_i].bounds.extents.z);
+                    }
 
                     _newPosition.z = _zLimit + (_colliderExtents.z + _colliderCenter.z) + .001f;
                 }
@@ -1996,29 +2033,29 @@ public class TDS_Player : TDS_Character, IPunObservable
         switch (_state)
         {
             case PlayerAnimState.Idle:
-                animator.SetBool("IsMoving", false);
+                animator.SetBool(isMoving_Hash, false);
                 break;
 
             case PlayerAnimState.Run:
-                animator.SetBool("IsMoving", true);
+                animator.SetBool(isMoving_Hash, true);
                 break;
 
             case PlayerAnimState.Hit:
-                animator.SetTrigger("Hit");
+                animator.SetTrigger(hit_Hash);
                 break;
 
             case PlayerAnimState.Die:
-                animator.SetTrigger("Die");
-                animator.SetInteger("GroundState", 0);
+                animator.SetTrigger(die_Hash);
+                animator.SetInteger(groundState_Hash, 0);
                 break;
 
             case PlayerAnimState.Dodge:
-                animator.SetTrigger("Dodge");
+                animator.SetTrigger(dodge_Hash);
                 break;
 
             case PlayerAnimState.Throw:
-                if (!isGrounded) animator.SetInteger("GroundState", 0);
-                animator.SetTrigger("Throw");
+                if (!isGrounded) animator.SetInteger(groundState_Hash, 0);
+                animator.SetTrigger(throw_Hash);
                 break;
 
             case PlayerAnimState.Catch:
@@ -2026,15 +2063,15 @@ public class TDS_Player : TDS_Character, IPunObservable
                 break;
 
             case PlayerAnimState.LightAttack:
-                animator.SetTrigger("LightAttack");
+                animator.SetTrigger(lightAttack_Hash);
                 break;
 
             case PlayerAnimState.HeavyAttack:
-                animator.SetTrigger("HeavyAttack");
+                animator.SetTrigger(heavyAttack_Hash);
                 break;
 
             case PlayerAnimState.ComboBreaker:
-                animator.SetTrigger("ComboBreaker");
+                animator.SetTrigger(comboBreaker_Hash);
                 break;
 
             case PlayerAnimState.Super:
@@ -2042,51 +2079,51 @@ public class TDS_Player : TDS_Character, IPunObservable
                 break;
 
             case PlayerAnimState.Grounded:
-                animator.SetInteger("GroundState", 0);
+                animator.SetInteger(groundState_Hash, 0);
                 break;
 
             case PlayerAnimState.Jumping:
-                animator.SetInteger("GroundState", 1);
+                animator.SetInteger(groundState_Hash, 1);
                 break;
 
             case PlayerAnimState.Falling:
-                animator.SetInteger("GroundState", -1);
+                animator.SetInteger(groundState_Hash, -1);
                 break;
 
             case PlayerAnimState.HasObject:
-                animator.SetBool("HasObject", true);
+                animator.SetBool(hasObject_Hash, true);
                 break;
 
             case PlayerAnimState.LostObject:
-                animator.SetBool("HasObject", false);
+                animator.SetBool(hasObject_Hash, false);
                 break;
 
             case PlayerAnimState.Parrying:
-                animator.SetBool("IsParrying", true);
+                animator.SetBool(isParrying_Hash, true);
                 break;
 
             case PlayerAnimState.NotParrying:
-                animator.SetBool("IsParrying", false);
+                animator.SetBool(isParrying_Hash, false);
                 break;
 
             case PlayerAnimState.Sliding:
-                animator.SetBool("IsSliding", true);
+                animator.SetBool(isSliding_Hash, true);
                 break;
 
             case PlayerAnimState.NotSliding:
-                animator.SetBool("IsSliding", false);
+                animator.SetBool(isSliding_Hash, false);
                 break;
 
             case PlayerAnimState.Down:
-                animator.SetTrigger("Down");
+                animator.SetTrigger(down_Hash);
                 break;
 
             case PlayerAnimState.BackFromTheDeads:
-                animator.SetTrigger("REVIVE");
+                animator.SetTrigger(revive_Hash);
                 break;
 
             case PlayerAnimState.JumpAttack:
-                animator.SetTrigger("JumpAttack");
+                animator.SetTrigger(jumpAttack_Hash);
                 break;
 
             default:
@@ -2126,7 +2163,6 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// 0 if everything went good ;
     /// A negative number if an action has been performed ;
     /// 1 if parrying or preparing an attack ;
-    /// 2 if having a throwable ;
     /// 3 if attacking or dodging.</returns>
     public virtual int CheckActionsInputs()
     {
@@ -2144,19 +2180,32 @@ public class TDS_Player : TDS_Character, IPunObservable
             return -1;
         }
 
-        // If having a throwable, return 2
-        if (throwable && (playerType != PlayerType.Juggler)) return 2;
-
         // Checks potentially agressives actions
         if (!IsPacific)
         {
             if (controller.GetButtonDown(ButtonType.LightAttack))
             {
+                if (throwable && (playerType != PlayerType.Juggler))
+                {
+                    // Throw the object
+                    IsPlayable = false;
+                    SetAnimOnline(PlayerAnimState.Throw);
+                    return -1;
+                }
+
                 StartPreparingAttack(true);
                 return -1;
             }
             if (controller.GetButtonDown(ButtonType.HeavyAttack))
             {
+                if (throwable && (playerType != PlayerType.Juggler))
+                {
+                    // Throw the object
+                    IsPlayable = false;
+                    SetAnimOnline(PlayerAnimState.Throw);
+                    return -1;
+                }
+
                 StartPreparingAttack(false);
                 return -1;
             }
@@ -2185,6 +2234,11 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         if (controller.GetButtonDown(ButtonType.Dodge) && !IsParalyzed)
         {
+            if (throwable && (playerType != PlayerType.Juggler))
+            {
+                DropObject();
+            }
+
             StartDodge();
             return -1;
         }
@@ -2194,6 +2248,11 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         if (controller.GetButton(ButtonType.Parry) && isGrounded && !IsInvulnerable)
         {
+            if (throwable && (playerType != PlayerType.Juggler))
+            {
+                DropObject();
+            }
+
             StartCoroutine(Parry());
             return -1;
         }
@@ -2387,14 +2446,19 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (!interactionBox)
         {
             interactionBox = GetComponentInChildren<TDS_PlayerInteractionBox>();
+
+#if UNITY_EDITOR
             if (!interactionBox) Debug.LogWarning("The Interaction Detector of \"" + name + "\" for script TDS_Player is missing !");
+#endif
         }
         if(!spriteHolder)
         {
             spriteHolder = GetComponentInChildren<TDS_PlayerSpriteHolder>();
+#if UNITY_EDITOR
             if (!spriteHolder) Debug.LogWarning("The Sprite Holder of \"" + name + "\" for script TDS_Player is missing !");
+#endif
         }
-        if(spriteHolder)
+        if (spriteHolder)
         {
             if (!spriteHolder.Owner) spriteHolder.Owner = this;
             if (!spriteHolder.PlayerSprite) spriteHolder.PlayerSprite = sprite;

@@ -278,6 +278,20 @@ public abstract class TDS_Enemy : TDS_Character
 
     #endregion
 
+    #region Animator
+    private static readonly int animationState_Hash = Animator.StringToHash("animationState");
+    private static readonly int bringTargetCloser_Hash = Animator.StringToHash("hitTrigger");
+    private static readonly int endBringingTargetCloser_Hash = Animator.StringToHash("EndBringingTargetCloser");
+    private static readonly int enemyState_Hash = Animator.StringToHash("enemyState");
+    private static readonly int isDead_Hash = Animator.StringToHash("isDead");
+    private static readonly int isOutOfBattle_Hash = Animator.StringToHash("isOutOfBattle");
+    private static readonly int hitTrigger_Hash = Animator.StringToHash("hitTrigger");
+    private static readonly int lightHitTrigger_Hash = Animator.StringToHash("lightHitTrigger");
+    private static readonly int ragingTrigger_Hash = Animator.StringToHash("RagingTrigger");
+    private static readonly int resetBehaviour_Hash = Animator.StringToHash("resetBehaviour");
+    private static readonly int stopDashing_Hash = Animator.StringToHash("StopDashing");
+    #endregion
+
     #endregion
 
     #region Methods
@@ -490,7 +504,7 @@ public abstract class TDS_Enemy : TDS_Character
     public virtual IEnumerator CastDetection()
     {
         if (isDead || !PhotonNetwork.isMasterClient) yield break; 
-        if(animator.GetInteger("animationState") != 1) SetAnimationState((int)EnemyAnimationState.Run);
+        if(animator.GetInteger(animationState_Hash) != 1) SetAnimationState((int)EnemyAnimationState.Run);
         while (agent.IsMoving)
         {
             //Orientate the agent
@@ -624,7 +638,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     public virtual IEnumerator Wander()
     {
-        if (animator.GetInteger("animationState") != 1) SetAnimationState((int)EnemyAnimationState.Run);
+        if (animator.GetInteger(animationState_Hash) != 1) SetAnimationState((int)EnemyAnimationState.Run);
         agent.AddAvoidanceLayer(new string[] { "Player" });
         Collider[] _colliders;
         Vector3 _closestPosition = targetedThrowable ? targetedThrowable.GetComponent<Collider>().ClosestPoint(transform.position) : Vector3.zero;
@@ -1183,28 +1197,28 @@ public abstract class TDS_Enemy : TDS_Character
         switch ((EnemyAnimationState)_animationID)
         {
             case EnemyAnimationState.Hit:
-                animator.SetTrigger("hitTrigger");
+                animator.SetTrigger(hitTrigger_Hash);
                 break;
             case EnemyAnimationState.Death:
-                animator.SetBool("isDead", true);
+                animator.SetBool(isDead_Hash, true);
                 break; 
             case EnemyAnimationState.BringTargetCloser:
-                animator.SetTrigger("BringTargetCloser");
+                animator.SetTrigger(bringTargetCloser_Hash);
                 break;
             case EnemyAnimationState.EndBringingTargetCloser:
-                animator.SetTrigger("EndBringingTargetCloser");
+                animator.SetTrigger(endBringingTargetCloser_Hash);
                 break;
             case EnemyAnimationState.StopDashing:
-                animator.SetTrigger("StopDashing");
+                animator.SetTrigger(stopDashing_Hash);
                 break;
             case EnemyAnimationState.LightHit:
-                animator.SetTrigger("lightHitTrigger");
+                animator.SetTrigger(lightHitTrigger_Hash);
                 break;
             case EnemyAnimationState.Rage:
-                animator.SetTrigger("RagingTrigger"); 
+                animator.SetTrigger(ragingTrigger_Hash); 
                 break; 
             default:
-                animator.SetInteger("animationState", _animationID);
+                animator.SetInteger(animationState_Hash, _animationID);
                 break;
         }
         if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID });
@@ -1221,16 +1235,16 @@ public abstract class TDS_Enemy : TDS_Character
         switch (enemyState) 
         {
             case EnemyState.MakingDecision:
-                animator.SetTrigger("resetBehaviour");
+                animator.SetTrigger(resetBehaviour_Hash);
                 break;
             case EnemyState.OutOfBattle:
-                animator.SetBool("isOutOfBattle", true); 
+                animator.SetBool(isOutOfBattle_Hash, true); 
                 break; 
             default:
-                animator.ResetTrigger("resetBehaviour"); 
+                animator.ResetTrigger(resetBehaviour_Hash); 
                 break;
         }
-        animator.SetInteger("enemyState", (int)enemyState); 
+        animator.SetInteger(enemyState_Hash, (int)enemyState); 
     }
 
     /// <summary>

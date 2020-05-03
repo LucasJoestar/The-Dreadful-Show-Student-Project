@@ -24,6 +24,12 @@ public class TDS_Destructible : TDS_Damageable
 	*/
 
     #region Fields / Properties
+
+    #region Animator
+    private static readonly int hit_Hash = Animator.StringToHash("Hit");
+    private static readonly int destruction_Hash = Animator.StringToHash("Destruction");
+    #endregion
+
     /// <summary>
     /// All available loot for this destructible.
     /// </summary>
@@ -175,11 +181,11 @@ public class TDS_Destructible : TDS_Damageable
         switch (_state)
         {
             case DestructibleAnimState.Hit:
-                animator.SetTrigger("Hit");
+                animator.SetTrigger(hit_Hash);
                 break;
 
             case DestructibleAnimState.Destruction:
-                animator.SetTrigger("Destruction");
+                animator.SetTrigger(destruction_Hash);
                 break;
 
             default:

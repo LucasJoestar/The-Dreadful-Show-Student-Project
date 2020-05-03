@@ -38,6 +38,11 @@ public class TDS_MrLoyal : TDS_Boss
     #endregion
 
     #region Fields / Properties
+
+    #region Animator
+    private readonly int isOutOfBattle_Hash = Animator.StringToHash("isOutOfBattle");
+    #endregion
+
     [SerializeField] private List<TDS_SpawnerArea> linkedAreas = new List<TDS_SpawnerArea>();
     [SerializeField] private float chargeCatsRate = 5f;
     [SerializeField] private TDS_Cat[] cats = null;
@@ -170,16 +175,14 @@ public class TDS_MrLoyal : TDS_Boss
     private IEnumerator GetBackIntoBattle()
     {
         SetAnimationState((int)EnemyAnimationState.Idle);
-        TDS_Bounds _bounds = TDS_Camera.Instance?.CurrentBounds;
-        Vector3 _pos = Vector3.zero; 
-        if (_bounds == null)
-        {
-            _pos = TDS_LevelManager.Instance.AllPlayers.FirstOrDefault().transform.position; 
-        }
-        else
-        {
-            _pos = new Vector3((_bounds.XMax + _bounds.XMin)/2, 0, (_bounds.ZMin + _bounds.ZMax)/2); 
-        }
+        TDS_Bounds _bounds = TDS_Camera.Instance.CurrentBounds;
+
+        //if (_bounds == null)
+        //{
+        //    _pos = TDS_LevelManager.Instance.AllPlayers.FirstOrDefault().transform.position; 
+        //}
+        Vector3 _pos = new Vector3((_bounds.XMax + _bounds.XMin) / 2, 0, (_bounds.ZMin + _bounds.ZMax) / 2);
+
         //Reinstantiate the particle here
         TDS_VFXManager.Instance.SpawnEffect(FXType.MrLoyalTeleportation, transform.position);
         yield return new WaitForSeconds(1.25f);
@@ -190,7 +193,7 @@ public class TDS_MrLoyal : TDS_Boss
         sprite.enabled = true;
         yield return null;
         //ActivateEnemy();
-        animator.SetBool("isOutOfBattle", false); 
+        animator.SetBool(isOutOfBattle_Hash, false); 
         SetEnemyState(EnemyState.MakingDecision);
         Invoke("PlayRandomTaunt", Random.Range(tauntRateMin, tauntRateMax));
         if (isEnraged) cats.ToList().ForEach(c => c.SetCatIndependant()); 

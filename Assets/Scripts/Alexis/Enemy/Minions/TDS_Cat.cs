@@ -38,7 +38,15 @@ public class TDS_Cat : TDS_Character
 
     #region Fields / Properties
     #region Constants
-    private const float LANDING_TIME = .8f; 
+    private const float LANDING_TIME = .8f;
+    #endregion
+
+    #region Animator
+    private static readonly int endJump_Hash = Animator.StringToHash("EndJumpTrigger");
+    private static readonly int hit_Hash = Animator.StringToHash("HitTrigger");
+    private static readonly int isDead_Hash = Animator.StringToHash("isDead");
+    private static readonly int isRunning_Hash = Animator.StringToHash("isRunning");
+    private static readonly int jump_Hash = Animator.StringToHash("JumpTrigger");
     #endregion
 
     [SerializeField] private CustomNavMeshAgent agent = null;
@@ -162,27 +170,27 @@ public class TDS_Cat : TDS_Character
         switch ((CatAnimationState)_animationID)
         {
             case CatAnimationState.Idle:
-                animator.SetBool("isRunning", false); 
+                animator.SetBool(isRunning_Hash, false); 
                 break;
             case CatAnimationState.Run:
-                animator.SetBool("isRunning", true); 
+                animator.SetBool(isRunning_Hash, true); 
                 break;
             case CatAnimationState.Hit:
-                animator.SetTrigger("HitTrigger"); 
+                animator.SetTrigger(hit_Hash); 
                 break;
             case CatAnimationState.Jump:
-                animator.SetTrigger("JumpTrigger");
+                animator.SetTrigger(jump_Hash);
                 break;
             case CatAnimationState.EndJump:
-                animator.SetTrigger("EndJumpTrigger");
+                animator.SetTrigger(endJump_Hash);
                 break;
             case CatAnimationState.Die:
-                animator.SetBool("isDead", true);
+                animator.SetBool(isDead_Hash, true);
                 break; 
             default:
                 break;
         }
-        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID });
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetAnimationState"), new object[] { _animationID });
 
     }
 

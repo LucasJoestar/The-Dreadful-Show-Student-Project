@@ -196,6 +196,10 @@ public class TDS_BeardLady : TDS_Player
     [SerializeField] private AudioClip tornadoSound = null;
     #endregion
 
+    #region Animator
+    private readonly int beard_Hash = Animator.StringToHash("Beard");
+    #endregion
+
     #endregion
 
     #region Methods
@@ -327,7 +331,7 @@ public class TDS_BeardLady : TDS_Player
     /// <param name="_state">State of the beard.</param>
     public void SetBeardAnim(BeardState _state)
     {
-        animator.SetFloat("Beard", (int)_state);
+        animator.SetFloat(beard_Hash, (int)_state);
 
         TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetBeardAnim"), new object[] { (int)_state });
     }
@@ -338,7 +342,7 @@ public class TDS_BeardLady : TDS_Player
     /// <param name="_state">State of the beard.</param>
     public void SetBeardAnim(int _state)
     {
-        animator.SetFloat("Beard", _state);
+        animator.SetFloat(beard_Hash, _state);
     }
     #endregion
 

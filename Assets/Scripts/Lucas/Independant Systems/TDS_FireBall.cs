@@ -32,6 +32,11 @@ public class TDS_FireBall : TDS_Object
 	*/
 
     #region Fields / Properties
+
+    #region Animator
+    private static readonly int explosion_Hash = Animator.StringToHash("Explosion");
+    #endregion
+
     /// <summary>
     /// Animator of the Fire Ball.
     /// </summary>
@@ -80,7 +85,7 @@ public class TDS_FireBall : TDS_Object
     private void Explode()
     {
         if (hitBox.IsActive) hitBox.Desactivate();
-        animator.SetTrigger("Explosion");
+        animator.SetTrigger(explosion_Hash);
 
         TDS_SoundManager.Instance.PlayEffectSound(destroySound, audioSource);
     }
@@ -114,17 +119,17 @@ public class TDS_FireBall : TDS_Object
 
 	#region Unity Methods
 	// Awake is called when the script instance is being loaded
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         if (!animator)
         {
             animator = GetComponent<Animator>();
-            if (!animator) Debug.LogWarning("Animator is missing on Fire Ball !");
         }
         if (!hitBox)
         {
             hitBox = GetComponent<TDS_HitBox>();
-            if (!hitBox) Debug.LogWarning("HitBox is missing on Fire Ball !");
         }
     }
 

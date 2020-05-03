@@ -65,7 +65,7 @@ public class TDS_PlayerSpriteHolder : MonoBehaviour
     {
         if (!Owner || Owner.IsDead || Owner.IsInvulnerable || Owner.IsInInvulnerabilityCoroutine || !Application.isPlaying) return;
 
-        TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(Owner, true);
+        TDS_UIManager.Instance.DisplayHiddenPlayerPosition(Owner, true);
         Owner.StartMovingPlayerInView();
     }
 
@@ -74,7 +74,7 @@ public class TDS_PlayerSpriteHolder : MonoBehaviour
     {
         if (!Owner || !Application.isPlaying) return;
 
-        TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(Owner, false);
+        TDS_UIManager.Instance.DisplayHiddenPlayerPosition(Owner, false);
         Owner.StopMovingPlayerInView();
     }
 
@@ -88,7 +88,7 @@ public class TDS_PlayerSpriteHolder : MonoBehaviour
             return;
         }
 
-        Owner.OnDie += () => TDS_UIManager.Instance?.DisplayHiddenPlayerPosition(Owner, false);
+        Owner.OnDie += () => TDS_UIManager.Instance.DisplayHiddenPlayerPosition(Owner, false);
         Owner.OnRevive += ShowOutOfScreenInfoOnRevive;
     }
     #endregion

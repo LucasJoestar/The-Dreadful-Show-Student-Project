@@ -30,16 +30,21 @@ public class TDS_WavesBehaviour : MonoBehaviour
 	 *	-----------------------------------
 	*/
 
-	#region Unity Methods
-	// Use this for initialization
+    #region Animator
+    private readonly int anim_Hash = Animator.StringToHash("Anim");
+    private readonly int speed_Hash = Animator.StringToHash("Speed");
+    #endregion
+
+    #region Unity Methods
+    // Use this for initialization
     private void Start()
     {
         Animator[] _animators = GetComponentsInChildren<Animator>();
 
         foreach (Animator _animator in _animators)
         {
-            _animator.Play("Anim", 0, Random.Range(.001f, .999f));
-            _animator.SetFloat("Speed", Random.Range(.9f, 1.1f));
+            _animator.Play(anim_Hash, 0, Random.Range(.001f, .999f));
+            _animator.SetFloat(speed_Hash, Random.Range(.9f, 1.1f));
         }
 
         Destroy(this);

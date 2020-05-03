@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
-public class TDS_Bounds 
+public struct TDS_Bounds 
 {
     /* TDS_Bounds :
 	 *
@@ -47,7 +46,7 @@ public class TDS_Bounds
     /// <summary>
     /// Vector for X maximum value of the bounds.
     /// </summary>
-    public Vector3 XMaxVector = Vector3.zero;
+    public Vector3 XMaxVector;
 
     /// <summary>
     /// X minimum value of the bounds.
@@ -57,7 +56,7 @@ public class TDS_Bounds
     /// <summary>
     /// Vector for X minimum value of the bounds.
     /// </summary>
-    public Vector3 XMinVector = Vector3.zero;
+    public Vector3 XMinVector;
 
     /// <summary>
     /// Z maximum value of the bounds.
@@ -67,7 +66,7 @@ public class TDS_Bounds
     /// <summary>
     /// Vector for Z minimum value of the bounds.
     /// </summary>
-    public Vector3 ZMinVector = Vector3.zero;
+    public Vector3 ZMinVector;
 
     /// <summary>
     /// Z minimum value of the bounds.
@@ -77,7 +76,7 @@ public class TDS_Bounds
     /// <summary>
     /// Vector for Z maximum value of the bounds.
     /// </summary>
-    public Vector3 ZMaxVector = Vector3.zero;
+    public Vector3 ZMaxVector;
     #endregion
 
     #region Constructor

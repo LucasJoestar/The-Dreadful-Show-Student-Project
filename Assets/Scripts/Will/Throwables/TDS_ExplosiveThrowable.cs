@@ -37,6 +37,11 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
     #endregion
 
     #region Fields / Properties
+
+    #region Animator
+    private static readonly int speedMultiplier_Hash = Animator.StringToHash("speedMultiplier");
+    #endregion
+
     [Header("Explosion Settings")]
     [SerializeField, Range(1,60)] private float explodingDelay = 5;
 
@@ -68,7 +73,7 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
         {
             _timer += Time.deltaTime; 
             _animationSpeed = Mathf.MoveTowards(_animationSpeed, animationSpeedMax, (Time.deltaTime * _timer));
-            if (animator) animator.SetFloat("speedMultiplier", _animationSpeed); 
+            animator.SetFloat(speedMultiplier_Hash, _animationSpeed); 
             yield return new WaitForEndOfFrame();
         }
         TDS_VFXManager.Instance.SpawnEffect(FXType.Kaboom, transform.position + (Vector3.up * 1.75f));

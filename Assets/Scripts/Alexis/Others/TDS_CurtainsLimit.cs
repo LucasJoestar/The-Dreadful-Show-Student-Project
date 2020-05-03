@@ -36,6 +36,12 @@ public class TDS_CurtainsLimit : MonoBehaviour
     #endregion
 
     #region Fields / Properties
+
+    #region Animator
+    private readonly int hideLeftCurtain_Hash = Animator.StringToHash("HideLeftCurtain");
+    private readonly int hideRightCurtain_Hash = Animator.StringToHash("HideRightCurtain");
+    #endregion
+
     /// <summary>
     /// Detected tags of the limit.
     /// </summary>
@@ -63,11 +69,11 @@ public class TDS_CurtainsLimit : MonoBehaviour
         if (!other.gameObject.HasTag(detectedTags.ObjectTags) || !curtainsAnimator) return;
         if (isLeftLimit)
         {
-            curtainsAnimator.SetBool("HideLeftCurtain", true);
+            curtainsAnimator.SetBool(hideLeftCurtain_Hash, true);
 
             return;
         }
-        curtainsAnimator.SetBool("HideRightCurtain", true);
+        curtainsAnimator.SetBool(hideRightCurtain_Hash, true);
     }
 
     private void OnTriggerExit(Collider other)
@@ -75,11 +81,11 @@ public class TDS_CurtainsLimit : MonoBehaviour
         if (!other.gameObject.HasTag(detectedTags.ObjectTags) || !curtainsAnimator) return;
         if (isLeftLimit)
         {
-            curtainsAnimator.SetBool("HideLeftCurtain", false);
+            curtainsAnimator.SetBool(hideLeftCurtain_Hash, false);
 
             return;
         }
-        curtainsAnimator.SetBool("HideRightCurtain", false);       
+        curtainsAnimator.SetBool(hideRightCurtain_Hash, false);       
     }
     #endregion
 
