@@ -122,7 +122,11 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
             }
         }
 
-        if (!_player.photonView.isMine) return;
+        if (!_player.photonView.isMine)
+        {
+            gameObject.SetActive(true);
+            return;
+        }
 
         // Set inputs informations
         if (_player)

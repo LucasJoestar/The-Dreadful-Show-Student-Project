@@ -205,7 +205,6 @@ public class TDS_UIManager : PunBehaviour
     public TDS_CharacterSelectionManager CharacterSelectionManager { get { return characterSelectionManager; } }
     #endregion
 
-
     #region TextField
     [SerializeField] private TMP_Text playerNameField;
     public TMP_Text PlayerNameField
@@ -238,8 +237,6 @@ public class TDS_UIManager : PunBehaviour
 
     #region Text
     [Header("Dialog/Narrator/Error Box")]
-    //Text of the dialog Box
-    [SerializeField] private TMP_Text dialogBoxText;
     //Text of the narrator Box
     [SerializeField] private TMP_Text narratorBoxText;
     //Text of the Error Box
@@ -274,9 +271,6 @@ public class TDS_UIManager : PunBehaviour
     [SerializeField] private TDS_OptionManager optionManager = null;
 
     [SerializeField] private TMP_Text addPlayerText = null;
-    #endregion
-
-    #region WorkInProgress
     #endregion
 
     #region Animator
@@ -522,18 +516,6 @@ public class TDS_UIManager : PunBehaviour
     public void ActivateCutsceneBlackBars()
     {
         cutsceneBlackBarsAnimator.SetBool(cutsceneIsActivated_Hash, true);
-    }
-
-    /// <summary>
-    /// Fill the text of the dialog box as _text
-    /// Set the parent of the dialogbox Active
-    /// </summary>
-    /// <param name="_text">Text to fill in the text fieldw</param>
-    public void ActivateDialogBox(string _text)
-    {
-        if (dialogBoxParent == null || dialogBoxText == null) return;
-        dialogBoxText.text = _text;
-        dialogBoxParent.SetActive(true);  
     }
 
     /// <summary>
