@@ -255,8 +255,9 @@ public class CustomNavMeshAgent : MonoBehaviour
     {
         _direction.Normalize();
         // Avoidance = Tan(avoidanceForce) * velocity * time.deltatime
+        _direction.y = 0;
         Vector3 _avoidance = _direction * AvoidanceForce * Time.fixedDeltaTime;
-        Debug.DrawLine(transform.position + velocity, transform.position + velocity + _avoidance, Color.red, 1); 
+        //Debug.DrawLine(transform.position + velocity, transform.position + velocity + _avoidance, Color.red, 1); 
         velocity += _avoidance;
         velocity = Vector3.ClampMagnitude(velocity, speed);
     }
@@ -341,6 +342,8 @@ public class CustomNavMeshAgent : MonoBehaviour
             velocity = Vector3.ClampMagnitude(velocity, speed);
             transform.position += velocity * Time.deltaTime;
 
+            if (_pathIndex > _followingPath.Count) _pathIndex = 0;
+            if (_followingPath.Count == 0) break; 
             /* If the agent is close to the next position
              * Update the previous and the next point
              * Also update the pathIndex
@@ -468,8 +471,9 @@ public class CustomNavMeshAgent : MonoBehaviour
     /// <param name="_target"></param>
     private void Seek(Vector3 _target)
     {
+        _target.y = 0;
         Vector3 _desiredVelocity = (_target - OffsetPosition).normalized * speed;
-
+        Debug.Log(_target.y + " -> " + _desiredVelocity.y); 
         Vector3 _steer = (_desiredVelocity - velocity) * Mathf.Tan(Mathf.Deg2Rad * steerForce) * Time.fixedDeltaTime;
         velocity += _steer;
         velocity = Vector3.ClampMagnitude(velocity, speed);
