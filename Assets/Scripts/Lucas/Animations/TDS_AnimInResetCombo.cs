@@ -2,16 +2,20 @@
 
 public class TDS_AnimInResetCombo : StateMachineBehaviour
 {
-    /// <summary>
-    /// Player associated with this script.
-    /// </summary>
-    private TDS_Player player = null;
+    private bool        isInitialized = false;
+    private TDS_Player  player =        null;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (!player) player = animator.GetComponent<TDS_Player>();
-        if (player.photonView.isMine) player.ResetCombo();
+        if (!isInitialized)
+        {
+            isInitialized = true;
+            player = animator.GetComponent<TDS_Player>();
+        }
+
+        if (player.photonView.isMine)
+            player.ResetCombo();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

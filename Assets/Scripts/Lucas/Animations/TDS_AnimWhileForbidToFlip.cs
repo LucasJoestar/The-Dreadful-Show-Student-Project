@@ -2,15 +2,18 @@
 
 public class TDS_AnimWhileForbidToFlip : StateMachineBehaviour
 {
-    /// <summary>
-    /// Player associated to this animator.
-    /// </summary>
-    private TDS_Player player = null;
+    private bool        isInitialized = false;
+    private TDS_Player  player =        null;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (!player) player = animator.GetComponent<TDS_Player>();
+        if (!isInitialized)
+        {
+            isInitialized = true;
+            player = animator.GetComponent<TDS_Player>();
+        }
+
         player.CanFlip = false;
     }
 

@@ -2,7 +2,8 @@
 
 public class TDS_AnimOutGetUp : StateMachineBehaviour
 {
-    TDS_Character character = null;
+    private bool            isInitialized = false;
+    private TDS_Character   character =     null;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -19,7 +20,12 @@ public class TDS_AnimOutGetUp : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (!character) character = animator.GetComponent<TDS_Character>();
+        if (!isInitialized)
+        {
+            isInitialized = true;
+            character = animator.GetComponent<TDS_Character>();
+        }
+
         character.GetUp();
     }
 

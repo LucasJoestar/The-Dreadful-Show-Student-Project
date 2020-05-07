@@ -2,10 +2,8 @@
 
 public class TDS_AnimOutJugglerShootCheck : StateMachineBehaviour
 {
-    /// <summary>
-    /// Juggler associated to this animator.
-    /// </summary>
-    private TDS_Juggler juggler = null;
+    private bool        isInitialized = false;
+    private TDS_Juggler juggler =       null;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -22,7 +20,12 @@ public class TDS_AnimOutJugglerShootCheck : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (!juggler) juggler = animator.GetComponent<TDS_Juggler>();
+        if (!isInitialized)
+        {
+            isInitialized = true;
+            juggler = animator.GetComponent<TDS_Juggler>();
+        }
+
         juggler.CheckShootAbility();
     }
 
