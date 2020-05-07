@@ -134,13 +134,19 @@ public class TDS_Destructible : TDS_Damageable
                             new Vector3(sprite.bounds.center.x + (sprite.bounds.extents.x * Random.Range(-.9f, .9f)), sprite.bounds.center.y + (sprite.bounds.extents.y * Random.Range(-.5f, .9f)), sprite.bounds.center.z + (sprite.bounds.extents.z * Random.Range(-.9f, .9f))) :
                             new Vector3(sprite.bounds.center.x, 0, sprite.bounds.center.z);
 
-        GameObject _instance = PhotonNetwork.Instantiate(_loot.name, _position, Quaternion.identity, 0);
-
         if (_rigidbody)
         {
-            _rigidbody.AddForce(new Vector3(Random.Range(-250, 250), Random.Range(100, 400), Random.Range(-150, 150)));
+            if (_loot.HasTag("Enemy"))
+            {
+                _position = new Vector3(_position.x, 0, _position.z);
+            }
+            else
+            {
+                _rigidbody.AddForce(new Vector3(Random.Range(-250, 250), Random.Range(100, 400), Random.Range(-150, 150)));
+            }
         }
 
+        GameObject _instance = PhotonNetwork.Instantiate(_loot.name, _position, Quaternion.identity, 0);
         _availableLoot.Remove(_loot);
 
         return _instance;
