@@ -1380,14 +1380,10 @@ public abstract class TDS_Enemy : TDS_Character
     // Use this for initialization
     protected override void Start()
     {
-        if (!PhotonNetwork.isMasterClient)
-        {
-            rigidbody.useGravity = false;
-        }
-        else
+        if(PhotonNetwork.isMasterClient)
         {
             if (photonView.owner == null) photonView.TransferOwnership(PhotonNetwork.masterClient);
-
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z); 
             // Scales up health on player amount
             if (doScaleOnPlayerAmount)
             {
