@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class TDS_SpritesEditor : EditorWindow
 {
-    /* TDS_ColorLevelEditor :
+    /* TDS_SpritesEditor :
 	 *
 	 *	#####################
 	 *	###### PURPOSE ######
@@ -87,6 +87,21 @@ public class TDS_SpritesEditor : EditorWindow
     /// Groups of loaded sprite renderers sorted by color.
     /// </summary>
     [SerializeField] private TDS_ColorGroup[] colorGroups = new TDS_ColorGroup[] { };
+
+
+    private readonly GUIContent[] modes =   new GUIContent[]
+                                            {
+                                                new GUIContent("Color Management", "Manages all scene sprites color"),
+                                                new GUIContent("Sprite Creator", "Create a single sprite from multiple ones")
+                                            };
+
+    [SerializeField] private int modeIndex = 0;
+
+    [SerializeField] private string savePath = "Assets/";
+
+    [SerializeField] private Transform modelRoot = null;
+
+    private int spriteCreatorMessageID = 0;
     #endregion
 
     #region Methods
@@ -113,7 +128,21 @@ public class TDS_SpritesEditor : EditorWindow
         EditorGUILayout.LabelField("________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________", EditorStyles.boldLabel);
         EditorGUILayout.EndHorizontal();
 
-        DrawColorMode();
+        modeIndex = GUILayout.Toolbar(modeIndex, modes, GUILayout.Height(25), GUILayout.ExpandWidth(true));
+
+        switch (modeIndex)
+        {
+            case 0:
+                DrawColorMode();
+                break;
+
+            case 1:
+                DrawSpriteCreator();
+                break;
+
+            default:
+                break;
+        }
     }
 
     /// <summary>
@@ -290,6 +319,54 @@ public class TDS_SpritesEditor : EditorWindow
 
         GUILayout.Space(10);
         EditorGUILayout.EndScrollView();
+    }
+
+    public void DrawSpriteCreator()
+    {
+        GUILayout.Space(5);
+        EditorGUILayout.LabelField(new GUIContent("Sprite Creator", "Create single sprites from multiple ones !"), EditorStyles.boldLabel);
+
+        float _maxWidth = (Screen.width / 2f) - 10;
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.BeginVertical(GUILayout.MaxWidth(_maxWidth));
+
+        modelRoot = (Transform)EditorGUILayout.ObjectField(new GUIContent("Model Root"), modelRoot, typeof(Transform), true);
+        EditorGUILayout.HelpBox("Model to create sprite from all its renderer in children", MessageType.Info);
+
+        EditorGUILayout.EndVertical();
+        GUILayout.FlexibleSpace();
+        EditorGUILayout.BeginVertical(GUILayout.MaxWidth(_maxWidth));
+
+        savePath = EditorGUILayout.TextField(new GUIContent("Save Path", "Path to save newly created sprite"), savePath);
+        EditorGUILayout.HelpBox("You can copy a folder path with \"Context click/ Copy path\"", MessageType.Info);
+
+        EditorGUILayout.EndVertical();
+        EditorGUILayout.EndHorizontal();
+
+        if (GUILayout.Button("Create Sprite", GUILayout.MaxWidth(200)))
+        {
+            if (modelRoot)
+            {
+                spriteCreatorMessageID = 0;
+            }
+            else
+                spriteCreatorMessageID = 1;
+        }
+
+        switch (spriteCreatorMessageID)
+        {
+            case 0:
+                // Do nothing
+                break;
+
+            case 1:
+                EditorGUILayout.HelpBox("You must select a model root to create sprite from !", MessageType.Error);
+                break;
+
+            default:
+                break;
+        }
     }
 
     /// <summary>
