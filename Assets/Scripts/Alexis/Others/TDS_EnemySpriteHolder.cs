@@ -50,12 +50,14 @@ public class TDS_EnemySpriteHolder : MonoBehaviour
     // OnBecameInvisible is called when the renderer is no longer visible by any camera
     private void OnBecameInvisible()
     {
+        if (!spriteRenderer.enabled) return;
         spriteOwner.OnBecameInvisibleCallBack(); 
     }
 
     // OnBecameVisible is called when the renderer became visible by any camera
     private void OnBecameVisible()
     {
+        if (!spriteRenderer.enabled) return;
         spriteOwner.OnBecameVisibleCallBack();
     }
     private void Start()

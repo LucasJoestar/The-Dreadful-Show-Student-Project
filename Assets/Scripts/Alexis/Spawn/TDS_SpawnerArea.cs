@@ -110,12 +110,14 @@ public class TDS_SpawnerArea : PunBehaviour
     /// <summary>
     /// Is the area activated or not
     /// </summary>
-    [SerializeField] private bool isActivated = false; 
+    [SerializeField] private bool isActivated = false;
+
+    public bool IsActivated => isActivated; 
 
     /// <summary>
     /// Does the area has to be called by event or by its trigger
     /// </summary>
-    [SerializeField] protected bool isActivatedByEvent = false; 
+        [SerializeField] protected bool isActivatedByEvent = false; 
 
     /// <summary>
     /// Is the area call the first wave when the last wave is over  

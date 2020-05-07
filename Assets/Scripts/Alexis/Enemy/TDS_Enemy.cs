@@ -1419,8 +1419,13 @@ public abstract class TDS_Enemy : TDS_Character
 
     public void OnBecameInvisibleCallBack()
     {
-        if(PhotonNetwork.isMasterClient)
-            Invoke("KillEnemy", 20.0f); 
+        if(PhotonNetwork.isMasterClient && !IsPacific && !IsParalyzed)
+        {
+            Invoke("KillEnemy", 20.0f);
+            Debug.Log($"Kill {gameObject.name} called in 20.0s."); 
+        }
+        if (PhotonNetwork.isMasterClient && isDead)
+            PhotonNetwork.Destroy(gameObject);
     }
 
     public void OnBecameVisibleCallBack()
