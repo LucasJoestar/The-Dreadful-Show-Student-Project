@@ -1,0 +1,314 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9a37514c7671e24d88492cc62bbc3b7, type: 3}
+  m_Name: AkWwiseProjectData
+  m_EditorClassIdentifier: 
+  AcousticTextureWwu:
+  - PhysicalPath: Virtual Acoustics\Default Work Unit.wwu
+    ParentPath: Default Work Unit
+    guid: 8bc392f5b7d3754cb86f7488cbeb71b7
+    GuidInternal: 
+    m_lastTime: -8586128189992798268
+    List: []
+  AuxBusWwu:
+  - PhysicalPath: Master-Mixer Hierarchy\Default Work Unit.wwu
+    ParentPath: Default Work Unit
+    guid: 5728dc951eec2f4ba0da03385db6a701
+    GuidInternal: 
+    m_lastTime: -8586128189989327563
+    List:
+    - name: Master Audio Bus
+      guid: d8a41415a61d2a41a17e75ca0c2149f3
+      id: 3803692087
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Master Audio Bus
+        ObjectType: 2
+      Path: Default Work Unit\Master Audio Bus
+  BankWwu:
+  - PhysicalPath: SoundBanks\Default Work Unit.wwu
+    ParentPath: Default Work Unit
+    guid: 1006ea0a9d7e324da8219c686cfb7962
+    GuidInternal: 
+    m_lastTime: -8586126645398178786
+    List:
+    - name: sounbank_all
+      guid: 8cda858f11488046959f94076e742185
+      id: 3374902692
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: sounbank_all
+        ObjectType: 7
+      Path: Default Work Unit\sounbank_all
+  EventWwu:
+  - PhysicalPath: Events\Default Work Unit.wwu
+    ParentPath: Default Work Unit
+    guid: cc3d7ab8a618c64db455f8be16d3f7da
+    GuidInternal: 
+    m_lastTime: -8586126646825018417
+    List:
+    - name: ACROBAT
+      guid: d9188ad2d1e8d34294cc1019f9e17537
+      id: 248488741
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: monsters
+        ObjectType: 4
+      - ElementName: ACROBAT
+        ObjectType: 3
+      Path: Default Work Unit\monsters\ACROBAT
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: ambiances levels
+      guid: 221139a9a66dbf4d9caac1036d92c489
+      id: 578902225
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: ambiances levels
+        ObjectType: 4
+      - ElementName: ambiances levels
+        ObjectType: 3
+      Path: Default Work Unit\ambiances levels\ambiances levels
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: attaque_1
+      guid: 4539f336f3c728469ebd8b88d5e0d67f
+      id: 4145357458
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: attaque_1
+        ObjectType: 3
+      Path: Default Work Unit\persos\attaque_1
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: attaque_2
+      guid: 784084fe8bc6ca46aebc6aec2ef4f382
+      id: 4145357457
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: attaque_2
+        ObjectType: 3
+      Path: Default Work Unit\persos\attaque_2
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: attaque_3
+      guid: 620a929c4961eb4aa400552e7614f0c7
+      id: 4145357456
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: attaque_3
+        ObjectType: 3
+      Path: Default Work Unit\persos\attaque_3
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: BRUTAL_SIAMESE
+      guid: 47fa00768c1102409f990e65c1da0306
+      id: 2390245931
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: monsters
+        ObjectType: 4
+      - ElementName: BRUTAL_SIAMESE
+        ObjectType: 3
+      Path: Default Work Unit\monsters\BRUTAL_SIAMESE
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: FAKIR
+      guid: f8dd8b24a0c4ac4ca51fc51ea5fabeab
+      id: 2888865648
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: monsters
+        ObjectType: 4
+      - ElementName: FAKIR
+        ObjectType: 3
+      Path: Default Work Unit\monsters\FAKIR
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: hurt
+      guid: 93762ae56dd11c4689e4332084481a9f
+      id: 3193947170
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: hurt
+        ObjectType: 3
+      Path: Default Work Unit\persos\hurt
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: MIGHTYMAN
+      guid: f564442ffc624240842a134c818f5476
+      id: 2358710769
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: monsters
+        ObjectType: 4
+      - ElementName: MIGHTYMAN
+        ObjectType: 3
+      Path: Default Work Unit\monsters\MIGHTYMAN
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: MIME
+      guid: eb8e345b8a13154fabccdf91d2e306e4
+      id: 2559194501
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: monsters
+        ObjectType: 4
+      - ElementName: MIME
+        ObjectType: 3
+      Path: Default Work Unit\monsters\MIME
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: monsters
+      guid: 48ccf8e79aa3ff42955a6daf1ed9c566
+      id: 3858746980
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: monsters
+        ObjectType: 4
+      - ElementName: monsters
+        ObjectType: 3
+      Path: Default Work Unit\monsters\monsters
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: niveau_X
+      guid: 096cabb4762d63499d7248be3e86cfb8
+      id: 1050926838
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: ambiances levels
+        ObjectType: 4
+      - ElementName: niveau_X
+        ObjectType: 3
+      Path: Default Work Unit\ambiances levels\niveau_X
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: persos
+      guid: 7f5250f4c6d75544857d091eb4d19a33
+      id: 1731679499
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: persos
+        ObjectType: 3
+      Path: Default Work Unit\persos\persos
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: PUNK
+      guid: 188557feaf65244c8bea3c308cfbf5c3
+      id: 1942555113
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: monsters
+        ObjectType: 4
+      - ElementName: PUNK
+        ObjectType: 3
+      Path: Default Work Unit\monsters\PUNK
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: SIAMESE
+      guid: b770576f7f3dad4e995c0c9fc6b903da
+      id: 804534660
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: monsters
+        ObjectType: 4
+      - ElementName: SIAMESE
+        ObjectType: 3
+      Path: Default Work Unit\monsters\SIAMESE
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: test_sound
+      guid: 46f96fee0c91aa48be19caff3c74d1c9
+      id: 1936185617
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: test_sound
+        ObjectType: 3
+      Path: Default Work Unit\test_sound
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+  RtpcWwu:
+  - PhysicalPath: Game Parameters\Default Work Unit.wwu
+    ParentPath: Default Work Unit
+    guid: 36f8251017abdb4a85abc88ad330292c
+    GuidInternal: 
+    m_lastTime: -8586128189989377426
+    List: []
+  StateWwu:
+  - PhysicalPath: States\Default Work Unit.wwu
+    ParentPath: Default Work Unit
+    guid: 860f0487bae3cd4ca7ba6237240ac2e7
+    GuidInternal: 
+    m_lastTime: -8586128189989207881
+    List: []
+  SwitchWwu:
+  - PhysicalPath: Switches\Default Work Unit.wwu
+    ParentPath: Default Work Unit
+    guid: 195628f6399e6948865cf7fa78defe64
+    GuidInternal: 
+    m_lastTime: -8586128189989247773
+    List: []
+  TriggerWwu:
+  - PhysicalPath: Triggers\Default Work Unit.wwu
+    ParentPath: Default Work Unit
+    guid: 2b47591faef95b4fb314e30c9c2ce648
+    GuidInternal: 
+    m_lastTime: -8586128189993661312
+    List: []
+  ExpandedItems:
+  - /The Dreadful Show
+  autoPopulateEnabled: 1
+  CurrentPluginConfig: 
