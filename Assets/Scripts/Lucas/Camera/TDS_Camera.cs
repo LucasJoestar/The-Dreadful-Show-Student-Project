@@ -145,7 +145,7 @@ public class TDS_Camera : MonoBehaviour
     /// <summary>
     /// Current bounds to clamp the camera position.
     /// </summary>
-    [SerializeField] private TDS_Bounds currentBounds = null;
+    [SerializeField] private TDS_Bounds currentBounds = new TDS_Bounds();
 
     public TDS_Bounds CurrentBounds
     {
@@ -823,8 +823,6 @@ public class TDS_Camera : MonoBehaviour
                                             _levelBounds.TopBound.z != 0 ?
                                             _levelBounds.TopBound :
                                             currentBounds.ZMaxVector);
-
-        if (currentBounds == _bounds) return;
 
         if (setBoundsCoroutine != null) StopCoroutine(setBoundsCoroutine);
         setBoundsCoroutine = StartCoroutine(SetBoundsInTime(_bounds));

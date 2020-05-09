@@ -36,6 +36,11 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
     #endregion
 
     #region Fields / Properties
+
+    #region Animator
+    private static readonly int displayHideInfos_Hash = Animator.StringToHash("DisplayHideInfos");
+    #endregion
+
     [SerializeField] protected GameObject howToPlayAnchor= null;
     [SerializeField] protected GameObject howToPlayInfo = null;
     [SerializeField] protected Animator howToPlayTextAnimator = null;
@@ -79,7 +84,7 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
         string _controllerInput = isController ? "Controller_Select" : "Keyboard_Tab";
         showHowToPlayText.text = _areHideInfos ? $"Press <sprite name={_controllerInput}> to Hide" : $"<sprite name={ _controllerInput}> How to Play";
 
-        if (howToPlayTextAnimator) howToPlayTextAnimator.SetBool("DisplayHideInfos", _areHideInfos);
+        howToPlayTextAnimator.SetBool(displayHideInfos_Hash, _areHideInfos);
     }
 
     /// <summary>
@@ -117,7 +122,11 @@ public class TDS_PlayerLifeBar : TDS_LifeBar
             }
         }
 
-        if (!_player.photonView.isMine) return;
+        if (!_player.photonView.isMine)
+        {
+            gameObject.SetActive(true);
+            return;
+        }
 
         // Set inputs informations
         if (_player)

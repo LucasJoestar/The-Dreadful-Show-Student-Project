@@ -97,6 +97,7 @@ public class TDS_SpawnPoint
         for (int i = 0; i < 5; i++)
         {
             _offsetedPosition = spawnPosition + new Vector3(Random.Range(-spawnRange, spawnRange), 0, Random.Range(-spawnRange, spawnRange));
+            _offsetedPosition.y = 0; 
             _coll = Physics.OverlapSphere(_offsetedPosition + Vector3.up, 1, LayerMask.NameToLayer("Enemy"));
             if (_coll.Length == 0)
             {

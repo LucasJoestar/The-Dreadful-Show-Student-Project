@@ -184,6 +184,12 @@ public class TDS_FatLady : TDS_Player
     [SerializeField] private AudioClip eatSound = null;
     #endregion
 
+    #region Animator
+    private readonly int isAngry_Hash = Animator.StringToHash("IsAngry");
+    private readonly int prepareAttack_Hash = Animator.StringToHash("PrepareAttack");
+    private readonly int snack_Hash = Animator.StringToHash("Snack");
+    #endregion
+
     #endregion
 
     #region Methods
@@ -373,19 +379,19 @@ public class TDS_FatLady : TDS_Player
         switch (_state)
         {
             case FatLadyAnimState.Angry:
-                animator.SetBool("IsAngry", true);
+                animator.SetBool(isAngry_Hash, true);
                 break;
 
             case FatLadyAnimState.Cool:
-                animator.SetBool("IsAngry", false);
+                animator.SetBool(isAngry_Hash, false);
                 break;
 
             case FatLadyAnimState.Snack:
-                animator.SetTrigger("Snack");
+                animator.SetTrigger(snack_Hash);
                 break;
 
             case FatLadyAnimState.PrepareAttack:
-                animator.SetTrigger("PrepareAttack");
+                animator.SetTrigger(prepareAttack_Hash);
                 break;
 
             default:

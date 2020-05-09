@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
 public abstract class TDS_Consumable : TDS_Object 
 {
     /* TDS_Consumable :
@@ -31,22 +30,10 @@ public abstract class TDS_Consumable : TDS_Object
 	 *	-----------------------------------
 	*/
 
-    #region Events
-
-    #endregion
-
-    #region Fields / Properties
-    [SerializeField] protected Animator animator;
-    #endregion
 
     #region Methods
 
-    #region Original Methods
     abstract public void Use(TDS_Player _player); 
-	#endregion
-
-	#region Unity Methods
-	#endregion
 
 	#endregion
 }

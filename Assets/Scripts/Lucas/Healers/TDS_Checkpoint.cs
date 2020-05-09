@@ -65,6 +65,12 @@ public class TDS_Checkpoint : PunBehaviour
     #endregion
 
     #region Fields / Properties
+
+    #region Animator
+    private static readonly int activated_Hash = Animator.StringToHash("Activated");
+    private static readonly int resurrect_Hash = Animator.StringToHash("Resurrect");
+    #endregion
+
     /// <summary>
     /// Animator of the Checkpoint object.
     /// </summary>
@@ -192,15 +198,15 @@ public class TDS_Checkpoint : PunBehaviour
         switch (_animState)
         {
             case CheckpointAnimState.Desactivated:
-                animator.SetBool("Activated", false);
+                animator.SetBool(activated_Hash, false);
                 break;
 
             case CheckpointAnimState.Resurrect:
-                animator.SetTrigger("Resurrect");
+                animator.SetTrigger(resurrect_Hash);
                 break;
 
             case CheckpointAnimState.Activated:
-                animator.SetBool("Activated", true);
+                animator.SetBool(activated_Hash, true);
                 break;
 
             default:
@@ -217,17 +223,14 @@ public class TDS_Checkpoint : PunBehaviour
         if (!animator)
         {
             animator = GetComponent<Animator>();
-            if (!animator) Debug.LogWarning("The Animator of \"" + name + "\" for script TDS_Checkpoint is missing !");
         }
         if (!trigger)
         {
             trigger = GetComponents<BoxCollider>().Where(b => b.isTrigger).FirstOrDefault();
-            if (!trigger) Debug.LogWarning("The Trigger of \"" + name + "\" for script TDS_Checkpoint is missing !");
         }
         if (!audioSource)
         {
             audioSource = GetComponent<AudioSource>();
-            if (!audioSource) Debug.LogWarning("The AudioSource of \"" + name + "\" for script TDS_Checkpoint is missing !");
         }
     }
 
@@ -254,7 +257,7 @@ public class TDS_Checkpoint : PunBehaviour
             _player.Heal(999);
 
             // Call the OnPassCheckpoint event on the player machine
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", _player.photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "CallOnPassCheckpoint"), new object[] { });
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", _player.photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "CallOnPassCheckpoint"), new object[] { });
 
             if (!isActivated) Activate();
 

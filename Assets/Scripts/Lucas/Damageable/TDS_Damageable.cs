@@ -324,6 +324,10 @@ public abstract class TDS_Damageable : TDS_Object
     [SerializeField] protected AudioClip[] deathSounds = new AudioClip[] { };
     #endregion
 
+    #region Animator
+    private readonly int vanish_Hash = Animator.StringToHash("Vanish");
+    #endregion
+
     #endregion
 
     #region Methods
@@ -519,7 +523,7 @@ public abstract class TDS_Damageable : TDS_Object
         burningCoroutines[_id] = null;
         burningCoroutines.Remove(_id);
 
-        if (burningCoroutines.Count == 0) StopBurning();
+        if (burningCoroutines.Count == 0) DestroyFireEffect();
     }
 
     /// <summary>
@@ -532,7 +536,7 @@ public abstract class TDS_Damageable : TDS_Object
             TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "DestroyFireEffect"), new object[] { });
         }
 
-        if (burnEffect) burnEffect.SetTrigger("Vanish");
+        burnEffect.SetTrigger(vanish_Hash);
     }
 
     /// <summary>
@@ -562,9 +566,9 @@ public abstract class TDS_Damageable : TDS_Object
                 StopCoroutine(_burning.Value);
             }
             burningCoroutines.Clear();
-        }
 
-        DestroyFireEffect();
+            DestroyFireEffect();
+        }
     }
     #endregion
 
@@ -646,17 +650,14 @@ public abstract class TDS_Damageable : TDS_Object
         if (!animator)
         {
             animator = GetComponent<Animator>();
-            if (!animator) Debug.LogWarning("The Animator of \"" + name + "\" for script TDS_Damageable is missing !");
         }
         if (!collider)
         {
             collider = GetComponent<BoxCollider>();
-            if (!collider) Debug.LogWarning("The Collider of \"" + name + "\" for script TDS_Damageable is missing !");
         }
         if (!sprite)
         {
             sprite = GetComponent<SpriteRenderer>();
-            if (!sprite) Debug.LogWarning("The SpriteRenderer of \"" + name + "\" for script TDS_Damageable is missing !");
         }
     }
 

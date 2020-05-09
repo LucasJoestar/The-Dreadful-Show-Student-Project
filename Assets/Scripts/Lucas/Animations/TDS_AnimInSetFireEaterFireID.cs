@@ -2,15 +2,13 @@
 
 public class TDS_AnimInSetFireEaterFireID : StateMachineBehaviour
 {
-    /// <summary>
-    /// ID used for the next fire attack.
-    /// </summary>
-    [SerializeField] private int fireID = 0;
+    [SerializeField] private int    fireID =        0;
+    private static readonly int     fireID_Hash =   Animator.StringToHash("FireID");
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetInteger("FireID", fireID);
+        animator.SetInteger(fireID_Hash, fireID);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

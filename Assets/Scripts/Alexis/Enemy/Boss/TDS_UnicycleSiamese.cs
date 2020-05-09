@@ -38,7 +38,7 @@ public class TDS_UnicycleSiamese : TDS_Enemy
 
     #region Fields / Properties
     private bool hasReachedRightBound = false; 
-    private TDS_Bounds bounds = null;
+    private TDS_Bounds bounds = new TDS_Bounds();
 
     #endregion
 
@@ -77,12 +77,9 @@ public class TDS_UnicycleSiamese : TDS_Enemy
     /// <returns></returns>
     protected override Vector3 GetAttackingPosition()
     {
-        Vector3 _v = transform.position; 
-        if(bounds != null)
-        {
-            _v.z = UnityEngine.Random.Range(bounds.ZMin + agent.Radius, bounds.ZMax - agent.Radius);
-            _v.x = hasReachedRightBound ? bounds.XMin + agent.Radius : bounds.XMax - agent.Radius; 
-        }
+        Vector3 _v = transform.position;
+        _v.z = UnityEngine.Random.Range(bounds.ZMin + agent.Radius, bounds.ZMax - agent.Radius);
+        _v.x = hasReachedRightBound ? bounds.XMin + agent.Radius : bounds.XMax - agent.Radius;
         return _v; 
     }
 
@@ -210,7 +207,7 @@ public class TDS_UnicycleSiamese : TDS_Enemy
     // Use this for initialization
     protected override void Start()
     {
-        bounds = TDS_Camera.Instance?.CurrentBounds;
+        bounds = TDS_Camera.Instance.CurrentBounds;
         hasReachedRightBound = Mathf.Abs(transform.position.x - bounds.XMin) >= Mathf.Abs(transform.position.x - bounds.XMax) ? true : false;
         base.Start();
         SetEnemyState(EnemyState.MakingDecision);

@@ -102,7 +102,7 @@ public class TDS_FireEater : TDS_Player
                 {
                     miniGameAnchor.localPosition = new Vector3(0, miniGameAnchor.localPosition.y, miniGameAnchor.localPosition.z);
                 }
-                animator.SetBool("IsInMiniGame", value);
+                animator.SetBool(isInMiniGame_Hash, value);
             }
         }
     }
@@ -213,6 +213,15 @@ public class TDS_FireEater : TDS_Player
     [SerializeField] private AudioClip[] attackFiretHit = null;
     #endregion
 
+    #region Animator
+    private readonly int fire_Hash = Animator.StringToHash("Fire");
+    private readonly int fireID_Hash = Animator.StringToHash("FireID");
+    private readonly int isDrunk_Hash = Animator.StringToHash("IsDrunk");
+    private readonly int isInMiniGame_Hash = Animator.StringToHash("IsInMiniGame");
+    private readonly int miniGameSpeed_Hash = Animator.StringToHash("MiniGameSpeed");
+    private readonly int puke_Hash = Animator.StringToHash("Puke");
+    #endregion
+
     #endregion
 
     #region Methods
@@ -288,7 +297,7 @@ public class TDS_FireEater : TDS_Player
         if (isInMiniGame)
         {
             IsInMiniGame = true;
-            animator.SetFloat("MiniGameSpeed", Random.Range(.5f, 1f));
+            animator.SetFloat(miniGameSpeed_Hash, Random.Range(.5f, 1f));
 
             while (isInMiniGame)
             {
@@ -538,35 +547,35 @@ public class TDS_FireEater : TDS_Player
         switch (_state)
         {
             case FireEaterAnimState.Sober:
-                animator.SetBool("IsDrunk", false);
+                animator.SetBool(isDrunk_Hash, false);
                 audioSource.Stop();
                 break;
 
             case FireEaterAnimState.Drunk:
-                animator.SetBool("IsDrunk", true);
+                animator.SetBool(isDrunk_Hash, true);
                 audioSource.time = 0;
                 audioSource.Play();
                 break;
 
             case FireEaterAnimState.MiniGame:
-                animator.ResetTrigger("Fire");
-                animator.SetInteger("FireID", 9999999);
+                animator.ResetTrigger(fire_Hash);
+                animator.SetInteger(fireID_Hash, 9999999);
                 break;
 
             case FireEaterAnimState.Spit:
-                animator.SetInteger("FireID", 9999999);
+                animator.SetInteger(fireID_Hash, 9999999);
                 break;
 
             case FireEaterAnimState.DoNotSpit:
-                animator.SetInteger("FireID", -9999999);
+                animator.SetInteger(fireID_Hash, -9999999);
                 break;
 
             case FireEaterAnimState.Fire:
-                animator.SetTrigger("Fire");
+                animator.SetTrigger(fire_Hash);
                 break;
 
             case FireEaterAnimState.Puke:
-                animator.SetTrigger("Puke");
+                animator.SetTrigger(puke_Hash);
                 break;
 
             default:

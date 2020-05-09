@@ -39,6 +39,11 @@ public class TDS_ComboManager : MonoBehaviour
     #endregion
 
     #region Fields / Properties
+
+    #region Animator
+    private static readonly int increase_Hash = Animator.StringToHash("Increase");
+    #endregion
+
     [SerializeField, Range(.1f, 5)] private float resetTimer = 2;
     [SerializeField, Range(0, 45)] private float limitRotation = 30; 
     [SerializeField] private TMP_Text comboText = null;
@@ -55,7 +60,7 @@ public class TDS_ComboManager : MonoBehaviour
     {
         combocounter++;
         transform.rotation = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-limitRotation, limitRotation));
-        if (comboManagerAnimator) comboManagerAnimator.SetTrigger("Increase"); 
+        comboManagerAnimator.SetTrigger(increase_Hash); 
         comboText.text = $"X {combocounter} !"; 
         if (resetComboCoroutine != null)
             StopCoroutine(resetComboCoroutine);

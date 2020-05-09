@@ -205,7 +205,6 @@ public class TDS_UIManager : PunBehaviour
     public TDS_CharacterSelectionManager CharacterSelectionManager { get { return characterSelectionManager; } }
     #endregion
 
-
     #region TextField
     [SerializeField] private TMP_Text playerNameField;
     public TMP_Text PlayerNameField
@@ -238,8 +237,6 @@ public class TDS_UIManager : PunBehaviour
 
     #region Text
     [Header("Dialog/Narrator/Error Box")]
-    //Text of the dialog Box
-    [SerializeField] private TMP_Text dialogBoxText;
     //Text of the narrator Box
     [SerializeField] private TMP_Text narratorBoxText;
     //Text of the Error Box
@@ -273,10 +270,17 @@ public class TDS_UIManager : PunBehaviour
     [Header("Options Menu")]
     [SerializeField] private TDS_OptionManager optionManager = null;
 
-    [SerializeField] private TMP_Text addPlayerText = null; 
-    #endregion 
+    [SerializeField] private TMP_Text addPlayerText = null;
+    #endregion
 
-    #region WorkInProgress
+    #region Animator
+    private readonly int curtainsVisible_Hash = Animator.StringToHash("Visible");
+    private readonly int cutsceneIsActivated_Hash = Animator.StringToHash("IsActivated");
+    private readonly int curtainsReset_Hash = Animator.StringToHash("Reset");
+    private readonly int isLoading_Hash = Animator.StringToHash("IsLoading");
+    private readonly int jugglerState_Hash = Animator.StringToHash("State");
+    private readonly int switch_Hash = Animator.StringToHash("Switch");
+    private readonly int switchPanel_Hash = Animator.StringToHash("SwitchPanel");
     #endregion
 
     #endregion
@@ -447,7 +451,7 @@ public class TDS_UIManager : PunBehaviour
 
         followHiddenPlayerCouroutines.Clear();
         filledImages.Clear();
-        curtainsAnimator.SetTrigger("Reset");
+        curtainsAnimator.SetTrigger(curtainsReset_Hash);
         if(ComboManager)ComboManager.ResetComboManager();
         for (int i = 0; i < canvasWorld.transform.childCount; i++)
         {
@@ -511,19 +515,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void ActivateCutsceneBlackBars()
     {
-        cutsceneBlackBarsAnimator.SetBool("IsActivated", true);
-    }
-
-    /// <summary>
-    /// Fill the text of the dialog box as _text
-    /// Set the parent of the dialogbox Active
-    /// </summary>
-    /// <param name="_text">Text to fill in the text fieldw</param>
-    public void ActivateDialogBox(string _text)
-    {
-        if (dialogBoxParent == null || dialogBoxText == null) return;
-        dialogBoxText.text = _text;
-        dialogBoxParent.SetActive(true);  
+        cutsceneBlackBarsAnimator.SetBool(cutsceneIsActivated_Hash, true);
     }
 
     /// <summary>
@@ -688,7 +680,7 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public void DesactivateCutsceneBlackBars()
     {
-        cutsceneBlackBarsAnimator.SetBool("IsActivated", false);
+        cutsceneBlackBarsAnimator.SetBool(cutsceneIsActivated_Hash, false);
     }
 
     /// <summary>
@@ -782,8 +774,7 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_isLoading">Does the scene is loading or not</param>
     public void DisplayLoadingScreen(bool _isLoading)
     {
-        if (loadingScreenAnimator) loadingScreenAnimator.SetBool("IsLoading", _isLoading);
-        //if (loadingScreenParent) loadingScreenParent.SetActive(_isLoading);
+        loadingScreenAnimator.SetBool(isLoading_Hash, _isLoading);
     }
 
     /// <summary>
@@ -1025,7 +1016,7 @@ public class TDS_UIManager : PunBehaviour
     /// <param name="_state">New state of the aim target.</param>
     public void SetJugglerAimTargetAnim(JugglerAimTargetAnimState _state)
     {
-        jugglerAimTargetAnimator.SetInteger("State", (int)_state);
+        jugglerAimTargetAnimator.SetInteger(jugglerState_Hash, (int)_state);
     }
 
     /// <summary>
@@ -1176,7 +1167,7 @@ public class TDS_UIManager : PunBehaviour
     public void SwitchArrow()
     {
         if (!arrowAnimator) return;
-        arrowAnimator.SetTrigger("Switch");
+        arrowAnimator.SetTrigger(switch_Hash);
     }
 
     /// <summary>
@@ -1187,12 +1178,12 @@ public class TDS_UIManager : PunBehaviour
         if (!curtainsAnimator) return;
 
         // Play curtains sound
-        if (curtainsAnimator.GetBool("Visible") != _areVisible)
+        if (curtainsAnimator.GetBool(curtainsVisible_Hash) != _areVisible)
         {
             if (_areVisible) Invoke("PlayCurtainsIn", .1f);
             else PlayCurtainsOut();
 
-            curtainsAnimator.SetBool("Visible", _areVisible);
+            curtainsAnimator.SetBool(curtainsVisible_Hash, _areVisible);
         }
     }
 
@@ -1202,7 +1193,7 @@ public class TDS_UIManager : PunBehaviour
     public void SwitchWaitingPanel()
     {
         if (!waitingPanelAnimator) return;
-        waitingPanelAnimator.SetTrigger("SwitchPanel");
+        waitingPanelAnimator.SetTrigger(switchPanel_Hash);
     }
 
     /// <summary>
@@ -1247,8 +1238,8 @@ public class TDS_UIManager : PunBehaviour
     private void RefreshUI(Scene _scene, LoadSceneMode _loadMode)
     {
         if (narratorBoxParent.activeInHierarchy) DesactivateNarratorBox();
-        if (curtainsAnimator.GetBool("Visible")) curtainsAnimator.SetBool("Visible", false) ;
-        if (cutsceneBlackBarsAnimator.GetBool("IsActivated")) cutsceneBlackBarsAnimator.SetBool("IsActivated", false);
+        if (curtainsAnimator.GetBool(curtainsVisible_Hash)) curtainsAnimator.SetBool(curtainsVisible_Hash, false) ;
+        if (cutsceneBlackBarsAnimator.GetBool(cutsceneIsActivated_Hash)) cutsceneBlackBarsAnimator.SetBool(cutsceneIsActivated_Hash, false);
     }
     #endregion
 
