@@ -339,18 +339,19 @@ public class TDS_UIManager : PunBehaviour
                 break;
         }
         int _value = 0;
+        WaitForEndOfFrame _wait = new WaitForEndOfFrame(); 
         if (!PhotonNetwork.offlineMode)
         {
             while (UIState == _state)
             {
                 if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Cancel))
                 {
-                    yield return new WaitForEndOfFrame();
+                    yield return _wait;
                     _cancelAction?.Invoke();
                 }
                 else if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Confirm))
                 {
-                    yield return new WaitForEndOfFrame();
+                    yield return _wait;
                     _submitAction?.Invoke();
                 }
                 else if (TDS_GameManager.InputsAsset.Controllers[0].GetAxisDown(AxisType.Horizontal, out _value))
