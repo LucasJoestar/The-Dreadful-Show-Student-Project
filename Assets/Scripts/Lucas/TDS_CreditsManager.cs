@@ -1,6 +1,5 @@
 ﻿using Photon;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -81,47 +80,53 @@ public class TDS_CreditsManager : PunBehaviour
     /// </summary>
     public void SetCredits()
     {
-        TDS_PlayerScore _playerScore = null;
         PlayerType _type = 0;
+        TDS_PlayerScore _playerScore = null;
         Dictionary<PlayerType, string[]> _playersScores = new Dictionary<PlayerType, string[]>();
 
         // Get all players score
-        for (int i = 1; i < 5; i++)
+        for (int _i = 1; _i < 5; _i++)
         {
-            _type = (PlayerType)(i);
-            _playerScore = TDS_GameManager.PlayersInfo.FirstOrDefault(p => p.PlayerType == _type)?.PlayerScore;
+            _type = (PlayerType)_i;
+            _playerScore = null;
+
+            for (int _j = 0; _j < TDS_GameManager.PlayersInfo.Count; _j++)
+            {
+                if (TDS_GameManager.PlayersInfo[_j].PlayerType == _type)
+                {
+                    _playerScore = TDS_GameManager.PlayersInfo[_j].PlayerScore;
+                    break;
+                }
+            }
 
             _playersScores.Add(_type, new string[19]);
 
             // If no player of the type, set all
             if (_playerScore == null)
             {
-                for (int _j = 0; _j < 19; _j++)
+                for (int _j = 0; _j < 18; _j++)
                 {
                     _playersScores[_type][_j] = "-";
                 }
 
-                string _nemesisInfo = "\n";
-
                 switch (_type)
                 {
                     case PlayerType.BeardLady:
-                        _nemesisInfo += "Was lost in the corridors.";
+                        _playersScores[_type][18] = "-\nWas lost in the corridors.";
                         break;
 
                     case PlayerType.FatLady:
-                        _nemesisInfo += "Flight over the seven kingdoms.";
+                        _playersScores[_type][18] = "-\nFlight over the seven kingdoms.";
                         break;
 
                     case PlayerType.FireEater:
-                        _nemesisInfo += "Too drunk to fight.";
+                        _playersScores[_type][18] = "-\nToo drunk to fight.";
                         break;
 
                     case PlayerType.Juggler:
-                        _nemesisInfo += "Stayed under the table.";
+                        _playersScores[_type][18] = "-\nStayed under the table.";
                         break;
                 }
-                _playersScores[_type][18] += _nemesisInfo;
                 continue;
             }
 
@@ -151,33 +156,52 @@ public class TDS_CreditsManager : PunBehaviour
             _playersScores[_type][15] = _playerScore.InflictedDmgsToEnemies["Mr Loyal"].ToString();
 
             // Get player related score
-            _playersScores[_type][16] = _playerScore.KnockoutAmountFromEnemies.Sum(e => e.Value).ToString();
-            _playersScores[_type][17] = _playerScore.SuffuredDmgsFromEnemies.Sum(e => e.Value).ToString();
-            _playersScores[_type][18] = _playerScore.SuffuredDmgsFromEnemies.Aggregate((a, b) => a.Value > b.Value ? a : b).Key;
-
-            // If player took no damages, show special content
-            if (_playerScore.SuffuredDmgsFromEnemies[_playersScores[_type][18]] == 0)
+            int _score = 0;
+            foreach (KeyValuePair<string, int> _knockout in _playerScore.KnockoutAmountFromEnemies)
             {
-                string _nemesisInfo = "-\n";
+                _score += _knockout.Value;
+            }
+            _playersScores[_type][16] = _score.ToString();
+
+            string _nemesis = string.Empty;
+            int _nemesisDamages = 0;
+            foreach (KeyValuePair<string, int> _damages in _playerScore.SuffuredDmgsFromEnemies)
+            {
+                if (_damages.Value > _nemesisDamages)
+                {
+                    _nemesis = _damages.Key;
+                    _nemesisDamages = _damages.Value;
+                }
+
+                _score += _damages.Value;
+            }
+            _playersScores[_type][17] = _score.ToString();
+            
+            // If player took no damages, show special content
+            if (_nemesisDamages == 0)
+            {
                 switch (_type)
                 {
                     case PlayerType.BeardLady:
-                        _nemesisInfo += "Invincible from beard to feets.";
+                        _playersScores[_type][18] = "-\nInvincible from beard to feets.";
                         break;
 
                     case PlayerType.FatLady:
-                        _nemesisInfo += "Nobody can touch her grace.";
+                        _playersScores[_type][18] = "-\nNobody can touch her grace.";
                         break;
 
                     case PlayerType.FireEater:
-                        _nemesisInfo += "Scared everyone with his fire.";
+                        _playersScores[_type][18] = "-\nScared everyone with his fire.";
                         break;
 
                     case PlayerType.Juggler:
-                        _nemesisInfo += "Surprisingly dexterous in fights.";
+                        _playersScores[_type][18] = "-\nSurprisingly dexterous in fights.";
                         break;
                 }
-                _playersScores[_type][18] += _nemesisInfo;
+            }
+            else
+            {
+                _playersScores[_type][18] = _nemesis;
             }
         }
 

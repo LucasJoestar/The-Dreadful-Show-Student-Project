@@ -33,8 +33,8 @@ public class TDS_Object : PunBehaviour
     /// </summary>
     public virtual void Destroy()
     {
-        if (!PhotonNetwork.isMasterClient) return;
-        PhotonNetwork.Destroy(photonView);
+        if (photonView.isMine)
+            PhotonNetwork.Destroy(photonView);
     }
     #endregion
 
@@ -42,7 +42,8 @@ public class TDS_Object : PunBehaviour
     // Awake is called when the script instance is being loaded
     protected virtual void Awake()
     {
-        if (!audioSource) audioSource = GetComponent<AudioSource>();
+        if (!audioSource)
+            audioSource = GetComponent<AudioSource>();
     }
     #endregion
 

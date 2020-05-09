@@ -17,7 +17,15 @@ public class TDS_AnimOutDestroyObject : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Destroy(animator.gameObject);
+        PhotonView _photonView = animator.GetComponent<PhotonView>();
+
+        if (_photonView)
+        {
+            if (_photonView.isMine)
+                PhotonNetwork.Destroy(_photonView);
+        }
+        else
+            Destroy(animator.gameObject);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
