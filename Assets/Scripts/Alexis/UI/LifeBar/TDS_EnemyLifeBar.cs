@@ -76,11 +76,11 @@ public class TDS_EnemyLifeBar : TDS_LifeBar
         transform.position = Vector3.MoveTowards(transform.position, owner.transform.position + offset, Time.deltaTime * 25);
     }
 
-    public override void UpdateLifeBar(int _currentHealth)
+    public override void UpdateLifeBar()
     {
         if (!background.gameObject.activeInHierarchy)
             background.gameObject.SetActive(true); 
-        base.UpdateLifeBar(_currentHealth);
+        base.UpdateLifeBar();
     }
     #endregion
 

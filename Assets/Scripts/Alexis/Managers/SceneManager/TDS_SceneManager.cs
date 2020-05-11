@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq; 
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon; 
@@ -47,6 +46,8 @@ public class TDS_SceneManager : PunBehaviour
     public static TDS_SceneManager Instance;
     public static Dictionary<PhotonPlayer, bool> PlayerSceneLoaded = new Dictionary<PhotonPlayer, bool>();
     private bool sceneIsReady = false;
+
+    private readonly WaitForSeconds waitBeforeChangeLevel = new WaitForSeconds(1.25f);
     #endregion
 
     #region Methods
@@ -69,24 +70,27 @@ public class TDS_SceneManager : PunBehaviour
         // Save health
         foreach (TDS_Player _player in TDS_LevelManager.Instance.AllPlayers)
         {
-            TDS_GameManager.PlayersInfo.First(p => p.PlayerType == _player.PlayerType).Health = _player.HealthCurrent;
+            foreach (TDS_PlayerInfo _info in TDS_GameManager.PlayersInfo)
+            {
+                if (_player.PlayerType == _info.PlayerType)
+                {
+                    _info.Health = _player.HealthCurrent;
+                    break;
+                }
+            }
         }
 
         sceneIsReady = false;
         if (PhotonNetwork.isMasterClient && PlayerSceneLoaded.Count > 0)
         {
-            PlayerSceneLoaded = PlayerSceneLoaded.ToDictionary(p => p.Key, p => false);
+            List<PhotonPlayer> _players = new List<PhotonPlayer>(PlayerSceneLoaded.Keys);
+            foreach (PhotonPlayer _player in _players)
+            {
+                PlayerSceneLoaded[_player] = false;
+            }
         }
-        StartCoroutine(LoadSceneOnline(_sceneIndex, _nextUIState));
-    }
 
-    /// <summary>
-    /// Call this method to load a scene with the loading screen
-    /// </summary>
-    /// <param name="_sceneIndex"></param>
-    public void PrepareOnlineSceneLoading(string _sceneName, int _nextUIState)
-    {
-        PrepareOnlineSceneLoading(SceneManager.GetSceneByName(_sceneName).buildIndex, _nextUIState);
+        StartCoroutine(LoadSceneOnline(_sceneIndex, _nextUIState));
     }
 
     /// <summary>
@@ -96,49 +100,40 @@ public class TDS_SceneManager : PunBehaviour
     /// <returns></returns>
     private IEnumerator LoadSceneOnline(int _sceneIndex, int _nextUIState)
     {
-        if(PhotonNetwork.isMasterClient)
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PrepareOnlineSceneLoading"), new object[] { _sceneIndex, _nextUIState });
-
-        TDS_UIManager.Instance?.DisplayLoadingScreen(true);
-        yield return new WaitForSeconds(1f);
-        AsyncOperation _async = SceneManager.LoadSceneAsync(_sceneIndex, LoadSceneMode.Single);
-        while (!_async.isDone)
+        if (PhotonNetwork.isMasterClient)
         {
-            yield return null;
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PrepareOnlineSceneLoading"), new object[] { _sceneIndex, _nextUIState });
         }
+        TDS_UIManager.Instance.DisplayLoadingScreen(true);
+        yield return waitBeforeChangeLevel;
+        yield return SceneManager.LoadSceneAsync(_sceneIndex, LoadSceneMode.Single);
+
         OnLoadScene?.Invoke(_sceneIndex);
         TDS_GameManager.CurrentSceneIndex = _sceneIndex;
         if (PhotonNetwork.connected && PhotonNetwork.isMasterClient && PlayerSceneLoaded.Count > 0)
         {
-            while (PlayerSceneLoaded.Any(p => p.Value == false))
+            while (PlayerSceneLoaded.ContainsValue(false))
             {
                 yield return null;
             }
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "OnEverySceneReady"), new object[] { });
+
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "OnEverySceneReady"), new object[] { });
         }
         else if (PhotonNetwork.connected && !PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "PlayerHasLoadScene"), new object[] { PhotonNetwork.player.ID });
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "PlayerHasLoadScene"), new object[] { PhotonNetwork.player.ID });
+
             while (!sceneIsReady)
             {
                 yield return null;
             }
         }
-        // Call OnEveryOneSceneLoaded online
-        OnEveryOneSceneLoaded();
-        TDS_UIManager.Instance.ActivateMenu(_nextUIState);
-    }
 
-    /// <summary>
-    /// Called when the scene is loaded
-    /// </summary>
-    /// <param name="_scene">Scene loaded</param>
-    /// <param name="_mode">Loading mode of the scene</param>
-    private void OnEveryOneSceneLoaded()
-    {
-        TDS_UIManager.Instance?.DisplayLoadingScreen(false);
-        if (SceneManager.GetActiveScene().buildIndex == 0) return; 
-        TDS_LevelManager.Instance?.Spawn();
+        if (_sceneIndex > 0)
+            TDS_LevelManager.Instance.Spawn();
+
+        TDS_UIManager.Instance.DisplayLoadingScreen(false);
+        TDS_UIManager.Instance.ActivateMenu(_nextUIState);
     }
 
     /// <summary>
@@ -165,15 +160,6 @@ public class TDS_SceneManager : PunBehaviour
     /// Prepare to load a scene locally
     /// </summary>
     /// <param name="_sceneName"></param>
-    public void PrepareSceneLoading(string _sceneName, int _nextUIState)
-    {
-        StartCoroutine(LoadScene(SceneManager.GetSceneByName(_sceneName).buildIndex, _nextUIState)); 
-    }
-
-    /// <summary>
-    /// Prepare to load a scene locally
-    /// </summary>
-    /// <param name="_sceneName"></param>
     public void PrepareSceneLoading(int _sceneIndex, int _nextUIState)
     {
         StartCoroutine(LoadScene(_sceneIndex, _nextUIState));
@@ -186,39 +172,53 @@ public class TDS_SceneManager : PunBehaviour
     /// <returns></returns>
     public IEnumerator LoadScene(int _sceneIndex, int _nextUIState)
     {
-        TDS_UIManager.Instance?.DisplayLoadingScreen(true);
+        TDS_UIManager.Instance.DisplayLoadingScreen(true);
         if (_sceneIndex >= SceneManager.sceneCountInBuildSettings)
         {
             TDS_NetworkManager.Instance.LeaveGame();
             yield break;
         }
-        else
+        else if (_sceneIndex > 0)
         {
             // Save health
             foreach (TDS_Player _player in TDS_LevelManager.Instance.AllPlayers)
             {
-                TDS_GameManager.PlayersInfo.First(p => p.PlayerType == _player.PlayerType).Health = _player.HealthCurrent;
+                foreach (TDS_PlayerInfo _info in TDS_GameManager.PlayersInfo)
+                {
+                    if (_player.PlayerType == _info.PlayerType)
+                    {
+                        _info.Health = _player.HealthCurrent;
+                        break;
+                    }
+                }
             }
         }
 
-        yield return new WaitForSeconds(1.25f);
-        AsyncOperation _async = SceneManager.LoadSceneAsync(_sceneIndex, LoadSceneMode.Single);
-        while (!_async.isDone)
-        {
-            yield return null;
-        }
+        yield return waitBeforeChangeLevel;
+        yield return SceneManager.LoadSceneAsync(_sceneIndex, LoadSceneMode.Single);
+
         OnLoadScene?.Invoke(_sceneIndex);
         TDS_GameManager.CurrentSceneIndex = _sceneIndex;
-        TDS_UIManager.Instance.IsloadingNextScene = _sceneIndex == 0;
-        TDS_UIManager.Instance?.DisplayLoadingScreen(false);
+        
 
-        OnEveryOneSceneLoaded();
+        if (_sceneIndex > 0)
+        {
+            TDS_LevelManager.Instance.Spawn();
+            TDS_UIManager.Instance.IsloadingNextScene = false;
+        }
+        else
+            TDS_UIManager.Instance.IsloadingNextScene = true;
+
+        TDS_UIManager.Instance.DisplayLoadingScreen(false);
         TDS_UIManager.Instance.ActivateMenu(_nextUIState);
 
         // Reset score when loading main menu
         if (_sceneIndex == 0)
         {
-            TDS_GameManager.PlayersInfo.ForEach(p => p.PlayerScore = new TDS_PlayerScore());
+            foreach (TDS_PlayerInfo _info in TDS_GameManager.PlayersInfo)
+            {
+                _info.PlayerScore.Reset();
+            }
         }
     }
     #endregion

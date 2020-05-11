@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using TMPro;
 
@@ -54,6 +53,8 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
 	*/
 
     #region Fields / Properties
+    private const string OUTLINE_TAG = "Outline";
+
     /// <summary>
     /// Indicates if feedback should be displayed above nearest object.
     /// </summary>
@@ -113,7 +114,7 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
                 if (interactText.gameObject.activeInHierarchy) interactText.gameObject.SetActive(false);
 
                 // If the object has outline tag, desactivate the outline on it
-                if (nearestCollider.gameObject.HasTag("Outline")) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().DisableOutline();
+                if (nearestCollider.gameObject.HasTag(OUTLINE_TAG)) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().DisableOutline();
             }
             
         }
@@ -122,7 +123,7 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
             interactText.gameObject.SetActive(true);
 
             // If the object has outline tag, activate the outline on it
-            if (nearestCollider.gameObject.HasTag("Outline")) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().EnableOutline();
+            if (nearestCollider.gameObject.HasTag(OUTLINE_TAG)) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().EnableOutline();
         }
     }
 
@@ -141,9 +142,17 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
         }
 
         // Get element(s) to remove
-        Collider[] _toRemove = new List<Collider>(detectedColliders).Where(d => (d == null) || !d.enabled || !d.gameObject.activeInHierarchy).ToArray();
+        List<Collider> _toRemove = new List<Collider>();
+        for (int _i = 0; _i < detectedColliders.Count; _i++)
+        {
+            Collider _collider = detectedColliders[_i];
+            if ((_collider == null) || !_collider.enabled || !_collider.gameObject.activeInHierarchy)
+            {
+                _toRemove.Add(_collider);
+            }
+        }
 
-        if (_toRemove.Length > 0)
+        if (_toRemove.Count > 0)
         {
             // Remove all disable colliders
             foreach (Collider _collider in _toRemove)
@@ -154,7 +163,7 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
                 if (nearestCollider == _collider)
                 {
                     // Disable outline on remove from list
-                    if ((_collider != null) && nearestCollider.gameObject.HasTag("Outline")) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().DisableOutline();
+                    if ((_collider != null) && nearestCollider.gameObject.HasTag(OUTLINE_TAG)) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().DisableOutline();
                 }
             }
         }
@@ -163,13 +172,24 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
         if (detectedColliders.Count > 0)
         {
             Vector2 _pos = new Vector2(transform.position.x, transform.position.z);
-            detectedColliders = detectedColliders.OrderBy(c => Mathf.Abs((_pos - new Vector2(c.transform.position.x, c.transform.position.z)).magnitude)).ToList();
+            Collider _nearest = nearestCollider;
+            float _distance = !_nearest ? 9999 : Mathf.Abs((_pos - new Vector2(nearestCollider.transform.position.x, nearestCollider.transform.position.z)).magnitude);
+
+            for (int _i = 0; _i < detectedColliders.Count; _i++)
+            {
+                float _newDistance = Mathf.Abs((_pos - new Vector2(detectedColliders[_i].transform.position.x, detectedColliders[_i].transform.position.z)).magnitude);
+                if (_newDistance < _distance)
+                {
+                    _nearest = detectedColliders[_i];
+                    _distance = _newDistance;
+                }
+            }
 
             // Set nearest collider if different
-            if (nearestCollider != detectedColliders[0])
+            if (nearestCollider != _nearest)
             {
                 // Disable outline
-                if (nearestCollider && nearestCollider.gameObject.HasTag("Outline")) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().DisableOutline();
+                if (nearestCollider && nearestCollider.gameObject.HasTag(OUTLINE_TAG)) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().DisableOutline();
 
                 nearestCollider = detectedColliders[0];
 
@@ -177,11 +197,16 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
                 if (doDisplayFeedback && !interactText.gameObject.activeInHierarchy) interactText.gameObject.SetActive(true);
 
                 // If the object has outline tag, activate the outline on it
-                if (doDisplayFeedback && nearestCollider.gameObject.HasTag("Outline")) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().EnableOutline();
+                if (doDisplayFeedback && nearestCollider.gameObject.HasTag(OUTLINE_TAG)) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().EnableOutline();
             }
         }
         // Desactivate feedback if needed
         else if (interactText.gameObject.activeInHierarchy) interactText.gameObject.SetActive(false);
+    }
+
+    public void RotateText()
+    {
+        interactText.transform.Rotate(Vector3.up, -180);
     }
     #endregion
 
@@ -195,9 +220,6 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
             interactText = transform.GetChild(1).GetComponentInChildren<TextMeshPro>();
         }
         if (interactText.gameObject.activeInHierarchy) interactText.gameObject.SetActive(false);
-
-        // When player flip, reverse flip the feedback
-        GetComponentInParent<TDS_Player>().OnFlip += () => interactText.transform.Rotate(Vector3.up, -180);
     }
 
     // OnTriggerEnter is called when the GameObject collides with another GameObject
@@ -219,7 +241,7 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
             if (nearestCollider == other)
             {
                 // Disable outline on remove from list
-                if (nearestCollider.gameObject.HasTag("Outline")) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().DisableOutline();
+                if (nearestCollider.gameObject.HasTag(OUTLINE_TAG)) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().DisableOutline();
             }
 
             // Desactivate feedback if needed

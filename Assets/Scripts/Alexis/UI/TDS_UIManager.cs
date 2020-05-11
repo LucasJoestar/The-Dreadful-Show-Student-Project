@@ -897,10 +897,10 @@ public class TDS_UIManager : PunBehaviour
     {
         if(PhotonNetwork.offlineMode)
         {
-            TDS_SceneManager.Instance.PrepareSceneLoading(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, (int)UIState.InGame); 
+            TDS_SceneManager.Instance.PrepareSceneLoading(SceneManager.GetActiveScene().buildIndex, (int)UIState.InGame); 
         }
         else
-            TDS_SceneManager.Instance.PrepareOnlineSceneLoading(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, (int)UIState.InGame);
+            TDS_SceneManager.Instance.PrepareOnlineSceneLoading(SceneManager.GetActiveScene().buildIndex, (int)UIState.InGame);
     }
 
     /// <summary>
@@ -953,7 +953,7 @@ public class TDS_UIManager : PunBehaviour
     {
         if (!bossHealthBar) return;
         bossHealthBar.SetOwner(_boss);
-        bossHealthBar.UpdateLifeBar(_boss.HealthCurrent);
+        bossHealthBar.UpdateLifeBar();
         bossHealthBar.gameObject.SetActive(true);
 
         _boss.HealthBar = bossHealthBar;
@@ -1003,7 +1003,7 @@ public class TDS_UIManager : PunBehaviour
         TDS_EnemyLifeBar _healthBar = Instantiate(enemyHealthBar, _enemy.transform.position + _offset, Quaternion.identity, canvasWorld.transform).GetComponent<TDS_EnemyLifeBar>();
 
         _healthBar.SetOwner(_enemy, _offset);
-        _healthBar.UpdateLifeBar(_enemy.HealthCurrent);
+        _healthBar.UpdateLifeBar();
         _healthBar.Background.gameObject.SetActive(false); 
         _enemy.HealthBar = _healthBar;
 
@@ -1097,7 +1097,7 @@ public class TDS_UIManager : PunBehaviour
         }
         if (!_playerLifeBar) return; 
         _playerLifeBar.SetOwner(_player);
-        _playerLifeBar.UpdateLifeBar(_player.HealthCurrent);
+        _playerLifeBar.UpdateLifeBar();
         _player.HealthBar = _playerLifeBar;
         _player.OnHealthChanged += _playerLifeBar.UpdateLifeBar;
         _player.OnTriggerHowToPlay += _playerLifeBar.TriggerHowToPlayInfo;

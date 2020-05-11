@@ -59,7 +59,7 @@ public class TDS_BossLifeBar : TDS_LifeBar
         Instantiate(_portrait, portraitAnchor, false); 
     }
 
-    public override void UpdateLifeBar(int _currentHealth)
+    public override void UpdateLifeBar()
     {
         if (!TDS_UIManager.Instance || !owner && subOwners == null) return;
         float _fillingValue = 0; 

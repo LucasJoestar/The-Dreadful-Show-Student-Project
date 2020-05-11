@@ -993,7 +993,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     protected virtual IEnumerator Dodge()
     {
         // Dodge !
-        IsInvulnerable = true;
+        SetInvulnerable(true);
         isDodging = true;
         dodgeTimer = 0;
 
@@ -1052,7 +1052,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     public virtual IEnumerator Parry()
     {
         // Parry
-        IsInvulnerable = true;
+        SetInvulnerable(true);
         isParrying = true;
 
         // Desactivates the detection box
@@ -1110,7 +1110,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         }
 
         // Stop dodging
-        IsInvulnerable = false;
+        SetInvulnerable(false);
         isDodging = false;
         dodgeTimer = 0;
 
@@ -1159,7 +1159,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Stop parrying
         SetAnimOnline(PlayerAnimState.NotParrying);
         isParrying = false;
-        IsInvulnerable = false;
+        SetInvulnerable(false);
 
         // Activates the detection box
         interactionBox.DisplayInteractionFeedback(true);
@@ -1186,7 +1186,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (!base.BringCloser(_distance)) return false;
 
         FreezePlayer();
-        IsInvulnerable = true;
+        SetInvulnerable(true);
 
         // Set Animation
         SetAnimOnline(PlayerAnimState.Sliding);
@@ -1202,7 +1202,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         base.GetUp();
 
         UnfreezePlayer();
-        IsInvulnerable = false;
+        SetInvulnerable(false);
     }
 
     /// <summary>
@@ -1213,7 +1213,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (!base.PutOnTheGround()) return false;
 
         FreezePlayer();
-        IsInvulnerable = true;
+        SetInvulnerable(true);
 
         // Set animation
         SetAnimOnline(PlayerAnimState.Down);
@@ -1228,7 +1228,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         base.StopBringingCloser();
 
-        IsInvulnerable = false;
+        SetInvulnerable(false);
         UnfreezePlayer();
 
         // Set animation
@@ -1278,7 +1278,7 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         if (photonView.isMine)
         {
-            TDS_VFXManager.Instance?.SpawnEffect(FXType.Heal, fxTransformPV);
+            TDS_VFXManager.Instance.SpawnEffect(FXType.Heal, fxTransformPV);
         }
     }
 
@@ -1315,7 +1315,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // If down of bringed closer, just return
         if (IsDown || (bringingCloserCoroutine != null)) yield break;
 
-        IsInvulnerable = true;
+        SetInvulnerable(true);
 
         FreezePlayer();
         Invoke("UnfreezePlayer", INVULNERABILITY_TIME / 2f);
@@ -1329,7 +1329,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         }
 
         sprite.gameObject.SetActive(true);
-        IsInvulnerable = false;
+        SetInvulnerable(false);
 
         invulnerabilityCoroutine = null;
         yield break;
@@ -1643,7 +1643,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         bool _isGrounded = groundDetectionBox.Overlap(transform.position).Length > 0;
 
         // If grounded value changed, updates all necessary things
-        if (photonView.isMine && (_isGrounded != IsGrounded))
+        if (_isGrounded != IsGrounded)
         {
             // Updates value
             IsGrounded = _isGrounded;
@@ -1677,18 +1677,28 @@ public class TDS_Player : TDS_Character, IPunObservable
             {
                 if (animator.GetInteger(groundState_Hash) > -1)
                 {
-                    SetAnim(PlayerAnimState.Falling);
+                    SetAnimOnline(PlayerAnimState.Falling);
                 }
             }
             else if (animator.GetInteger(groundState_Hash) < 1)
             {
-                SetAnim(PlayerAnimState.Jumping);
+                SetAnimOnline(PlayerAnimState.Jumping);
             }
         }
         else if (animator.GetInteger(groundState_Hash) != 0)
         {
-            SetAnim(PlayerAnimState.Grounded);
+            SetAnimOnline(PlayerAnimState.Grounded);
         }
+    }
+
+    /// <summary>
+    /// Flips this character to have they looking at the opposite side.
+    /// </summary>
+    public override void Flip()
+    {
+        base.Flip();
+
+        interactionBox.RotateText();
     }
 
     /// <summary>
@@ -1696,6 +1706,16 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// </summary>
     public virtual void FreezePlayer()
     {
+        if (!photonView.isMine)
+        {
+            if (PhotonNetwork.isMasterClient)
+            {
+                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "FreezePlayer"), new object[] { });
+            }
+
+            return;
+        }
+
         IsPlayable = false;
         if (isDodging) StopDodge();
         if (isPreparingAttack) StopPreparingAttack();
@@ -2017,6 +2037,16 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// </summary>
     public virtual void UnfreezePlayer()
     {
+        if (!photonView.isMine)
+        {
+            if (PhotonNetwork.isMasterClient)
+            {
+                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "UnfreezePlayer"), new object[] { });
+            }
+
+            return;
+        }
+
         if (TDS_GameManager.IsInCutscene) return;
 
         IsPlayable = true;
@@ -2148,7 +2178,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         if (photonView.isMine)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnim"), new object[] { (int)_state });
+            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetAnim"), new object[] { (int)_state });
         }
 
         SetAnim(_state);
@@ -2477,11 +2507,11 @@ public class TDS_Player : TDS_Character, IPunObservable
     // Frame-rate independent MonoBehaviour.FixedUpdate message for physics calculations
     protected virtual void FixedUpdate()
     {
-        // If dead or not playable, return
-        if (isDead || !IsPlayable || (Time.timeScale == 0)) return;
-
         // Checks if the player is grounded or not, and all related elements
-        CheckGrounded();
+        if (photonView.isMine && !isDead && IsPlayable && (Time.timeScale != 0))
+        {
+            CheckGrounded();
+        }
     }
 
     // LateUpdate is called every frame, if the Behaviour is enabled
@@ -2501,6 +2531,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         TDS_LevelManager.Instance?.RemoveOnlinePlayer(this);
     }
 
+#if UNITY_EDITOR
     // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
     protected override void OnDrawGizmos()
     {
@@ -2509,6 +2540,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Draws the ground detection box gizmos
         groundDetectionBox.DrawGizmos(transform.position);
     }
+#endif
 
     // Use this for initialization
     protected override void Start ()
@@ -2539,6 +2571,9 @@ public class TDS_Player : TDS_Character, IPunObservable
                 controller = TDS_GameManager.InputsAsset.Controllers[0];
             }
             else controller = TDS_GameManager.PlayersInfo.Where(p => p.PlayerType == playerType).First().Controller;
+
+            // Add bound obstacle to local player
+            WhatIsObstacle |= (1 << LayerMask.NameToLayer("Bound"));
         }
 
         //Initialize the player LifeBar
@@ -2546,7 +2581,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     }
 
     // Update is called once per frame
-    protected override void Update ()
+    protected virtual void Update ()
     {
         // If dead or not playable, return
         if (!photonView.isMine) return;
@@ -2555,8 +2590,6 @@ public class TDS_Player : TDS_Character, IPunObservable
         CheckMenuInputs();
 
         if (isDead || (Time.timeScale == 0) || TDS_GameManager.IsInCutscene) return;
-
-        base.Update();
 
         // Adjust the position of the player for each axis of the rigidbody velocity where a force is exercised
         AdjustPositionOnRigidbody();

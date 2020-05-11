@@ -32,10 +32,13 @@ public class TDS_VirtualBox
 	*/
 
     #region Fields / Properties
+
+#if UNITY_EDITOR
     /// <summary>
     /// Color of the virtual box, used to draw its gizmos.
     /// </summary>
     public Color Color = Color.green;
+#endif
 
     /// <summary>
     /// LayerMask of what to detect when using this box for overlap.
@@ -64,6 +67,8 @@ public class TDS_VirtualBox
     #endregion
 
     #region Methods
+
+#if UNITY_EDITOR
     /// <summary>
     /// Call this method in a MonoBehaviour OnDrawGizmos method to draw this box gizmos.
     /// </summary>
@@ -77,6 +82,7 @@ public class TDS_VirtualBox
 
         Gizmos.color = _original;
     }
+#endif
 
     /// <summary>
     /// Overlaps in the box to get all colliders in it.
