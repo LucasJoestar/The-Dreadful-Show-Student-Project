@@ -103,6 +103,8 @@ public class TDS_HitBox : MonoBehaviour
     /// All tags to hit.
     /// </summary>
     public Tags HittableTags = new Tags();
+
+    public bool IgnoreOwner = true;
     #endregion
 
     #endregion
@@ -244,7 +246,7 @@ public class TDS_HitBox : MonoBehaviour
 
         // If the collider object should be hit, hit it
         // Check if object has tags
-        if ((Owner && (other.gameObject == Owner.gameObject)) || !other.gameObject.HasTag(HittableTags.ObjectTags)) return;
+        if ((IgnoreOwner && Owner && (other.gameObject == Owner.gameObject)) || !other.gameObject.HasTag(HittableTags.ObjectTags)) return;
 
         TDS_Damageable _target = other.GetComponent<TDS_Damageable>();
         if (!_target ) return;

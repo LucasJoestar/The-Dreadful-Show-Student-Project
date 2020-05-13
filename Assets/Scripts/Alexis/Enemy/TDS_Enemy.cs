@@ -1388,7 +1388,7 @@ public abstract class TDS_Enemy : TDS_Character
             {
                 for (int _i = 0; _i < TDS_LevelManager.Instance.OtherPlayers.Count; _i++)
                 {
-                    HealthMax += healthMax * (healthScalePercent / 100);
+                    HealthMax += (int)(healthMax * (healthScalePercent / 100f));
                 }
                 HealthCurrent = healthMax;
             }

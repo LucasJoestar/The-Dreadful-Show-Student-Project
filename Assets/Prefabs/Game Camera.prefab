@@ -217,13 +217,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b50b6bf4ec3d20a4899abcc900b2c794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectedTags:
-    ObjectTags:
-    - Name: Enemy
-      Color: {r: 0.8980392, g: 0.14117648, b: 0.14117648, a: 1}
-    - Name: Player
-      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
+  whatDetect:
+    serializedVersion: 2
+    m_Bits: 3584
   curtainsAnimator: {fileID: 0}
+  collider: {fileID: 947382110476803882}
   isLeftLimit: 0
 --- !u!1 &1499614404932280473
 GameObject:
@@ -282,13 +280,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b50b6bf4ec3d20a4899abcc900b2c794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectedTags:
-    ObjectTags:
-    - Name: Enemy
-      Color: {r: 0.8980392, g: 0.14117648, b: 0.14117648, a: 1}
-    - Name: Player
-      Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
+  whatDetect:
+    serializedVersion: 2
+    m_Bits: 3584
   curtainsAnimator: {fileID: 0}
+  collider: {fileID: 2817160621979821114}
   isLeftLimit: 1
 --- !u!1 &2865729119139192581
 GameObject:

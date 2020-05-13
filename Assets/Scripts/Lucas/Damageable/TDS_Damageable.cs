@@ -497,6 +497,17 @@ public abstract class TDS_Damageable : TDS_Object
             StopCoroutine(bringingCloserCoroutine);
             bringingCloserCoroutine = null;
         }
+
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "CallOnStopBringingCloser"), new object[] { });
+        }
+
+        OnStopBringingCloser?.Invoke();
+    }
+
+    protected void CallOnStopBringingCloser()
+    {
         OnStopBringingCloser?.Invoke();
     }
     #endregion
