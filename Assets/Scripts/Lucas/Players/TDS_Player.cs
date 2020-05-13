@@ -1484,154 +1484,172 @@ public class TDS_Player : TDS_Character, IPunObservable
         // If the player rigidbody velocity is null, return
         if (rigidbody.velocity == Vector3.zero) return;
 
-        // Get all touching colliders ; if none, return
-        if (Physics.OverlapBoxNonAlloc(collider.bounds.center, collider.bounds.extents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore) == 0)
-            return;
-
-        // For each axis where the player rigidbody velocity is non null, adjust the player position if it is in another collider
-        // To do this, use the previous position and overlap from this in the actual position for each axis where the velocity is not null
-
-        Vector3 _newPosition = transform.position;
-        Vector3 _newVelocity = rigidbody.velocity;
-        Vector3 _movementVector = transform.position - previousPosition;
-        Vector3 _colliderCenter = Vector3.Scale(collider.center, collider.transform.lossyScale);
-        Vector3 _colliderWorldPosition = collider.bounds.center;
-        Vector3 _colliderExtents = collider.bounds.extents - (Vector3.one * .0001f);
-        Vector3 _overlapCenter = Vector3.zero;
-        Vector3 _overlapExtents = Vector3.one;
-
-        // X axis adjustment
-        if (rigidbody.velocity.x != 0)
+        if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(collider.bounds.center, collider.bounds.extents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
         {
-            // Get the extents & center position for the overlap
-            _overlapExtents = new Vector3(Mathf.Abs(_movementVector.x) / 2, _colliderExtents.y, _colliderExtents.z);
-
-            _overlapCenter = new Vector3(previousColliderPosition.x + ((_colliderExtents.x + _overlapExtents.x) * Mathf.Sign(rigidbody.velocity.x)), previousColliderPosition.y, previousColliderPosition.z);
-
-            // Overlap in the zone where the player would be from the previous position after the movement on the X axis.
-            // If something is touched, then adjust the position of the player against it
-            if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(_overlapCenter, _overlapExtents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
+            for (int _i = 0; _i < touchedCollidersAmount; _i++)
             {
-                float _xLimit = 0;
-                
-                // Get the X position of the nearest collider limit, and set the position of the player against it
-                if (_movementVector.x > 0)
+                if (Physics.ComputePenetration(collider, rigidbody.position, transform.rotation,
+                                               touchedColliders[_i], touchedColliders[_i].transform.position, touchedColliders[_i].transform.rotation,
+                                               out Vector3 _direction, out float _distance))
                 {
-                    _xLimit = touchedColliders[0].bounds.center.x - touchedColliders[0].bounds.extents.x;
-                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
-                    {
-                        _xLimit = Mathf.Min(_xLimit, touchedColliders[_i].bounds.center.x - touchedColliders[_i].bounds.extents.x);
-                    }
-
-                    _newPosition.x = _xLimit - (_colliderExtents.x - _colliderCenter.x) - .001f;
+                    rigidbody.position += _direction * _distance;
+                    rigidbody.velocity -= Vector3.Scale(rigidbody.velocity, _direction);
                 }
-                else
-                {
-                    _xLimit = touchedColliders[0].bounds.center.x + touchedColliders[0].bounds.extents.x;
-                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
-                    {
-                        _xLimit = Mathf.Max(_xLimit, touchedColliders[_i].bounds.center.x + touchedColliders[_i].bounds.extents.x);
-                    }
-
-                    _newPosition.x = _xLimit + (_colliderExtents.x - _colliderCenter.x) + .001f;
-                }
-
-                _movementVector.x = _newPosition.x - previousPosition.x;
-
-                // Reset the X velocity
-                _newVelocity.x = 0;
             }
         }
+        return;
 
-        // Y axis adjustment
-        if (rigidbody.velocity.y != 0)
-        {
-            // Get the extents & center position for the overlap
-            _overlapExtents = new Vector3(_colliderExtents.x, Mathf.Abs(_movementVector.y) / 2, _colliderExtents.z);
+        // Old fashion way,
+        // kept for history purpose.
 
-            _overlapCenter = new Vector3(previousColliderPosition.x, previousColliderPosition.y + ((_colliderExtents.y + _overlapExtents.y) * Mathf.Sign(rigidbody.velocity.y)), previousColliderPosition.z);
+        //// Get all touching colliders ; if none, return
+        //if (Physics.OverlapBoxNonAlloc(collider.bounds.center, collider.bounds.extents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore) == 0)
+        //    return;
 
-            // Overlap in the zone where the player would be from the previous position after the movement on the Y axis.
-            // If something is touched, then adjust the position of the player against it
-            if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(_overlapCenter, _overlapExtents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
-            {
-                float _yLimit = 0;
+        //// For each axis where the player rigidbody velocity is non null, adjust the player position if it is in another collider
+        //// To do this, use the previous position and overlap from this in the actual position for each axis where the velocity is not null
 
-                // Get the Y position of the nearest collider limit, and set the position of the player against it
-                if (_movementVector.y > 0)
-                {
-                    _yLimit = touchedColliders[0].bounds.center.y - touchedColliders[0].bounds.extents.y;
-                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
-                    {
-                        _yLimit = Mathf.Min(_yLimit, touchedColliders[_i].bounds.center.y - touchedColliders[_i].bounds.extents.y);
-                    }
+        //Vector3 _newPosition = transform.position;
+        //Vector3 _newVelocity = rigidbody.velocity;
+        //Vector3 _movementVector = transform.position - previousPosition;
+        //Vector3 _colliderCenter = Vector3.Scale(collider.center, collider.transform.lossyScale);
+        //Vector3 _colliderWorldPosition = collider.bounds.center;
+        //Vector3 _colliderExtents = collider.bounds.extents - (Vector3.one * .0001f);
+        //Vector3 _overlapCenter = Vector3.zero;
+        //Vector3 _overlapExtents = Vector3.one;
 
-                    _newPosition.y = _yLimit - (_colliderExtents.y - _colliderCenter.y) - .001f;
-                }
-                else
-                {
-                    _yLimit = touchedColliders[0].bounds.center.y + touchedColliders[0].bounds.extents.y;
-                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
-                    {
-                        _yLimit = Mathf.Max(_yLimit, touchedColliders[_i].bounds.center.y + touchedColliders[_i].bounds.extents.y);
-                    }
+        //// X axis adjustment
+        //if (rigidbody.velocity.x != 0)
+        //{
+        //    // Get the extents & center position for the overlap
+        //    _overlapExtents = new Vector3(Mathf.Abs(_movementVector.x) / 2, _colliderExtents.y, _colliderExtents.z);
 
-                    _newPosition.y = _yLimit + (_colliderExtents.y - _colliderCenter.y) + .001f;
-                }
+        //    _overlapCenter = new Vector3(previousColliderPosition.x + ((_colliderExtents.x + _overlapExtents.x) * Mathf.Sign(rigidbody.velocity.x)), previousColliderPosition.y, previousColliderPosition.z);
 
-                _movementVector.y = _newPosition.y - previousPosition.y;
+        //    // Overlap in the zone where the player would be from the previous position after the movement on the X axis.
+        //    // If something is touched, then adjust the position of the player against it
+        //    if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(_overlapCenter, _overlapExtents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
+        //    {
+        //        float _xLimit = 0;
 
-                // Reset the Y velocity
-                _newVelocity.y = 0;
-            }
-        }
+        //        // Get the X position of the nearest collider limit, and set the position of the player against it
+        //        if (_movementVector.x > 0)
+        //        {
+        //            _xLimit = touchedColliders[0].bounds.center.x - touchedColliders[0].bounds.extents.x;
+        //            for (int _i = 1; _i < touchedCollidersAmount; _i++)
+        //            {
+        //                _xLimit = Mathf.Min(_xLimit, touchedColliders[_i].bounds.center.x - touchedColliders[_i].bounds.extents.x);
+        //            }
 
-        // Z axis adjustment
-        if (rigidbody.velocity.z != 0)
-        {
-            // Get the extents & center position for the overlap
-            _overlapExtents = new Vector3(_colliderExtents.x, _colliderExtents.y, Mathf.Abs(_movementVector.z) / 2);
+        //            _newPosition.x = _xLimit - (_colliderExtents.x - _colliderCenter.x) - .001f;
+        //        }
+        //        else
+        //        {
+        //            _xLimit = touchedColliders[0].bounds.center.x + touchedColliders[0].bounds.extents.x;
+        //            for (int _i = 1; _i < touchedCollidersAmount; _i++)
+        //            {
+        //                _xLimit = Mathf.Max(_xLimit, touchedColliders[_i].bounds.center.x + touchedColliders[_i].bounds.extents.x);
+        //            }
 
-            _overlapCenter = new Vector3(previousColliderPosition.x, previousColliderPosition.y, previousColliderPosition.z + ((_colliderExtents.z + _overlapExtents.z) * Mathf.Sign(rigidbody.velocity.z)));
+        //            _newPosition.x = _xLimit + (_colliderExtents.x - _colliderCenter.x) + .001f;
+        //        }
 
-            // Overlap in the zone where the player would be from the previous position after the movement on the Z axis.
-            // If something is touched, then adjust the position of the player against it
-            if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(_overlapCenter, _overlapExtents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
-            {
-                float _zLimit = 0;
+        //        _movementVector.x = _newPosition.x - previousPosition.x;
 
-                // Get the Z position of the nearest collider limit, and set the position of the player against it
-                if (_movementVector.z > 0)
-                {
-                    _zLimit = touchedColliders[0].bounds.center.z - touchedColliders[0].bounds.extents.z;
-                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
-                    {
-                        _zLimit = Mathf.Min(_zLimit, touchedColliders[_i].bounds.center.z - touchedColliders[_i].bounds.extents.z);
-                    }
+        //        // Reset the X velocity
+        //        _newVelocity.x = 0;
+        //    }
+        //}
 
-                    _newPosition.z = _zLimit - (_colliderExtents.z - _colliderCenter.z) - .001f;
-                }
-                else
-                {
-                    _zLimit = touchedColliders[0].bounds.center.z + touchedColliders[0].bounds.extents.z;
-                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
-                    {
-                        _zLimit = Mathf.Max(_zLimit, touchedColliders[_i].bounds.center.z + touchedColliders[_i].bounds.extents.z);
-                    }
+        //// Y axis adjustment
+        //if (rigidbody.velocity.y != 0)
+        //{
+        //    // Get the extents & center position for the overlap
+        //    _overlapExtents = new Vector3(_colliderExtents.x, Mathf.Abs(_movementVector.y) / 2, _colliderExtents.z);
 
-                    _newPosition.z = _zLimit + (_colliderExtents.z - _colliderCenter.z) + .001f;
-                }
+        //    _overlapCenter = new Vector3(previousColliderPosition.x, previousColliderPosition.y + ((_colliderExtents.y + _overlapExtents.y) * Mathf.Sign(rigidbody.velocity.y)), previousColliderPosition.z);
 
-                _movementVector.z = _newPosition.z - previousPosition.z;
+        //    // Overlap in the zone where the player would be from the previous position after the movement on the Y axis.
+        //    // If something is touched, then adjust the position of the player against it
+        //    if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(_overlapCenter, _overlapExtents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
+        //    {
+        //        float _yLimit = 0;
 
-                // Reset the Z velocity
-                _newVelocity.z = 0;
-            }
-        }
+        //        // Get the Y position of the nearest collider limit, and set the position of the player against it
+        //        if (_movementVector.y > 0)
+        //        {
+        //            _yLimit = touchedColliders[0].bounds.center.y - touchedColliders[0].bounds.extents.y;
+        //            for (int _i = 1; _i < touchedCollidersAmount; _i++)
+        //            {
+        //                _yLimit = Mathf.Min(_yLimit, touchedColliders[_i].bounds.center.y - touchedColliders[_i].bounds.extents.y);
+        //            }
 
-        // Set the position of the player as the new calculated one, and reset the velocity for the recalculated axis
-        transform.position = _newPosition;
-        rigidbody.velocity = _newVelocity;
+        //            _newPosition.y = _yLimit - (_colliderExtents.y - _colliderCenter.y) - .001f;
+        //        }
+        //        else
+        //        {
+        //            _yLimit = touchedColliders[0].bounds.center.y + touchedColliders[0].bounds.extents.y;
+        //            for (int _i = 1; _i < touchedCollidersAmount; _i++)
+        //            {
+        //                _yLimit = Mathf.Max(_yLimit, touchedColliders[_i].bounds.center.y + touchedColliders[_i].bounds.extents.y);
+        //            }
+
+        //            _newPosition.y = _yLimit + (_colliderExtents.y - _colliderCenter.y) + .001f;
+        //        }
+
+        //        _movementVector.y = _newPosition.y - previousPosition.y;
+
+        //        // Reset the Y velocity
+        //        _newVelocity.y = 0;
+        //    }
+        //}
+
+        //// Z axis adjustment
+        //if (rigidbody.velocity.z != 0)
+        //{
+        //    // Get the extents & center position for the overlap
+        //    _overlapExtents = new Vector3(_colliderExtents.x, _colliderExtents.y, Mathf.Abs(_movementVector.z) / 2);
+
+        //    _overlapCenter = new Vector3(previousColliderPosition.x, previousColliderPosition.y, previousColliderPosition.z + ((_colliderExtents.z + _overlapExtents.z) * Mathf.Sign(rigidbody.velocity.z)));
+
+        //    // Overlap in the zone where the player would be from the previous position after the movement on the Z axis.
+        //    // If something is touched, then adjust the position of the player against it
+        //    if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(_overlapCenter, _overlapExtents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
+        //    {
+        //        float _zLimit = 0;
+
+        //        // Get the Z position of the nearest collider limit, and set the position of the player against it
+        //        if (_movementVector.z > 0)
+        //        {
+        //            _zLimit = touchedColliders[0].bounds.center.z - touchedColliders[0].bounds.extents.z;
+        //            for (int _i = 1; _i < touchedCollidersAmount; _i++)
+        //            {
+        //                _zLimit = Mathf.Min(_zLimit, touchedColliders[_i].bounds.center.z - touchedColliders[_i].bounds.extents.z);
+        //            }
+
+        //            _newPosition.z = _zLimit - (_colliderExtents.z - _colliderCenter.z) - .001f;
+        //        }
+        //        else
+        //        {
+        //            _zLimit = touchedColliders[0].bounds.center.z + touchedColliders[0].bounds.extents.z;
+        //            for (int _i = 1; _i < touchedCollidersAmount; _i++)
+        //            {
+        //                _zLimit = Mathf.Max(_zLimit, touchedColliders[_i].bounds.center.z + touchedColliders[_i].bounds.extents.z);
+        //            }
+
+        //            _newPosition.z = _zLimit + (_colliderExtents.z - _colliderCenter.z) + .001f;
+        //        }
+
+        //        _movementVector.z = _newPosition.z - previousPosition.z;
+
+        //        // Reset the Z velocity
+        //        _newVelocity.z = 0;
+        //    }
+        //}
+
+        //// Set the position of the player as the new calculated one, and reset the velocity for the recalculated axis
+        //transform.position = _newPosition;
+        //rigidbody.velocity = _newVelocity;
     }
 
     /// <summary>
@@ -1640,7 +1658,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     private void CheckGrounded()
     {
         // Set the player as grounded if something is detected in the ground detection box
-        bool _isGrounded = groundDetectionBox.Overlap(transform.position).Length > 0;
+        bool _isGrounded = groundDetectionBox.DoOverlap(transform.position);
 
         // If grounded value changed, updates all necessary things
         if (_isGrounded != IsGrounded)
@@ -1886,99 +1904,25 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <param name="_newPosition">New position to move to.</param>
     public void MoveTo(Vector3 _newPosition)
     {
-        // For X & Z axis, overlap in the zone between this position and the future one ; priority order is X, & Z.
-        // If something is touched, use the bounds of the collider to set the position of the player against the obstacle.
+        rigidbody.position = _newPosition;
 
-        Vector3 _movementVector = _newPosition - transform.position;
-        Vector3 _colliderCenter = Vector3.Scale(collider.center, collider.transform.lossyScale);
-        Vector3 _colliderWorldPosition = collider.bounds.center;
-        Vector3 _colliderExtents = collider.bounds.extents - (Vector3.one * .0001f);
-        Vector3 _overlapCenter = Vector3.zero;
-        Vector3 _overlapExtents = Vector3.one;
-
-        // X axis movement test
-        if (_movementVector.x != 0)
+        if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(collider.bounds.center, collider.bounds.extents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
         {
-            // Get the extents & center positon for the overlap
-            _overlapExtents = new Vector3(Mathf.Abs(_movementVector.x) / 2, _colliderExtents.y, _colliderExtents.z);
-
-            _overlapCenter = new Vector3(_colliderWorldPosition.x + ((_colliderExtents.x + _overlapExtents.x) * Mathf.Sign(_movementVector.x)), _colliderWorldPosition.y, _colliderWorldPosition.z);
-
-            // Overlaps in the position where the player would be after the X movement ;
-            // If nothing is touched, then the player can move in X
-            if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(_overlapCenter, _overlapExtents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
+            for (int _i = 0; _i < touchedCollidersAmount; _i++)
             {
-                float _xLimit = 0;
-
-                // Get the X position of the nearest collider limit, and set the position of the player against it
-                if (_movementVector.x > 0)
+                if (Physics.ComputePenetration(collider, rigidbody.position, transform.rotation,
+                                               touchedColliders[_i], touchedColliders[_i].transform.position, touchedColliders[_i].transform.rotation,
+                                               out Vector3 _direction, out float _distance))
                 {
-                    _xLimit = touchedColliders[0].bounds.center.x - touchedColliders[0].bounds.extents.x;
-                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
-                    {
-                        _xLimit = Mathf.Min(_xLimit, touchedColliders[_i].bounds.center.x - touchedColliders[_i].bounds.extents.x);
-                    }
-
-                    _newPosition.x = _xLimit - (_colliderExtents.x + _colliderCenter.x) - .001f;
-                }
-                else
-                {
-                    _xLimit = touchedColliders[0].bounds.center.x + touchedColliders[0].bounds.extents.x;
-                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
-                    {
-                        _xLimit = Mathf.Max(_xLimit, touchedColliders[_i].bounds.center.x + touchedColliders[_i].bounds.extents.x);
-                    }
-
-                    _newPosition.x = _xLimit + (_colliderExtents.x + _colliderCenter.x) + .001f;
-                }
-
-                _movementVector.x = _newPosition.x - transform.position.x;
-            }
-        }
-
-        // Z axis movement test
-        if (_movementVector.z != 0)
-        {
-            // Get the extents & center positon for the overlap ;
-            // If the player can move in X, overlap from this new X position
-            _overlapExtents = new Vector3(_colliderExtents.x, _colliderExtents.y, Mathf.Abs(_movementVector.z) / 2);
-
-            _overlapCenter = new Vector3(_colliderWorldPosition.x + _movementVector.x, _colliderWorldPosition.y, _colliderWorldPosition.z + ((_colliderExtents.z + _overlapExtents.z) * Mathf.Sign(_movementVector.z)));
-
-            // Overlaps in the position where the player would be after the Z movement ;
-            // If nothing is touched, then the player can move in Z
-            if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(_overlapCenter, _overlapExtents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
-            {
-                float _zLimit = 0;
-
-                // Get the Z position of the nearest collider limit, and set the position of the player against it
-                if (_movementVector.z > 0)
-                {
-                    _zLimit = touchedColliders[0].bounds.center.z - touchedColliders[0].bounds.extents.z;
-                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
-                    {
-                        _zLimit = Mathf.Min(_zLimit, touchedColliders[_i].bounds.center.z - touchedColliders[_i].bounds.extents.z);
-                    }
-
-                    _newPosition.z = _zLimit - (_colliderExtents.z + _colliderCenter.z) - .001f;
-                }
-                else
-                {
-                    _zLimit = touchedColliders[0].bounds.center.z + touchedColliders[0].bounds.extents.z;
-                    for (int _i = 1; _i < touchedCollidersAmount; _i++)
-                    {
-                        _zLimit = Mathf.Max(_zLimit, touchedColliders[_i].bounds.center.z + touchedColliders[_i].bounds.extents.z);
-                    }
-
-                    _newPosition.z = _zLimit + (_colliderExtents.z + _colliderCenter.z) + .001f;
+                    rigidbody.position += _direction * _distance;
                 }
             }
         }
 
         // Move the player
-        if (transform.position != _newPosition)
+        if (transform.position != rigidbody.position)
         {
-            transform.position = _newPosition;
+            transform.position = rigidbody.position;
 
             // If starting moving, update informations
             if (!isMoving)
@@ -1992,6 +1936,116 @@ public class TDS_Player : TDS_Character, IPunObservable
             isMoving = false;
             SetAnimOnline(PlayerAnimState.Idle);
         }
+        return;
+
+        // Old fashion way,
+        // kept for history purpose.
+
+        // For X & Z axis, overlap in the zone between this position and the future one ; priority order is X, & Z.
+        // If something is touched, use the bounds of the collider to set the position of the player against the obstacle.
+        //Vector3 _movementVector = _newPosition - transform.position;
+        //Vector3 _colliderCenter = Vector3.Scale(collider.center, collider.transform.lossyScale);
+        //Vector3 _colliderWorldPosition = collider.bounds.center;
+        //Vector3 _colliderExtents = collider.bounds.extents - (Vector3.one * .0001f);
+        //Vector3 _overlapCenter = Vector3.zero;
+        //Vector3 _overlapExtents = Vector3.one;
+
+        //// X axis movement test
+        //if (_movementVector.x != 0)
+        //{
+        //    // Get the extents & center positon for the overlap
+        //    _overlapExtents = new Vector3(Mathf.Abs(_movementVector.x) / 2, _colliderExtents.y, _colliderExtents.z);
+
+        //    _overlapCenter = new Vector3(_colliderWorldPosition.x + ((_colliderExtents.x + _overlapExtents.x) * Mathf.Sign(_movementVector.x)), _colliderWorldPosition.y, _colliderWorldPosition.z);
+
+        //    // Overlaps in the position where the player would be after the X movement ;
+        //    // If nothing is touched, then the player can move in X
+        //    if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(_overlapCenter, _overlapExtents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
+        //    {
+        //        float _xLimit = 0;
+
+        //        // Get the X position of the nearest collider limit, and set the position of the player against it
+        //        if (_movementVector.x > 0)
+        //        {
+        //            _xLimit = touchedColliders[0].bounds.center.x - touchedColliders[0].bounds.extents.x;
+        //            for (int _i = 1; _i < touchedCollidersAmount; _i++)
+        //            {
+        //                _xLimit = Mathf.Min(_xLimit, touchedColliders[_i].bounds.center.x - touchedColliders[_i].bounds.extents.x);
+        //            }
+
+        //            _newPosition.x = _xLimit - (_colliderExtents.x + _colliderCenter.x) - .001f;
+        //        }
+        //        else
+        //        {
+        //            _xLimit = touchedColliders[0].bounds.center.x + touchedColliders[0].bounds.extents.x;
+        //            for (int _i = 1; _i < touchedCollidersAmount; _i++)
+        //            {
+        //                _xLimit = Mathf.Max(_xLimit, touchedColliders[_i].bounds.center.x + touchedColliders[_i].bounds.extents.x);
+        //            }
+
+        //            _newPosition.x = _xLimit + (_colliderExtents.x + _colliderCenter.x) + .001f;
+        //        }
+
+        //        _movementVector.x = _newPosition.x - transform.position.x;
+        //    }
+        //}
+
+        //// Z axis movement test
+        //if (_movementVector.z != 0)
+        //{
+        //    // Get the extents & center positon for the overlap ;
+        //    // If the player can move in X, overlap from this new X position
+        //    _overlapExtents = new Vector3(_colliderExtents.x, _colliderExtents.y, Mathf.Abs(_movementVector.z) / 2);
+
+        //    _overlapCenter = new Vector3(_colliderWorldPosition.x + _movementVector.x, _colliderWorldPosition.y, _colliderWorldPosition.z + ((_colliderExtents.z + _overlapExtents.z) * Mathf.Sign(_movementVector.z)));
+
+        //    // Overlaps in the position where the player would be after the Z movement ;
+        //    // If nothing is touched, then the player can move in Z
+        //    if ((touchedCollidersAmount = Physics.OverlapBoxNonAlloc(_overlapCenter, _overlapExtents, touchedColliders, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore)) > 0)
+        //    {
+        //        float _zLimit = 0;
+
+        //        // Get the Z position of the nearest collider limit, and set the position of the player against it
+        //        if (_movementVector.z > 0)
+        //        {
+        //            _zLimit = touchedColliders[0].bounds.center.z - touchedColliders[0].bounds.extents.z;
+        //            for (int _i = 1; _i < touchedCollidersAmount; _i++)
+        //            {
+        //                _zLimit = Mathf.Min(_zLimit, touchedColliders[_i].bounds.center.z - touchedColliders[_i].bounds.extents.z);
+        //            }
+
+        //            _newPosition.z = _zLimit - (_colliderExtents.z + _colliderCenter.z) - .001f;
+        //        }
+        //        else
+        //        {
+        //            _zLimit = touchedColliders[0].bounds.center.z + touchedColliders[0].bounds.extents.z;
+        //            for (int _i = 1; _i < touchedCollidersAmount; _i++)
+        //            {
+        //                _zLimit = Mathf.Max(_zLimit, touchedColliders[_i].bounds.center.z + touchedColliders[_i].bounds.extents.z);
+        //            }
+
+        //            _newPosition.z = _zLimit + (_colliderExtents.z + _colliderCenter.z) + .001f;
+        //        }
+        //    }
+        //}
+
+        //// Move the player
+        //if (transform.position != _newPosition)
+        //{
+        //    transform.position = _newPosition;
+
+        //    // If starting moving, update informations
+        //    if (!isMoving)
+        //    {
+        //        isMoving = true;
+        //        SetAnimOnline(PlayerAnimState.Run);
+        //    }
+        //}
+        //else if (isMoving)
+        //{
+        //    isMoving = false;
+        //    SetAnimOnline(PlayerAnimState.Idle);
+        //}
     }
 
     /// <summary>
@@ -2571,9 +2625,6 @@ public class TDS_Player : TDS_Character, IPunObservable
                 controller = TDS_GameManager.InputsAsset.Controllers[0];
             }
             else controller = TDS_GameManager.PlayersInfo.Where(p => p.PlayerType == playerType).First().Controller;
-
-            // Add bound obstacle to local player
-            WhatIsObstacle |= (1 << LayerMask.NameToLayer("Bound"));
         }
 
         //Initialize the player LifeBar

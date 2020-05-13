@@ -84,14 +84,15 @@ public class TDS_VirtualBox
     }
 #endif
 
+    private static Collider[] collider = new Collider[1];
+
     /// <summary>
     /// Overlaps in the box to get all colliders in it.
     /// </summary>
     /// <param name="_parentPosition">Position in relation to which this box should by drawn, in world space. Mostly the position of the game object this script is attached to.</param>
-    /// <returns>Returns all colliders touching the box.</returns>
-    public Collider[] Overlap(Vector3 _parentPosition)
+    public bool DoOverlap(Vector3 _parentPosition)
     {
-        return Physics.OverlapBox(_parentPosition + LocalPosition, Extents, Quaternion.identity, WhatDetect, TriggerInteraction);
+        return Physics.OverlapBoxNonAlloc(_parentPosition + LocalPosition, Extents, collider, Quaternion.identity, WhatDetect, TriggerInteraction) > 0;
     }
     #endregion
 }
