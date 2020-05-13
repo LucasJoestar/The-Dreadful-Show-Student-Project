@@ -78,12 +78,21 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
         }
         TDS_VFXManager.Instance.SpawnEffect(FXType.Kaboom, transform.position + (Vector3.up * 1.75f));
 
+        collider.enabled = false;
         hitBox.Activate(attack, owner);
         DestroyThrowableObject(1); 
     }
     #endregion
 
     #region Overriden Methods
+    protected override void ActivateHitbox(int _bonusDamages)
+    {
+        if (hitBox.IsActive) hitBox.Desactivate();
+
+        hitBox.BonusDamages = bonusDamage + _bonusDamages;
+        hitBox.Activate(attack, owner);
+    }
+
     /// <summary>
     /// The Throwable don't loose durability when it's exploding
     /// </summary>
@@ -128,13 +137,6 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
         collider.enabled = true;
         
         gameObject.layer = LayerMask.NameToLayer("Object");
-
-        Tags _hitableTags = new Tags(owner.HitBox.HittableTags.ObjectTags);
-        if (owner is TDS_Enemy)
-        {
-            _hitableTags.AddTag("Enemy");
-        }
-        hitBox.HittableTags = _hitableTags;
 
         if (hitBox.IsActive)
         {

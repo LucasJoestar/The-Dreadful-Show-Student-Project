@@ -454,10 +454,6 @@ public class TDS_UIManager : PunBehaviour
         filledImages.Clear();
         curtainsAnimator.SetTrigger(curtainsReset_Hash);
         if(ComboManager)ComboManager.ResetComboManager();
-        for (int i = 0; i < canvasWorld.transform.childCount; i++)
-        {
-            Destroy(canvasWorld.transform.GetChild(i).gameObject);
-        }
         ActivateMenu(UIState.InGameOver);
     }
 
@@ -673,6 +669,18 @@ public class TDS_UIManager : PunBehaviour
                 break;
             default:
                 break;
+        }
+    }
+
+    /// <summary>
+    /// Called on scene loaded.
+    /// </summary>
+    /// <param name="_sceneIndex"></param>
+    private void CleanWorldCanvas(int _sceneIndex)
+    {
+        for (int i = 0; i < canvasWorld.transform.childCount; i++)
+        {
+            Destroy(canvasWorld.transform.GetChild(i).gameObject);
         }
     }
 
@@ -1280,6 +1288,8 @@ public class TDS_UIManager : PunBehaviour
         if (uiGameObject)
             uiGameObject.SetActive(true);
         ActivateMenu(uiState);
+
+        TDS_SceneManager.OnLoadScene += CleanWorldCanvas;
     }
 
     private void OnDestroy()
