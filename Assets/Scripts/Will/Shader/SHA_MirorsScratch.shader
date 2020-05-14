@@ -1,4 +1,4 @@
-﻿Shader "Custom/SHA_OldMovieEffect"
+﻿Shader "Custom/SHA_MirorsScratch"
 {
     Properties  
     { 
@@ -54,9 +54,8 @@
 				fixed lum = dot (fixed3(0.299, 0.587, 0.114), renderTex.rgb); 
                  
 				//Add the constant color to the luminosity values 
-				fixed4 finalColor = lum + lerp(_SepiaColor, _SepiaColor + 
-				 fixed4(0.1f,0.1f,0.1f,1.0f), _RandomValue); 
-				finalColor = pow(finalColor, _Contrast); 
+				fixed4 finalColor =/* lum +*/ lerp(_SepiaColor, _SepiaColor + fixed4(0.1f,0.1f,0.1f,1.0f), _RandomValue); 
+				finalColor = pow(finalColor, _Contrast);                
 
 				//Create a constant white color we can use to adjust opacity of effects 
 				fixed3 constantWhite = fixed3(1,1,1); 

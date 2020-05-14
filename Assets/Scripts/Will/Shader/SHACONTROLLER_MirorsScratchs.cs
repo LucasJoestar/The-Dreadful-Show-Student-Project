@@ -1,35 +1,27 @@
 ﻿using UnityEngine;
 
 [ExecuteInEditMode]
-public class SHACONTROLLER_OldMovieEffect : MonoBehaviour
+public class SHACONTROLLER_MirorsScratchs : MonoBehaviour
 {
     #region F/P
     [SerializeField]
-        Shader curentShader;
+    Shader curentShader;
 
-    [SerializeField, Range(0,1), Space(20)]
-        float oldFilmEffectAmount = .5f;
+    [SerializeField, Range(0, 1), Space(20)]
+    float oldFilmEffectAmount = .5f;
     [SerializeField]
-        Color sepiaColor = Color.white;
-
-    [SerializeField,Space(20)]
-        Texture2D vignetteTexture;
-    [SerializeField, Range(0,1), Space(5)]
-        float vignetteAmount = .5f;
+    Color sepiaColor = Color.white;
 
     [SerializeField, Space(20)]
-        Texture2D scratchesTexture;
-    [SerializeField, Range(0,10), Space(5)]
-        float scratchesYSpeed = 10.0f;
-    [SerializeField, Range(0, 10)]
-        float scratchesXSpeed = 10.0f;
+    Texture2D vignetteTexture;
+    [SerializeField, Range(0, 1), Space(5)]
+    float vignetteAmount = .5f;
 
     [SerializeField, Space(20)]
-        Texture2D dustTexture;
-    [SerializeField, Range(0, 10), Space(5)]
-        float dustYSpeed = 10.0f;
-    [SerializeField, Range(0, 10)]
-        float dustXSpeed = 10.0f;
+    Texture2D layer1Texture;
+
+    [SerializeField, Space(20)]
+    Texture2D layer2Texture;
 
     Material screenMat;
     float randomValue;
@@ -63,18 +55,14 @@ public class SHACONTROLLER_OldMovieEffect : MonoBehaviour
                 ScreenMat.SetTexture("_VignetteTex", vignetteTexture);
             }
 
-            if (scratchesTexture)
+            if (layer1Texture)
             {
-                ScreenMat.SetTexture("_ScratchesTex", scratchesTexture);
-                ScreenMat.SetFloat("_ScratchesYSpeed", scratchesYSpeed);
-                ScreenMat.SetFloat("_ScratchesXSpeed", scratchesXSpeed);
+                ScreenMat.SetTexture("_ScratchesTex", layer1Texture);
             }
 
-            if (dustTexture)
+            if (layer2Texture)
             {
-                ScreenMat.SetTexture("_DustTex", dustTexture);
-                ScreenMat.SetFloat("_dustYSpeed", dustYSpeed);
-                ScreenMat.SetFloat("_dustXSpeed", dustXSpeed);
+                ScreenMat.SetTexture("_DustTex", layer2Texture);
                 ScreenMat.SetFloat("_RandomValue", randomValue);
             }
 
@@ -95,20 +83,6 @@ public class SHACONTROLLER_OldMovieEffect : MonoBehaviour
             DestroyImmediate(screenMat);
         }
     }
-
-    //void Start()
-    //{
-    //    if (!SystemInfo.supportsImageEffects)
-    //    {
-    //        enabled = false;
-    //        return;
-    //    }
-
-    //    if (!curentShader && !curentShader.isSupported)
-    //    {
-    //        enabled = false;
-    //    }
-    //}
 
     void Update()
     {
