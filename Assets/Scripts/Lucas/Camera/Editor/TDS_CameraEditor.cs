@@ -120,10 +120,10 @@ public class TDS_CameraEditor : Editor
 
         GUILayout.Space(3);
 
-        TDS_EditorUtility.ObjectField("Top Bound", "Top bound collider of this level", topBound, typeof(BoxCollider));
-        TDS_EditorUtility.ObjectField("Left Bound", "Left bound collider of this level", leftBound, typeof(BoxCollider));
-        TDS_EditorUtility.ObjectField("Right Bound", "Right bound collider of this level", rightBound, typeof(BoxCollider));
-        TDS_EditorUtility.ObjectField("Bottom Bound", "Bottom bound collider of this level", bottomBound, typeof(BoxCollider));
+        TDS_EditorUtility.ObjectField("Top Bound", "Top bound collider of this level", topBound, typeof(Transform));
+        TDS_EditorUtility.ObjectField("Left Bound", "Left bound collider of this level", leftBound, typeof(Transform));
+        TDS_EditorUtility.ObjectField("Right Bound", "Right bound collider of this level", rightBound, typeof(Transform));
+        TDS_EditorUtility.ObjectField("Bottom Bound", "Bottom bound collider of this level", bottomBound, typeof(Transform));
 
         GUILayout.Space(3);
 

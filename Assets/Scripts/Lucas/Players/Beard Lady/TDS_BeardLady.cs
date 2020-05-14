@@ -401,12 +401,6 @@ public class TDS_BeardLady : TDS_Player
             beardCurrentLife = beardMaxLife;
         }
     }
-	
-	// Update is called once per frame
-	protected override void Update()
-    {
-        base.Update();
-	}
 	#endregion
 
 	#endregion

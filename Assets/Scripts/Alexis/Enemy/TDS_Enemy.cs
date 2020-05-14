@@ -235,7 +235,6 @@ public abstract class TDS_Enemy : TDS_Character
     /// </summary>
     public static List<TDS_Enemy> AllEnemies = new List<TDS_Enemy>();
 
-
     /// <summary>
     /// The target of the enemy
     /// </summary>
@@ -280,7 +279,7 @@ public abstract class TDS_Enemy : TDS_Character
 
     #region Animator
     private static readonly int animationState_Hash = Animator.StringToHash("animationState");
-    private static readonly int bringTargetCloser_Hash = Animator.StringToHash("hitTrigger");
+    private static readonly int bringTargetCloser_Hash = Animator.StringToHash("BringTargetCloser");
     private static readonly int endBringingTargetCloser_Hash = Animator.StringToHash("EndBringingTargetCloser");
     private static readonly int enemyState_Hash = Animator.StringToHash("enemyState");
     private static readonly int isDead_Hash = Animator.StringToHash("isDead");
@@ -928,7 +927,7 @@ public abstract class TDS_Enemy : TDS_Character
         bool _isTakingDamages = base.TakeDamage(_damage);
         if (_isTakingDamages)
         {
-            ApplyDamagesBehaviour(_damage, _position); 
+            ApplyDamagesBehaviour(_damage, _position);
         }
         return _isTakingDamages;
     }
@@ -1221,7 +1220,7 @@ public abstract class TDS_Enemy : TDS_Character
                 animator.SetInteger(animationState_Hash, _animationID);
                 break;
         }
-        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_animationID });
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { _animationID });
     }
 
     /// <summary>
@@ -1374,7 +1373,8 @@ public abstract class TDS_Enemy : TDS_Character
 
     private void OnDestroy()
     {
-        if (AllEnemies.Contains(this)) AllEnemies.Remove(this);
+        if (AllEnemies.Contains(this))
+            AllEnemies.Remove(this);
     }
 
     // Use this for initialization
@@ -1388,7 +1388,7 @@ public abstract class TDS_Enemy : TDS_Character
             {
                 for (int _i = 0; _i < TDS_LevelManager.Instance.OtherPlayers.Count; _i++)
                 {
-                    HealthMax += healthMax * (healthScalePercent / 100);
+                    HealthMax += (int)(healthMax * (healthScalePercent / 100f));
                 }
                 HealthCurrent = healthMax;
             }
@@ -1419,13 +1419,11 @@ public abstract class TDS_Enemy : TDS_Character
 
     public void OnBecameInvisibleCallBack()
     {
-        if(PhotonNetwork.isMasterClient && !IsPacific && !IsParalyzed)
+        if (PhotonNetwork.isMasterClient && !IsPacific && !IsParalyzed)
         {
             Invoke("KillEnemy", 20.0f);
-            Debug.Log($"Kill {gameObject.name} called in 20.0s."); 
+            //Debug.Log($"Kill {gameObject.name} called in 20.0s."); 
         }
-        if (PhotonNetwork.isMasterClient && isDead)
-            PhotonNetwork.Destroy(gameObject);
     }
 
     public void OnBecameVisibleCallBack()

@@ -32,10 +32,13 @@ public class TDS_VirtualBox
 	*/
 
     #region Fields / Properties
+
+#if UNITY_EDITOR
     /// <summary>
     /// Color of the virtual box, used to draw its gizmos.
     /// </summary>
     public Color Color = Color.green;
+#endif
 
     /// <summary>
     /// LayerMask of what to detect when using this box for overlap.
@@ -64,6 +67,8 @@ public class TDS_VirtualBox
     #endregion
 
     #region Methods
+
+#if UNITY_EDITOR
     /// <summary>
     /// Call this method in a MonoBehaviour OnDrawGizmos method to draw this box gizmos.
     /// </summary>
@@ -77,15 +82,17 @@ public class TDS_VirtualBox
 
         Gizmos.color = _original;
     }
+#endif
+
+    private static Collider[] collider = new Collider[1];
 
     /// <summary>
     /// Overlaps in the box to get all colliders in it.
     /// </summary>
     /// <param name="_parentPosition">Position in relation to which this box should by drawn, in world space. Mostly the position of the game object this script is attached to.</param>
-    /// <returns>Returns all colliders touching the box.</returns>
-    public Collider[] Overlap(Vector3 _parentPosition)
+    public bool DoOverlap(Vector3 _parentPosition)
     {
-        return Physics.OverlapBox(_parentPosition + LocalPosition, Extents, Quaternion.identity, WhatDetect, TriggerInteraction);
+        return Physics.OverlapBoxNonAlloc(_parentPosition + LocalPosition, Extents, collider, Quaternion.identity, WhatDetect, TriggerInteraction) > 0;
     }
     #endregion
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -101,13 +100,6 @@ public abstract class TDS_Character : TDS_Damageable
 	 *
 	 *	-----------------------------------
 	*/
-
-    #region Events
-    /// <summary>
-    /// Event called when the character flip on the X axis.
-    /// </summary>
-    public event Action OnFlip = null;
-    #endregion
 
     #region Fields / Properties
 
@@ -402,15 +394,16 @@ public abstract class TDS_Character : TDS_Damageable
 
         if (photonView.isMine)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Flip"), new object[] { isFacingRight });
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Flip"), new object[] { isFacingRight });
         }
 
         transform.Rotate(Vector3.up, 180);
-        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z * -1);
 
-        shadowTransform.localPosition = new Vector3(shadowTransform.localPosition.x, shadowTransform.localPosition.y, shadowTransform.localPosition.z * -1);
+        Vector3 _vector = transform.localScale;
+        transform.localScale = new Vector3(_vector.x, _vector.y, _vector.z * -1);
 
-        OnFlip?.Invoke();
+        _vector = shadowTransform.localPosition;
+        shadowTransform.localPosition = new Vector3(_vector.x, _vector.y, _vector.z * -1);
     }
 
     /// <summary>
@@ -418,7 +411,8 @@ public abstract class TDS_Character : TDS_Damageable
     /// </summary>
     public void Flip(bool _isFacingRight)
     {
-        if (isFacingRight != _isFacingRight) Flip();
+        if (isFacingRight != _isFacingRight)
+            Flip();
     }
 
     /// <summary>
@@ -692,6 +686,12 @@ public abstract class TDS_Character : TDS_Damageable
     /// </summary>
     public virtual bool PutOnTheGround()
     {
+        if (!photonView.isMine)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "PutOnTheGround"), new object[] { });
+            return false;
+        }
+
         if (IsDown) return false;
 
         // Drop object if having one
@@ -760,8 +760,9 @@ public abstract class TDS_Character : TDS_Damageable
                 break;
         }
 
-        if (!_foostep) return;
-        TDS_SoundManager.Instance.PlayEffectSound(_foostep, audioSource);
+        if (_foostep)
+            TDS_SoundManager.Instance.PlayEffectSound(_foostep, audioSource);
+
     }
     #endregion
 

@@ -31,10 +31,6 @@ public class TDS_CurtainsLimit : MonoBehaviour
 	 *	-----------------------------------
 	*/
 
-    #region Events
-
-    #endregion
-
     #region Fields / Properties
 
     #region Animator
@@ -42,52 +38,32 @@ public class TDS_CurtainsLimit : MonoBehaviour
     private readonly int hideRightCurtain_Hash = Animator.StringToHash("HideRightCurtain");
     #endregion
 
-    /// <summary>
-    /// Detected tags of the limit.
-    /// </summary>
-    [SerializeField] private Tags detectedTags = new Tags();
+    [SerializeField] LayerMask whatDetect = new LayerMask();
 
     [SerializeField] private Animator curtainsAnimator = null;
 
+    [SerializeField] private new BoxCollider collider = null;
+
     [SerializeField] private bool isLeftLimit = true;
+
+    private bool isActive = false;
     #endregion
 
     #region Methods
-
-    #region Original Methods
-
-    #endregion
-
-    #region Unity Methods
     private void Start()
     {
         curtainsAnimator = TDS_UIManager.Instance.CurtainsAnimator; 
     }
 
-    private void OnTriggerEnter(Collider other)
+    private static Collider[] colliders = new Collider[1];
+
+    private void Update()
     {
-        if (!other.gameObject.HasTag(detectedTags.ObjectTags) || !curtainsAnimator) return;
-        if (isLeftLimit)
+        if ((Physics.OverlapBoxNonAlloc(collider.bounds.center, collider.bounds.extents, colliders, Quaternion.identity, whatDetect) > 0) != isActive)
         {
-            curtainsAnimator.SetBool(hideLeftCurtain_Hash, true);
-
-            return;
+            isActive = !isActive;
+            curtainsAnimator.SetBool(isLeftLimit ? hideLeftCurtain_Hash : hideRightCurtain_Hash, isActive);
         }
-        curtainsAnimator.SetBool(hideRightCurtain_Hash, true);
     }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (!other.gameObject.HasTag(detectedTags.ObjectTags) || !curtainsAnimator) return;
-        if (isLeftLimit)
-        {
-            curtainsAnimator.SetBool(hideLeftCurtain_Hash, false);
-
-            return;
-        }
-        curtainsAnimator.SetBool(hideRightCurtain_Hash, false);       
-    }
-    #endregion
-
     #endregion
 }

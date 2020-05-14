@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using Photon;
 
@@ -92,7 +91,7 @@ public class TDS_NetworkManager : PunBehaviour
     {
         if (PhotonNetwork.connected) PhotonNetwork.Disconnect(); 
         PhotonNetwork.offlineMode = true;
-        string _randomID = "LocalRoom" + (int)Random.Range(1, 999); 
+        string _randomID = "LocalRoom" + Random.Range(1, 999); 
         PhotonNetwork.JoinOrCreateRoom(_randomID, new RoomOptions() { MaxPlayers = 1 }, null);
     }
     //♥
@@ -116,14 +115,14 @@ public class TDS_NetworkManager : PunBehaviour
 
     public void LockRoom()
     {
-        if (!PhotonNetwork.connected || PhotonNetwork.offlineMode) return; 
-        PhotonNetwork.room.IsOpen = false;
+        if (PhotonNetwork.connected && !PhotonNetwork.offlineMode)
+            PhotonNetwork.room.IsOpen = false;
     }
 
     void PlayerCount()
     {
         bool _canLaunch = PhotonNetwork.room.PlayerCount >= minimumPlayerToLaunch && PhotonNetwork.isMasterClient ? true : false;
-        TDS_UIManager.Instance?.UpdatePlayerCount(PhotonNetwork.room.PlayerCount, _canLaunch, PhotonNetwork.playerList); 
+        TDS_UIManager.Instance.UpdatePlayerCount(PhotonNetwork.room.PlayerCount, _canLaunch, PhotonNetwork.playerList); 
     }
 
     public void SelectRoom(Button _btn)
@@ -140,10 +139,16 @@ public class TDS_NetworkManager : PunBehaviour
 
         roomName = _btn.name;
 
-        if (PhotonNetwork.GetRoomList().Any(r => r.Name == roomName && (!r.IsOpen || r.PlayerCount == r.MaxPlayers)))
+        RoomInfo[] _rooms = PhotonNetwork.GetRoomList();
+        RoomInfo _roomInfo;
+        for (int _i = 0; _i < _rooms.Length; _i++)
         {
-            TDS_UIManager.Instance?.ActivateErrorBox("This room is already full or in game!\nPlease select another room to enjoy the game!");
-            return;
+            _roomInfo = _rooms[_i];
+            if (_roomInfo.Name == roomName && (!_roomInfo.IsOpen) || _roomInfo.PlayerCount == _roomInfo.MaxPlayers)
+            {
+                TDS_UIManager.Instance?.ActivateErrorBox("This room is already full or in game!\nPlease select another room to enjoy the game!");
+                return;
+            }
         }
 
         if (_roomId == RoomId.WaitForIt)
@@ -170,13 +175,20 @@ public class TDS_NetworkManager : PunBehaviour
     {
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "LeaveGame"), new object[] { });
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "ForceLeave"), new object[] { });
         }
         else
         {
             TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "RemovePlayer"), new object[] { PhotonNetwork.player.ID });
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "RemovePlayerLifeBar"), new object[] { (int)TDS_GameManager.LocalPlayer }); 
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "RemovePlayerLifeBar"), new object[] { (int)TDS_GameManager.LocalPlayer });
         }
+
+        PhotonNetwork.SendOutgoingCommands();
+        ForceLeave();
+    }
+
+    private void ForceLeave()
+    {
         TDS_GameManager.LocalPlayer = PlayerType.Unknown;
         PhotonNetwork.Disconnect();
 

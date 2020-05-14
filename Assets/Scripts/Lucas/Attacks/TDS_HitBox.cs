@@ -49,12 +49,6 @@ public class TDS_HitBox : MonoBehaviour
 
     #region Events
     /// <summary>
-    /// Start attack event.
-    /// Called when the hit box is being activated with the specified attack as parameter.
-    /// </summary>
-    public event Action<TDS_Attack> OnStartAttack = null;
-
-    /// <summary>
     /// Stop attack event.
     /// Called when the hit box is being desactivated at the end of an attack.
     /// </summary>
@@ -109,6 +103,8 @@ public class TDS_HitBox : MonoBehaviour
     /// All tags to hit.
     /// </summary>
     public Tags HittableTags = new Tags();
+
+    public bool IgnoreOwner = true;
     #endregion
 
     #endregion
@@ -129,13 +125,13 @@ public class TDS_HitBox : MonoBehaviour
         // and return before activating the hit box.
         if (_attack == null)
         {
+
             Debug.LogWarning("The given attack to activate " + Owner.name + "'s hit box is null ! Activation is canceled.");
             return;
         }
         CurrentAttack = _attack;
         collider.enabled = true;
         IsActive = true;
-        OnStartAttack?.Invoke(_attack);
     }
 
     /// <summary>
@@ -157,10 +153,10 @@ public class TDS_HitBox : MonoBehaviour
     /// <param name="_attack">Attack used to hit what is in the hit box.</param>
     /// <param name="_owner">The person who attack.</param>
     /// <param name="_hittableTags">Tags to hit.</param>
-    public void Activate(TDS_Attack _attack, TDS_Character _owner, Tag[] _hittableTags)
+    public void Activate(TDS_Attack _attack, TDS_Character _owner, Tags _hittableTags)
     {
         Owner = _owner;
-        HittableTags.ObjectTags = _hittableTags;
+        HittableTags = _hittableTags;
 
         Activate(_attack);
     }
@@ -210,7 +206,7 @@ public class TDS_HitBox : MonoBehaviour
             }
             else
             {
-                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", Owner.photonView.owner, TDS_RPCManager.GetInfo(Owner.photonView, Owner.GetType(), "HitCallback"), new object[] { _target.Collider.bounds.center.x, _target.Collider.bounds.max.y, _target.transform.position.z });
+                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", Owner.photonView.owner, TDS_RPCManager.GetInfo(Owner.photonView, Owner.GetType(), "HitCallback"), new object[] { _target.Collider.bounds.center.x, _target.Collider.bounds.max.y, _target.transform.position.z });
             }
         }
     }
@@ -250,7 +246,7 @@ public class TDS_HitBox : MonoBehaviour
 
         // If the collider object should be hit, hit it
         // Check if object has tags
-        if ((Owner && (other.gameObject == Owner.gameObject)) || !other.gameObject.HasTag(HittableTags.ObjectTags)) return;
+        if ((IgnoreOwner && Owner && (other.gameObject == Owner.gameObject)) || !other.gameObject.HasTag(HittableTags.ObjectTags)) return;
 
         TDS_Damageable _target = other.GetComponent<TDS_Damageable>();
         if (!_target ) return;

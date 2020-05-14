@@ -153,7 +153,7 @@ public class TDS_Throwable : TDS_Object
         Tags _hitableTags = new Tags(owner.HitBox.HittableTags.ObjectTags);
         if (owner is TDS_Enemy) _hitableTags.AddTag("Enemy");
         hitBox.BonusDamages = bonusDamage + _bonusDamages;
-        hitBox.Activate(attack, owner, _hitableTags.ObjectTags);
+        hitBox.Activate(attack, owner, _hitableTags);
     }
 
     /// <summary>

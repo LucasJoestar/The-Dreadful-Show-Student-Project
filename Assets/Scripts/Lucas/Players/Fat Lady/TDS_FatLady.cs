@@ -200,15 +200,14 @@ public class TDS_FatLady : TDS_Player
     /// <summary>
     /// Checks the health status of the Fat Lady and set her berserk mode consequently.
     /// </summary>
-    /// <param name="_health">New health value of the Fat Lady.</param>
-    public void CheckHealthStatus(int _health)
+    public void CheckHealthStatus()
     {
         if (isDead)
         {
             if (isAngry) IsAngry = false;
             return;
         }
-        if (_health > angryHealthStep)
+        if (healthCurrent > angryHealthStep)
         {
             if (isAngry) IsAngry = false;
         }
@@ -243,12 +242,15 @@ public class TDS_FatLady : TDS_Player
     /// <returns>Returns true if having some food to eat, false otherwise.</returns>
     public bool SnackHeal()
     {
-        if (!isSnackAvailable) return false;
+        if (PhotonNetwork.isMasterClient && isSnackAvailable)
+        {
+            Heal(snackHealValue);
+            IsSnackAvailable = false;
 
-        Heal(snackHealValue);
-        IsSnackAvailable = false;
+            return true;
+        }
 
-        return true;
+        return false;
     }
 
     /// <summary>

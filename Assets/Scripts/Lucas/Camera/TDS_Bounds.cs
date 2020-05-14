@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
+[Serializable]
 public struct TDS_Bounds 
 {
     /* TDS_Bounds :

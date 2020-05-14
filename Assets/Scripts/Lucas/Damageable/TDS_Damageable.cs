@@ -88,11 +88,6 @@ public abstract class TDS_Damageable : TDS_Object
 
     #region Events
     /// <summary>
-    /// Event called when the damageable gets burn, with the burning damages as parameter.
-    /// </summary>
-    public event Action<int> OnBurn = null;
-
-    /// <summary>
     /// Die event.
     /// Called when this object just die, meaning when it is not indestructible and its health reach zero.
     /// </summary>
@@ -108,13 +103,13 @@ public abstract class TDS_Damageable : TDS_Object
     /// Heal event.
     /// Called when the object is healed, with the amount as parameter
     /// </summary>
-    public event Action<int> OnHeal = null;
+    public event Action OnHeal = null;
 
     /// <summary>
     /// Health changed event.
     /// Called when this object health changed, with its new value as parameter
     /// </summary>
-    public event Action<int> OnHealthChanged = null;
+    public event Action OnHealthChanged = null;
 
     /// <summary>
     /// Event called when the damageable come back from the deads.
@@ -130,7 +125,7 @@ public abstract class TDS_Damageable : TDS_Object
     /// Take damage event.
     /// Called when this object take any damage, with the amount as parameter
     /// </summary>
-    public event Action<int> OnTakeDamage = null;
+    public event Action OnTakeDamage = null;
     #endregion
 
     #region Fields / Properties
@@ -265,7 +260,7 @@ public abstract class TDS_Damageable : TDS_Object
             if (value == 0) IsDead = true;
             else if (isDead) IsDead = false;
 
-            OnHealthChanged?.Invoke(value);
+            OnHealthChanged?.Invoke();
         }
     }
 
@@ -342,10 +337,13 @@ public abstract class TDS_Damageable : TDS_Object
     protected virtual void Die()
     {
         // Stop effects
+        if (PhotonNetwork.isMasterClient)
+        {
+            StopBurning();
+        }
         if (photonView.isMine)
         {
             if (bringingCloserCoroutine != null) StopBringingCloser();
-            StopBurning();
         }
 
         // Call events
@@ -368,11 +366,15 @@ public abstract class TDS_Damageable : TDS_Object
     {
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Heal"), new object[] { _heal });
+            HealthCurrent += _heal;
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Heal"), new object[] { healthCurrent });
+        }
+        else
+        {
+            HealthCurrent = _heal;
         }
 
-        HealthCurrent += _heal;
-        OnHeal?.Invoke(_heal);
+        OnHeal?.Invoke();
     }
 
     /// <summary>
@@ -384,6 +386,20 @@ public abstract class TDS_Damageable : TDS_Object
         gameObject.layer = layerBeforeDeath;
     }
 
+    protected void SetInvulnerable(bool _isInvulnerable)
+    {
+        if (PhotonNetwork.isMasterClient)
+        {
+            IsInvulnerable = _isInvulnerable;
+        }
+        else if (photonView.isMine)
+        {
+            IsInvulnerable = _isInvulnerable;
+
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "SetInvulnerable"), new object[] { _isInvulnerable });
+        }
+    }
+
     /// <summary>
     /// Makes this object take damage and decrease its health if it is not invulnerable.
     /// </summary>
@@ -391,15 +407,19 @@ public abstract class TDS_Damageable : TDS_Object
     /// <returns>Returns true if some damages were inflicted, false if none.</returns>
     public virtual bool TakeDamage(int _damage)
     {
-        if (IsInvulnerable || isDead) return false;
-        
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "TakeDamage"), new object[] { _damage });
-        }
+            if (IsInvulnerable || isDead) return false;
 
-        HealthCurrent -= _damage;
-        OnTakeDamage?.Invoke(_damage);
+            HealthCurrent -= _damage;
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "TakeDamage"), new object[] { healthCurrent });
+        }
+        else
+        {
+            HealthCurrent = _damage;
+        }
+        
+        OnTakeDamage?.Invoke();
 
         // Play hit sound
         TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Hit, .75f, audioSource);
@@ -430,6 +450,12 @@ public abstract class TDS_Damageable : TDS_Object
     /// <param name="_distance">Distance to browse.</param>
     public virtual bool BringCloser(float _distance)
     {
+        if (!photonView.isMine)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "BringCloser"), new object[] { _distance });
+            return false;
+        }
+
         // If can't be bringed closer, just return
         if (!canBeMoved) return false;
 
@@ -471,6 +497,17 @@ public abstract class TDS_Damageable : TDS_Object
             StopCoroutine(bringingCloserCoroutine);
             bringingCloserCoroutine = null;
         }
+
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "CallOnStopBringingCloser"), new object[] { });
+        }
+
+        OnStopBringingCloser?.Invoke();
+    }
+
+    protected void CallOnStopBringingCloser()
+    {
         OnStopBringingCloser?.Invoke();
     }
     #endregion
@@ -516,8 +553,6 @@ public abstract class TDS_Damageable : TDS_Object
             int _damages = Random.Range(_damagesMin, _damagesMax);
             TakeDamage(_damages);
             _duration -= _wait;
-
-            OnBurn?.Invoke(_damages);
         }
 
         burningCoroutines[_id] = null;
@@ -531,9 +566,9 @@ public abstract class TDS_Damageable : TDS_Object
     /// </summary>
     protected virtual void DestroyFireEffect()
     {
-        if (photonView.isMine)
+        if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "DestroyFireEffect"), new object[] { });
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "DestroyFireEffect"), new object[] { });
         }
 
         burnEffect.SetTrigger(vanish_Hash);
@@ -544,9 +579,9 @@ public abstract class TDS_Damageable : TDS_Object
     /// </summary>
     protected virtual void InstantiateFireEffect()
     {
-        if (photonView.isMine)
+        if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "InstantiateFireEffect"), new object[] { });
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "InstantiateFireEffect"), new object[] { });
         }
 
         burnEffect = ((GameObject)Instantiate(Resources.Load("FireBurn"), new Vector3(transform.position.x, transform.position.y, transform.position.z - .05f), Quaternion.identity)).GetComponent<Animator>();
@@ -580,6 +615,12 @@ public abstract class TDS_Damageable : TDS_Object
     /// <returns>Returns true if successfully applied knockback on this damageable, false otherwise.</returns>
     public virtual bool Knockback(bool _toRight)
     {
+        if (!photonView.isMine)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "Knockback"), new object[] { _toRight });
+            return false;
+        }
+
         if (!canBeMoved || (bringingCloserCoroutine != null)) return false;
 
         knockbackCoroutine = StartCoroutine(KnockbackCoroutine(_toRight));
@@ -628,6 +669,12 @@ public abstract class TDS_Damageable : TDS_Object
     /// <returns>Returns true if successfully projected this damageable in the air, false otherwise.</returns>
     public virtual bool Project(bool _toRight)
     {
+        if (!photonView.isMine)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "Project"), new object[] { _toRight });
+            return false;
+        }
+
         if (!canBeMoved) return false;
 
         if (bringingCloserCoroutine != null) StopBringingCloser();
@@ -672,12 +719,6 @@ public abstract class TDS_Damageable : TDS_Object
                 rigidbody.useGravity = false;
             }
         }
-    }
-	
-	// Update is called once per frame
-	protected virtual void Update ()
-    {
-
     }
     #endregion
 

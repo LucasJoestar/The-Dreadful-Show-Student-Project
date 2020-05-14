@@ -376,8 +376,11 @@ public class TDS_SpawnerArea : PunBehaviour
     {
         foreach (TDS_Enemy e in deadEnemies)
         {
-            TDS_VFXManager.Instance.SpawnEffect(FXType.MagicDisappear, e.transform.position);
-            PhotonNetwork.Destroy(e.gameObject);
+            if (e)
+            {
+                TDS_VFXManager.Instance.SpawnEffect(FXType.MagicDisappear, e.transform.position);
+                PhotonNetwork.Destroy(e.photonView);
+            }
         }
         deadEnemies.Clear();
     }

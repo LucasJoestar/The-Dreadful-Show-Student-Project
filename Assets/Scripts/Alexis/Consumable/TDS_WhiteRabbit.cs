@@ -52,10 +52,8 @@ public class TDS_WhiteRabbit : TDS_Consumable
     [SerializeField] private bool isLooping = false;
     [SerializeField, Range(1, 200)] private int healingValueMax;
     [SerializeField, Range(1, 200)] private int healingValueMin;
-    private int passingCountCurrent = 0;
+    [SerializeField] private int passingCountCurrent = 0;
     [SerializeField] int passingCountMax = 5;
-    private float boundLeft;
-    private float boundRight; 
     [SerializeField, Range(1,10)] private float speed;
     [SerializeField] private CustomNavMeshAgent agent;
     [SerializeField] private new BoxCollider collider;
@@ -84,13 +82,20 @@ public class TDS_WhiteRabbit : TDS_Consumable
     private void IncreasePassingCount()
     {
         if (!PhotonNetwork.isMasterClient) return; 
+
         passingCountCurrent++;
-        if (passingCountCurrent > passingCountMax && !isLooping)
+
+        Debug.Log("Pass => " + passingCountCurrent);
+
+        if (!isLooping && (passingCountCurrent > passingCountMax))
         {
+            Debug.Log("Loose => " + passingCountCurrent);
             PhotonNetwork.Destroy(gameObject);
             OnLoseRabbit?.Invoke();
             return; 
         }
+
+        goRight = !goRight;
         Run();
     }
 
@@ -116,6 +121,8 @@ public class TDS_WhiteRabbit : TDS_Consumable
 
         UseFeedback();
         Invoke("Destroy", 2);
+
+        Debug.Log("Use");
     }
 
     /// <summary>
@@ -154,14 +161,23 @@ public class TDS_WhiteRabbit : TDS_Consumable
     /// </summary>
     private void Run()
     {
-        if (!PhotonNetwork.isMasterClient) return; 
-        float _x = goRight ? boundRight : boundLeft; 
+        if (!PhotonNetwork.isMasterClient) return;
+
+        float _x = goRight ? TDS_Camera.Instance.CurrentBounds.XMax + 1 : TDS_Camera.Instance.CurrentBounds.XMin - 1; 
         Vector3 _targetPosition = new Vector3(_x, transform.position.y, transform.position.z);
-        goRight = !goRight; 
         agent.SetDestination(_targetPosition);
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Flip"), new object[] { });
+        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, GetType(), "Flip"), new object[] { });
     }
 
+    private void RecalculatePath()
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+
+        float _x = goRight ? TDS_Camera.Instance.CurrentBounds.XMax + 1 : TDS_Camera.Instance.CurrentBounds.XMin - 1;
+        Vector3 _targetPosition = new Vector3(_x, transform.position.y, transform.position.z);
+
+        agent.SetDestination(_targetPosition);
+    }
     #endregion
 
     #region Unity Methods
@@ -178,9 +194,14 @@ public class TDS_WhiteRabbit : TDS_Consumable
         }
         agent.Speed = speed;
         agent.OnDestinationReached += IncreasePassingCount;
-        boundLeft = TDS_Camera.Instance.CurrentBounds.XMin - 1;
-        boundRight =  TDS_Camera.Instance.CurrentBounds.XMax + 1;
+        TDS_Camera.Instance.OnBoundFreeze += RecalculatePath;
+
         Run();
+    }
+
+    private void OnDestroy()
+    {
+        Debug.Log("Destroy");
     }
     #endregion
 

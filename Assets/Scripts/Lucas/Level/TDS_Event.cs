@@ -258,9 +258,11 @@ public class TDS_Event
                 }
                 else TDS_SceneManager.Instance.PrepareSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
 
-                yield return new WaitForSeconds(1f);
-                if (TDS_GameManager.CurrentSceneIndex == 0) break;
+                if (TDS_GameManager.CurrentSceneIndex == 0)
+                    break;
 
+                yield return new WaitForSeconds(1f);
+                
                 if (!PhotonNetwork.offlineMode) TDS_LevelManager.Instance?.LocalPlayer?.FreezePlayer();
                 else
                 {

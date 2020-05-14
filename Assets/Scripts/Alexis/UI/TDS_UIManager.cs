@@ -339,18 +339,19 @@ public class TDS_UIManager : PunBehaviour
                 break;
         }
         int _value = 0;
+        WaitForEndOfFrame _wait = new WaitForEndOfFrame(); 
         if (!PhotonNetwork.offlineMode)
         {
             while (UIState == _state)
             {
                 if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Cancel))
                 {
-                    yield return new WaitForEndOfFrame();
+                    yield return _wait;
                     _cancelAction?.Invoke();
                 }
                 else if (TDS_GameManager.InputsAsset.Controllers[0].GetButtonDown(ButtonType.Confirm))
                 {
-                    yield return new WaitForEndOfFrame();
+                    yield return _wait;
                     _submitAction?.Invoke();
                 }
                 else if (TDS_GameManager.InputsAsset.Controllers[0].GetAxisDown(AxisType.Horizontal, out _value))
@@ -453,10 +454,6 @@ public class TDS_UIManager : PunBehaviour
         filledImages.Clear();
         curtainsAnimator.SetTrigger(curtainsReset_Hash);
         if(ComboManager)ComboManager.ResetComboManager();
-        for (int i = 0; i < canvasWorld.transform.childCount; i++)
-        {
-            Destroy(canvasWorld.transform.GetChild(i).gameObject);
-        }
         ActivateMenu(UIState.InGameOver);
     }
 
@@ -672,6 +669,18 @@ public class TDS_UIManager : PunBehaviour
                 break;
             default:
                 break;
+        }
+    }
+
+    /// <summary>
+    /// Called on scene loaded.
+    /// </summary>
+    /// <param name="_sceneIndex"></param>
+    private void CleanWorldCanvas(int _sceneIndex)
+    {
+        for (int i = 0; i < canvasWorld.transform.childCount; i++)
+        {
+            Destroy(canvasWorld.transform.GetChild(i).gameObject);
         }
     }
 
@@ -896,10 +905,10 @@ public class TDS_UIManager : PunBehaviour
     {
         if(PhotonNetwork.offlineMode)
         {
-            TDS_SceneManager.Instance.PrepareSceneLoading(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, (int)UIState.InGame); 
+            TDS_SceneManager.Instance.PrepareSceneLoading(SceneManager.GetActiveScene().buildIndex, (int)UIState.InGame); 
         }
         else
-            TDS_SceneManager.Instance.PrepareOnlineSceneLoading(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, (int)UIState.InGame);
+            TDS_SceneManager.Instance.PrepareOnlineSceneLoading(SceneManager.GetActiveScene().buildIndex, (int)UIState.InGame);
     }
 
     /// <summary>
@@ -952,7 +961,7 @@ public class TDS_UIManager : PunBehaviour
     {
         if (!bossHealthBar) return;
         bossHealthBar.SetOwner(_boss);
-        bossHealthBar.UpdateLifeBar(_boss.HealthCurrent);
+        bossHealthBar.UpdateLifeBar();
         bossHealthBar.gameObject.SetActive(true);
 
         _boss.HealthBar = bossHealthBar;
@@ -1002,7 +1011,7 @@ public class TDS_UIManager : PunBehaviour
         TDS_EnemyLifeBar _healthBar = Instantiate(enemyHealthBar, _enemy.transform.position + _offset, Quaternion.identity, canvasWorld.transform).GetComponent<TDS_EnemyLifeBar>();
 
         _healthBar.SetOwner(_enemy, _offset);
-        _healthBar.UpdateLifeBar(_enemy.HealthCurrent);
+        _healthBar.UpdateLifeBar();
         _healthBar.Background.gameObject.SetActive(false); 
         _enemy.HealthBar = _healthBar;
 
@@ -1096,7 +1105,7 @@ public class TDS_UIManager : PunBehaviour
         }
         if (!_playerLifeBar) return; 
         _playerLifeBar.SetOwner(_player);
-        _playerLifeBar.UpdateLifeBar(_player.HealthCurrent);
+        _playerLifeBar.UpdateLifeBar();
         _player.HealthBar = _playerLifeBar;
         _player.OnHealthChanged += _playerLifeBar.UpdateLifeBar;
         _player.OnTriggerHowToPlay += _playerLifeBar.TriggerHowToPlayInfo;
@@ -1279,6 +1288,8 @@ public class TDS_UIManager : PunBehaviour
         if (uiGameObject)
             uiGameObject.SetActive(true);
         ActivateMenu(uiState);
+
+        TDS_SceneManager.OnLoadScene += CleanWorldCanvas;
     }
 
     private void OnDestroy()

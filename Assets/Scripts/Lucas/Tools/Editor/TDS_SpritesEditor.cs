@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -349,6 +350,134 @@ public class TDS_SpritesEditor : EditorWindow
             if (modelRoot)
             {
                 spriteCreatorMessageID = 0;
+
+                SpriteRenderer[] _sprites = modelRoot.GetComponentsInChildren<SpriteRenderer>();
+                if (_sprites.Length > 0)
+                {
+                    var targetTexture = new Texture2D(1024, 1024, TextureFormat.RGBA32, false, false);
+                    targetTexture.filterMode = FilterMode.Point;
+                    var targetPixels = targetTexture.GetPixels();
+                    for (int i = 0; i < targetPixels.Length; i++) targetPixels[i] = Color.clear;// default pixels are not set
+                    var targetWidth = targetTexture.width;
+
+                    for (int i = 0; i < _sprites.Length; i++)
+                    {
+                        // Get sprites bounding volume
+                        Vector2 _min = Vector2.zero;
+                        Vector2 _max = Vector2.zero;
+
+                        Vector2[] _sMin = new Vector2[_sprites.Length];
+                        Vector2[] _sMax = new Vector2[_sprites.Length];
+
+                        Comparison<SpriteRenderer> _comparer = (x, y) => x.sortingOrder.CompareTo(y.sortingOrder);
+                        Array.Sort(_sprites, _comparer);
+
+                        _min = _sprites[0].bounds.min;
+                        _max = _sprites[0].bounds.max;
+
+                        for (int _i = 1; _i < _sprites.Length; _i++)
+                        {
+                            _sMin[_i] = _sprites[_i].bounds.min;
+                            _sMax[_i] = _sprites[_i].bounds.max;
+
+                            _min.x = Mathf.Min(_min.x, _sMin[_i].x);
+                            _min.y = Mathf.Min(_min.y, _sMin[_i].y);
+                            _max.x = Mathf.Max(_max.x, _sMax[_i].x);
+                            _max.y = Mathf.Max(_max.y, _sMax[_i].y);
+                        }
+
+                        Vector2 _size = new Vector2((int)(_max.x - _min.x), (int)(_max.y - _min.y)) * 100;
+                        Texture2D _texture = new Texture2D((int)_size.x, (int)_size.y, TextureFormat.RGBA32, false, false);
+
+                        Color[] _pixels = _texture.GetPixels();
+                        for (int _i = 0; _i < _pixels.Length; _i++)
+                            _pixels[_i] = Color.clear;
+
+                        // Paint all sprites on the texture
+                        for (int _i = 0; _i < _sprites.Length; _i++)
+                        {
+                            SpriteRenderer _sprite = _sprites[_i];
+                            Vector2 _scale = _sprite.transform.localScale;
+                            Rect _rect = _sprite.sprite.textureRect;
+                            Texture2D _spriteTexture = _sprite.sprite.texture;
+
+                            int _x = 0;
+                            for (float _w = 0; _w < _rect.width; _w += 1 / _scale.x)
+                            {
+                                int _y = 0;
+                                for (float _h = 0; _h < _rect.height; _h += 1 / _scale.y)
+                                {
+                                    Color _pixel = _spriteTexture.GetPixel((int)_rect.x + (int)_w, (int)_rect.y + (int)_h);
+                                    _pixel *= _sprite.color;
+
+                                    if (_pixel.a > 0)
+                                    {
+                                        Vector2Int _index = new Vector2Int((int)(_sMin[_i].x - _min.x) + _x,
+                                                                           (int)(_sMin[_i].y - _min.y) + _y);
+
+                                        // Blend colors
+                                        Color _originalPixel = _texture.GetPixel(_index.x, _index.y);
+                                        _pixel = _originalPixel * (1 - _pixel.a) + _pixel;
+
+                                        _texture.SetPixel(_index.x, _index.y, _pixel);
+                                    }
+
+                                    _y++;
+                                }
+
+                                _x++;
+                            }
+                        }
+                        _texture.Apply(false, true);
+
+                        SpriteRenderer _newSprite = new GameObject("SPRITE").AddComponent<SpriteRenderer>();
+                        _newSprite.transform.position = modelRoot.transform.position;
+                        _newSprite.material = _sprites[0].sharedMaterial;
+                        _newSprite.sprite = Sprite.Create(_texture, new Rect(0, 0, _size.x, _size.y), Vector2.zero);
+
+                        return;
+
+                        // --------------------
+                        var sr = _sprites[i];
+                        var position = (Vector2)sr.transform.localPosition - sr.sprite.pivot;
+                        var p = new Vector2Int((int)position.x, (int)position.y);
+                        var sourceWidth = sr.sprite.texture.width;
+                        // if read/write is not enabled on texture (under Advanced) then this next line throws an error
+                        // no way to check this without Try/Catch :(
+                        var sourcePixels = sr.sprite.texture.GetPixels();
+                        for (int j = 0; j < sourcePixels.Length; j++)
+                        {
+                            var source = sourcePixels[j];
+                            var x = (j % sourceWidth) + p.x;
+                            var y = (j / sourceWidth) + p.y;
+                            var index = x + y * targetWidth;
+                            if (index > 0 && index < targetPixels.Length)
+                            {
+                                var target = targetPixels[index];
+                                if (target.a > 0)
+                                {
+                                    // alpha blend when we've already written to the target
+                                    float sourceAlpha = source.a;
+                                    float invSourceAlpha = 1f - source.a;
+                                    float alpha = sourceAlpha + invSourceAlpha * target.a;
+                                    Color result = (source * sourceAlpha + target * target.a * invSourceAlpha) / alpha;
+                                    result.a = alpha;
+                                    source = result;
+                                }
+                                targetPixels[index] = source;
+                            }
+                        }
+
+                        targetTexture.SetPixels(targetPixels);
+                        targetTexture.Apply(false, true);// read/write is disabled in 2nd param to free up memory
+
+                        SpriteRenderer _spriteRenderer = new GameObject("SPRITE").AddComponent<SpriteRenderer>();
+                        _spriteRenderer.transform.position = modelRoot.transform.position;
+                        _spriteRenderer.sprite = Sprite.Create(targetTexture, new Rect(new Vector2(), new Vector2(1024, 1024)), new Vector2(), 1, 0, SpriteMeshType.FullRect);
+                    }
+                }
+                else
+                    spriteCreatorMessageID = 2;
             }
             else
                 spriteCreatorMessageID = 1;
@@ -362,6 +491,10 @@ public class TDS_SpritesEditor : EditorWindow
 
             case 1:
                 EditorGUILayout.HelpBox("You must select a model root to create sprite from !", MessageType.Error);
+                break;
+
+            case 2:
+                EditorGUILayout.HelpBox("There must be at least one SpriteRenderer in a child GameObject of the root !", MessageType.Error);
                 break;
 
             default:
