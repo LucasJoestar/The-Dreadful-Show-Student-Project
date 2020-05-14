@@ -8,10 +8,12 @@
         [HideInInspector] _RendererColor ("RendererColor", Color) = (1,1,1,1)
         [HideInInspector] _Flip ("Flip", Vector) = (1,1,1,1)
         [PerRendererData] _AlphaTex ("External Alpha", 2D) = "white" {}
-        [PerRendererData] _EnableExternalAlpha ("Enable External Alpha", Float) = 0
-    
-        [PerRendererData] _OutlineSize ("Outline", Float) = 0
-        [PerRendererData] _OutlineColor("Outline Color", Color) = (1,1,1,1)
+		[PerRendererData] _EnableExternalAlpha("Enable External Alpha", Float) = 0
+
+		[PerRendererData] _OutlineSize("Outline", Float) = 0
+		[PerRendererData] _OutlineColor("Outline Color", Color) = (1,1,1,1)
+
+		[Enum(UnityEngine.Rendering.CompareFunction)] _ZTest("ZTest", Float) = 4
     }
 
     SubShader
@@ -29,6 +31,7 @@
         Cull Off
         Lighting Off
         ZWrite Off
+		ZTest [_ZTest]
         Blend One OneMinusSrcAlpha
         
         CGPROGRAM
