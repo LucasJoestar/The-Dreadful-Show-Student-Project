@@ -42,9 +42,6 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     
     public TDS_PlayerInfo PlayerInfo { get; set; }
 
-    [SerializeField] private TMP_Text playerName = null;
-    [SerializeField] private TMP_InputField playerNameInputField = null; 
-
     [SerializeField] private TDS_CharacterSelectionImage[] characterSelectionImages = new TDS_CharacterSelectionImage[] { };
     public TDS_CharacterSelectionImage[] CharacterSelectionImages
     {
@@ -74,6 +71,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
             readyToggle.animator.SetBool("IsReady", value);
             readyToggle.animator.SetTrigger("ReadyChanged");
             if (PlayerInfo == null) return;
+            Debug.Log("Set Ready");
             PlayerInfo.IsReady = value;
             if (isLocked)
             {
@@ -104,8 +102,6 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     /// <param name="_player">Photon player linked to the element</param>
     public void SetPhotonPlayer(PhotonPlayer _player)
     {
-        if (playerName) playerName.text = _player.NickName;
-        if (playerNameInputField) playerNameInputField.text = _player.NickName;
         if (_player.IsMasterClient && ownerCrownImage) ownerCrownImage.gameObject.SetActive(true);
         else if (!_player.IsMasterClient && ownerCrownImage) ownerCrownImage.gameObject.SetActive(false); 
         PlayerInfo = TDS_GameManager.PlayersInfo.Where(i => i.PhotonPlayer == _player).First();
@@ -161,7 +157,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     public void LockElement(bool _isPlayerReady)
     {
         // SET THE TOGGLE
-        if(!PhotonNetwork.offlineMode && (PlayerInfo.PhotonPlayer == null || PhotonNetwork.player.ID == PlayerInfo.PhotonPlayer.ID))
+        if (!PhotonNetwork.offlineMode && (PlayerInfo.PhotonPlayer == null || PhotonNetwork.player.ID == PlayerInfo.PhotonPlayer.ID))
         {
             return; 
         }
@@ -197,7 +193,6 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         if (!PhotonNetwork.offlineMode)
         {
             if (localPelletImage) localPelletImage.gameObject.SetActive(true);
-            if (playerNameInputField) playerNameInputField.interactable = true;
             Selectable _launchButton = TDS_UIManager.Instance.LaunchGameButton;
             if (_launchButton != null)
             {
@@ -220,10 +215,34 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
                 _returnButton.navigation = _nav;
 
             }
-            readyToggle.onValueChanged.AddListener(delegate { characterSelectionManager.SelectCharacterOnline(); });
+            readyToggle.onValueChanged.AddListener(ToggleOnline);
             return; 
         }
         readyToggle.onValueChanged.AddListener(LockElement); 
+    }
+
+    public void ToggleOnline(bool _toggleValue)
+    {
+        if (_toggleValue)
+        {
+            if (!CurrentSelection.CanBeSelected)
+            {
+                DisplayNextImage();
+                return;
+            }
+            if (!TDS_GameManager.LocalIsReady)
+            {
+                characterSelectionManager.SelectCharacterOnline();
+                return;
+            }
+        }
+        else
+        {
+            if (TDS_GameManager.LocalIsReady)
+            {
+                characterSelectionManager.SelectCharacterOnline();
+            }
+        }
     }
 
     /// <summary>
@@ -259,7 +278,6 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         {
             if (localPelletImage) localPelletImage.gameObject.SetActive(false);
             if (ownerCrownImage) ownerCrownImage.gameObject.SetActive(false);
-            if (playerNameInputField) playerNameInputField.interactable = false;
 
             Selectable _launchButton = TDS_UIManager.Instance.LaunchGameButton;
             if (_launchButton != null)

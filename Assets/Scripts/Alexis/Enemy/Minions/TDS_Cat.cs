@@ -219,7 +219,9 @@ public class TDS_Cat : TDS_Character
         }
         agent.StopAgent();
         hitBox.Desactivate(); 
-        SetAnimationState((int)CatAnimationState.Die); 
+        SetAnimationState((int)CatAnimationState.Die);
+        rigidbody.useGravity = true;
+        rigidbody.isKinematic = false;
         base.Die();
     }
 

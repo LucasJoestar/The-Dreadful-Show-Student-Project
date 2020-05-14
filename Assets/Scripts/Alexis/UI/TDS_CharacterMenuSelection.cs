@@ -60,7 +60,9 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
         if (_newPlayer.ID == PhotonNetwork.player.ID)
         {
             LocalElement = _elem; 
-            LocalElement.SetPlayerLocal();
+            LocalElement.SetPlayerLocal(); 
+            if (!LocalElement.CurrentSelection.CanBeSelected) LocalElement.DisplayNextImage();
+
             return; 
         }
         if (_type != PlayerType.Unknown)
@@ -96,6 +98,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
         characterSelectionElements.ToList().ForEach(e => e.DisconnectPlayer()); 
     }
 
+    
     /// <summary>
     /// Lock a particulary element 
     /// </summary>
@@ -111,6 +114,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
         }
         characterSelectionElements.Where(e => (e.PlayerInfo != null) && (e.PlayerInfo.PhotonPlayer.ID == _playerID)).First().LockElement(_playerIsLocked);
     }
+    
 
     /// <summary>
     /// Make the elements selectable or not if a player select it
@@ -127,7 +131,7 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
         {
             _element.DisplayImageOfType(_newType); 
         }
-        if (!TDS_GameManager.LocalIsReady && !LocalElement.CurrentSelection.CanBeSelected) LocalElement.DisplayNextImage(); 
+        if (!TDS_GameManager.LocalIsReady && LocalElement.CurrentSelection.CharacterType == _newType) LocalElement.DisplayNextImage(); 
     }
 
     /// <summary>

@@ -213,12 +213,6 @@ public class TDS_UnicycleSiamese : TDS_Enemy
         SetEnemyState(EnemyState.MakingDecision);
         StartCoroutine(ResetAttackCoolDown()); 
     }
-
-    // Update is called once per frame
-    protected override void Update()
-    {
-        base.Update();
-    }
     #endregion
 
     #endregion

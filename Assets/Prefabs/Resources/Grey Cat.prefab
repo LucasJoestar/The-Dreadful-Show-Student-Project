@@ -298,12 +298,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PositionModel:
-    SynchronizeEnabled: 0
+    SynchronizeEnabled: 1
     TeleportEnabled: 1
     TeleportIfDistanceGreaterThan: 3
-    InterpolateOption: 2
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 1
+    InterpolateOption: 4
+    InterpolateMoveTowardsSpeed: 10
+    InterpolateLerpSpeed: 10
     InterpolateMoveTowardsAcceleration: 2
     InterpolateMoveTowardsDeceleration: 2
     InterpolateSpeedCurve:
@@ -350,7 +350,7 @@ MonoBehaviour:
       m_RotationOrder: 4
     ExtrapolateOption: 0
     ExtrapolateSpeed: 1
-    ExtrapolateIncludingRoundTripTime: 1
+    ExtrapolateIncludingRoundTripTime: 0
     ExtrapolateNumberOfStoredPositions: 1
     DrawErrorGizmo: 1
   m_RotationModel:
@@ -377,7 +377,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 122
   m_CollisionDetection: 0
 --- !u!114 &2815848292181177532
 MonoBehaviour:
@@ -645,3 +645,4 @@ MonoBehaviour:
     ObjectTags:
     - Name: Player
       Color: {r: 0.097232126, g: 0.8962264, b: 0.6973913, a: 1}
+  IgnoreOwner: 1

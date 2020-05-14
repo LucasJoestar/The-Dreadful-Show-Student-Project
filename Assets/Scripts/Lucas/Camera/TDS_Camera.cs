@@ -98,6 +98,8 @@ public class TDS_Camera : MonoBehaviour
     /// Event called the Bound X minimum value is changed.
     /// </summary>
     public event Action OnXMinBoundChanged = null;
+
+    public event Action OnBoundFreeze = null;
     #endregion
 
     #region Fields / Properties
@@ -155,10 +157,10 @@ public class TDS_Camera : MonoBehaviour
             currentBounds = value;
 
             // Set new bounds position
-            topBound.transform.position = value.ZMaxVector;
-            leftBound.transform.position = value.XMinVector;
-            rightBound.transform.position = value.XMaxVector;
-            bottomBound.transform.position = value.ZMinVector;
+            topBound.position = value.ZMaxVector;
+            leftBound.position = value.XMinVector;
+            rightBound.position = value.XMaxVector;
+            bottomBound.position = value.ZMinVector;
 
             OnXMinBoundChanged?.Invoke();
         }
@@ -173,22 +175,22 @@ public class TDS_Camera : MonoBehaviour
     /// <summary>
     /// Bottom bound collider of the level.
     /// </summary>
-    [SerializeField] private BoxCollider bottomBound = null;
+    [SerializeField] private Transform bottomBound = null;
 
     /// <summary>
     /// Left bound collider of the level.
     /// </summary>
-    [SerializeField] private BoxCollider leftBound = null;
+    [SerializeField] private Transform leftBound = null;
 
     /// <summary>
     /// Right bound collider of the level.
     /// </summary>
-    [SerializeField] private BoxCollider rightBound = null;
+    [SerializeField] private Transform rightBound = null;
 
     /// <summary>
     /// Top bound collider of the level.
     /// </summary>
-    [SerializeField] private BoxCollider topBound = null;
+    [SerializeField] private Transform topBound = null;
 
 
     /// <summary>Backing field for <see cref="Camera"/>.</summary>
@@ -364,7 +366,7 @@ public class TDS_Camera : MonoBehaviour
         set
         {
             currentBounds.ZMinVector = value;
-            bottomBound.transform.position = value;
+            bottomBound.position = value;
         }
     }
 
@@ -376,7 +378,7 @@ public class TDS_Camera : MonoBehaviour
         set
         {
             currentBounds.XMinVector = value;
-            leftBound.transform.position = value;
+            leftBound.position = value;
         }
     }
 
@@ -388,7 +390,7 @@ public class TDS_Camera : MonoBehaviour
         set
         {
             currentBounds.XMaxVector = value;
-            rightBound.transform.position = value;
+            rightBound.position = value;
         }
     }
 
@@ -400,7 +402,7 @@ public class TDS_Camera : MonoBehaviour
         set
         {
             currentBounds.ZMaxVector = value;
-            topBound.transform.position = value;
+            topBound.position = value;
         }
     }
 
@@ -874,6 +876,8 @@ public class TDS_Camera : MonoBehaviour
         Vector3 _localPlayerPosition = new Vector3();
         Vector3[] _playerPositions = new Vector3[TDS_LevelManager.Instance.OtherPlayers.Count];
 
+        yield return null;
+
         // While all the bounds are not in the right place, set their position
         while (_boundsMovement.Any(m => m != 0))
         {
@@ -881,6 +885,11 @@ public class TDS_Camera : MonoBehaviour
             if (!PhotonNetwork.offlineMode)
             {
                 _localPlayerPosition = TDS_LevelManager.Instance.LocalPlayer.transform.position;
+                if (_playerPositions.Length != TDS_LevelManager.Instance.OtherPlayers.Count)
+                {
+                    _playerPositions = new Vector3[TDS_LevelManager.Instance.OtherPlayers.Count];
+                }
+
                 for (int _i = 0; _i < TDS_LevelManager.Instance.OtherPlayers.Count; _i++)
                 {
                     _playerPositions[_i] = TDS_LevelManager.Instance.OtherPlayers[_i].transform.position;
@@ -908,7 +917,7 @@ public class TDS_Camera : MonoBehaviour
                         _xMin = transform.position.x - CameraXRatio;
                         if (_xMin != currentBounds.XMin)
                         {
-                            leftBoundVector = new Vector3(_xMin, leftBound.transform.position.y, leftBound.transform.position.z);
+                            leftBoundVector = new Vector3(_xMin, leftBound.position.y, leftBound.position.z);
 
                             OnXMinBoundChanged?.Invoke();
 
@@ -941,7 +950,7 @@ public class TDS_Camera : MonoBehaviour
                         _xMax = transform.position.x + CameraXRatio;
                         if (_xMax != currentBounds.XMax)
                         {
-                            rightBoundVector = new Vector3(_xMax, rightBound.transform.position.y, rightBound.transform.position.z);
+                            rightBoundVector = new Vector3(_xMax, rightBound.position.y, rightBound.position.z);
 
                             // Set X Max bound value to send online
                             onlineSendingBounds.y = currentBounds.XMax;
@@ -972,7 +981,7 @@ public class TDS_Camera : MonoBehaviour
                         _zMin = bottomBound.transform.position.z - (camera.orthographicSize * 2 * camera.WorldToViewportPoint(currentBounds.ZMinVector).y * VIEWPORT_CALCL_Y_COEF);
                         if (_zMin != currentBounds.ZMin)
                         {
-                            bottomBoundVector = new Vector3(bottomBound.transform.position.x, bottomBound.transform.position.y, _zMin);
+                            bottomBoundVector = new Vector3(bottomBound.position.x, bottomBound.position.y, _zMin);
 
                             // Set Z Min bound value to send online
                             onlineSendingBounds.z = currentBounds.ZMin;
@@ -1006,7 +1015,7 @@ public class TDS_Camera : MonoBehaviour
 
                         if ((_zMax != currentBounds.ZMax) && (_mostUpPlayer + 1 < _zMax))
                         {
-                            topBoundVector = new Vector3(topBound.transform.position.x, topBound.transform.position.y, _zMax);
+                            topBoundVector = new Vector3(topBound.position.x, topBound.position.y, _zMax);
 
                             // Set Z Max bound value to send online
                             onlineSendingBounds.w = currentBounds.ZMax;
@@ -1022,6 +1031,7 @@ public class TDS_Camera : MonoBehaviour
             yield return null;
         }
 
+        OnBoundFreeze?.Invoke();
         setBoundsCoroutine = null;
     }
 
@@ -1124,7 +1134,7 @@ public class TDS_Camera : MonoBehaviour
     private void Start ()
     {
         // Set default level bounds
-        levelBounds = new TDS_Bounds(leftBound.transform.position, rightBound.transform.position, bottomBound.transform.position, topBound.transform.position);
+        levelBounds = new TDS_Bounds(leftBound.position, rightBound.position, bottomBound.position, topBound.position);
         currentBounds = levelBounds;
 
         // Set previous position as current one

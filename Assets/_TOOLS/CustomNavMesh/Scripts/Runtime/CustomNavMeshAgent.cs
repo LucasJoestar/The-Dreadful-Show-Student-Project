@@ -473,7 +473,7 @@ public class CustomNavMeshAgent : MonoBehaviour
     {
         _target.y = 0;
         Vector3 _desiredVelocity = (_target - OffsetPosition).normalized * speed;
-        Debug.Log(_target.y + " -> " + _desiredVelocity.y); 
+        //Debug.Log(_target.y + " -> " + _desiredVelocity.y); 
         Vector3 _steer = (_desiredVelocity - velocity) * Mathf.Tan(Mathf.Deg2Rad * steerForce) * Time.fixedDeltaTime;
         velocity += _steer;
         velocity = Vector3.ClampMagnitude(velocity, speed);

@@ -94,7 +94,7 @@ public abstract class TDS_LifeBar : MonoBehaviour
     /// <summary>
     /// Fill the lifebar!
     /// </summary>
-    public virtual void UpdateLifeBar(int _currentHealth)
+    public virtual void UpdateLifeBar()
     {
         if (!TDS_UIManager.Instance || !owner) return;
         float _fillingValue = Mathf.Clamp((float)owner.HealthCurrent / (float)owner.HealthMax, 0, 1);

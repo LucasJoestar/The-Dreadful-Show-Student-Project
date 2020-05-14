@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -42,6 +41,8 @@ public class TDS_Attack : ScriptableObject
 	*/
 
     #region Fields / Properties
+
+#if UNITY_EDITOR
     /// <summary>Backing field for <see cref="AttackName"/>.</summary>
     [SerializeField] protected string attackName = "New Attack"; 
 
@@ -49,6 +50,7 @@ public class TDS_Attack : ScriptableObject
     /// Name of this attack, used to reference it.
     /// </summary>
     public string AttackName { get { return attackName; } }
+#endif
 
 
     /// <summary>
@@ -101,11 +103,9 @@ public class TDS_Attack : ScriptableObject
         get { return Random.Range(damagesMin, damagesMax + 1); }
     }
 
-    [SerializeField, TextArea] protected string description = string.Empty;  
-    /// <summary>
-    /// Short (or long) description of this attack, and what it does.
-    /// </summary>
-    public string Description { get { return description; } }
+#if UNITY_EDITOR
+    [SerializeField, TextArea] protected string description = string.Empty;
+#endif
 
     [SerializeField] private AudioClip[] attackClips = new AudioClip[] { }; 
     #endregion
@@ -130,9 +130,9 @@ public class TDS_Attack : ScriptableObject
         bool _doPutOnGround = false;
 
         // If a player performs an attack from behind, increase damages and try to put on ground
-        if (_attacker.Owner && (_target is TDS_Character _targetC) && _attacker.transform.parent && (_attacker.transform.parent.gameObject.HasTag("Player") && ((_attacker.transform.position.x > (_target.transform.position.x + .5f)) != _targetC.IsFacingRight)))
+        if (_attacker.Owner && (_target is TDS_Character _targetC) && _attacker.transform.parent && (_attacker.Owner is TDS_Player) && (Mathf.Sign(_attacker.transform.position.x - (_target.transform.position.x + (.5f * (!_targetC.IsFacingRight).ToSign()))) != _targetC.IsFacingRight.ToSign()))
         {
-            _damages = (int)(_damages * 2f);
+            _damages = _damages * 2;
 
             // Get 1 / 4 chance to put target on ground
             _doPutOnGround = _noEffect && (Random.Range(1, 100) < 25);
@@ -144,11 +144,23 @@ public class TDS_Attack : ScriptableObject
         // Increase score
         if ((_attacker.Owner is TDS_Player _player) && (_target is TDS_Enemy _enemyTarget))
         {
-            TDS_GameManager.PlayersInfo.First(p => p.PlayerType == _player.PlayerType).PlayerScore.IncreaseInflictedScore(_enemyTarget, _damages);
+            for (int _i = 0; _i < TDS_GameManager.PlayersInfo.Count; _i++)
+            {
+                if (TDS_GameManager.PlayersInfo[_i].PlayerType == _player.PlayerType)
+                {
+                    TDS_GameManager.PlayersInfo[_i].PlayerScore.IncreaseInflictedScore(_enemyTarget, _damages);
+                }
+            }
         }
         else if ((_target is TDS_Player _playerTarget) && (_attacker.Owner is TDS_Enemy _enemy))
         {
-            TDS_GameManager.PlayersInfo.First(p => p.PlayerType == _playerTarget.PlayerType).PlayerScore.IncreaseSuffuredScore(_enemy, _damages, _playerTarget.IsDead);
+            for (int _i = 0; _i < TDS_GameManager.PlayersInfo.Count; _i++)
+            {
+                if (TDS_GameManager.PlayersInfo[_i].PlayerType == _playerTarget.PlayerType)
+                {
+                    TDS_GameManager.PlayersInfo[_i].PlayerScore.IncreaseSuffuredScore(_enemy, _damages, _playerTarget.IsDead); ;
+                }
+            }
         }
 
         if (_target.IsDead) return -1;
@@ -201,9 +213,12 @@ public class TDS_Attack : ScriptableObject
 
     public AudioClip GetRandomClip()
     {
-        if (attackClips.Length == 0) return null; 
-        int _randomIndex = Random.Range(0, attackClips.Length);
-        return attackClips[_randomIndex]; 
+        if (attackClips.Length > 0)
+        {
+            return attackClips[Random.Range(0, attackClips.Length)];
+        }
+
+        return null;
     }
     #endregion
 }

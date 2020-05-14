@@ -118,5 +118,14 @@ public class TDS_PlayerScore
             if (_isPlayerDead) KnockoutAmountFromEnemies[_tag] ++;
         }
     }
+
+    public void Reset()
+    {
+        CollectiblesScore = 0;
+        KnockoutEnemiesAmount.Clear();
+        InflictedDmgsToEnemies.Clear();
+        SuffuredDmgsFromEnemies.Clear();
+        KnockoutAmountFromEnemies.Clear();
+    }
     #endregion
 }
