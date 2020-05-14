@@ -142,6 +142,7 @@ MonoBehaviour:
     ObjectTags:
     - Name: Player
       Color: {r: 0.13861692, g: 0.8396226, b: 0.76441735, a: 1}
+  IgnoreOwner: 1
 --- !u!1 &2085316961524171253
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,8 +286,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 2085316961524171248}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 48
-  instantiationId: 48
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &2085316961524171248

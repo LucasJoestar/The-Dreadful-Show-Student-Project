@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -99,6 +100,7 @@ public class TDS_SpritesEditor : EditorWindow
 
     [SerializeField] private string savePath = "Assets/";
 
+    [SerializeField] private Camera renderCamera = null;
     [SerializeField] private Transform modelRoot = null;
 
     private int spriteCreatorMessageID = 0;
@@ -325,6 +327,9 @@ public class TDS_SpritesEditor : EditorWindow
     {
         GUILayout.Space(5);
         EditorGUILayout.LabelField(new GUIContent("Sprite Creator", "Create single sprites from multiple ones !"), EditorStyles.boldLabel);
+        GUILayout.Space(5);
+
+        renderCamera = (Camera)EditorGUILayout.ObjectField(new GUIContent("Render Camera", "Camera used to capture the model"), renderCamera, typeof(Camera), true);
 
         float _maxWidth = (Screen.width / 2f) - 10;
 
@@ -346,9 +351,69 @@ public class TDS_SpritesEditor : EditorWindow
 
         if (GUILayout.Button("Create Sprite", GUILayout.MaxWidth(200)))
         {
-            if (modelRoot)
+            if (!renderCamera)
+            {
+                spriteCreatorMessageID = 2;
+            }
+            else if (modelRoot)
             {
                 spriteCreatorMessageID = 0;
+
+                SpriteRenderer[] _sprites = modelRoot.GetComponentsInChildren<SpriteRenderer>();
+
+                // Set all renderers on a different layer (not visible)
+                Renderer[] _allRenderers = FindObjectsOfType<Renderer>();
+                Dictionary<Renderer, int> _renderers = new Dictionary<Renderer, int>();
+                for (int _i = 0; _i < _allRenderers.Length; _i++)
+                {
+                    if (_allRenderers[_i].isVisible && !_sprites.Contains(_allRenderers[_i]))
+                    {
+                        _renderers.Add(_allRenderers[_i], _allRenderers[_i].gameObject.layer);
+                        _allRenderers[_i].gameObject.layer = 2;
+                    }
+                }
+
+                // Get sprites bounding volume
+                Bounds _bounds = new Bounds(modelRoot.position, Vector3.zero);
+                for (int _i = 0; _i < _sprites.Length; _i++)
+                {
+                    _bounds.Encapsulate(_sprites[_i].bounds);
+                }
+
+                renderCamera.transform.position = _bounds.center;
+                Vector2 _offset = renderCamera.WorldToScreenPoint(_bounds.min);
+                Vector2 _boundsSize = (Vector2)renderCamera.WorldToScreenPoint(_bounds.max) - _offset;
+
+                int _size = Mathf.ClosestPowerOfTwo((int)Mathf.Max(_boundsSize.x, _boundsSize.y));
+
+                RenderTexture _renderTexture = new RenderTexture(renderCamera.scaledPixelWidth, renderCamera.pixelHeight, 32);
+                RenderTexture.active = _renderTexture;
+                renderCamera.targetTexture = _renderTexture;
+                renderCamera.Render();
+                renderCamera.targetTexture = null;
+
+                // Reset renderers layer
+                foreach (KeyValuePair<Renderer, int> _renderer in _renderers)
+                {
+                    _renderer.Key.gameObject.layer = _renderer.Value;
+                }
+
+                var _capture = new Texture2D(_size, _size, TextureFormat.RGBA32, false);
+                Color[] _colors = _capture.GetPixels();
+                for (int _i = 0; _i < _colors.Length; _i++)
+                {
+                    _colors[_i] = Color.clear;
+                }
+                _capture.SetPixels(_colors);
+
+                _capture.ReadPixels(new Rect(_offset.x, _offset.y, _size, _size), 0, 0);
+                _capture.Apply();
+                RenderTexture.active = null;
+
+                SpriteRenderer _newSprite = new GameObject("SPRITE").AddComponent<SpriteRenderer>();
+                _newSprite.transform.position = _bounds.center;
+                _newSprite.sprite = Sprite.Create(_capture, new Rect(0, 0, _size, _size), new Vector2(.5f, .5f), 88);
+                _newSprite.transform.localScale = new Vector3(.98f, 1.025f, 1);
             }
             else
                 spriteCreatorMessageID = 1;
@@ -362,6 +427,10 @@ public class TDS_SpritesEditor : EditorWindow
 
             case 1:
                 EditorGUILayout.HelpBox("You must select a model root to create sprite from !", MessageType.Error);
+                break;
+
+            case 2:
+                EditorGUILayout.HelpBox("You must assign a camera to capture the model !", MessageType.Error);
                 break;
 
             default:
