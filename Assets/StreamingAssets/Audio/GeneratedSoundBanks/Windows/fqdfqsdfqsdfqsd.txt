@@ -1,0 +1,65 @@
+Event	ID	Name			Wwise Object Path	Notes
+	248488741	ACROBAT			\Default Work Unit\monsters\ACROBAT	
+	804534660	SIAMESE			\Default Work Unit\monsters\SIAMESE	
+	1050926838	niveau_X			\Default Work Unit\ambiances levels\niveau_X	
+	1936185617	test_sound			\Default Work Unit\test_sound	
+	1942555113	PUNK			\Default Work Unit\monsters\PUNK	
+	2358710769	MIGHTYMAN			\Default Work Unit\monsters\MIGHTYMAN	
+	2390245931	BRUTAL_SIAMESE			\Default Work Unit\monsters\BRUTAL_SIAMESE	
+	2559194501	MIME			\Default Work Unit\monsters\MIME	
+	2888865648	FAKIR			\Default Work Unit\monsters\FAKIR	
+	3193947170	hurt			\Default Work Unit\persos\hurt	
+	4145357456	attaque_3			\Default Work Unit\persos\attaque_3	
+	4145357457	attaque_2			\Default Work Unit\persos\attaque_2	
+	4145357458	attaque_1			\Default Work Unit\persos\attaque_1	
+
+Switch Group	ID	Name			Wwise Object Path	Notes
+	2066487578	ENNEMIS_ATTACK_SWITCH			\Default Work Unit\ENNEMIS_ATTACK_SWITCH	
+
+Switch	ID	Name	Switch Group			Notes
+	4145357456	attaque_3	ENNEMIS_ATTACK_SWITCH			
+	4145357457	attaque_2	ENNEMIS_ATTACK_SWITCH			
+	4145357458	attaque_1	ENNEMIS_ATTACK_SWITCH			
+	4145357461	attaque_6	ENNEMIS_ATTACK_SWITCH			
+	4145357462	attaque_5	ENNEMIS_ATTACK_SWITCH			
+	4145357463	attaque_4	ENNEMIS_ATTACK_SWITCH			
+
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	3540893800	ennemies_attack			\Default Work Unit\ennemies_attack	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	29386585	CHARGE_03	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARGE\CHARGE_03_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\MIGHTYMAN\CHARGE\CHARGE_03		70536
+	35543552	RIBBON	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\RIBBON_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\ACROBAT\RIBBON\RIBBON		64130
+	44757587	MIME_FISH_START	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\MIME_FISH_START_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\MIME\MIME_FISH_START		53182
+	112895815	PISTOL	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\PISTOL_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\MIME\PISTOL		86550
+	139238231	MIME_FISH_REELING	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\MIME_FISH_REELING_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\MIME\MIME_FISH_REELING		73738
+	139321919	CHARGE_02	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARGE\CHARGE_02_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\MIGHTYMAN\CHARGE\CHARGE_02		89754
+	229587323	SIAMES_BRUTAL_HIT_01	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SIAMES_BRUTAL_HIT_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\BRUTAL_SIAMESE\Brutal_hit\SIAMES_BRUTAL_HIT_01		64128
+	232228637	SALTO	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SALTO_6AFFD427.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\ACROBAT\SALTO\SALTO		56724
+	341544695	test sound	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\ouinouinmastered_DDF13D90.wem		\Actor-Mixer Hierarchy\Default Work Unit\test sound		2020428
+	341859559	CHARGE_04	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARGE\CHARGE_04_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\MIGHTYMAN\CHARGE\CHARGE_04		73736
+	378083774	COSTUME	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SIAMESE\COSTUME_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\SIAMESE\COSTUME		67200
+	484614860	SWORD_DRAW	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SWORD_DRAW_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\FAKIR\SWORD_DRAW		41706
+	498916138	SWORD_THROW	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SWORD_THROW_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\FAKIR\SWORD_THROW		47732
+	510495615	HAMMER_03	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\HAMMER\HAMMER_03_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\MIME\HAMMER\HAMMER_03		44910
+	576318832	FAKIR_DASH	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\FAKIR_DASH_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\FAKIR\FAKIR_DASH		44910
+	584764245	CHARGE_01	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARGE\CHARGE_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\MIGHTYMAN\CHARGE\CHARGE_01		73738
+	693430572	SIAMES_BRUTAL_HIT_02	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SIAMES_BRUTAL_HIT_02_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\BRUTAL_SIAMESE\Brutal_hit\SIAMES_BRUTAL_HIT_02		71584
+	693893787	CROWBAR_04	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\PUNK\CROWBAR\CROWBAR_04_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\PUNK\CROWBAR\CROWBAR_04		39782
+	714091263	SIAMESE_LARGEHIT	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SIAMESE\SIAMESE_LARGEHIT_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\SIAMESE\SIAMESE_LARGEHIT		41706
+	736406922	HAMMER_05	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\HAMMER\HAMMER_05_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\MIME\HAMMER\HAMMER_05		44906
+	779630561	SIAMESE_SMALLHIT	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SIAMESE\SIAMESE_SMALLHIT_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\SIAMESE\SIAMESE_SMALLHIT		32096
+	779758517	KNIFE	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\KNIFE_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\FAKIR\KNIFE		28894
+	783107874	ACROBAT_DASH	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\ACROBAT_DASH_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\ACROBAT\ACROBAT_DASH\ACROBAT_DASH		35300
+	799369274	HAMMER_02	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\HAMMER\HAMMER_02_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\MIME\HAMMER\HAMMER_02		38502
+	810962521	SIAMESE_TONRADO	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SIAMESE\SIAMESE_TONRADO_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\SIAMESE\SIAMESE_TONRADO		432494
+	833459906	SIAMES_BRUTAL_HIT_03	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SIAMES_BRUTAL_HIT_03_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\BRUTAL_SIAMESE\Brutal_hit\SIAMES_BRUTAL_HIT_03		83348
+	833954741	HAMMER_01	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\HAMMER\HAMMER_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\MIME\HAMMER\HAMMER_01		51316
+	877355694	CROWBAR_01	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\PUNK\CROWBAR\CROWBAR_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\PUNK\CROWBAR\CROWBAR_01		35298
+	915269170	SNAKE	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SNAKE_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\FAKIR\SNAKE		49820
+	933588251	CHARGE_05	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARGE\CHARGE_05_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\MIGHTYMAN\CHARGE\CHARGE_05		83348
+	1032823669	GROUND_SLAM	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\GROUND_SLAM_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\MIGHTYMAN\GROUND_SLAM		161886
+	1040413234	CROWBAR_03	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\PUNK\CROWBAR\CROWBAR_03_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\PUNK\CROWBAR\CROWBAR_03		38504
+	1060116836	CROWBAR_02	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\PUNK\CROWBAR\CROWBAR_02_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\PUNK\CROWBAR\CROWBAR_02		41706
+	1068517412	HAMMER_04	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\HAMMER\HAMMER_04_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ENNEMIES\MIME\HAMMER\HAMMER_04		44910
+
