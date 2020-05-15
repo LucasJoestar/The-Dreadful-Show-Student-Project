@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}" SchemaVersion="97">
+	<Events>
+		<WorkUnit Name="Default Work Unit" ID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}" PersistMode="Standalone">
+			<ChildrenList>
+				<Folder Name="persos" ID="{F450527F-D7C6-4455-857D-091EB4D19A33}" ShortID="440825715">
+					<PropertyList>
+						<Property Name="Color" Type="int16" Value="10"/>
+						<Property Name="OverrideColor" Type="bool" Value="True"/>
+					</PropertyList>
+					<ChildrenList>
+						<Event Name="attaque_1" ID="{36F33945-C7F3-4628-9EBD-8B88D5E0D67F}"/>
+						<Event Name="attaque_2" ID="{FE844078-C68B-46CA-AEBC-6AEC2EF4F382}"/>
+						<Event Name="attaque_3" ID="{9C920A62-6149-4AEB-A400-552E7614F0C7}"/>
+						<Event Name="hurt" ID="{E52A7693-D16D-461C-89E4-332084481A9F}"/>
+					</ChildrenList>
+				</Folder>
+				<Folder Name="monsters" ID="{E7F8CC48-A39A-42FF-955A-6DAF1ED9C566}" ShortID="583648434">
+					<PropertyList>
+						<Property Name="Color" Type="int16" Value="3"/>
+						<Property Name="OverrideColor" Type="bool" Value="True"/>
+					</PropertyList>
+					<ChildrenList>
+						<Event Name="ACROBAT" ID="{D28A18D9-E8D1-42D3-94CC-1019F9E17537}">
+							<PropertyList>
+								<Property Name="Color" Type="int16" Value="1"/>
+							</PropertyList>
+							<ChildrenList>
+								<Action Name="" ID="{06583BBF-DC23-482B-B777-9B1CFABFDB4E}" ShortID="905524777">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="ACROBAT" ID="{347AD3BA-0480-491A-B5D9-44C0EABF6BA2}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="BRUTAL_SIAMESE" ID="{7600FA47-118C-4002-9F99-0E65C1DA0306}">
+							<PropertyList>
+								<Property Name="Color" Type="int16" Value="4"/>
+							</PropertyList>
+							<ChildrenList>
+								<Action Name="" ID="{EE4682AB-CA13-40FF-B231-9A7FC5492B4C}" ShortID="870708228">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="BRUTAL_SIAMESE" ID="{D50FECE9-B909-408B-8A17-DBD9C22CC924}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="FAKIR" ID="{248BDDF8-C4A0-4CAC-A51F-C51EA5FABEAB}">
+							<PropertyList>
+								<Property Name="Color" Type="int16" Value="15"/>
+							</PropertyList>
+							<ChildrenList>
+								<Action Name="" ID="{B2024ED6-77C3-4B46-8BEA-65488B0031BA}" ShortID="911850685">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="FAKIR" ID="{CE2104C4-2119-4ECF-9FC1-05EC19CCA3EA}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="MIGHTYMAN" ID="{2F4464F5-62FC-4042-842A-134C818F5476}">
+							<ChildrenList>
+								<Action Name="" ID="{29F610AB-ED17-4EBF-8486-0333A376F55B}" ShortID="69647456">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="MIGHTYMAN" ID="{CCE863A3-13F4-4BCC-B2C9-0B5D17436570}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="MIME" ID="{5B348EEB-138A-4F15-ABCC-DF91D2E306E4}">
+							<PropertyList>
+								<Property Name="Color" Type="int16" Value="15"/>
+							</PropertyList>
+							<ChildrenList>
+								<Action Name="" ID="{CEF142BD-8F16-4F46-A78A-0042DDE15579}" ShortID="57228796">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="MIME" ID="{5BA3409F-AAFA-4EEA-AEAD-4A028EE2B55F}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="PUNK" ID="{FE578518-65AF-4C24-8BEA-3C308CFBF5C3}">
+							<ChildrenList>
+								<Action Name="" ID="{F4176F0F-20FD-429B-BA41-1540B0A73706}" ShortID="787044512">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="PUNK" ID="{705DFA6C-78C4-473E-90FC-3F1F3043F2D1}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="SIAMESE" ID="{6F5770B7-3D7F-4EAD-995C-0C9FC6B903DA}">
+							<ChildrenList>
+								<Action Name="" ID="{986F9DEB-52C9-47D2-A048-9F7183F02AED}" ShortID="990493003">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="SIAMESE" ID="{034506F4-825B-490F-96D3-985BFFD890AB}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
+				<Folder Name="ambiances levels" ID="{A9391122-6DA6-4DBF-9CAA-C1036D92C489}" ShortID="219106261">
+					<ChildrenList>
+						<Event Name="niveau_X" ID="{B4AB6C09-2D76-4963-9D72-48BE3E86CFB8}"/>
+					</ChildrenList>
+				</Folder>
+				<Event Name="test_sound" ID="{EE6FF946-910C-48AA-BE19-CAFF3C74D1C9}">
+					<ChildrenList>
+						<Action Name="" ID="{C0CA2CD1-E5DC-4AE0-9F68-1A4331079F69}" ShortID="366375442">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="test sound" ID="{4691158A-5044-4EA1-9FBF-5BA57F4140B9}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>

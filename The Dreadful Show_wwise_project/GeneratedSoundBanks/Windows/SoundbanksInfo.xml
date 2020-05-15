@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="12" SoundbankVersion="135">
+	<RootPaths>
+		<ProjectRoot>D:\documents stock\Documents\WwiseProjects\The Dreadful Show\</ProjectRoot>
+		<SourceFilesRoot>D:\documents stock\Documents\WwiseProjects\The Dreadful Show\.cache\Windows\</SourceFilesRoot>
+		<SoundBanksRoot>D:\documents stock\Documents\WwiseProjects\The Dreadful Show\GeneratedSoundBanks\Windows\</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>D:\documents stock\Documents\WwiseProjects\The Dreadful Show\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<DialogueEvents/>
+	<StreamedFiles/>
+	<MediaFilesNotInAnyBank/>
+	<SoundBanks>
+		<SoundBank Id="1355168291" Language="SFX">
+			<ObjectPath>Init</ObjectPath>
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
+		</SoundBank>
+		<SoundBank Id="3374902692" Language="SFX">
+			<ObjectPath>\SoundBanks\Default Work Unit\sounbank_all</ObjectPath>
+			<ShortName>sounbank_all</ShortName>
+			<Path>sounbank_all.bnk</Path>
+			<IncludedEvents>
+				<Event Id="1936185617" Name="test_sound" ObjectPath="\Events\Default Work Unit\test_sound">
+					<IncludedMemoryFiles>
+						<File Id="341544695" Language="SFX">
+							<ShortName>ouinouinmastered.wav</ShortName>
+							<Path>SFX\ouinouinmastered_5F2EE193.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+			</IncludedEvents>
+		</SoundBank>
+	</SoundBanks>
+</SoundBanksInfo>
