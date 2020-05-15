@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AK.Wwise;
+using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -107,7 +108,10 @@ public class TDS_Attack : ScriptableObject
     [SerializeField, TextArea] protected string description = string.Empty;
 #endif
 
-    [SerializeField] private AudioClip[] attackClips = new AudioClip[] { }; 
+    [Header("Sound")]
+
+    [SerializeField] private string soundEvent = "ENEMY";
+    [SerializeField] private float soundRTPCValue = .1f;
     #endregion
 
     #region Methods
@@ -211,14 +215,10 @@ public class TDS_Attack : ScriptableObject
         return 1;
     }
 
-    public AudioClip GetRandomClip()
+    public void PlaySound(GameObject _object)
     {
-        if (attackClips.Length > 0)
-        {
-            return attackClips[Random.Range(0, attackClips.Length)];
-        }
-
-        return null;
+        AkSoundEngine.SetRTPCValue("ennemies_attack", soundRTPCValue);
+        AkSoundEngine.PostEvent(soundEvent, _object);
     }
     #endregion
 }
