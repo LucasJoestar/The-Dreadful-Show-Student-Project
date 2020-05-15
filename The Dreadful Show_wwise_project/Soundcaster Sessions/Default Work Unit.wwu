@@ -10,6 +10,10 @@
 							<Position X="0" Y="0"/>
 						</Module>
 						<Module>
+							<ObjectRef Name="MIME" ID="{5B348EEB-138A-4F15-ABCC-DF91D2E306E4}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="1" Y="0"/>
+						</Module>
+						<Module>
 							<ObjectRef Name="ACROBAT" ID="{D28A18D9-E8D1-42D3-94CC-1019F9E17537}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
 							<Position X="1" Y="2"/>
 						</Module>
@@ -17,7 +21,7 @@
 					<RTPCValueList ShowAll="true">
 						<RTPCValue>
 							<GameParameterRef Name="ennemies_attack" ID="{3B2701C7-FA62-4A8C-BFC5-BC19D3034E4B}"/>
-							<Value>0.3</Value>
+							<Value>0.37</Value>
 						</RTPCValue>
 					</RTPCValueList>
 					<CurrentStateList ShowAll="true"/>
