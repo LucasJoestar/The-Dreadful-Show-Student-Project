@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -110,7 +109,7 @@ public class TDS_SpritesEditor : EditorWindow
 
     #region Original Methods
 
-    #region Menus
+    #region General
     /// <summary>
     /// Method to call this window from the Unity toolbar.
     /// </summary>
@@ -122,7 +121,48 @@ public class TDS_SpritesEditor : EditorWindow
     /// </summary>
     public void DrawEditor()
     {
-        DrawToolbar();
+        #region Toolbar
+        // Draw toolbar
+        EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
+
+        GUILayout.FlexibleSpace();
+
+        if (GUILayout.Button(new GUIContent("Range", "Range the groups by name"), EditorStyles.toolbarButton))
+        {
+            colorGroups = colorGroups.OrderBy(g => g.Color.grayscale).ToArray();
+            colorGroups = colorGroups.OrderBy(g => g.Name).ToArray();
+        }
+
+        if (GUILayout.Button(new GUIContent("Load Sprites", "Loads all sprites of this level"), EditorStyles.toolbarButton)) LoadSprites();
+
+        GUILayout.Space(15);
+
+        if (GUILayout.Button(new GUIContent("Reset", "Clear all loaded sprites and get them from zero point"), EditorStyles.toolbarButton))
+        {
+            if (EditorUtility.DisplayDialog("Confirm color groups reset", "Are you sure you want to reset all your color groups ? This action cannot be undone.", "Yes, I'm sure !", "I've changed my mind..."))
+            {
+                colorGroups = new TDS_ColorGroup[] { };
+                LoadSprites();
+                Repaint();
+            }
+        }
+
+        GUILayout.Space(10);
+
+        if (GUILayout.Button(new GUIContent("Load", "Load saved groups if existing"), EditorStyles.toolbarButton))
+        {
+            if (EditorUtility.DisplayDialog("Confirm color group load", "Are you sure you want to load saved groups ? Your saved groups will be erased. This action cannot be undone.", "Yes, I'm sure !", "I've changed my mind..."))
+            {
+                LoadGroups();
+            }
+        }
+        if (GUILayout.Button(new GUIContent("Save", "Save color groups"), EditorStyles.toolbarButton))
+        {
+            SaveGroups();
+        }
+
+        EditorGUILayout.EndHorizontal();
+        #endregion
 
         DrawGeneralMode();
 
@@ -380,11 +420,12 @@ public class TDS_SpritesEditor : EditorWindow
                     _bounds.Encapsulate(_sprites[_i].bounds);
                 }
 
-                renderCamera.transform.position = _bounds.center;
+                //renderCamera.transform.position = _bounds.center;
                 Vector2 _offset = renderCamera.WorldToScreenPoint(_bounds.min);
                 Vector2 _boundsSize = (Vector2)renderCamera.WorldToScreenPoint(_bounds.max) - _offset;
+                int _size = Mathf.NextPowerOfTwo((int)Mathf.Max(_boundsSize.x, _boundsSize.y));
 
-                int _size = Mathf.ClosestPowerOfTwo((int)Mathf.Max(_boundsSize.x, _boundsSize.y));
+                Debug.Log("Min => " + _offset + " | Max => " + ((Vector2)renderCamera.WorldToScreenPoint(_bounds.max)) + " | Bounds => " + _boundsSize);
 
                 RenderTexture _renderTexture = new RenderTexture(renderCamera.scaledPixelWidth, renderCamera.pixelHeight, 32);
                 RenderTexture.active = _renderTexture;
@@ -406,14 +447,17 @@ public class TDS_SpritesEditor : EditorWindow
                 }
                 _capture.SetPixels(_colors);
 
-                _capture.ReadPixels(new Rect(_offset.x, _offset.y, _size, _size), 0, 0);
+                // Reversed Y starting position
+                _capture.ReadPixels(new Rect(_offset.x, renderCamera.pixelHeight - _offset.y - _boundsSize.y, _boundsSize.x, _boundsSize.y), 0, 0);
                 _capture.Apply();
                 RenderTexture.active = null;
 
                 SpriteRenderer _newSprite = new GameObject("SPRITE").AddComponent<SpriteRenderer>();
                 _newSprite.transform.position = _bounds.center;
-                _newSprite.sprite = Sprite.Create(_capture, new Rect(0, 0, _size, _size), new Vector2(.5f, .5f), 88);
-                _newSprite.transform.localScale = new Vector3(.98f, 1.025f, 1);
+                _newSprite.sprite = Sprite.Create(_capture, new Rect(0, 0, _size, _size), new Vector2(.5f, .5f), renderCamera.pixelHeight / (renderCamera.orthographicSize * 2f));
+                _newSprite.transform.localScale = new Vector3(1, TDS_Camera.VIEWPORT_CALCL_Y_COEF, 1);
+
+                //File.WriteAllBytes(Path.Combine(Application.dataPath, savePath), _capture.EncodeToPNG());
             }
             else
                 spriteCreatorMessageID = 1;
@@ -436,53 +480,6 @@ public class TDS_SpritesEditor : EditorWindow
             default:
                 break;
         }
-    }
-
-    /// <summary>
-    /// Draws the toolbar.
-    /// </summary>
-    public void DrawToolbar()
-    {
-        // Draw toolbar
-        EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
-
-        GUILayout.FlexibleSpace();
-
-        if (GUILayout.Button(new GUIContent("Range", "Range the groups by name"), EditorStyles.toolbarButton))
-        {
-            colorGroups = colorGroups.OrderBy(g => g.Color.grayscale).ToArray();
-            colorGroups = colorGroups.OrderBy(g => g.Name).ToArray();
-        }
-
-        if (GUILayout.Button(new GUIContent("Load Sprites", "Loads all sprites of this level"), EditorStyles.toolbarButton)) LoadSprites();
-
-        GUILayout.Space(15);
-
-        if (GUILayout.Button(new GUIContent("Reset", "Clear all loaded sprites and get them from zero point"), EditorStyles.toolbarButton))
-        {
-            if (EditorUtility.DisplayDialog("Confirm color groups reset", "Are you sure you want to reset all your color groups ? This action cannot be undone.", "Yes, I'm sure !", "I've changed my mind..."))
-            {
-                colorGroups = new TDS_ColorGroup[] { };
-                LoadSprites();
-                Repaint();
-            }
-        }
-
-        GUILayout.Space(10);
-
-        if (GUILayout.Button(new GUIContent("Load", "Load saved groups if existing"), EditorStyles.toolbarButton))
-        {
-            if (EditorUtility.DisplayDialog("Confirm color group load", "Are you sure you want to load saved groups ? Your saved groups will be erased. This action cannot be undone.", "Yes, I'm sure !", "I've changed my mind..."))
-            {
-                LoadGroups();
-            }
-        }
-        if (GUILayout.Button(new GUIContent("Save", "Save color groups"), EditorStyles.toolbarButton))
-        {
-            SaveGroups();
-        }
-
-        EditorGUILayout.EndHorizontal();
     }
     #endregion
 
