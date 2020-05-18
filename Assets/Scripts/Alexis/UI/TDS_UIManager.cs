@@ -793,10 +793,10 @@ public class TDS_UIManager : PunBehaviour
     public void DisplayOptions(bool _isDisplaying)
     {
         if (!optionManager) return;
-        if (_isDisplaying)
-        {
-            optionManager.ResetDisplayedSettings();
-        }
+        //if (_isDisplaying)
+        //{
+        //    optionManager.ResetDisplayedSettings();
+        //}
         optionManager.gameObject.SetActive(_isDisplaying);
     }
 
@@ -1288,7 +1288,7 @@ public class TDS_UIManager : PunBehaviour
         if (uiGameObject)
             uiGameObject.SetActive(true);
         ActivateMenu(uiState);
-
+        optionManager.ResetDisplayedSettings();
         TDS_SceneManager.OnLoadScene += CleanWorldCanvas;
     }
 
