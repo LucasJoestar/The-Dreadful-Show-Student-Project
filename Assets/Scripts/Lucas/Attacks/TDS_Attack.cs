@@ -215,10 +215,16 @@ public class TDS_Attack : ScriptableObject
         return 1;
     }
 
+    public RTPC myRTPC = new RTPC();
+
     public void PlaySound(GameObject _object)
     {
-        //AkSoundEngine.SetRTPCValue("ennemies_attack", soundRTPCValue, _object);
+        // Doesn't work
+        AkSoundEngine.SetRTPCValue("ennemies_attack", .1f, _object);
+
+        // Work
         AkSoundEngine.SetSwitch("ENNEMIS_ATTACK_SWITCH", "attaque_1", _object);
+
         AkSoundEngine.PostEvent(soundEvent, _object);
     }
     #endregion
