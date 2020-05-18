@@ -17,14 +17,14 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: 8bc392f5b7d3754cb86f7488cbeb71b7
     GuidInternal: 
-    m_lastTime: -8586128189992798268
+    m_lastTime: -8586118001912066333
     List: []
   AuxBusWwu:
   - PhysicalPath: Master-Mixer Hierarchy\Default Work Unit.wwu
     ParentPath: Default Work Unit
     guid: 5728dc951eec2f4ba0da03385db6a701
     GuidInternal: 
-    m_lastTime: -8586128189989327563
+    m_lastTime: -8586118001927410827
     List:
     - name: Master Audio Bus
       guid: d8a41415a61d2a41a17e75ca0c2149f3
@@ -40,23 +40,23 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: 1006ea0a9d7e324da8219c686cfb7962
     GuidInternal: 
-    m_lastTime: -8586126645398178786
+    m_lastTime: -8586117986083054165
     List:
-    - name: sounbank_all
-      guid: 8cda858f11488046959f94076e742185
-      id: 3374902692
+    - name: la_seule_et_unique_banque_de_soon
+      guid: 698b67326979da4cbd63fcebcb94d86f
+      id: 3151042580
       PathAndIcons:
       - ElementName: Default Work Unit
         ObjectType: 12
-      - ElementName: sounbank_all
+      - ElementName: la_seule_et_unique_banque_de_soon
         ObjectType: 7
-      Path: Default Work Unit\sounbank_all
+      Path: Default Work Unit\la_seule_et_unique_banque_de_soon
   EventWwu:
   - PhysicalPath: Events\Default Work Unit.wwu
     ParentPath: Default Work Unit
     guid: cc3d7ab8a618c64db455f8be16d3f7da
     GuidInternal: 
-    m_lastTime: -8586126646825018417
+    m_lastTime: -8586118001927615341
     List:
     - name: ACROBAT
       guid: d9188ad2d1e8d34294cc1019f9e17537
@@ -285,28 +285,86 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: 36f8251017abdb4a85abc88ad330292c
     GuidInternal: 
-    m_lastTime: -8586128189989377426
-    List: []
+    m_lastTime: -8586118001927645264
+    List:
+    - name: ennemies_attack
+      guid: c701273b62fa8c4abfc5bc19d3034e4b
+      id: 3540893800
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: ennemies_attack
+        ObjectType: 13
+      Path: Default Work Unit\ennemies_attack
   StateWwu:
   - PhysicalPath: States\Default Work Unit.wwu
     ParentPath: Default Work Unit
     guid: 860f0487bae3cd4ca7ba6237240ac2e7
     GuidInternal: 
-    m_lastTime: -8586128189989207881
+    m_lastTime: -8586118001912156096
     List: []
   SwitchWwu:
   - PhysicalPath: Switches\Default Work Unit.wwu
     ParentPath: Default Work Unit
     guid: 195628f6399e6948865cf7fa78defe64
     GuidInternal: 
-    m_lastTime: -8586128189989247773
-    List: []
+    m_lastTime: -8586118001912146124
+    List:
+    - name: ENNEMIS_ATTACK_SWITCH
+      guid: 696fe1d8172f8e47bf25c6f253d9f271
+      id: 2066487578
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: ENNEMIS_ATTACK_SWITCH
+        ObjectType: 11
+      Path: Default Work Unit\ENNEMIS_ATTACK_SWITCH
+      values:
+      - name: attaque_1
+        guid: 0289c09f74490f4485dddcd99e37f430
+        id: 4145357458
+        PathAndIcons:
+        - ElementName: attaque_1
+          ObjectType: 10
+      - name: attaque_2
+        guid: fd3ad6c9a5341c4ea4625415f71a1835
+        id: 4145357457
+        PathAndIcons:
+        - ElementName: attaque_2
+          ObjectType: 10
+      - name: attaque_3
+        guid: d620baaaa88c0e48bc3ada2d9af32d48
+        id: 4145357456
+        PathAndIcons:
+        - ElementName: attaque_3
+          ObjectType: 10
+      - name: attaque_4
+        guid: 9235b4492869834b93e9e20f7b2f0b3a
+        id: 4145357463
+        PathAndIcons:
+        - ElementName: attaque_4
+          ObjectType: 10
+      - name: attaque_5
+        guid: dc29ef8b298cc5418af51758765b6407
+        id: 4145357462
+        PathAndIcons:
+        - ElementName: attaque_5
+          ObjectType: 10
+      - name: attaque_6
+        guid: b1439c43e8b6da48b620c48a3daeb684
+        id: 4145357461
+        PathAndIcons:
+        - ElementName: attaque_6
+          ObjectType: 10
+      ValueGuids: []
+      ValueIcons: []
+      valuesInternal: []
   TriggerWwu:
   - PhysicalPath: Triggers\Default Work Unit.wwu
     ParentPath: Default Work Unit
     guid: 2b47591faef95b4fb314e30c9c2ce648
     GuidInternal: 
-    m_lastTime: -8586128189993661312
+    m_lastTime: -8586118001912086284
     List: []
   ExpandedItems:
   - /The Dreadful Show
