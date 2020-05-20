@@ -6,10 +6,6 @@
 				<SoundcasterSession Name="New Soundcaster Session" ID="{63AF646D-9C33-4462-8465-385C30922E32}">
 					<ModuleList>
 						<Module>
-							<ObjectRef Name="test_sound" ID="{EE6FF946-910C-48AA-BE19-CAFF3C74D1C9}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
-							<Position X="0" Y="0"/>
-						</Module>
-						<Module>
 							<ObjectRef Name="MIME" ID="{5B348EEB-138A-4F15-ABCC-DF91D2E306E4}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
 							<Position X="1" Y="0"/>
 						</Module>
@@ -17,11 +13,23 @@
 							<ObjectRef Name="ACROBAT" ID="{D28A18D9-E8D1-42D3-94CC-1019F9E17537}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
 							<Position X="1" Y="2"/>
 						</Module>
+						<Module>
+							<ObjectRef Name="Play_Ambiance_pluie" ID="{4AF5190A-AC63-40B9-95C6-F8D566306588}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="3" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Stop_Ambiance_pluie" ID="{EDF8F2A9-76EB-4A28-9737-9941CB9AB7D2}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="3" Y="1"/>
+						</Module>
 					</ModuleList>
 					<RTPCValueList ShowAll="true">
 						<RTPCValue>
 							<GameParameterRef Name="ennemies_attack" ID="{3B2701C7-FA62-4A8C-BFC5-BC19D3034E4B}"/>
 							<Value>0</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="foot_surface" ID="{E43EC714-A577-4FC5-9311-A7D2781E4882}"/>
+							<Value>0.922297297297297</Value>
 						</RTPCValue>
 					</RTPCValueList>
 					<CurrentStateList ShowAll="true"/>

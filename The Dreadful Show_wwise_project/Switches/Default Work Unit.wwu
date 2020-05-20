@@ -68,6 +68,53 @@
 						</Curve>
 					</SwitchOnRTPC>
 				</SwitchGroup>
+				<SwitchGroup Name="footsteps_switch" ID="{8847A834-1A19-4FC1-9814-6DB5405F1C39}">
+					<PropertyList>
+						<Property Name="Color" Type="int16" Value="25"/>
+						<Property Name="OverrideColor" Type="bool" Value="True"/>
+						<Property Name="UseGameParameter" Type="bool" Value="True"/>
+					</PropertyList>
+					<ChildrenList>
+						<Switch Name="concrete" ID="{BE07F8E4-E4EE-4BA3-ABC1-5FF3AF38F7CA}"/>
+						<Switch Name="dirt" ID="{8337A956-8256-464B-BE89-BE58ACAF047D}"/>
+						<Switch Name="wood" ID="{06E404A2-3413-49DE-90E8-E338A06D202B}"/>
+					</ChildrenList>
+					<SwitchOnRTPC>
+						<GameParameterRef Name="foot_surface" ID="{E43EC714-A577-4FC5-9311-A7D2781E4882}"/>
+						<Curve Name="" ID="{80E92187-957D-451D-BCCA-14ADB605D253}">
+							<PropertyList>
+								<Property Name="Flags" Type="int32" Value="65537"/>
+							</PropertyList>
+							<PointList>
+								<Point>
+									<XPos>0</XPos>
+									<YPos>0</YPos>
+									<Flags>5</Flags>
+								</Point>
+								<Point>
+									<XPos>0.09966</XPos>
+									<YPos>1</YPos>
+									<Flags>0</Flags>
+								</Point>
+								<Point>
+									<XPos>0.2</XPos>
+									<YPos>2</YPos>
+									<Flags>0</Flags>
+								</Point>
+								<Point>
+									<XPos>0.3</XPos>
+									<YPos>3</YPos>
+									<Flags>0</Flags>
+								</Point>
+								<Point>
+									<XPos>1</XPos>
+									<YPos>3</YPos>
+									<Flags>37</Flags>
+								</Point>
+							</PointList>
+						</Curve>
+					</SwitchOnRTPC>
+				</SwitchGroup>
 			</ChildrenList>
 		</WorkUnit>
 	</Switches>
