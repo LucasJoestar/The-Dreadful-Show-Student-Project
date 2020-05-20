@@ -1386,7 +1386,7 @@ public abstract class TDS_Enemy : TDS_Character
             // Scales up health on player amount
             if (doScaleOnPlayerAmount)
             {
-                for (int _i = 0; _i < TDS_LevelManager.Instance.OtherPlayers.Count; _i++)
+                for (int _i = 1; _i < TDS_LevelManager.Instance.AllPlayers.Length; _i++)
                 {
                     HealthMax += (int)(healthMax * (healthScalePercent / 100f));
                 }

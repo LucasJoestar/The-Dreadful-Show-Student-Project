@@ -352,7 +352,7 @@ public abstract class TDS_Character : TDS_Damageable
     /// <summary>
     /// Returns <see cref="throwAimingPoint"/> vector3 in world space.
     /// </summary>
-    public Vector3 ThrowAimingPoint
+    public virtual Vector3 ThrowAimingPoint
     {
         get
         {
@@ -455,26 +455,7 @@ public abstract class TDS_Character : TDS_Damageable
     #endregion
 
     #region Throwable Object
-    /// <summary>
-    /// Drop the weared throwable.
-    /// </summary>
-    /// <returns>Returns true if successfully dropped the object, false if not having an object to drop.</returns>
-    public virtual bool DropObject()
-    {
-        // Call this method in owner only
-        if (!photonView.isMine)
-        {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "DropObject"), new object[] { });
-            return false;
-        }
-
-        // If no throwable, return
-        if (!throwable || !throwable.IsHeld) return false;
-
-        // Drooop
-        throwable.Drop();
-        return true;
-    }
+    protected virtual bool CanGrabObject() => !throwable;
 
     /// <summary>
     /// Try to grab a throwable.
@@ -487,20 +468,25 @@ public abstract class TDS_Character : TDS_Damageable
         // Call this method in master client only
         if (!PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "GrabObject"), new object[] { _throwable.photonView.viewID });
+            if (CanGrabObject() && !_throwable.IsHeld)
+            {
+                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "GrabObject"), new object[] { _throwable.photonView.viewID });
 
-            if (!_throwable.IsHeld) SetThrowable(_throwable);
+                if (_throwable is TDS_SpecialThrowable _special)
+                    _special.ActiveSpecialEvent();
+
+                SetThrowable(_throwable);
+                return true;
+            }
             return false;
         }
 
         // Take the object if possible
-        if (throwable) return false;
-        if (!_throwable.PickUp(this))
+        if (!CanGrabObject() || !_throwable.PickUp(this))
         {
             TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "RemoveThrowable"), new object[] { });
             return false;
         }
-
         return true;
     }
 
@@ -513,9 +499,34 @@ public abstract class TDS_Character : TDS_Damageable
     public virtual bool GrabObject(int _throwableID)
     {
         TDS_Throwable _throwable = PhotonView.Find(_throwableID).GetComponent<TDS_Throwable>();
-        if (!_throwable) return false;
+        if (!_throwable)
+            return false;
 
         return GrabObject(_throwable);
+    }
+
+    /// <summary>
+    /// Drop the weared throwable.
+    /// </summary>
+    /// <returns>Returns true if successfully dropped the object, false if not having an object to drop.</returns>
+    public virtual bool DropObject()
+    {
+        if (!throwable)
+            return false;
+
+        // Call this method in MasterClient
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "DropObject"), new object[] { });
+
+            if (!throwable.DropLocal())
+                RemoveThrowable();
+            return true;
+        }
+
+        // Drop
+        throwable.Drop();
+        return true;
     }
 
     /// <summary>
@@ -524,8 +535,11 @@ public abstract class TDS_Character : TDS_Damageable
     /// <returns>Returns true if successfully removed the throwable, false otherwise.</returns>
     public virtual bool RemoveThrowable()
     {
-        if (!throwable) return false;
-        if (!throwable.IsHeld || (throwable.Owner == this)) throwable.transform.SetParent(null, true);
+        if (!throwable)
+            return false;
+
+        if (throwable.transform.parent == handsTransform)
+            throwable.transform.SetParent(null, true);
 
         throwable = null;
         return true;
@@ -540,6 +554,11 @@ public abstract class TDS_Character : TDS_Damageable
     {
         if (_throwable)
         {
+            if (throwable == _throwable)
+                return true;
+            else
+                RemoveThrowable();
+
             Throwable = _throwable;
             _throwable.transform.SetParent(handsTransform, true);
             _throwable.transform.localPosition = Vector3.zero;
@@ -550,10 +569,8 @@ public abstract class TDS_Character : TDS_Damageable
                 _throwable.transform.Rotate(Vector3.up, 180);
                 _throwable.transform.localScale = new Vector3(_throwable.transform.localScale.x, _throwable.transform.localScale.y, _throwable.transform.localScale.z * -1);
             }
-
             return true;
         }
-
         return false;
     }
 
@@ -564,19 +581,30 @@ public abstract class TDS_Character : TDS_Damageable
     protected virtual void SetThrowable(int _throwableID)
     {
         PhotonView _throwable = PhotonView.Find(_throwableID);
-
-        if (_throwable) SetThrowable(_throwable.GetComponent<TDS_Throwable>());
+        if (_throwable)
+            SetThrowable(_throwable.GetComponent<TDS_Throwable>());
     }
 
     /// <summary>
-    /// Throws the weared throwable.
+    /// Throws the weared throwable from animation.
     /// </summary>
     public virtual bool ThrowObject_A()
     {
-        // If not mine, return false
-        if (!photonView.isMine) return false;
+        if (photonView.isMine)
+        {
+            if (PhotonNetwork.isMasterClient)
+            {
+                return ThrowObject(ThrowAimingPoint);
+            }
 
-        return ThrowObject(ThrowAimingPoint);
+            if (throwable && throwable.ThrowLocal(ThrowAimingPoint, aimAngle))
+            {
+                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "ThrowObject"), new object[] { ThrowAimingPoint.x, ThrowAimingPoint.y, ThrowAimingPoint.z });
+
+                return true;
+            }
+        }
+        return false;
     }
 
     /// <summary>
@@ -585,19 +613,20 @@ public abstract class TDS_Character : TDS_Damageable
     /// <param name="_targetPosition">Position where the object should land</param>
     public virtual bool ThrowObject(Vector3 _targetPosition)
     {
-        // Call this method in owner only
-        if (!photonView.isMine)
-        {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "ThrowObject_A"), new object[] { });
+        if (!throwable)
             return false;
-        }
 
-        // Return false if no throwable
-        if (!throwable || !throwable.IsHeld) return false;
-
-        // Alright, then throw it !
         throwable.Throw(_targetPosition, aimAngle, RandomThrowBonusDamages);
         return true;
+    }
+
+    protected void ThrowObject(float _x, float _y, float _z)
+    {
+        // If object throw is refused,
+        // then owner shouldn't have it.
+        // If so, the object is in another character's hand,
+        // so its position will be soon updated by grab RPC.
+        ThrowObject(new Vector3(_x, _y, _z));
     }
     #endregion
 
@@ -624,10 +653,9 @@ public abstract class TDS_Character : TDS_Damageable
     {
         if (base.TakeDamage(_damage))
         {
-            if (photonView.isMine)
-            {
-                if (throwable) DropObject();
-            }
+            if (PhotonNetwork.isMasterClient)
+                DropObject();
+
             return true;
         }
         return false;

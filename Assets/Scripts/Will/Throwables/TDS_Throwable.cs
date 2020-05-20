@@ -186,7 +186,7 @@ public class TDS_Throwable : TDS_Object
     /// <summary>
     /// Destroy the gameObject Throwable if the durability is less or equal to zero 
     /// </summary>
-    protected virtual void DestroyThrowableObject(float _destroyingTime = 2)
+    public virtual void DestroyThrowableObject(float _destroyingTime = 2)
     {
         if (isDestroyed || !PhotonNetwork.isMasterClient) return;
 
@@ -226,38 +226,44 @@ public class TDS_Throwable : TDS_Object
         feedbackFX.gameObject.SetActive(true);
     }
 
-    /// <summary>
-    /// Drop the object from the character who was carring it. 
-    /// </summary>
-    public virtual void Drop()
-    {
-        if (!isHeld) return;
+    // ----------
 
-        if (owner.photonView.isMine)
-        {
-            // Drop the throwable for other players
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Drop"), new object[] { transform.position.x, transform.position.y, transform.position.z });
-        }
+    public virtual bool DropLocal()
+    {
+        if (!isHeld)
+            return false;
 
         rigidbody.isKinematic = false;
         collider.enabled = true;
         isHeld = false;
 
         owner.RemoveThrowable();
-        SetIndependant();
+        owner = null;
+        return true;
+    }
+
+    protected virtual void DropLocal(float _x, float _y, float _z)
+    {
+        transform.position = new Vector3(_x, _y, _z);
+        DropLocal();
     }
 
     /// <summary>
     /// Drop the object from the character who was carring it. 
     /// </summary>
-    /// <param name="_x">X position where to drop it from.</param>
-    /// <param name="_y">Y position where to drop it from.</param>
-    /// <param name="_z">Z position where to drop it from.</param>
-    protected virtual void Drop(float _x, float _y, float _z)
+    public virtual void Drop()
     {
-        transform.position = new Vector3(_x, _y, _z);
-        Drop();
+        if (DropLocal())
+        {
+            // Drop the throwable for other players
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "DropLocal"), new object[] { transform.position.x, transform.position.y, transform.position.z });
+
+            if (hitBox.IsActive)
+                hitBox.Desactivate();
+        }
     }
+
+    // ----------
 
     /// <summary> 
     /// Reduces the durability of the object and if the durability is lower or equal to zero called the method that destroys the object. 
@@ -274,7 +280,13 @@ public class TDS_Throwable : TDS_Object
     /// </summary>
     protected virtual void OnHitSomething()
     {
-        if (PhotonNetwork.isMasterClient) BounceObject();
+        if (!PhotonNetwork.isMasterClient)
+        {
+            Debug.LogError("ERRORRRRRR");
+            return;
+        }
+
+        BounceObject();
         ResetThrowable();
 
         // Play sound
@@ -288,21 +300,24 @@ public class TDS_Throwable : TDS_Object
     /// <returns>Returns true is successfully picked up the object, false if a issue has been encountered.</returns> 
     public virtual bool PickUp(TDS_Character _owner)
     {
-        if (isHeld || isDestroyed) return false;
+        if (PhotonNetwork.isMasterClient)
+        {
+            if (isHeld || isDestroyed)
+                return false;
+
+            // Pickup the throwable for other players
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PickUp"), new object[] { _owner.PhotonID });
+
+            if (hitBox.IsActive)
+                hitBox.Desactivate();
+        }
+
+        if (owner)
+            owner.RemoveThrowable();
 
         isHeld = true;
         owner = _owner;
         owner.SetThrowable(this);
-
-        if (hitBox.IsActive) hitBox.Desactivate();
-
-        if (PhotonNetwork.isMasterClient)
-        {
-            // Pickup the throwable for other players
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PickUp"), new object[] { _owner.PhotonID });
-        }
-
-        gameObject.layer = _owner.gameObject.layer;
 
         if (shadow && !shadow.activeInHierarchy) shadow.SetActive(true);
         rigidbody.isKinematic = true;
@@ -310,7 +325,6 @@ public class TDS_Throwable : TDS_Object
 
         // Play sound
         TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Pickup, audioSource);
-
         return true;
     }
 
@@ -321,9 +335,8 @@ public class TDS_Throwable : TDS_Object
     protected virtual void PickUp(int _ownerID)
     {
         PhotonView _photonView = PhotonView.Find(_ownerID);
-        if (!photonView) return;
-
-        PickUp(_photonView.GetComponent<TDS_Character>());
+        if (photonView)
+            PickUp(_photonView.GetComponent<TDS_Character>());
     }
 
     /// <summary>
@@ -350,11 +363,10 @@ public class TDS_Throwable : TDS_Object
     /// </summary>
     protected virtual void SetIndependant()
     {
-        if (hitBox.IsActive) hitBox.Desactivate();
-        if (!owner) return;
+        if (hitBox.IsActive)
+            hitBox.Desactivate();
 
         owner = null;
-        gameObject.layer = LayerMask.NameToLayer("Object");
     }
 
     /// <summary> 
@@ -365,43 +377,44 @@ public class TDS_Throwable : TDS_Object
     /// <param name="_bonusDamage">Bonus damages added to the attack.</param> 
     public virtual void Throw(Vector3 _finalPosition, float _angle, int _bonusDamage)
     {
-        if (!isHeld) return;
-
-        if (owner.photonView.isMine)
+        if (ThrowLocal(_finalPosition, _angle))
         {
             // Throw the throwable for other players
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Throw"), new object[] { transform.position.x, transform.position.y, transform.position.z, _finalPosition.x, _finalPosition.y, _finalPosition.z, _angle, _bonusDamage });
-        }
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "ThrowLocal"), new object[] { _finalPosition.x, _finalPosition.y, _finalPosition.z, _angle });
 
-        ActivateHitbox(_bonusDamage);
+            ActivateHitbox(_bonusDamage);
+        }
+    }
+
+    /// <summary>
+    /// Throws the object to a given position by converting the final position to velocity.
+    /// </summary>
+    /// <param name="_x">X position where to throw the object.</param>
+    /// <param name="_y">Y position where to throw the object.</param>
+    /// <param name="_z">Z position where to throw the object.</param>
+    /// <param name="_angle">Throw angle.</param> 
+    /// <param name="_bonusDamage">Bonus damages added to the attack.</param>
+    protected void ThrowLocal(float _x, float _y, float _z, float _angle)
+    {
+        ThrowLocal(new Vector3(_x, _y, _z), _angle);
+    }
+
+    public virtual bool ThrowLocal(Vector3 _finalPosition, float _angle)
+    {
+        if (!isHeld)
+            return false;
 
         owner.RemoveThrowable();
 
         rigidbody.isKinematic = false;
-        rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position,_finalPosition,_angle);
+        rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position, _finalPosition, _angle);
 
         collider.enabled = true;
         isHeld = false;
 
         // Play sound
         TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Throw, audioSource);
-    }
-
-    /// <summary>
-    /// Throws the object to a given position by converting the final position to velocity.
-    /// </summary>
-    /// <param name="_xFrom">X position from where the object is thrown.</param>
-    /// <param name="_yFrom">Y position from where the object is thrown.</param>
-    /// <param name="_zFrom">Z position from where the object is thrown.</param>
-    /// <param name="_xTo">X position where to throw the object.</param>
-    /// <param name="_yTo">Y position where to throw the object.</param>
-    /// <param name="_zTo">Z position where to throw the object.</param>
-    /// <param name="_angle">Throw angle.</param> 
-    /// <param name="_bonusDamage">Bonus damages added to the attack.</param>
-    protected virtual void Throw(float _xFrom, float _yFrom, float _zFrom, float _xTo, float _yTo, float _zTo, float _angle, int _bonusDamage)
-    {
-        transform.position = new Vector3(_xFrom, _yFrom, _zFrom);
-        Throw(new Vector3(_xTo, _yTo, _zTo), _angle, _bonusDamage);
+        return true;
     }
     #endregion
 
@@ -434,25 +447,23 @@ public class TDS_Throwable : TDS_Object
     // OnCollisionEnter is called when this collider/rigidbody has begun touching another rigidbody/collider
     protected virtual void OnCollisionEnter(Collision other)
     {
-        if (Time.timeSinceLevelLoad > .1f)
+        if (hitBox.IsActive)
         {
-            if (hitBox.IsActive)
-            {
-                ResetThrowable();
-            }
-
-            // Play sound
-            TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Drop, audioSource);
+            ResetThrowable();
         }
+
+        // Play sound
+        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Drop, audioSource);
     }
 
     private void OnDestroy()
     {
         if (owner && PhotonNetwork.connected && gameObject.activeInHierarchy && !isDestroyed)
         {
-            owner.DropObject();
+            owner.RemoveThrowable();
         }
-        if (hitBox.IsActive) hitBox.Desactivate();
+        if (hitBox.IsActive)
+            hitBox.Desactivate();
     }
     #endregion
 

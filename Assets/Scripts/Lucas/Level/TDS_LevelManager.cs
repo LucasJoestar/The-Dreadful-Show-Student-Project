@@ -58,6 +58,8 @@ public class TDS_LevelManager : PunBehaviour
     /// </summary>
     private PlayableDirector currentCutscene = null;
 
+    [SerializeField] private PlayableDirector startCutscene = null;
+
     /// <summary>
     /// Local player, the one who play on this machine.
     /// </summary>
@@ -187,6 +189,10 @@ public class TDS_LevelManager : PunBehaviour
             localPlayer = PhotonNetwork.Instantiate(TDS_GameManager.LocalPlayer.ToString(), new Vector3(StartSpawnPoint.x + _randomPos.x, StartSpawnPoint.y, StartSpawnPoint.z + _randomPos.y), Quaternion.identity, 0).GetComponent<TDS_Player>();
             TDS_Camera.Instance.Target = localPlayer.transform;
         }
+
+        // Play start cutscene
+        if (startCutscene)
+            PlayCutscene(startCutscene);
     }
 
     /// <summary>
@@ -207,19 +213,21 @@ public class TDS_LevelManager : PunBehaviour
         TDS_GameManager.IsInCutscene = true;
         currentCutscene = _cutscene;
         if (_cutscene.time == 0) _cutscene.Play();
-        _cutscene.stopped += OnCutsceneStopeed;
+        _cutscene.stopped += OnCutsceneStoped;
     }
 
     /// <summary>
     /// Called when the current cutscene is stopped.
     /// </summary>
     /// <param name="_cutscene">Cutscene that stopped.</param>
-    private void OnCutsceneStopeed(PlayableDirector _cutscene)
+    private void OnCutsceneStoped(PlayableDirector _cutscene)
     {
-        if (_cutscene != currentCutscene) return;
-        currentCutscene = null;
-        _cutscene.stopped -= OnCutsceneStopeed;
-        OnCutsceneEnds?.Invoke();
+        if (_cutscene == currentCutscene)
+        {
+            currentCutscene = null;
+            _cutscene.stopped -= OnCutsceneStoped;
+            OnCutsceneEnds?.Invoke();
+        }
     }
 
     /// <summary>

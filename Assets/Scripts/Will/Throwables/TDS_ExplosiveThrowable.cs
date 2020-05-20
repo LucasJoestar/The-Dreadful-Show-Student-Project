@@ -102,17 +102,6 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
     }
 
     /// <summary>
-    /// Set throwable independant by nullifying owner and getting back on Object layer.
-    /// </summary>
-    protected override void SetIndependant()
-    {
-        if (!owner) return;
-
-        owner = null;
-        gameObject.layer = LayerMask.NameToLayer("Object");
-    }
-
-    /// <summary>
     /// Modify the Throwable Position as in <see cref="TDS_Throwable.Throw(Vector3, float, int)"/> 
     /// But don't Activate the hitbox
     /// </summary>
@@ -121,28 +110,10 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
     /// <param name="_bonusDamage"></param>
     public override void Throw(Vector3 _finalPosition, float _angle, int _bonusDamage)
     {
-        if (!isHeld) return;
-
-        if (owner.photonView.isMine)
-        {
-            // Throw the throwable for other players
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Throw"), new object[] { transform.position.x, transform.position.y, transform.position.z, _finalPosition.x, _finalPosition.y, _finalPosition.z, _angle, _bonusDamage });
-        }
-
-        owner.RemoveThrowable();
-
-        rigidbody.isKinematic = false;
-        rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position, _finalPosition, _angle);
-
-        collider.enabled = true;
-        
-        gameObject.layer = LayerMask.NameToLayer("Object");
+        base.Throw(_finalPosition, _angle, _bonusDamage);
 
         if (hitBox.IsActive)
-        {
             hitBox.Desactivate();
-        }
-        isHeld = false;
     }
     #endregion
 

@@ -364,6 +364,17 @@ public class TDS_Juggler : TDS_Player
     /// Used to lerp the transform to a new position when moving.
     /// </summary>
     [SerializeField] private Vector3 juggleTransformIdealLocalPosition = Vector3.zero;
+
+    /// <summary>
+    /// Returns <see cref="throwAimingPoint"/> vector3 in world space.
+    /// </summary>
+    public override Vector3 ThrowAimingPoint
+    {
+        get
+        {
+            return throwAimingPoint;
+        }
+    }
     #endregion
 
     #region Coroutines
@@ -666,26 +677,9 @@ public class TDS_Juggler : TDS_Player
         juggleKickOutHeight = 0;
     }
 
-    /// <summary>
-    /// Try to grab a throwable.
-    /// When grabbed, the object follows the character and can be thrown by this one.
-    /// </summary>
-    /// <param name="_throwable">Throwable to try to grab.</param>
-    /// <returns>Returns true if the throwable was successfully grabbed, false either.</returns>
-    public override bool GrabObject(TDS_Throwable _throwable)
-    {
-        // Call this method in master client only
-        if (!PhotonNetwork.isMasterClient)
-        {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "GrabObject"), new object[] { _throwable.photonView.viewID });
-            return false;
-        }
+    // -----------
 
-        // If currently wearing the maximum amount of throwables he can, return
-        if ((CurrentThrowableAmount == MaxThrowableAmount) || !_throwable.PickUp(this)) return false;
-
-        return true;
-    }
+    protected override bool CanGrabObject() => CurrentThrowableAmount < MaxThrowableAmount;
 
     /// <summary>
     /// Make the Juggler juggle ! Yeeeaah !
@@ -1019,35 +1013,26 @@ public class TDS_Juggler : TDS_Player
     public override bool ThrowObject_A()
     {
         // If not mine, return false
-        if (!photonView.isMine) return false;
+        if (!photonView.isMine)
+            return false;
 
         // Get the destination point in world space
         Ray _ray = TDS_Camera.Instance.Camera.ScreenPointToRay(aimTargetTransform.position);
         RaycastHit _info = new RaycastHit();
 
         if (Physics.Raycast(_ray, out _info, 100, whatCanAim))
+            throwAimingPoint = _info.point;
+        else
+            throwAimingPoint = _ray.origin + (_ray.direction * 75);
+
+        if (base.ThrowObject_A())
         {
-            return ThrowObject(_info.point);
+            shootCooldownCoroutine = StartCoroutine(AllowToShootCoroutine());
+            return true;
         }
 
-        return ThrowObject(_ray.origin + (_ray.direction * 75));
-    }
-
-    /// <summary>
-    /// Throws the weared throwable.
-    /// </summary>
-    /// <param name="_targetPosition">Position where the object should land</param>
-    public override bool ThrowObject(Vector3 _targetPosition)
-    {
-        if (!base.ThrowObject(_targetPosition))
-        {
-            canShoot = true;
-            return false;
-        }
-
-        shootCooldownCoroutine = StartCoroutine(AllowToShootCoroutine());
-
-        return true;
+        canShoot = true;
+        return false;
     }
 
     /// <summary>
@@ -1190,9 +1175,12 @@ public class TDS_Juggler : TDS_Player
         base.Die();
 
         // Drop all objects juggling with
-        while (throwable)
+        if (PhotonNetwork.isMasterClient)
         {
-            DropObject();
+            while (throwable)
+            {
+                DropObject();
+            }
         }
     }
 

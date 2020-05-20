@@ -679,7 +679,8 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <returns>Returns true if successfully removed the throwable, false otherwise.</returns>
     public override bool RemoveThrowable()
     {
-        if (!base.RemoveThrowable()) return false;
+        if (!base.RemoveThrowable())
+            return false;
 
         // Set animation
         SetAnim(PlayerAnimState.LostObject);
@@ -688,7 +689,8 @@ public class TDS_Player : TDS_Character, IPunObservable
         interactionBox.DisplayInteractionFeedback(true);
 
         // Triggers event
-        if (photonView.isMine) OnHasObject?.Invoke(false);
+        if (photonView.isMine)
+            OnHasObject?.Invoke(false);
 
         return true;
     }
@@ -700,7 +702,8 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <returns>Returns true if successfully set the throwable, false otherwise.</returns>
     public override bool SetThrowable(TDS_Throwable _throwable)
     {
-        if (!base.SetThrowable(_throwable)) return false;
+        if (!base.SetThrowable(_throwable))
+            return false;
 
         // Set animation
         SetAnim(PlayerAnimState.HasObject);
@@ -709,7 +712,8 @@ public class TDS_Player : TDS_Character, IPunObservable
         interactionBox.DisplayInteractionFeedback(false);
 
         // Triggers event
-        if (photonView.isMine) OnHasObject?.Invoke(true);
+        if (photonView.isMine)
+            OnHasObject?.Invoke(true);
 
         return true;
     }
@@ -1249,6 +1253,9 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         OnPlayerDie?.Invoke(this);
 
+        if (PhotonNetwork.isMasterClient)
+            DropObject();
+
         if (!photonView.isMine) return;
 
         // Removes the player to follow for the camera if offline mode
@@ -1257,9 +1264,6 @@ public class TDS_Player : TDS_Character, IPunObservable
             TDS_Camera.Instance.RemoveLocalPlayer(this);
             if (movePlayerInViewCoroutine != null) StopMovingPlayerInView();
         }
-
-        // Drop object if needed
-        if (throwable) DropObject();
 
         // Desactivates the detection box
         interactionBox.DisplayInteractionFeedback(false);
@@ -2356,7 +2360,8 @@ public class TDS_Player : TDS_Character, IPunObservable
             if (TDS_GameManager.IsInCutscene)
             {
                 // Skip it
-                TDS_LevelManager.Instance?.SkipCutscene();
+                if (PhotonNetwork.isMasterClient)
+                    TDS_LevelManager.Instance.SkipCutscene();
             }
             else
             {

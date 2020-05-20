@@ -876,6 +876,9 @@ public class TDS_Camera : MonoBehaviour
         Vector3 _localPlayerPosition = new Vector3();
         Vector3[] _playerPositions = new Vector3[TDS_LevelManager.Instance.OtherPlayers.Count];
 
+        bool _isFreezeX = (_boundsMovement[0] == 0) && (_boundsMovement[1] == 0);
+        SetBoundObjectCollision(!_isFreezeX);
+
         yield return null;
 
         // While all the bounds are not in the right place, set their position
@@ -906,6 +909,15 @@ public class TDS_Camera : MonoBehaviour
                     {
                         leftBoundVector = _bounds.XMinVector;
                         _boundsMovement[0] = 0;
+
+                        if (!_isFreezeX)
+                        {
+                            _isFreezeX = _boundsMovement[1] == 0;
+                            if (_isFreezeX)
+                            {
+                                SetBoundObjectCollision(false);
+                            }
+                        }
 
                         OnXMinBoundChanged?.Invoke();
 
@@ -941,6 +953,15 @@ public class TDS_Camera : MonoBehaviour
                     {
                         rightBoundVector = _bounds.XMaxVector;
                         _boundsMovement[1] = 0;
+
+                        if (!_isFreezeX)
+                        {
+                            _isFreezeX = _boundsMovement[0] == 0;
+                            if (_isFreezeX)
+                            {
+                                SetBoundObjectCollision(false);
+                            }
+                        }
 
                         // Set X Max bound value to send online
                         onlineSendingBounds.y = currentBounds.XMax;
@@ -1035,6 +1056,15 @@ public class TDS_Camera : MonoBehaviour
         setBoundsCoroutine = null;
     }
 
+
+    private int boundLayer = 0;
+    private int objectLayer = 0;
+    private void SetBoundObjectCollision(bool _doIgnore)
+    {
+        Physics.IgnoreLayerCollision(boundLayer, objectLayer, _doIgnore);
+    }
+
+
     /// <summary>
     /// Calculates and set the Camera view aspect based on target ratio.
     /// </summary>
@@ -1125,11 +1155,6 @@ public class TDS_Camera : MonoBehaviour
         if (Instance == this) Instance = null;
     }
 
-    // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
-    private void OnDrawGizmos()
-    {
-    }
-
     // Use this for initialization
     private void Start ()
     {
@@ -1142,6 +1167,9 @@ public class TDS_Camera : MonoBehaviour
 
         // Set the camera position between bounds
         ClampInBounds();
+
+        boundLayer = LayerMask.NameToLayer("Bound");
+        objectLayer = LayerMask.NameToLayer("Object");
     }
 	
 	// Update is called once per frame
