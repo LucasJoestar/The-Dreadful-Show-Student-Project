@@ -1,0 +1,1074 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="12" SoundbankVersion="135">
+	<RootPaths>
+		<ProjectRoot>D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\</ProjectRoot>
+		<SourceFilesRoot>D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\</SourceFilesRoot>
+		<SoundBanksRoot>D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\GeneratedSoundBanks\Windows\</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<DialogueEvents/>
+	<StreamedFiles/>
+	<MediaFilesNotInAnyBank/>
+	<SoundBanks>
+		<SoundBank Id="1355168291" Language="SFX">
+			<ObjectPath>Init</ObjectPath>
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
+		</SoundBank>
+		<SoundBank Id="1404066300" Language="SFX">
+			<ObjectPath>\SoundBanks\Default Work Unit\ambiances</ObjectPath>
+			<ShortName>ambiances</ShortName>
+			<Path>ambiances.bnk</Path>
+			<IncludedEvents>
+				<Event Id="3995323232" Name="Play_Ambiance_pluie" ObjectPath="\Events\Default Work Unit\amb\Play_Ambiance_pluie" MaxAttenuation="30.000000">
+					<IncludedMemoryFiles>
+						<File Id="941717481" Language="SFX">
+							<ShortName>AMBIANCE\Ambiance_pluie.wav</ShortName>
+							<Path>SFX\AMBIANCE\Ambiance_pluie_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3809599778" Name="play_circus_amb" ObjectPath="\Events\Default Work Unit\amb\play_circus_amb" MaxAttenuation="30.000000">
+					<IncludedMemoryFiles>
+						<File Id="335496261" Language="SFX">
+							<ShortName>AMBIANCE\Cirque.wav</ShortName>
+							<Path>SFX\AMBIANCE\Cirque_D79FB2B7.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3908812351" Name="Play_loop_foret" ObjectPath="\Events\Default Work Unit\amb\Play_loop_foret" MaxAttenuation="30.000000">
+					<IncludedMemoryFiles>
+						<File Id="891667266" Language="SFX">
+							<ShortName>AMBIANCE\Ambaince_foret.wav</ShortName>
+							<Path>SFX\AMBIANCE\Ambaince_foret_D79FB2B7.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2819974902" Name="Stop_Ambiance_pluie" ObjectPath="\Events\Default Work Unit\amb\Stop_Ambiance_pluie" MaxAttenuation="0.000000"/>
+			</IncludedEvents>
+		</SoundBank>
+		<SoundBank Id="3151042580" Language="SFX">
+			<ObjectPath>\SoundBanks\Default Work Unit\la_seule_et_unique_banque_de_soon</ObjectPath>
+			<ShortName>la_seule_et_unique_banque_de_soon</ShortName>
+			<Path>la_seule_et_unique_banque_de_soon.bnk</Path>
+			<IncludedEvents>
+				<Event Id="248488741" Name="ACROBAT" ObjectPath="\Events\Default Work Unit\monsters\ACROBAT">
+					<IncludedMemoryFiles>
+						<File Id="35543552" Language="SFX">
+							<ShortName>RIBBON.wav</ShortName>
+							<Path>SFX\RIBBON_10C4C929.wem</Path>
+						</File>
+						<File Id="232228637" Language="SFX">
+							<ShortName>SALTO.wav</ShortName>
+							<Path>SFX\SALTO_6AFFD427.wem</Path>
+						</File>
+						<File Id="783107874" Language="SFX">
+							<ShortName>ACROBAT_DASH.wav</ShortName>
+							<Path>SFX\ACROBAT_DASH_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<SwitchContainers>
+						<SwitchContainer SwitchValue="{C9D63AFD-34A5-4E1C-A462-5415F71A1835}">
+							<Media>
+								<File Id="35543552"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{AABA20D6-8CA8-480E-BC3A-DA2D9AF32D48}">
+							<Media>
+								<File Id="232228637"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{9FC08902-4974-440F-85DD-DCD99E37F430}">
+							<Media>
+								<File Id="783107874"/>
+							</Media>
+						</SwitchContainer>
+					</SwitchContainers>
+				</Event>
+				<Event Id="2390245931" Name="BRUTAL_SIAMESE" ObjectPath="\Events\Default Work Unit\monsters\BRUTAL_SIAMESE">
+					<IncludedMemoryFiles>
+						<File Id="229587323" Language="SFX">
+							<ShortName>SIAMES_BRUTAL_HIT_01.wav</ShortName>
+							<Path>SFX\SIAMES_BRUTAL_HIT_01_10C4C929.wem</Path>
+						</File>
+						<File Id="693430572" Language="SFX">
+							<ShortName>SIAMES_BRUTAL_HIT_02.wav</ShortName>
+							<Path>SFX\SIAMES_BRUTAL_HIT_02_10C4C929.wem</Path>
+						</File>
+						<File Id="833459906" Language="SFX">
+							<ShortName>SIAMES_BRUTAL_HIT_03.wav</ShortName>
+							<Path>SFX\SIAMES_BRUTAL_HIT_03_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<SwitchContainers>
+						<SwitchContainer SwitchValue="{9FC08902-4974-440F-85DD-DCD99E37F430}">
+							<Media>
+								<File Id="229587323"/>
+								<File Id="693430572"/>
+								<File Id="833459906"/>
+							</Media>
+						</SwitchContainer>
+					</SwitchContainers>
+				</Event>
+				<Event Id="2888865648" Name="FAKIR" ObjectPath="\Events\Default Work Unit\monsters\FAKIR">
+					<IncludedMemoryFiles>
+						<File Id="484614860" Language="SFX">
+							<ShortName>SWORD_DRAW.wav</ShortName>
+							<Path>SFX\SWORD_DRAW_10C4C929.wem</Path>
+						</File>
+						<File Id="498916138" Language="SFX">
+							<ShortName>SWORD_THROW.wav</ShortName>
+							<Path>SFX\SWORD_THROW_10C4C929.wem</Path>
+						</File>
+						<File Id="576318832" Language="SFX">
+							<ShortName>FAKIR_DASH.wav</ShortName>
+							<Path>SFX\FAKIR_DASH_10C4C929.wem</Path>
+						</File>
+						<File Id="779758517" Language="SFX">
+							<ShortName>KNIFE.wav</ShortName>
+							<Path>SFX\KNIFE_10C4C929.wem</Path>
+						</File>
+						<File Id="915269170" Language="SFX">
+							<ShortName>SNAKE.wav</ShortName>
+							<Path>SFX\SNAKE_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<SwitchContainers>
+						<SwitchContainer SwitchValue="{C9D63AFD-34A5-4E1C-A462-5415F71A1835}">
+							<Media>
+								<File Id="576318832"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{9FC08902-4974-440F-85DD-DCD99E37F430}">
+							<Media>
+								<File Id="779758517"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{AABA20D6-8CA8-480E-BC3A-DA2D9AF32D48}">
+							<Media>
+								<File Id="915269170"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{49B43592-6928-4B83-93E9-E20F7B2F0B3A}">
+							<Media>
+								<File Id="484614860"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{8BEF29DC-8C29-41C5-8AF5-1758765B6407}">
+							<Media>
+								<File Id="498916138"/>
+							</Media>
+						</SwitchContainer>
+					</SwitchContainers>
+				</Event>
+				<Event Id="2358710769" Name="MIGHTYMAN" ObjectPath="\Events\Default Work Unit\monsters\MIGHTYMAN">
+					<IncludedMemoryFiles>
+						<File Id="29386585" Language="SFX">
+							<ShortName>CHARGE\CHARGE_03.wav</ShortName>
+							<Path>SFX\CHARGE\CHARGE_03_10C4C929.wem</Path>
+						</File>
+						<File Id="139321919" Language="SFX">
+							<ShortName>CHARGE\CHARGE_02.wav</ShortName>
+							<Path>SFX\CHARGE\CHARGE_02_10C4C929.wem</Path>
+						</File>
+						<File Id="341859559" Language="SFX">
+							<ShortName>CHARGE\CHARGE_04.wav</ShortName>
+							<Path>SFX\CHARGE\CHARGE_04_10C4C929.wem</Path>
+						</File>
+						<File Id="584764245" Language="SFX">
+							<ShortName>CHARGE\CHARGE_01.wav</ShortName>
+							<Path>SFX\CHARGE\CHARGE_01_10C4C929.wem</Path>
+						</File>
+						<File Id="933588251" Language="SFX">
+							<ShortName>CHARGE\CHARGE_05.wav</ShortName>
+							<Path>SFX\CHARGE\CHARGE_05_10C4C929.wem</Path>
+						</File>
+						<File Id="1032823669" Language="SFX">
+							<ShortName>GROUND_SLAM.wav</ShortName>
+							<Path>SFX\GROUND_SLAM_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<SwitchContainers>
+						<SwitchContainer SwitchValue="{C9D63AFD-34A5-4E1C-A462-5415F71A1835}">
+							<Media>
+								<File Id="584764245"/>
+								<File Id="139321919"/>
+								<File Id="29386585"/>
+								<File Id="341859559"/>
+								<File Id="933588251"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{9FC08902-4974-440F-85DD-DCD99E37F430}">
+							<Media>
+								<File Id="1032823669"/>
+							</Media>
+						</SwitchContainer>
+					</SwitchContainers>
+				</Event>
+				<Event Id="2559194501" Name="MIME" ObjectPath="\Events\Default Work Unit\monsters\MIME">
+					<IncludedMemoryFiles>
+						<File Id="44757587" Language="SFX">
+							<ShortName>MIME_FISH_START.wav</ShortName>
+							<Path>SFX\MIME_FISH_START_10C4C929.wem</Path>
+						</File>
+						<File Id="112895815" Language="SFX">
+							<ShortName>PISTOL.wav</ShortName>
+							<Path>SFX\PISTOL_10C4C929.wem</Path>
+						</File>
+						<File Id="139238231" Language="SFX">
+							<ShortName>MIME_FISH_REELING.wav</ShortName>
+							<Path>SFX\MIME_FISH_REELING_10C4C929.wem</Path>
+						</File>
+						<File Id="510495615" Language="SFX">
+							<ShortName>HAMMER\HAMMER_03.wav</ShortName>
+							<Path>SFX\HAMMER\HAMMER_03_10C4C929.wem</Path>
+						</File>
+						<File Id="736406922" Language="SFX">
+							<ShortName>HAMMER\HAMMER_05.wav</ShortName>
+							<Path>SFX\HAMMER\HAMMER_05_10C4C929.wem</Path>
+						</File>
+						<File Id="799369274" Language="SFX">
+							<ShortName>HAMMER\HAMMER_02.wav</ShortName>
+							<Path>SFX\HAMMER\HAMMER_02_10C4C929.wem</Path>
+						</File>
+						<File Id="833954741" Language="SFX">
+							<ShortName>HAMMER\HAMMER_01.wav</ShortName>
+							<Path>SFX\HAMMER\HAMMER_01_10C4C929.wem</Path>
+						</File>
+						<File Id="1068517412" Language="SFX">
+							<ShortName>HAMMER\HAMMER_04.wav</ShortName>
+							<Path>SFX\HAMMER\HAMMER_04_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<SwitchContainers>
+						<SwitchContainer SwitchValue="{AABA20D6-8CA8-480E-BC3A-DA2D9AF32D48}">
+							<Media>
+								<File Id="139238231"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{49B43592-6928-4B83-93E9-E20F7B2F0B3A}">
+							<Media>
+								<File Id="44757587"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{9FC08902-4974-440F-85DD-DCD99E37F430}">
+							<Media>
+								<File Id="833954741"/>
+								<File Id="799369274"/>
+								<File Id="510495615"/>
+								<File Id="1068517412"/>
+								<File Id="736406922"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{C9D63AFD-34A5-4E1C-A462-5415F71A1835}">
+							<Media>
+								<File Id="112895815"/>
+							</Media>
+						</SwitchContainer>
+					</SwitchContainers>
+				</Event>
+				<Event Id="1500695173" Name="Play_BODYFALL" ObjectPath="\Events\Default Work Unit\persos\basics\Play_BODYFALL">
+					<IncludedMemoryFiles>
+						<File Id="696098442" Language="SFX">
+							<ShortName>BODYFALL.wav</ShortName>
+							<Path>SFX\BODYFALL_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="812881236" Name="Play_BRUTAL_HIT" ObjectPath="\Events\Default Work Unit\persos\basics\Play_BRUTAL_HIT">
+					<IncludedMemoryFiles>
+						<File Id="224794555" Language="SFX">
+							<ShortName>BRUTAL_HIT\BRUTAL_HIT_01.wav</ShortName>
+							<Path>SFX\BRUTAL_HIT\BRUTAL_HIT_01_10C4C929.wem</Path>
+						</File>
+						<File Id="415393021" Language="SFX">
+							<ShortName>BRUTAL_HIT\BRUTAL_HIT_02.wav</ShortName>
+							<Path>SFX\BRUTAL_HIT\BRUTAL_HIT_02_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3338421947" Name="Play_DODGE" ObjectPath="\Events\Default Work Unit\persos\basics\Play_DODGE">
+					<IncludedMemoryFiles>
+						<File Id="102178241" Language="SFX">
+							<ShortName>DODGE\DODGE_01.wav</ShortName>
+							<Path>SFX\DODGE\DODGE_01_10C4C929.wem</Path>
+						</File>
+						<File Id="393121411" Language="SFX">
+							<ShortName>DODGE\DODGE_03.wav</ShortName>
+							<Path>SFX\DODGE\DODGE_03_10C4C929.wem</Path>
+						</File>
+						<File Id="1011462183" Language="SFX">
+							<ShortName>DODGE\DODGE_02.wav</ShortName>
+							<Path>SFX\DODGE\DODGE_02_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="4042538376" Name="Play_DRINK" ObjectPath="\Events\Default Work Unit\persos\Fire_eater\Play_DRINK">
+					<IncludedMemoryFiles>
+						<File Id="103125718" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\DRINK.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\DRINK_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="4045789892" Name="Play_Drunk" ObjectPath="\Events\Default Work Unit\persos\Fire_eater\Play_Drunk">
+					<IncludedMemoryFiles>
+						<File Id="455048258" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\Drunk.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\Drunk_D79FB2B7.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2489068396" Name="Play_EAT" ObjectPath="\Events\Default Work Unit\persos\Grande_dame\Play_EAT">
+					<IncludedMemoryFiles>
+						<File Id="123580659" Language="SFX">
+							<ShortName>CHARACTERS\GRANDEDAME\EAT.wav</ShortName>
+							<Path>SFX\CHARACTERS\GRANDEDAME\EAT_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3177064491" Name="Play_FIREBALL_HIT" ObjectPath="\Events\Default Work Unit\persos\Fire_eater\Play_FIREBALL_HIT">
+					<IncludedMemoryFiles>
+						<File Id="694004119" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FIREBALL\FIREBALL_HIT.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FIREBALL\FIREBALL_HIT_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2915545918" Name="Play_FIREBALL_SPIT" ObjectPath="\Events\Default Work Unit\persos\Fire_eater\Play_FIREBALL_SPIT">
+					<IncludedMemoryFiles>
+						<File Id="77657225" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FIREBALL\FIREBALL_SPIT.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FIREBALL\FIREBALL_SPIT_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="694398836" Name="Play_FIREBREATH" ObjectPath="\Events\Default Work Unit\persos\Fire_eater\Play_FIREBREATH">
+					<IncludedMemoryFiles>
+						<File Id="62632162" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FIREBREATH.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FIREBREATH_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="99002451" Name="Play_FOOT_bearlady" ObjectPath="\Events\Default Work Unit\persos\Bear_Lady\Play_FOOT_bearlady">
+					<IncludedMemoryFiles>
+						<File Id="687575" Language="SFX">
+							<ShortName>CHARACTERS\BEARDLADY\FOOT\WOOD\TDS_RUN_BEARD_WOOD_05.wav</ShortName>
+							<Path>SFX\CHARACTERS\BEARDLADY\FOOT\WOOD\TDS_RUN_BEARD_WOOD_05_10C4C929.wem</Path>
+						</File>
+						<File Id="13574745" Language="SFX">
+							<ShortName>CHARACTERS\BEARDLADY\FOOT\CONCRETE\TDS_RUN_BEARD_CONCRETE_01.wav</ShortName>
+							<Path>SFX\CHARACTERS\BEARDLADY\FOOT\CONCRETE\TDS_RUN_BEARD_CONCRETE_01_10C4C929.wem</Path>
+						</File>
+						<File Id="218537076" Language="SFX">
+							<ShortName>CHARACTERS\BEARDLADY\FOOT\CONCRETE\TDS_RUN_BEARD_CONCRETE_05.wav</ShortName>
+							<Path>SFX\CHARACTERS\BEARDLADY\FOOT\CONCRETE\TDS_RUN_BEARD_CONCRETE_05_10C4C929.wem</Path>
+						</File>
+						<File Id="235332823" Language="SFX">
+							<ShortName>CHARACTERS\BEARDLADY\FOOT\WOOD\TDS_RUN_BEARD_WOOD_04.wav</ShortName>
+							<Path>SFX\CHARACTERS\BEARDLADY\FOOT\WOOD\TDS_RUN_BEARD_WOOD_04_10C4C929.wem</Path>
+						</File>
+						<File Id="259481838" Language="SFX">
+							<ShortName>CHARACTERS\BEARDLADY\FOOT\CONCRETE\TDS_RUN_BEARD_CONCRETE_02.wav</ShortName>
+							<Path>SFX\CHARACTERS\BEARDLADY\FOOT\CONCRETE\TDS_RUN_BEARD_CONCRETE_02_10C4C929.wem</Path>
+						</File>
+						<File Id="263712196" Language="SFX">
+							<ShortName>CHARACTERS\BEARDLADY\FOOT\CONCRETE\TDS_RUN_BEARD_CONCRETE_03.wav</ShortName>
+							<Path>SFX\CHARACTERS\BEARDLADY\FOOT\CONCRETE\TDS_RUN_BEARD_CONCRETE_03_10C4C929.wem</Path>
+						</File>
+						<File Id="428934094" Language="SFX">
+							<ShortName>CHARACTERS\BEARDLADY\FOOT\DIRT\BEARDLADY_FOOT_DIRT_05.wav</ShortName>
+							<Path>SFX\CHARACTERS\BEARDLADY\FOOT\DIRT\BEARDLADY_FOOT_DIRT_05_10C4C929.wem</Path>
+						</File>
+						<File Id="445609198" Language="SFX">
+							<ShortName>CHARACTERS\BEARDLADY\FOOT\DIRT\BEARDLADY_FOOT_DIRT_04.wav</ShortName>
+							<Path>SFX\CHARACTERS\BEARDLADY\FOOT\DIRT\BEARDLADY_FOOT_DIRT_04_10C4C929.wem</Path>
+						</File>
+						<File Id="482501973" Language="SFX">
+							<ShortName>CHARACTERS\BEARDLADY\FOOT\DIRT\BEARDLADY_FOOT_DIRT_02.wav</ShortName>
+							<Path>SFX\CHARACTERS\BEARDLADY\FOOT\DIRT\BEARDLADY_FOOT_DIRT_02_10C4C929.wem</Path>
+						</File>
+						<File Id="582409642" Language="SFX">
+							<ShortName>CHARACTERS\BEARDLADY\FOOT\DIRT\BEARDLADY_FOOT_DIRT_01.wav</ShortName>
+							<Path>SFX\CHARACTERS\BEARDLADY\FOOT\DIRT\BEARDLADY_FOOT_DIRT_01_10C4C929.wem</Path>
+						</File>
+						<File Id="583773422" Language="SFX">
+							<ShortName>CHARACTERS\BEARDLADY\FOOT\WOOD\TDS_RUN_BEARD_WOOD_01.wav</ShortName>
+							<Path>SFX\CHARACTERS\BEARDLADY\FOOT\WOOD\TDS_RUN_BEARD_WOOD_01_10C4C929.wem</Path>
+						</File>
+						<File Id="651121146" Language="SFX">
+							<ShortName>CHARACTERS\BEARDLADY\FOOT\CONCRETE\TDS_RUN_BEARD_CONCRETE_04.wav</ShortName>
+							<Path>SFX\CHARACTERS\BEARDLADY\FOOT\CONCRETE\TDS_RUN_BEARD_CONCRETE_04_10C4C929.wem</Path>
+						</File>
+						<File Id="854775559" Language="SFX">
+							<ShortName>CHARACTERS\BEARDLADY\FOOT\DIRT\BEARDLADY_FOOT_DIRT_03.wav</ShortName>
+							<Path>SFX\CHARACTERS\BEARDLADY\FOOT\DIRT\BEARDLADY_FOOT_DIRT_03_10C4C929.wem</Path>
+						</File>
+						<File Id="979183075" Language="SFX">
+							<ShortName>CHARACTERS\BEARDLADY\FOOT\WOOD\TDS_RUN_BEARD_WOOD_02.wav</ShortName>
+							<Path>SFX\CHARACTERS\BEARDLADY\FOOT\WOOD\TDS_RUN_BEARD_WOOD_02_10C4C929.wem</Path>
+						</File>
+						<File Id="1069629119" Language="SFX">
+							<ShortName>CHARACTERS\BEARDLADY\FOOT\WOOD\TDS_RUN_BEARD_WOOD_03.wav</ShortName>
+							<Path>SFX\CHARACTERS\BEARDLADY\FOOT\WOOD\TDS_RUN_BEARD_WOOD_03_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<SwitchContainers>
+						<SwitchContainer SwitchValue="{BE07F8E4-E4EE-4BA3-ABC1-5FF3AF38F7CA}">
+							<Media>
+								<File Id="13574745"/>
+								<File Id="259481838"/>
+								<File Id="263712196"/>
+								<File Id="651121146"/>
+								<File Id="218537076"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{8337A956-8256-464B-BE89-BE58ACAF047D}">
+							<Media>
+								<File Id="582409642"/>
+								<File Id="482501973"/>
+								<File Id="854775559"/>
+								<File Id="445609198"/>
+								<File Id="428934094"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{06E404A2-3413-49DE-90E8-E338A06D202B}">
+							<Media>
+								<File Id="583773422"/>
+								<File Id="979183075"/>
+								<File Id="1069629119"/>
+								<File Id="235332823"/>
+								<File Id="687575"/>
+							</Media>
+						</SwitchContainer>
+					</SwitchContainers>
+				</Event>
+				<Event Id="3677433246" Name="Play_FOOT_DAME" ObjectPath="\Events\Default Work Unit\persos\Grande_dame\Play_FOOT_DAME">
+					<IncludedMemoryFiles>
+						<File Id="4333413" Language="SFX">
+							<ShortName>CHARACTERS\GRANDEDAME\FOOT\CONCRETE\TDS_RUN_GRANDE_CONCRETE_01.wav</ShortName>
+							<Path>SFX\CHARACTERS\GRANDEDAME\FOOT\CONCRETE\TDS_RUN_GRANDE_CONCRETE_01_10C4C929.wem</Path>
+						</File>
+						<File Id="7001288" Language="SFX">
+							<ShortName>CHARACTERS\GRANDEDAME\FOOT\CONCRETE\TDS_RUN_GRANDE_CONCRETE_04.wav</ShortName>
+							<Path>SFX\CHARACTERS\GRANDEDAME\FOOT\CONCRETE\TDS_RUN_GRANDE_CONCRETE_04_10C4C929.wem</Path>
+						</File>
+						<File Id="128596922" Language="SFX">
+							<ShortName>CHARACTERS\GRANDEDAME\FOOT\WOOD\TDS_RUN_GRANDE_WOOD_05.wav</ShortName>
+							<Path>SFX\CHARACTERS\GRANDEDAME\FOOT\WOOD\TDS_RUN_GRANDE_WOOD_05_10C4C929.wem</Path>
+						</File>
+						<File Id="171082334" Language="SFX">
+							<ShortName>CHARACTERS\GRANDEDAME\FOOT\WOOD\TDS_RUN_GRANDE_WOOD_01.wav</ShortName>
+							<Path>SFX\CHARACTERS\GRANDEDAME\FOOT\WOOD\TDS_RUN_GRANDE_WOOD_01_10C4C929.wem</Path>
+						</File>
+						<File Id="207727343" Language="SFX">
+							<ShortName>CHARACTERS\GRANDEDAME\FOOT\CONCRETE\TDS_RUN_GRANDE_CONCRETE_05.wav</ShortName>
+							<Path>SFX\CHARACTERS\GRANDEDAME\FOOT\CONCRETE\TDS_RUN_GRANDE_CONCRETE_05_10C4C929.wem</Path>
+						</File>
+						<File Id="349998988" Language="SFX">
+							<ShortName>CHARACTERS\GRANDEDAME\FOOT\WOOD\TDS_RUN_GRANDE_WOOD_02.wav</ShortName>
+							<Path>SFX\CHARACTERS\GRANDEDAME\FOOT\WOOD\TDS_RUN_GRANDE_WOOD_02_10C4C929.wem</Path>
+						</File>
+						<File Id="425794982" Language="SFX">
+							<ShortName>CHARACTERS\GRANDEDAME\FOOT\DIRT\BIGLADY_FOOT_DIRT_05.wav</ShortName>
+							<Path>SFX\CHARACTERS\GRANDEDAME\FOOT\DIRT\BIGLADY_FOOT_DIRT_05_10C4C929.wem</Path>
+						</File>
+						<File Id="435846707" Language="SFX">
+							<ShortName>CHARACTERS\GRANDEDAME\FOOT\WOOD\TDS_RUN_GRANDE_WOOD_03.wav</ShortName>
+							<Path>SFX\CHARACTERS\GRANDEDAME\FOOT\WOOD\TDS_RUN_GRANDE_WOOD_03_10C4C929.wem</Path>
+						</File>
+						<File Id="598675431" Language="SFX">
+							<ShortName>CHARACTERS\GRANDEDAME\FOOT\DIRT\BIGLADY_FOOT_DIRT_01.wav</ShortName>
+							<Path>SFX\CHARACTERS\GRANDEDAME\FOOT\DIRT\BIGLADY_FOOT_DIRT_01_10C4C929.wem</Path>
+						</File>
+						<File Id="648985403" Language="SFX">
+							<ShortName>CHARACTERS\GRANDEDAME\FOOT\CONCRETE\TDS_RUN_GRANDE_CONCRETE_02.wav</ShortName>
+							<Path>SFX\CHARACTERS\GRANDEDAME\FOOT\CONCRETE\TDS_RUN_GRANDE_CONCRETE_02_10C4C929.wem</Path>
+						</File>
+						<File Id="674816718" Language="SFX">
+							<ShortName>CHARACTERS\GRANDEDAME\FOOT\DIRT\BIGLADY_FOOT_DIRT_04.wav</ShortName>
+							<Path>SFX\CHARACTERS\GRANDEDAME\FOOT\DIRT\BIGLADY_FOOT_DIRT_04_10C4C929.wem</Path>
+						</File>
+						<File Id="697778551" Language="SFX">
+							<ShortName>CHARACTERS\GRANDEDAME\FOOT\DIRT\BIGLADY_FOOT_DIRT_02.wav</ShortName>
+							<Path>SFX\CHARACTERS\GRANDEDAME\FOOT\DIRT\BIGLADY_FOOT_DIRT_02_10C4C929.wem</Path>
+						</File>
+						<File Id="906154454" Language="SFX">
+							<ShortName>CHARACTERS\GRANDEDAME\FOOT\WOOD\TDS_RUN_GRANDE_WOOD_04.wav</ShortName>
+							<Path>SFX\CHARACTERS\GRANDEDAME\FOOT\WOOD\TDS_RUN_GRANDE_WOOD_04_10C4C929.wem</Path>
+						</File>
+						<File Id="931641693" Language="SFX">
+							<ShortName>CHARACTERS\GRANDEDAME\FOOT\DIRT\BIGLADY_FOOT_DIRT_03.wav</ShortName>
+							<Path>SFX\CHARACTERS\GRANDEDAME\FOOT\DIRT\BIGLADY_FOOT_DIRT_03_10C4C929.wem</Path>
+						</File>
+						<File Id="963785291" Language="SFX">
+							<ShortName>CHARACTERS\GRANDEDAME\FOOT\CONCRETE\TDS_RUN_GRANDE_CONCRETE_03.wav</ShortName>
+							<Path>SFX\CHARACTERS\GRANDEDAME\FOOT\CONCRETE\TDS_RUN_GRANDE_CONCRETE_03_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<SwitchContainers>
+						<SwitchContainer SwitchValue="{BE07F8E4-E4EE-4BA3-ABC1-5FF3AF38F7CA}">
+							<Media>
+								<File Id="4333413"/>
+								<File Id="648985403"/>
+								<File Id="963785291"/>
+								<File Id="7001288"/>
+								<File Id="207727343"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{8337A956-8256-464B-BE89-BE58ACAF047D}">
+							<Media>
+								<File Id="598675431"/>
+								<File Id="697778551"/>
+								<File Id="931641693"/>
+								<File Id="674816718"/>
+								<File Id="425794982"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{06E404A2-3413-49DE-90E8-E338A06D202B}">
+							<Media>
+								<File Id="171082334"/>
+								<File Id="349998988"/>
+								<File Id="435846707"/>
+								<File Id="906154454"/>
+								<File Id="128596922"/>
+							</Media>
+						</SwitchContainer>
+					</SwitchContainers>
+				</Event>
+				<Event Id="1740506432" Name="Play_FOOT_fireeater" ObjectPath="\Events\Default Work Unit\persos\Fire_eater\Play_FOOT_fireeater">
+					<IncludedMemoryFiles>
+						<File Id="56108977" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FOOT\DIRT\FIREEATER_FOOT_DIRT_01.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FOOT\DIRT\FIREEATER_FOOT_DIRT_01_10C4C929.wem</Path>
+						</File>
+						<File Id="192265638" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FOOT\WOOD\TDS_RUN_FIRE_WOOD_02.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FOOT\WOOD\TDS_RUN_FIRE_WOOD_02_10C4C929.wem</Path>
+						</File>
+						<File Id="306836325" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FOOT\WOOD\TDS_RUN_FIRE_WOOD_01.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FOOT\WOOD\TDS_RUN_FIRE_WOOD_01_10C4C929.wem</Path>
+						</File>
+						<File Id="310679151" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FOOT\DIRT\FIREEATER_FOOT_DIRT_03.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FOOT\DIRT\FIREEATER_FOOT_DIRT_03_10C4C929.wem</Path>
+						</File>
+						<File Id="324749030" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FOOT\DIRT\FIREEATER_FOOT_DIRT_02.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FOOT\DIRT\FIREEATER_FOOT_DIRT_02_10C4C929.wem</Path>
+						</File>
+						<File Id="406240939" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FOOT\CONCRETE\TDS_RUN_FIRE_CONCRETE_05.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FOOT\CONCRETE\TDS_RUN_FIRE_CONCRETE_05_10C4C929.wem</Path>
+						</File>
+						<File Id="498570810" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FOOT\WOOD\TDS_RUN_FIRE_WOOD_04.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FOOT\WOOD\TDS_RUN_FIRE_WOOD_04_10C4C929.wem</Path>
+						</File>
+						<File Id="632987654" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FOOT\DIRT\FIREEATER_FOOT_DIRT_04.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FOOT\DIRT\FIREEATER_FOOT_DIRT_04_10C4C929.wem</Path>
+						</File>
+						<File Id="655342127" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FOOT\DIRT\FIREEATER_FOOT_DIRT_05.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FOOT\DIRT\FIREEATER_FOOT_DIRT_05_10C4C929.wem</Path>
+						</File>
+						<File Id="729822130" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FOOT\WOOD\TDS_RUN_FIRE_WOOD_05.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FOOT\WOOD\TDS_RUN_FIRE_WOOD_05_10C4C929.wem</Path>
+						</File>
+						<File Id="761798437" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FOOT\CONCRETE\TDS_RUN_FIRE_CONCRETE_04.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FOOT\CONCRETE\TDS_RUN_FIRE_CONCRETE_04_10C4C929.wem</Path>
+						</File>
+						<File Id="829237442" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FOOT\CONCRETE\TDS_RUN_FIRE_CONCRETE_01.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FOOT\CONCRETE\TDS_RUN_FIRE_CONCRETE_01_10C4C929.wem</Path>
+						</File>
+						<File Id="875857245" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FOOT\CONCRETE\TDS_RUN_FIRE_CONCRETE_02.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FOOT\CONCRETE\TDS_RUN_FIRE_CONCRETE_02_10C4C929.wem</Path>
+						</File>
+						<File Id="1014550003" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FOOT\CONCRETE\TDS_RUN_FIRE_CONCRETE_03.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FOOT\CONCRETE\TDS_RUN_FIRE_CONCRETE_03_10C4C929.wem</Path>
+						</File>
+						<File Id="1056393560" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\FOOT\WOOD\TDS_RUN_FIRE_WOOD_03.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\FOOT\WOOD\TDS_RUN_FIRE_WOOD_03_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<SwitchContainers>
+						<SwitchContainer SwitchValue="{BE07F8E4-E4EE-4BA3-ABC1-5FF3AF38F7CA}">
+							<Media>
+								<File Id="829237442"/>
+								<File Id="875857245"/>
+								<File Id="1014550003"/>
+								<File Id="761798437"/>
+								<File Id="406240939"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{8337A956-8256-464B-BE89-BE58ACAF047D}">
+							<Media>
+								<File Id="56108977"/>
+								<File Id="324749030"/>
+								<File Id="310679151"/>
+								<File Id="632987654"/>
+								<File Id="655342127"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{06E404A2-3413-49DE-90E8-E338A06D202B}">
+							<Media>
+								<File Id="306836325"/>
+								<File Id="192265638"/>
+								<File Id="1056393560"/>
+								<File Id="498570810"/>
+								<File Id="729822130"/>
+							</Media>
+						</SwitchContainer>
+					</SwitchContainers>
+				</Event>
+				<Event Id="114210310" Name="Play_FOOT_jugler" ObjectPath="\Events\Default Work Unit\persos\jugler\Play_FOOT_jugler">
+					<IncludedMemoryFiles>
+						<File Id="17832004" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\FOOT\WOOD\TDS_RUN_JUGGLER_WOOD_01.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\FOOT\WOOD\TDS_RUN_JUGGLER_WOOD_01_10C4C929.wem</Path>
+						</File>
+						<File Id="56464918" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\FOOT\DIRT\JUGGLER_FOOT_DIRT_01.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\FOOT\DIRT\JUGGLER_FOOT_DIRT_01_10C4C929.wem</Path>
+						</File>
+						<File Id="62095196" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\FOOT\WOOD\TDS_RUN_JUGGLER_WOOD_02.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\FOOT\WOOD\TDS_RUN_JUGGLER_WOOD_02_10C4C929.wem</Path>
+						</File>
+						<File Id="92757692" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\FOOT\DIRT\JUGGLER_FOOT_DIRT_03.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\FOOT\DIRT\JUGGLER_FOOT_DIRT_03_10C4C929.wem</Path>
+						</File>
+						<File Id="174322488" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\FOOT\CONCRETE\TDS_RUN_JUGGLER_CONCRETE_05.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\FOOT\CONCRETE\TDS_RUN_JUGGLER_CONCRETE_05_10C4C929.wem</Path>
+						</File>
+						<File Id="224708156" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\FOOT\CONCRETE\TDS_RUN_JUGGLER_CONCRETE_01.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\FOOT\CONCRETE\TDS_RUN_JUGGLER_CONCRETE_01_10C4C929.wem</Path>
+						</File>
+						<File Id="329029829" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\FOOT\DIRT\JUGGLER_FOOT_DIRT_02.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\FOOT\DIRT\JUGGLER_FOOT_DIRT_02_10C4C929.wem</Path>
+						</File>
+						<File Id="390025853" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\FOOT\DIRT\JUGGLER_FOOT_DIRT_04.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\FOOT\DIRT\JUGGLER_FOOT_DIRT_04_10C4C929.wem</Path>
+						</File>
+						<File Id="632458798" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\FOOT\DIRT\JUGGLER_FOOT_DIRT_05.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\FOOT\DIRT\JUGGLER_FOOT_DIRT_05_10C4C929.wem</Path>
+						</File>
+						<File Id="721206159" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\FOOT\CONCRETE\TDS_RUN_JUGGLER_CONCRETE_04.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\FOOT\CONCRETE\TDS_RUN_JUGGLER_CONCRETE_04_10C4C929.wem</Path>
+						</File>
+						<File Id="764324286" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\FOOT\WOOD\TDS_RUN_JUGGLER_WOOD_04.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\FOOT\WOOD\TDS_RUN_JUGGLER_WOOD_04_10C4C929.wem</Path>
+						</File>
+						<File Id="804310568" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\FOOT\CONCRETE\TDS_RUN_JUGGLER_CONCRETE_02.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\FOOT\CONCRETE\TDS_RUN_JUGGLER_CONCRETE_02_10C4C929.wem</Path>
+						</File>
+						<File Id="860023171" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\FOOT\WOOD\TDS_RUN_JUGGLER_WOOD_05.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\FOOT\WOOD\TDS_RUN_JUGGLER_WOOD_05_10C4C929.wem</Path>
+						</File>
+						<File Id="930025913" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\FOOT\CONCRETE\TDS_RUN_JUGGLER_CONCRETE_03.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\FOOT\CONCRETE\TDS_RUN_JUGGLER_CONCRETE_03_10C4C929.wem</Path>
+						</File>
+						<File Id="958123301" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\FOOT\WOOD\TDS_RUN_JUGGLER_WOOD_03.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\FOOT\WOOD\TDS_RUN_JUGGLER_WOOD_03_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<SwitchContainers>
+						<SwitchContainer SwitchValue="{BE07F8E4-E4EE-4BA3-ABC1-5FF3AF38F7CA}">
+							<Media>
+								<File Id="224708156"/>
+								<File Id="804310568"/>
+								<File Id="930025913"/>
+								<File Id="721206159"/>
+								<File Id="174322488"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{8337A956-8256-464B-BE89-BE58ACAF047D}">
+							<Media>
+								<File Id="56464918"/>
+								<File Id="329029829"/>
+								<File Id="92757692"/>
+								<File Id="390025853"/>
+								<File Id="632458798"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{06E404A2-3413-49DE-90E8-E338A06D202B}">
+							<Media>
+								<File Id="17832004"/>
+								<File Id="62095196"/>
+								<File Id="958123301"/>
+								<File Id="764324286"/>
+								<File Id="860023171"/>
+							</Media>
+						</SwitchContainer>
+					</SwitchContainers>
+				</Event>
+				<Event Id="944420934" Name="Play_HUD_BIGCONFIRM" ObjectPath="\Events\Default Work Unit\HUD\Play_HUD_BIGCONFIRM">
+					<IncludedMemoryFiles>
+						<File Id="1013280479" Language="SFX">
+							<ShortName>HUD_BIGCONFIRM.wav</ShortName>
+							<Path>SFX\HUD_BIGCONFIRM_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2196985468" Name="Play_HUD_CONFIRM" ObjectPath="\Events\Default Work Unit\HUD\Play_HUD_CONFIRM">
+					<IncludedMemoryFiles>
+						<File Id="396262020" Language="SFX">
+							<ShortName>HUD_CONFIRM.wav</ShortName>
+							<Path>SFX\HUD_CONFIRM_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="138578522" Name="Play_HUD_OVER" ObjectPath="\Events\Default Work Unit\HUD\Play_HUD_OVER">
+					<IncludedMemoryFiles>
+						<File Id="472748580" Language="SFX">
+							<ShortName>HUD_OVER.wav</ShortName>
+							<Path>SFX\HUD_OVER_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1110856793" Name="Play_HUD_READY" ObjectPath="\Events\Default Work Unit\HUD\Play_HUD_READY">
+					<IncludedMemoryFiles>
+						<File Id="541279875" Language="SFX">
+							<ShortName>HUD_READY.wav</ShortName>
+							<Path>SFX\HUD_READY_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="212900658" Name="Play_Juggle" ObjectPath="\Events\Default Work Unit\persos\jugler\Play_Juggle">
+					<IncludedMemoryFiles>
+						<File Id="933290748" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\Juggle.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\Juggle_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="169396492" Name="Play_LAND_jump" ObjectPath="\Events\Default Work Unit\persos\basics\Play_LAND_jump">
+					<IncludedMemoryFiles>
+						<File Id="244111195" Language="SFX">
+							<ShortName>JUMP\LAND\TDS_JUMP_LAND_02.wav</ShortName>
+							<Path>SFX\JUMP\LAND\TDS_JUMP_LAND_02_10C4C929.wem</Path>
+						</File>
+						<File Id="294900231" Language="SFX">
+							<ShortName>JUMP\LAND\TDS_JUMP_LAND_04.wav</ShortName>
+							<Path>SFX\JUMP\LAND\TDS_JUMP_LAND_04_10C4C929.wem</Path>
+						</File>
+						<File Id="635829914" Language="SFX">
+							<ShortName>JUMP\LAND\TDS_JUMP_LAND_01.wav</ShortName>
+							<Path>SFX\JUMP\LAND\TDS_JUMP_LAND_01_10C4C929.wem</Path>
+						</File>
+						<File Id="797194123" Language="SFX">
+							<ShortName>JUMP\LAND\TDS_JUMP_LAND_03.wav</ShortName>
+							<Path>SFX\JUMP\LAND\TDS_JUMP_LAND_03_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1082762910" Name="Play_LARGE_BLOW" ObjectPath="\Events\Default Work Unit\persos\basics\Play_LARGE_BLOW">
+					<IncludedMemoryFiles>
+						<File Id="110464765" Language="SFX">
+							<ShortName>LARGE_BLOW\LARGE_HIT_01.wav</ShortName>
+							<Path>SFX\LARGE_BLOW\LARGE_HIT_01_10C4C929.wem</Path>
+						</File>
+						<File Id="303833755" Language="SFX">
+							<ShortName>LARGE_BLOW\LARGE_HIT_05.wav</ShortName>
+							<Path>SFX\LARGE_BLOW\LARGE_HIT_05_10C4C929.wem</Path>
+						</File>
+						<File Id="383198552" Language="SFX">
+							<ShortName>LARGE_BLOW\LARGE_HIT_03.wav</ShortName>
+							<Path>SFX\LARGE_BLOW\LARGE_HIT_03_10C4C929.wem</Path>
+						</File>
+						<File Id="428699502" Language="SFX">
+							<ShortName>LARGE_BLOW\LARGE_HIT_02.wav</ShortName>
+							<Path>SFX\LARGE_BLOW\LARGE_HIT_02_10C4C929.wem</Path>
+						</File>
+						<File Id="610299881" Language="SFX">
+							<ShortName>LARGE_BLOW\LARGE_HIT_04.wav</ShortName>
+							<Path>SFX\LARGE_BLOW\LARGE_HIT_04_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="4064908091" Name="Play_Lock" ObjectPath="\Events\Default Work Unit\persos\jugler\Play_Lock">
+					<IncludedMemoryFiles>
+						<File Id="457071443" Language="SFX">
+							<ShortName>CHARACTERS\JUGGLER\Lock.wav</ShortName>
+							<Path>SFX\CHARACTERS\JUGGLER\Lock_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="4115969904" Name="Play_PARRY" ObjectPath="\Events\Default Work Unit\persos\basics\Play_PARRY">
+					<IncludedMemoryFiles>
+						<File Id="164847459" Language="SFX">
+							<ShortName>PARRY\PARRY_03.wav</ShortName>
+							<Path>SFX\PARRY\PARRY_03_10C4C929.wem</Path>
+						</File>
+						<File Id="549491571" Language="SFX">
+							<ShortName>PARRY\PARRY_01.wav</ShortName>
+							<Path>SFX\PARRY\PARRY_01_10C4C929.wem</Path>
+						</File>
+						<File Id="765940290" Language="SFX">
+							<ShortName>PARRY\PARRY_02.wav</ShortName>
+							<Path>SFX\PARRY\PARRY_02_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3715669161" Name="Play_SLIDE" ObjectPath="\Events\Default Work Unit\persos\basics\Play_SLIDE">
+					<IncludedMemoryFiles>
+						<File Id="57685847" Language="SFX">
+							<ShortName>SLIDE\SLIDE_02.wav</ShortName>
+							<Path>SFX\SLIDE\SLIDE_02_10C4C929.wem</Path>
+						</File>
+						<File Id="904481222" Language="SFX">
+							<ShortName>SLIDE\SLIDE_01.wav</ShortName>
+							<Path>SFX\SLIDE\SLIDE_01_10C4C929.wem</Path>
+						</File>
+						<File Id="1048273243" Language="SFX">
+							<ShortName>SLIDE\SLIDE_03.wav</ShortName>
+							<Path>SFX\SLIDE\SLIDE_03_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="134550002" Name="Play_SMALL_BLOW" ObjectPath="\Events\Default Work Unit\persos\basics\Play_SMALL_BLOW">
+					<IncludedMemoryFiles>
+						<File Id="369386999" Language="SFX">
+							<ShortName>SMALL_BLOW\SMALL_HIT_03.wav</ShortName>
+							<Path>SFX\SMALL_BLOW\SMALL_HIT_03_10C4C929.wem</Path>
+						</File>
+						<File Id="372707453" Language="SFX">
+							<ShortName>SMALL_BLOW\SMALL_HIT_02.wav</ShortName>
+							<Path>SFX\SMALL_BLOW\SMALL_HIT_02_10C4C929.wem</Path>
+						</File>
+						<File Id="441449810" Language="SFX">
+							<ShortName>SMALL_BLOW\SMALL_HIT_01.wav</ShortName>
+							<Path>SFX\SMALL_BLOW\SMALL_HIT_01_10C4C929.wem</Path>
+						</File>
+						<File Id="576915860" Language="SFX">
+							<ShortName>SMALL_BLOW\SMALL_HIT_05.wav</ShortName>
+							<Path>SFX\SMALL_BLOW\SMALL_HIT_05_10C4C929.wem</Path>
+						</File>
+						<File Id="771628745" Language="SFX">
+							<ShortName>SMALL_BLOW\SMALL_HIT_04.wav</ShortName>
+							<Path>SFX\SMALL_BLOW\SMALL_HIT_04_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="301125896" Name="Play_SPIT" ObjectPath="\Events\Default Work Unit\persos\Fire_eater\Play_SPIT">
+					<IncludedMemoryFiles>
+						<File Id="108845846" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\SPIT.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\SPIT_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="708322162" Name="Play_SPLAT" ObjectPath="\Events\Default Work Unit\persos\Fire_eater\Play_SPLAT">
+					<IncludedMemoryFiles>
+						<File Id="21620485" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\SPLAT.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\SPLAT_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="406111645" Name="Play_START_jump" ObjectPath="\Events\Default Work Unit\persos\basics\Play_START_jump">
+					<IncludedMemoryFiles>
+						<File Id="221539393" Language="SFX">
+							<ShortName>JUMP\START\TDS_JUMP_START_01.wav</ShortName>
+							<Path>SFX\JUMP\START\TDS_JUMP_START_01_10C4C929.wem</Path>
+						</File>
+						<File Id="585703525" Language="SFX">
+							<ShortName>JUMP\START\TDS_JUMP_START_04.wav</ShortName>
+							<Path>SFX\JUMP\START\TDS_JUMP_START_04_10C4C929.wem</Path>
+						</File>
+						<File Id="801857241" Language="SFX">
+							<ShortName>JUMP\START\TDS_JUMP_START_02.wav</ShortName>
+							<Path>SFX\JUMP\START\TDS_JUMP_START_02_10C4C929.wem</Path>
+						</File>
+						<File Id="1065436191" Language="SFX">
+							<ShortName>JUMP\START\TDS_JUMP_START_03.wav</ShortName>
+							<Path>SFX\JUMP\START\TDS_JUMP_START_03_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3595911238" Name="Play_TORCH_OFF" ObjectPath="\Events\Default Work Unit\persos\Fire_eater\Play_TORCH_OFF">
+					<IncludedMemoryFiles>
+						<File Id="440017095" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\TORCH_OFF\TORCH_OFF_01.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\TORCH_OFF\TORCH_OFF_01_10C4C929.wem</Path>
+						</File>
+						<File Id="658348243" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\TORCH_OFF\TORCH_OFF_04.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\TORCH_OFF\TORCH_OFF_04_10C4C929.wem</Path>
+						</File>
+						<File Id="821813250" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\TORCH_OFF\TORCH_OFF_02.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\TORCH_OFF\TORCH_OFF_02_10C4C929.wem</Path>
+						</File>
+						<File Id="914191231" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\TORCH_OFF\TORCH_OFF_03.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\TORCH_OFF\TORCH_OFF_03_10C4C929.wem</Path>
+						</File>
+						<File Id="1027126958" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\TORCH_OFF\TORCH_OFF_05.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\TORCH_OFF\TORCH_OFF_05_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="505828200" Name="Play_TORCH_ON" ObjectPath="\Events\Default Work Unit\persos\Fire_eater\Play_TORCH_ON">
+					<IncludedMemoryFiles>
+						<File Id="101232382" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\TORCH_ON\TORCH_ON_03.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\TORCH_ON\TORCH_ON_03_10C4C929.wem</Path>
+						</File>
+						<File Id="177057535" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\TORCH_ON\TORCH_ON_04.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\TORCH_ON\TORCH_ON_04_10C4C929.wem</Path>
+						</File>
+						<File Id="234590143" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\TORCH_ON\TORCH_ON_01.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\TORCH_ON\TORCH_ON_01_10C4C929.wem</Path>
+						</File>
+						<File Id="612808619" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\TORCH_ON\TORCH_ON_05.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\TORCH_ON\TORCH_ON_05_10C4C929.wem</Path>
+						</File>
+						<File Id="961154556" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\TORCH_ON\TORCH_ON_02.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\TORCH_ON\TORCH_ON_02_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="369801413" Name="Play_TORNADO" ObjectPath="\Events\Default Work Unit\persos\Bear_Lady\Play_TORNADO">
+					<IncludedMemoryFiles>
+						<File Id="368211890" Language="SFX">
+							<ShortName>CHARACTERS\BEARDLADY\TORNAO.wav</ShortName>
+							<Path>SFX\CHARACTERS\BEARDLADY\TORNAO_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1339992111" Name="Play_VOMIT" ObjectPath="\Events\Default Work Unit\persos\Fire_eater\Play_VOMIT">
+					<IncludedMemoryFiles>
+						<File Id="664666690" Language="SFX">
+							<ShortName>CHARACTERS\FIREEATER\VOMIT.wav</ShortName>
+							<Path>SFX\CHARACTERS\FIREEATER\VOMIT_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1942555113" Name="PUNK" ObjectPath="\Events\Default Work Unit\monsters\PUNK">
+					<IncludedMemoryFiles>
+						<File Id="693893787" Language="SFX">
+							<ShortName>PUNK\CROWBAR\CROWBAR_04.wav</ShortName>
+							<Path>SFX\PUNK\CROWBAR\CROWBAR_04_10C4C929.wem</Path>
+						</File>
+						<File Id="877355694" Language="SFX">
+							<ShortName>PUNK\CROWBAR\CROWBAR_01.wav</ShortName>
+							<Path>SFX\PUNK\CROWBAR\CROWBAR_01_10C4C929.wem</Path>
+						</File>
+						<File Id="1040413234" Language="SFX">
+							<ShortName>PUNK\CROWBAR\CROWBAR_03.wav</ShortName>
+							<Path>SFX\PUNK\CROWBAR\CROWBAR_03_10C4C929.wem</Path>
+						</File>
+						<File Id="1060116836" Language="SFX">
+							<ShortName>PUNK\CROWBAR\CROWBAR_02.wav</ShortName>
+							<Path>SFX\PUNK\CROWBAR\CROWBAR_02_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<SwitchContainers>
+						<SwitchContainer SwitchValue="{9FC08902-4974-440F-85DD-DCD99E37F430}">
+							<Media>
+								<File Id="877355694"/>
+								<File Id="1060116836"/>
+								<File Id="1040413234"/>
+								<File Id="693893787"/>
+							</Media>
+						</SwitchContainer>
+					</SwitchContainers>
+				</Event>
+				<Event Id="804534660" Name="SIAMESE" ObjectPath="\Events\Default Work Unit\monsters\SIAMESE">
+					<IncludedMemoryFiles>
+						<File Id="378083774" Language="SFX">
+							<ShortName>SIAMESE\COSTUME.wav</ShortName>
+							<Path>SFX\SIAMESE\COSTUME_10C4C929.wem</Path>
+						</File>
+						<File Id="714091263" Language="SFX">
+							<ShortName>SIAMESE\SIAMESE_LARGEHIT.wav</ShortName>
+							<Path>SFX\SIAMESE\SIAMESE_LARGEHIT_10C4C929.wem</Path>
+						</File>
+						<File Id="779630561" Language="SFX">
+							<ShortName>SIAMESE\SIAMESE_SMALLHIT.wav</ShortName>
+							<Path>SFX\SIAMESE\SIAMESE_SMALLHIT_10C4C929.wem</Path>
+						</File>
+						<File Id="810962521" Language="SFX">
+							<ShortName>SIAMESE\SIAMESE_TONRADO.wav</ShortName>
+							<Path>SFX\SIAMESE\SIAMESE_TONRADO_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<SwitchContainers>
+						<SwitchContainer SwitchValue="{9FC08902-4974-440F-85DD-DCD99E37F430}">
+							<Media>
+								<File Id="378083774"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{C9D63AFD-34A5-4E1C-A462-5415F71A1835}">
+							<Media>
+								<File Id="714091263"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{AABA20D6-8CA8-480E-BC3A-DA2D9AF32D48}">
+							<Media>
+								<File Id="779630561"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{49B43592-6928-4B83-93E9-E20F7B2F0B3A}">
+							<Media>
+								<File Id="810962521"/>
+							</Media>
+						</SwitchContainer>
+					</SwitchContainers>
+				</Event>
+				<Event Id="411907754" Name="stop_drunk" ObjectPath="\Events\Default Work Unit\persos\Fire_eater\stop_drunk" MaxAttenuation="0.000000"/>
+			</IncludedEvents>
+			<GameParameters>
+				<GameParameter Id="2961358289" Name="foot_surface" ObjectPath="\Game Parameters\Default Work Unit\foot_surface"/>
+				<GameParameter Id="3540893800" Name="ennemies_attack" ObjectPath="\Game Parameters\Default Work Unit\ennemies_attack"/>
+			</GameParameters>
+			<SwitchGroups>
+				<SwitchGroup Id="2066487578" Name="ENNEMIS_ATTACK_SWITCH" ObjectPath="\Switches\Default Work Unit\ENNEMIS_ATTACK_SWITCH">
+					<Switches>
+						<Switch Id="4145357458" Name="attaque_1" ObjectPath="\Switches\Default Work Unit\ENNEMIS_ATTACK_SWITCH\attaque_1"/>
+						<Switch Id="4145357457" Name="attaque_2" ObjectPath="\Switches\Default Work Unit\ENNEMIS_ATTACK_SWITCH\attaque_2"/>
+						<Switch Id="4145357456" Name="attaque_3" ObjectPath="\Switches\Default Work Unit\ENNEMIS_ATTACK_SWITCH\attaque_3"/>
+						<Switch Id="4145357463" Name="attaque_4" ObjectPath="\Switches\Default Work Unit\ENNEMIS_ATTACK_SWITCH\attaque_4"/>
+						<Switch Id="4145357462" Name="attaque_5" ObjectPath="\Switches\Default Work Unit\ENNEMIS_ATTACK_SWITCH\attaque_5"/>
+						<Switch Id="4145357461" Name="attaque_6" ObjectPath="\Switches\Default Work Unit\ENNEMIS_ATTACK_SWITCH\attaque_6"/>
+					</Switches>
+				</SwitchGroup>
+				<SwitchGroup Id="3140091853" Name="footsteps_switch" ObjectPath="\Switches\Default Work Unit\footsteps_switch">
+					<Switches>
+						<Switch Id="841620460" Name="concrete" ObjectPath="\Switches\Default Work Unit\footsteps_switch\concrete"/>
+						<Switch Id="2195636714" Name="dirt" ObjectPath="\Switches\Default Work Unit\footsteps_switch\dirt"/>
+						<Switch Id="2058049674" Name="wood" ObjectPath="\Switches\Default Work Unit\footsteps_switch\wood"/>
+					</Switches>
+				</SwitchGroup>
+			</SwitchGroups>
+		</SoundBank>
+	</SoundBanks>
+</SoundBanksInfo>

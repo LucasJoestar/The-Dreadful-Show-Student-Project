@@ -5,8 +5,16 @@
 			<ChildrenList>
 				<SoundBank Name="la_seule_et_unique_banque_de_soon" ID="{32678B69-7969-4CDA-BD63-FCEBCB94D86F}">
 					<ObjectInclusionList>
-						<ObjectRef Name="Characters" ID="{AE3E5790-1BB3-4640-8675-04C4D42AABAC}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}" Origin="Manual" Filter="7"/>
-						<ObjectRef Name="ENNEMIES" ID="{08B8D713-BC54-465C-BFD5-A4E4E4ABD4F6}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="monsters" ID="{E7F8CC48-A39A-42FF-955A-6DAF1ED9C566}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="persos" ID="{F450527F-D7C6-4455-857D-091EB4D19A33}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="HUD" ID="{C51C0DA7-5B52-4622-9149-1D1682943C8F}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}" Origin="Manual" Filter="7"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+				<SoundBank Name="ambiances" ID="{17DBB0C1-8F97-4C61-9F99-2FFEF17DD752}">
+					<ObjectInclusionList>
+						<ObjectRef Name="amb" ID="{8BD1AEC4-4DE3-4F6E-8FCD-EEF2EFF7BF69}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}" Origin="Manual" Filter="7"/>
 					</ObjectInclusionList>
 					<ObjectExclusionList/>
 					<GameSyncExclusionList/>
