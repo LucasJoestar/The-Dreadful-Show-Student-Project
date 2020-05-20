@@ -467,8 +467,6 @@ public class TDS_Juggler : TDS_Player
         // Activate aiming target and set its default position
         TDS_UIManager.Instance.ActivateJugglerAimTarget();
 
-        aimTargetTransform.anchoredPosition = TDS_Camera.Instance.Camera.WorldToScreenPoint(ThrowAimingPoint);
-
         // While holding the throw button, aim a position
         while (controller.GetButton(ButtonType.Aim))
         {
@@ -496,6 +494,8 @@ public class TDS_Juggler : TDS_Player
         yield break;
     }
 
+    readonly Rect _cameraRect = new Rect(0, 0, 1920, 1080);
+
     /// <summary>
     /// Method called in the Aim coroutine.
     /// </summary>
@@ -504,18 +504,19 @@ public class TDS_Juggler : TDS_Player
         // If having a target, follows it 'til death or getting out of screen
         if (targetEnemy)
         {
-            Vector3 _screenPos;
-            if (targetEnemy.IsDead || !TDS_Camera.Instance.Camera.pixelRect.Contains(_screenPos = TDS_Camera.Instance.Camera.WorldToScreenPoint(targetEnemy.Collider.bounds.center)))
+            Vector3 _screenPos = TDS_Camera.Instance.Camera.WorldToViewportPoint(targetEnemy.Collider.bounds.center);
+            _screenPos.x *= 1920;
+            _screenPos.y *= 1080;
+
+            if (targetEnemy.IsDead || !_cameraRect.Contains(_screenPos))
             {
                 targetEnemy = null;
                 TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
             }
             else
             {
-                if (aimTargetTransform.position != _screenPos)
-                {
-                    aimTargetTransform.position = _screenPos;
-                }
+                aimTargetTransform.anchoredPosition = new Vector3(_screenPos.x, _screenPos.y, 0);
+
                 // Switch target when moving related axis
                 if (controller.GetAxisDown(AxisType.HorizontalAim))
                 {
@@ -531,13 +532,15 @@ public class TDS_Juggler : TDS_Player
                         else if (_index >= _enemies.Length) _index = 0;
 
                         // Get new available target position ; if on screen, take it
-                        _screenPos = TDS_Camera.Instance.Camera.WorldToScreenPoint(_enemies[_index].Collider.bounds.center);
+                        _screenPos = TDS_Camera.Instance.Camera.WorldToViewportPoint(targetEnemy.Collider.bounds.center);
+                        _screenPos.x *= 1920;
+                        _screenPos.y *= 1080;
 
-                        if (TDS_Camera.Instance.Camera.pixelRect.Contains(_screenPos) && (targetEnemy != _enemies[_index]))
+                        if (_cameraRect.Contains(_screenPos) && (targetEnemy != _enemies[_index]))
                         {
                             // Set target enemy
                             targetEnemy = _enemies[_index];
-                            aimTargetTransform.position = _screenPos;
+                            aimTargetTransform.anchoredPosition = new Vector3(_screenPos.x, _screenPos.y, 0);
 
                             // Play sound
                             PlayLock();
@@ -545,7 +548,6 @@ public class TDS_Juggler : TDS_Player
                         }
                     }
                 }
-
                 return;
             }
         }
@@ -560,8 +562,10 @@ public class TDS_Juggler : TDS_Player
 
             foreach (TDS_Enemy _enemy in _activeEnemies)
             {
-                _enemyPosOnScreen = TDS_Camera.Instance.Camera.WorldToScreenPoint(_enemy.Collider.bounds.center);
-                if (TDS_Camera.Instance.Camera.pixelRect.Contains(_enemyPosOnScreen))
+                _enemyPosOnScreen = TDS_Camera.Instance.Camera.WorldToViewportPoint(_enemy.Collider.bounds.center);
+                _enemyPosOnScreen.x *= 1920;
+                _enemyPosOnScreen.y *= 1080;
+                if (_cameraRect.Contains(_enemyPosOnScreen))
                 {
                     // Nullify target object
                     if (targetObject) targetObject = null;
@@ -573,8 +577,8 @@ public class TDS_Juggler : TDS_Player
                     PlayLock();
 
                     // Set aim target & arrow positions
-                    aimTargetTransform.position = _enemyPosOnScreen;
-                    aimArrowTransform.anchoredPosition = (Vector2)TDS_Camera.Instance.Camera.WorldToScreenPoint(new Vector3(_enemy.Collider.bounds.center.x, _enemy.Collider.bounds.max.y + .1f, _enemy.Collider.bounds.center.z)) - (Vector2)aimTargetTransform.position;
+                    aimTargetTransform.anchoredPosition = new Vector3(_enemyPosOnScreen.x, _enemyPosOnScreen.y, 0);
+                    aimArrowTransform.anchoredPosition = new Vector3(0, TDS_Camera.Instance.Camera.pixelHeight / 5, 0);
 
                     // Set lock animation
                     TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Locked);
@@ -625,11 +629,15 @@ public class TDS_Juggler : TDS_Player
             }
         }
 
-        // Set new target if different
-        if (_newTarget != aimTargetTransform.anchoredPosition) aimTargetTransform.anchoredPosition = _newTarget;
+        // Set new target
+        aimTargetTransform.anchoredPosition = _newTarget;
 
         // Check if target is under enemy
-        Ray _ray = TDS_Camera.Instance.Camera.ScreenPointToRay(aimTargetTransform.position);
+        Vector2 _viewportPos = aimTargetTransform.anchoredPosition;
+        _viewportPos.x /= 1920;
+        _viewportPos.y /= 1080;
+
+        Ray _ray = TDS_Camera.Instance.Camera.ViewportPointToRay(_viewportPos);
         RaycastHit _hit = new RaycastHit();
 
         if (Physics.Raycast(_ray, out _hit, 100, whatCanAim) && _hit.collider.gameObject.HasTag(aimDetectTags.ObjectTags))
@@ -1017,7 +1025,11 @@ public class TDS_Juggler : TDS_Player
             return false;
 
         // Get the destination point in world space
-        Ray _ray = TDS_Camera.Instance.Camera.ScreenPointToRay(aimTargetTransform.position);
+        Vector2 _viewportPos = aimTargetTransform.anchoredPosition;
+        _viewportPos.x /= 1920;
+        _viewportPos.y /= 1080;
+
+        Ray _ray = TDS_Camera.Instance.Camera.ViewportPointToRay(_viewportPos);
         RaycastHit _info = new RaycastHit();
 
         if (Physics.Raycast(_ray, out _info, 100, whatCanAim))
