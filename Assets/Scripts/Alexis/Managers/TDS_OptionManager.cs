@@ -138,18 +138,31 @@ public class TDS_OptionManager : MonoBehaviour
         }
 
 
-        if (toggleFullScreen) toggleFullScreen.isOn = Screen.fullScreen;
-        Resolution _r = Screen.currentResolution;
-        for (int i = 0; i < Screen.resolutions.Length; i++)
+        if (toggleFullScreen)
         {
-            if (_r.width == Screen.resolutions[i].width && _r.height == Screen.resolutions[i].height)
-            {
-                _r = Screen.resolutions[i];
-                break;
-            }
+            toggleFullScreen.isOn = Screen.fullScreen;
         }
-        if (textResolution) textResolution.text = $"{_r.width} x {_r.height}";
-        selectedResolutionIndex = Screen.resolutions.ToList().IndexOf(_r);
+        Resolution _r;
+        if (Screen.fullScreen)
+        {
+            _r = Screen.currentResolution;
+            if (textResolution) textResolution.text = $"{_r.width} x {_r.height}";
+            selectedResolutionIndex = Screen.resolutions.ToList().IndexOf(_r);
+        }
+        else
+        {
+            _r = Screen.resolutions[0]; 
+            for (int i = 1; i < Screen.resolutions.Length; i++)
+            {
+                if (Screen.width == Screen.resolutions[i].width && Screen.height == Screen.resolutions[i].height)
+                {
+                    _r = Screen.resolutions[i];
+                    break;
+                }
+            }
+            if (textResolution) textResolution.text = $"{Screen.width} x {Screen.height}";
+            selectedResolutionIndex = Screen.resolutions.ToList().IndexOf(_r);
+        }
 
         buttonPreviousResolution.Select(); 
     }
