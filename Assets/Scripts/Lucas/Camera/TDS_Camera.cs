@@ -1170,6 +1170,8 @@ public class TDS_Camera : MonoBehaviour
 
         boundLayer = LayerMask.NameToLayer("Bound");
         objectLayer = LayerMask.NameToLayer("Object");
+
+        TDS_UIManager.Instance.SetMainCamera(camera);
     }
 	
 	// Update is called once per frame

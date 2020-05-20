@@ -1852,6 +1852,8 @@ public class TDS_Player : TDS_Character, IPunObservable
         MoveTo(_newPosition);
     }
 
+    private bool isMovingPlayerInView = false;
+
     /// <summary>
     /// Moves the player inside the visible zone.
     /// </summary>
@@ -1864,6 +1866,9 @@ public class TDS_Player : TDS_Character, IPunObservable
             yield return null;
             _timer -= Time.deltaTime;
         }
+
+        isMovingPlayerInView = true;
+        FreezePlayer();
 
         rigidbody.isKinematic = true;
         enabled = false;
@@ -2082,11 +2087,17 @@ public class TDS_Player : TDS_Character, IPunObservable
             StopCoroutine(movePlayerInViewCoroutine);
             movePlayerInViewCoroutine = null;
 
-            SetAnim(PlayerAnimState.Idle);
-            rigidbody.isKinematic = false;
+            if (isMovingPlayerInView)
+            {
+                SetAnim(PlayerAnimState.Idle);
+                rigidbody.isKinematic = false;
 
-            isMoving = false;
-            enabled = true;
+                isMoving = false;
+                enabled = true;
+
+                isMovingPlayerInView = false;
+                UnfreezePlayer();
+            }
         }
     }
 

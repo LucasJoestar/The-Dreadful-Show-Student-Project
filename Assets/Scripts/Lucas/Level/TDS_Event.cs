@@ -261,16 +261,16 @@ public class TDS_Event
                 if (TDS_GameManager.CurrentSceneIndex == 0)
                     break;
 
-                yield return new WaitForSeconds(1f);
+                //yield return new WaitForSeconds(1f);
                 
-                if (!PhotonNetwork.offlineMode) TDS_LevelManager.Instance?.LocalPlayer?.FreezePlayer();
-                else
-                {
-                    foreach (TDS_Player _player in TDS_LevelManager.Instance?.AllPlayers)
-                    {
-                        _player.FreezePlayer();
-                    }
-                }
+                //if (!PhotonNetwork.offlineMode) TDS_LevelManager.Instance?.LocalPlayer?.FreezePlayer();
+                //else
+                //{
+                //    foreach (TDS_Player _player in TDS_LevelManager.Instance?.AllPlayers)
+                //    {
+                //        _player.FreezePlayer();
+                //    }
+                //}
                 break;
 
             // Moves the local player around a point

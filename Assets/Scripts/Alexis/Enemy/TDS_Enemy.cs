@@ -1172,7 +1172,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected virtual void InitLifeBar()
     {
         //INIT LIFEBAR
-        if (TDS_UIManager.Instance?.CanvasWorld)
+        if (TDS_UIManager.Instance.CanvasWorld)
         {
             TDS_UIManager.Instance.SetEnemyLifebar(this);
         }

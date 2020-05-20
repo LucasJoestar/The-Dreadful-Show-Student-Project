@@ -61,6 +61,8 @@ public class TDS_Projectile : TDS_Object
     [SerializeField] private ParticleSystem feedbackFX = null;
     #endregion
 
+    bool isDestroying = false;
+
     #region Methods
 
     #region Original Methods
@@ -101,14 +103,16 @@ public class TDS_Projectile : TDS_Object
     /// </summary>
     private void CallDestruction()
     {
-        if (!PhotonNetwork.isMasterClient) return;
-        StopAllCoroutines(); 
-        hitBox.Desactivate();
+        if (PhotonNetwork.isMasterClient)
+        {
+            hitBox.Desactivate();
 
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "DestroyFeedback"), new object[] { });
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PrepareDestruction"), new object[] { });
+
+            Invoke("Destroy", 2);
+        }
 
         DestroyFeedback();
-        Invoke("Destroy", 2);
     }
 
     public void StartProjectileMovement(Vector3 _direction, float _range)
@@ -128,8 +132,10 @@ public class TDS_Projectile : TDS_Object
 
     private void PrepareDestruction()
     {
-        if (!PhotonNetwork.isMasterClient) return;
-        CancelInvoke("CallDestruction");
+        if (isDestroying)
+            return;
+
+        isDestroying = true;
         StopAllCoroutines();
         Invoke("CallDestruction", .001f);
     }
@@ -153,7 +159,6 @@ public class TDS_Projectile : TDS_Object
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!PhotonNetwork.isMasterClient) return;
         PrepareDestruction(); 
     }
     #endregion

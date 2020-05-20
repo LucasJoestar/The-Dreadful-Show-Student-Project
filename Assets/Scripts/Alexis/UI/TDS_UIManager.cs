@@ -1037,6 +1037,11 @@ public class TDS_UIManager : PunBehaviour
         TDS_GameManager.LocalisationIsEnglish = _isEnglish; 
     }
 
+    public void SetMainCamera(Camera _camera)
+    {
+        canvasScreen.worldCamera = _camera;
+    }
+
     /// <summary>
     /// Set the new name of the player (Used in Unity Event)
     /// </summary>

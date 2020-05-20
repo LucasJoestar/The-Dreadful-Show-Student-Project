@@ -274,7 +274,10 @@ public class TDS_LevelManager : PunBehaviour
         currentCutscene.Stop();
         TDS_GameManager.IsInCutscene = false;
 
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SkipCutscene"), new object[] { });
+        if (PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SkipCutscene"), new object[] { });
+        }
     }
 
     /// <summary>
