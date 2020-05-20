@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4366757, g: 0.48427194, b: 0.5645252, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1214,6 +1214,16 @@ PrefabInstance:
       propertyPath: m_UpdateMode
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 550355978814379819, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -320042503
+      objectReference: {fileID: 0}
+    - target: {fileID: 550355978814379819, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 559996645852553635, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -1319,6 +1329,16 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetLocalisation
       objectReference: {fileID: 0}
+    - target: {fileID: 1014790766192587869, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -320042503
+      objectReference: {fileID: 0}
+    - target: {fileID: 1014790766192587869, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1127369057722689283, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
       propertyPath: m_Enabled
@@ -1418,6 +1438,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2083870346639556712, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -320042503
+      objectReference: {fileID: 0}
+    - target: {fileID: 2083870346639556712, guid: ca57834bf12a62e4f857e7cd35728f26,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2168007380641741995, guid: ca57834bf12a62e4f857e7cd35728f26,
         type: 3}
