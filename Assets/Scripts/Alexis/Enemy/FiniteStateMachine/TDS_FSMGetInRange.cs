@@ -12,9 +12,7 @@ public class TDS_FSMGetInRange : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (!PhotonNetwork.isMasterClient) return;
-
         if (!owner) owner = animator.GetComponent<TDS_Enemy>();
-        if (!owner) return;
         gettingInRangeCoroutine = owner.StartCoroutine(owner.CastDetection()); 
         
     }

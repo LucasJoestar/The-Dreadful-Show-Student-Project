@@ -12,8 +12,6 @@ public class TDS_FSMPickUpObject : StateMachineBehaviour
     {
         if (!PhotonNetwork.isMasterClient) return;
         if (!owner) owner = animator.GetComponent<TDS_Enemy>();
-        if (!owner) return;
-
         pickUpCoroutine = owner.StartCoroutine(owner.CastGrab()); 
     }
 

@@ -164,7 +164,7 @@ public class TDS_OptionManager : MonoBehaviour
             selectedResolutionIndex = Screen.resolutions.ToList().IndexOf(_r);
         }
 
-        buttonPreviousResolution.Select(); 
+        if(gameObject.activeInHierarchy) buttonPreviousResolution.Select(); 
     }
     #endregion
 

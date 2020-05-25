@@ -10,7 +10,6 @@ public class TDS_FSMDefaultState : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (!owner) owner = animator.GetComponent<TDS_Enemy>();
-        if (!owner) return;
         owner.StopAll(); 
     }
 
