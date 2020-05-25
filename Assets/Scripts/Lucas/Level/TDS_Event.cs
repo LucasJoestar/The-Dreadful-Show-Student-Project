@@ -198,13 +198,12 @@ public class TDS_Event
             case CustomEventType.DesactiveInfoBox:
                 if (doRequireSpecificPlayerType)
                 {
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", TDS_LevelManager.Instance.AllPlayers.ToList().Where(p => p.PlayerType == playerType).Select(p => p.photonView.owner).First(), TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "DesactivateDialogBox")
-                      , new object[] { });
+                    PhotonPlayer _target = TDS_LevelManager.Instance.AllPlayers.ToList().Where(p => p.PlayerType == playerType).Select(p => p.photonView.owner).First();
+                    TDS_RPCManager.Instance.CallRPC(_target, TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "DesactivateDialogBox", new object[] { });
                 }
                 else
                 {
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "DesactivateDialogBox")
-                      , new object[] { });
+                    TDS_RPCManager.Instance.CallRPC(PhotonTargets.All, TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "DesactivateDialogBox", new object[] { });
                 }
                 break;
 
@@ -213,13 +212,12 @@ public class TDS_Event
                 // Activate the info box for the requested player or for everyone
                 if (doRequireSpecificPlayerType)
                 {
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", TDS_LevelManager.Instance.AllPlayers.ToList().Where(p => p.PlayerType == playerType).Select(p => p.photonView.owner).First(), TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateDialogBox")
-                      , new object[] { TDS_GameManager.GetDialog(eventString)[0] });
+                    PhotonPlayer _target = TDS_LevelManager.Instance.AllPlayers.ToList().Where(p => p.PlayerType == playerType).Select(p => p.photonView.owner).First();
+                    TDS_RPCManager.Instance.CallRPC(_target, TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateDialogBox", new object[] { TDS_GameManager.GetDialog(eventString)[0] });
                 }
                 else
                 {
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateDialogBox")
-                      , new object[] { TDS_GameManager.GetDialog(eventString)[0] });
+                    TDS_RPCManager.Instance.CallRPC(PhotonTargets.All, TDS_UIManager.Instance.photonView, TDS_UIManager.Instance.GetType(), "ActivateDialogBox", new object[] { TDS_GameManager.GetDialog(eventString)[0] });
                 }
                 break;
 
@@ -396,7 +394,7 @@ public class TDS_Event
                     // Switch waiting players panel if playing with your folks
                     if (_doSwitch)
                     {
-                       TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel"), new object[] { });
+                        TDS_RPCManager.Instance.CallRPC(PhotonTargets.All, TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel", new object[] { });
 
                         yield return new WaitForSeconds(.25f);
                     }
@@ -406,7 +404,7 @@ public class TDS_Event
 
                     if (_doSwitch)
                     {
-                       TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(TDS_UIManager.Instance?.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel"), new object[] { });
+                        TDS_RPCManager.Instance.CallRPC(PhotonTargets.All, TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchWaitingPanel", new object[] { });
                     }
                 }
                 break;

@@ -180,8 +180,7 @@ public class TDS_Destructible : TDS_Damageable
         // Online
         if (PhotonNetwork.isMasterClient)
         {
-            // if (!animator) return;
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { (int)_state });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "SetAnimationState", new object[] { (int)_state });
         }
 
         switch (_state)

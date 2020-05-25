@@ -394,7 +394,7 @@ public abstract class TDS_Character : TDS_Damageable
 
         if (photonView.isMine)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Flip"), new object[] { isFacingRight });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "HitFlipCallback", new object[] { isFacingRight });
         }
 
         transform.Rotate(Vector3.up, 180);
@@ -470,7 +470,7 @@ public abstract class TDS_Character : TDS_Damageable
         {
             if (CanGrabObject() && !_throwable.IsHeld)
             {
-                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "GrabObject"), new object[] { _throwable.photonView.viewID });
+                TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, GetType(), "GrabObject", new object[] { _throwable.photonView.viewID });
 
                 if (_throwable is TDS_SpecialThrowable _special)
                     _special.ActiveSpecialEvent();
@@ -484,7 +484,7 @@ public abstract class TDS_Character : TDS_Damageable
         // Take the object if possible
         if (!CanGrabObject() || !_throwable.PickUp(this))
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "RemoveThrowable"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(photonView.owner, photonView, GetType(), "RemoveThrowable", new object[] { });
             return false;
         }
         return true;
@@ -517,7 +517,7 @@ public abstract class TDS_Character : TDS_Damageable
         // Call this method in MasterClient
         if (!PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "DropObject"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, GetType(), "DropObject", new object[] { });
 
             if (!throwable.DropLocal())
                 RemoveThrowable();
@@ -599,8 +599,7 @@ public abstract class TDS_Character : TDS_Damageable
 
             if (throwable && throwable.ThrowLocal(ThrowAimingPoint, aimAngle))
             {
-                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "ThrowObject"), new object[] { ThrowAimingPoint.x, ThrowAimingPoint.y, ThrowAimingPoint.z });
-
+                TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, GetType(), "ThrowObject", new object[] { ThrowAimingPoint.x, ThrowAimingPoint.y, ThrowAimingPoint.z });
                 return true;
             }
         }
@@ -717,7 +716,7 @@ public abstract class TDS_Character : TDS_Damageable
     {
         if (!photonView.isMine)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "PutOnTheGround"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(photonView.owner, photonView, GetType(), "PutOnTheGround", new object[] { });
             return false;
         }
 
