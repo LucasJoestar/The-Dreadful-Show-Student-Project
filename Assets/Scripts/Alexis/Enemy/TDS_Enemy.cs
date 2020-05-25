@@ -1222,7 +1222,7 @@ public abstract class TDS_Enemy : TDS_Character
                 animator.SetInteger(animationState_Hash, _animationID);
                 break;
         }
-        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { _animationID });
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, this.GetType(), "SetAnimationState", new object[] { _animationID });
     }
 
     /// <summary>

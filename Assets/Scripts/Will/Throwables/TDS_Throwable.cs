@@ -163,7 +163,7 @@ public class TDS_Throwable : TDS_Object
     {
         rigidbody.velocity *= bouncePower * -1;
 
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "BounceObject"), new object[] { transform.position.x, transform.position.y, transform.position.z, rigidbody.velocity.x, rigidbody.velocity.y, rigidbody.velocity.z });
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "BounceObject", new object[] { transform.position.x, transform.position.y, transform.position.z, rigidbody.velocity.x, rigidbody.velocity.y, rigidbody.velocity.z });
     }
 
     /// <summary>
@@ -192,7 +192,7 @@ public class TDS_Throwable : TDS_Object
 
         OnDestroyed?.Invoke();
 
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "DestroyFeedback"), new object[] { });
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "DestroyFeedback", new object[] { });
 
         DestroyFeedback();
         Invoke("Destroy", _destroyingTime);
@@ -256,7 +256,7 @@ public class TDS_Throwable : TDS_Object
         if (DropLocal())
         {
             // Drop the throwable for other players
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "DropLocal"), new object[] { transform.position.x, transform.position.y, transform.position.z });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "DropLocal", new object[] { transform.position.x, transform.position.y, transform.position.z });
 
             if (hitBox.IsActive)
                 hitBox.Desactivate();
@@ -305,7 +305,7 @@ public class TDS_Throwable : TDS_Object
                 return false;
 
             // Pickup the throwable for other players
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PickUp"), new object[] { _owner.PhotonID });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "PickUp", new object[] { _owner.PhotonID });
 
             if (hitBox.IsActive)
                 hitBox.Desactivate();
@@ -348,7 +348,7 @@ public class TDS_Throwable : TDS_Object
         {
             LoseDurability();
 
-            if (!isDestroyed) TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "LoseDurability"), new object[] { });
+            if (!isDestroyed) TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "LoseDurability", new object[] { });
         }
         else
         {
@@ -378,7 +378,7 @@ public class TDS_Throwable : TDS_Object
         if (ThrowLocal(_finalPosition, _angle))
         {
             // Throw the throwable for other players
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "ThrowLocal"), new object[] { _finalPosition.x, _finalPosition.y, _finalPosition.z, _angle });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "ThrowLocal", new object[] { _finalPosition.x, _finalPosition.y, _finalPosition.z, _angle });
 
             ActivateHitbox(_bonusDamage);
         }

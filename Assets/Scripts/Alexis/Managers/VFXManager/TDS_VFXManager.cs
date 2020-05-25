@@ -152,7 +152,7 @@ public class TDS_VFXManager : PunBehaviour
     /// <param name="_position">Position where to spawn the FX.</param>
     public void SpawnEffect(FXType _fxtype, Vector3 _position)
     {
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, GetType(), "SpawnEffect"), new object[] { (int)_fxtype, _position.x, _position.y, _position.z });
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.All, photonView, GetType(), "SpawnEffect", new object[] { (int)_fxtype, _position.x, _position.y, _position.z });
     }
 
     /// <summary>
@@ -168,7 +168,7 @@ public class TDS_VFXManager : PunBehaviour
             return;
         }
 
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, GetType(), "SpawnEffect"), new object[] { (int)_fxRype, _transformPhotonView.viewID });
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.All, photonView, GetType(), "SpawnEffect", new object[] { (int)_fxRype, _transformPhotonView.viewID });
     }
 
     /// <summary>

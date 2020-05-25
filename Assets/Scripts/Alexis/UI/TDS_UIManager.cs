@@ -621,7 +621,7 @@ public class TDS_UIManager : PunBehaviour
                 StopAllCoroutines();
                 if (!PhotonNetwork.isMasterClient)
                 {
-                    TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, false });
+                    TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, this.GetType(), "UpdateReadySettings", new object[] { PhotonNetwork.player.ID, false });
                 }
                 buttonRestartGame.Select(); 
                 break; 
@@ -840,7 +840,7 @@ public class TDS_UIManager : PunBehaviour
             else
             {
                 if (PhotonNetwork.isMasterClient)
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "LoadLevel"), new object[] { });
+                    TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "LoadLevel", new object[] { });
                 TDS_LevelManager.Instance.Spawn();
                 ActivateMenu(UIState.InGame);
             }
@@ -877,12 +877,12 @@ public class TDS_UIManager : PunBehaviour
         }
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ResetLevel"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, this.GetType(), "ResetLevel", new object[] { });
             ResetLevel();
         }
         else
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, true });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, this.GetType(), "UpdateReadySettings", new object[] { PhotonNetwork.player.ID, true });
         }
     }
 
@@ -1156,7 +1156,7 @@ public class TDS_UIManager : PunBehaviour
         }
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "StartLeavingRoom"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others,photonView, this.GetType(), "StartLeavingRoom", new object[] { });
         }
         StartCoroutine(characterSelectionManager.PreapreLeavingRoom());
         roomSelectionManager.RoomSelectionElements.First().RoomSelectionButton.Select(); 

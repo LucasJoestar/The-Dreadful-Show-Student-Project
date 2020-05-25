@@ -107,7 +107,7 @@ public class TDS_Projectile : TDS_Object
         {
             hitBox.Desactivate();
 
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PrepareDestruction"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "PrepareDestruction", new object[] { });
 
             Invoke("Destroy", 2);
         }
@@ -119,7 +119,7 @@ public class TDS_Projectile : TDS_Object
     {
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "StartProjectileMovement"), new object[] { _direction.x, _direction.y, _direction.z, _range });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "StartProjectileMovement", new object[] { _direction.x, _direction.y, _direction.z, _range });
         }
         range = _range;
         StartCoroutine(ProjectileMovement(_direction));

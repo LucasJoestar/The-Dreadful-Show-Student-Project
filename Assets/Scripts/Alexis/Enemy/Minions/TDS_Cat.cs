@@ -190,7 +190,7 @@ public class TDS_Cat : TDS_Character
             default:
                 break;
         }
-        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetAnimationState"), new object[] { _animationID });
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "SetAnimationState", new object[] { _animationID });
 
     }
 

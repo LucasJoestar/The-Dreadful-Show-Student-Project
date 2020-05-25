@@ -100,7 +100,7 @@ public class TDS_MrLoyal : TDS_Boss
         }
         TDS_LevelManager.Instance.PlayNarratorQuote(_quote); 
 
-        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "PlayCallOutSound"), new object[] { _enemyName });
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, this.GetType(), "PlayCallOutSound", new object[] { _enemyName });
     }
 
     private void PlayRandomTaunt()
@@ -110,7 +110,7 @@ public class TDS_MrLoyal : TDS_Boss
         TDS_NarratorQuote _quote = tauntQuotes[_index];
         if (_quote == null) return;
         TDS_LevelManager.Instance?.PlayNarratorQuote(_quote);
-        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "PlayTaunt"), new object[] { _index });
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, this.GetType(), "PlayTaunt", new object[] { _index });
     }
 
     private void PlayTaunt(int _index)
