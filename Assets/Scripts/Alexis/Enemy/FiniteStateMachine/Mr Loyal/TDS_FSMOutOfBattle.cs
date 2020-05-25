@@ -39,7 +39,6 @@ public class TDS_FSMOutOfBattle : StateMachineBehaviour
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (!owner) owner = animator.GetComponent<TDS_MrLoyal>();
-        if (!owner) return;
         owner.IsInvulnerable = true;
         owner.StopAll();
         owner.SetAnimationState((int)EnemyAnimationState.Idle); 

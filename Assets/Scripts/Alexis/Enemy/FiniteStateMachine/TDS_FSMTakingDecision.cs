@@ -12,7 +12,6 @@ public class TDS_FSMTakingDecision : StateMachineBehaviour
         if (!PhotonNetwork.isMasterClient) return;
 
         if (!owner) owner = animator.GetComponent<TDS_Enemy>();
-        if (!owner) return;
         if (!owner.PlayerTarget)
             owner.SearchTarget();
 

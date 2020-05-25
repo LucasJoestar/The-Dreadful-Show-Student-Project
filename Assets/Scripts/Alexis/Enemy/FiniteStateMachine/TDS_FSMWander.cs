@@ -12,7 +12,6 @@ public class TDS_FSMWander : StateMachineBehaviour
     {
         if (!PhotonNetwork.isMasterClient) return;
         if (!owner) owner = animator.GetComponent<TDS_Enemy>();
-        if (!owner) return;
         wanderingCoroutine = owner.StartCoroutine(owner.Wander());
     }
 
