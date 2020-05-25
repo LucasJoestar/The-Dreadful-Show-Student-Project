@@ -542,6 +542,16 @@ public class SpritesEditor : EditorWindow
     private const string saveAsMenuPath =       "File/Save As...";
     private const string browseIconName =       "BrowseIcon.png";
 
+    private const string cleanButton = "Clean";
+    private const string cleanMessage = "Are you sure you want to clean your template list ?";
+
+    private const string removeUnusedButton = "Remove Unused";
+    private const string removeUnusedMessage = "Are you sure you want to remove all unused (disabled) templates from the list ?";
+
+    private const string confirmDialogTitle = "Confirm this action";
+    private const string confirmDialogOK = "Yes";
+    private const string confirmDialogCancel = "Cancel";
+
     private const string textureFolderPanel =   "Select a folder where to save Sprite Scraper created textures.";
     private const string invalidFolderMessage = "Invalid folder. Please select a directory from your project Assets folder.";
     private const string noUnlitMessage =       "No unlit material assign. Disabling light bake option will not be taken into account.";
@@ -682,6 +692,28 @@ public class SpritesEditor : EditorWindow
 
         templatesList.DoLayoutList();
 
+        // List cleaner buttons
+        GUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+
+        if (GUILayout.Button(cleanButton) && EditorUtility.DisplayDialog(confirmDialogTitle, cleanMessage, confirmDialogOK, confirmDialogCancel))
+        {
+            templates.Clear();
+        }
+        if (GUILayout.Button(removeUnusedButton) && EditorUtility.DisplayDialog(confirmDialogTitle, removeUnusedMessage, confirmDialogOK, confirmDialogCancel))
+        {
+            for (int _i = 0; _i < templates.Count; _i++)
+            {
+                if (!templates[_i].IsSelected)
+                {
+                    templates.RemoveAt(_i);
+                    _i--;
+                }
+            }
+        }
+
+        GUILayout.EndHorizontal();
+
         // Merge scraps into beautiful artworks.
         if (GUILayout.Button(mergeScrapsGUI, GUILayout.MaxWidth(100), GUILayout.Height(25)))
         {
@@ -709,17 +741,7 @@ public class SpritesEditor : EditorWindow
 
                     SpriteTemplate _template = templates[_n];
                     SpriteRenderer[] _sprites = _template.Root.GetComponentsInChildren<SpriteRenderer>();
-
-                    // Set all visible renderers on a different layer (not visible anymore).
-                    Dictionary<Renderer, int> _renderers = new Dictionary<Renderer, int>();
-                    for (int _i = 0; _i < _allRenderers.Length; _i++)
-                    {
-                        if (_allRenderers[_i].isVisible && !_sprites.Contains(_allRenderers[_i]))
-                        {
-                            _renderers.Add(_allRenderers[_i], _allRenderers[_i].gameObject.layer);
-                            _allRenderers[_i].gameObject.layer = 1;
-                        }
-                    }
+                    SpriteMask[] _masks = _template.Root.GetComponentsInChildren<SpriteMask>();
 
                     // Set template bounds volume entirely in camera view.
                     Bounds _bounds = new Bounds(_sprites[0].bounds.center, _sprites[0].bounds.size);
@@ -733,6 +755,20 @@ public class SpritesEditor : EditorWindow
                     while (!(_viewport.Contains(_renderCamera.WorldToViewportPoint(_bounds.min)) && _viewport.Contains(_renderCamera.WorldToViewportPoint(_bounds.max))))
                     {
                         _renderCamera.orthographicSize++;
+                    }
+
+                    // Set all visible renderers on a different layer (not visible anymore).
+                    Plane[] _frustrumPlanes = GeometryUtility.CalculateFrustumPlanes(_renderCamera);
+                    Dictionary<GameObject, int> _renderers = new Dictionary<GameObject, int>();
+                    for (int _i = 0; _i < _allRenderers.Length; _i++)
+                    {
+                        if (GeometryUtility.TestPlanesAABB(_frustrumPlanes, _allRenderers[_i].bounds) &&
+                            !_sprites.Contains(_allRenderers[_i]) && !_masks.Contains(_allRenderers[_i]) &&
+                            !_renderers.ContainsKey(_allRenderers[_i].gameObject))
+                        {
+                            _renderers.Add(_allRenderers[_i].gameObject, _allRenderers[_i].gameObject.layer);
+                            _allRenderers[_i].gameObject.layer = 1;
+                        }
                     }
 
                     // Get artwork texture information and capture template.
@@ -775,9 +811,9 @@ public class SpritesEditor : EditorWindow
                     }
 
                     // Reset renderers layer.
-                    foreach (KeyValuePair<Renderer, int> _renderer in _renderers)
+                    foreach (KeyValuePair<GameObject, int> _renderer in _renderers)
                     {
-                        _renderer.Key.gameObject.layer = _renderer.Value;
+                        _renderer.Key.layer = _renderer.Value;
                     }
 
                     // Create full transparent texture, then paint capture on it.
@@ -879,6 +915,7 @@ public class SpritesEditor : EditorWindow
                     }
 
                     // Save scene as new one.
+                    templates.Clear();
                     EditorApplication.ExecuteMenuItem(saveAsMenuPath);
                 }
 

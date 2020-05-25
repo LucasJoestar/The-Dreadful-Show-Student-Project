@@ -415,7 +415,10 @@ public class TDS_FatLady : TDS_Player
     /// <summary>
     /// Plays sound for when eating food.
     /// </summary>
-    protected void PlayEat() => TDS_SoundManager.Instance.PlayEffectSound(eatSound, audioSource);
+    protected void PlayEat()
+    {
+        // Play eat sound
+    }
     #endregion
 
     #endregion

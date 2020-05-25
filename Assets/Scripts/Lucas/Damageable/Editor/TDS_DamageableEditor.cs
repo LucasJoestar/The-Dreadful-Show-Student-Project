@@ -75,9 +75,6 @@ public class TDS_DamageableEditor : Editor
     /// <summary>SerializedProperty for <see cref="TDS_Damageable.animator"/> of type <see cref="Animator"/>.</summary>
     private SerializedProperty animator = null;
 
-    /// <summary>SerializedProperty for <see cref="TDS_Object.audioSource"/> of type <see cref="AudioSource"/>.</summary>
-    private SerializedProperty audioSource = null;
-
     /// <summary>SerializedProperty for <see cref="TDS_Damageable.collider"/> of type <see cref="BoxCollider"/>.</summary>
     private SerializedProperty collider = null;
 
@@ -246,7 +243,6 @@ public class TDS_DamageableEditor : Editor
     private void DrawComponentsAndReferences()
     {
         TDS_EditorUtility.ObjectField("Animator", "Animator of this object", animator, typeof(Animator));
-        TDS_EditorUtility.ObjectField("Audio Source", "Audio Source of this object", audioSource, typeof(AudioSource));
         TDS_EditorUtility.ObjectField("Collider", "Non-trigger BoxCollider of this object, used to detect collisions", collider, typeof(BoxCollider));
         TDS_EditorUtility.ObjectField("Rigidbody", "Rigidbody of this character, used for physic simulation", rigidbody, typeof(Rigidbody));
         TDS_EditorUtility.ObjectField("Sprite", "Main SpriteRenderer used to render this object", sprite, typeof(SpriteRenderer));
@@ -502,7 +498,6 @@ public class TDS_DamageableEditor : Editor
 
         // Get the serializedProperties from the serializedObject
         animator = serializedObject.FindProperty("animator");
-        audioSource = serializedObject.FindProperty("audioSource");
         collider = serializedObject.FindProperty("collider");
         rigidbody = serializedObject.FindProperty("rigidbody");
         sprite = serializedObject.FindProperty("sprite");

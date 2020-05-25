@@ -1066,10 +1066,12 @@ public abstract class TDS_Enemy : TDS_Character
     protected void ActivateAttack(int _animationID)
     {
         TDS_EnemyAttack _attack = attacks.Where(a => a.AnimationID == _animationID).FirstOrDefault();
-        if (_attack == null) return;
-        //TDS_SoundManager.Instance.PlaySoundAtPosition(audioSource, _attack.GetRandomClip(), transform.position, TDS_SoundManager.FX_GROUP_NAME, false, 1);
-        TDS_SoundManager.Instance?.PlayEffectSound(_attack.GetRandomClip(), audioSource);
-        if (!PhotonNetwork.isMasterClient) return;
+        if (_attack == null)
+            return;
+
+        if (!PhotonNetwork.isMasterClient)
+            return;
+
         hitBox.Activate(_attack);
         _attack.ApplyAttackBehaviour(this); 
     }

@@ -71,20 +71,6 @@ public class TDS_Siamese : TDS_Boss
         PhotonNetwork.Destroy(this.gameObject);
     }
 
-    public void PlayTornadoSound()
-    {
-        if (!audioSource || !tornadoClip) return;
-        audioSource.clip = tornadoClip;
-        audioSource.Play();
-        //TDS_SoundManager.Instance.PlaySoundAtPosition(audioSource, tornadoClip, transform.position, TDS_SoundManager.FX_GROUP_NAME, true, 1);
-    }
-
-    public void StopTornadoSound()
-    {
-        if (!audioSource || !audioSource.isPlaying) return;
-        audioSource.Stop();
-        audioSource.clip = null;
-    }
     #region Overriden Methods
     #endregion
 

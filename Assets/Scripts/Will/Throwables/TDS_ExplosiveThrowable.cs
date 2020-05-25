@@ -133,13 +133,15 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
         if (!hasHit)
         {
             hasHit = true;
-            audioSource.Play();
+            
+            // Play explosive timer sound
 
-            if (PhotonNetwork.isMasterClient) explosionCoroutine = StartCoroutine(SetupExplosion());
+            if (PhotonNetwork.isMasterClient)
+                explosionCoroutine = StartCoroutine(SetupExplosion());
         }
 
-        // Play sound
-        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Drop, audioSource);
+        // Play hit "drop" sound
+
         return; 
     }
     #endregion

@@ -91,7 +91,7 @@ public class TDS_Projectile : TDS_Object
         sprite.enabled = false;
         if (shadow) shadow.SetActive(false);
 
-        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_MagicPoof, audioSource);
+        // Play magic poof
 
         if (!feedbackFX) return;
 
@@ -143,10 +143,8 @@ public class TDS_Projectile : TDS_Object
 
     #region Unity Methods
     // Awake is called when the script instance is being loaded
-    protected override void Awake()
+    protected virtual void Awake()
     {
-        base.Awake();
-
         if (!hitBox)
         {
             hitBox = GetComponent<TDS_HitBox>();

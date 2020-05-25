@@ -354,8 +354,7 @@ public abstract class TDS_Damageable : TDS_Object
         layerBeforeDeath = gameObject.layer;
         gameObject.layer = LayerMask.NameToLayer("Dead");
 
-        // Play sound
-        if (deathSounds.Length > 0) TDS_SoundManager.Instance.PlayEffectSound(deathSounds, audioSource);
+        // Play death sound
     }
 
     /// <summary>
@@ -421,10 +420,7 @@ public abstract class TDS_Damageable : TDS_Object
         
         OnTakeDamage?.Invoke();
 
-        // Play hit sound
-        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Hit, .75f, audioSource);
-
-        if (hitSounds.Length > 0) TDS_SoundManager.Instance.PlayEffectSound(hitSounds, audioSource);
+        // Play hit sounds
 
         return true;
     }
@@ -689,10 +685,8 @@ public abstract class TDS_Damageable : TDS_Object
 
     #region Unity Methods
     // Awake is called when the script instance is being loaded
-    protected override void Awake()
+    protected virtual void Awake()
     {
-        base.Awake();
-
         // Try yo get components references of they are missing
         if (!animator)
         {

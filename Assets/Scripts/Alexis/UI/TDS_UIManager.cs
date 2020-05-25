@@ -1304,6 +1304,15 @@ public class TDS_UIManager : PunBehaviour
             SceneManager.sceneLoaded -= RefreshUI;
         }
     }
+
+    private void OnGUI()
+    {
+        GUIStyle _style = new GUIStyle();
+        _style.fontSize = 32;
+        _style.normal.textColor = Color.green;
+
+        GUI.Label(new Rect(0, 0, 250, 100), (1 / Time.deltaTime).ToString(), _style);
+    }
     #endregion
 
     #endregion

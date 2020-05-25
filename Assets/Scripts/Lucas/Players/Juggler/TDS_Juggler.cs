@@ -846,7 +846,8 @@ public class TDS_Juggler : TDS_Player
             if (CurrentThrowableAmount == 0)
             {
                 SetAnim(PlayerAnimState.LostObject);
-                audioSource.Stop();
+                
+                // Stop juggle sound
             }
         }
 
@@ -890,8 +891,7 @@ public class TDS_Juggler : TDS_Player
             {
                 SetAnim(PlayerAnimState.HasObject);
 
-                audioSource.time = 0;
-                audioSource.Play();
+                // Play juggle sound
             }
 
             // Updates juggling informations
@@ -1286,7 +1286,10 @@ public class TDS_Juggler : TDS_Player
     /// <summary>
     /// Plays sound for when locking an enemy.
     /// </summary>
-    protected void PlayLock() => TDS_SoundManager.Instance.PlayEffectSound(lockSound, audioSource);
+    protected void PlayLock()
+    {
+        // Play lock sound
+    }
     #endregion
 
     #region Others

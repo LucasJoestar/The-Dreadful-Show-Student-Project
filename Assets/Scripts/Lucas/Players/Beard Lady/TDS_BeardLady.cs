@@ -372,7 +372,10 @@ public class TDS_BeardLady : TDS_Player
     /// <summary>
     /// Plays sound for tornado effect.
     /// </summary>
-    protected void PlayTornado() => TDS_SoundManager.Instance.PlayEffectSound(tornadoSound, audioSource);
+    protected void PlayTornado()
+    {
+        // Play tornado sound.
+    }
     #endregion
 
     #endregion

@@ -219,7 +219,7 @@ public class TDS_Throwable : TDS_Object
             SetIndependant();
         }
 
-        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_MagicPoof, audioSource);
+        // Play magic poof
 
         if (!feedbackFX) return;
 
@@ -289,8 +289,7 @@ public class TDS_Throwable : TDS_Object
         BounceObject();
         ResetThrowable();
 
-        // Play sound
-        TDS_SoundManager.Instance.PlayEffectSound(hitSound, audioSource);
+        // Play hit sound
     }
 
     /// <summary> 
@@ -323,8 +322,7 @@ public class TDS_Throwable : TDS_Object
         rigidbody.isKinematic = true;
         collider.enabled = false;
 
-        // Play sound
-        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Pickup, audioSource);
+        // Play pick up sound
         return true;
     }
 
@@ -412,18 +410,15 @@ public class TDS_Throwable : TDS_Object
         collider.enabled = true;
         isHeld = false;
 
-        // Play sound
-        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Throw, audioSource);
+        // Play throw sound
         return true;
     }
     #endregion
 
     #region Unity Methods
     // Awake is called when the script instance is being loaded
-    protected override void Awake()
+    protected virtual void Awake()
     {
-        base.Awake();
-
         // Get missing references
         if (!rigidbody) rigidbody = GetComponentInChildren<Rigidbody>();
         if (!collider) collider = GetComponentInChildren<BoxCollider>();
@@ -452,8 +447,7 @@ public class TDS_Throwable : TDS_Object
             ResetThrowable();
         }
 
-        // Play sound
-        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Drop, audioSource);
+        // Play drop sound
     }
 
     private void OnDestroy()

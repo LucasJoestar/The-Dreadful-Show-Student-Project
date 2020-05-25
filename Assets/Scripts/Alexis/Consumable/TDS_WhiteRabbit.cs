@@ -136,7 +136,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
         sprite.enabled = false;
         if (shadow) shadow.SetActive(false);
 
-        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_RabbitPoof, audioSource);
+        // Play rabbit poof
 
         if (!feedbackFX) return;
 

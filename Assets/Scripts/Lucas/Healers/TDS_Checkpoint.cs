@@ -81,11 +81,6 @@ public class TDS_Checkpoint : PunBehaviour
     /// </summary>
     [SerializeField] private BoxCollider trigger = null;
 
-    /// <summary>
-    /// Audio source of the checkpoint.
-    /// </summary>
-    [SerializeField] private AudioSource audioSource = null;
-
     /// <summary>Backing field for <see cref="IsActivated"/>.</summary>
     [SerializeField] private bool isActivated = false;
 
@@ -139,7 +134,10 @@ public class TDS_Checkpoint : PunBehaviour
     /// <summary>
     /// Plays checkpoit activation sound.
     /// </summary>
-    private void PlayActivationSound() => audioSource.PlayOneShot(TDS_GameManager.AudioAsset.S_Checkpoint);
+    private void PlayActivationSound()
+    {
+        // Play activation sound
+    }
 
     /// <summary>
     /// Make all dead players respawn to this point.
@@ -227,10 +225,6 @@ public class TDS_Checkpoint : PunBehaviour
         if (!trigger)
         {
             trigger = GetComponents<BoxCollider>().Where(b => b.isTrigger).FirstOrDefault();
-        }
-        if (!audioSource)
-        {
-            audioSource = GetComponent<AudioSource>();
         }
     }
 

@@ -77,7 +77,6 @@ public class TDS_MrLoyal : TDS_Boss
 
     private void PlayCallOutSound(string _enemyName)
     {
-        if (!audioSource) return; 
         TDS_NarratorQuote _quote = null; 
         switch (_enemyName)
         {
@@ -99,13 +98,14 @@ public class TDS_MrLoyal : TDS_Boss
             default:
                 return;
         }
-        TDS_LevelManager.Instance?.PlayNarratorQuote(_quote); 
-        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "PlayCallOutSound"), new object[] { _enemyName });
+        TDS_LevelManager.Instance.PlayNarratorQuote(_quote); 
+
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "PlayCallOutSound"), new object[] { _enemyName });
     }
 
     private void PlayRandomTaunt()
     {
-        if (!audioSource || tauntQuotes == null || tauntQuotes.Length == 0) return;
+        if (tauntQuotes == null || tauntQuotes.Length == 0) return;
         int _index = (int)Random.Range((int)0, (int)tauntQuotes.Length); 
         TDS_NarratorQuote _quote = tauntQuotes[_index];
         if (_quote == null) return;
@@ -115,7 +115,7 @@ public class TDS_MrLoyal : TDS_Boss
 
     private void PlayTaunt(int _index)
     {
-        if (!audioSource || tauntQuotes == null || tauntQuotes.Length == 0) return;
+        if (tauntQuotes == null || tauntQuotes.Length == 0) return;
         TDS_NarratorQuote _quote = tauntQuotes[_index];
         if (_quote == null) return;
         TDS_LevelManager.Instance?.PlayNarratorQuote(_quote);

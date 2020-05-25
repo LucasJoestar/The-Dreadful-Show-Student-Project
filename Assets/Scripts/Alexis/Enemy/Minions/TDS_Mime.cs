@@ -39,27 +39,6 @@ public class TDS_Mime : TDS_Minion
     [SerializeField] private AudioClip fishingRodClip = null; 
     #endregion
 
-    #region Methods
-
-    #region Original Methods
-    public void PlayFishingRodSound()
-    {
-        if (!audioSource || !fishingRodClip) return;
-        audioSource.clip = fishingRodClip;
-        audioSource.Play();
-        //TDS_SoundManager.Instance.PlaySoundAtPosition(audioSource, fishingRodClip, transform.position, TDS_SoundManager.FX_GROUP_NAME, true, 1); 
-    }
-
-    public void StopFishingRodSound()
-    {
-        if (!audioSource || !audioSource.isPlaying) return;
-        audioSource.Stop();
-        audioSource.clip = null; 
-    }
-    #endregion
-
     #region Unity Methods
-    #endregion
-
     #endregion
 }

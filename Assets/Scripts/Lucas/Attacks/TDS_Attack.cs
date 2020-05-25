@@ -220,5 +220,10 @@ public class TDS_Attack : ScriptableObject
 
         return null;
     }
+
+    public void PlaySound()
+    {
+        // Play sound
+    }
     #endregion
 }
