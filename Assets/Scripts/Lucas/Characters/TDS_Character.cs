@@ -394,7 +394,7 @@ public abstract class TDS_Character : TDS_Damageable
 
         if (photonView.isMine)
         {
-            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "HitFlipCallback", new object[] { isFacingRight });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "Flip", new object[] { isFacingRight });
         }
 
         transform.Rotate(Vector3.up, 180);
