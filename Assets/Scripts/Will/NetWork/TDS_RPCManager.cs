@@ -176,7 +176,14 @@ public class TDS_RPCManager : PunBehaviour
 
             if (!string.IsNullOrEmpty(_rpc.RPC))
             {
-                photonView.RPC("CallMethodOnline", _rpc.Target, _rpc.RPC, _rpc.RPCParams.ToArray());
+                if (_rpc.PlayerTarget != null)
+                {
+                    photonView.RPC("CallMethodOnline", _rpc.PlayerTarget, _rpc.RPC, _rpc.RPCParams.ToArray());
+                }
+                else
+                {
+                    photonView.RPC("CallMethodOnline", _rpc.Target, _rpc.RPC, _rpc.RPCParams.ToArray());
+                }
 
                 _rpc.RPC = string.Empty;
                 _rpc.RPCParams.Clear();
