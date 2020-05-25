@@ -132,8 +132,7 @@ public abstract class TDS_FleeingThrowable : TDS_Throwable
     /// <param name="_animationID">ID of the new animation.</param>
     public virtual void SetAnimationOnline(int _animationID)
     {
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetAnimation"), new object[] { _animationID });
-
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "SetAnimation", new object[] { _animationID });
         SetAnimation(_animationID);
     }
 

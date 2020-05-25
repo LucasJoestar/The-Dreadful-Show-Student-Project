@@ -122,7 +122,7 @@ public class TDS_EventsSystem : PunBehaviour
 
             if (!isLocal && ((int)events[_i].EventType > 20))
             {
-                TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "StartEventCoroutine"), new object[] { _i });
+                TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "StartEventCoroutine", new object[] { _i });
             }
 
             // Wait end of event to start next one

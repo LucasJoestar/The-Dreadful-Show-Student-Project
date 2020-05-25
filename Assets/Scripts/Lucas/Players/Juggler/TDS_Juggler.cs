@@ -679,7 +679,7 @@ public class TDS_Juggler : TDS_Player
         // Do that for all other clients too
         if (photonView.isMine)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "GetBackJuggle"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "GetBackJuggle", new object[] { });
         }
 
         juggleKickOutHeight = 0;
@@ -755,7 +755,7 @@ public class TDS_Juggler : TDS_Player
         // Do that for all other clients too
         if (photonView.isMine)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "KickOutJuggleLight"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "KickOutJuggleLight", new object[] { });
         }
 
         juggleKickOutHeight = 5f;
@@ -769,7 +769,7 @@ public class TDS_Juggler : TDS_Player
         // Do that for all other clients too
         if (photonView.isMine)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "KickOutJuggleHeavy"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "KickOutJuggleHeavy", new object[] { });
         }
 
         juggleKickOutHeight = 15;
@@ -947,7 +947,7 @@ public class TDS_Juggler : TDS_Player
         // Do that for all other clients too
         if (photonView.isMine)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SwitchThrowable"), new object[] { _doIncrease });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "SwitchThrowable", new object[] { _doIncrease });
         }
 
         // Get selected throwable & place the previous one in the juggling list

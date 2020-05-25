@@ -206,7 +206,7 @@ public class TDS_HitBox : MonoBehaviour
             }
             else
             {
-                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", Owner.photonView.owner, TDS_RPCManager.GetInfo(Owner.photonView, Owner.GetType(), "HitCallback"), new object[] { _target.Collider.bounds.center.x, _target.Collider.bounds.max.y, _target.transform.position.z });
+                TDS_RPCManager.Instance.CallRPC(Owner.photonView.owner, Owner.photonView, Owner.GetType(), "HitCallback", new object[] { _target.Collider.bounds.center.x, _target.Collider.bounds.max.y, _target.transform.position.z });
             }
         }
     }

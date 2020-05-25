@@ -76,7 +76,7 @@ public class TDS_FireBall : TDS_Object
     /// </summary>
     private void CallExplode()
     {
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, GetType(), "Explode"), new object[] { });
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.All, photonView, GetType(), "Explode", new object[] { });
     }
 
     /// <summary>

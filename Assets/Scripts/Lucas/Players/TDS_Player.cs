@@ -1730,7 +1730,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         {
             if (PhotonNetwork.isMasterClient)
             {
-                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "FreezePlayer"), new object[] { });
+                TDS_RPCManager.Instance.CallRPC(photonView.owner, photonView, GetType(), "FreezePlayer", new object[] { });
             }
 
             return;
@@ -2107,7 +2107,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         {
             if (PhotonNetwork.isMasterClient)
             {
-                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "UnfreezePlayer"), new object[] { });
+                TDS_RPCManager.Instance.CallRPC(photonView.owner, photonView, GetType(), "UnfreezePlayer", new object[] { });
             }
 
             return;
@@ -2244,7 +2244,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         if (photonView.isMine)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetAnim"), new object[] { (int)_state });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "SetAnim", new object[] { (int)_state });
         }
 
         SetAnim(_state);
@@ -2453,7 +2453,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Call this method for other clients
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "DisappearBeforeRespawn"), new object[] { _xPos, _yPos, _zPos });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "DisappearBeforeRespawn", new object[] { _xPos, _yPos, _zPos });
         }
 
         sprite.enabled = false;
@@ -2478,7 +2478,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Call this method for other clients
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "RespawnPlayer"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "RespawnPlayer", new object[] { });
         }
 
         sprite.enabled = true;

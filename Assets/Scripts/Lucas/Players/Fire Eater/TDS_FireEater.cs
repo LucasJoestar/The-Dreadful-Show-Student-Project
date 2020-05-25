@@ -543,7 +543,7 @@ public class TDS_FireEater : TDS_Player
     {
         if (photonView.isMine)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetFireEaterAnim"), new object[] { (int)_state });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "SetFireEaterAnim", new object[] { (int)_state });
         }
 
         switch (_state)
