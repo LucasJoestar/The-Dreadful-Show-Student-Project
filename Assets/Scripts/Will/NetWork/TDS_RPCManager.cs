@@ -168,6 +168,7 @@ public class TDS_RPCManager : PunBehaviour
     #region Unity Methods
     private void LateUpdate()
     {
+        if (!PhotonNetwork.connected) return; 
         // Send out RPC
         for (int _i = 0; _i < rpcBuffers.Count; _i++)
         {
