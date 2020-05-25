@@ -57,7 +57,7 @@ public class TDS_ThrowableBird : TDS_FleeingThrowable
             Flip();
         }
 
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "StartFleeOnline"), new object[] { isFacingRight });
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "StartFleeOnline", new object[] { isFacingRight });
 
         _movement.x *= speed;
 
