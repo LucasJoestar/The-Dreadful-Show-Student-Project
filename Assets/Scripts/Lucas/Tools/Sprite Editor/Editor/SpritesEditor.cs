@@ -729,6 +729,7 @@ public class SpritesEditor : EditorWindow
                 _renderCamera.clearFlags = CameraClearFlags.SolidColor;
                 _renderCamera.backgroundColor = Color.clear;
                 _renderCamera.cullingMask = ~2;
+                _renderCamera.allowDynamicResolution = true;
 
                 Renderer[] _allRenderers = FindObjectsOfType<Renderer>();
                 GameObject[] _artworks = new GameObject[templates.Count];

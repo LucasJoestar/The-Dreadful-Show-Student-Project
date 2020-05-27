@@ -288,7 +288,7 @@ public class TDS_LevelManager : PunBehaviour
         if (jugglerSupplies.Length == 0) return;
 
         // Spawn supply !
-        PhotonNetwork.Instantiate(jugglerSupplies[Random.Range(0, jugglerSupplies.Length)].name, new Vector3(Random.Range(TDS_Camera.Instance.CurrentBounds.XMin + 3, TDS_Camera.Instance.CurrentBounds.XMax - 3), 17.5f, Random.Range(TDS_Camera.Instance.CurrentBounds.ZMin + 2, TDS_Camera.Instance.CurrentBounds.ZMax - 2)), Quaternion.identity, 0);
+        PhotonNetwork.Instantiate(jugglerSupplies[Random.Range(0, jugglerSupplies.Length)].name, new Vector3(Random.Range(TDS_Camera.Instance.CurrentBounds.XMin + 3, TDS_Camera.Instance.CurrentBounds.XMax - 3), 17.5f, Random.Range(TDS_Camera.Instance.CurrentBounds.ZMin + 5, TDS_Camera.Instance.CurrentBounds.ZMin + 10)), Quaternion.identity, 0);
     }
     #endregion
 

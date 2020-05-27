@@ -69,6 +69,8 @@ public class TDS_Throwable : TDS_Object
     /// </summary>
     [SerializeField] protected new BoxCollider collider = null;
 
+    public BoxCollider Collider { get { return collider; } }
+
     /// <summary>
     /// Shadow of the object.
     /// </summary>
@@ -311,7 +313,7 @@ public class TDS_Throwable : TDS_Object
                 hitBox.Desactivate();
         }
 
-        if (owner)
+        if (owner && (owner != _owner))
             owner.RemoveThrowable();
 
         isHeld = true;

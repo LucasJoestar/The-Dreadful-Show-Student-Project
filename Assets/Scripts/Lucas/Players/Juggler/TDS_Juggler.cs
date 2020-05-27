@@ -884,6 +884,7 @@ public class TDS_Juggler : TDS_Player
 
         if (!_throwable) return false;
         Throwable = _throwable;
+        interactionBox.RemoveObject(_throwable.Collider);
 
         if (CurrentThrowableAmount > 0)
         {

@@ -85,8 +85,6 @@ public class TDS_WhiteRabbit : TDS_Consumable
 
         passingCountCurrent++;
 
-        Debug.Log("Pass => " + passingCountCurrent);
-
         if (!isLooping && (passingCountCurrent > passingCountMax))
         {
             Debug.Log("Loose => " + passingCountCurrent);
@@ -121,8 +119,6 @@ public class TDS_WhiteRabbit : TDS_Consumable
 
         UseFeedback();
         Invoke("Destroy", 2);
-
-        Debug.Log("Use");
     }
 
     /// <summary>
@@ -201,7 +197,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
 
     private void OnDestroy()
     {
-        Debug.Log("Destroy");
+        TDS_Camera.Instance.OnBoundFreeze -= RecalculatePath;
     }
     #endregion
 
