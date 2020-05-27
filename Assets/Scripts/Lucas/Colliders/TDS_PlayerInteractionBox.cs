@@ -208,6 +208,31 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
     {
         interactText.transform.Rotate(Vector3.up, -180);
     }
+
+    public void RemoveObject(Collider _object)
+    {
+        // Remove detected object when leaving
+        if (detectedColliders.Contains(_object))
+        {
+            DetectedColliders.Remove(_object);
+
+            // Do some actions if the nearest object gets removed
+            if (nearestCollider == _object)
+            {
+                // Disable outline on remove from list
+                if (nearestCollider.gameObject.HasTag(OUTLINE_TAG)) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().DisableOutline();
+            }
+
+            // Desactivate feedback if needed
+            if (detectedColliders.Count == 0)
+            {
+                nearestCollider = null;
+
+                // Desactivate feedback
+                if (interactText.gameObject.activeInHierarchy) interactText.gameObject.SetActive(false);
+            }
+        }
+    }
     #endregion
 
     #region Unity Methods
@@ -232,27 +257,7 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
     // OnTriggerExit is called when the Collider other has stopped touching the trigger
     private void OnTriggerExit(Collider other)
     {
-        // Remove detected object when leaving
-        if (detectedColliders.Contains(other))
-        {
-            DetectedColliders.Remove(other);
-
-            // Do some actions if the nearest object gets removed
-            if (nearestCollider == other)
-            {
-                // Disable outline on remove from list
-                if (nearestCollider.gameObject.HasTag(OUTLINE_TAG)) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().DisableOutline();
-            }
-
-            // Desactivate feedback if needed
-            if (detectedColliders.Count == 0)
-            {
-                nearestCollider = null;
-
-                // Desactivate feedback
-                if (interactText.gameObject.activeInHierarchy) interactText.gameObject.SetActive(false);
-            }
-        }
+        RemoveObject(other);
     }
 
     // Use this for initialization

@@ -333,7 +333,7 @@ public class TDS_BeardLady : TDS_Player
     {
         animator.SetFloat(beard_Hash, (int)_state);
 
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetBeardAnim"), new object[] { (int)_state });
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "SetBeardAnim", new object[] { (int)_state });
     }
 
     /// <summary>
@@ -372,7 +372,10 @@ public class TDS_BeardLady : TDS_Player
     /// <summary>
     /// Plays sound for tornado effect.
     /// </summary>
-    protected void PlayTornado() => TDS_SoundManager.Instance.PlayEffectSound(tornadoSound, audioSource);
+    protected void PlayTornado()
+    {
+        // Play tornado sound.
+    }
     #endregion
 
     #endregion

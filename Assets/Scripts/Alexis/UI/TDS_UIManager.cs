@@ -621,7 +621,7 @@ public class TDS_UIManager : PunBehaviour
                 StopAllCoroutines();
                 if (!PhotonNetwork.isMasterClient)
                 {
-                    TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, false });
+                    TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, this.GetType(), "UpdateReadySettings", new object[] { PhotonNetwork.player.ID, false });
                 }
                 buttonRestartGame.Select(); 
                 break; 
@@ -793,10 +793,10 @@ public class TDS_UIManager : PunBehaviour
     public void DisplayOptions(bool _isDisplaying)
     {
         if (!optionManager) return;
-        if (_isDisplaying)
-        {
-            optionManager.ResetDisplayedSettings();
-        }
+        //if (_isDisplaying)
+        //{
+        //    optionManager.ResetDisplayedSettings();
+        //}
         optionManager.gameObject.SetActive(_isDisplaying);
     }
 
@@ -840,7 +840,7 @@ public class TDS_UIManager : PunBehaviour
             else
             {
                 if (PhotonNetwork.isMasterClient)
-                    TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "LoadLevel"), new object[] { });
+                    TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "LoadLevel", new object[] { });
                 TDS_LevelManager.Instance.Spawn();
                 ActivateMenu(UIState.InGame);
             }
@@ -877,12 +877,12 @@ public class TDS_UIManager : PunBehaviour
         }
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ResetLevel"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, this.GetType(), "ResetLevel", new object[] { });
             ResetLevel();
         }
         else
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, true });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, this.GetType(), "UpdateReadySettings", new object[] { PhotonNetwork.player.ID, true });
         }
     }
 
@@ -1037,6 +1037,11 @@ public class TDS_UIManager : PunBehaviour
         TDS_GameManager.LocalisationIsEnglish = _isEnglish; 
     }
 
+    public void SetMainCamera(Camera _camera)
+    {
+        canvasScreen.worldCamera = _camera;
+    }
+
     /// <summary>
     /// Set the new name of the player (Used in Unity Event)
     /// </summary>
@@ -1151,7 +1156,7 @@ public class TDS_UIManager : PunBehaviour
         }
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "StartLeavingRoom"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others,photonView, this.GetType(), "StartLeavingRoom", new object[] { });
         }
         StartCoroutine(characterSelectionManager.PreapreLeavingRoom());
         roomSelectionManager.RoomSelectionElements.First().RoomSelectionButton.Select(); 
@@ -1288,7 +1293,7 @@ public class TDS_UIManager : PunBehaviour
         if (uiGameObject)
             uiGameObject.SetActive(true);
         ActivateMenu(uiState);
-
+        optionManager.ResetDisplayedSettings();
         TDS_SceneManager.OnLoadScene += CleanWorldCanvas;
     }
 
@@ -1298,6 +1303,15 @@ public class TDS_UIManager : PunBehaviour
         {
             SceneManager.sceneLoaded -= RefreshUI;
         }
+    }
+
+    private void OnGUI()
+    {
+        GUIStyle _style = new GUIStyle();
+        _style.fontSize = 32;
+        _style.normal.textColor = Color.green;
+
+        GUI.Label(new Rect(0, 0, 250, 100), (1 / Time.deltaTime).ToString(), _style);
     }
     #endregion
 

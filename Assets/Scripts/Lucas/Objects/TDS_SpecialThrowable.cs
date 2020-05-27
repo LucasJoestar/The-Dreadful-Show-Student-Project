@@ -36,6 +36,16 @@ public class TDS_SpecialThrowable : TDS_Throwable
     #endregion
 
     #region Methods
+    public void ActiveSpecialEvent()
+    {
+        if (!hasBeenHeld)
+        {
+            hasBeenHeld = true;
+            if (sprite.maskInteraction != SpriteMaskInteraction.None) sprite.maskInteraction = SpriteMaskInteraction.None;
+            OnGrabbedFirstTime.Invoke();
+        }
+    }
+
     /// <summary> 
     /// Let a character pickup the object.
     /// </summary> 
@@ -43,15 +53,10 @@ public class TDS_SpecialThrowable : TDS_Throwable
     /// <returns>Returns true is successfully picked up the object, false if a issue has been encountered.</returns> 
     public override bool PickUp(TDS_Character _owner)
     {
-        if (!base.PickUp(_owner)) return false;
+        if (!base.PickUp(_owner))
+            return false;
 
-        if (!hasBeenHeld)
-        {
-            hasBeenHeld = true;
-            if (sprite.maskInteraction != SpriteMaskInteraction.None) sprite.maskInteraction = SpriteMaskInteraction.None;
-            OnGrabbedFirstTime.Invoke();
-        }
-
+        ActiveSpecialEvent();
         return true;
     }
     #endregion

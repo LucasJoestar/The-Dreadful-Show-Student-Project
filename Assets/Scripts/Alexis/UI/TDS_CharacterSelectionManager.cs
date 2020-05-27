@@ -86,14 +86,14 @@ public class TDS_CharacterSelectionManager : PunBehaviour
         if (_elem == null)
             return; 
         _elem.IsLocked = _isReady;
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetOnlinePlayerReady"), new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady });
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.All, photonView, this.GetType(), "SetOnlinePlayerReady", new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady });
         if(!_isReady)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UnlockPlayerType"), new object[] { (int)characterSelectionMenu.LocalElement.CurrentSelection.CharacterType });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.All, photonView, this.GetType(), "UnlockPlayerType", new object[] { (int)characterSelectionMenu.LocalElement.CurrentSelection.CharacterType });
         }
         if (!PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, typeof(TDS_UIManager), "UpdateReadySettings"), new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, typeof(TDS_UIManager), "UpdateReadySettings", new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady });
             return;
         }
         TDS_UIManager.Instance?.UpdateReadySettings(PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady);
@@ -112,7 +112,7 @@ public class TDS_CharacterSelectionManager : PunBehaviour
         }
         int _newPlayerType = (int)characterSelectionMenu.LocalElement.CurrentSelection.CharacterType;
         TDS_GameManager.LocalPlayer = (PlayerType)_newPlayerType; 
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdatePlayerSelectionInfo"), new object[] {_newPlayerType, PhotonNetwork.player.ID });
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, this.GetType(), "UpdatePlayerSelectionInfo", new object[] {_newPlayerType, PhotonNetwork.player.ID });
         OnLocalPlayerReadyOnline(true); 
     }
 
@@ -200,7 +200,7 @@ public class TDS_CharacterSelectionManager : PunBehaviour
 
     private void SendInfoToNewPlayer(PhotonPlayer _newPlayer)
     {
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", _newPlayer, TDS_RPCManager.GetInfo(photonView, this.GetType(), "ReceiveOnConnectionInfo"), new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady, (int)characterSelectionMenu.LocalElement.CurrentSelection.CharacterType });
+        TDS_RPCManager.Instance.CallRPC(_newPlayer, photonView, this.GetType(), "ReceiveOnConnectionInfo", new object[] { PhotonNetwork.player.ID, TDS_GameManager.LocalIsReady, (int)characterSelectionMenu.LocalElement.CurrentSelection.CharacterType });
     }
 
     /// <summary>
@@ -210,7 +210,7 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     /// <param name="_newCharacterSelectionIndex">New Index</param>
     public void UpdateLocalCharacterIndex(PhotonPlayer _player, int _newCharacterSelectionIndex)
     {
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "UpdateOnlineCharacterIndex"), new object[] { _player.ID, _newCharacterSelectionIndex });
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, this.GetType(), "UpdateOnlineCharacterIndex", new object[] { _player.ID, _newCharacterSelectionIndex });
     }
     #endregion
 

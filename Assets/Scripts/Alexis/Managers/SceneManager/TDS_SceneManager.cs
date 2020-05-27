@@ -102,7 +102,7 @@ public class TDS_SceneManager : PunBehaviour
     {
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PrepareOnlineSceneLoading"), new object[] { _sceneIndex, _nextUIState });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "PrepareOnlineSceneLoading", new object[] { _sceneIndex, _nextUIState });
         }
         TDS_UIManager.Instance.DisplayLoadingScreen(true);
         yield return waitBeforeChangeLevel;
@@ -117,11 +117,11 @@ public class TDS_SceneManager : PunBehaviour
                 yield return null;
             }
 
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "OnEverySceneReady"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "OnEverySceneReady", new object[] { });
         }
         else if (PhotonNetwork.connected && !PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "PlayerHasLoadScene"), new object[] { PhotonNetwork.player.ID });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, GetType(), "PlayerHasLoadScene", new object[] { PhotonNetwork.player.ID });
 
             while (!sceneIsReady)
             {

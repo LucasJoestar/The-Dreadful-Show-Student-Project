@@ -119,8 +119,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 0
-  viewIdField: 3
-  instantiationId: 3
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!96 &1269694687186753519
@@ -378,6 +378,7 @@ MonoBehaviour:
   BonusDamages: 0
   HittableTags:
     ObjectTags: []
+  IgnoreOwner: 1
 --- !u!1 &6453753117036512213
 GameObject:
   m_ObjectHideFlags: 0

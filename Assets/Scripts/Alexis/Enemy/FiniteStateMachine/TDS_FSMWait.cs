@@ -12,8 +12,6 @@ public class TDS_FSMWait : StateMachineBehaviour
     {
         if (!PhotonNetwork.isMasterClient) return;
         if (!owner) owner = animator.GetComponent<TDS_Enemy>();
-        if (!owner) return;
-
         waitingCoroutine = owner.StartCoroutine(owner.Waiting()); 
     }
 

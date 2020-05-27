@@ -72,7 +72,7 @@ public class TDS_ThrowableAnimal : TDS_FleeingThrowable
                 agent.SetDestination(_actualDestination);
 
                 // Set destination for other clients
-                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetDestination"), new object[] { _actualDestination.x, _actualDestination.y, _actualDestination.z });
+                TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "SetDestination", new object[] { _actualDestination.x, _actualDestination.y, _actualDestination.z });
             }
 
             yield return null;

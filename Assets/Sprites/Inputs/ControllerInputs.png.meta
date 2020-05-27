@@ -1,46 +1,132 @@
 fileFormatVersion: 2
 guid: f624e9bb8c40b6f45a26a49e0c7f5e08
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: Controller_DPadY
-    21300002: Controller_DPadX
-    21300004: Controller_Joystick
-    21300006: Controller_X
-    21300008: Controller_Y
-    21300010: Controller_LT
-    21300012: Controller_RT
-    21300014: Controller_LB
-    21300016: Controller_B
-    21300018: SoldOut
-    21300020: Controller_RB
-    21300022: Controller_A
-    21300024: Keyboard_Key
-    21300026: Keyboard_Enter
-    21300028: Controller_Select
-    21300030: Keyboard_Shift
-    21300032: Controller_Start
-    21300034: Keyboard_Space
-    21300036: Keyboard_A
-    21300038: Keyboard_E
-    21300040: Keyboard_F
-    21300042: Keyboard_R
-    21300044: Keyboard_J
-    21300046: Keyboard_L
-    21300048: Keyboard_Empty
-    21300050: Keyboard_1
-    21300052: Keyboard_2
-    21300054: Keyboard_K
-    21300056: Keyboard_Z
-    21300058: Keyboard_C
-    21300060: Keyboard_I
-    21300062: Keyboard_S
-    21300064: Keyboard_Q
-    21300066: Keyboard_D
-    21300068: Keyboard_Tab
-    21300070: Keyboard_Ctrl
-    21300072: Keyboard_Escape
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: Controller_DPadY
+  - first:
+      213: 21300002
+    second: Controller_DPadX
+  - first:
+      213: 21300004
+    second: Controller_Joystick
+  - first:
+      213: 21300006
+    second: Controller_X
+  - first:
+      213: 21300008
+    second: Controller_Y
+  - first:
+      213: 21300010
+    second: Controller_LT
+  - first:
+      213: 21300012
+    second: Controller_RT
+  - first:
+      213: 21300014
+    second: Controller_LB
+  - first:
+      213: 21300016
+    second: Controller_B
+  - first:
+      213: 21300018
+    second: SoldOut
+  - first:
+      213: 21300020
+    second: Controller_RB
+  - first:
+      213: 21300022
+    second: Controller_A
+  - first:
+      213: 21300024
+    second: Keyboard_Key
+  - first:
+      213: 21300026
+    second: Keyboard_Enter
+  - first:
+      213: 21300028
+    second: Controller_Select
+  - first:
+      213: 21300030
+    second: Keyboard_Shift
+  - first:
+      213: 21300032
+    second: Controller_Start
+  - first:
+      213: 21300034
+    second: Keyboard_Space
+  - first:
+      213: 21300036
+    second: Keyboard_A
+  - first:
+      213: 21300038
+    second: Keyboard_E
+  - first:
+      213: 21300040
+    second: Keyboard_F
+  - first:
+      213: 21300042
+    second: Keyboard_R
+  - first:
+      213: 21300044
+    second: Keyboard_J
+  - first:
+      213: 21300046
+    second: Keyboard_L
+  - first:
+      213: 21300048
+    second: Keyboard_Empty
+  - first:
+      213: 21300050
+    second: Keyboard_1
+  - first:
+      213: 21300052
+    second: Keyboard_2
+  - first:
+      213: 21300054
+    second: Keyboard_K
+  - first:
+      213: 21300056
+    second: Keyboard_W
+  - first:
+      213: 21300058
+    second: Keyboard_C
+  - first:
+      213: 21300060
+    second: Keyboard_I
+  - first:
+      213: 21300062
+    second: Keyboard_S
+  - first:
+      213: 21300064
+    second: Keyboard_Q
+  - first:
+      213: 21300066
+    second: Keyboard_D
+  - first:
+      213: 21300068
+    second: Keyboard_Tab
+  - first:
+      213: 21300070
+    second: Keyboard_Ctrl
+  - first:
+      213: 21300072
+    second: Keyboard_Escape
+  - first:
+      213: -4452964101592610179
+    second: Keyboard_Up
+  - first:
+      213: 5437254755628748278
+    second: Keyboard_Right
+  - first:
+      213: 199547793265871125
+    second: Keyboard_Down
+  - first:
+      213: 2890910035307642275
+    second: Keyboard_Left
   externalObjects: {}
-  serializedVersion: 9
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -95,7 +181,7 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -106,7 +192,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -117,7 +204,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -128,7 +216,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -139,6 +228,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -158,6 +248,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 6165e52394a92c34cb29e74d8252e7ec
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -178,6 +269,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: e0caf2962a4951642982ad1c6557d9a3
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -198,6 +290,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: ddb0c8a7776a2fd4aa4083b48578144b
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -218,6 +311,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: eb9b6e66e9a39cd49a82d3a6011738c3
+      internalID: 21300006
       vertices: []
       indices: 
       edges: []
@@ -238,6 +332,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 7e5bfd97907a9814caaf59aa958f9297
+      internalID: 21300008
       vertices: []
       indices: 
       edges: []
@@ -258,6 +353,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 6204297dba474bd4f974f14c194d0286
+      internalID: 21300010
       vertices: []
       indices: 
       edges: []
@@ -278,6 +374,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: ed5d0c848eb77904d8a05de6b083ab4a
+      internalID: 21300012
       vertices: []
       indices: 
       edges: []
@@ -298,6 +395,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d29fdf5c030fe04479ce4ee5a24d90c1
+      internalID: 21300014
       vertices: []
       indices: 
       edges: []
@@ -318,6 +416,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 9978b1082f9cde546b399dd9ff056018
+      internalID: 21300016
       vertices: []
       indices: 
       edges: []
@@ -338,6 +437,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 15ac77f040ac0d94a9686de3a7be53cb
+      internalID: 21300018
       vertices: []
       indices: 
       edges: []
@@ -358,6 +458,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 5bf4d16b8cce4014b86394c4b6aa96c4
+      internalID: 21300020
       vertices: []
       indices: 
       edges: []
@@ -378,6 +479,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 9d6b3f33cd22b444aa26f69898bfaedf
+      internalID: 21300022
       vertices: []
       indices: 
       edges: []
@@ -398,6 +500,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: fee739ffa0218d145bb1fdd53e30002f
+      internalID: 21300026
       vertices: []
       indices: 
       edges: []
@@ -418,6 +521,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 055ad446533f369438d018a86acee029
+      internalID: 21300028
       vertices: []
       indices: 
       edges: []
@@ -438,6 +542,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 5d255ea1cb6bd9d4785c928fb3b06c69
+      internalID: 21300030
       vertices: []
       indices: 
       edges: []
@@ -458,6 +563,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 8cb78190a7c34f147a43c96c28cac322
+      internalID: 21300032
       vertices: []
       indices: 
       edges: []
@@ -478,6 +584,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 72868398a1646d241b630a46ce5ad5bd
+      internalID: 21300034
       vertices: []
       indices: 
       edges: []
@@ -498,6 +605,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 0a2273cf2d48d43429678db6151c083c
+      internalID: 21300036
       vertices: []
       indices: 
       edges: []
@@ -518,6 +626,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 0035aad9c2893ae4a9120a99d38d4b56
+      internalID: 21300038
       vertices: []
       indices: 
       edges: []
@@ -538,6 +647,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 877b38baa8be9544e88109013e880d41
+      internalID: 21300040
       vertices: []
       indices: 
       edges: []
@@ -558,6 +668,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 5c8b1af6ed670a7429c24b360c2eb718
+      internalID: 21300042
       vertices: []
       indices: 
       edges: []
@@ -578,6 +689,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 54dd4b0f56d591f4bb2d9ca74df69f51
+      internalID: 21300044
       vertices: []
       indices: 
       edges: []
@@ -598,6 +710,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 913e31e169f1faa49a88daa73c45a45d
+      internalID: 21300046
       vertices: []
       indices: 
       edges: []
@@ -618,6 +731,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 5cea9201e8b7e3b4fa2d2f03458b29f9
+      internalID: 21300048
       vertices: []
       indices: 
       edges: []
@@ -638,6 +752,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 4c9ed80baabce1348885d7bb3affa8ed
+      internalID: 21300050
       vertices: []
       indices: 
       edges: []
@@ -658,6 +773,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 53072c4cd4f60894ab09f6afd2691c4d
+      internalID: 21300052
       vertices: []
       indices: 
       edges: []
@@ -678,12 +794,13 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: ab3d0bdde3ae365429e0fa8115e60ccb
+      internalID: 21300054
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Keyboard_Z
+      name: Keyboard_W
       rect:
         serializedVersion: 2
         x: 1041
@@ -698,6 +815,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 6111089aa74aa9c44accf3aa3d912b1b
+      internalID: 21300056
       vertices: []
       indices: 
       edges: []
@@ -718,6 +836,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: cec88deb64dba5f4a97dbc01434704ad
+      internalID: 21300058
       vertices: []
       indices: 
       edges: []
@@ -738,6 +857,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 049b5937434b9a244b20f140aab41368
+      internalID: 21300060
       vertices: []
       indices: 
       edges: []
@@ -758,6 +878,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 69a2edcf324b4da41895e9e11f9cf5e8
+      internalID: 21300062
       vertices: []
       indices: 
       edges: []
@@ -778,6 +899,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: fde6bfa984ac8b348ac573b2a05d907f
+      internalID: 21300064
       vertices: []
       indices: 
       edges: []
@@ -798,6 +920,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 1611f5d0c2076f542b1d6b8972cfba12
+      internalID: 21300066
       vertices: []
       indices: 
       edges: []
@@ -818,6 +941,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 60ea861686f775449b815628d2100014
+      internalID: 21300068
       vertices: []
       indices: 
       edges: []
@@ -838,6 +962,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 6a0fb8890c9c6e64c85e6b0ed2bc403a
+      internalID: 21300070
       vertices: []
       indices: 
       edges: []
@@ -858,6 +983,91 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 4bff8b1197dcc13499f1f44cd2482572
+      internalID: 21300072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Keyboard_Up
+      rect:
+        serializedVersion: 2
+        x: 1917
+        y: 950
+        width: 214
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 517877a9c2c64c449b5be4c2f1187934
+      internalID: -4452964101592610179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Keyboard_Right
+      rect:
+        serializedVersion: 2
+        x: 2173
+        y: 724
+        width: 214
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c3e233cc2097cb4fab7d2b0758d980b
+      internalID: 5437254755628748278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Keyboard_Down
+      rect:
+        serializedVersion: 2
+        x: 1911
+        y: 725
+        width: 214
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 505797567cebe374eb0361f3f5f4f45d
+      internalID: 199547793265871125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Keyboard_Left
+      rect:
+        serializedVersion: 2
+        x: 1645
+        y: 727
+        width: 214
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c7d79e6a92d3d342a49881daf0657d5
+      internalID: 2890910035307642275
       vertices: []
       indices: 
       edges: []
@@ -866,10 +1076,12 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 0a10131b28d716b4db334649fc234dff
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

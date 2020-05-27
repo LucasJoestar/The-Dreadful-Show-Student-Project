@@ -116,12 +116,12 @@ MonoBehaviour:
   group: 0
   OwnerShipWasTransfered: 0
   prefixBackup: -1
-  synchronization: 0
+  synchronization: 3
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
   ObservedComponents:
-  - {fileID: 0}
+  - {fileID: 5268511999767807708}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
@@ -324,7 +324,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 122
   m_CollisionDetection: 0
 --- !u!82 &2531816460339152144
 AudioSource:
@@ -565,6 +565,7 @@ MonoBehaviour:
     ObjectTags:
     - Name: Player
       Color: {r: 0.097232126, g: 0.8962264, b: 0.6973913, a: 1}
+  IgnoreOwner: 1
 --- !u!1 &5268512001762362898
 GameObject:
   m_ObjectHideFlags: 0

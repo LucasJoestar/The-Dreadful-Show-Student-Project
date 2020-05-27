@@ -61,6 +61,8 @@ public class TDS_Projectile : TDS_Object
     [SerializeField] private ParticleSystem feedbackFX = null;
     #endregion
 
+    bool isDestroying = false;
+
     #region Methods
 
     #region Original Methods
@@ -89,7 +91,7 @@ public class TDS_Projectile : TDS_Object
         sprite.enabled = false;
         if (shadow) shadow.SetActive(false);
 
-        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_MagicPoof, audioSource);
+        // Play magic poof
 
         if (!feedbackFX) return;
 
@@ -101,21 +103,23 @@ public class TDS_Projectile : TDS_Object
     /// </summary>
     private void CallDestruction()
     {
-        if (!PhotonNetwork.isMasterClient) return;
-        StopAllCoroutines(); 
-        hitBox.Desactivate();
+        if (PhotonNetwork.isMasterClient)
+        {
+            hitBox.Desactivate();
 
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "DestroyFeedback"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "PrepareDestruction", new object[] { });
+
+            Invoke("Destroy", 2);
+        }
 
         DestroyFeedback();
-        Invoke("Destroy", 2);
     }
 
     public void StartProjectileMovement(Vector3 _direction, float _range)
     {
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "StartProjectileMovement"), new object[] { _direction.x, _direction.y, _direction.z, _range });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "StartProjectileMovement", new object[] { _direction.x, _direction.y, _direction.z, _range });
         }
         range = _range;
         StartCoroutine(ProjectileMovement(_direction));
@@ -128,8 +132,10 @@ public class TDS_Projectile : TDS_Object
 
     private void PrepareDestruction()
     {
-        if (!PhotonNetwork.isMasterClient) return;
-        CancelInvoke("CallDestruction");
+        if (isDestroying)
+            return;
+
+        isDestroying = true;
         StopAllCoroutines();
         Invoke("CallDestruction", .001f);
     }
@@ -137,10 +143,8 @@ public class TDS_Projectile : TDS_Object
 
     #region Unity Methods
     // Awake is called when the script instance is being loaded
-    protected override void Awake()
+    protected virtual void Awake()
     {
-        base.Awake();
-
         if (!hitBox)
         {
             hitBox = GetComponent<TDS_HitBox>();
@@ -153,7 +157,6 @@ public class TDS_Projectile : TDS_Object
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!PhotonNetwork.isMasterClient) return;
         PrepareDestruction(); 
     }
     #endregion

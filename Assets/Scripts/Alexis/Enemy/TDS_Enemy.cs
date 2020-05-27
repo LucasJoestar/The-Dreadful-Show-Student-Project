@@ -1066,12 +1066,12 @@ public abstract class TDS_Enemy : TDS_Character
     protected void ActivateAttack(int _animationID)
     {
         TDS_EnemyAttack _attack = attacks.Where(a => a.AnimationID == _animationID).FirstOrDefault();
-        if (_attack == null) return;
-        //TDS_SoundManager.Instance.PlaySoundAtPosition(audioSource, _attack.GetRandomClip(), transform.position, TDS_SoundManager.FX_GROUP_NAME, false, 1);
-        //TDS_SoundManager.Instance?.PlayEffectSound(_attack.GetRandomClip(), audioSource);
-        _attack.PlaySound(gameObject);
+        if (_attack == null)
+            return;
 
-        if (!PhotonNetwork.isMasterClient) return;
+        if (!PhotonNetwork.isMasterClient)
+            return;
+
         hitBox.Activate(_attack);
         _attack.ApplyAttackBehaviour(this); 
     }
@@ -1174,7 +1174,7 @@ public abstract class TDS_Enemy : TDS_Character
     protected virtual void InitLifeBar()
     {
         //INIT LIFEBAR
-        if (TDS_UIManager.Instance?.CanvasWorld)
+        if (TDS_UIManager.Instance.CanvasWorld)
         {
             TDS_UIManager.Instance.SetEnemyLifebar(this);
         }
@@ -1222,7 +1222,7 @@ public abstract class TDS_Enemy : TDS_Character
                 animator.SetInteger(animationState_Hash, _animationID);
                 break;
         }
-        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "SetAnimationState"), new object[] { _animationID });
+        if (PhotonNetwork.isMasterClient) TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, this.GetType(), "SetAnimationState", new object[] { _animationID });
     }
 
     /// <summary>
@@ -1388,7 +1388,7 @@ public abstract class TDS_Enemy : TDS_Character
             // Scales up health on player amount
             if (doScaleOnPlayerAmount)
             {
-                for (int _i = 0; _i < TDS_LevelManager.Instance.OtherPlayers.Count; _i++)
+                for (int _i = 1; _i < TDS_LevelManager.Instance.AllPlayers.Length; _i++)
                 {
                     HealthMax += (int)(healthMax * (healthScalePercent / 100f));
                 }

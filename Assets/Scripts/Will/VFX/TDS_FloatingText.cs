@@ -26,7 +26,7 @@ public class TDS_FloatingText : PunBehaviour
     {
         if(PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, this.GetType(), "Init"), new object[] { _damage });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, this.GetType(), "Init", new object[] { _damage });
             StartCoroutine(DestoryAfterTime()); 
         }
         if (text)

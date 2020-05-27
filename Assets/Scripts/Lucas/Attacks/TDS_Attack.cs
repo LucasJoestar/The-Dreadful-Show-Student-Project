@@ -221,5 +221,10 @@ public class TDS_Attack : ScriptableObject
         AkSoundEngine.SetRTPCValue("ennemies_attack", soundRTPCValue, _object);
         AkSoundEngine.PostEvent(soundEvent, _object);
     }
+
+    public void PlaySound()
+    {
+        // Play sound
+    }
     #endregion
 }

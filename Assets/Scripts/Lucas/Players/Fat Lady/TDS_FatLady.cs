@@ -375,7 +375,7 @@ public class TDS_FatLady : TDS_Player
     {
         if (photonView.isMine)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetFatLadyAnim"), new object[] { (int)_state });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "SetFatLadyAnim", new object[] { (int)_state });
         }
 
         switch (_state)
@@ -415,7 +415,10 @@ public class TDS_FatLady : TDS_Player
     /// <summary>
     /// Plays sound for when eating food.
     /// </summary>
-    protected void PlayEat() => TDS_SoundManager.Instance.PlayEffectSound(eatSound, audioSource);
+    protected void PlayEat()
+    {
+        // Play eat sound
+    }
     #endregion
 
     #endregion

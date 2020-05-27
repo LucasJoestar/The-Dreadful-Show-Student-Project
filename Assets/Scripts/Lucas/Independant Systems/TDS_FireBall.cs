@@ -76,7 +76,7 @@ public class TDS_FireBall : TDS_Object
     /// </summary>
     private void CallExplode()
     {
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, GetType(), "Explode"), new object[] { });
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.All, photonView, GetType(), "Explode", new object[] { });
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ public class TDS_FireBall : TDS_Object
         if (hitBox.IsActive) hitBox.Desactivate();
         animator.SetTrigger(explosion_Hash);
 
-        TDS_SoundManager.Instance.PlayEffectSound(destroySound, audioSource);
+        // Play explode sound
     }
 
     /// <summary>
@@ -119,10 +119,8 @@ public class TDS_FireBall : TDS_Object
 
 	#region Unity Methods
 	// Awake is called when the script instance is being loaded
-    protected override void Awake()
+    protected virtual void Awake()
     {
-        base.Awake();
-
         if (!animator)
         {
             animator = GetComponent<Animator>();

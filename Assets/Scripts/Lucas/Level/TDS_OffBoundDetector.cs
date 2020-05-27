@@ -38,6 +38,13 @@ public class TDS_OffBoundDetector : MonoBehaviour
 
             Debug.LogError("TELEPORT : " + other.gameObject.name);
         }
+        else if (PhotonNetwork.isMasterClient)
+        {
+            TDS_Throwable _object = other.GetComponent<TDS_Throwable>();
+
+            if (_object && _object.transform.position.x < TDS_Camera.Instance.CurrentBounds.XMin)
+                _object.DestroyThrowableObject();
+        }
     }
     #endregion
 }

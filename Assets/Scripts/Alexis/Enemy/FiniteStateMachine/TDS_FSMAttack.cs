@@ -12,7 +12,6 @@ public class TDS_FSMAttack : StateMachineBehaviour
     {
         if (!PhotonNetwork.isMasterClient) return;
         if (!owner) owner = animator.GetComponent<TDS_Enemy>();
-        if (!owner) return;
         if (animator.GetFloat("animationState") != 0)
             owner.SetAnimationState(0);
         attackingCoroutine = owner.StartCoroutine(owner.CastAttack()); 

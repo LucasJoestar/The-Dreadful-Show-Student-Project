@@ -270,7 +270,7 @@ public class TDS_SpawnerArea : PunBehaviour
             {
                 TDS_UIManager.Instance.SwitchCurtains(false);
 
-                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchCurtains"), new object[] { false });
+                TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchCurtains", new object[] { false });
             }
             return;
         }
@@ -363,7 +363,7 @@ public class TDS_SpawnerArea : PunBehaviour
             OnStartFight?.Invoke();
             TDS_UIManager.Instance.SwitchCurtains(true);
 
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchCurtains"), new object[] { true });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "SwitchCurtains", new object[] { true });
         }
         spawnedEnemies.ForEach(e => StartCoroutine(WaitAndActivate(e, waves[waveIndex].IsActivatedByEvent)));
     }

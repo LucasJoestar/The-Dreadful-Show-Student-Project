@@ -679,7 +679,8 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <returns>Returns true if successfully removed the throwable, false otherwise.</returns>
     public override bool RemoveThrowable()
     {
-        if (!base.RemoveThrowable()) return false;
+        if (!base.RemoveThrowable())
+            return false;
 
         // Set animation
         SetAnim(PlayerAnimState.LostObject);
@@ -688,7 +689,8 @@ public class TDS_Player : TDS_Character, IPunObservable
         interactionBox.DisplayInteractionFeedback(true);
 
         // Triggers event
-        if (photonView.isMine) OnHasObject?.Invoke(false);
+        if (photonView.isMine)
+            OnHasObject?.Invoke(false);
 
         return true;
     }
@@ -700,7 +702,8 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <returns>Returns true if successfully set the throwable, false otherwise.</returns>
     public override bool SetThrowable(TDS_Throwable _throwable)
     {
-        if (!base.SetThrowable(_throwable)) return false;
+        if (!base.SetThrowable(_throwable))
+            return false;
 
         // Set animation
         SetAnim(PlayerAnimState.HasObject);
@@ -709,7 +712,8 @@ public class TDS_Player : TDS_Character, IPunObservable
         interactionBox.DisplayInteractionFeedback(false);
 
         // Triggers event
-        if (photonView.isMine) OnHasObject?.Invoke(true);
+        if (photonView.isMine)
+            OnHasObject?.Invoke(true);
 
         return true;
     }
@@ -1249,6 +1253,9 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         OnPlayerDie?.Invoke(this);
 
+        if (PhotonNetwork.isMasterClient)
+            DropObject();
+
         if (!photonView.isMine) return;
 
         // Removes the player to follow for the camera if offline mode
@@ -1257,9 +1264,6 @@ public class TDS_Player : TDS_Character, IPunObservable
             TDS_Camera.Instance.RemoveLocalPlayer(this);
             if (movePlayerInViewCoroutine != null) StopMovingPlayerInView();
         }
-
-        // Drop object if needed
-        if (throwable) DropObject();
 
         // Desactivates the detection box
         interactionBox.DisplayInteractionFeedback(false);
@@ -1370,7 +1374,6 @@ public class TDS_Player : TDS_Character, IPunObservable
             if (photonView.isMine) TDS_Camera.Instance.StartScreenShake(.02f, .2f);
 
             // Play parry sound
-            if (isParrying) TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Parry, audioSource);
             return false;
         }
 
@@ -1684,7 +1687,6 @@ public class TDS_Player : TDS_Character, IPunObservable
                 OnGetOnGround?.Invoke();
 
                 // Plays land sound
-                TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Land, audioSource);
             }
         }
 
@@ -1728,7 +1730,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         {
             if (PhotonNetwork.isMasterClient)
             {
-                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "FreezePlayer"), new object[] { });
+                TDS_RPCManager.Instance.CallRPC(photonView.owner, photonView, GetType(), "FreezePlayer", new object[] { });
             }
 
             return;
@@ -1812,7 +1814,6 @@ public class TDS_Player : TDS_Character, IPunObservable
         rigidbody.AddForce(Vector3.up * JumpForce);
 
         // Plays jump sound
-        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.J_Jump, audioSource);
 
         while (controller.GetButton(ButtonType.Jump) && _timer < JumpMaximumTime)
         {
@@ -1848,6 +1849,8 @@ public class TDS_Player : TDS_Character, IPunObservable
         MoveTo(_newPosition);
     }
 
+    private bool isMovingPlayerInView = false;
+
     /// <summary>
     /// Moves the player inside the visible zone.
     /// </summary>
@@ -1860,6 +1863,9 @@ public class TDS_Player : TDS_Character, IPunObservable
             yield return null;
             _timer -= Time.deltaTime;
         }
+
+        isMovingPlayerInView = true;
+        FreezePlayer();
 
         rigidbody.isKinematic = true;
         enabled = false;
@@ -2078,11 +2084,17 @@ public class TDS_Player : TDS_Character, IPunObservable
             StopCoroutine(movePlayerInViewCoroutine);
             movePlayerInViewCoroutine = null;
 
-            SetAnim(PlayerAnimState.Idle);
-            rigidbody.isKinematic = false;
+            if (isMovingPlayerInView)
+            {
+                SetAnim(PlayerAnimState.Idle);
+                rigidbody.isKinematic = false;
 
-            isMoving = false;
-            enabled = true;
+                isMoving = false;
+                enabled = true;
+
+                isMovingPlayerInView = false;
+                UnfreezePlayer();
+            }
         }
     }
 
@@ -2095,7 +2107,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         {
             if (PhotonNetwork.isMasterClient)
             {
-                TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "UnfreezePlayer"), new object[] { });
+                TDS_RPCManager.Instance.CallRPC(photonView.owner, photonView, GetType(), "UnfreezePlayer", new object[] { });
             }
 
             return;
@@ -2232,7 +2244,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     {
         if (photonView.isMine)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetAnim"), new object[] { (int)_state });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "SetAnim", new object[] { (int)_state });
         }
 
         SetAnim(_state);
@@ -2356,7 +2368,8 @@ public class TDS_Player : TDS_Character, IPunObservable
             if (TDS_GameManager.IsInCutscene)
             {
                 // Skip it
-                TDS_LevelManager.Instance?.SkipCutscene();
+                if (PhotonNetwork.isMasterClient)
+                    TDS_LevelManager.Instance.SkipCutscene();
             }
             else
             {
@@ -2425,7 +2438,10 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <summary>
     /// Plays dodge sound.
     /// </summary>
-    protected void PlayDodge() => TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Dodge, audioSource);
+    protected void PlayDodge()
+    {
+        // Play dodge
+    }
     #endregion
 
     #region Others
@@ -2437,7 +2453,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Call this method for other clients
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "DisappearBeforeRespawn"), new object[] { _xPos, _yPos, _zPos });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "DisappearBeforeRespawn", new object[] { _xPos, _yPos, _zPos });
         }
 
         sprite.enabled = false;
@@ -2462,7 +2478,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Call this method for other clients
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "RespawnPlayer"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "RespawnPlayer", new object[] { });
         }
 
         sprite.enabled = true;

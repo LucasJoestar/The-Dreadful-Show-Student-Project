@@ -175,12 +175,12 @@ public class TDS_NetworkManager : PunBehaviour
     {
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "ForceLeave"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "ForceLeave", new object[] { });
         }
         else
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "RemovePlayer"), new object[] { PhotonNetwork.player.ID });
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "RemovePlayerLifeBar"), new object[] { (int)TDS_GameManager.LocalPlayer });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "RemovePlayer", new object[] { PhotonNetwork.player.ID });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "RemovePlayerLifeBar", new object[] { (int)TDS_GameManager.LocalPlayer });
         }
 
         PhotonNetwork.SendOutgoingCommands();

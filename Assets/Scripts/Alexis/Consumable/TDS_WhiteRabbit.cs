@@ -85,8 +85,6 @@ public class TDS_WhiteRabbit : TDS_Consumable
 
         passingCountCurrent++;
 
-        Debug.Log("Pass => " + passingCountCurrent);
-
         if (!isLooping && (passingCountCurrent > passingCountMax))
         {
             Debug.Log("Loose => " + passingCountCurrent);
@@ -109,7 +107,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
         if (isDesactivated) return;
         if (!PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "UseOnline"), new object[] { _player.PhotonID });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, GetType(), "UseOnline", new object[] { _player.PhotonID}); 
             return; 
         }
         int _healingValue = UnityEngine.Random.Range(healingValueMin, healingValueMax);
@@ -117,12 +115,10 @@ public class TDS_WhiteRabbit : TDS_Consumable
 
         OnUseRabbit?.Invoke();
 
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "UseFeedback"), new object[] { });
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "UseFeedback", new object[] { });
 
         UseFeedback();
         Invoke("Destroy", 2);
-
-        Debug.Log("Use");
     }
 
     /// <summary>
@@ -136,7 +132,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
         sprite.enabled = false;
         if (shadow) shadow.SetActive(false);
 
-        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_RabbitPoof, audioSource);
+        // Play rabbit poof
 
         if (!feedbackFX) return;
 
@@ -166,7 +162,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
         float _x = goRight ? TDS_Camera.Instance.CurrentBounds.XMax + 1 : TDS_Camera.Instance.CurrentBounds.XMin - 1; 
         Vector3 _targetPosition = new Vector3(_x, transform.position.y, transform.position.z);
         agent.SetDestination(_targetPosition);
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, GetType(), "Flip"), new object[] { });
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.All, photonView, GetType(), "Flip", new object[] { });
     }
 
     private void RecalculatePath()
@@ -201,7 +197,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
 
     private void OnDestroy()
     {
-        Debug.Log("Destroy");
+        TDS_Camera.Instance.OnBoundFreeze -= RecalculatePath;
     }
     #endregion
 

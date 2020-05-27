@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Photon;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-public class TDS_RPCManager : MonoBehaviour
+public class TDS_RPCManager : PunBehaviour
 {
     /* TDS_RPCManager :
 	 *
@@ -30,126 +32,197 @@ public class TDS_RPCManager : MonoBehaviour
 	 *	-----------------------------------
 	*/
 
-    #region Events
+    private const char INFO_SEPARATOR = '#';
+    private const char RPC_SEPARATOR = '|';
 
-    #endregion
-
-    #region Fields / Properties
     public static TDS_RPCManager Instance;
-    public PhotonView RPCPhotonView;
-    #endregion
+
+    List<RPCBuffer> rpcBuffers =    new List<RPCBuffer>()
+                                        {
+                                            new RPCBuffer(PhotonTargets.All),
+                                            new RPCBuffer(PhotonTargets.AllBuffered),
+                                            new RPCBuffer(PhotonTargets.MasterClient),
+                                            new RPCBuffer(PhotonTargets.Others),
+                                            new RPCBuffer(PhotonTargets.OthersBuffered)
+                                        };
 
     #region Methods
+
     #region Original Methods   
-    /// <summary>
-    /// Get component with its photon view ID
-    /// </summary>
-    /// <typeparam name="T">Desired Component</typeparam>
-    /// <param name="_photonViewID">Photon view ID</param>
-    /// <returns></returns>
-    public static T GetComponentWithID<T>(int _photonViewID)
-    {
-        PhotonView _photonView = PhotonView.Find(_photonViewID);
-        if (!_photonView) return default(T);
-        T _component = _photonView.GetComponent<T>();
-        return _component;
-    }
-
-    /// <summary>
-    /// Call a method with a selected Name on a targeted Script 
-    /// /// </summary>
-    /// <param name="_info"> Info: PhotonViewID#Type#MethodName</param>
     [PunRPC]
-    public void CallMethodOnline(string _info, params object[] args)
+    private void CallMethodOnline(string _infos, object[] _args)
     {
-        //Split the information
-        string[] _infoArray = _info.Split('#');
-        // Get the id, if it can't be gotten return
-        int _id;
-        if (!int.TryParse(_infoArray[0], out _id))
+        string[] _rpcs = _infos.Split(RPC_SEPARATOR);
+        int _paramCounter = 0;
+
+        for (int _i = 0; _i < _rpcs.Length; _i++)
         {
-            return;
-        }
-        //Get the type, if it can't be gotten return
-        Type _t = Type.GetType(_infoArray[1]);
-        if (_t == null)
-        {
-            return;
-        }
-        //Get the method GetTypeWithId with reflection to call it with the gotten type
-        MethodInfo _methodInfo = typeof(TDS_RPCManager).GetMethod("GetComponentWithID");
-        MethodInfo _methodConstructed = _methodInfo.MakeGenericMethod(_t);
-        object[] _arg = { _id }; 
-        // Get the object calling the method
-        var _target = _methodConstructed.Invoke(null, _arg);
-        // Get the arguments if they exist
-        //Try to call the method with the name selected on the object target with the arguments
-        try
-        {
-            _t.InvokeMember(_infoArray[2].ToString(), BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy , null, _target, args);
-        }
-        catch (TargetException _targetException)
-        {
-            // If the method can't be found, catch the exception
-            Debug.LogError($"Couldn't find the target. The {_infoArray[1]} with the ID {_infoArray[0]} does not exists\n{_targetException.Message}");
-            return;
-        }
-        catch (MissingMethodException _e)
-        {
-            // If the method can't be found, catch the exception
-            Debug.LogError($"Couldn't find the {_infoArray[2]} Method in the selected script.\n{_e.Message}"); 
-            return;
+            string _rpc = _rpcs[_i];
+
+            if (string.IsNullOrEmpty(_rpc))
+                continue;
+
+            //Split the information
+            string[] _infoArray = _rpc.Split(INFO_SEPARATOR);
+
+            // Get the id, if it can't be gotten return
+            int _id = int.Parse(_infoArray[0]);
+
+            //Get the type, if it can't be gotten return
+            Type _t = Type.GetType(_infoArray[1]);
+
+            int _paramsCount = int.Parse(_infoArray[3]);
+            object[] _params = new object[_paramsCount];
+            for (int _j = 0; _j < _params.Length; _j++)
+            {
+                _params[_j] = _args[_paramCounter + _j];
+            }
+
+            _paramCounter += _paramsCount;
+
+            PhotonView _photonView = PhotonView.Find(_id);
+            if (!_photonView)
+                continue;
+
+            Component _comp = _photonView.GetComponent(_t);
+            if (!_comp)
+                continue;
+
+            // Get the arguments if they exist
+            //Try to call the method with the name selected on the object target with the arguments
+            try
+            {
+                _t.InvokeMember(_infoArray[2], BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy, null, _comp, _params);
+            }
+            catch (TargetException _targetException)
+            {
+                // If the method can't be found, catch the exception
+                Debug.LogError($"Couldn't find the target. The {_infoArray[1]} with the ID {_infoArray[0]} does not exists\n{_targetException.Message}");
+                continue;
+            }
+            catch (MissingMethodException _e)
+            {
+                // If the method can't be found, catch the exception
+                Debug.LogError($"Couldn't find the {_infoArray[2]} Method in the selected script.\n{_e.Message}");
+                continue;
+            }
         }
     }
 
+    // ----------------
 
-    /// <summary>
-    /// Get informations used by the called method Online
-    /// Concat in a string the informations
-    /// Info: ID#typeName#MethodName#Arguments
-    /// </summary>
-    /// <param name="_photonViewID">ID from the PhotonView of the caller</param>
-    /// <param name="_type">Type of the caller</param>
-    /// <param name="_methodName">Name of the called method</param>
-    /// <param name="args">arguments used in the method</param>
-    /// <returns></returns>
-    public static string GetInfo(int _photonViewID, Type _type, string _methodName)
+    public void CallRPC(PhotonTargets _target, PhotonView _photonView, Type _type, string _methodName, object[] _params)
     {
-        string _info = $"{_photonViewID}#{_type.ToString()}#{_methodName}";
-        return _info;
+        for (int _i = 0; _i < rpcBuffers.Count; _i++)
+        {
+            if (rpcBuffers[_i].Target == _target)
+            {
+                rpcBuffers[_i].RPC +=   $"{_photonView.viewID}{INFO_SEPARATOR}" +
+                                        $"{_type.ToString()}{INFO_SEPARATOR}" +
+                                        $"{_methodName}{INFO_SEPARATOR}" +
+                                        $"{_params.Length}{INFO_SEPARATOR}{RPC_SEPARATOR}";
+                rpcBuffers[_i].RPCParams.AddRange(_params);
+
+                break;
+            }
+        }
     }
 
-    /// <summary>
-    /// Get informations used by the called method Online
-    /// Concat in a string the informations
-    /// Info: ID#typeName#MethodName#Arguments
-    /// </summary>
-    /// <param name="_photonView">PhotonView of the caller</param>
-    /// <param name="_type">Type of the caller</param>
-    /// <param name="_methodName">Name of the called method</param>
-    /// <param name="args">arguments used in the method</param>
-    /// <returns></returns>
-    public static string GetInfo(PhotonView _photonView, Type _type, string _methodName)
+    public void CallRPC(PhotonPlayer _target, PhotonView _photonView, Type _type, string _methodName, object[] _params)
     {
-        return GetInfo(_photonView.viewID, _type, _methodName);
+        for (int _i = 0; _i < rpcBuffers.Count; _i++)
+        {
+            if (rpcBuffers[_i].PlayerTarget == _target)
+            {
+                rpcBuffers[_i].RPC += $"{_photonView.viewID}{INFO_SEPARATOR}" +
+                                        $"{_type.ToString()}{INFO_SEPARATOR}" +
+                                        $"{_methodName}{INFO_SEPARATOR}" +
+                                        $"{_params.Length}{INFO_SEPARATOR}{RPC_SEPARATOR}";
+                rpcBuffers[_i].RPCParams.AddRange(_params);
+
+                break;
+            }
+        }
+    }
+    #endregion
+
+    #region Photon
+    public override void OnPhotonPlayerConnected(PhotonPlayer _newPlayer)
+    {
+        rpcBuffers.Add(new RPCBuffer(_newPlayer));
+    }
+
+    public override void OnPhotonPlayerDisconnected(PhotonPlayer _otherPlayer)
+    {
+        for (int _i = 0; _i < rpcBuffers.Count; _i++)
+        {
+            if (rpcBuffers[_i].PlayerTarget == _otherPlayer)
+            {
+                rpcBuffers.RemoveAt(_i);
+                break;
+            }
+        }
     }
     #endregion
 
     #region Unity Methods
-    void Awake()
-    {      
-        if (!Instance) Instance = this;
-        else
-        {
-            Destroy(this);
-            return; 
-        }
-    }
-    void Start()
+    private void LateUpdate()
     {
-        if (!RPCPhotonView)
-            RPCPhotonView = GetComponent<PhotonView>();
+        if (!PhotonNetwork.connected) return; 
+        // Send out RPC
+        for (int _i = 0; _i < rpcBuffers.Count; _i++)
+        {
+            RPCBuffer _rpc = rpcBuffers[_i];
+
+            if (!string.IsNullOrEmpty(_rpc.RPC))
+            {
+                if (_rpc.PlayerTarget != null)
+                {
+                    photonView.RPC("CallMethodOnline", _rpc.PlayerTarget, _rpc.RPC, _rpc.RPCParams.ToArray());
+                }
+                else
+                {
+                    photonView.RPC("CallMethodOnline", _rpc.Target, _rpc.RPC, _rpc.RPCParams.ToArray());
+                }
+
+                _rpc.RPC = string.Empty;
+                _rpc.RPCParams.Clear();
+            }
+        }
+
+        PhotonNetwork.SendOutgoingCommands();
+    }
+
+    private void Start()
+    {
+        if (!Instance)
+        {
+            Instance = this;
+        }
+        else
+            Destroy(this);
     }
     #endregion
+
     #endregion
+}
+
+[Serializable]
+public class RPCBuffer
+{
+    public PhotonTargets Target;
+    public PhotonPlayer PlayerTarget;
+
+    public string RPC = string.Empty;
+    public List<object> RPCParams = new List<object>();
+
+    public RPCBuffer(PhotonTargets _target)
+    {
+        Target = _target;
+    }
+
+    public RPCBuffer(PhotonPlayer _playerTarget)
+    {
+        PlayerTarget = _playerTarget;
+    }
 }

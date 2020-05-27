@@ -71,7 +71,7 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
             readyToggle.animator.SetBool("IsReady", value);
             readyToggle.animator.SetTrigger("ReadyChanged");
             if (PlayerInfo == null) return;
-            Debug.Log("Set Ready");
+
             PlayerInfo.IsReady = value;
             if (isLocked)
             {

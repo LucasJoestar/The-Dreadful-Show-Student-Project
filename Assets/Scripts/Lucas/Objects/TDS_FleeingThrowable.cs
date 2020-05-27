@@ -132,8 +132,7 @@ public abstract class TDS_FleeingThrowable : TDS_Throwable
     /// <param name="_animationID">ID of the new animation.</param>
     public virtual void SetAnimationOnline(int _animationID)
     {
-        TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "SetAnimation"), new object[] { _animationID });
-
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "SetAnimation", new object[] { _animationID });
         SetAnimation(_animationID);
     }
 
@@ -152,12 +151,13 @@ public abstract class TDS_FleeingThrowable : TDS_Throwable
     /// <summary>
     /// Drop the object from the character who was carring it. 
     /// </summary>
-    public override void Drop()
+    public override bool DropLocal()
     {
-        if (!isHeld) return;
+        if (!base.DropLocal())
+            return false;
 
         isFacingRight = owner.IsFacingRight;
-        base.Drop();
+        return true;
     }
 
     /// <summary> 
@@ -202,13 +202,13 @@ public abstract class TDS_FleeingThrowable : TDS_Throwable
     /// </summary> 
     /// <param name="_finalPosition">Final position where the object is supposed to be at the end of the trajectory.</param> 
     /// <param name="_angle">Throw angle.</param> 
-    /// <param name="_bonusDamage">Bonus damages added to the attack.</param> 
-    public override void Throw(Vector3 _finalPosition, float _angle, int _bonusDamage)
+    public override bool ThrowLocal(Vector3 _finalPosition, float _angle)
     {
-        if (!isHeld) return;
+        if (!base.ThrowLocal(_finalPosition, _angle))
+            return false;
 
         isFacingRight = owner.IsFacingRight;
-        base.Throw(_finalPosition, _angle, _bonusDamage);
+        return true;
     }
     #endregion
 

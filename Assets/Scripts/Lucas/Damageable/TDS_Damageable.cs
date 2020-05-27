@@ -354,8 +354,7 @@ public abstract class TDS_Damageable : TDS_Object
         layerBeforeDeath = gameObject.layer;
         gameObject.layer = LayerMask.NameToLayer("Dead");
 
-        // Play sound
-        if (deathSounds.Length > 0) TDS_SoundManager.Instance.PlayEffectSound(deathSounds, audioSource);
+        // Play death sound
     }
 
     /// <summary>
@@ -367,7 +366,7 @@ public abstract class TDS_Damageable : TDS_Object
         if (PhotonNetwork.isMasterClient)
         {
             HealthCurrent += _heal;
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Heal"), new object[] { healthCurrent });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "Heal", new object[] { healthCurrent });
         }
         else
         {
@@ -396,7 +395,7 @@ public abstract class TDS_Damageable : TDS_Object
         {
             IsInvulnerable = _isInvulnerable;
 
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "SetInvulnerable"), new object[] { _isInvulnerable });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, GetType(), "SetInvulnerable", new object[] { _isInvulnerable });
         }
     }
 
@@ -412,7 +411,7 @@ public abstract class TDS_Damageable : TDS_Object
             if (IsInvulnerable || isDead) return false;
 
             HealthCurrent -= _damage;
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "TakeDamage"), new object[] { healthCurrent });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "TakeDamage", new object[] { healthCurrent });
         }
         else
         {
@@ -421,10 +420,7 @@ public abstract class TDS_Damageable : TDS_Object
         
         OnTakeDamage?.Invoke();
 
-        // Play hit sound
-        TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Hit, .75f, audioSource);
-
-        if (hitSounds.Length > 0) TDS_SoundManager.Instance.PlayEffectSound(hitSounds, audioSource);
+        // Play hit sounds
 
         return true;
     }
@@ -452,7 +448,7 @@ public abstract class TDS_Damageable : TDS_Object
     {
         if (!photonView.isMine)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "BringCloser"), new object[] { _distance });
+            TDS_RPCManager.Instance.CallRPC(photonView.owner, photonView, GetType(), "BringCloser", new object[] { _distance });
             return false;
         }
 
@@ -500,7 +496,7 @@ public abstract class TDS_Damageable : TDS_Object
 
         if (!PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "CallOnStopBringingCloser"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, GetType(), "CallOnStopBringingCloser", new object[] { });
         }
 
         OnStopBringingCloser?.Invoke();
@@ -568,7 +564,7 @@ public abstract class TDS_Damageable : TDS_Object
     {
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "DestroyFireEffect"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "DestroyFireEffect", new object[] { });
         }
 
         burnEffect.SetTrigger(vanish_Hash);
@@ -581,7 +577,7 @@ public abstract class TDS_Damageable : TDS_Object
     {
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "InstantiateFireEffect"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "InstantiateFireEffect", new object[] { });
         }
 
         burnEffect = ((GameObject)Instantiate(Resources.Load("FireBurn"), new Vector3(transform.position.x, transform.position.y, transform.position.z - .05f), Quaternion.identity)).GetComponent<Animator>();
@@ -617,7 +613,7 @@ public abstract class TDS_Damageable : TDS_Object
     {
         if (!photonView.isMine)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "Knockback"), new object[] { _toRight });
+            TDS_RPCManager.Instance.CallRPC(photonView.owner, photonView, GetType(), "Knockback", new object[] { _toRight });
             return false;
         }
 
@@ -671,7 +667,7 @@ public abstract class TDS_Damageable : TDS_Object
     {
         if (!photonView.isMine)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "Project"), new object[] { _toRight });
+            TDS_RPCManager.Instance.CallRPC(photonView.owner, photonView, GetType(), "Project", new object[] { _toRight });
             return false;
         }
 
@@ -689,10 +685,8 @@ public abstract class TDS_Damageable : TDS_Object
 
     #region Unity Methods
     // Awake is called when the script instance is being loaded
-    protected override void Awake()
+    protected virtual void Awake()
     {
-        base.Awake();
-
         // Try yo get components references of they are missing
         if (!animator)
         {

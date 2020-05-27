@@ -352,7 +352,7 @@ public abstract class TDS_Character : TDS_Damageable
     /// <summary>
     /// Returns <see cref="throwAimingPoint"/> vector3 in world space.
     /// </summary>
-    public Vector3 ThrowAimingPoint
+    public virtual Vector3 ThrowAimingPoint
     {
         get
         {
@@ -394,7 +394,7 @@ public abstract class TDS_Character : TDS_Damageable
 
         if (photonView.isMine)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "Flip"), new object[] { isFacingRight });
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "Flip", new object[] { isFacingRight });
         }
 
         transform.Rotate(Vector3.up, 180);
@@ -455,26 +455,7 @@ public abstract class TDS_Character : TDS_Damageable
     #endregion
 
     #region Throwable Object
-    /// <summary>
-    /// Drop the weared throwable.
-    /// </summary>
-    /// <returns>Returns true if successfully dropped the object, false if not having an object to drop.</returns>
-    public virtual bool DropObject()
-    {
-        // Call this method in owner only
-        if (!photonView.isMine)
-        {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "DropObject"), new object[] { });
-            return false;
-        }
-
-        // If no throwable, return
-        if (!throwable || !throwable.IsHeld) return false;
-
-        // Drooop
-        throwable.Drop();
-        return true;
-    }
+    protected virtual bool CanGrabObject() => !throwable;
 
     /// <summary>
     /// Try to grab a throwable.
@@ -487,20 +468,25 @@ public abstract class TDS_Character : TDS_Damageable
         // Call this method in master client only
         if (!PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.MasterClient, TDS_RPCManager.GetInfo(photonView, GetType(), "GrabObject"), new object[] { _throwable.photonView.viewID });
+            if (CanGrabObject() && !_throwable.IsHeld)
+            {
+                TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, GetType(), "GrabObject", new object[] { _throwable.photonView.viewID });
 
-            if (!_throwable.IsHeld) SetThrowable(_throwable);
+                if (_throwable is TDS_SpecialThrowable _special)
+                    _special.ActiveSpecialEvent();
+
+                SetThrowable(_throwable);
+                return true;
+            }
             return false;
         }
 
         // Take the object if possible
-        if (throwable) return false;
-        if (!_throwable.PickUp(this))
+        if (!CanGrabObject() || !_throwable.PickUp(this))
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "RemoveThrowable"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(photonView.owner, photonView, GetType(), "RemoveThrowable", new object[] { });
             return false;
         }
-
         return true;
     }
 
@@ -513,9 +499,34 @@ public abstract class TDS_Character : TDS_Damageable
     public virtual bool GrabObject(int _throwableID)
     {
         TDS_Throwable _throwable = PhotonView.Find(_throwableID).GetComponent<TDS_Throwable>();
-        if (!_throwable) return false;
+        if (!_throwable)
+            return false;
 
         return GrabObject(_throwable);
+    }
+
+    /// <summary>
+    /// Drop the weared throwable.
+    /// </summary>
+    /// <returns>Returns true if successfully dropped the object, false if not having an object to drop.</returns>
+    public virtual bool DropObject()
+    {
+        if (!throwable)
+            return false;
+
+        // Call this method in MasterClient
+        if (!PhotonNetwork.isMasterClient)
+        {
+            TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, GetType(), "DropObject", new object[] { });
+
+            if (!throwable.DropLocal())
+                RemoveThrowable();
+            return true;
+        }
+
+        // Drop
+        throwable.Drop();
+        return true;
     }
 
     /// <summary>
@@ -524,8 +535,11 @@ public abstract class TDS_Character : TDS_Damageable
     /// <returns>Returns true if successfully removed the throwable, false otherwise.</returns>
     public virtual bool RemoveThrowable()
     {
-        if (!throwable) return false;
-        if (!throwable.IsHeld || (throwable.Owner == this)) throwable.transform.SetParent(null, true);
+        if (!throwable)
+            return false;
+
+        if (throwable.transform.parent == handsTransform)
+            throwable.transform.SetParent(null, true);
 
         throwable = null;
         return true;
@@ -540,6 +554,11 @@ public abstract class TDS_Character : TDS_Damageable
     {
         if (_throwable)
         {
+            if (throwable == _throwable)
+                return true;
+            else
+                RemoveThrowable();
+
             Throwable = _throwable;
             _throwable.transform.SetParent(handsTransform, true);
             _throwable.transform.localPosition = Vector3.zero;
@@ -550,10 +569,8 @@ public abstract class TDS_Character : TDS_Damageable
                 _throwable.transform.Rotate(Vector3.up, 180);
                 _throwable.transform.localScale = new Vector3(_throwable.transform.localScale.x, _throwable.transform.localScale.y, _throwable.transform.localScale.z * -1);
             }
-
             return true;
         }
-
         return false;
     }
 
@@ -564,19 +581,29 @@ public abstract class TDS_Character : TDS_Damageable
     protected virtual void SetThrowable(int _throwableID)
     {
         PhotonView _throwable = PhotonView.Find(_throwableID);
-
-        if (_throwable) SetThrowable(_throwable.GetComponent<TDS_Throwable>());
+        if (_throwable)
+            SetThrowable(_throwable.GetComponent<TDS_Throwable>());
     }
 
     /// <summary>
-    /// Throws the weared throwable.
+    /// Throws the weared throwable from animation.
     /// </summary>
     public virtual bool ThrowObject_A()
     {
-        // If not mine, return false
-        if (!photonView.isMine) return false;
+        if (photonView.isMine)
+        {
+            if (PhotonNetwork.isMasterClient)
+            {
+                return ThrowObject(ThrowAimingPoint);
+            }
 
-        return ThrowObject(ThrowAimingPoint);
+            if (throwable && throwable.ThrowLocal(ThrowAimingPoint, aimAngle))
+            {
+                TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, GetType(), "ThrowObject", new object[] { ThrowAimingPoint.x, ThrowAimingPoint.y, ThrowAimingPoint.z });
+                return true;
+            }
+        }
+        return false;
     }
 
     /// <summary>
@@ -585,19 +612,20 @@ public abstract class TDS_Character : TDS_Damageable
     /// <param name="_targetPosition">Position where the object should land</param>
     public virtual bool ThrowObject(Vector3 _targetPosition)
     {
-        // Call this method in owner only
-        if (!photonView.isMine)
-        {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "ThrowObject_A"), new object[] { });
+        if (!throwable)
             return false;
-        }
 
-        // Return false if no throwable
-        if (!throwable || !throwable.IsHeld) return false;
-
-        // Alright, then throw it !
         throwable.Throw(_targetPosition, aimAngle, RandomThrowBonusDamages);
         return true;
+    }
+
+    protected void ThrowObject(float _x, float _y, float _z)
+    {
+        // If object throw is refused,
+        // then owner shouldn't have it.
+        // If so, the object is in another character's hand,
+        // so its position will be soon updated by grab RPC.
+        ThrowObject(new Vector3(_x, _y, _z));
     }
     #endregion
 
@@ -609,7 +637,8 @@ public abstract class TDS_Character : TDS_Damageable
     protected override void Die()
     {
         base.Die();
-        if (audioSource) audioSource.enabled = false;
+        // Stop all sounds
+
         if (!photonView.isMine) return;
 
         if (IsDown) GetUp();
@@ -624,10 +653,9 @@ public abstract class TDS_Character : TDS_Damageable
     {
         if (base.TakeDamage(_damage))
         {
-            if (photonView.isMine)
-            {
-                if (throwable) DropObject();
-            }
+            if (PhotonNetwork.isMasterClient)
+                DropObject();
+
             return true;
         }
         return false;
@@ -688,7 +716,7 @@ public abstract class TDS_Character : TDS_Damageable
     {
         if (!photonView.isMine)
         {
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "PutOnTheGround"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(photonView.owner, photonView, GetType(), "PutOnTheGround", new object[] { });
             return false;
         }
 
@@ -706,63 +734,60 @@ public abstract class TDS_Character : TDS_Damageable
     #endregion
 
     #region Sound
+    protected void PlayAttackSound()
+    {
+        if (hitBox.CurrentAttack)
+        {
+            hitBox.CurrentAttack.PlaySound();
+        }
+    }
+
     /// <summary>
     /// Plays sound for a big strike blow.
     /// </summary>
-    protected void PlayBlowBig() => TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_BlowBig, audioSource);
+    protected void PlayBlowBig()
+    {
+        // Play big blow
+    }
 
     /// <summary>
     /// Plays sound for a small strike blow.
     /// </summary>
-    protected void PlayBlowSmall() => TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_BlowSmall, audioSource);
+    protected void PlayBlowSmall()
+    {
+        // Play small blow
+    }
 
     /// <summary>
     /// Plays sound for when this character's body fall down.
     /// </summary>
-    protected void PlayBodyFall() => TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_BodyFall, audioSource);
+    protected void PlayBodyFall()
+    {
+        // Play body fall
+    }
 
     /// <summary>
     /// Plays sound for when this character's body fall down.
     /// </summary>
-    protected void PlaySlide() => TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_Slide, audioSource);
+    protected void PlaySlide()
+    {
+        // Play slide
+    }
 
     /// <summary>
     /// Plays sound for when hitting something brutally.
     /// </summary>
-    protected void PlayBrutalHit() => TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_BrutalHit, audioSource);
+    protected void PlayBrutalHit()
+    {
+        // Play brutal hit
+    }
 
     /// <summary>
     /// Plays sound for this character's footsteps.
     /// </summary>
     protected void PlayFootsteps()
     {
-        RaycastHit _hit = new RaycastHit();
-
-        if (!Physics.Raycast(new Vector3(collider.bounds.center.x, collider.bounds.min.y + .025f, collider.bounds.center.z), Vector3.down, out _hit, .1f)) return;
-
-        AudioClip _foostep = null;
-
-        switch (_hit.collider.gameObject.tag)
-        {
-            case "Grass":
-                if (foostepsGrass.Length == 0) return;
-                _foostep = TDS_SoundManager.GetRandomClip(foostepsGrass);
-                break;
-
-            case "Wood":
-                if (foostepsWood.Length == 0) return;
-                _foostep = TDS_SoundManager.GetRandomClip(foostepsWood);
-                break;
-
-            default:
-                if (foostepsConcrete.Length == 0) return;
-                _foostep = TDS_SoundManager.GetRandomClip(foostepsConcrete);
-                break;
-        }
-
-        if (_foostep)
-            TDS_SoundManager.Instance.PlayEffectSound(_foostep, audioSource);
-
+        // Play footsteps
     }
     #endregion
 
@@ -791,11 +816,6 @@ public abstract class TDS_Character : TDS_Damageable
         if (!shadowTransform)
         {
             Debug.LogWarning("The Shadow Transform of \"" + name + "\" for script TDS_Character is missing !");
-        }
-        if(!audioSource)
-        {
-            audioSource = GetComponent<AudioSource>(); 
-            if(!audioSource) Debug.LogWarning("The AudioSource of \"" + name + "\" for script TDS_Character is missing !");
         }
     }
 

@@ -81,11 +81,6 @@ public class TDS_Checkpoint : PunBehaviour
     /// </summary>
     [SerializeField] private BoxCollider trigger = null;
 
-    /// <summary>
-    /// Audio source of the checkpoint.
-    /// </summary>
-    [SerializeField] private AudioSource audioSource = null;
-
     /// <summary>Backing field for <see cref="IsActivated"/>.</summary>
     [SerializeField] private bool isActivated = false;
 
@@ -128,7 +123,7 @@ public class TDS_Checkpoint : PunBehaviour
 
         // Plays activation sound for everyone
         PlayActivationSound();
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.Others, TDS_RPCManager.GetInfo(photonView, GetType(), "PlayActivationSound"), new object[] { });
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "PlayActivationSound", new object[] { });
     }
 
     /// <summary>
@@ -139,7 +134,10 @@ public class TDS_Checkpoint : PunBehaviour
     /// <summary>
     /// Plays checkpoit activation sound.
     /// </summary>
-    private void PlayActivationSound() => audioSource.PlayOneShot(TDS_GameManager.AudioAsset.S_Checkpoint);
+    private void PlayActivationSound()
+    {
+        // Play activation sound
+    }
 
     /// <summary>
     /// Make all dead players respawn to this point.
@@ -184,7 +182,7 @@ public class TDS_Checkpoint : PunBehaviour
     /// <param name="_state"></param>
     public void SetAnimState(CheckpointAnimState _state)
     {
-        TDS_RPCManager.Instance?.RPCPhotonView.RPC("CallMethodOnline", PhotonTargets.All, TDS_RPCManager.GetInfo(photonView, GetType(), "SetAnimState"), new object[] { (int)_state });
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.All, photonView, GetType(), "SetAnimState", new object[] { (int)_state });
     }
 
     /// <summary>
@@ -228,10 +226,6 @@ public class TDS_Checkpoint : PunBehaviour
         {
             trigger = GetComponents<BoxCollider>().Where(b => b.isTrigger).FirstOrDefault();
         }
-        if (!audioSource)
-        {
-            audioSource = GetComponent<AudioSource>();
-        }
     }
 
     // Implement OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn
@@ -257,7 +251,7 @@ public class TDS_Checkpoint : PunBehaviour
             _player.Heal(999);
 
             // Call the OnPassCheckpoint event on the player machine
-            TDS_RPCManager.Instance.RPCPhotonView.RPC("CallMethodOnline", _player.photonView.owner, TDS_RPCManager.GetInfo(photonView, GetType(), "CallOnPassCheckpoint"), new object[] { });
+            TDS_RPCManager.Instance.CallRPC(_player.photonView.owner, photonView, GetType(), "CallOnPassCheckpoint", new object[] { });
 
             if (!isActivated) Activate();
 

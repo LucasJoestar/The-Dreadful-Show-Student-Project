@@ -63,7 +63,7 @@ public class TDS_PlayerSpriteHolder : MonoBehaviour
     // OnBecameInvisible is called when the renderer is no longer visible by any camera
     private void OnBecameInvisible()
     {
-        if (!Owner || Owner.IsDead || Owner.IsInvulnerable || Owner.IsInInvulnerabilityCoroutine || !Application.isPlaying) return;
+        if (!Owner || !Owner.photonView.isMine || Owner.IsDead || Owner.IsInvulnerable || Owner.IsInInvulnerabilityCoroutine || !Application.isPlaying) return;
 
         TDS_UIManager.Instance.DisplayHiddenPlayerPosition(Owner, true);
         Owner.StartMovingPlayerInView();
@@ -72,7 +72,7 @@ public class TDS_PlayerSpriteHolder : MonoBehaviour
     // OnBecameVisible is called when the renderer became visible by any camera
     private void OnBecameVisible()
     {
-        if (!Owner || !Application.isPlaying) return;
+        if (!Owner || !Owner.photonView.isMine || !Application.isPlaying) return;
 
         TDS_UIManager.Instance.DisplayHiddenPlayerPosition(Owner, false);
         Owner.StopMovingPlayerInView();

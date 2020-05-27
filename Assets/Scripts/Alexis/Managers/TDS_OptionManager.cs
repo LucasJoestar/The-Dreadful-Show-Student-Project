@@ -72,17 +72,20 @@ public class TDS_OptionManager : MonoBehaviour
     private void SetMusicVolume(float _value)
     {
         if (!mixerMusic) return;
-        mixerMusic.SetFloat("MusicVolume", _value); 
+        mixerMusic.SetFloat("MusicVolume", _value);
+        PlayerPrefs.SetFloat("TDSMusicVolume", _value);
     }
     private void SetVoicesVolume(float _value)
     {
         if (!mixerVoices) return;
         mixerVoices.SetFloat("VoicesVolume", _value);
+        PlayerPrefs.SetFloat("TDSVoiceVolume", _value);
     }
     private void SetFXVolume(float _value)
     {
         if (!mixerFX) return;
         mixerFX.SetFloat("FXVolume", _value);
+        PlayerPrefs.SetFloat("TDSFXVolume", _value);
     }
     #endregion
 
@@ -115,28 +118,53 @@ public class TDS_OptionManager : MonoBehaviour
         float _value = 0;
         if(mixerMusic)
         {
-            mixerMusic.GetFloat("MusicVolume", out _value);
+            _value = PlayerPrefs.GetFloat("TDSMusicVolume"); 
+            mixerMusic.SetFloat("MusicVolume", _value);
             if (sliderMusic) sliderMusic.value = _value;
         }
 
         if (mixerVoices)
         {
-            mixerVoices.GetFloat("VoicesVolume", out _value);
+            _value = PlayerPrefs.GetFloat("TDSVoiceVolume");
+            mixerVoices.SetFloat("VoicesVolume" ,_value);
             if (sliderVoices) sliderVoices.value = _value;
         }
 
         if(mixerFX)
         {
-            mixerFX.GetFloat("FXVolume", out _value);
+            _value = PlayerPrefs.GetFloat("TDSFXVolume");
+            mixerFX.SetFloat("FXVolume", _value);
             if (sliderFX) sliderFX.value = _value;
         }
 
 
-        if (textResolution) textResolution.text = $"{Screen.currentResolution.width} x {Screen.currentResolution.height}";
-        if (toggleFullScreen) toggleFullScreen.isOn = Screen.fullScreen;
-        selectedResolutionIndex = Screen.resolutions.ToList().IndexOf(Screen.currentResolution);
+        if (toggleFullScreen)
+        {
+            toggleFullScreen.isOn = Screen.fullScreen;
+        }
+        Resolution _r;
+        if (Screen.fullScreen)
+        {
+            _r = Screen.currentResolution;
+            if (textResolution) textResolution.text = $"{_r.width} x {_r.height}";
+            selectedResolutionIndex = Screen.resolutions.ToList().IndexOf(_r);
+        }
+        else
+        {
+            _r = Screen.resolutions[0]; 
+            for (int i = 1; i < Screen.resolutions.Length; i++)
+            {
+                if (Screen.width == Screen.resolutions[i].width && Screen.height == Screen.resolutions[i].height)
+                {
+                    _r = Screen.resolutions[i];
+                    break;
+                }
+            }
+            if (textResolution) textResolution.text = $"{Screen.width} x {Screen.height}";
+            selectedResolutionIndex = Screen.resolutions.ToList().IndexOf(_r);
+        }
 
-        buttonPreviousResolution.Select(); 
+        if(gameObject.activeInHierarchy) buttonPreviousResolution.Select(); 
     }
     #endregion
 
@@ -190,6 +218,7 @@ public class TDS_OptionManager : MonoBehaviour
 
     private void OnEnable()
     {
+        ResetDisplayedSettings();
         ResetLocalisation();
     }
     #endregion
