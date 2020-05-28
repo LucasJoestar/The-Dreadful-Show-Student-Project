@@ -42,7 +42,6 @@ public class TDS_Siamese : TDS_Boss
     [SerializeField] private string[] splitingEnemiesNames = new string[] { };
     [SerializeField] private Vector3[] splitingPosition = new Vector3[] { };
     [SerializeField] private GameObject splittingPortrait = null;
-    [SerializeField] private AudioClip tornadoClip = null; 
     #endregion
 
     #region Methods

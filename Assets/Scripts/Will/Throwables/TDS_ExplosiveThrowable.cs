@@ -80,7 +80,10 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
 
         collider.enabled = false;
         hitBox.Activate(attack, owner);
-        DestroyThrowableObject(1); 
+        DestroyThrowableObject(1);
+
+        // Play sound
+        attack.PlaySound(gameObject);
     }
     #endregion
 
@@ -91,6 +94,9 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
 
         hitBox.BonusDamages = bonusDamage + _bonusDamages;
         hitBox.Activate(attack, owner);
+
+        // Play sound
+        attack.PlaySound(gameObject);
     }
 
     /// <summary>

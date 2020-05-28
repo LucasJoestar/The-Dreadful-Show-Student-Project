@@ -1,5 +1,4 @@
-﻿using AK.Wwise;
-using System;
+﻿using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -52,7 +51,6 @@ public class TDS_Attack : ScriptableObject
     /// </summary>
     public string AttackName { get { return attackName; } }
 #endif
-
 
     /// <summary>
     /// Effect associated with this attack.
@@ -111,7 +109,10 @@ public class TDS_Attack : ScriptableObject
     [Header("Sound")]
 
     [SerializeField] private string soundEvent = "ENEMY";
-    [SerializeField] private float soundRTPCValue = .1f;
+    [SerializeField] private float soundRTPCValue = 0;
+
+    private bool hasSound = true;
+    private bool doUseRTPC = false;
     #endregion
 
     #region Methods
@@ -217,14 +218,20 @@ public class TDS_Attack : ScriptableObject
 
     public void PlaySound(GameObject _object)
     {
-        // Doesn't work
-        AkSoundEngine.SetRTPCValue("ennemies_attack", soundRTPCValue, _object);
-        AkSoundEngine.PostEvent(soundEvent, _object);
+        if (hasSound)
+        {
+            // Set event RTPC
+            if (doUseRTPC)
+                AkSoundEngine.SetRTPCValue("ennemies_attack", soundRTPCValue, _object);
+
+            AkSoundEngine.PostEvent(soundEvent, _object);
+        }
     }
 
-    public void PlaySound()
+    private void Awake()
     {
-        // Play sound
+        hasSound = !string.IsNullOrEmpty(soundEvent);
+        doUseRTPC = soundRTPCValue > 0;
     }
     #endregion
 }

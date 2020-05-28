@@ -65,6 +65,14 @@ public class TDS_WhiteRabbit : TDS_Consumable
     #region Methods
 
     #region Original Methods
+    public override void Destroy()
+    {
+        base.Destroy();
+
+        if (PhotonNetwork.isMasterClient)
+            TDS_Camera.Instance.OnBoundFreeze -= RecalculatePath;
+    }
+
     /// <summary>
     /// Rotate the rabbit (Local and online)
     /// </summary>
@@ -87,8 +95,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
 
         if (!isLooping && (passingCountCurrent > passingCountMax))
         {
-            Debug.Log("Loose => " + passingCountCurrent);
-            PhotonNetwork.Destroy(gameObject);
+            Destroy();
             OnLoseRabbit?.Invoke();
             return; 
         }
@@ -193,11 +200,6 @@ public class TDS_WhiteRabbit : TDS_Consumable
         TDS_Camera.Instance.OnBoundFreeze += RecalculatePath;
 
         Run();
-    }
-
-    private void OnDestroy()
-    {
-        TDS_Camera.Instance.OnBoundFreeze -= RecalculatePath;
     }
     #endregion
 

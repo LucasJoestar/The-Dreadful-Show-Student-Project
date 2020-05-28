@@ -94,11 +94,6 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
     private SerializedProperty juggleTransformIdealLocalPosition = null;
     #endregion
 
-    #region Sounds
-    /// <summary>SerializedProperties for <see cref="TDS_Juggler.lockSound"/> of type <see cref="AudioClip"/>.</summary>
-    private SerializedProperty lockSound = null;
-    #endregion
-
     #endregion
 
     #region Foldouts
@@ -380,7 +375,6 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
     /// </summary>
     private void DrawJugglerSounds()
     {
-        TDS_EditorUtility.PropertyField("Lock", "Sound to play when locking an enemy", lockSound);
     }
 
     /// <summary>
@@ -431,8 +425,6 @@ public class TDS_JugglerEditor : TDS_PlayerEditor
         whatCanAim = serializedObject.FindProperty("whatCanAim");
         aimDetectTags = serializedObject.FindProperty("aimDetectTags");
         juggleTransformIdealLocalPosition = serializedObject.FindProperty("juggleTransformIdealLocalPosition");
-
-        lockSound = serializedObject.FindProperty("lockSound");
 
         // Loads the editor folded & unfolded values of this script
         isJugglerUnfolded = EditorPrefs.GetBool("isJugglerUnfolded", isJugglerUnfolded);

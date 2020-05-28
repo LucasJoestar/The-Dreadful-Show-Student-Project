@@ -27,7 +27,7 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 	{
 		if (ms_Instance)
 		{
-			DestroyImmediate(this);
+			DestroyImmediate(gameObject);
 			return;
 		}
 
@@ -38,7 +38,7 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 			return;
 #endif
 
-		DontDestroyOnLoad(this);
+		DontDestroyOnLoad(gameObject);
 	}
 
 	private void OnEnable()

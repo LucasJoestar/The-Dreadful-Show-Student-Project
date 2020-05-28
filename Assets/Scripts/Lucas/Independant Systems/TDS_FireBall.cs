@@ -43,11 +43,6 @@ public class TDS_FireBall : TDS_Object
     [SerializeField] private Animator animator = null;
 
     /// <summary>
-    /// Audio track to play when the fire ball gets destroyed.
-    /// </summary>
-    [SerializeField] private AudioClip destroySound = null;
-
-    /// <summary>
     /// Indicates if the fire ball is actually destroying itself.
     /// </summary>
     [SerializeField] private bool isDestroying = false;

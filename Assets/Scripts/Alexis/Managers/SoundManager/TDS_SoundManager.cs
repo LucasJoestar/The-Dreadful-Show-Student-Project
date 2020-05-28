@@ -299,35 +299,24 @@ public class TDS_SoundManager : MonoBehaviour
 
 
     /// <summary>
-    /// Plays a UI sound.
-    /// </summary>
-    /// <param name="_clip">Clip to play.</param>
-    public void PlayUISound(AudioClip _clip)
-    {
-        if (!uiSource) return;
-        uiSource.PlayOneShot(_clip);
-    }
-
-
-    /// <summary>
     /// Plays a sound for confirm in UI.
     /// </summary>
-    public void PlayUIConfirm() => PlayUISound(TDS_GameManager.AudioAsset.S_UI_Confirm);
+    public void PlayUIConfirm() => AkSoundEngine.PostEvent("Play_HUD_CONFIRM", TDS_GameManager.MainAudio);
 
     /// <summary>
     /// Plays a sound for a big confirm in UI.
     /// </summary>
-    public void PlayUIBigConfirm() => PlayUISound(TDS_GameManager.AudioAsset.S_UI_BigConfirm);
+    public void PlayUIBigConfirm() => AkSoundEngine.PostEvent("Play_HUD_BIGCONFIRM", TDS_GameManager.MainAudio);
 
     /// <summary>
     /// Plays a sound for "over" effect in UI.
     /// </summary>
-    public void PlayUIOver() => PlayUISound(TDS_GameManager.AudioAsset.S_UI_Over);
+    public void PlayUIOver() => AkSoundEngine.PostEvent("Play_HUD_OVER", TDS_GameManager.MainAudio);
 
     /// <summary>
     /// Plays a sound when player is ready.
     /// </summary>
-    public void PlayUIReady() => PlayUISound(TDS_GameManager.AudioAsset.S_UI_Ready);
+    public void PlayUIReady() => AkSoundEngine.PostEvent("Play_HUD_READY", TDS_GameManager.MainAudio);
     #endregion
 
     #region Effects
@@ -419,8 +408,8 @@ public class TDS_SoundManager : MonoBehaviour
             return; 
         }
 
-        musicSource.ignoreListenerPause = true;
-        uiSource.ignoreListenerPause = true;
+        //musicSource.ignoreListenerPause = true;
+        //uiSource.ignoreListenerPause = true;
     }
     #endregion
 

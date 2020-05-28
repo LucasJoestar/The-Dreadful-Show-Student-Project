@@ -153,6 +153,8 @@ public static class TDS_GameManager
     public static TextAsset DialogsAsset { get; private set; }
     #endregion
 
+    public static GameObject MainAudio { get; private set; }
+
     #endregion
 
     #region Methods
@@ -242,6 +244,12 @@ public static class TDS_GameManager
     {
         IsPaused = _doPause;
         TDS_UIManager.Instance?.SetPause(_doPause);
+    }
+
+    public static void SetMainCamera(Camera _camera)
+    {
+        MainAudio = _camera.gameObject;
+        TDS_UIManager.Instance.SetMainCamera(_camera);
     }
 
     /// <summary>

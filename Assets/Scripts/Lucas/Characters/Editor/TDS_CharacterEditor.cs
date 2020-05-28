@@ -132,17 +132,6 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
     protected SerializedProperty throwAimingPoint = null;
     #endregion
 
-    #region Sound
-    /// <summary>SerializedProperty for <see cref="TDS_Character.foostepsConcrete"/> of type <see cref="AudioClip"/>[].</summary>
-    private SerializedProperty foostepsConcrete = null;
-
-    /// <summary>SerializedProperty for <see cref="TDS_Character.foostepsGrass"/> of type <see cref="AudioClip"/>[].</summary>
-    private SerializedProperty foostepsGrass = null;
-
-    /// <summary>SerializedProperty for <see cref="TDS_Character.foostepsWood"/> of type <see cref="AudioClip"/>[].</summary>
-    private SerializedProperty foostepsWood = null;
-    #endregion
-
     #endregion
 
     #region Foldouts
@@ -478,11 +467,6 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
     /// </summary>
     private void DrawCharacterSounds()
     {
-        TDS_EditorUtility.PropertyField("Concrete Footsteps", "Array of audio tracks used when the character walks on concrete ground", foostepsConcrete);
-        GUILayout.Space(3);
-        TDS_EditorUtility.PropertyField("Grass Footsteps", "Array of audio tracks used when the character walks on grass", foostepsGrass);
-        GUILayout.Space(3);
-        TDS_EditorUtility.PropertyField("Wood Footsteps", "Array of audio tracks used when the character walks on wood", foostepsWood);
     }
 
     /// <summary>
@@ -539,10 +523,6 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
         throwBonusDamagesMax = serializedObject.FindProperty("throwBonusDamagesMax");
         throwBonusDamagesMin = serializedObject.FindProperty("throwBonusDamagesMin");
         throwAimingPoint = serializedObject.FindProperty("throwAimingPoint");
-
-        foostepsConcrete = serializedObject.FindProperty("foostepsConcrete");
-        foostepsGrass = serializedObject.FindProperty("foostepsGrass");
-        foostepsWood = serializedObject.FindProperty("foostepsWood");
 
         // Loads the editor folded a unfolded values of this class
         isCharaUnfolded = EditorPrefs.GetBool("isCharaUnfolded", isCharaUnfolded);

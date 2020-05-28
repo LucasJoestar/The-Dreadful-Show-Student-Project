@@ -77,7 +77,7 @@ public class AkBank : AkTriggerHandler
 	/// Unloads a SoundBank
 	public void UnloadBank(UnityEngine.GameObject in_gameObject)
 	{
-		data.Unload();
+        data.Unload();
 	}
 
 	protected override void OnDestroy()

@@ -889,12 +889,12 @@ public class TDS_UIManager : PunBehaviour
     /// <summary>
     /// Plays sound for when the curtains gets in.
     /// </summary>
-    public void PlayCurtainsIn() => TDS_SoundManager.Instance.PlayUISound(TDS_GameManager.AudioAsset.S_CurtainsIn);
+    public void PlayCurtainsIn() => TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_CurtainsIn);
 
     /// <summary>
     /// Plays sound for when the curtains gets out.
     /// </summary>
-    public void PlayCurtainsOut() => TDS_SoundManager.Instance.PlayUISound(TDS_GameManager.AudioAsset.S_CurtainsOut);
+    public void PlayCurtainsOut() => TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_CurtainsOut);
 
     public void QuitGame() => Application.Quit();
 

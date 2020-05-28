@@ -59,11 +59,6 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
     private SerializedProperty snackHealValue = null;
     #endregion
 
-    #region Sounds
-    /// <summary>SerializedProperties for <see cref="TDS_FatLady.eatSound"/> of type <see cref="AudioClip"/>.</summary>
-    private SerializedProperty eatSound = null;
-    #endregion
-
     #endregion
 
     #region Foldouts
@@ -285,7 +280,7 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
     /// </summary>
     private void DrawFatLadySounds()
     {
-        TDS_EditorUtility.PropertyField("Eat", "Sound to play when eating food", eatSound);
+        
     }
 
     /// <summary>
@@ -330,8 +325,6 @@ public class TDS_FatLadyEditor : TDS_PlayerEditor
         snackRestaureTimer = serializedObject.FindProperty("snackRestaureTimer");
         angryHealthStep = serializedObject.FindProperty("angryHealthStep");
         snackHealValue = serializedObject.FindProperty("snackHealValue");
-
-        eatSound = serializedObject.FindProperty("eatSound");
 
         // Loads the editor folded & unfolded values of this script
         isFatLadyUnfolded = EditorPrefs.GetBool("isFatLadyUnfolded", isFatLadyUnfolded);
