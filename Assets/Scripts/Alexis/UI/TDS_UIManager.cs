@@ -206,11 +206,6 @@ public class TDS_UIManager : PunBehaviour
     #endregion
 
     #region TextField
-    [SerializeField] private TMP_Text playerNameField;
-    public TMP_Text PlayerNameField
-    {
-        get { return playerNameField; }
-    }
     [SerializeField] private TMP_Text playerCountText;
     #endregion
 
@@ -793,10 +788,6 @@ public class TDS_UIManager : PunBehaviour
     public void DisplayOptions(bool _isDisplaying)
     {
         if (!optionManager) return;
-        //if (_isDisplaying)
-        //{
-        //    optionManager.ResetDisplayedSettings();
-        //}
         optionManager.gameObject.SetActive(_isDisplaying);
     }
 
@@ -1043,15 +1034,6 @@ public class TDS_UIManager : PunBehaviour
     }
 
     /// <summary>
-    /// Set the new name of the player (Used in Unity Event)
-    /// </summary>
-    public void SetNewName()
-    {
-        if (playerNameField)
-            TDS_NetworkManager.Instance.PlayerNamePrefKey = playerNameField.text;
-    }
-
-    /// <summary>
     /// Set the game in pause menu
     /// If the player is alone, freeze the time
     /// </summary>
@@ -1284,12 +1266,6 @@ public class TDS_UIManager : PunBehaviour
     private void Start()
     {
         InitLicalisation(); 
-        if (playerNameField)
-        {
-            string _name = $"Guest {(int)UnityEngine.Random.Range(0, 999)}";
-            playerNameField.text = _name;
-            SetNewName(_name);
-        }
         if (uiGameObject)
             uiGameObject.SetActive(true);
         ActivateMenu(uiState);

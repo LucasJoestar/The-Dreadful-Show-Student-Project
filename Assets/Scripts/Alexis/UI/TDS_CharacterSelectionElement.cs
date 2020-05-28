@@ -117,7 +117,6 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         {
             characterSelectionManager.UnlockPlayerType(CurrentSelection.CharacterType); 
         }
-        //LockElement(false);
         TDS_GameManager.PlayersInfo.Remove(PlayerInfo); 
         PlayerInfo = null;
         gameObject.SetActive(false);
@@ -401,6 +400,11 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     private void Start()
     {
         characterSelectionManager = TDS_UIManager.Instance.CharacterSelectionManager;
+    }
+
+    private void OnGUI()
+    {
+        GUILayout.Box($"{characterSelectionImages[0].CanBeSelected} // {characterSelectionImages[1].CanBeSelected} // {characterSelectionImages[2].CanBeSelected} // {characterSelectionImages[3].CanBeSelected}") ;
     }
     #endregion 
 

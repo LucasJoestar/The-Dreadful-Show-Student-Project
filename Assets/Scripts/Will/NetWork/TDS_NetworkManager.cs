@@ -35,9 +35,6 @@ public class TDS_NetworkManager : PunBehaviour
     int minimumPlayerToLaunch = 1;
     string roomName = string.Empty;
 
-    [Space]
-    [SerializeField]
-    new PhotonView photonView;
 
     #endregion
     public static TDS_NetworkManager Instance;
@@ -231,12 +228,12 @@ public class TDS_NetworkManager : PunBehaviour
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
         if (PhotonNetwork.offlineMode) return;
-        PlayerCount();
+        //PlayerCount();
     }
     public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
     {
         if (PhotonNetwork.offlineMode) return;
-        PlayerCount();
+        //PlayerCount();
     }
     #endregion
 
@@ -256,16 +253,8 @@ public class TDS_NetworkManager : PunBehaviour
         return;
         GUILayout.Box(PhotonNetwork.GetPing().ToString()); 
         GUILayout.Box(PhotonNetwork.connectionStateDetailed.ToString());
-        GUILayout.Box($"PLAYER USERNAME: {PhotonNetwork.playerName}\nPLAYER USER ID: {PhotonNetwork.player.UserId}\nID: {PhotonNetwork.player.ID}");
-        GUILayout.Box(PhotonNetwork.isMasterClient.ToString());
-        GUILayout.Box(TDS_GameManager.LocalPlayer.ToString());
     }
 #endif
-    void Start ()
-    {
-        if(!photonView) photonView = GetComponent<PhotonView>();
-    }
-
     #endregion
     #endregion
 }

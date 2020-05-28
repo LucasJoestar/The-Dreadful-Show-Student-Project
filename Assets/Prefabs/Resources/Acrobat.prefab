@@ -265,7 +265,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431bc681bd70cda428d6806cae3f725d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
   animator: {fileID: 1147437898632130517}
   burnEffect: {fileID: 0}
   collider: {fileID: 1031544622418304013}
@@ -493,6 +492,7 @@ MonoBehaviour:
     ObjectTags:
     - Name: Player
       Color: {r: 0.097232126, g: 0.8962264, b: 0.6973913, a: 1}
+  IgnoreOwner: 1
 --- !u!1 &1062506033306977371
 GameObject:
   m_ObjectHideFlags: 0

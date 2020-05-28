@@ -1240,7 +1240,9 @@ public abstract class TDS_Enemy : TDS_Character
                 break;
             case EnemyState.OutOfBattle:
                 animator.SetBool(isOutOfBattle_Hash, true); 
-                break; 
+                break;
+            case EnemyState.GettingInRange:
+                break;
             default:
                 animator.ResetTrigger(resetBehaviour_Hash); 
                 break;

@@ -222,6 +222,7 @@ MonoBehaviour:
     ObjectTags:
     - Name: Player
       Color: {r: 1, g: 1, b: 1, a: 1}
+  IgnoreOwner: 1
 --- !u!1 &8324170712202841065
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,8 +345,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 8220541036763860223}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 121
+  instantiationId: 121
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &8220541036763860223
@@ -438,7 +439,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc47d02e59f6b14d870bf6513881672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
   animator: {fileID: 3088651002119351410}
   burnEffect: {fileID: 0}
   collider: {fileID: 8316902795381107907}
