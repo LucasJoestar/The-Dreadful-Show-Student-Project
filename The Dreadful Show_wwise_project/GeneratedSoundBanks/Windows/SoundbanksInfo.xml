@@ -218,7 +218,7 @@
 						</File>
 						<File Id="139238231" Language="SFX">
 							<ShortName>MIME_FISH_REELING.wav</ShortName>
-							<Path>SFX\MIME_FISH_REELING_10C4C929.wem</Path>
+							<Path>SFX\MIME_FISH_REELING_D79FB2B7.wem</Path>
 						</File>
 						<File Id="510495615" Language="SFX">
 							<ShortName>HAMMER\HAMMER_03.wav</ShortName>
@@ -268,6 +268,22 @@
 						</SwitchContainer>
 					</SwitchContainers>
 				</Event>
+				<Event Id="1948585674" Name="Play_BARRAGE" ObjectPath="\Events\Default Work Unit\autre\Play_BARRAGE">
+					<IncludedMemoryFiles>
+						<File Id="291351537" Language="SFX">
+							<ShortName>MISC\BARRAGE.wav</ShortName>
+							<Path>SFX\MISC\BARRAGE_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="356368927" Name="Play_BELL_FALL" ObjectPath="\Events\Default Work Unit\autre\Play_BELL_FALL">
+					<IncludedMemoryFiles>
+						<File Id="991989983" Language="SFX">
+							<ShortName>MISC\BELL_FALL.wav</ShortName>
+							<Path>SFX\MISC\BELL_FALL_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="1500695173" Name="Play_BODYFALL" ObjectPath="\Events\Default Work Unit\persos\basics\Play_BODYFALL">
 					<IncludedMemoryFiles>
 						<File Id="696098442" Language="SFX">
@@ -285,6 +301,62 @@
 						<File Id="415393021" Language="SFX">
 							<ShortName>BRUTAL_HIT\BRUTAL_HIT_02.wav</ShortName>
 							<Path>SFX\BRUTAL_HIT\BRUTAL_HIT_02_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2512626354" Name="Play_BUNNY_PUF" ObjectPath="\Events\Default Work Unit\autre\Play_BUNNY_PUF">
+					<IncludedMemoryFiles>
+						<File Id="601255628" Language="SFX">
+							<ShortName>MISC\BUNNY\BUNNY_PUF.wav</ShortName>
+							<Path>SFX\MISC\BUNNY\BUNNY_PUF_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2394181555" Name="Play_BURNING" ObjectPath="\Events\Default Work Unit\autre\Play_BURNING">
+					<IncludedMemoryFiles>
+						<File Id="337993079" Language="SFX">
+							<ShortName>MISC\BURNING.wav</ShortName>
+							<Path>SFX\MISC\BURNING_D79FB2B7.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2962822744" Name="Play_Checkpoint" ObjectPath="\Events\Default Work Unit\autre\Play_Checkpoint">
+					<IncludedMemoryFiles>
+						<File Id="601691919" Language="SFX">
+							<ShortName>MISC\Checkpoint.wav</ShortName>
+							<Path>SFX\MISC\Checkpoint_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="4070979672" Name="Play_CLOCK" ObjectPath="\Events\Default Work Unit\autre\Play_CLOCK">
+					<IncludedMemoryFiles>
+						<File Id="1008835701" Language="SFX">
+							<ShortName>MISC\CLOCK.wav</ShortName>
+							<Path>SFX\MISC\CLOCK_D79FB2B7.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="387483575" Name="Play_CRATE" ObjectPath="\Events\Default Work Unit\autre\Play_CRATE">
+					<IncludedMemoryFiles>
+						<File Id="387135467" Language="SFX">
+							<ShortName>MISC\CRATE.wav</ShortName>
+							<Path>SFX\MISC\CRATE_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="4070879423" Name="Play_CURTAINS_IN" ObjectPath="\Events\Default Work Unit\autre\Play_CURTAINS_IN">
+					<IncludedMemoryFiles>
+						<File Id="254255593" Language="SFX">
+							<ShortName>MISC\CURTAINS\CURTAINS_IN.wav</ShortName>
+							<Path>SFX\MISC\CURTAINS\CURTAINS_IN_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2705757650" Name="Play_CURTAINS_OUT" ObjectPath="\Events\Default Work Unit\autre\Play_CURTAINS_OUT">
+					<IncludedMemoryFiles>
+						<File Id="352685405" Language="SFX">
+							<ShortName>MISC\CURTAINS\CURTAINS_OUT.wav</ShortName>
+							<Path>SFX\MISC\CURTAINS\CURTAINS_OUT_10C4C929.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
@@ -317,6 +389,22 @@
 						<File Id="455048258" Language="SFX">
 							<ShortName>CHARACTERS\FIREEATER\Drunk.wav</ShortName>
 							<Path>SFX\CHARACTERS\FIREEATER\Drunk_D79FB2B7.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2175868442" Name="Play_DUMMY" ObjectPath="\Events\Default Work Unit\autre\Play_DUMMY">
+					<IncludedMemoryFiles>
+						<File Id="89935378" Language="SFX">
+							<ShortName>MISC\DUMMY\DUMMY_03.wav</ShortName>
+							<Path>SFX\MISC\DUMMY\DUMMY_03_10C4C929.wem</Path>
+						</File>
+						<File Id="336454369" Language="SFX">
+							<ShortName>MISC\DUMMY\DUMMY_01.wav</ShortName>
+							<Path>SFX\MISC\DUMMY\DUMMY_01_10C4C929.wem</Path>
+						</File>
+						<File Id="464032147" Language="SFX">
+							<ShortName>MISC\DUMMY\DUMMY_02.wav</ShortName>
+							<Path>SFX\MISC\DUMMY\DUMMY_02_10C4C929.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
@@ -724,6 +812,30 @@
 						</SwitchContainer>
 					</SwitchContainers>
 				</Event>
+				<Event Id="1722917615" Name="Play_HIT_WOOD" ObjectPath="\Events\Default Work Unit\autre\Play_HIT_WOOD">
+					<IncludedMemoryFiles>
+						<File Id="735715009" Language="SFX">
+							<ShortName>MISC\HIT_WOOD\HIT_WOOD_02.wav</ShortName>
+							<Path>SFX\MISC\HIT_WOOD\HIT_WOOD_02_10C4C929.wem</Path>
+						</File>
+						<File Id="749940456" Language="SFX">
+							<ShortName>MISC\HIT_WOOD\HIT_WOOD_04.wav</ShortName>
+							<Path>SFX\MISC\HIT_WOOD\HIT_WOOD_04_10C4C929.wem</Path>
+						</File>
+						<File Id="818342541" Language="SFX">
+							<ShortName>MISC\HIT_WOOD\HIT_WOOD_01.wav</ShortName>
+							<Path>SFX\MISC\HIT_WOOD\HIT_WOOD_01_10C4C929.wem</Path>
+						</File>
+						<File Id="958184495" Language="SFX">
+							<ShortName>MISC\HIT_WOOD\HIT_WOOD_03.wav</ShortName>
+							<Path>SFX\MISC\HIT_WOOD\HIT_WOOD_03_10C4C929.wem</Path>
+						</File>
+						<File Id="965017043" Language="SFX">
+							<ShortName>MISC\HIT_WOOD\HIT_WOOD_05.wav</ShortName>
+							<Path>SFX\MISC\HIT_WOOD\HIT_WOOD_05_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="944420934" Name="Play_HUD_BIGCONFIRM" ObjectPath="\Events\Default Work Unit\HUD\Play_HUD_BIGCONFIRM">
 					<IncludedMemoryFiles>
 						<File Id="1013280479" Language="SFX">
@@ -760,7 +872,7 @@
 					<IncludedMemoryFiles>
 						<File Id="933290748" Language="SFX">
 							<ShortName>CHARACTERS\JUGGLER\Juggle.wav</ShortName>
-							<Path>SFX\CHARACTERS\JUGGLER\Juggle_10C4C929.wem</Path>
+							<Path>SFX\CHARACTERS\JUGGLER\Juggle_D79FB2B7.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
@@ -816,6 +928,110 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
+				<Event Id="790309211" Name="Play_MAGIC_PUF" ObjectPath="\Events\Default Work Unit\autre\Play_MAGIC_PUF">
+					<IncludedMemoryFiles>
+						<File Id="542273445" Language="SFX">
+							<ShortName>MISC\MAGIC_PUF.wav</ShortName>
+							<Path>SFX\MISC\MAGIC_PUF_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2579240604" Name="Play_OBJECT_ACCORDION" ObjectPath="\Events\Default Work Unit\autre\Play_OBJECT_ACCORDION">
+					<IncludedMemoryFiles>
+						<File Id="225662067" Language="SFX">
+							<ShortName>MISC\OBJECTS\OBJECTS_HITS\OBJECT_ACCORDION.wav</ShortName>
+							<Path>SFX\MISC\OBJECTS\OBJECTS_HITS\OBJECT_ACCORDION_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1884262679" Name="Play_OBJECT_FRUITS" ObjectPath="\Events\Default Work Unit\autre\Play_OBJECT_FRUITS">
+					<IncludedMemoryFiles>
+						<File Id="788856471" Language="SFX">
+							<ShortName>MISC\OBJECTS\OBJECTS_HITS\OBJECT_FRUITS.wav</ShortName>
+							<Path>SFX\MISC\OBJECTS\OBJECTS_HITS\OBJECT_FRUITS_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2213751667" Name="Play_OBJECT_GENERIC_FALL" ObjectPath="\Events\Default Work Unit\autre\Play_OBJECT_GENERIC_FALL">
+					<IncludedMemoryFiles>
+						<File Id="961761069" Language="SFX">
+							<ShortName>MISC\OBJECTS\OBJECT_GENERIC_FALL.wav</ShortName>
+							<Path>SFX\MISC\OBJECTS\OBJECT_GENERIC_FALL_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="969855252" Name="Play_OBJECT_GENERIC_PICKUP" ObjectPath="\Events\Default Work Unit\autre\Play_OBJECT_GENERIC_PICKUP">
+					<IncludedMemoryFiles>
+						<File Id="518208962" Language="SFX">
+							<ShortName>MISC\OBJECTS\OBJECT_GENERIC_PICKUP.wav</ShortName>
+							<Path>SFX\MISC\OBJECTS\OBJECT_GENERIC_PICKUP_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1644365000" Name="Play_OBJECT_GENERIC_THROW" ObjectPath="\Events\Default Work Unit\autre\Play_OBJECT_GENERIC_THROW">
+					<IncludedMemoryFiles>
+						<File Id="833839880" Language="SFX">
+							<ShortName>MISC\OBJECTS\OBJECT_GENERIC_THROW.wav</ShortName>
+							<Path>SFX\MISC\OBJECTS\OBJECT_GENERIC_THROW_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3392599287" Name="Play_OBJECT_HEAVY" ObjectPath="\Events\Default Work Unit\autre\Play_OBJECT_HEAVY">
+					<IncludedMemoryFiles>
+						<File Id="668847503" Language="SFX">
+							<ShortName>MISC\OBJECTS\OBJECTS_HITS\OBJECT_HEAVY.wav</ShortName>
+							<Path>SFX\MISC\OBJECTS\OBJECTS_HITS\OBJECT_HEAVY_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1225569167" Name="Play_OBJECT_METAL" ObjectPath="\Events\Default Work Unit\autre\Play_OBJECT_METAL">
+					<IncludedMemoryFiles>
+						<File Id="992737485" Language="SFX">
+							<ShortName>MISC\OBJECTS\OBJECTS_HITS\OBJECT_METAL.wav</ShortName>
+							<Path>SFX\MISC\OBJECTS\OBJECTS_HITS\OBJECT_METAL_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="4232097126" Name="Play_OBJECT_PLASTIC" ObjectPath="\Events\Default Work Unit\autre\Play_OBJECT_PLASTIC">
+					<IncludedMemoryFiles>
+						<File Id="467373674" Language="SFX">
+							<ShortName>MISC\OBJECTS\OBJECTS_HITS\OBJECT_PLASTIC.wav</ShortName>
+							<Path>SFX\MISC\OBJECTS\OBJECTS_HITS\OBJECT_PLASTIC_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="100848274" Name="Play_OBJECT_SHARP" ObjectPath="\Events\Default Work Unit\autre\Play_OBJECT_SHARP">
+					<IncludedMemoryFiles>
+						<File Id="70245139" Language="SFX">
+							<ShortName>MISC\OBJECTS\OBJECTS_HITS\OBJECT_SHARP.wav</ShortName>
+							<Path>SFX\MISC\OBJECTS\OBJECTS_HITS\OBJECT_SHARP_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3231752328" Name="Play_OBJECT_SHATTERS" ObjectPath="\Events\Default Work Unit\autre\Play_OBJECT_SHATTERS">
+					<IncludedMemoryFiles>
+						<File Id="977011108" Language="SFX">
+							<ShortName>MISC\OBJECTS\OBJECTS_HITS\OBJECT_SHATTERS.wav</ShortName>
+							<Path>SFX\MISC\OBJECTS\OBJECTS_HITS\OBJECT_SHATTERS_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3392214282" Name="Play_OBJECT_SPLAT" ObjectPath="\Events\Default Work Unit\autre\Play_OBJECT_SPLAT">
+					<IncludedMemoryFiles>
+						<File Id="961623552" Language="SFX">
+							<ShortName>MISC\OBJECTS\OBJECTS_HITS\OBJECT_SPLAT.wav</ShortName>
+							<Path>SFX\MISC\OBJECTS\OBJECTS_HITS\OBJECT_SPLAT_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="4075690973" Name="Play_OBJECT_WOOD" ObjectPath="\Events\Default Work Unit\autre\Play_OBJECT_WOOD">
+					<IncludedMemoryFiles>
+						<File Id="228416069" Language="SFX">
+							<ShortName>MISC\OBJECTS\OBJECTS_HITS\OBJECT_WOOD.wav</ShortName>
+							<Path>SFX\MISC\OBJECTS\OBJECTS_HITS\OBJECT_WOOD_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="4115969904" Name="Play_PARRY" ObjectPath="\Events\Default Work Unit\persos\basics\Play_PARRY">
 					<IncludedMemoryFiles>
 						<File Id="164847459" Language="SFX">
@@ -829,6 +1045,38 @@
 						<File Id="765940290" Language="SFX">
 							<ShortName>PARRY\PARRY_02.wav</ShortName>
 							<Path>SFX\PARRY\PARRY_02_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="474393687" Name="Play_Piano_hit" ObjectPath="\Events\Default Work Unit\autre\Play_Piano_hit">
+					<IncludedMemoryFiles>
+						<File Id="51819087" Language="SFX">
+							<ShortName>MISC\Piano\Piano_hit.wav</ShortName>
+							<Path>SFX\MISC\Piano\Piano_hit_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="4074114726" Name="Play_Piano_impact" ObjectPath="\Events\Default Work Unit\autre\Play_Piano_impact">
+					<IncludedMemoryFiles>
+						<File Id="475137420" Language="SFX">
+							<ShortName>MISC\Piano\Piano_impact.wav</ShortName>
+							<Path>SFX\MISC\Piano\Piano_impact_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2691116071" Name="Play_PRESENT_EXPLOSION" ObjectPath="\Events\Default Work Unit\autre\Play_PRESENT_EXPLOSION">
+					<IncludedMemoryFiles>
+						<File Id="996466742" Language="SFX">
+							<ShortName>MISC\PRESENT\PRESENT_EXPLOSION.wav</ShortName>
+							<Path>SFX\MISC\PRESENT\PRESENT_EXPLOSION_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3707495729" Name="Play_PRESENT_TIMER" ObjectPath="\Events\Default Work Unit\autre\Play_PRESENT_TIMER">
+					<IncludedMemoryFiles>
+						<File Id="790685343" Language="SFX">
+							<ShortName>MISC\PRESENT\PRESENT_TIMER.wav</ShortName>
+							<Path>SFX\MISC\PRESENT\PRESENT_TIMER_10C4C929.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
@@ -908,6 +1156,14 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
+				<Event Id="934702239" Name="Play_Supply" ObjectPath="\Events\Default Work Unit\autre\Play_Supply">
+					<IncludedMemoryFiles>
+						<File Id="192873850" Language="SFX">
+							<ShortName>MISC\Supply.wav</ShortName>
+							<Path>SFX\MISC\Supply_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="3595911238" Name="Play_TORCH_OFF" ObjectPath="\Events\Default Work Unit\persos\Fire_eater\Play_TORCH_OFF">
 					<IncludedMemoryFiles>
 						<File Id="440017095" Language="SFX">
@@ -972,6 +1228,14 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
+				<Event Id="1544694806" Name="Play_WINDOW_BREAK" ObjectPath="\Events\Default Work Unit\autre\Play_WINDOW_BREAK">
+					<IncludedMemoryFiles>
+						<File Id="948994414" Language="SFX">
+							<ShortName>MISC\WINDOW_BREAK.wav</ShortName>
+							<Path>SFX\MISC\WINDOW_BREAK_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="1942555113" Name="PUNK" ObjectPath="\Events\Default Work Unit\monsters\PUNK">
 					<IncludedMemoryFiles>
 						<File Id="693893787" Language="SFX">
@@ -1018,7 +1282,7 @@
 						</File>
 						<File Id="810962521" Language="SFX">
 							<ShortName>SIAMESE\SIAMESE_TONRADO.wav</ShortName>
-							<Path>SFX\SIAMESE\SIAMESE_TONRADO_10C4C929.wem</Path>
+							<Path>SFX\SIAMESE\SIAMESE_TONRADO_D79FB2B7.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 					<SwitchContainers>
@@ -1044,7 +1308,12 @@
 						</SwitchContainer>
 					</SwitchContainers>
 				</Event>
+				<Event Id="3057916297" Name="Stop_BURNING" ObjectPath="\Events\Default Work Unit\autre\Stop_BURNING" MaxAttenuation="0.000000"/>
+				<Event Id="236049130" Name="Stop_CLOCK" ObjectPath="\Events\Default Work Unit\autre\Stop_CLOCK" MaxAttenuation="0.000000"/>
 				<Event Id="411907754" Name="stop_drunk" ObjectPath="\Events\Default Work Unit\persos\Fire_eater\stop_drunk" MaxAttenuation="0.000000"/>
+				<Event Id="1341598556" Name="Stop_MIME_FISH_REELING" ObjectPath="\Events\Default Work Unit\monsters\Stop_MIME_FISH_REELING" MaxAttenuation="0.000000"/>
+				<Event Id="1620583853" Name="Stop_Play_Juggle" ObjectPath="\Events\Default Work Unit\persos\jugler\Stop_Play_Juggle" MaxAttenuation="0.000000"/>
+				<Event Id="1391252741" Name="Stop_SIAMESE_TONRADO" ObjectPath="\Events\Default Work Unit\monsters\Stop_SIAMESE_TONRADO" MaxAttenuation="0.000000"/>
 			</IncludedEvents>
 			<GameParameters>
 				<GameParameter Id="2961358289" Name="foot_surface" ObjectPath="\Game Parameters\Default Work Unit\foot_surface"/>
