@@ -12,7 +12,7 @@ public class TDS_AnimOutTaunt : StateMachineBehaviour
         if (!owner) owner = animator.GetComponent<TDS_Enemy>();
         if (!owner) return;
         if (animator.GetInteger("enemyState") == (int)EnemyState.Waiting) return; 
-        owner.SetEnemyState(0); 
+        owner.SetEnemyState(EnemyState.MakingDecision); 
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
