@@ -6,6 +6,14 @@
 				<SoundcasterSession Name="New Soundcaster Session" ID="{63AF646D-9C33-4462-8465-385C30922E32}">
 					<ModuleList>
 						<Module>
+							<ObjectRef Name="Play_Juggle" ID="{E7003729-4BBD-4DFF-9B23-8579E1FA917B}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="0" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Stop_Play_Juggle" ID="{8234542E-B0CA-4CBD-9A9A-B69C764C5807}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="0" Y="2"/>
+						</Module>
+						<Module>
 							<ObjectRef Name="MIME" ID="{5B348EEB-138A-4F15-ABCC-DF91D2E306E4}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
 							<Position X="1" Y="0"/>
 						</Module>
@@ -29,7 +37,7 @@
 						</RTPCValue>
 						<RTPCValue>
 							<GameParameterRef Name="foot_surface" ID="{E43EC714-A577-4FC5-9311-A7D2781E4882}"/>
-							<Value>0.922297297297297</Value>
+							<Value>0</Value>
 						</RTPCValue>
 					</RTPCValueList>
 					<CurrentStateList ShowAll="true"/>
