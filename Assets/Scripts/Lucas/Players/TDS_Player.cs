@@ -2606,7 +2606,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     }
 
     // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
-    protected virtual void OnDestroy()
+    protected override void OnDestroy()
     {
         TDS_LevelManager.Instance?.RemoveOnlinePlayer(this);
     }

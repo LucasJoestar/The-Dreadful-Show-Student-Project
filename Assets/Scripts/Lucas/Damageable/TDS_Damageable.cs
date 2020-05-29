@@ -706,6 +706,11 @@ public abstract class TDS_Damageable : TDS_Object
         }
     }
 
+    protected virtual void OnDestroy()
+    {
+        AkSoundEngine.PostEvent("STOP_ALL", gameObject);
+    }
+
     // Use this for initialization
     protected virtual void Start ()
     {
