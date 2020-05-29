@@ -21,7 +21,7 @@
 			<ShortName>ambiances</ShortName>
 			<Path>ambiances.bnk</Path>
 			<IncludedEvents>
-				<Event Id="3995323232" Name="Play_Ambiance_pluie" ObjectPath="\Events\Default Work Unit\amb\Play_Ambiance_pluie" MaxAttenuation="30.000000">
+				<Event Id="3995323232" Name="Play_Ambiance_pluie" ObjectPath="\Events\Default Work Unit\amb\Play_Ambiance_pluie">
 					<IncludedMemoryFiles>
 						<File Id="941717481" Language="SFX">
 							<ShortName>AMBIANCE\Ambiance_pluie.wav</ShortName>
@@ -86,6 +86,7 @@
 						</SwitchContainer>
 					</SwitchContainers>
 				</Event>
+				<Event Id="3421098005" Name="battle_theme" ObjectPath="\Events\Default Work Unit\music\battle_theme" MaxAttenuation="0.000000"/>
 				<Event Id="2390245931" Name="BRUTAL_SIAMESE" ObjectPath="\Events\Default Work Unit\monsters\BRUTAL_SIAMESE">
 					<IncludedMemoryFiles>
 						<File Id="229587323" Language="SFX">
@@ -162,6 +163,7 @@
 						</SwitchContainer>
 					</SwitchContainers>
 				</Event>
+				<Event Id="2431730365" Name="game_theme" ObjectPath="\Events\Default Work Unit\music\game_theme" MaxAttenuation="0.000000"/>
 				<Event Id="2358710769" Name="MIGHTYMAN" ObjectPath="\Events\Default Work Unit\monsters\MIGHTYMAN">
 					<IncludedMemoryFiles>
 						<File Id="29386585" Language="SFX">
@@ -267,6 +269,55 @@
 							</Media>
 						</SwitchContainer>
 					</SwitchContainers>
+				</Event>
+				<Event Id="899895346" Name="Play__music" ObjectPath="\Events\Default Work Unit\music\Play__music">
+					<IncludedMemoryFiles>
+						<File Id="80787974" Language="SFX">
+							<ShortName>GameTheme_Intro.wav</ShortName>
+							<Path>SFX\GameTheme_Intro_D79FB2B7.wem</Path>
+						</File>
+						<File Id="365211028" Language="SFX">
+							<ShortName>Fight_Intro.wav</ShortName>
+							<Path>SFX\Fight_Intro_D79FB2B7.wem</Path>
+						</File>
+						<File Id="609072203" Language="SFX">
+							<ShortName>Fight_Loop.wav</ShortName>
+							<Path>SFX\Fight_Loop_D79FB2B7.wem</Path>
+						</File>
+						<File Id="690116845" Language="SFX">
+							<ShortName>GameTheme_Loop.wav</ShortName>
+							<Path>SFX\GameTheme_Loop_D79FB2B7.wem</Path>
+						</File>
+						<File Id="767846308" Language="SFX">
+							<ShortName>TitleScreen.wav</ShortName>
+							<Path>SFX\TitleScreen_D79FB2B7.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<SwitchContainers>
+						<SwitchContainer SwitchValue="{D4CF0137-3553-40D8-AEFD-C22CAA685313}">
+							<Media>
+								<File Id="690116845"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{74CF8D4F-1107-4762-8ACD-46B9B90639B8}">
+							<Media>
+								<File Id="609072203"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{003E9A4F-7DC8-4C5C-A5B6-47C5A9F5ADCD}">
+							<Media>
+								<File Id="767846308"/>
+							</Media>
+						</SwitchContainer>
+					</SwitchContainers>
+				</Event>
+				<Event Id="1749736639" Name="Play_APROACHING_DEATH" ObjectPath="\Events\Default Work Unit\autre\Play_APROACHING_DEATH">
+					<IncludedMemoryFiles>
+						<File Id="591596505" Language="SFX">
+							<ShortName>FEEDBACK\APROACHING_DEATH.wav</ShortName>
+							<Path>SFX\FEEDBACK\APROACHING_DEATH_D79FB2B7.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
 				</Event>
 				<Event Id="1948585674" Name="Play_BARRAGE" ObjectPath="\Events\Default Work Unit\autre\Play_BARRAGE">
 					<IncludedMemoryFiles>
@@ -413,6 +464,30 @@
 						<File Id="123580659" Language="SFX">
 							<ShortName>CHARACTERS\GRANDEDAME\EAT.wav</ShortName>
 							<Path>SFX\CHARACTERS\GRANDEDAME\EAT_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2599681053" Name="Play_FEEDBACK_HIT" ObjectPath="\Events\Default Work Unit\autre\Play_FEEDBACK_HIT">
+					<IncludedMemoryFiles>
+						<File Id="228192368" Language="SFX">
+							<ShortName>FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_05.wav</ShortName>
+							<Path>SFX\FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_05_10C4C929.wem</Path>
+						</File>
+						<File Id="553036249" Language="SFX">
+							<ShortName>FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_02.wav</ShortName>
+							<Path>SFX\FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_02_10C4C929.wem</Path>
+						</File>
+						<File Id="768994934" Language="SFX">
+							<ShortName>FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_03.wav</ShortName>
+							<Path>SFX\FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_03_10C4C929.wem</Path>
+						</File>
+						<File Id="904219929" Language="SFX">
+							<ShortName>FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_04.wav</ShortName>
+							<Path>SFX\FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_04_10C4C929.wem</Path>
+						</File>
+						<File Id="921015710" Language="SFX">
+							<ShortName>FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_01.wav</ShortName>
+							<Path>SFX\FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_01_10C4C929.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
@@ -1308,12 +1383,17 @@
 						</SwitchContainer>
 					</SwitchContainers>
 				</Event>
+				<Event Id="452547817" Name="STOP_ALL" ObjectPath="\Events\Default Work Unit\STOP_ALL" MaxAttenuation="0.000000"/>
+				<Event Id="2819974902" Name="Stop_Ambiance_pluie" ObjectPath="\Events\Default Work Unit\amb\Stop_Ambiance_pluie" MaxAttenuation="0.000000"/>
+				<Event Id="3040299933" Name="Stop_APROACHING_DEATH" ObjectPath="\Events\Default Work Unit\autre\Stop_APROACHING_DEATH" MaxAttenuation="0.000000"/>
 				<Event Id="3057916297" Name="Stop_BURNING" ObjectPath="\Events\Default Work Unit\autre\Stop_BURNING" MaxAttenuation="0.000000"/>
 				<Event Id="236049130" Name="Stop_CLOCK" ObjectPath="\Events\Default Work Unit\autre\Stop_CLOCK" MaxAttenuation="0.000000"/>
 				<Event Id="411907754" Name="stop_drunk" ObjectPath="\Events\Default Work Unit\persos\Fire_eater\stop_drunk" MaxAttenuation="0.000000"/>
 				<Event Id="1341598556" Name="Stop_MIME_FISH_REELING" ObjectPath="\Events\Default Work Unit\monsters\Stop_MIME_FISH_REELING" MaxAttenuation="0.000000"/>
+				<Event Id="2837384057" Name="Stop_music" ObjectPath="\Events\Default Work Unit\music\Stop_music" MaxAttenuation="0.000000"/>
 				<Event Id="1620583853" Name="Stop_Play_Juggle" ObjectPath="\Events\Default Work Unit\persos\jugler\Stop_Play_Juggle" MaxAttenuation="0.000000"/>
 				<Event Id="1391252741" Name="Stop_SIAMESE_TONRADO" ObjectPath="\Events\Default Work Unit\monsters\Stop_SIAMESE_TONRADO" MaxAttenuation="0.000000"/>
+				<Event Id="152105657" Name="titlescreen" ObjectPath="\Events\Default Work Unit\music\titlescreen" MaxAttenuation="0.000000"/>
 			</IncludedEvents>
 			<GameParameters>
 				<GameParameter Id="2961358289" Name="foot_surface" ObjectPath="\Game Parameters\Default Work Unit\foot_surface"/>
@@ -1328,6 +1408,13 @@
 						<Switch Id="4145357463" Name="attaque_4" ObjectPath="\Switches\Default Work Unit\ENNEMIS_ATTACK_SWITCH\attaque_4"/>
 						<Switch Id="4145357462" Name="attaque_5" ObjectPath="\Switches\Default Work Unit\ENNEMIS_ATTACK_SWITCH\attaque_5"/>
 						<Switch Id="4145357461" Name="attaque_6" ObjectPath="\Switches\Default Work Unit\ENNEMIS_ATTACK_SWITCH\attaque_6"/>
+					</Switches>
+				</SwitchGroup>
+				<SwitchGroup Id="2724869341" Name="music_switch" ObjectPath="\Switches\Default Work Unit\music_switch">
+					<Switches>
+						<Switch Id="3421098005" Name="battle_theme" ObjectPath="\Switches\Default Work Unit\music_switch\battle_theme"/>
+						<Switch Id="152105657" Name="titlescreen" ObjectPath="\Switches\Default Work Unit\music_switch\titlescreen"/>
+						<Switch Id="2431730365" Name="game_theme" ObjectPath="\Switches\Default Work Unit\music_switch\game_theme"/>
 					</Switches>
 				</SwitchGroup>
 				<SwitchGroup Id="3140091853" Name="footsteps_switch" ObjectPath="\Switches\Default Work Unit\footsteps_switch">

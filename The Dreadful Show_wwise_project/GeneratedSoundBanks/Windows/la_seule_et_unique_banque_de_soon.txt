@@ -4,6 +4,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	114210310	Play_FOOT_jugler			\Default Work Unit\persos\jugler\Play_FOOT_jugler	
 	134550002	Play_SMALL_BLOW			\Default Work Unit\persos\basics\Play_SMALL_BLOW	
 	138578522	Play_HUD_OVER			\Default Work Unit\HUD\Play_HUD_OVER	
+	152105657	titlescreen			\Default Work Unit\music\titlescreen	
 	169396492	Play_LAND_jump			\Default Work Unit\persos\basics\Play_LAND_jump	
 	212900658	Play_Juggle			\Default Work Unit\persos\jugler\Play_Juggle	
 	236049130	Stop_CLOCK			\Default Work Unit\autre\Stop_CLOCK	
@@ -14,6 +15,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	387483575	Play_CRATE			\Default Work Unit\autre\Play_CRATE	
 	406111645	Play_START_jump			\Default Work Unit\persos\basics\Play_START_jump	
 	411907754	stop_drunk			\Default Work Unit\persos\Fire_eater\stop_drunk	
+	452547817	STOP_ALL			\Default Work Unit\STOP_ALL	
 	474393687	Play_Piano_hit			\Default Work Unit\autre\Play_Piano_hit	
 	505828200	Play_TORCH_ON			\Default Work Unit\persos\Fire_eater\Play_TORCH_ON	
 	694398836	Play_FIREBREATH			\Default Work Unit\persos\Fire_eater\Play_FIREBREATH	
@@ -21,6 +23,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	790309211	Play_MAGIC_PUF			\Default Work Unit\autre\Play_MAGIC_PUF	
 	804534660	SIAMESE			\Default Work Unit\monsters\SIAMESE	
 	812881236	Play_BRUTAL_HIT			\Default Work Unit\persos\basics\Play_BRUTAL_HIT	
+	899895346	Play__music			\Default Work Unit\music\Play__music	
 	934702239	Play_Supply			\Default Work Unit\autre\Play_Supply	
 	944420934	Play_HUD_BIGCONFIRM			\Default Work Unit\HUD\Play_HUD_BIGCONFIRM	
 	969855252	Play_OBJECT_GENERIC_PICKUP			\Default Work Unit\autre\Play_OBJECT_GENERIC_PICKUP	
@@ -36,6 +39,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	1644365000	Play_OBJECT_GENERIC_THROW			\Default Work Unit\autre\Play_OBJECT_GENERIC_THROW	
 	1722917615	Play_HIT_WOOD			\Default Work Unit\autre\Play_HIT_WOOD	
 	1740506432	Play_FOOT_fireeater			\Default Work Unit\persos\Fire_eater\Play_FOOT_fireeater	
+	1749736639	Play_APROACHING_DEATH			\Default Work Unit\autre\Play_APROACHING_DEATH	
 	1884262679	Play_OBJECT_FRUITS			\Default Work Unit\autre\Play_OBJECT_FRUITS	
 	1942555113	PUNK			\Default Work Unit\monsters\PUNK	
 	1948585674	Play_BARRAGE			\Default Work Unit\autre\Play_BARRAGE	
@@ -45,21 +49,27 @@ Event	ID	Name			Wwise Object Path	Notes
 	2358710769	MIGHTYMAN			\Default Work Unit\monsters\MIGHTYMAN	
 	2390245931	BRUTAL_SIAMESE			\Default Work Unit\monsters\BRUTAL_SIAMESE	
 	2394181555	Play_BURNING			\Default Work Unit\autre\Play_BURNING	
+	2431730365	game_theme			\Default Work Unit\music\game_theme	
 	2489068396	Play_EAT			\Default Work Unit\persos\Grande_dame\Play_EAT	
 	2512626354	Play_BUNNY_PUF			\Default Work Unit\autre\Play_BUNNY_PUF	
 	2559194501	MIME			\Default Work Unit\monsters\MIME	
 	2579240604	Play_OBJECT_ACCORDION			\Default Work Unit\autre\Play_OBJECT_ACCORDION	
+	2599681053	Play_FEEDBACK_HIT			\Default Work Unit\autre\Play_FEEDBACK_HIT	
 	2691116071	Play_PRESENT_EXPLOSION			\Default Work Unit\autre\Play_PRESENT_EXPLOSION	
 	2705757650	Play_CURTAINS_OUT			\Default Work Unit\autre\Play_CURTAINS_OUT	
+	2819974902	Stop_Ambiance_pluie			\Default Work Unit\amb\Stop_Ambiance_pluie	
+	2837384057	Stop_music			\Default Work Unit\music\Stop_music	
 	2888865648	FAKIR			\Default Work Unit\monsters\FAKIR	
 	2915545918	Play_FIREBALL_SPIT			\Default Work Unit\persos\Fire_eater\Play_FIREBALL_SPIT	
 	2962822744	Play_Checkpoint			\Default Work Unit\autre\Play_Checkpoint	
+	3040299933	Stop_APROACHING_DEATH			\Default Work Unit\autre\Stop_APROACHING_DEATH	
 	3057916297	Stop_BURNING			\Default Work Unit\autre\Stop_BURNING	
 	3177064491	Play_FIREBALL_HIT			\Default Work Unit\persos\Fire_eater\Play_FIREBALL_HIT	
 	3231752328	Play_OBJECT_SHATTERS			\Default Work Unit\autre\Play_OBJECT_SHATTERS	
 	3338421947	Play_DODGE			\Default Work Unit\persos\basics\Play_DODGE	
 	3392214282	Play_OBJECT_SPLAT			\Default Work Unit\autre\Play_OBJECT_SPLAT	
 	3392599287	Play_OBJECT_HEAVY			\Default Work Unit\autre\Play_OBJECT_HEAVY	
+	3421098005	battle_theme			\Default Work Unit\music\battle_theme	
 	3595911238	Play_TORCH_OFF			\Default Work Unit\persos\Fire_eater\Play_TORCH_OFF	
 	3677433246	Play_FOOT_DAME			\Default Work Unit\persos\Grande_dame\Play_FOOT_DAME	
 	3707495729	Play_PRESENT_TIMER			\Default Work Unit\autre\Play_PRESENT_TIMER	
@@ -76,6 +86,7 @@ Event	ID	Name			Wwise Object Path	Notes
 
 Switch Group	ID	Name			Wwise Object Path	Notes
 	2066487578	ENNEMIS_ATTACK_SWITCH			\Default Work Unit\ENNEMIS_ATTACK_SWITCH	
+	2724869341	music_switch			\Default Work Unit\music_switch	
 	3140091853	footsteps_switch			\Default Work Unit\footsteps_switch	
 
 Switch	ID	Name	Switch Group			Notes
@@ -85,6 +96,9 @@ Switch	ID	Name	Switch Group			Notes
 	4145357461	attaque_6	ENNEMIS_ATTACK_SWITCH			
 	4145357462	attaque_5	ENNEMIS_ATTACK_SWITCH			
 	4145357463	attaque_4	ENNEMIS_ATTACK_SWITCH			
+	152105657	titlescreen	music_switch			
+	2431730365	game_theme	music_switch			
+	3421098005	battle_theme	music_switch			
 	841620460	concrete	footsteps_switch			
 	2058049674	wood	footsteps_switch			
 	2195636714	dirt	footsteps_switch			
@@ -111,6 +125,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	62632162	FIREBREATH	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\FIREEATER\FIREBREATH_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\FIREEATER\FIREBREATH		134598
 	70245139	OBJECT_SHARP	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\MISC\OBJECTS\OBJECTS_HITS\OBJECT_SHARP_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\autres\MISC\OBJECTS\OBJECTS_HITS\OBJECT_SHARP		28894
 	77657225	FIREBALL_SPIT	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\FIREEATER\FIREBALL\FIREBALL_SPIT_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\FIREEATER\FIREBALL_SPIT		107912
+	80787974	GameTheme_Intro	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\GameTheme_Intro_D79FB2B7.wem		\Interactive Music Hierarchy\Default Work Unit\switch music\GameTheme_Intro\GameTheme_Intro		651468
 	89935378	DUMMY_03	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\MISC\DUMMY\DUMMY_03_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\autres\MISC\DUMMY\DUMMY_03		42882
 	92757692	JUGGLER_FOOT_DIRT_03	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\JUGGLER\FOOT\DIRT\JUGGLER_FOOT_DIRT_03_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\JUGGLER\FOOT_jugler\DIRT\JUGGLER_FOOT_DIRT_03		28624
 	101232382	TORCH_ON_03	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\FIREEATER\TORCH_ON\TORCH_ON_03_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\FIREEATER\TORCH_ON\TORCH_ON_03		41706
@@ -135,6 +150,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	224708156	TDS_RUN_JUGGLER_CONCRETE_01	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\JUGGLER\FOOT\CONCRETE\TDS_RUN_JUGGLER_CONCRETE_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\JUGGLER\FOOT_jugler\CONCRETE\TDS_RUN_JUGGLER_CONCRETE_01		25688
 	224794555	BRUTAL_HIT_01	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\BRUTAL_HIT\BRUTAL_HIT_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\BASICS_common\BRUTAL_HIT\BRUTAL_HIT_01		55876
 	225662067	OBJECT_ACCORDION	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\MISC\OBJECTS\OBJECTS_HITS\OBJECT_ACCORDION_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\autres\MISC\OBJECTS\OBJECTS_HITS\OBJECT_ACCORDION		64128
+	228192368	FEEDBACK_HIT_05	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_05_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\autres\FEEDBACK_HIT\FEEDBACK_HIT_05		25690
 	228416069	OBJECT_WOOD	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\MISC\OBJECTS\OBJECTS_HITS\OBJECT_WOOD_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\autres\MISC\OBJECTS\OBJECTS_HITS\OBJECT_WOOD		39370
 	229587323	SIAMES_BRUTAL_HIT_01	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SIAMES_BRUTAL_HIT_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ennemies\ENNEMIES\BRUTAL_SIAMESE\Brutal_hit\SIAMES_BRUTAL_HIT_01		64128
 	232228637	SALTO	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SALTO_6AFFD427.wem		\Actor-Mixer Hierarchy\Default Work Unit\ennemies\ENNEMIES\ACROBAT\SALTO\SALTO		56724
@@ -156,6 +172,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	341859559	CHARGE_04	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARGE\CHARGE_04_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ennemies\ENNEMIES\MIGHTYMAN\CHARGE\CHARGE_04		73736
 	349998988	TDS_RUN_GRANDE_WOOD_02	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\GRANDEDAME\FOOT\WOOD\TDS_RUN_GRANDE_WOOD_02_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\GRANDEDAME\FOOT_DAME\WOOD\TDS_RUN_GRANDE_WOOD_02		47982
 	352685405	CURTAINS_OUT	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\MISC\CURTAINS\CURTAINS_OUT_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\autres\MISC\CURTAINS\CURTAINS_OUT		112176
+	365211028	Fight_Intro	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\Fight_Intro_D79FB2B7.wem		\Interactive Music Hierarchy\Default Work Unit\switch music\Fight_Intro\Fight_Intro		131088
 	368211890	TORNAO	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\BEARDLADY\TORNAO_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\BEARDLADY\TORNAO		70534
 	369386999	SMALL_HIT_03	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SMALL_BLOW\SMALL_HIT_03_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\BASICS_common\SMALL_BLOW\SMALL_HIT_03		25690
 	372707453	SMALL_HIT_02	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SMALL_BLOW\SMALL_HIT_02_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\BASICS_common\SMALL_BLOW\SMALL_HIT_02		25690
@@ -189,15 +206,18 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	541279875	HUD_READY	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\HUD_READY_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\HUD\HUD_READY		16080
 	542273445	MAGIC_PUF	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\MISC\MAGIC_PUF_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\autres\MISC\MAGIC_PUF		179442
 	549491571	PARRY_01	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\PARRY\PARRY_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\BASICS_common\PARRY\PARRY_01		25690
+	553036249	FEEDBACK_HIT_02	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_02_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\autres\FEEDBACK_HIT\FEEDBACK_HIT_02		28894
 	576318832	FAKIR_DASH	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\FAKIR_DASH_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ennemies\ENNEMIES\FAKIR\FAKIR_DASH		44910
 	576915860	SMALL_HIT_05	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SMALL_BLOW\SMALL_HIT_05_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\BASICS_common\SMALL_BLOW\SMALL_HIT_05		19282
 	582409642	BEARDLADY_FOOT_DIRT_01	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\BEARDLADY\FOOT\DIRT\BEARDLADY_FOOT_DIRT_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\BEARDLADY\FOOT\DIRT\BEARDLADY_FOOT_DIRT_01		32096
 	583773422	TDS_RUN_BEARD_WOOD_01	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\BEARDLADY\FOOT\WOOD\TDS_RUN_BEARD_WOOD_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\BEARDLADY\FOOT\WOOD\TDS_RUN_BEARD_WOOD_01		32096
 	584764245	CHARGE_01	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARGE\CHARGE_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ennemies\ENNEMIES\MIGHTYMAN\CHARGE\CHARGE_01		73738
 	585703525	TDS_JUMP_START_04	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\JUMP\START\TDS_JUMP_START_04_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\BASICS_common\START_jump\TDS_JUMP_START_04		19284
+	591596505	APROACHING_DEATH	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\FEEDBACK\APROACHING_DEATH_D79FB2B7.wem		\Actor-Mixer Hierarchy\Default Work Unit\autres\APROACHING_DEATH		44908
 	598675431	BIGLADY_FOOT_DIRT_01	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\GRANDEDAME\FOOT\DIRT\BIGLADY_FOOT_DIRT_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\GRANDEDAME\FOOT_DAME\DIRT\BIGLADY_FOOT_DIRT_01		47918
 	601255628	BUNNY_PUF	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\MISC\BUNNY\BUNNY_PUF_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\autres\MISC\BUNNY\BUNNY_PUF		131396
 	601691919	Checkpoint	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\MISC\Checkpoint_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\autres\MISC\Checkpoint		237100
+	609072203	Fight_Loop	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\Fight_Loop_D79FB2B7.wem		\Interactive Music Hierarchy\Default Work Unit\switch music\Fight_Loop\Fight_Loop		18676156
 	610299881	LARGE_HIT_04	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\LARGE_BLOW\LARGE_HIT_04_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\BASICS_common\LARGE_BLOW\LARGE_HIT_04		69242
 	612808619	TORCH_ON_05	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\FIREEATER\TORCH_ON\TORCH_ON_05_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\FIREEATER\TORCH_ON\TORCH_ON_05		41706
 	632458798	JUGGLER_FOOT_DIRT_05	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\JUGGLER\FOOT\DIRT\JUGGLER_FOOT_DIRT_05_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\JUGGLER\FOOT_jugler\DIRT\JUGGLER_FOOT_DIRT_05		25170
@@ -210,6 +230,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	664666690	VOMIT	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\FIREEATER\VOMIT_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\FIREEATER\VOMIT		92956
 	668847503	OBJECT_HEAVY	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\MISC\OBJECTS\OBJECTS_HITS\OBJECT_HEAVY_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\autres\MISC\OBJECTS\OBJECTS_HITS\OBJECT_HEAVY		35300
 	674816718	BIGLADY_FOOT_DIRT_04	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\GRANDEDAME\FOOT\DIRT\BIGLADY_FOOT_DIRT_04_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\GRANDEDAME\FOOT_DAME\DIRT\BIGLADY_FOOT_DIRT_04		57462
+	690116845	GameTheme_Loop	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\GameTheme_Loop_D79FB2B7.wem		\Interactive Music Hierarchy\Default Work Unit\switch music\GameTheme_Loop\GameTheme_Loop		16283220
 	693430572	SIAMES_BRUTAL_HIT_02	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SIAMES_BRUTAL_HIT_02_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ennemies\ENNEMIES\BRUTAL_SIAMESE\Brutal_hit\SIAMES_BRUTAL_HIT_02		71584
 	693893787	CROWBAR_04	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\PUNK\CROWBAR\CROWBAR_04_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ennemies\ENNEMIES\PUNK\CROWBAR\CROWBAR_04		39782
 	694004119	FIREBALL_HIT	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\FIREEATER\FIREBALL\FIREBALL_HIT_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\FIREEATER\FIREBALL_HIT		105768
@@ -224,6 +245,8 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	761798437	TDS_RUN_FIRE_CONCRETE_04	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\FIREEATER\FOOT\CONCRETE\TDS_RUN_FIRE_CONCRETE_04_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\FIREEATER\FOOT_fireeater\CONCRETE\TDS_RUN_FIRE_CONCRETE_04		22106
 	764324286	TDS_RUN_JUGGLER_WOOD_04	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\JUGGLER\FOOT\WOOD\TDS_RUN_JUGGLER_WOOD_04_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\JUGGLER\FOOT_jugler\WOOD\TDS_RUN_JUGGLER_WOOD_04		22486
 	765940290	PARRY_02	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\PARRY\PARRY_02_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\BASICS_common\PARRY\PARRY_02		25690
+	767846308	TitleScreen	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\TitleScreen_D79FB2B7.wem		\Interactive Music Hierarchy\Default Work Unit\switch music\TitleScreen\TitleScreen		8384872
+	768994934	FEEDBACK_HIT_03	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_03_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\autres\FEEDBACK_HIT\FEEDBACK_HIT_03		19284
 	771628745	SMALL_HIT_04	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SMALL_BLOW\SMALL_HIT_04_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\BASICS_common\SMALL_BLOW\SMALL_HIT_04		22486
 	779630561	SIAMESE_SMALLHIT	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SIAMESE\SIAMESE_SMALLHIT_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ennemies\ENNEMIES\SIAMESE\SIAMESE_SMALLHIT		32096
 	779758517	KNIFE	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\KNIFE_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ennemies\ENNEMIES\FAKIR\KNIFE		28894
@@ -245,10 +268,12 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	860023171	TDS_RUN_JUGGLER_WOOD_05	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\JUGGLER\FOOT\WOOD\TDS_RUN_JUGGLER_WOOD_05_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\JUGGLER\FOOT_jugler\WOOD\TDS_RUN_JUGGLER_WOOD_05		25690
 	875857245	TDS_RUN_FIRE_CONCRETE_02	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\FIREEATER\FOOT\CONCRETE\TDS_RUN_FIRE_CONCRETE_02_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\FIREEATER\FOOT_fireeater\CONCRETE\TDS_RUN_FIRE_CONCRETE_02		22486
 	877355694	CROWBAR_01	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\PUNK\CROWBAR\CROWBAR_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ennemies\ENNEMIES\PUNK\CROWBAR\CROWBAR_01		35298
+	904219929	FEEDBACK_HIT_04	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_04_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\autres\FEEDBACK_HIT\FEEDBACK_HIT_04		25690
 	904481222	SLIDE_01	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SLIDE\SLIDE_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\BASICS_common\SLIDE\SLIDE_01		48112
 	906154454	TDS_RUN_GRANDE_WOOD_04	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\GRANDEDAME\FOOT\WOOD\TDS_RUN_GRANDE_WOOD_04_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\GRANDEDAME\FOOT_DAME\WOOD\TDS_RUN_GRANDE_WOOD_04		57462
 	914191231	TORCH_OFF_03	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\FIREEATER\TORCH_OFF\TORCH_OFF_03_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\FIREEATER\TORCH_OFF\TORCH_OFF_03		22488
 	915269170	SNAKE	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\SNAKE_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\ennemies\ENNEMIES\FAKIR\SNAKE		49820
+	921015710	FEEDBACK_HIT_01	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_01_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\autres\FEEDBACK_HIT\FEEDBACK_HIT_01		22486
 	930025913	TDS_RUN_JUGGLER_CONCRETE_03	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\JUGGLER\FOOT\CONCRETE\TDS_RUN_JUGGLER_CONCRETE_03_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\JUGGLER\FOOT_jugler\CONCRETE\TDS_RUN_JUGGLER_CONCRETE_03		22486
 	931641693	BIGLADY_FOOT_DIRT_03	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\GRANDEDAME\FOOT\DIRT\BIGLADY_FOOT_DIRT_03_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\GRANDEDAME\FOOT_DAME\DIRT\BIGLADY_FOOT_DIRT_03		41706
 	933290748	Juggle	D:\SOUND DESIGN\PROJETS PERSO\the dreadfull show\The-Dreadful-Show\The Dreadful Show_wwise_project\.cache\Windows\SFX\CHARACTERS\JUGGLER\Juggle_D79FB2B7.wem		\Actor-Mixer Hierarchy\Default Work Unit\Characters\JUGGLER\Juggle		369714
