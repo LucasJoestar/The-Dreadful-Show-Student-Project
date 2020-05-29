@@ -76,6 +76,40 @@
 						<CurrentSwitchRef Name="outro" ID="{E8A54E1D-61ED-432E-8F62-ACC2823FC0BC}"/>
 					</CurrentSwitchList>
 				</SoundcasterSession>
+				<SoundcasterSession Name="fghc" ID="{259DCC7C-3407-40B8-85CE-3C371D7F0AF8}">
+					<ModuleList>
+						<Module>
+							<ObjectRef Name="MIME" ID="{5B348EEB-138A-4F15-ABCC-DF91D2E306E4}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="0" Y="0"/>
+						</Module>
+					</ModuleList>
+					<RTPCValueList ShowAll="true">
+						<RTPCValue>
+							<GameParameterRef Name="music_mix" ID="{86C9CD8C-BAA8-48B5-8DC8-5BA9A87D05CA}"/>
+							<Value>1</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="ennemies_attack" ID="{3B2701C7-FA62-4A8C-BFC5-BC19D3034E4B}"/>
+							<Value>0.4</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="bruitage_mix" ID="{316FD8FC-1E54-4AEE-81C9-FE13319FE60E}"/>
+							<Value>1</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="foot_surface" ID="{E43EC714-A577-4FC5-9311-A7D2781E4882}"/>
+							<Value>0</Value>
+						</RTPCValue>
+					</RTPCValueList>
+					<CurrentStateList ShowAll="true">
+						<CurrentStateRef Name="None" ID="{A57DE26A-BC6A-4E83-A706-9F277AEFEE71}"/>
+					</CurrentStateList>
+					<CurrentSwitchList ShowAll="true">
+						<CurrentSwitchRef Name="attaque_4" ID="{49B43592-6928-4B83-93E9-E20F7B2F0B3A}"/>
+						<CurrentSwitchRef Name="outro" ID="{E8A54E1D-61ED-432E-8F62-ACC2823FC0BC}"/>
+						<CurrentSwitchRef Name="concrete" ID="{BE07F8E4-E4EE-4BA3-ABC1-5FF3AF38F7CA}"/>
+					</CurrentSwitchList>
+				</SoundcasterSession>
 			</ChildrenList>
 		</WorkUnit>
 	</SoundcasterSessions>
