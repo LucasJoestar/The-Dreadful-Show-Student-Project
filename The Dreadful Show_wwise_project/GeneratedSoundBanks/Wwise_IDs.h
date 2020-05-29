@@ -177,7 +177,7 @@ namespace AK
         static const AkUniqueID BRUITAGE_MIX = 981565069U;
         static const AkUniqueID ENNEMIES_ATTACK = 3540893800U;
         static const AkUniqueID FOOT_SURFACE = 2961358289U;
-        static const AkUniqueID MIX_MUSIC = 3326784033U;
+        static const AkUniqueID MUSIC_MIX = 2883026413U;
     } // namespace GAME_PARAMETERS
 
     namespace BANKS
