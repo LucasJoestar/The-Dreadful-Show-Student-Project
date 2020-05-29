@@ -1003,6 +1003,7 @@
 								<Action Name="" ID="{29A195FE-3160-4DB4-B242-08FF7300B144}" ShortID="323007311">
 									<PropertyList>
 										<Property Name="ActionType" Type="int16" Value="2"/>
+										<Property Name="FadeTime" Type="Real64" Value="1"/>
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Target">
@@ -1186,6 +1187,68 @@
 									<ReferenceList>
 										<Reference Name="Target">
 											<ObjectRef Name="switch music" ID="{B7017B39-0481-4EC3-B123-7C94D7494A8B}" WorkUnitID="{63976DBD-5132-444A-BBAE-F40D875B3796}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="intro" ID="{8A75ECDE-F5D6-447A-B25A-2724ECF078E3}">
+							<ChildrenList>
+								<Action Name="" ID="{35D99926-06C0-45A2-B588-D981813B9D61}" ShortID="599338756">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Intro" ID="{1698BA8C-08F1-4E0E-AC6A-070C2CF1262F}" WorkUnitID="{63976DBD-5132-444A-BBAE-F40D875B3796}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="outro" ID="{5C6E6489-F44E-4AE9-A374-2163FCC0DEFE}">
+							<ChildrenList>
+								<Action Name="" ID="{8BCA280D-E78F-4EA5-A6B6-6BCE090214A5}" ShortID="461759778">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Outro" ID="{AB850591-D8E5-4DE5-B47E-F889DDD85589}" WorkUnitID="{63976DBD-5132-444A-BBAE-F40D875B3796}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
+				<Folder Name="pause" ID="{F074FD17-8797-492D-84A7-1D1577826E6B}" ShortID="309018712">
+					<PropertyList>
+						<Property Name="Color" Type="int16" Value="8"/>
+						<Property Name="OverrideColor" Type="bool" Value="True"/>
+					</PropertyList>
+					<ChildrenList>
+						<Event Name="pause" ID="{B9C8B350-8D6A-49E2-B396-77D385B3F76D}">
+							<PropertyList>
+								<Property Name="Color" Type="int16" Value="8"/>
+								<Property Name="OverrideColor" Type="bool" Value="True"/>
+							</PropertyList>
+							<ChildrenList>
+								<Action Name="" ID="{C8102068-6E5E-41B4-933B-9AF37E03D964}" ShortID="958813441">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="22"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="paused" ID="{A51D1CA9-4476-487B-A5D4-4EC7CBADBCD1}" WorkUnitID="{87040F86-E3BA-4CCD-A7BA-6237240AC2E7}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="unpaused" ID="{796361E8-035F-490B-BC67-AEB8FFE26B40}">
+							<ChildrenList>
+								<Action Name="" ID="{C70D6B7B-A038-4563-BF4B-8D28C4C87623}" ShortID="28580843">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="22"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="unpaused" ID="{95D0BCF6-32C8-4074-AF7C-D3001529BA7D}" WorkUnitID="{87040F86-E3BA-4CCD-A7BA-6237240AC2E7}"/>
 										</Reference>
 									</ReferenceList>
 								</Action>

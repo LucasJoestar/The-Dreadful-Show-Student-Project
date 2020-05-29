@@ -3,44 +3,6 @@
 	<AudioObjects>
 		<WorkUnit Name="Default Work Unit" ID="{B0789196-2323-4243-AC08-783C802D3753}" PersistMode="Standalone">
 			<ChildrenList>
-				<Sound Name="test sound" ID="{4691158A-5044-4EA1-9FBF-5BA57F4140B9}" ShortID="358494492">
-					<PropertyList>
-						<Property Name="Color" Type="int16" Value="15"/>
-						<Property Name="OverrideColor" Type="bool" Value="True"/>
-						<Property Name="Volume" Type="Real64">
-							<ValueList>
-								<Value>-5</Value>
-							</ValueList>
-						</Property>
-					</PropertyList>
-					<ReferenceList>
-						<Reference Name="Conversion">
-							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
-						</Reference>
-						<Reference Name="OutputBus">
-							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
-						</Reference>
-					</ReferenceList>
-					<ChildrenList>
-						<AudioFileSource Name="ouinouinmastered" ID="{FCE07E2C-B50C-4775-911D-E3CD8DCC07E6}">
-							<PropertyList>
-								<Property Name="FadeInDuration" Type="Real64" Value="4.62537996545769"/>
-								<Property Name="FadeOutDuration" Type="Real64" Value="1.61888298791019"/>
-								<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
-								<Property Name="TrimBegin" Type="Real64" Value="1.27197949050086"/>
-								<Property Name="TrimEnd" Type="Real64" Value="11.7947189119173"/>
-							</PropertyList>
-							<Language>SFX</Language>
-							<AudioFile>ouinouinmastered.wav</AudioFile>
-							<MediaIDList>
-								<MediaID ID="341544695"/>
-							</MediaIDList>
-						</AudioFileSource>
-					</ChildrenList>
-					<ActiveSourceList>
-						<ActiveSource Name="ouinouinmastered" ID="{FCE07E2C-B50C-4775-911D-E3CD8DCC07E6}" Platform="Linked"/>
-					</ActiveSourceList>
-				</Sound>
 				<Folder Name="Characters" ID="{AE3E5790-1BB3-4640-8675-04C4D42AABAC}" ShortID="157626999">
 					<PropertyList>
 						<Property Name="Color" Type="int16" Value="10"/>
@@ -3343,28 +3305,6 @@
 													</ChildrenList>
 													<ActiveSourceList>
 														<ActiveSource Name="SIAMES_BRUTAL_HIT_02" ID="{5C5C43D4-C382-4311-AAF3-7A967652BD09}" Platform="Linked"/>
-													</ActiveSourceList>
-												</Sound>
-												<Sound Name="SIAMES_BRUTAL_HIT_03" ID="{8440F1E2-65A2-4A71-B90E-BA85D84E2FF2}" ShortID="354803413">
-													<ReferenceList>
-														<Reference Name="Conversion">
-															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
-														</Reference>
-														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
-														</Reference>
-													</ReferenceList>
-													<ChildrenList>
-														<AudioFileSource Name="SIAMES_BRUTAL_HIT_03" ID="{B5254A0A-D940-4AED-8510-3FD2E669A461}">
-															<Language>SFX</Language>
-															<AudioFile>SIAMES_BRUTAL_HIT_03.wav</AudioFile>
-															<MediaIDList>
-																<MediaID ID="833459906"/>
-															</MediaIDList>
-														</AudioFileSource>
-													</ChildrenList>
-													<ActiveSourceList>
-														<ActiveSource Name="SIAMES_BRUTAL_HIT_03" ID="{B5254A0A-D940-4AED-8510-3FD2E669A461}" Platform="Linked"/>
 													</ActiveSourceList>
 												</Sound>
 											</ChildrenList>
