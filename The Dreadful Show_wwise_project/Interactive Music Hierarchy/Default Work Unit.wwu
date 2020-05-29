@@ -6,6 +6,12 @@
 				<MusicSwitchContainer Name="switch music" ID="{B7017B39-0481-4EC3-B123-7C94D7494A8B}" ShortID="40540208">
 					<PropertyList>
 						<Property Name="Color" Type="int16" Value="24"/>
+						<Property Name="IsGlobalLimit" Type="int16" Value="1"/>
+						<Property Name="MaxSoundPerInstance" Type="int16">
+							<ValueList>
+								<Value>1</Value>
+							</ValueList>
+						</Property>
 						<Property Name="OverrideColor" Type="bool" Value="True"/>
 					</PropertyList>
 					<ReferenceList>
@@ -479,7 +485,29 @@
 										<SourceFadeOut>
 											<MusicFade Name="Source Fade-out" ID="{8782F457-06ED-4E22-A027-25E27AA0AEF5}">
 												<PropertyList>
-													<Property Name="FadeTime" Type="Real64" Value="1.3"/>
+													<Property Name="FadeTime" Type="Real64" Value="1.4"/>
+													<Property Name="FadeType" Type="int16" Value="1"/>
+												</PropertyList>
+											</MusicFade>
+										</SourceFadeOut>
+									</TransitionInfo>
+								</MusicTransition>
+								<MusicTransition Name="Transition" ID="{B25167C4-CD23-4698-81EF-58D2D1A7A661}">
+									<PropertyList>
+										<Property Name="DestinationContextType" Type="int16" Value="2"/>
+										<Property Name="EnableSourceFadeOut" Type="bool" Value="True"/>
+										<Property Name="ExitSourceAt" Type="int16" Value="2"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="DestinationContextObject">
+											<ObjectRef Name="Outro" ID="{AB850591-D8E5-4DE5-B47E-F889DDD85589}" WorkUnitID="{63976DBD-5132-444A-BBAE-F40D875B3796}"/>
+										</Reference>
+									</ReferenceList>
+									<TransitionInfo>
+										<SourceFadeOut>
+											<MusicFade Name="Source Fade-out" ID="{595C8E2F-06FB-4DB5-9D03-EC5BC72AF4F6}">
+												<PropertyList>
+													<Property Name="FadeTime" Type="Real64" Value="3"/>
 													<Property Name="FadeType" Type="int16" Value="1"/>
 												</PropertyList>
 											</MusicFade>
@@ -491,15 +519,11 @@
 										<Property Name="DestinationContextType" Type="int16" Value="2"/>
 										<Property Name="EnableSourceFadeOut" Type="bool" Value="True"/>
 										<Property Name="ExitSourceAt" Type="int16" Value="2"/>
-										<Property Name="SourceContextType" Type="int16" Value="2"/>
 										<Property Name="UseTransitionObject" Type="bool" Value="True"/>
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="DestinationContextObject">
 											<ObjectRef Name="GameTheme_Loop" ID="{BA77ED8A-BEFF-48DA-A5EB-B8CF845528F0}" WorkUnitID="{63976DBD-5132-444A-BBAE-F40D875B3796}"/>
-										</Reference>
-										<Reference Name="SourceContextObject">
-											<ObjectRef Name="TitleScreen" ID="{4D0BAFAB-D060-439B-8824-9625100694EA}" WorkUnitID="{63976DBD-5132-444A-BBAE-F40D875B3796}"/>
 										</Reference>
 									</ReferenceList>
 									<TransitionInfo>
@@ -513,6 +537,14 @@
 												</PropertyList>
 											</MusicFade>
 										</SourceFadeOut>
+										<TransitionFadeIn>
+											<MusicFade Name="Transition Fade-in" ID="{BFD39FC2-CCA4-41F1-AE71-326BF60AB77C}">
+												<PropertyList>
+													<Property Name="FadeOffset" Type="Real64" Value="-1.3"/>
+													<Property Name="FadeTime" Type="Real64" Value="1.4"/>
+												</PropertyList>
+											</MusicFade>
+										</TransitionFadeIn>
 									</TransitionInfo>
 								</MusicTransition>
 								<MusicTransition Name="Transition" ID="{C32EE693-2EE4-4538-A096-9A80FC40E231}">
@@ -621,6 +653,22 @@
 							</Path>
 							<AudioNodeInfo>
 								<AudioNodeRef Name="TitleScreen" ID="{4D0BAFAB-D060-439B-8824-9625100694EA}" WorkUnitID="{63976DBD-5132-444A-BBAE-F40D875B3796}" Platform="Linked"/>
+							</AudioNodeInfo>
+						</Entry>
+						<Entry>
+							<Path>
+								<PathElementRef Name="intro" ID="{8B664F32-01B8-4688-93C4-3224B57110EA}"/>
+							</Path>
+							<AudioNodeInfo>
+								<AudioNodeRef Name="Intro" ID="{1698BA8C-08F1-4E0E-AC6A-070C2CF1262F}" WorkUnitID="{63976DBD-5132-444A-BBAE-F40D875B3796}" Platform="Linked"/>
+							</AudioNodeInfo>
+						</Entry>
+						<Entry>
+							<Path>
+								<PathElementRef Name="outro" ID="{E8A54E1D-61ED-432E-8F62-ACC2823FC0BC}"/>
+							</Path>
+							<AudioNodeInfo>
+								<AudioNodeRef Name="Outro" ID="{AB850591-D8E5-4DE5-B47E-F889DDD85589}" WorkUnitID="{63976DBD-5132-444A-BBAE-F40D875B3796}" Platform="Linked"/>
 							</AudioNodeInfo>
 						</Entry>
 					</EntryList>

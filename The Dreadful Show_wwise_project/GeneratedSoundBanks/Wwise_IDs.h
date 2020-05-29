@@ -62,6 +62,7 @@ namespace AK
         static const AkUniqueID PLAY_LOCK = 4064908091U;
         static const AkUniqueID PLAY_LOOP_FORET = 3908812351U;
         static const AkUniqueID PLAY_MAGIC_PUF = 790309211U;
+        static const AkUniqueID PLAY_MONOCYCLE = 3428643599U;
         static const AkUniqueID PLAY_OBJECT_ACCORDION = 2579240604U;
         static const AkUniqueID PLAY_OBJECT_FRUITS = 1884262679U;
         static const AkUniqueID PLAY_OBJECT_GENERIC_FALL = 2213751667U;
@@ -93,6 +94,7 @@ namespace AK
         static const AkUniqueID PLAY_VOMIT = 1339992111U;
         static const AkUniqueID PLAY_WINDOW_BREAK = 1544694806U;
         static const AkUniqueID PUNK = 1942555113U;
+        static const AkUniqueID RESET_VOLUME_MUSIC = 4021601711U;
         static const AkUniqueID SIAMESE = 804534660U;
         static const AkUniqueID STOP_ALL = 452547817U;
         static const AkUniqueID STOP_AMBIANCE_PLUIE = 2819974902U;
@@ -101,6 +103,7 @@ namespace AK
         static const AkUniqueID STOP_CLOCK = 236049130U;
         static const AkUniqueID STOP_DRUNK = 411907754U;
         static const AkUniqueID STOP_MIME_FISH_REELING = 1341598556U;
+        static const AkUniqueID STOP_MONOCYCLE = 3940831365U;
         static const AkUniqueID STOP_MUSIC = 2837384057U;
         static const AkUniqueID STOP_PLAY_JUGGLE = 1620583853U;
         static const AkUniqueID STOP_SIAMESE_TONRADO = 1391252741U;
@@ -161,6 +164,8 @@ namespace AK
             {
                 static const AkUniqueID BATTLE_THEME = 3421098005U;
                 static const AkUniqueID GAME_THEME = 2431730365U;
+                static const AkUniqueID INTRO = 1125500713U;
+                static const AkUniqueID OUTRO = 4184794294U;
                 static const AkUniqueID TITLESCREEN = 152105657U;
             } // namespace SWITCH
         } // namespace MUSIC_SWITCH

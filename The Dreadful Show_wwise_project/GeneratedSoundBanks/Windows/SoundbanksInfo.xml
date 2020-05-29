@@ -168,22 +168,7 @@
 					</SwitchContainers>
 				</Event>
 				<Event Id="2431730365" Name="game_theme" ObjectPath="\Events\Default Work Unit\music\game_theme" MaxAttenuation="0.000000"/>
-				<Event Id="1125500713" Name="intro" ObjectPath="\Events\Default Work Unit\music\intro">
-					<IncludedMemoryFiles>
-						<File Id="80787974" Language="SFX">
-							<ShortName>GameTheme_Intro.wav</ShortName>
-							<Path>SFX\GameTheme_Intro_D79FB2B7.wem</Path>
-						</File>
-						<File Id="365211028" Language="SFX">
-							<ShortName>Fight_Intro.wav</ShortName>
-							<Path>SFX\Fight_Intro_D79FB2B7.wem</Path>
-						</File>
-						<File Id="457549526" Language="SFX">
-							<ShortName>Intro.wav</ShortName>
-							<Path>SFX\Intro_D79FB2B7.wem</Path>
-						</File>
-					</IncludedMemoryFiles>
-				</Event>
+				<Event Id="1125500713" Name="intro" ObjectPath="\Events\Default Work Unit\music\intro" MaxAttenuation="0.000000"/>
 				<Event Id="2358710769" Name="MIGHTYMAN" ObjectPath="\Events\Default Work Unit\monsters\MIGHTYMAN">
 					<IncludedMemoryFiles>
 						<File Id="29386585" Language="SFX">
@@ -290,7 +275,9 @@
 						</SwitchContainer>
 					</SwitchContainers>
 				</Event>
-				<Event Id="4184794294" Name="outro" ObjectPath="\Events\Default Work Unit\music\outro">
+				<Event Id="4184794294" Name="outro" ObjectPath="\Events\Default Work Unit\music\outro" MaxAttenuation="0.000000"/>
+				<Event Id="3092587493" Name="pause" ObjectPath="\Events\Default Work Unit\pause\pause" MaxAttenuation="0.000000"/>
+				<Event Id="899895346" Name="Play__music" ObjectPath="\Events\Default Work Unit\music\Play__music">
 					<IncludedMemoryFiles>
 						<File Id="4018111" Language="SFX">
 							<ShortName>Outro.wav</ShortName>
@@ -304,18 +291,9 @@
 							<ShortName>Fight_Intro.wav</ShortName>
 							<Path>SFX\Fight_Intro_D79FB2B7.wem</Path>
 						</File>
-					</IncludedMemoryFiles>
-				</Event>
-				<Event Id="3092587493" Name="pause" ObjectPath="\Events\Default Work Unit\pause\pause" MaxAttenuation="0.000000"/>
-				<Event Id="899895346" Name="Play__music" ObjectPath="\Events\Default Work Unit\music\Play__music">
-					<IncludedMemoryFiles>
-						<File Id="80787974" Language="SFX">
-							<ShortName>GameTheme_Intro.wav</ShortName>
-							<Path>SFX\GameTheme_Intro_D79FB2B7.wem</Path>
-						</File>
-						<File Id="365211028" Language="SFX">
-							<ShortName>Fight_Intro.wav</ShortName>
-							<Path>SFX\Fight_Intro_D79FB2B7.wem</Path>
+						<File Id="457549526" Language="SFX">
+							<ShortName>Intro.wav</ShortName>
+							<Path>SFX\Intro_D79FB2B7.wem</Path>
 						</File>
 						<File Id="609072203" Language="SFX">
 							<ShortName>Fight_Loop.wav</ShortName>
@@ -344,6 +322,16 @@
 						<SwitchContainer SwitchValue="{003E9A4F-7DC8-4C5C-A5B6-47C5A9F5ADCD}">
 							<Media>
 								<File Id="767846308"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{8B664F32-01B8-4688-93C4-3224B57110EA}">
+							<Media>
+								<File Id="457549526"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{E8A54E1D-61ED-432E-8F62-ACC2823FC0BC}">
+							<Media>
+								<File Id="4018111"/>
 							</Media>
 						</SwitchContainer>
 					</SwitchContainers>
@@ -504,7 +492,7 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
-				<Event Id="2599681053" Name="Play_FEEDBACK_HIT" ObjectPath="\Events\Default Work Unit\autre\Play_FEEDBACK_HIT">
+				<Event Id="2599681053" Name="Play_FEEDBACK_HIT" ObjectPath="\Events\Default Work Unit\persos\Play_FEEDBACK_HIT">
 					<IncludedMemoryFiles>
 						<File Id="228192368" Language="SFX">
 							<ShortName>FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_05.wav</ShortName>
@@ -1048,6 +1036,14 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
+				<Event Id="3428643599" Name="Play_monocycle" ObjectPath="\Events\Default Work Unit\monsters\Play_monocycle">
+					<IncludedMemoryFiles>
+						<File Id="472020178" Language="SFX">
+							<ShortName>monocycle.wav</ShortName>
+							<Path>SFX\monocycle_D79FB2B7.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="2579240604" Name="Play_OBJECT_ACCORDION" ObjectPath="\Events\Default Work Unit\autre\Play_OBJECT_ACCORDION">
 					<IncludedMemoryFiles>
 						<File Id="225662067" Language="SFX">
@@ -1394,6 +1390,7 @@
 						</SwitchContainer>
 					</SwitchContainers>
 				</Event>
+				<Event Id="4021601711" Name="reset_volume_music" ObjectPath="\Events\Default Work Unit\music\reset_volume_music" MaxAttenuation="0.000000"/>
 				<Event Id="804534660" Name="SIAMESE" ObjectPath="\Events\Default Work Unit\monsters\SIAMESE">
 					<IncludedMemoryFiles>
 						<File Id="378083774" Language="SFX">
@@ -1443,6 +1440,7 @@
 				<Event Id="236049130" Name="Stop_CLOCK" ObjectPath="\Events\Default Work Unit\autre\Stop_CLOCK" MaxAttenuation="0.000000"/>
 				<Event Id="411907754" Name="stop_drunk" ObjectPath="\Events\Default Work Unit\persos\Fire_eater\stop_drunk" MaxAttenuation="0.000000"/>
 				<Event Id="1341598556" Name="Stop_MIME_FISH_REELING" ObjectPath="\Events\Default Work Unit\monsters\Stop_MIME_FISH_REELING" MaxAttenuation="0.000000"/>
+				<Event Id="3940831365" Name="Stop_monocycle" ObjectPath="\Events\Default Work Unit\monsters\Stop_monocycle" MaxAttenuation="0.000000"/>
 				<Event Id="2837384057" Name="Stop_music" ObjectPath="\Events\Default Work Unit\music\Stop_music" MaxAttenuation="0.000000"/>
 				<Event Id="1620583853" Name="Stop_Play_Juggle" ObjectPath="\Events\Default Work Unit\persos\jugler\Stop_Play_Juggle" MaxAttenuation="0.000000"/>
 				<Event Id="1391252741" Name="Stop_SIAMESE_TONRADO" ObjectPath="\Events\Default Work Unit\monsters\Stop_SIAMESE_TONRADO" MaxAttenuation="0.000000"/>
@@ -1469,6 +1467,8 @@
 						<Switch Id="3421098005" Name="battle_theme" ObjectPath="\Switches\Default Work Unit\music_switch\battle_theme"/>
 						<Switch Id="152105657" Name="titlescreen" ObjectPath="\Switches\Default Work Unit\music_switch\titlescreen"/>
 						<Switch Id="2431730365" Name="game_theme" ObjectPath="\Switches\Default Work Unit\music_switch\game_theme"/>
+						<Switch Id="1125500713" Name="intro" ObjectPath="\Switches\Default Work Unit\music_switch\intro"/>
+						<Switch Id="4184794294" Name="outro" ObjectPath="\Switches\Default Work Unit\music_switch\outro"/>
 					</Switches>
 				</SwitchGroup>
 				<SwitchGroup Id="3140091853" Name="footsteps_switch" ObjectPath="\Switches\Default Work Unit\footsteps_switch">
