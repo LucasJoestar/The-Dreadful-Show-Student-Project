@@ -908,10 +908,10 @@ public class TDS_UIManager : PunBehaviour
     {
         if(PhotonNetwork.offlineMode)
         {
-            TDS_SceneManager.Instance.PrepareSceneLoading(SceneManager.GetActiveScene().buildIndex, (int)UIState.InGame); 
+            TDS_SceneManager.Instance.PrepareSceneLoading(TDS_GameManager.CurrentSceneIndex, (int)UIState.InGame); 
         }
         else
-            TDS_SceneManager.Instance.PrepareOnlineSceneLoading(SceneManager.GetActiveScene().buildIndex, (int)UIState.InGame);
+            TDS_SceneManager.Instance.PrepareOnlineSceneLoading(TDS_GameManager.CurrentSceneIndex, (int)UIState.InGame);
     }
 
     /// <summary>

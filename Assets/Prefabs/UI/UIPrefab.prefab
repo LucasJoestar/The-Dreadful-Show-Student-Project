@@ -4387,8 +4387,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 1
+  instantiationId: 1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!1 &1348033205689514
@@ -23881,9 +23881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42612df9bac5c4549b72342b20ec0356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mixerMusic: {fileID: 24100000, guid: f0f4d8919da41f04f86c3616f9711a20, type: 2}
   mixerVoices: {fileID: 24100000, guid: f0f4d8919da41f04f86c3616f9711a20, type: 2}
-  mixerFX: {fileID: 24100000, guid: f0f4d8919da41f04f86c3616f9711a20, type: 2}
   sliderMusic: {fileID: 577460224557458814}
   sliderVoices: {fileID: 7744722307951239613}
   sliderFX: {fileID: 4961183951441369449}
@@ -41730,10 +41728,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 5544740453053758516}
   m_HandleRect: {fileID: 7986752997530381930}
   m_Direction: 0
-  m_MinValue: -50
-  m_MaxValue: 5
+  m_MinValue: 0
+  m_MaxValue: 0.75
   m_WholeNumbers: 0
-  m_Value: -10
+  m_Value: 0.7
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -41839,10 +41837,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 116936795138352478}
   m_HandleRect: {fileID: 6844140045024623910}
   m_Direction: 0
-  m_MinValue: -50
-  m_MaxValue: 5
+  m_MinValue: 0
+  m_MaxValue: 0.75
   m_WholeNumbers: 0
-  m_Value: -10
+  m_Value: 0.7
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
