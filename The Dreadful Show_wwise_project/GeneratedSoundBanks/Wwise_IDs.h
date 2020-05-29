@@ -18,8 +18,10 @@ namespace AK
         static const AkUniqueID BRUTAL_SIAMESE = 2390245931U;
         static const AkUniqueID FAKIR = 2888865648U;
         static const AkUniqueID GAME_THEME = 2431730365U;
+        static const AkUniqueID INTRO = 1125500713U;
         static const AkUniqueID MIGHTYMAN = 2358710769U;
         static const AkUniqueID MIME = 2559194501U;
+        static const AkUniqueID OUTRO = 4184794294U;
         static const AkUniqueID PLAY__MUSIC = 899895346U;
         static const AkUniqueID PLAY_AMBIANCE_PLUIE = 3995323232U;
         static const AkUniqueID PLAY_APROACHING_DEATH = 1749736639U;
@@ -102,6 +104,22 @@ namespace AK
         static const AkUniqueID TITLESCREEN = 152105657U;
     } // namespace EVENTS
 
+    namespace STATES
+    {
+        namespace PAUSE_STATE
+        {
+            static const AkUniqueID GROUP = 1944582999U;
+
+            namespace STATE
+            {
+                static const AkUniqueID NONE = 748895195U;
+                static const AkUniqueID PAUSED = 319258907U;
+                static const AkUniqueID UNPAUSED = 1365518790U;
+            } // namespace STATE
+        } // namespace PAUSE_STATE
+
+    } // namespace STATES
+
     namespace SWITCHES
     {
         namespace ENNEMIS_ATTACK_SWITCH
@@ -147,8 +165,10 @@ namespace AK
 
     namespace GAME_PARAMETERS
     {
+        static const AkUniqueID BRUITAGE_MIX = 981565069U;
         static const AkUniqueID ENNEMIES_ATTACK = 3540893800U;
         static const AkUniqueID FOOT_SURFACE = 2961358289U;
+        static const AkUniqueID MIX_MUSIC = 3326784033U;
     } // namespace GAME_PARAMETERS
 
     namespace BANKS
@@ -161,6 +181,7 @@ namespace AK
     namespace BUSSES
     {
         static const AkUniqueID MASTER_AUDIO_BUS = 3803692087U;
+        static const AkUniqueID MUSIC_BUS = 3127962312U;
     } // namespace BUSSES
 
     namespace AUDIO_DEVICES

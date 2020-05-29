@@ -15,6 +15,10 @@
 			<ObjectPath>Init</ObjectPath>
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
+			<GameParameters>
+				<GameParameter Id="981565069" Name="bruitage_mix" ObjectPath="\Game Parameters\Default Work Unit\mix\bruitage_mix"/>
+				<GameParameter Id="3326784033" Name="mix_music" ObjectPath="\Game Parameters\Default Work Unit\mix\mix_music"/>
+			</GameParameters>
 		</SoundBank>
 		<SoundBank Id="1404066300" Language="SFX">
 			<ObjectPath>\SoundBanks\Default Work Unit\ambiances</ObjectPath>
@@ -97,17 +101,12 @@
 							<ShortName>SIAMES_BRUTAL_HIT_02.wav</ShortName>
 							<Path>SFX\SIAMES_BRUTAL_HIT_02_10C4C929.wem</Path>
 						</File>
-						<File Id="833459906" Language="SFX">
-							<ShortName>SIAMES_BRUTAL_HIT_03.wav</ShortName>
-							<Path>SFX\SIAMES_BRUTAL_HIT_03_10C4C929.wem</Path>
-						</File>
 					</IncludedMemoryFiles>
 					<SwitchContainers>
 						<SwitchContainer SwitchValue="{9FC08902-4974-440F-85DD-DCD99E37F430}">
 							<Media>
 								<File Id="229587323"/>
 								<File Id="693430572"/>
-								<File Id="833459906"/>
 							</Media>
 						</SwitchContainer>
 					</SwitchContainers>
@@ -164,6 +163,22 @@
 					</SwitchContainers>
 				</Event>
 				<Event Id="2431730365" Name="game_theme" ObjectPath="\Events\Default Work Unit\music\game_theme" MaxAttenuation="0.000000"/>
+				<Event Id="1125500713" Name="intro" ObjectPath="\Events\Default Work Unit\music\intro">
+					<IncludedMemoryFiles>
+						<File Id="80787974" Language="SFX">
+							<ShortName>GameTheme_Intro.wav</ShortName>
+							<Path>SFX\GameTheme_Intro_D79FB2B7.wem</Path>
+						</File>
+						<File Id="365211028" Language="SFX">
+							<ShortName>Fight_Intro.wav</ShortName>
+							<Path>SFX\Fight_Intro_D79FB2B7.wem</Path>
+						</File>
+						<File Id="457549526" Language="SFX">
+							<ShortName>Intro.wav</ShortName>
+							<Path>SFX\Intro_D79FB2B7.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="2358710769" Name="MIGHTYMAN" ObjectPath="\Events\Default Work Unit\monsters\MIGHTYMAN">
 					<IncludedMemoryFiles>
 						<File Id="29386585" Language="SFX">
@@ -269,6 +284,22 @@
 							</Media>
 						</SwitchContainer>
 					</SwitchContainers>
+				</Event>
+				<Event Id="4184794294" Name="outro" ObjectPath="\Events\Default Work Unit\music\outro">
+					<IncludedMemoryFiles>
+						<File Id="4018111" Language="SFX">
+							<ShortName>Outro.wav</ShortName>
+							<Path>SFX\Outro_D79FB2B7.wem</Path>
+						</File>
+						<File Id="80787974" Language="SFX">
+							<ShortName>GameTheme_Intro.wav</ShortName>
+							<Path>SFX\GameTheme_Intro_D79FB2B7.wem</Path>
+						</File>
+						<File Id="365211028" Language="SFX">
+							<ShortName>Fight_Intro.wav</ShortName>
+							<Path>SFX\Fight_Intro_D79FB2B7.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
 				</Event>
 				<Event Id="899895346" Name="Play__music" ObjectPath="\Events\Default Work Unit\music\Play__music">
 					<IncludedMemoryFiles>

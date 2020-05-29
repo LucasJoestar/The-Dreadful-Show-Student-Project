@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{87040F86-E3BA-4CCD-A7BA-6237240AC2E7}" SchemaVersion="97">
 	<States>
-		<WorkUnit Name="Default Work Unit" ID="{87040F86-E3BA-4CCD-A7BA-6237240AC2E7}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{87040F86-E3BA-4CCD-A7BA-6237240AC2E7}" PersistMode="Standalone">
+			<ChildrenList>
+				<StateGroup Name="pause_state" ID="{ADCD6E59-DD78-4472-B4BF-A9A65C1A4278}">
+					<PropertyList>
+						<Property Name="Color" Type="int16" Value="8"/>
+						<Property Name="OverrideColor" Type="bool" Value="True"/>
+					</PropertyList>
+					<ChildrenList>
+						<State Name="None" ID="{A57DE26A-BC6A-4E83-A706-9F277AEFEE71}"/>
+						<State Name="paused" ID="{A51D1CA9-4476-487B-A5D4-4EC7CBADBCD1}"/>
+						<State Name="unpaused" ID="{95D0BCF6-32C8-4074-AF7C-D3001529BA7D}"/>
+					</ChildrenList>
+				</StateGroup>
+			</ChildrenList>
+		</WorkUnit>
 	</States>
 </WwiseDocument>

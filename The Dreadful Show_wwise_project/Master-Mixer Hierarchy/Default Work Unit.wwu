@@ -4,11 +4,105 @@
 		<WorkUnit Name="Default Work Unit" ID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}" PersistMode="Standalone">
 			<ChildrenList>
 				<Bus Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}">
+					<PropertyList>
+						<Property Name="Color" Type="int16" Value="15"/>
+						<Property Name="MakeUpGain" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{55BA1C56-7479-4D5D-9668-3B1D5A463591}" ShortID="165789440">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="bruitage_mix" ID="{316FD8FC-1E54-4AEE-81C9-FE13319FE60E}" WorkUnitID="{1025F836-AB17-4ADB-85AB-C88AD330292C}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{60B11C4F-3BE7-47D6-B777-3DBAC4D290E7}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>1</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+						<Property Name="OverrideColor" Type="bool" Value="True"/>
+					</PropertyList>
 					<ReferenceList>
 						<Reference Name="AudioDevice">
 							<ObjectRef Name="System" ID="{639F6059-D8F6-4B0E-B9D3-71E06BA5C700}" WorkUnitID="{0B2D0B6E-7E14-4AFB-B237-991AF6908A02}"/>
 						</Reference>
 					</ReferenceList>
+				</Bus>
+				<Bus Name="music bus" ID="{243FB170-4ACD-44BD-AAE2-C7A8EB80EB5E}">
+					<PropertyList>
+						<Property Name="Color" Type="int16" Value="24"/>
+						<Property Name="MakeUpGain" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{5EEDBFD6-2B8C-4799-AF9B-2550F7106887}" ShortID="712000962">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="mix_music" ID="{86C9CD8C-BAA8-48B5-8DC8-5BA9A87D05CA}" WorkUnitID="{1025F836-AB17-4ADB-85AB-C88AD330292C}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{26F1978A-C9AD-4430-87FE-2223E454F0A9}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>1</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+						<Property Name="OverrideColor" Type="bool" Value="True"/>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="AudioDevice">
+							<ObjectRef Name="System" ID="{639F6059-D8F6-4B0E-B9D3-71E06BA5C700}" WorkUnitID="{0B2D0B6E-7E14-4AFB-B237-991AF6908A02}"/>
+						</Reference>
+					</ReferenceList>
+					<StateInfo>
+						<StateGroupList>
+							<StateGroupInfo>
+								<StateGroupRef Name="pause_state" ID="{ADCD6E59-DD78-4472-B4BF-A9A65C1A4278}"/>
+							</StateGroupInfo>
+						</StateGroupList>
+						<CustomStateList>
+							<CustomState>
+								<StateRef Name="unpaused" ID="{95D0BCF6-32C8-4074-AF7C-D3001529BA7D}"/>
+								<CustomState Name="" ID="{26D17A9A-ACCF-4928-BDAB-117B0083CE4C}" ShortID="130917209"/>
+							</CustomState>
+							<CustomState>
+								<StateRef Name="paused" ID="{A51D1CA9-4476-487B-A5D4-4EC7CBADBCD1}"/>
+								<CustomState Name="" ID="{4EE92914-2754-44AA-8420-FBA166CE7F47}" ShortID="1051318908">
+									<PropertyList>
+										<Property Name="BusVolume" Type="Real64" Value="-8"/>
+										<Property Name="Highpass" Type="int16" Value="45"/>
+										<Property Name="Lowpass" Type="int16" Value="40"/>
+									</PropertyList>
+								</CustomState>
+							</CustomState>
+						</CustomStateList>
+					</StateInfo>
 				</Bus>
 			</ChildrenList>
 		</WorkUnit>

@@ -18,8 +18,16 @@
 							<Position X="1" Y="0"/>
 						</Module>
 						<Module>
+							<ObjectRef Name="unpaused" ID="{796361E8-035F-490B-BC67-AEB8FFE26B40}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="1" Y="1"/>
+						</Module>
+						<Module>
 							<ObjectRef Name="titlescreen" ID="{71022DD3-B578-4595-BDDE-8CF33C8E4B13}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
 							<Position X="2" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="pause" ID="{B9C8B350-8D6A-49E2-B396-77D385B3F76D}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="2" Y="1"/>
 						</Module>
 						<Module>
 							<ObjectRef Name="Play_Ambiance_pluie" ID="{4AF5190A-AC63-40B9-95C6-F8D566306588}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
@@ -32,18 +40,28 @@
 					</ModuleList>
 					<RTPCValueList ShowAll="true">
 						<RTPCValue>
+							<GameParameterRef Name="mix_music" ID="{86C9CD8C-BAA8-48B5-8DC8-5BA9A87D05CA}"/>
+							<Value>1</Value>
+						</RTPCValue>
+						<RTPCValue>
 							<GameParameterRef Name="ennemies_attack" ID="{3B2701C7-FA62-4A8C-BFC5-BC19D3034E4B}"/>
 							<Value>0</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="bruitage_mix" ID="{316FD8FC-1E54-4AEE-81C9-FE13319FE60E}"/>
+							<Value>1</Value>
 						</RTPCValue>
 						<RTPCValue>
 							<GameParameterRef Name="foot_surface" ID="{E43EC714-A577-4FC5-9311-A7D2781E4882}"/>
 							<Value>0</Value>
 						</RTPCValue>
 					</RTPCValueList>
-					<CurrentStateList ShowAll="true"/>
+					<CurrentStateList ShowAll="true">
+						<CurrentStateRef Name="paused" ID="{A51D1CA9-4476-487B-A5D4-4EC7CBADBCD1}"/>
+					</CurrentStateList>
 					<CurrentSwitchList ShowAll="true">
 						<CurrentSwitchRef Name="attaque_3" ID="{AABA20D6-8CA8-480E-BC3A-DA2D9AF32D48}"/>
-						<CurrentSwitchRef Name="game_theme" ID="{D4CF0137-3553-40D8-AEFD-C22CAA685313}"/>
+						<CurrentSwitchRef Name="battle_theme" ID="{74CF8D4F-1107-4762-8ACD-46B9B90639B8}"/>
 					</CurrentSwitchList>
 				</SoundcasterSession>
 			</ChildrenList>
