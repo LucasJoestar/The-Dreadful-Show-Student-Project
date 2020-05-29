@@ -1152,7 +1152,11 @@ public class TDS_Camera : MonoBehaviour
     private void OnDestroy()
     {
         // Nullify the singleton instance if needed
-        if (Instance == this) Instance = null;
+        if (Instance == this)
+        {
+            AkSoundEngine.PostEvent("STOP_ALL", TDS_GameManager.MainAudio);
+            Instance = null;
+        }
     }
 
     // Use this for initialization
@@ -1172,6 +1176,7 @@ public class TDS_Camera : MonoBehaviour
         objectLayer = LayerMask.NameToLayer("Object");
 
         TDS_GameManager.SetMainCamera(camera);
+        AkSoundEngine.PostEvent("Play__music", TDS_GameManager.MainAudio);
     }
 	
 	// Update is called once per frame

@@ -1262,6 +1262,8 @@ public class TDS_Player : TDS_Character, IPunObservable
             if (movePlayerInViewCoroutine != null) StopMovingPlayerInView();
         }
 
+        AkSoundEngine.PostEvent("Stop_APROACHING_DEATH", TDS_GameManager.MainAudio);
+
         // Desactivates the detection box
         interactionBox.DisplayInteractionFeedback(false);
 
@@ -1275,11 +1277,21 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <param name="_heal">Amount of health point to restore.</param>
     public override void Heal(int _heal)
     {
+        float _healthBefore = healthCurrent;
+
         base.Heal(_heal);
 
         if (photonView.isMine)
         {
             TDS_VFXManager.Instance.SpawnEffect(FXType.Heal, fxTransformPV);
+
+            // Stop feedback sound
+            float _treshold = healthMax / 4f;
+
+            if ((_healthBefore <= _treshold) && (healthCurrent > _treshold))
+            {
+                AkSoundEngine.PostEvent("Stop_APROACHING_DEATH", TDS_GameManager.MainAudio);
+            }
         }
     }
 
@@ -1365,6 +1377,8 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Cannot hit the player while in cutscene !
         if (TDS_GameManager.IsInCutscene) return false;
 
+        float _healthBefore = healthCurrent;
+
         // Executes base method
         if (!base.TakeDamage(_damage))
         {
@@ -1389,8 +1403,12 @@ public class TDS_Player : TDS_Character, IPunObservable
             if (isDodging) StopDodge();
 
             // Play feedback sound
-            if (healthCurrent <= (healthMax / 4f))
-                TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_approachDeath);
+            float _treshold = healthMax / 4f;
+
+            if ((_healthBefore > _treshold) && (healthCurrent <= _treshold))
+            {
+                AkSoundEngine.PostEvent("Play_APROACHING_DEATH", TDS_GameManager.MainAudio);
+            }
         }
 
         // If not dead, be just hit

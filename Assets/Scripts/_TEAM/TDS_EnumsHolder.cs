@@ -197,10 +197,9 @@ public enum CustomEventType
     RemoveCurtains,
     SwitchArrow,
     LoadNextLevel,
-    PlayMusic,
+    PlaySoundEvent,
     PlayCutscene,
-    SetUIQuotes,
-    PlaySoundEvent
+    SetUIQuotes
 }
 
 /// <summary>
