@@ -130,6 +130,10 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 
     /// <summary>SerializedProperties for <see cref="TDS_Character.throwAimingPoint"/> of type <see cref="Vector3"/>.</summary>
     protected SerializedProperty throwAimingPoint = null;
+
+
+    /// <summary>SerializedProperties for <see cref="TDS_Character.foostepsSoundEvent"/> of type <see cref="string"/>.</summary>
+    protected SerializedProperty foostepsSoundEvent = null;
     #endregion
 
     #endregion
@@ -467,6 +471,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
     /// </summary>
     private void DrawCharacterSounds()
     {
+        TDS_EditorUtility.TextField("Footsteps Sound Event", string.Empty, foostepsSoundEvent);
     }
 
     /// <summary>
@@ -523,6 +528,8 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
         throwBonusDamagesMax = serializedObject.FindProperty("throwBonusDamagesMax");
         throwBonusDamagesMin = serializedObject.FindProperty("throwBonusDamagesMin");
         throwAimingPoint = serializedObject.FindProperty("throwAimingPoint");
+
+        foostepsSoundEvent = serializedObject.FindProperty("foostepsSoundEvent");
 
         // Loads the editor folded a unfolded values of this class
         isCharaUnfolded = EditorPrefs.GetBool("isCharaUnfolded", isCharaUnfolded);

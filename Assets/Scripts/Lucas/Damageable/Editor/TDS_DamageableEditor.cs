@@ -103,6 +103,13 @@ public class TDS_DamageableEditor : Editor
 
     /// <summary>SerializedProperty for <see cref="TDS_Damageable.healthMax"/> of type <see cref="int"/>.</summary>
     private SerializedProperty healthMax = null;
+
+
+    /// <summary>SerializedProperty for <see cref="TDS_Damageable.hitSoundEvent"/> of type <see cref="string"/>.</summary>
+    private SerializedProperty hitSoundEvent = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Damageable.deathSoundEvent"/> of type <see cref="string"/>.</summary>
+    private SerializedProperty deathSoundEvent = null;
     #endregion
 
     #endregion
@@ -454,7 +461,8 @@ public class TDS_DamageableEditor : Editor
     /// </summary>
     private void DrawDamagSoundsEditor()
     {
-
+        TDS_EditorUtility.TextField("Hit Sound Event", string.Empty, hitSoundEvent);
+        TDS_EditorUtility.TextField("Death Sound Event", string.Empty, deathSoundEvent);
     }
 
     /// <summary>
@@ -498,6 +506,9 @@ public class TDS_DamageableEditor : Editor
         isInvulnerable = serializedObject.FindProperty("IsInvulnerable");
         healthCurrent = serializedObject.FindProperty("healthCurrent");
         healthMax = serializedObject.FindProperty("healthMax");
+
+        hitSoundEvent = serializedObject.FindProperty("hitSoundEvent");
+        deathSoundEvent = serializedObject.FindProperty("deathSoundEvent");
 
         // Loads the editor folded and unfolded values of this class
         isDamagUnfolded = EditorPrefs.GetBool("isDamagUnfolded", isDamagUnfolded);

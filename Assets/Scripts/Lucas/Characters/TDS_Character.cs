@@ -362,24 +362,11 @@ public abstract class TDS_Character : TDS_Damageable
     #endregion
 
     #region Sound
-    /// <summary>
-    /// All this character's foosteps audio track for concrete ground.
-    /// </summary>
-    [SerializeField] protected AudioClip[] foostepsConcrete = new AudioClip[] { };
-
-    /// <summary>
-    /// All this character's foosteps audio track for grass.
-    /// </summary>
-    [SerializeField] protected AudioClip[] foostepsGrass = new AudioClip[] { };
-
-    /// <summary>
-    /// All this character's foosteps audio track for wood.
-    /// </summary>
-    [SerializeField] protected AudioClip[] foostepsWood = new AudioClip[] { };
+    [SerializeField] protected string foostepsSoundEvent = "Play_FOOT_jugler";
     #endregion
 
     #endregion
-
+    
     #region Methods
 
     #region Original Methods
@@ -764,7 +751,11 @@ public abstract class TDS_Character : TDS_Damageable
     /// <summary>
     /// Plays sound for this character's footsteps.
     /// </summary>
-    protected virtual void PlayFootsteps() { }
+    protected virtual void PlayFootsteps()
+    {
+        AkSoundEngine.SetRTPCValue("foot_surface", TDS_LevelManager.Instance.IsDirtGround ? .2f : .1f, gameObject);
+        AkSoundEngine.PostEvent(foostepsSoundEvent, gameObject);
+    }
     #endregion
 
     #endregion

@@ -312,6 +312,8 @@ public class TDS_FatLady : TDS_Player
             }
         }
 
+        SetFatLadyAnim(FatLadyAnimState.StopPreparingAttack);
+
         // Executes the attack
         Attack(_isLight);
 
@@ -329,6 +331,7 @@ public class TDS_FatLady : TDS_Player
         if (!base.StopPreparingAttack()) return false;
 
         // Reset animation
+        SetFatLadyAnim(FatLadyAnimState.StopPreparingAttack);
         SetAnimOnline(PlayerAnimState.ComboBreaker);
         return true;
     }
@@ -388,7 +391,11 @@ public class TDS_FatLady : TDS_Player
                 break;
 
             case FatLadyAnimState.PrepareAttack:
-                animator.SetTrigger(prepareAttack_Hash);
+                animator.SetBool(prepareAttack_Hash, true);
+                break;
+
+            case FatLadyAnimState.StopPreparingAttack:
+                animator.SetBool(prepareAttack_Hash, false);
                 break;
 
             default:

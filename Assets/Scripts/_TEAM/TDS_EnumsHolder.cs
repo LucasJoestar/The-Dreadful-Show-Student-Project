@@ -262,7 +262,8 @@ public enum FatLadyAnimState
     Angry,
     Cool,
     Snack,
-    PrepareAttack
+    PrepareAttack,
+    StopPreparingAttack
 }
 
 /// <summary>

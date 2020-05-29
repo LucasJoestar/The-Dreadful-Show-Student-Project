@@ -308,15 +308,9 @@ public abstract class TDS_Damageable : TDS_Object
     #endregion
 
     #region Sound
-    /// <summary>
-    /// Audio tracks to play when the damageable gets hit.
-    /// </summary>
-    [SerializeField] protected AudioClip[] hitSounds = new AudioClip[] { };
+    [SerializeField] protected string hitSoundEvent = string.Empty;
 
-    /// <summary>
-    /// Audio tracks to play when the damageable die.
-    /// </summary>
-    [SerializeField] protected AudioClip[] deathSounds = new AudioClip[] { };
+    [SerializeField] protected string deathSoundEvent = string.Empty;
     #endregion
 
     #region Animator
@@ -355,6 +349,8 @@ public abstract class TDS_Damageable : TDS_Object
         gameObject.layer = LayerMask.NameToLayer("Dead");
 
         // Play death sound
+        if (!string.IsNullOrEmpty(deathSoundEvent))
+            AkSoundEngine.PostEvent(deathSoundEvent, gameObject);
     }
 
     /// <summary>
@@ -421,6 +417,8 @@ public abstract class TDS_Damageable : TDS_Object
         OnTakeDamage?.Invoke();
 
         // Play hit sounds
+        if (!string.IsNullOrEmpty(hitSoundEvent))
+            AkSoundEngine.PostEvent(hitSoundEvent, gameObject);
 
         return true;
     }
@@ -568,6 +566,9 @@ public abstract class TDS_Damageable : TDS_Object
         }
 
         burnEffect.SetTrigger(vanish_Hash);
+
+        // Stop burn sound
+        AkSoundEngine.PostEvent("Stop_BURNING", gameObject);
     }
 
     /// <summary>
@@ -583,6 +584,9 @@ public abstract class TDS_Damageable : TDS_Object
         burnEffect = ((GameObject)Instantiate(Resources.Load("FireBurn"), new Vector3(transform.position.x, transform.position.y, transform.position.z - .05f), Quaternion.identity)).GetComponent<Animator>();
 
         burnEffect.transform.SetParent(transform, true);
+
+        // Play burn effect
+        AkSoundEngine.PostEvent("Play_BURNING", gameObject);
     }
 
     /// <summary>

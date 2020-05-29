@@ -17,14 +17,14 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: 8bc392f5b7d3754cb86f7488cbeb71b7
     GuidInternal: 
-    m_lastTime: -8586118001912066333
+    m_lastTime: -8586110206332222307
     List: []
   AuxBusWwu:
   - PhysicalPath: Master-Mixer Hierarchy\Default Work Unit.wwu
     ParentPath: Default Work Unit
     guid: 5728dc951eec2f4ba0da03385db6a701
     GuidInternal: 
-    m_lastTime: -8586118001927410827
+    m_lastTime: -8586110206543985962
     List:
     - name: Master Audio Bus
       guid: d8a41415a61d2a41a17e75ca0c2149f3
@@ -40,8 +40,17 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: 1006ea0a9d7e324da8219c686cfb7962
     GuidInternal: 
-    m_lastTime: -8586117965636724467
+    m_lastTime: -8586109068068158832
     List:
+    - name: ambiances
+      guid: c1b0db17978f614c9f992ffef17dd752
+      id: 1404066300
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: ambiances
+        ObjectType: 7
+      Path: Default Work Unit\ambiances
     - name: la_seule_et_unique_banque_de_soon
       guid: 698b67326979da4cbd63fcebcb94d86f
       id: 3151042580
@@ -56,7 +65,7 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: cc3d7ab8a618c64db455f8be16d3f7da
     GuidInternal: 
-    m_lastTime: -8586117938422694476
+    m_lastTime: -8586109068069365608
     List:
     - name: ACROBAT
       guid: d9188ad2d1e8d34294cc1019f9e17537
@@ -86,45 +95,49 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
-    - name: attaque_1
-      guid: 4539f336f3c728469ebd8b88d5e0d67f
-      id: 4145357458
+    - name: autre
+      guid: 2c7710acefaddb4bac2065c487551e5e
+      id: 916253438
       PathAndIcons:
       - ElementName: Default Work Unit
         ObjectType: 12
-      - ElementName: persos
+      - ElementName: autre
         ObjectType: 4
-      - ElementName: attaque_1
+      - ElementName: autre
         ObjectType: 3
-      Path: Default Work Unit\persos\attaque_1
+      Path: Default Work Unit\autre\autre
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
-    - name: attaque_2
-      guid: 784084fe8bc6ca46aebc6aec2ef4f382
-      id: 4145357457
+    - name: basics
+      guid: f9a3999a1807064a8d267a80064a1ad1
+      id: 2032813828
       PathAndIcons:
       - ElementName: Default Work Unit
         ObjectType: 12
       - ElementName: persos
         ObjectType: 4
-      - ElementName: attaque_2
+      - ElementName: basics
+        ObjectType: 4
+      - ElementName: basics
         ObjectType: 3
-      Path: Default Work Unit\persos\attaque_2
+      Path: Default Work Unit\persos\basics\basics
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
-    - name: attaque_3
-      guid: 620a929c4961eb4aa400552e7614f0c7
-      id: 4145357456
+    - name: Bear_Lady
+      guid: 0af91fba8b44af46b90132c681e26c42
+      id: 325063546
       PathAndIcons:
       - ElementName: Default Work Unit
         ObjectType: 12
       - ElementName: persos
         ObjectType: 4
-      - ElementName: attaque_3
+      - ElementName: Bear_Lady
+        ObjectType: 4
+      - ElementName: Bear_Lady
         ObjectType: 3
-      Path: Default Work Unit\persos\attaque_3
+      Path: Default Work Unit\persos\Bear_Lady\Bear_Lady
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -156,17 +169,65 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
-    - name: hurt
-      guid: 93762ae56dd11c4689e4332084481a9f
-      id: 3193947170
+    - name: Fire_eater
+      guid: 0ac91ad76f5e004fb40f5d57ae880a42
+      id: 593512291
       PathAndIcons:
       - ElementName: Default Work Unit
         ObjectType: 12
       - ElementName: persos
         ObjectType: 4
-      - ElementName: hurt
+      - ElementName: Fire_eater
+        ObjectType: 4
+      - ElementName: Fire_eater
         ObjectType: 3
-      Path: Default Work Unit\persos\hurt
+      Path: Default Work Unit\persos\Fire_eater\Fire_eater
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Grande_dame
+      guid: 949a51886604284e91b433b5cef332c9
+      id: 3620492126
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Grande_dame
+        ObjectType: 4
+      - ElementName: Grande_dame
+        ObjectType: 3
+      Path: Default Work Unit\persos\Grande_dame\Grande_dame
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: HUD
+      guid: a70d1cc5525b224691491d1682943c8f
+      id: 646625284
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: HUD
+        ObjectType: 4
+      - ElementName: HUD
+        ObjectType: 3
+      Path: Default Work Unit\HUD\HUD
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: jugler
+      guid: f8bfb9f109b1fb41b30201909382c6c0
+      id: 3614827090
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: jugler
+        ObjectType: 4
+      - ElementName: jugler
+        ObjectType: 3
+      Path: Default Work Unit\persos\jugler\jugler
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -226,6 +287,122 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: Play_Ambiance_pluie
+      guid: 0a19f54a63acb94095c6f8d566306588
+      id: 3995323232
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: amb
+        ObjectType: 4
+      - ElementName: Play_Ambiance_pluie
+        ObjectType: 3
+      Path: Default Work Unit\amb\Play_Ambiance_pluie
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_BARRAGE
+      guid: 8f7b9965545b3f46a1b0ff18c0e28090
+      id: 1948585674
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_BARRAGE
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_BARRAGE
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_BELL_FALL
+      guid: 6e242981e3790446b1af7a6d4fe525b6
+      id: 356368927
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_BELL_FALL
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_BELL_FALL
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_BODYFALL
+      guid: 2bc7eb2554681c48add9c2f736368529
+      id: 1500695173
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: basics
+        ObjectType: 4
+      - ElementName: Play_BODYFALL
+        ObjectType: 3
+      Path: Default Work Unit\persos\basics\Play_BODYFALL
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_BRUTAL_HIT
+      guid: 70bbfe08c615b641b6676b13fbcd0bf9
+      id: 812881236
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: basics
+        ObjectType: 4
+      - ElementName: Play_BRUTAL_HIT
+        ObjectType: 3
+      Path: Default Work Unit\persos\basics\Play_BRUTAL_HIT
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_BUNNY_PUF
+      guid: 89a283a7b588924584acc63b6e286919
+      id: 2512626354
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_BUNNY_PUF
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_BUNNY_PUF
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_BURNING
+      guid: 43dfd9219d180e488347a68279806e82
+      id: 2394181555
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_BURNING
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_BURNING
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_Checkpoint
+      guid: c6041950bbdbc54bbe89784f17e82830
+      id: 2962822744
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_Checkpoint
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_Checkpoint
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: play_circus_amb
       guid: 8066fc37798a854c85692c004fc4a69e
       id: 3809599778
@@ -240,6 +417,386 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: Play_CLOCK
+      guid: 163db66e178c3c4ba24f448b8e12e679
+      id: 4070979672
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_CLOCK
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_CLOCK
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_CRATE
+      guid: b1a6013a66788b4b9cd5f7d62af7fc11
+      id: 387483575
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_CRATE
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_CRATE
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_CURTAINS_IN
+      guid: ae538e22655d5849a15927dd78801889
+      id: 4070879423
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_CURTAINS_IN
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_CURTAINS_IN
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_CURTAINS_OUT
+      guid: 1311a71e5a7a124aa08a20c15d0da01b
+      id: 2705757650
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_CURTAINS_OUT
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_CURTAINS_OUT
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_DODGE
+      guid: 5963f83d3fe8c9498117378b8cf9d5c2
+      id: 3338421947
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: basics
+        ObjectType: 4
+      - ElementName: Play_DODGE
+        ObjectType: 3
+      Path: Default Work Unit\persos\basics\Play_DODGE
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_DRINK
+      guid: 6b94579cd4c96a49bee0ef657a0e7ffb
+      id: 4042538376
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Fire_eater
+        ObjectType: 4
+      - ElementName: Play_DRINK
+        ObjectType: 3
+      Path: Default Work Unit\persos\Fire_eater\Play_DRINK
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_Drunk
+      guid: b8d9c19655d14d4d8c85f9438ca595e5
+      id: 4045789892
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Fire_eater
+        ObjectType: 4
+      - ElementName: Play_Drunk
+        ObjectType: 3
+      Path: Default Work Unit\persos\Fire_eater\Play_Drunk
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_DUMMY
+      guid: a279dacfc9dcf444af3207c8070e9940
+      id: 2175868442
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_DUMMY
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_DUMMY
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_EAT
+      guid: 1a58e47dcbac2645b85e2e477adf8275
+      id: 2489068396
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Grande_dame
+        ObjectType: 4
+      - ElementName: Play_EAT
+        ObjectType: 3
+      Path: Default Work Unit\persos\Grande_dame\Play_EAT
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_FIREBALL_HIT
+      guid: d4491d9a5ac2d140b9ba0fe704c64700
+      id: 3177064491
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Fire_eater
+        ObjectType: 4
+      - ElementName: Play_FIREBALL_HIT
+        ObjectType: 3
+      Path: Default Work Unit\persos\Fire_eater\Play_FIREBALL_HIT
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_FIREBALL_SPIT
+      guid: 89655b628694d347a088f72ddd86e471
+      id: 2915545918
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Fire_eater
+        ObjectType: 4
+      - ElementName: Play_FIREBALL_SPIT
+        ObjectType: 3
+      Path: Default Work Unit\persos\Fire_eater\Play_FIREBALL_SPIT
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_FIREBREATH
+      guid: 62b8b531f686cc44bc3145ea3d00569c
+      id: 694398836
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Fire_eater
+        ObjectType: 4
+      - ElementName: Play_FIREBREATH
+        ObjectType: 3
+      Path: Default Work Unit\persos\Fire_eater\Play_FIREBREATH
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_FOOT_bearlady
+      guid: 395a8e0dc6cdf4448b49c1c5fa75f848
+      id: 99002451
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Bear_Lady
+        ObjectType: 4
+      - ElementName: Play_FOOT_bearlady
+        ObjectType: 3
+      Path: Default Work Unit\persos\Bear_Lady\Play_FOOT_bearlady
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_FOOT_DAME
+      guid: b33563e4eeccf849bca372e2974a0bc4
+      id: 3677433246
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Grande_dame
+        ObjectType: 4
+      - ElementName: Play_FOOT_DAME
+        ObjectType: 3
+      Path: Default Work Unit\persos\Grande_dame\Play_FOOT_DAME
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_FOOT_fireeater
+      guid: 0eaf54f26063aa4e99c28b34102513a3
+      id: 1740506432
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Fire_eater
+        ObjectType: 4
+      - ElementName: Play_FOOT_fireeater
+        ObjectType: 3
+      Path: Default Work Unit\persos\Fire_eater\Play_FOOT_fireeater
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_FOOT_jugler
+      guid: 056da03c0b460f499db5945803fcfa73
+      id: 114210310
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: jugler
+        ObjectType: 4
+      - ElementName: Play_FOOT_jugler
+        ObjectType: 3
+      Path: Default Work Unit\persos\jugler\Play_FOOT_jugler
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_HIT_WOOD
+      guid: 49dd3800fe9418498121aa9f1cd5b2fa
+      id: 1722917615
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_HIT_WOOD
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_HIT_WOOD
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_HUD_BIGCONFIRM
+      guid: 167156392fdb3e459b4ce5fc91252c64
+      id: 944420934
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: HUD
+        ObjectType: 4
+      - ElementName: Play_HUD_BIGCONFIRM
+        ObjectType: 3
+      Path: Default Work Unit\HUD\Play_HUD_BIGCONFIRM
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_HUD_CONFIRM
+      guid: 73fa3f01298d16449c04f4a238092456
+      id: 2196985468
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: HUD
+        ObjectType: 4
+      - ElementName: Play_HUD_CONFIRM
+        ObjectType: 3
+      Path: Default Work Unit\HUD\Play_HUD_CONFIRM
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_HUD_OVER
+      guid: c0cca98718ba59408f4fa4cdf8f19a94
+      id: 138578522
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: HUD
+        ObjectType: 4
+      - ElementName: Play_HUD_OVER
+        ObjectType: 3
+      Path: Default Work Unit\HUD\Play_HUD_OVER
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_HUD_READY
+      guid: a39cfb304b9dbf46a077de8472c946d5
+      id: 1110856793
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: HUD
+        ObjectType: 4
+      - ElementName: Play_HUD_READY
+        ObjectType: 3
+      Path: Default Work Unit\HUD\Play_HUD_READY
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_Juggle
+      guid: 293700e7bd4bff4d9b238579e1fa917b
+      id: 212900658
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: jugler
+        ObjectType: 4
+      - ElementName: Play_Juggle
+        ObjectType: 3
+      Path: Default Work Unit\persos\jugler\Play_Juggle
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_LAND_jump
+      guid: 77f5331942f2b0428cdce05f5b3c29c2
+      id: 169396492
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: basics
+        ObjectType: 4
+      - ElementName: Play_LAND_jump
+        ObjectType: 3
+      Path: Default Work Unit\persos\basics\Play_LAND_jump
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_LARGE_BLOW
+      guid: 718291c55bc8834f98003ae0a3a42b29
+      id: 1082762910
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: basics
+        ObjectType: 4
+      - ElementName: Play_LARGE_BLOW
+        ObjectType: 3
+      Path: Default Work Unit\persos\basics\Play_LARGE_BLOW
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_Lock
+      guid: d4e6793750240f4a9b91628abec36b8a
+      id: 4064908091
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: jugler
+        ObjectType: 4
+      - ElementName: Play_Lock
+        ObjectType: 3
+      Path: Default Work Unit\persos\jugler\Play_Lock
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: Play_loop_foret
       guid: 916e080c2f71634799adee01cc5e82c2
       id: 3908812351
@@ -251,6 +808,432 @@ MonoBehaviour:
       - ElementName: Play_loop_foret
         ObjectType: 3
       Path: Default Work Unit\amb\Play_loop_foret
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_MAGIC_PUF
+      guid: 26ea7b17dbe36e46bf0dc81e3b111dfe
+      id: 790309211
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_MAGIC_PUF
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_MAGIC_PUF
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_OBJECT_ACCORDION
+      guid: fec0ea8e1b8ae042b286f260288d154c
+      id: 2579240604
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_OBJECT_ACCORDION
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_OBJECT_ACCORDION
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_OBJECT_FRUITS
+      guid: 47b66a947532e047b3b07e07ef13c62d
+      id: 1884262679
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_OBJECT_FRUITS
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_OBJECT_FRUITS
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_OBJECT_GENERIC_FALL
+      guid: c1781f0786cead479f05744ba74b12c6
+      id: 2213751667
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_OBJECT_GENERIC_FALL
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_OBJECT_GENERIC_FALL
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_OBJECT_GENERIC_PICKUP
+      guid: f4a9a0cf25526b48a05a91eaff3fc5bc
+      id: 969855252
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_OBJECT_GENERIC_PICKUP
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_OBJECT_GENERIC_PICKUP
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_OBJECT_GENERIC_THROW
+      guid: 903f12e5228cc745aad88657d32691f9
+      id: 1644365000
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_OBJECT_GENERIC_THROW
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_OBJECT_GENERIC_THROW
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_OBJECT_HEAVY
+      guid: 337c8748fc1a6a44932ac1425356c546
+      id: 3392599287
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_OBJECT_HEAVY
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_OBJECT_HEAVY
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_OBJECT_METAL
+      guid: 470e80c4bbbb9f46a90b14c430409ba5
+      id: 1225569167
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_OBJECT_METAL
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_OBJECT_METAL
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_OBJECT_PLASTIC
+      guid: ee6df75d80cebb47b2301e2df2052ced
+      id: 4232097126
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_OBJECT_PLASTIC
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_OBJECT_PLASTIC
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_OBJECT_SHARP
+      guid: 02ebd02f6b5ec5429df2ab47a9eaab08
+      id: 100848274
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_OBJECT_SHARP
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_OBJECT_SHARP
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_OBJECT_SHATTERS
+      guid: a2f282bbaf0274409fad3f55c686aaa5
+      id: 3231752328
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_OBJECT_SHATTERS
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_OBJECT_SHATTERS
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_OBJECT_SPLAT
+      guid: 243ae240a91e2342b7b8f350f5e08484
+      id: 3392214282
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_OBJECT_SPLAT
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_OBJECT_SPLAT
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_OBJECT_WOOD
+      guid: bd7cb6d281b39644827145fb5b05bb39
+      id: 4075690973
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_OBJECT_WOOD
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_OBJECT_WOOD
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_PARRY
+      guid: 3cb84943c8fd49489e91f9f3d0b06205
+      id: 4115969904
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: basics
+        ObjectType: 4
+      - ElementName: Play_PARRY
+        ObjectType: 3
+      Path: Default Work Unit\persos\basics\Play_PARRY
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_Piano_hit
+      guid: eba1dec5ea491b42a7442dc39a0b476a
+      id: 474393687
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_Piano_hit
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_Piano_hit
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_Piano_impact
+      guid: c8358ef66900784dbdd18da65cb85049
+      id: 4074114726
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_Piano_impact
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_Piano_impact
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_PRESENT_EXPLOSION
+      guid: 97bb1280a1c71a45abc30bcfdba202ae
+      id: 2691116071
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_PRESENT_EXPLOSION
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_PRESENT_EXPLOSION
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_PRESENT_TIMER
+      guid: 42323dffd09aa8408dd5094b51458120
+      id: 3707495729
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_PRESENT_TIMER
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_PRESENT_TIMER
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_SLIDE
+      guid: 6ccf1d786100b94db9b80c96b4326b59
+      id: 3715669161
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: basics
+        ObjectType: 4
+      - ElementName: Play_SLIDE
+        ObjectType: 3
+      Path: Default Work Unit\persos\basics\Play_SLIDE
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_SMALL_BLOW
+      guid: a1764a92c0b9404b8c4449be38578028
+      id: 134550002
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: basics
+        ObjectType: 4
+      - ElementName: Play_SMALL_BLOW
+        ObjectType: 3
+      Path: Default Work Unit\persos\basics\Play_SMALL_BLOW
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_SPIT
+      guid: 3c98b189848c3b4e88e9ee2934034cdc
+      id: 301125896
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Fire_eater
+        ObjectType: 4
+      - ElementName: Play_SPIT
+        ObjectType: 3
+      Path: Default Work Unit\persos\Fire_eater\Play_SPIT
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_SPLAT
+      guid: fda9ad0563cecf4fac2b22b218f3b8b2
+      id: 708322162
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Fire_eater
+        ObjectType: 4
+      - ElementName: Play_SPLAT
+        ObjectType: 3
+      Path: Default Work Unit\persos\Fire_eater\Play_SPLAT
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_START_jump
+      guid: a1344dce50d48344abef90a6a4e4d1a2
+      id: 406111645
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: basics
+        ObjectType: 4
+      - ElementName: Play_START_jump
+        ObjectType: 3
+      Path: Default Work Unit\persos\basics\Play_START_jump
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_Supply
+      guid: 9a0d4865c9550542903f4360767fc85c
+      id: 934702239
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_Supply
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_Supply
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_TORCH_OFF
+      guid: df17ef1c68ea3143b06fa3af1b2c746e
+      id: 3595911238
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Fire_eater
+        ObjectType: 4
+      - ElementName: Play_TORCH_OFF
+        ObjectType: 3
+      Path: Default Work Unit\persos\Fire_eater\Play_TORCH_OFF
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_TORCH_ON
+      guid: be1ac4cc0475b5409e9e24952d37bb25
+      id: 505828200
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Fire_eater
+        ObjectType: 4
+      - ElementName: Play_TORCH_ON
+        ObjectType: 3
+      Path: Default Work Unit\persos\Fire_eater\Play_TORCH_ON
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_TORNADO
+      guid: a6dce9802cfd8742a05cf7a8eae37e86
+      id: 369801413
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Bear_Lady
+        ObjectType: 4
+      - ElementName: Play_TORNADO
+        ObjectType: 3
+      Path: Default Work Unit\persos\Bear_Lady\Play_TORNADO
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_VOMIT
+      guid: 1fa6a2581eed2e40b6d5b367a6e60605
+      id: 1339992111
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Fire_eater
+        ObjectType: 4
+      - ElementName: Play_VOMIT
+        ObjectType: 3
+      Path: Default Work Unit\persos\Fire_eater\Play_VOMIT
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_WINDOW_BREAK
+      guid: cbec50115f3c0940af09862af59ffbd5
+      id: 1544694806
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_WINDOW_BREAK
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_WINDOW_BREAK
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -282,15 +1265,105 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
-    - name: test_sound
-      guid: 46f96fee0c91aa48be19caff3c74d1c9
-      id: 1936185617
+    - name: Stop_Ambiance_pluie
+      guid: a9f2f8edeb76284a97379941cb9ab7d2
+      id: 2819974902
       PathAndIcons:
       - ElementName: Default Work Unit
         ObjectType: 12
-      - ElementName: test_sound
+      - ElementName: amb
+        ObjectType: 4
+      - ElementName: Stop_Ambiance_pluie
         ObjectType: 3
-      Path: Default Work Unit\test_sound
+      Path: Default Work Unit\amb\Stop_Ambiance_pluie
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Stop_BURNING
+      guid: 1c25cc986ecbcf499f172378bf216c6e
+      id: 3057916297
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Stop_BURNING
+        ObjectType: 3
+      Path: Default Work Unit\autre\Stop_BURNING
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Stop_CLOCK
+      guid: 274b98ad064c254fb1017ffd429f0043
+      id: 236049130
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Stop_CLOCK
+        ObjectType: 3
+      Path: Default Work Unit\autre\Stop_CLOCK
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: stop_drunk
+      guid: dd54e6facad68b49b1ae662a8a9262a8
+      id: 411907754
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: Fire_eater
+        ObjectType: 4
+      - ElementName: stop_drunk
+        ObjectType: 3
+      Path: Default Work Unit\persos\Fire_eater\stop_drunk
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Stop_MIME_FISH_REELING
+      guid: cb39238bf9ca6a489be38c5f089697c1
+      id: 1341598556
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: monsters
+        ObjectType: 4
+      - ElementName: Stop_MIME_FISH_REELING
+        ObjectType: 3
+      Path: Default Work Unit\monsters\Stop_MIME_FISH_REELING
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Stop_Play_Juggle
+      guid: 2e543482cab0bd4c9a9ab69c764c5807
+      id: 1620583853
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: persos
+        ObjectType: 4
+      - ElementName: jugler
+        ObjectType: 4
+      - ElementName: Stop_Play_Juggle
+        ObjectType: 3
+      Path: Default Work Unit\persos\jugler\Stop_Play_Juggle
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Stop_SIAMESE_TONRADO
+      guid: 1cfb86031df73042b6f6e946c10b4a8e
+      id: 1391252741
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: monsters
+        ObjectType: 4
+      - ElementName: Stop_SIAMESE_TONRADO
+        ObjectType: 3
+      Path: Default Work Unit\monsters\Stop_SIAMESE_TONRADO
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -299,7 +1372,7 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: 36f8251017abdb4a85abc88ad330292c
     GuidInternal: 
-    m_lastTime: -8586126603339333597
+    m_lastTime: -8586110206547845633
     List:
     - name: ennemies_attack
       guid: c701273b62fa8c4abfc5bc19d3034e4b
@@ -310,19 +1383,28 @@ MonoBehaviour:
       - ElementName: ennemies_attack
         ObjectType: 13
       Path: Default Work Unit\ennemies_attack
+    - name: foot_surface
+      guid: 14c73ee477a5c54f9311a7d2781e4882
+      id: 2961358289
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: foot_surface
+        ObjectType: 13
+      Path: Default Work Unit\foot_surface
   StateWwu:
   - PhysicalPath: States\Default Work Unit.wwu
     ParentPath: Default Work Unit
     guid: 860f0487bae3cd4ca7ba6237240ac2e7
     GuidInternal: 
-    m_lastTime: -8586118001912156096
+    m_lastTime: -8586110206337947003
     List: []
   SwitchWwu:
   - PhysicalPath: Switches\Default Work Unit.wwu
     ParentPath: Default Work Unit
     guid: 195628f6399e6948865cf7fa78defe64
     GuidInternal: 
-    m_lastTime: -8586117993384543455
+    m_lastTime: -8586110206332381873
     List:
     - name: ENNEMIS_ATTACK_SWITCH
       guid: 696fe1d8172f8e47bf25c6f253d9f271
@@ -373,18 +1455,65 @@ MonoBehaviour:
       ValueGuids: []
       ValueIcons: []
       valuesInternal: []
+    - name: footsteps_switch
+      guid: 34a84788191ac14f98146db5405f1c39
+      id: 3140091853
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: footsteps_switch
+        ObjectType: 11
+      Path: Default Work Unit\footsteps_switch
+      values:
+      - name: concrete
+        guid: e4f807beeee4a34babc15ff3af38f7ca
+        id: 841620460
+        PathAndIcons:
+        - ElementName: concrete
+          ObjectType: 10
+      - name: dirt
+        guid: 56a9378356824b46be89be58acaf047d
+        id: 2195636714
+        PathAndIcons:
+        - ElementName: dirt
+          ObjectType: 10
+      - name: wood
+        guid: a204e4061334de4990e8e338a06d202b
+        id: 2058049674
+        PathAndIcons:
+        - ElementName: wood
+          ObjectType: 10
+      ValueGuids: []
+      ValueIcons: []
+      valuesInternal: []
   TriggerWwu:
   - PhysicalPath: Triggers\Default Work Unit.wwu
     ParentPath: Default Work Unit
     guid: 2b47591faef95b4fb314e30c9c2ce648
     GuidInternal: 
-    m_lastTime: -8586118001912086284
+    m_lastTime: -8586110206332222307
     List: []
   ExpandedItems:
   - /The Dreadful Show
+  - /The Dreadful Show/Auxiliary Busses
+  - /The Dreadful Show/Auxiliary Busses/Default Work Unit
   - /The Dreadful Show/Events
   - /The Dreadful Show/Events/Default Work Unit
   - /The Dreadful Show/Events/Default Work Unit/amb
+  - /The Dreadful Show/Events/Default Work Unit/autre
+  - /The Dreadful Show/Events/Default Work Unit/HUD
   - /The Dreadful Show/Events/Default Work Unit/monsters
+  - /The Dreadful Show/Events/Default Work Unit/persos
+  - /The Dreadful Show/Events/Default Work Unit/persos/basics
+  - /The Dreadful Show/Events/Default Work Unit/persos/Bear_Lady
+  - /The Dreadful Show/Events/Default Work Unit/persos/Fire_eater
+  - /The Dreadful Show/Events/Default Work Unit/persos/Grande_dame
+  - /The Dreadful Show/Events/Default Work Unit/persos/jugler
+  - /The Dreadful Show/SoundBanks
+  - /The Dreadful Show/SoundBanks/Default Work Unit
+  - /The Dreadful Show/Switches
+  - /The Dreadful Show/Switches/Default Work Unit
+  - /The Dreadful Show/Switches/Default Work Unit/ENNEMIS_ATTACK_SWITCH
+  - /The Dreadful Show/Switches/Default Work Unit/footsteps_switch
   autoPopulateEnabled: 1
   CurrentPluginConfig: 

@@ -137,6 +137,7 @@ public class TDS_Checkpoint : PunBehaviour
     private void PlayActivationSound()
     {
         // Play activation sound
+        AkSoundEngine.PostEvent("Play_Checkpoint", gameObject);
     }
 
     /// <summary>

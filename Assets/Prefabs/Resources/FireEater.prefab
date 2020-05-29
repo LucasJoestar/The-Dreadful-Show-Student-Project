@@ -216,6 +216,7 @@ MonoBehaviour:
       Color: {r: 0.8980392, g: 0.14117648, b: 0.14117648, a: 1}
     - Name: Hittable
       Color: {r: 0.8773585, g: 0.6957892, b: 0.16140087, a: 1}
+  IgnoreOwner: 1
 --- !u!65 &1742449074048896966
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -418,7 +419,7 @@ GameObject:
   - component: {fileID: 1731511335411897444}
   - component: {fileID: 1824174745630554882}
   - component: {fileID: 1824394482898569924}
-  - component: {fileID: 231089745024148024}
+  - component: {fileID: 6737695558865096786}
   m_Layer: 9
   m_Name: FireEater
   m_TagString: Player|GameController
@@ -457,7 +458,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d46d09c9ef06ec44388469d030f45bdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
   animator: {fileID: 1843503580909251902}
   burnEffect: {fileID: 0}
   collider: {fileID: 1742555645731049310}
@@ -469,8 +469,8 @@ MonoBehaviour:
   IsInvulnerable: 0
   healthCurrent: 150
   healthMax: 150
-  hitSounds: []
-  deathSounds: []
+  hitSoundEvent: 
+  deathSoundEvent: 
   hitBox: {fileID: 1824287809139402758}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
@@ -489,24 +489,7 @@ MonoBehaviour:
   throwBonusDamagesMax: 6
   throwBonusDamagesMin: 2
   throwAimingPoint: {x: 7.5, y: 0, z: 0}
-  foostepsConcrete:
-  - {fileID: 8300000, guid: e5782623eaf2a8346af86722e0f623e7, type: 3}
-  - {fileID: 8300000, guid: c4aca18c488dd604ab6b7bddba5900dd, type: 3}
-  - {fileID: 8300000, guid: 23c706322e0c94345a0cf659bb27d607, type: 3}
-  - {fileID: 8300000, guid: 9d4265f016b35a946aca9d040f738409, type: 3}
-  - {fileID: 8300000, guid: c77da95e5cd97f440bfc8a12c1376ec5, type: 3}
-  foostepsGrass:
-  - {fileID: 8300000, guid: a05eded0f02f0584ebbb4a41dfbafadc, type: 3}
-  - {fileID: 8300000, guid: f81645d323988c84f9c6f829b004eedc, type: 3}
-  - {fileID: 8300000, guid: 1e79d07b7d60cc641acd7fb37d567ec4, type: 3}
-  - {fileID: 8300000, guid: 0795ed0c4c6e4a64a82fac96f21c6859, type: 3}
-  - {fileID: 8300000, guid: a39218a05d33ca14f929652b509997b1, type: 3}
-  foostepsWood:
-  - {fileID: 8300000, guid: f6fa9849a2de992469fc5f019695aa9d, type: 3}
-  - {fileID: 8300000, guid: f563edbd97ebc30488f836fcd0fca97d, type: 3}
-  - {fileID: 8300000, guid: 36061539557b43d4d98b77be61232c43, type: 3}
-  - {fileID: 8300000, guid: 7b76f5d1262594c4991642d93e0d97ae, type: 3}
-  - {fileID: 8300000, guid: 6a863246196cd8844acf8b75f562f205, type: 3}
+  foostepsSoundEvent: Play_FOOT_fireeater
   controller:
     name: New Controller
     axis:
@@ -669,24 +652,6 @@ MonoBehaviour:
   xMovementAfterDrunkenDodge: 1.5
   drunkJumpForce: 225
   soberUpTimer: 0
-  crashSound: {fileID: 8300000, guid: 0a3d7bbc19e9c4b4aac0fb5748cbdb58, type: 3}
-  drinkSound: {fileID: 8300000, guid: 2906f1615219677489019ef73b09c433, type: 3}
-  fireBreathSound: {fileID: 8300000, guid: d823e6c579177624c85afb8f1e3ba9d2, type: 3}
-  pukeSound: {fileID: 8300000, guid: d7b257bf1947dcc4aaa027afe444a6e6, type: 3}
-  spitFireBallSound: {fileID: 8300000, guid: 5a2d4c138842ceb429e03fdf485060ed, type: 3}
-  spitSound: {fileID: 8300000, guid: 443bf1a2857f4ed46b609f280998b50c, type: 3}
-  attackExtinctHit:
-  - {fileID: 8300000, guid: 9ad43bc4a987a3347ab5c5f80adbf16b, type: 3}
-  - {fileID: 8300000, guid: 6b376a9c871632642b54452ca60bae6c, type: 3}
-  - {fileID: 8300000, guid: c012f049b8a594a4e9d59618403a3b76, type: 3}
-  - {fileID: 8300000, guid: dd0084af3c8a23140a8a57f4371b3f23, type: 3}
-  - {fileID: 8300000, guid: bc058d0b831d3ac4c91786d58a896096, type: 3}
-  attackFiretHit:
-  - {fileID: 8300000, guid: 8381a5968f162614491dcbaa518f1cce, type: 3}
-  - {fileID: 8300000, guid: 8c9c39c0cf827764382f6d801ed7c386, type: 3}
-  - {fileID: 8300000, guid: 4e7ada10adba2e0478e6368dd5d98036, type: 3}
-  - {fileID: 8300000, guid: ad105c08b07cb9147948c1aab7ba8323, type: 3}
-  - {fileID: 8300000, guid: e8a2be16a29578244bd92e3f32b713b1, type: 3}
 --- !u!95 &1843503580909251902
 Animator:
   serializedVersion: 3
@@ -841,103 +806,28 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
---- !u!82 &231089745024148024
-AudioSource:
+--- !u!114 &6737695558865096786
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1785089289656064482}
   m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
-    type: 2}
-  m_audioClip: {fileID: 8300000, guid: 533dc2f0f7415f145bc525eb6511b857, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfa388358c0884e4e8aa76193895ab97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 1
+  isStaticObject: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!1 &2990969419023338319
 GameObject:
   m_ObjectHideFlags: 0

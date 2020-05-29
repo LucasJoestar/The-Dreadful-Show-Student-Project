@@ -1389,7 +1389,8 @@ public class TDS_Player : TDS_Character, IPunObservable
             if (isDodging) StopDodge();
 
             // Play feedback sound
-            if (healthCurrent <= ((float)healthMax / 4f)) TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_approachDeath);
+            if (healthCurrent <= (healthMax / 4f))
+                TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_approachDeath);
         }
 
         // If not dead, be just hit

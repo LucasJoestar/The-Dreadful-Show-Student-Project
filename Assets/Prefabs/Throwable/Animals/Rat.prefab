@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 638233118706310064}
   - component: {fileID: 644381019735298222}
   - component: {fileID: 584190349559023867}
-  - component: {fileID: 7010276032025738171}
+  - component: {fileID: 8897491934733284452}
   m_Layer: 11
   m_Name: Rat
   m_TagString: Outline|Throwable
@@ -38,7 +38,7 @@ Transform:
   - {fileID: 6578314680997330502}
   - {fileID: 7334098113127397266}
   - {fileID: 6527572417262796518}
-  - {fileID: 1958304715546639626}
+  - {fileID: 1955222149109266251}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -54,14 +54,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c1083d5daae544780f0990009a4de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 7010276032025738171}
   owner: {fileID: 0}
   attack: {fileID: 11400000, guid: 5b783ed432e74f242be4c42874729f99, type: 2}
-  hitSound: {fileID: 8300000, guid: 6d900478e07eced4fb5d3deb349a3e0a, type: 3}
+  hitSoundEvent: EVENT
   collider: {fileID: 644381019735298222}
   shadow: {fileID: 6346425208969623175}
   hitBox: {fileID: 688021111951553020}
-  feedbackFX: {fileID: 1958304715546637228}
+  feedbackFX: {fileID: 1957038015733581651}
   rigidbody: {fileID: 638233118706310064}
   sprite: {fileID: 8075041755608746907}
   isHeld: 0
@@ -176,103 +175,28 @@ MonoBehaviour:
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!82 &7010276032025738171
-AudioSource:
+--- !u!114 &8897491934733284452
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 585052966105372696}
   m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
-    type: 2}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfa388358c0884e4e8aa76193895ab97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 1
+  isStaticObject: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!1 &585211797503573350
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,6 +259,7 @@ MonoBehaviour:
   BonusDamages: 0
   HittableTags:
     ObjectTags: []
+  IgnoreOwner: 1
 --- !u!1 &5065382618593207934
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,13 +592,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}
---- !u!1 &1958304715546637228 stripped
+--- !u!1 &1957038015733581651 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1548626687783702, guid: 71169cd45071ac94ba9fc202ff4188ca,
     type: 3}
   m_PrefabInstance: {fileID: 1958304715546637381}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1958304715546639626 stripped
+--- !u!4 &1955222149109266251 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4244029294445326, guid: 71169cd45071ac94ba9fc202ff4188ca,
     type: 3}

@@ -70,13 +70,18 @@ public class TDS_Siamese : TDS_Boss
         PhotonNetwork.Destroy(this.gameObject);
     }
 
+    public void PlayCostumeSound()
+    {
+        AkSoundEngine.SetRTPCValue("ennemies_attack", .1f, gameObject);
+        AkSoundEngine.PostEvent("SIAMESE", gameObject);
+    }
+
     #region Overriden Methods
     #endregion
 
     #endregion
 
     #region Unity Methods
-
     protected override void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;

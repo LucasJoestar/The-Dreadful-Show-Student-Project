@@ -5281,14 +5281,8 @@ MonoBehaviour:
   IsInvulnerable: 0
   healthCurrent: 15
   healthMax: 15
-  hitSounds:
-  - {fileID: 8300000, guid: d4da3099b2bc2274a8148bca7fe6f451, type: 3}
-  - {fileID: 8300000, guid: 397a891602e6cd54e94fd7b0585a4b16, type: 3}
-  - {fileID: 8300000, guid: 7ce137a67682ccd4d808e64a1c9b36b4, type: 3}
-  - {fileID: 8300000, guid: aca1b0988ac518645866ac8f43e42892, type: 3}
-  - {fileID: 8300000, guid: 422cf39396f06354896023c1293327d4, type: 3}
-  deathSounds:
-  - {fileID: 8300000, guid: abfaa91280789cd4188a3ab4ddf41994, type: 3}
+  hitSoundEvent: Play_HIT_WOOD
+  deathSoundEvent: Play_CRATE
   loot:
   - {fileID: 5195562398838127266, guid: 2132182c20690b448becee96af442859, type: 3}
   - {fileID: 7394747087646315898, guid: aa07071d770c93a4ca3c26f447796b51, type: 3}

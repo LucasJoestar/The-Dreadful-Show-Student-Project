@@ -94,9 +94,6 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
 
         hitBox.BonusDamages = bonusDamage + _bonusDamages;
         hitBox.Activate(attack, owner);
-
-        // Play sound
-        attack.PlaySound(gameObject);
     }
 
     /// <summary>
@@ -139,14 +136,16 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
         if (!hasHit)
         {
             hasHit = true;
-            
+
             // Play explosive timer sound
+            AkSoundEngine.PostEvent("Play_PRESENT_TIMER", gameObject);
 
             if (PhotonNetwork.isMasterClient)
                 explosionCoroutine = StartCoroutine(SetupExplosion());
         }
 
-        // Play hit "drop" sound
+        // Play drop sound
+        AkSoundEngine.PostEvent("Play_OBJECT_GENERIC_FALL", gameObject);
 
         return; 
     }

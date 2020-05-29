@@ -62,6 +62,7 @@ MonoBehaviour:
   BonusDamages: 0
   HittableTags:
     ObjectTags: []
+  IgnoreOwner: 1
 --- !u!1 &8462223660539153956
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,10 +130,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be188c0a9f7e8bd4da47cefd51a3eea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 951912983376878758}
   owner: {fileID: 0}
   attack: {fileID: 11400000, guid: 03477318084242345a0260b10c460d70, type: 2}
-  hitSound: {fileID: 8300000, guid: 15be36f13737ba148bddf5c1291e4148, type: 3}
+  hitSoundEvent: Play_OBJECT_SHARP
   collider: {fileID: 8462223660539153959}
   shadow: {fileID: 8462223661139009156}
   hitBox: {fileID: 8462223660036227109}
@@ -144,6 +144,7 @@ MonoBehaviour:
   bonusDamage: 2
   ObjectDurability: 2
   weight: 1
+  IsDropped: 0
 --- !u!65 &8462223660539153959
 BoxCollider:
   m_ObjectHideFlags: 0

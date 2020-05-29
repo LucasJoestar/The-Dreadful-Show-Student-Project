@@ -146,6 +146,10 @@ public class TDS_Destructible : TDS_Damageable
             }
         }
 
+        TDS_Throwable _throw = _loot.GetComponent<TDS_Throwable>();
+        if (_throw)
+            _throw.IsDropped = true;
+
         GameObject _instance = PhotonNetwork.Instantiate(_loot.name, _position, Quaternion.identity, 0);
         _availableLoot.Remove(_loot);
 

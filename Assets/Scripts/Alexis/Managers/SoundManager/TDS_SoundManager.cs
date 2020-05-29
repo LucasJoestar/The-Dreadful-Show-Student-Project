@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
-using System.Linq;
 
 public class TDS_SoundManager : MonoBehaviour
 {
@@ -121,28 +120,6 @@ public class TDS_SoundManager : MonoBehaviour
     #region Methods
 
     #region Original Methods
-    /// <summary>
-    /// Get the mixer group of the groupName
-    /// USE THIS METHOD WITH THE CONST MUSIC_GROUP_NAME. VOICES_GROUP_NAME AND FX_GROUP_NAME
-    /// </summary>
-    /// <param name="_groupName"></param>
-    /// <returns></returns>
-    public AudioMixerGroup GetMixerGroupOfName(string _groupName)
-    {
-        if (!audioMixer) return null;
-        return audioMixer.FindMatchingGroups(_groupName).FirstOrDefault(); 
-    }
-
-    /// <summary>
-    /// Returns a random audio clip from an array.
-    /// </summary>
-    /// <param name="_clips">Clips to change one from.</param>
-    /// <returns>Returns a random audio clip.</returns>
-    public static AudioClip GetRandomClip(AudioClip[] _clips)
-    {
-        if (_clips.Length == 0) return null;
-        return _clips[Random.Range(0, _clips.Length)];
-    }
 
     #region Music
     /// <summary>
@@ -345,53 +322,8 @@ public class TDS_SoundManager : MonoBehaviour
         }
         _source.PlayOneShot(_clip, _volumeScale);
     }
-
-    /// <summary>
-    /// Plays a random effect sound from a given array.
-    /// </summary>
-    /// <param name="_clips">Clips to play one from randomly.</param>
-    /// <param name="_source">Audio source to use.</param>
-    public void PlayEffectSound(AudioClip[] _clips, AudioSource _source = null)
-    {
-        PlayEffectSound(_clips, 1, _source);
-    }
-
-    /// <summary>
-    /// Plays a random effect sound from a given array.
-    /// </summary>
-    /// <param name="_clips">Clips to play one from randomly.</param>
-    /// <param name="_volumeScale">Volume scale of the sound(between 0 & 1).</param>
-    /// <param name="_source">Audio source to use.</param>
-    public void PlayEffectSound(AudioClip[] _clips, float _volumeScale, AudioSource _source = null)
-    {
-        PlayEffectSound(GetRandomClip(_clips), _volumeScale, _source);
-    }
     #endregion
 
-    /// <summary>
-    /// Play a sound at a position
-    /// </summary>
-    /// <param name="_source">Source that will play the sound</param>
-    /// <param name="_playedClip">Clip taht will be played</param>
-    /// <param name="_position">Position where the clip will be played</param>
-    /// <param name="_groupName">Group of the audioMixer /!\ USE THE CONST IN THE SOUNDMANAGER TO GET THE RIGHT NAME OF THE GROUP /!\ </param>
-    /// <param name="_isLooping">Does the sound has to loop</param>
-    public void PlaySoundAtPosition(AudioSource _source, AudioClip _playedClip, Vector3 _position, string _groupName = "Master", bool _isLooping = false, float _volume = 1f)
-    {
-        if (_source == null || _playedClip == null) return; 
-        _source.transform.position = _position;
-        _source.outputAudioMixerGroup = GetMixerGroupOfName(_groupName);
-        if(_isLooping)
-        {
-            _source.loop = true;
-            _source.volume = _volume;
-            _source.clip = _playedClip;
-            _source.Play();
-            return; 
-        }
-        _source.loop = false;
-        _source.PlayOneShot(_playedClip, _volume); 
-    }
     #endregion
 
     #region Unity Methods

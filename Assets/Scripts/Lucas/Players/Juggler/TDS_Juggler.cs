@@ -401,13 +401,6 @@ public class TDS_Juggler : TDS_Player
     private float jugglerCounter = 0;
     #endregion
 
-    #region Sounds
-    /// <summary>
-    /// Sound to play when locking an enemy
-    /// </summary>
-    [SerializeField] private AudioClip lockSound = null;
-    #endregion
-
     #endregion
 
     #region Methods
@@ -541,9 +534,6 @@ public class TDS_Juggler : TDS_Player
                             // Set target enemy
                             targetEnemy = _enemies[_index];
                             aimTargetTransform.anchoredPosition = new Vector3(_screenPos.x, _screenPos.y, 0);
-
-                            // Play sound
-                            PlayLock();
                             break;
                         }
                     }
@@ -574,7 +564,7 @@ public class TDS_Juggler : TDS_Player
                     targetEnemy = _enemy;
 
                     // Play sound
-                    PlayLock();
+                    AkSoundEngine.PostEvent("Play_Lock", gameObject);
 
                     // Set aim target & arrow positions
                     aimTargetTransform.anchoredPosition = new Vector3(_enemyPosOnScreen.x, _enemyPosOnScreen.y, 0);
@@ -846,8 +836,9 @@ public class TDS_Juggler : TDS_Player
             if (CurrentThrowableAmount == 0)
             {
                 SetAnim(PlayerAnimState.LostObject);
-                
+
                 // Stop juggle sound
+                AkSoundEngine.PostEvent("Stop_Play_Juggle", gameObject);
             }
         }
 
@@ -893,6 +884,7 @@ public class TDS_Juggler : TDS_Player
                 SetAnim(PlayerAnimState.HasObject);
 
                 // Play juggle sound
+                AkSoundEngine.PostEvent("Play_Juggle", gameObject);
             }
 
             // Updates juggling informations
@@ -1280,16 +1272,6 @@ public class TDS_Juggler : TDS_Player
         base.FreezePlayer();
 
         if (isAiming) StopAiming();
-    }
-    #endregion
-
-    #region Sounds
-    /// <summary>
-    /// Plays sound for when locking an enemy.
-    /// </summary>
-    protected void PlayLock()
-    {
-        // Play lock sound
     }
     #endregion
 

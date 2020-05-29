@@ -222,6 +222,7 @@ MonoBehaviour:
     ObjectTags:
     - Name: Player
       Color: {r: 1, g: 1, b: 1, a: 1}
+  IgnoreOwner: 1
 --- !u!1 &8324170712202841065
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,14 +232,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8326410700217714161}
+  - component: {fileID: 6228752325099018470}
   - component: {fileID: 8305109959566459029}
   - component: {fileID: 8316902795381107907}
   - component: {fileID: 8220726644610976985}
   - component: {fileID: 8222283133238178795}
   - component: {fileID: 8220541036763860223}
-  - component: {fileID: 6228752325099018470}
   - component: {fileID: 3088651002119351410}
-  - component: {fileID: 666820654592751383}
+  - component: {fileID: 7321268966046173439}
   m_Layer: 10
   m_Name: Fakir
   m_TagString: Enemy|Fakir
@@ -265,6 +266,85 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6228752325099018470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8324170712202841065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dc47d02e59f6b14d870bf6513881672, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 3088651002119351410}
+  burnEffect: {fileID: 0}
+  collider: {fileID: 8316902795381107907}
+  rigidbody: {fileID: 8305109959566459029}
+  sprite: {fileID: 8176192794216596615}
+  canBeMoved: 1
+  isDead: 0
+  isIndestructible: 0
+  IsInvulnerable: 0
+  healthCurrent: 80
+  healthMax: 80
+  hitSoundEvent: 
+  deathSoundEvent: 
+  hitBox: {fileID: 8220737141146118317}
+  healthBar: {fileID: 0}
+  throwable: {fileID: 0}
+  handsTransform: {fileID: 8328266892160233703}
+  shadowTransform: {fileID: 8326568344640052173}
+  isAttacking: 0
+  isFacingRight: 0
+  IsPacific: 0
+  IsParalyzed: 0
+  aimAngle: 45
+  speedAccelerationTime: 0.5
+  speedCoef: 1
+  speedCurrent: 0
+  speedInitial: 1.5
+  speedMax: 3
+  throwBonusDamagesMax: 5
+  throwBonusDamagesMin: 2
+  throwAimingPoint: {x: 0, y: 0, z: 0}
+  foostepsConcrete:
+  - {fileID: 8300000, guid: 6cec7ee85aa04054c83f32bb5b9c700b, type: 3}
+  - {fileID: 8300000, guid: f91833bb068843046922681919e4f1f7, type: 3}
+  - {fileID: 8300000, guid: ff1cf12ac0313204babfab1d38299747, type: 3}
+  - {fileID: 8300000, guid: 20a7277c2d2d52449b130ee6a12442d6, type: 3}
+  - {fileID: 8300000, guid: 59af498678b128543a68bdf34270b923, type: 3}
+  foostepsGrass:
+  - {fileID: 8300000, guid: c2b60e7979d499540a0b50aa5e218e69, type: 3}
+  - {fileID: 8300000, guid: 38fce040bcf4f47468b04297e0d6932f, type: 3}
+  - {fileID: 8300000, guid: 4704754b63bb62f41bdc1c1354b9ede9, type: 3}
+  - {fileID: 8300000, guid: ba4b8afe4834d474bbb55cfab3777b1a, type: 3}
+  - {fileID: 8300000, guid: a509118bd05a28e4187d01b2b18ada9b, type: 3}
+  foostepsWood:
+  - {fileID: 8300000, guid: 24c5a1ac845e8b04da02db682fc3f974, type: 3}
+  - {fileID: 8300000, guid: 1225a77dad1db214ab467cdc7eb828ab, type: 3}
+  - {fileID: 8300000, guid: 4593c48e8438b1d4589bb3090cc68c3e, type: 3}
+  - {fileID: 8300000, guid: ffc71ec3999e35e4ebabf3b849e255a3, type: 3}
+  - {fileID: 8300000, guid: e1aaac343f82e40469aff803f75a7b5e, type: 3}
+  canBeDown: 1
+  canThrow: 1
+  doScaleOnPlayerAmount: 1
+  enemyState: 0
+  tauntProbability: 0
+  throwRange: 5
+  wanderingRangeMin: 5
+  wanderingRangeMax: 9
+  healthScalePercent: 25
+  attacks:
+  - {fileID: 11400000, guid: eda2cc5418e908042bfb88957e93f957, type: 2}
+  - {fileID: 11400000, guid: b0caef6e7b560334cb81cbcfda2b0d6d, type: 2}
+  - {fileID: 11400000, guid: 31af5e06730bc82479e0977dc59db0ca, type: 2}
+  - {fileID: 11400000, guid: f9152918a363cb849b24c48388b14d25, type: 2}
+  agent: {fileID: 8220726644610976985}
+  hasEvolved: 0
+  ragingThreshold: 3
+  resetRageDelay: 3
 --- !u!54 &8305109959566459029
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -426,86 +506,6 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
---- !u!114 &6228752325099018470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8324170712202841065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9dc47d02e59f6b14d870bf6513881672, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
-  animator: {fileID: 3088651002119351410}
-  burnEffect: {fileID: 0}
-  collider: {fileID: 8316902795381107907}
-  rigidbody: {fileID: 8305109959566459029}
-  sprite: {fileID: 8176192794216596615}
-  canBeMoved: 1
-  isDead: 0
-  isIndestructible: 0
-  IsInvulnerable: 0
-  healthCurrent: 80
-  healthMax: 80
-  hitSounds: []
-  deathSounds: []
-  hitBox: {fileID: 8220737141146118317}
-  healthBar: {fileID: 0}
-  throwable: {fileID: 0}
-  handsTransform: {fileID: 8328266892160233703}
-  shadowTransform: {fileID: 8326568344640052173}
-  isAttacking: 0
-  isFacingRight: 0
-  IsPacific: 0
-  IsParalyzed: 0
-  aimAngle: 45
-  speedAccelerationTime: 0.5
-  speedCoef: 1
-  speedCurrent: 0
-  speedInitial: 1.5
-  speedMax: 3
-  throwBonusDamagesMax: 5
-  throwBonusDamagesMin: 2
-  throwAimingPoint: {x: 0, y: 0, z: 0}
-  foostepsConcrete:
-  - {fileID: 8300000, guid: 6cec7ee85aa04054c83f32bb5b9c700b, type: 3}
-  - {fileID: 8300000, guid: f91833bb068843046922681919e4f1f7, type: 3}
-  - {fileID: 8300000, guid: ff1cf12ac0313204babfab1d38299747, type: 3}
-  - {fileID: 8300000, guid: 20a7277c2d2d52449b130ee6a12442d6, type: 3}
-  - {fileID: 8300000, guid: 59af498678b128543a68bdf34270b923, type: 3}
-  foostepsGrass:
-  - {fileID: 8300000, guid: c2b60e7979d499540a0b50aa5e218e69, type: 3}
-  - {fileID: 8300000, guid: 38fce040bcf4f47468b04297e0d6932f, type: 3}
-  - {fileID: 8300000, guid: 4704754b63bb62f41bdc1c1354b9ede9, type: 3}
-  - {fileID: 8300000, guid: ba4b8afe4834d474bbb55cfab3777b1a, type: 3}
-  - {fileID: 8300000, guid: a509118bd05a28e4187d01b2b18ada9b, type: 3}
-  foostepsWood:
-  - {fileID: 8300000, guid: 24c5a1ac845e8b04da02db682fc3f974, type: 3}
-  - {fileID: 8300000, guid: 1225a77dad1db214ab467cdc7eb828ab, type: 3}
-  - {fileID: 8300000, guid: 4593c48e8438b1d4589bb3090cc68c3e, type: 3}
-  - {fileID: 8300000, guid: ffc71ec3999e35e4ebabf3b849e255a3, type: 3}
-  - {fileID: 8300000, guid: e1aaac343f82e40469aff803f75a7b5e, type: 3}
-  canBeDown: 1
-  canThrow: 1
-  doScaleOnPlayerAmount: 1
-  enemyState: 0
-  tauntProbability: 0
-  throwRange: 5
-  wanderingRangeMin: 5
-  wanderingRangeMax: 9
-  healthScalePercent: 25
-  attacks:
-  - {fileID: 11400000, guid: eda2cc5418e908042bfb88957e93f957, type: 2}
-  - {fileID: 11400000, guid: b0caef6e7b560334cb81cbcfda2b0d6d, type: 2}
-  - {fileID: 11400000, guid: 31af5e06730bc82479e0977dc59db0ca, type: 2}
-  - {fileID: 11400000, guid: f9152918a363cb849b24c48388b14d25, type: 2}
-  agent: {fileID: 8220726644610976985}
-  hasEvolved: 0
-  ragingThreshold: 3
-  resetRageDelay: 3
 --- !u!95 &3088651002119351410
 Animator:
   serializedVersion: 3
@@ -525,103 +525,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!82 &666820654592751383
-AudioSource:
+--- !u!114 &7321268966046173439
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8324170712202841065}
   m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
-    type: 2}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfa388358c0884e4e8aa76193895ab97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 1
+  isStaticObject: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!1 &8324231847427519637
 GameObject:
   m_ObjectHideFlags: 0

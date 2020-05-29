@@ -296,10 +296,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64604b01ce952ca4c84d469ae0ef00c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 735632852495417401}
   owner: {fileID: 0}
   attack: {fileID: 11400000, guid: b6d5b61386be20d41900816b63cf19ee, type: 2}
-  hitSound: {fileID: 8300000, guid: 2a9880e993b9d6742b36b96f68b9bd4f, type: 3}
+  hitSoundEvent: Play_OBJECT_METAL
   collider: {fileID: 7593376261498355137}
   shadow: {fileID: 686166241511664065}
   hitBox: {fileID: 7593376260666890815}
@@ -311,6 +310,7 @@ MonoBehaviour:
   bonusDamage: 0
   ObjectDurability: 2
   weight: 2
+  IsDropped: 0
   explodingDelay: 3
   animator: {fileID: 2557665236746908573}
   animationSpeedMin: 0.5

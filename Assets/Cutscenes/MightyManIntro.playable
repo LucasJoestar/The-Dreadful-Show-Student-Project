@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8184440184638705072
+--- !u!114 &-843188507920145225
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,14 +9,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f10dd60657c6004587f237a7e90f8e4, type: 3}
-  m_Name: AudioPlayableAsset
+  m_Script: {fileID: 11500000, guid: 750d31db00338674582daf4d9f56d8c2, type: 3}
+  m_Name: AkTimelineEventPlayable
   m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: ff4b86a7c22d2d741a6bed3d0656e511, type: 3}
-  m_Loop: 0
-  m_bufferingTime: 0.1
-  m_ClipProperties:
-    volume: 1
+  akEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: bdc340e615b60204f82c1461326feedc,
+      type: 2}
+  blendInCurve: 4
+  blendOutCurve: 4
+  eventDurationMax: -1
+  eventDurationMin: -1
+  retriggerEvent: 0
+  UseWwiseEventDuration: 1
+  StopEventAtClipEnd: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2775,7 +2782,7 @@ MonoBehaviour:
   m_Loop: 0
   m_Version: 1
   m_Rotation: {x: 0, y: 0, z: 0, w: 1}
---- !u!114 &959326404892978501
+--- !u!114 &3643621926404072218
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2784,25 +2791,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f10dd60657c6004587f237a7e90f8e4, type: 3}
-  m_Name: AudioPlayableAsset
-  m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: 6a47d088f9616cc4694ee27c63e204ed, type: 3}
-  m_Loop: 0
-  m_bufferingTime: 0.1
-  m_ClipProperties:
-    volume: 1
---- !u!114 &1523995974273252570
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b22792c3b570444eb18cb78c2af3a74, type: 3}
-  m_Name: Audio Track
+  m_Script: {fileID: 11500000, guid: 87338d948b7d613418af974ae48dd626, type: 3}
+  m_Name: Ak Timeline Event Track
   m_EditorClassIdentifier: 
   m_Version: 3
   m_AnimClip: {fileID: 0}
@@ -2816,10 +2806,10 @@ MonoBehaviour:
   - m_Version: 1
     m_Start: 3.8333333333333335
     m_ClipIn: 0
-    m_Asset: {fileID: -8184440184638705072}
-    m_Duration: 1.4999999999999996
+    m_Asset: {fileID: -843188507920145225}
+    m_Duration: 0.016666666666666666
     m_TimeScale: 1
-    m_ParentTrack: {fileID: 1523995974273252570}
+    m_ParentTrack: {fileID: 3643621926404072218}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: -1
@@ -2850,7 +2840,25 @@ MonoBehaviour:
       m_RotationOrder: 4
     m_MixOutCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -2863,21 +2871,39 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: Piano_impact
+    m_DisplayName: Play_Piano_impact
   - m_Version: 1
     m_Start: 5.333333333333333
     m_ClipIn: 0
-    m_Asset: {fileID: 959326404892978501}
-    m_Duration: 1.5015
+    m_Asset: {fileID: 5202463142358922550}
+    m_Duration: 0.016666666666666666
     m_TimeScale: 1
-    m_ParentTrack: {fileID: 1523995974273252570}
+    m_ParentTrack: {fileID: 3643621926404072218}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: -1
     m_BlendOutDuration: -1
     m_MixInCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -2914,13 +2940,9 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: Piano_hit
+    m_DisplayName: Play_Piano_hit
   m_Markers:
     m_Objects: []
-  m_TrackProperties:
-    volume: 1
-    stereoPan: 0
-    spatialBlend: 0
 --- !u!114 &4014724664498586068
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2941,7 +2963,7 @@ MonoBehaviour:
   m_Curves: {fileID: 0}
   m_Parent: {fileID: 11400000}
   m_Children:
-  - {fileID: 1523995974273252570}
+  - {fileID: 3643621926404072218}
   m_Clips: []
   m_Markers:
     m_Objects: []
@@ -2968,3 +2990,27 @@ MonoBehaviour:
   m_Clips: []
   m_Markers:
     m_Objects: []
+--- !u!114 &5202463142358922550
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 750d31db00338674582daf4d9f56d8c2, type: 3}
+  m_Name: AkTimelineEventPlayable
+  m_EditorClassIdentifier: 
+  akEvent:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: d96e6ab55ecc89b45bb6fa86a92246a2,
+      type: 2}
+  blendInCurve: 4
+  blendOutCurve: 4
+  eventDurationMax: -1
+  eventDurationMin: -1
+  retriggerEvent: 0
+  UseWwiseEventDuration: 1
+  StopEventAtClipEnd: 1

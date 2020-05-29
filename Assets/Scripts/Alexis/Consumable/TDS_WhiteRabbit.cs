@@ -139,8 +139,6 @@ public class TDS_WhiteRabbit : TDS_Consumable
         sprite.enabled = false;
         if (shadow) shadow.SetActive(false);
 
-        // Play rabbit poof
-
         if (!feedbackFX) return;
 
         feedbackFX.gameObject.SetActive(true);

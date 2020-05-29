@@ -27,9 +27,15 @@ public class TDS_SupplyDestructible : TDS_Destructible
         return _loot;
     }
 
+    private bool hasLanded = false;
     private void OnCollisionEnter(Collision collision)
     {
-        // Play supply sound
+        if (!hasLanded && (collision.gameObject.layer == LayerMask.NameToLayer("Ground")))
+        {
+            // Play supply sound
+            AkSoundEngine.PostEvent("Play_SUPPLY", gameObject);
+            hasLanded = true;
+        }
     }
     #endregion
 }
