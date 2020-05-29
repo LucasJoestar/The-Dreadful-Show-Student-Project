@@ -72,7 +72,7 @@ public class TDS_ThrowableBird : TDS_FleeingThrowable
             yield return null;
         }
 
-        if (PhotonNetwork.isMasterClient) DestroyThrowableObject();
+        if (PhotonNetwork.isMasterClient) Destroy();
     }
 
     /// <summary>

@@ -74,7 +74,7 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: cc3d7ab8a618c64db455f8be16d3f7da
     GuidInternal: 
-    m_lastTime: -8586108415773927022
+    m_lastTime: -8586108391900688795
     List:
     - name: ACROBAT
       guid: d9188ad2d1e8d34294cc1019f9e17537
@@ -687,16 +687,16 @@ MonoBehaviour:
       maxDuration: -1
       minDuration: -1
     - name: Play_FEEDBACK_HIT
-      guid: 6e534d965a949f448e2f329da62845a8
+      guid: ef99ff9747c429458c3976777deb7108
       id: 2599681053
       PathAndIcons:
       - ElementName: Default Work Unit
         ObjectType: 12
-      - ElementName: autre
+      - ElementName: persos
         ObjectType: 4
       - ElementName: Play_FEEDBACK_HIT
         ObjectType: 3
-      Path: Default Work Unit\autre\Play_FEEDBACK_HIT
+      Path: Default Work Unit\persos\Play_FEEDBACK_HIT
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -971,6 +971,20 @@ MonoBehaviour:
       - ElementName: Play_MAGIC_PUF
         ObjectType: 3
       Path: Default Work Unit\autre\Play_MAGIC_PUF
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_monocycle
+      guid: 7f8c6c260df89d4a928b0aa4c72b2ab0
+      id: 3428643599
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: monsters
+        ObjectType: 4
+      - ElementName: Play_monocycle
+        ObjectType: 3
+      Path: Default Work Unit\monsters\Play_monocycle
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -1428,6 +1442,20 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: reset_volume_music
+      guid: 14e4ea5de770b143ad5cb8ad4a0b0b0d
+      id: 4021601711
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: music
+        ObjectType: 4
+      - ElementName: reset_volume_music
+        ObjectType: 3
+      Path: Default Work Unit\music\reset_volume_music
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: SIAMESE
       guid: b770576f7f3dad4e995c0c9fc6b903da
       id: 804534660
@@ -1537,6 +1565,20 @@ MonoBehaviour:
       - ElementName: Stop_MIME_FISH_REELING
         ObjectType: 3
       Path: Default Work Unit\monsters\Stop_MIME_FISH_REELING
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Stop_monocycle
+      guid: 4748a0ad7f05724d96bf27205e9c10c1
+      id: 3940831365
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: monsters
+        ObjectType: 4
+      - ElementName: Stop_monocycle
+        ObjectType: 3
+      Path: Default Work Unit\monsters\Stop_monocycle
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -1713,7 +1755,7 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: 195628f6399e6948865cf7fa78defe64
     GuidInternal: 
-    m_lastTime: -8586108442726590539
+    m_lastTime: -8586108391900599034
     List:
     - name: ENNEMIS_ATTACK_SWITCH
       guid: 696fe1d8172f8e47bf25c6f253d9f271
@@ -1817,6 +1859,18 @@ MonoBehaviour:
         PathAndIcons:
         - ElementName: game_theme
           ObjectType: 10
+      - name: intro
+        guid: 324f668bb801884693c43224b57110ea
+        id: 1125500713
+        PathAndIcons:
+        - ElementName: intro
+          ObjectType: 10
+      - name: outro
+        guid: 1d4ea5e8ed612e438f62acc2823fc0bc
+        id: 4184794294
+        PathAndIcons:
+        - ElementName: outro
+          ObjectType: 10
       - name: titlescreen
         guid: 4f9a3e00c87d5c4ca5b647c5a9f5adcd
         id: 152105657
@@ -1837,8 +1891,7 @@ MonoBehaviour:
   - /The Dreadful Show
   - /The Dreadful Show/Events
   - /The Dreadful Show/Events/Default Work Unit
-  - /The Dreadful Show/Events/Default Work Unit/autre
   - /The Dreadful Show/Events/Default Work Unit/monsters
-  - /The Dreadful Show/Events/Default Work Unit/music
+  - /The Dreadful Show/Events/Default Work Unit/persos
   autoPopulateEnabled: 1
   CurrentPluginConfig: 

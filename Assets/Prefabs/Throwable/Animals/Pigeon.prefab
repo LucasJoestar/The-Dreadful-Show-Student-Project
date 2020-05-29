@@ -118,7 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
   attack: {fileID: 11400000, guid: 5b783ed432e74f242be4c42874729f99, type: 2}
-  hitSoundEvent: EVENT
+  hitSoundEvent: Play_OBJECT_SPLAT
   collider: {fileID: 137447759404682922}
   shadow: {fileID: 5839502989082568835}
   hitBox: {fileID: 42021769048600568}
@@ -130,6 +130,7 @@ MonoBehaviour:
   bonusDamage: 4
   ObjectDurability: 3
   weight: 2
+  IsDropped: 0
   animator: {fileID: 74198959308998173}
   detector: {fileID: 5932299833329836099}
   isFacingRight: 1
