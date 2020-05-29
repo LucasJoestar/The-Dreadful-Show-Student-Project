@@ -443,7 +443,6 @@ public class TDS_UIManager : PunBehaviour
     public IEnumerator ResetInGameUI()
     {
         AkSoundEngine.PostEvent("Stop_music", TDS_GameManager.MainAudio);
-        Debug.LogError("Stop MUSIC");
 
         yield return new WaitForSeconds(1.5f);
         beardLadyLifeBar.ResetLifeBar(); 
@@ -562,7 +561,6 @@ public class TDS_UIManager : PunBehaviour
         {
             case UIState.InMainMenu:
                 AkSoundEngine.PostEvent("titlescreen", TDS_GameManager.MainAudio);
-                Debug.LogError("Play TITLESCREEN");
 
                 mainMenuParent.SetActive(true);
                 roomSelectionMenuParent.SetActive(false);
@@ -874,7 +872,8 @@ public class TDS_UIManager : PunBehaviour
         fatLadyLifeBar.ResetLifeBar();
         fireEaterLifeBar.ResetLifeBar();
         jugglerLifeBar.ResetLifeBar();
-        if(PhotonNetwork.offlineMode)
+
+        if (PhotonNetwork.offlineMode)
         {
             ResetLevel();
             return; 
@@ -1303,7 +1302,6 @@ public class TDS_UIManager : PunBehaviour
 
         // Play
         AkSoundEngine.PostEvent("Play__music", TDS_GameManager.MainAudio);
-        Debug.LogError("PLAY !");
     }
 
     private void OnDestroy()
