@@ -22,6 +22,7 @@ namespace AK
         static const AkUniqueID MIGHTYMAN = 2358710769U;
         static const AkUniqueID MIME = 2559194501U;
         static const AkUniqueID OUTRO = 4184794294U;
+        static const AkUniqueID PAUSE = 3092587493U;
         static const AkUniqueID PLAY__MUSIC = 899895346U;
         static const AkUniqueID PLAY_AMBIANCE_PLUIE = 3995323232U;
         static const AkUniqueID PLAY_APROACHING_DEATH = 1749736639U;
@@ -78,6 +79,8 @@ namespace AK
         static const AkUniqueID PLAY_PIANO_IMPACT = 4074114726U;
         static const AkUniqueID PLAY_PRESENT_EXPLOSION = 2691116071U;
         static const AkUniqueID PLAY_PRESENT_TIMER = 3707495729U;
+        static const AkUniqueID PLAY_PROJECTOR_ON = 2963295578U;
+        static const AkUniqueID PLAY_RIRE_MIME = 1965134945U;
         static const AkUniqueID PLAY_SLIDE = 3715669161U;
         static const AkUniqueID PLAY_SMALL_BLOW = 134550002U;
         static const AkUniqueID PLAY_SPIT = 301125896U;
@@ -102,6 +105,7 @@ namespace AK
         static const AkUniqueID STOP_PLAY_JUGGLE = 1620583853U;
         static const AkUniqueID STOP_SIAMESE_TONRADO = 1391252741U;
         static const AkUniqueID TITLESCREEN = 152105657U;
+        static const AkUniqueID UNPAUSED = 1365518790U;
     } // namespace EVENTS
 
     namespace STATES

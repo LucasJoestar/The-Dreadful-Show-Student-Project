@@ -97,6 +97,10 @@
 							<ShortName>SIAMES_BRUTAL_HIT_01.wav</ShortName>
 							<Path>SFX\SIAMES_BRUTAL_HIT_01_10C4C929.wem</Path>
 						</File>
+						<File Id="517193063" Language="SFX">
+							<ShortName>SIAMES_BRUTAL_HIT_03.wav</ShortName>
+							<Path>SFX\SIAMES_BRUTAL_HIT_03_10C4C929.wem</Path>
+						</File>
 						<File Id="693430572" Language="SFX">
 							<ShortName>SIAMES_BRUTAL_HIT_02.wav</ShortName>
 							<Path>SFX\SIAMES_BRUTAL_HIT_02_10C4C929.wem</Path>
@@ -107,6 +111,7 @@
 							<Media>
 								<File Id="229587323"/>
 								<File Id="693430572"/>
+								<File Id="517193063"/>
 							</Media>
 						</SwitchContainer>
 					</SwitchContainers>
@@ -301,6 +306,7 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
+				<Event Id="3092587493" Name="pause" ObjectPath="\Events\Default Work Unit\pause\pause" MaxAttenuation="0.000000"/>
 				<Event Id="899895346" Name="Play__music" ObjectPath="\Events\Default Work Unit\music\Play__music">
 					<IncludedMemoryFiles>
 						<File Id="80787974" Language="SFX">
@@ -1186,6 +1192,22 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
+				<Event Id="2963295578" Name="Play_projector_on" ObjectPath="\Events\Default Work Unit\autre\Play_projector_on">
+					<IncludedMemoryFiles>
+						<File Id="499663917" Language="SFX">
+							<ShortName>projector_on.wav</ShortName>
+							<Path>SFX\projector_on_7BDA9A3F.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1965134945" Name="Play_rire_mime" ObjectPath="\Events\Default Work Unit\monsters\Play_rire_mime">
+					<IncludedMemoryFiles>
+						<File Id="719989392" Language="SFX">
+							<ShortName>rire_mime.wav</ShortName>
+							<Path>SFX\rire_mime_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="3715669161" Name="Play_SLIDE" ObjectPath="\Events\Default Work Unit\persos\basics\Play_SLIDE">
 					<IncludedMemoryFiles>
 						<File Id="57685847" Language="SFX">
@@ -1425,6 +1447,7 @@
 				<Event Id="1620583853" Name="Stop_Play_Juggle" ObjectPath="\Events\Default Work Unit\persos\jugler\Stop_Play_Juggle" MaxAttenuation="0.000000"/>
 				<Event Id="1391252741" Name="Stop_SIAMESE_TONRADO" ObjectPath="\Events\Default Work Unit\monsters\Stop_SIAMESE_TONRADO" MaxAttenuation="0.000000"/>
 				<Event Id="152105657" Name="titlescreen" ObjectPath="\Events\Default Work Unit\music\titlescreen" MaxAttenuation="0.000000"/>
+				<Event Id="1365518790" Name="unpaused" ObjectPath="\Events\Default Work Unit\pause\unpaused" MaxAttenuation="0.000000"/>
 			</IncludedEvents>
 			<GameParameters>
 				<GameParameter Id="2961358289" Name="foot_surface" ObjectPath="\Game Parameters\Default Work Unit\foot_surface"/>
