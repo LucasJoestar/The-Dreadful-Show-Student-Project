@@ -34,6 +34,11 @@
 												</ModifierInfo>
 											</ModifierList>
 										</Property>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-10</Value>
+											</ValueList>
+										</Property>
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
@@ -3183,6 +3188,454 @@
 								</RandomSequenceContainer>
 							</ChildrenList>
 						</ActorMixer>
+						<RandomSequenceContainer Name="sons_randoms_feedback_hit" ID="{78CEE052-55C3-40C4-9FEC-4EE8F00DC743}" ShortID="421103502">
+							<PropertyList>
+								<Property Name="Pitch" Type="int32">
+									<ModifierList>
+										<ModifierInfo>
+											<Modifier Name="" ID="{445722D1-6BC9-4618-82DA-237F675AE547}">
+												<PropertyList>
+													<Property Name="Enabled" Type="bool" Value="True"/>
+													<Property Name="Max" Type="Real64" Value="50"/>
+													<Property Name="Min" Type="Real64" Value="-50"/>
+												</PropertyList>
+											</Modifier>
+										</ModifierInfo>
+									</ModifierList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="sons_randoms-001" ID="{8F3AA890-C8B3-40FF-A25D-A6C8D006FEAA}" ShortID="263016834">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-9</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sons_randoms-001" ID="{58C9C218-D849-4E0C-847C-02A8D3E4803F}">
+											<PropertyList>
+												<Property Name="LoopBegin" Type="Real64" Value="0.109182772706089"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.109182772706089"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>sons_randoms-001.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="1039238787"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sons_randoms-001" ID="{58C9C218-D849-4E0C-847C-02A8D3E4803F}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sons_randoms-002" ID="{70EBE952-EE06-44A5-96CA-51AD6D23C248}" ShortID="902246928">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-7</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sons_randoms-002" ID="{F1B28B6B-C2F7-416F-8987-4EC647A98882}">
+											<PropertyList>
+												<Property Name="LoopBegin" Type="Real64" Value="0.0589405457059047"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.0589405457059047"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>sons_randoms-002.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="434399357"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sons_randoms-002" ID="{F1B28B6B-C2F7-416F-8987-4EC647A98882}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sons_randoms-003" ID="{E6C15212-5AF0-438C-A6B1-C096581A7F71}" ShortID="93536121">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-7</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sons_randoms-003" ID="{98FEA1C4-E1BF-42A5-9011-2D1D31BAA07E}">
+											<PropertyList>
+												<Property Name="LoopBegin" Type="Real64" Value="0.0691290402171231"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.0691290402171231"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>sons_randoms-003.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="395889736"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sons_randoms-003" ID="{98FEA1C4-E1BF-42A5-9011-2D1D31BAA07E}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sons_randoms-004" ID="{256D0B3C-CEF2-4F10-B385-55B9BA154000}" ShortID="894760995">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-10</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sons_randoms-004" ID="{4EFCC93F-FD6C-4C97-AFDF-B149016928C2}">
+											<PropertyList>
+												<Property Name="LoopBegin" Type="Real64" Value="0.010266508445635"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.010266508445635"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>sons_randoms-004.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="190667037"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sons_randoms-004" ID="{4EFCC93F-FD6C-4C97-AFDF-B149016928C2}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sons_randoms-005" ID="{E52995D1-FBCD-459B-BE17-2E6741D95166}" ShortID="271917424">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-10</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sons_randoms-005" ID="{10D6BA78-C6FB-44BC-B523-377E0584F80D}">
+											<PropertyList>
+												<Property Name="LoopBegin" Type="Real64" Value="0.127260230517077"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.127260230517077"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>sons_randoms-005.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="863886449"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sons_randoms-005" ID="{10D6BA78-C6FB-44BC-B523-377E0584F80D}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sons_randoms-006" ID="{1695D003-6E5E-4E92-81C7-2BD04720B1BF}" ShortID="955163814">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-8</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sons_randoms-006" ID="{84108EC6-C748-49F3-B8C2-7532C8EE4EB6}">
+											<Language>SFX</Language>
+											<AudioFile>sons_randoms-006.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="713747192"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sons_randoms-006" ID="{84108EC6-C748-49F3-B8C2-7532C8EE4EB6}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sons_randoms-007" ID="{6ACB3144-9E15-48FF-A661-63581A6D34AD}" ShortID="856024626">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>8</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sons_randoms-007" ID="{ABE740A5-0E71-4378-8D1E-2F5BFEB69305}">
+											<Language>SFX</Language>
+											<AudioFile>sons_randoms-007.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="334631354"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sons_randoms-007" ID="{ABE740A5-0E71-4378-8D1E-2F5BFEB69305}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sons_randoms-008" ID="{D3BEF329-659A-4745-8073-5B6CA6EEAA2B}" ShortID="439978947">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-2</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sons_randoms-008" ID="{8599B870-6F07-467C-AB78-F8403A349F2B}">
+											<PropertyList>
+												<Property Name="LoopBegin" Type="Real64" Value="0.0591383219954649"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.0591383219954649"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>sons_randoms-008.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="227110297"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sons_randoms-008" ID="{8599B870-6F07-467C-AB78-F8403A349F2B}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sons_randoms-009" ID="{B952913E-E61E-4DF3-AB2D-9D4357F39C50}" ShortID="775002782">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-3</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sons_randoms-009" ID="{92B567BE-5591-4D43-8B07-080BD29A90DE}">
+											<PropertyList>
+												<Property Name="LoopBegin" Type="Real64" Value="0.0579690529061365"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.0579690529061365"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>sons_randoms-009.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="734719067"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sons_randoms-009" ID="{92B567BE-5591-4D43-8B07-080BD29A90DE}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sons_randoms-010" ID="{72E8CF35-BBAC-4EC7-A28B-206560DA80AB}" ShortID="756250546">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>6</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sons_randoms-010" ID="{E1C24C41-C661-4332-9664-A492D5B48248}">
+											<PropertyList>
+												<Property Name="LoopBegin" Type="Real64" Value="0.0803336740568421"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.0803336740568421"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>sons_randoms-010.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="386786738"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sons_randoms-010" ID="{E1C24C41-C661-4332-9664-A492D5B48248}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sons_randoms-011" ID="{7AE047B7-7E97-404B-A6E3-BF851005F73D}" ShortID="153036771">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-7</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sons_randoms-011" ID="{55A7E35D-E189-4213-90EC-47E882C31D68}">
+											<Language>SFX</Language>
+											<AudioFile>sons_randoms-011.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="826798840"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sons_randoms-011" ID="{55A7E35D-E189-4213-90EC-47E882C31D68}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sons_randoms-012" ID="{A5E5B3A5-C57A-425A-94AD-815537DFF746}" ShortID="524412934">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-11</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sons_randoms-012" ID="{53963548-323B-418B-935A-D79495FFE670}">
+											<Language>SFX</Language>
+											<AudioFile>sons_randoms-012.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="805983243"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sons_randoms-012" ID="{53963548-323B-418B-935A-D79495FFE670}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="sons_randoms-013" ID="{DCFE6C1E-E46D-4F9B-9CFB-70C694B7FABE}" ShortID="130926576">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-8</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="sons_randoms-013" ID="{E1B8D16C-E2EE-43BE-A540-7AC63B3ADC68}">
+											<PropertyList>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.066441084205703"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>sons_randoms-013.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="506232291"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="sons_randoms-013" ID="{E1B8D16C-E2EE-43BE-A540-7AC63B3ADC68}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+						</RandomSequenceContainer>
 					</ChildrenList>
 				</Folder>
 				<ActorMixer Name="ennemies" ID="{C1EBF79B-2819-4C1F-9227-BCA191434DBB}" ShortID="474320920">
@@ -3876,11 +4329,6 @@
 												<Property Name="MaxSoundPerInstance" Type="int16">
 													<ValueList>
 														<Value>1</Value>
-													</ValueList>
-												</Property>
-												<Property Name="UseMaxSoundPerInstance" Type="bool">
-													<ValueList>
-														<Value>True</Value>
 													</ValueList>
 												</Property>
 											</PropertyList>
