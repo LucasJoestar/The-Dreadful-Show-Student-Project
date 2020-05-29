@@ -24,8 +24,11 @@ namespace AK
         static const AkUniqueID OUTRO = 4184794294U;
         static const AkUniqueID PAUSE = 3092587493U;
         static const AkUniqueID PLAY__MUSIC = 899895346U;
+        static const AkUniqueID PLAY_AMBIANCE_BRIDGE = 1770062638U;
+        static const AkUniqueID PLAY_AMBIANCE_CITY = 4202510244U;
         static const AkUniqueID PLAY_AMBIANCE_PLUIE = 3995323232U;
         static const AkUniqueID PLAY_APROACHING_DEATH = 1749736639U;
+        static const AkUniqueID PLAY_BANANE_ENVOLE = 2238113425U;
         static const AkUniqueID PLAY_BARRAGE = 1948585674U;
         static const AkUniqueID PLAY_BELL_FALL = 356368927U;
         static const AkUniqueID PLAY_BODYFALL = 1500695173U;
@@ -35,6 +38,9 @@ namespace AK
         static const AkUniqueID PLAY_CHECKPOINT = 2962822744U;
         static const AkUniqueID PLAY_CIRCUS_AMB = 3809599778U;
         static const AkUniqueID PLAY_CLOCK = 4070979672U;
+        static const AkUniqueID PLAY_COUTEAUX_ARBRE = 306206897U;
+        static const AkUniqueID PLAY_COUTEAUX_CIBLE = 1965858284U;
+        static const AkUniqueID PLAY_COUTEAUX_POMME = 1499012097U;
         static const AkUniqueID PLAY_CRATE = 387483575U;
         static const AkUniqueID PLAY_CURTAINS_IN = 4070879423U;
         static const AkUniqueID PLAY_CURTAINS_OUT = 2705757650U;
@@ -62,6 +68,9 @@ namespace AK
         static const AkUniqueID PLAY_LOCK = 4064908091U;
         static const AkUniqueID PLAY_LOOP_FORET = 3908812351U;
         static const AkUniqueID PLAY_MAGIC_PUF = 790309211U;
+        static const AkUniqueID PLAY_MIGHTYMAN_GROS = 4049595702U;
+        static const AkUniqueID PLAY_MIGHTYMAN_PETIT = 3869158349U;
+        static const AkUniqueID PLAY_MIME_ATERRISAGE = 2657800888U;
         static const AkUniqueID PLAY_MONOCYCLE = 3428643599U;
         static const AkUniqueID PLAY_OBJECT_ACCORDION = 2579240604U;
         static const AkUniqueID PLAY_OBJECT_FRUITS = 1884262679U;

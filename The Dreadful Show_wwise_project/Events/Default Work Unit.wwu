@@ -627,6 +627,28 @@
 								</Action>
 							</ChildrenList>
 						</Event>
+						<Event Name="Play_AMBIANCE_BRIDGE" ID="{3F72E838-3FBF-4D32-A92F-5CA1FC22124A}">
+							<ChildrenList>
+								<Action Name="" ID="{8598C088-325F-41EC-9F99-B269F2945540}" ShortID="1072322614">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMBIANCE_BRIDGE" ID="{1D19FA45-2ADB-438F-9417-67061654A58B}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_AMBIANCE_CITY" ID="{87C50056-4CF2-4D43-A2E6-E2267CA663DD}">
+							<ChildrenList>
+								<Action Name="" ID="{665E8004-DFD1-4185-8588-007DFEAB1C86}" ShortID="1234327">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMBIANCE_CITY" ID="{AD37AFDF-2CB4-4B9B-AC32-DF9F0BBD9558}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
 					</ChildrenList>
 				</Folder>
 				<Folder Name="HUD" ID="{C51C0DA7-5B52-4622-9149-1D1682943C8F}" ShortID="115306608">
@@ -1082,6 +1104,83 @@
 								</Action>
 							</ChildrenList>
 						</Event>
+						<Event Name="Play_mightyman_gros" ID="{82D98DF1-7EAF-41BE-99DF-20995892C3CE}">
+							<ChildrenList>
+								<Action Name="" ID="{3414492E-0129-4CCF-A219-CDFDF05A82B9}" ShortID="1065782391">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="mightyman_gros" ID="{E08B9390-BC75-4213-948A-A5E9401B0DEF}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_mightyman_petit" ID="{334619EB-7508-4F6B-9B7F-72BAC9785E19}">
+							<ChildrenList>
+								<Action Name="" ID="{C559C69B-80E2-4817-B1A1-5C7B80640832}" ShortID="1062928390">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="mightyman_petit" ID="{0B2D849D-37FC-44C8-ACB2-0DAF26B3D01A}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_mime_aterrisage" ID="{60963166-A1B0-4C56-B494-FB1A35F70642}">
+							<ChildrenList>
+								<Action Name="" ID="{4420EBBD-0E24-4C43-B235-821B9BF02281}" ShortID="867666745">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="mime_aterrisage" ID="{CA213726-FF61-4ABA-A3B6-E967628D6580}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_couteaux_arbre" ID="{4F41BCA0-D412-4F89-98AA-2B4ADEB6A80A}">
+							<ChildrenList>
+								<Action Name="" ID="{C1D4DBB9-3854-4018-AB4C-113507B42C73}" ShortID="1040517580">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="couteaux_arbre" ID="{848BB756-F9EA-4F9F-B17C-785182918F70}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_banane_envole" ID="{FE74AAC5-210C-47D9-9483-00AFBDF25AD6}">
+							<ChildrenList>
+								<Action Name="" ID="{4F5E7EF3-921B-422B-81BF-83BF6B97B02E}" ShortID="583737846">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="banane_envole" ID="{475B3206-09EB-4EE7-B0EC-FAE42650B5E3}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_couteaux_cible" ID="{5512A70F-B048-4B12-81F0-8FBA35F2B6DE}">
+							<ChildrenList>
+								<Action Name="" ID="{6593FDE5-829A-46F9-8B92-C89CE31654E8}" ShortID="967293199">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="couteaux_cible" ID="{D8DBDD70-92B4-4C07-95D7-F202B320D427}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_couteaux_pomme" ID="{41219294-3FBB-4EB3-ADC6-8E465164EBBE}">
+							<ChildrenList>
+								<Action Name="" ID="{C486FE5C-187B-49C5-8C5D-C2C605A32AB0}" ShortID="583551041">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="couteaux_pomme" ID="{3E5E64DE-723E-4002-88C7-9FF751CD6C13}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
 					</ChildrenList>
 				</Folder>
 				<Event Name="STOP_ALL" ID="{90AABE33-2602-4217-9C8D-07FA133B8496}">
@@ -1250,7 +1349,7 @@
 								<Action Name="" ID="{6CAFD999-989E-45EB-A59E-C27AC6EA2C99}" ShortID="904946081">
 									<PropertyList>
 										<Property Name="ActionType" Type="int16" Value="12"/>
-										<Property Name="FadeTime" Type="Real64" Value="1"/>
+										<Property Name="FadeTime" Type="Real64" Value="2"/>
 										<Property Name="Volume" Type="Real64" Value="-96"/>
 									</PropertyList>
 									<ReferenceList>

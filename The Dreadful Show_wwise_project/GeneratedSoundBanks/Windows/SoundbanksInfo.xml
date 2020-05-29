@@ -25,27 +25,43 @@
 			<ShortName>ambiances</ShortName>
 			<Path>ambiances.bnk</Path>
 			<IncludedEvents>
+				<Event Id="1770062638" Name="Play_AMBIANCE_BRIDGE" ObjectPath="\Events\Default Work Unit\amb\Play_AMBIANCE_BRIDGE" MaxAttenuation="10.000000">
+					<IncludedMemoryFiles>
+						<File Id="577556046" Language="SFX">
+							<ShortName>AMBIANCE\AMBIANCE_BRIDGE.wav</ShortName>
+							<Path>SFX\AMBIANCE\AMBIANCE_BRIDGE_DB5D90CC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="4202510244" Name="Play_AMBIANCE_CITY" ObjectPath="\Events\Default Work Unit\amb\Play_AMBIANCE_CITY" MaxAttenuation="10.000000">
+					<IncludedMemoryFiles>
+						<File Id="765059341" Language="SFX">
+							<ShortName>AMBIANCE_CITY.wav</ShortName>
+							<Path>SFX\AMBIANCE_CITY_DB5D90CC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="3995323232" Name="Play_Ambiance_pluie" ObjectPath="\Events\Default Work Unit\amb\Play_Ambiance_pluie">
 					<IncludedMemoryFiles>
 						<File Id="941717481" Language="SFX">
 							<ShortName>AMBIANCE\Ambiance_pluie.wav</ShortName>
-							<Path>SFX\AMBIANCE\Ambiance_pluie_10C4C929.wem</Path>
+							<Path>SFX\AMBIANCE\Ambiance_pluie_A7E09AA2.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
-				<Event Id="3809599778" Name="play_circus_amb" ObjectPath="\Events\Default Work Unit\amb\play_circus_amb" MaxAttenuation="30.000000">
+				<Event Id="3809599778" Name="play_circus_amb" ObjectPath="\Events\Default Work Unit\amb\play_circus_amb" MaxAttenuation="10.000000">
 					<IncludedMemoryFiles>
 						<File Id="335496261" Language="SFX">
 							<ShortName>AMBIANCE\Cirque.wav</ShortName>
-							<Path>SFX\AMBIANCE\Cirque_D79FB2B7.wem</Path>
+							<Path>SFX\AMBIANCE\Cirque_DB5D90CC.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
-				<Event Id="3908812351" Name="Play_loop_foret" ObjectPath="\Events\Default Work Unit\amb\Play_loop_foret" MaxAttenuation="30.000000">
+				<Event Id="3908812351" Name="Play_loop_foret" ObjectPath="\Events\Default Work Unit\amb\Play_loop_foret" MaxAttenuation="10.000000">
 					<IncludedMemoryFiles>
 						<File Id="891667266" Language="SFX">
 							<ShortName>AMBIANCE\Ambaince_foret.wav</ShortName>
-							<Path>SFX\AMBIANCE\Ambaince_foret_D79FB2B7.wem</Path>
+							<Path>SFX\AMBIANCE\Ambaince_foret_DB5D90CC.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
@@ -344,6 +360,14 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
+				<Event Id="2238113425" Name="Play_banane_envole" ObjectPath="\Events\Default Work Unit\autre\Play_banane_envole">
+					<IncludedMemoryFiles>
+						<File Id="43988017" Language="SFX">
+							<ShortName>banane_envole.wav</ShortName>
+							<Path>SFX\banane_envole_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="1948585674" Name="Play_BARRAGE" ObjectPath="\Events\Default Work Unit\autre\Play_BARRAGE">
 					<IncludedMemoryFiles>
 						<File Id="291351537" Language="SFX">
@@ -354,9 +378,9 @@
 				</Event>
 				<Event Id="356368927" Name="Play_BELL_FALL" ObjectPath="\Events\Default Work Unit\autre\Play_BELL_FALL">
 					<IncludedMemoryFiles>
-						<File Id="991989983" Language="SFX">
-							<ShortName>MISC\BELL_FALL.wav</ShortName>
-							<Path>SFX\MISC\BELL_FALL_10C4C929.wem</Path>
+						<File Id="892053525" Language="SFX">
+							<ShortName>cloche tombe.wav</ShortName>
+							<Path>SFX\cloche tombe_E2ED4396.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
@@ -409,6 +433,30 @@
 						<File Id="1008835701" Language="SFX">
 							<ShortName>MISC\CLOCK.wav</ShortName>
 							<Path>SFX\MISC\CLOCK_D79FB2B7.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="306206897" Name="Play_couteaux_arbre" ObjectPath="\Events\Default Work Unit\autre\Play_couteaux_arbre">
+					<IncludedMemoryFiles>
+						<File Id="394154603" Language="SFX">
+							<ShortName>couteaux_arbre.wav</ShortName>
+							<Path>SFX\couteaux_arbre_01AFBD71.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1965858284" Name="Play_couteaux_cible" ObjectPath="\Events\Default Work Unit\autre\Play_couteaux_cible">
+					<IncludedMemoryFiles>
+						<File Id="754266816" Language="SFX">
+							<ShortName>couteaux_cible.wav</ShortName>
+							<Path>SFX\couteaux_cible_E986CF9B.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1499012097" Name="Play_couteaux_pomme" ObjectPath="\Events\Default Work Unit\autre\Play_couteaux_pomme">
+					<IncludedMemoryFiles>
+						<File Id="311508032" Language="SFX">
+							<ShortName>couteaux_pomme.wav</ShortName>
+							<Path>SFX\couteaux_pomme_3D44B791.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
@@ -496,11 +544,11 @@
 					<IncludedMemoryFiles>
 						<File Id="190667037" Language="SFX">
 							<ShortName>sons_randoms-004.wav</ShortName>
-							<Path>SFX\sons_randoms-004_B41C33FF.wem</Path>
+							<Path>SFX\sons_randoms-004_3C4262E4.wem</Path>
 						</File>
 						<File Id="227110297" Language="SFX">
 							<ShortName>sons_randoms-008.wav</ShortName>
-							<Path>SFX\sons_randoms-008_3F6D9AAB.wem</Path>
+							<Path>SFX\sons_randoms-008_E193589F.wem</Path>
 						</File>
 						<File Id="228192368" Language="SFX">
 							<ShortName>FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_05.wav</ShortName>
@@ -512,19 +560,19 @@
 						</File>
 						<File Id="386786738" Language="SFX">
 							<ShortName>sons_randoms-010.wav</ShortName>
-							<Path>SFX\sons_randoms-010_4D9B078B.wem</Path>
+							<Path>SFX\sons_randoms-010_C686EAA0.wem</Path>
 						</File>
 						<File Id="395889736" Language="SFX">
 							<ShortName>sons_randoms-003.wav</ShortName>
-							<Path>SFX\sons_randoms-003_3994B6EB.wem</Path>
+							<Path>SFX\sons_randoms-003_00B016A4.wem</Path>
 						</File>
 						<File Id="434399357" Language="SFX">
 							<ShortName>sons_randoms-002.wav</ShortName>
-							<Path>SFX\sons_randoms-002_58DE9958.wem</Path>
+							<Path>SFX\sons_randoms-002_D68CDB2D.wem</Path>
 						</File>
 						<File Id="506232291" Language="SFX">
 							<ShortName>sons_randoms-013.wav</ShortName>
-							<Path>SFX\sons_randoms-013_65CD6B9C.wem</Path>
+							<Path>SFX\sons_randoms-013_7B4DB4C2.wem</Path>
 						</File>
 						<File Id="553036249" Language="SFX">
 							<ShortName>FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_02.wav</ShortName>
@@ -536,7 +584,7 @@
 						</File>
 						<File Id="734719067" Language="SFX">
 							<ShortName>sons_randoms-009.wav</ShortName>
-							<Path>SFX\sons_randoms-009_883DFFCB.wem</Path>
+							<Path>SFX\sons_randoms-009_64CF6AC5.wem</Path>
 						</File>
 						<File Id="768994934" Language="SFX">
 							<ShortName>FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_03.wav</ShortName>
@@ -552,7 +600,7 @@
 						</File>
 						<File Id="863886449" Language="SFX">
 							<ShortName>sons_randoms-005.wav</ShortName>
-							<Path>SFX\sons_randoms-005_D2A40750.wem</Path>
+							<Path>SFX\sons_randoms-005_C2211253.wem</Path>
 						</File>
 						<File Id="904219929" Language="SFX">
 							<ShortName>FEEDBACK\FEEDBACK_HIT\FEEDBACK_HIT_04.wav</ShortName>
@@ -564,7 +612,7 @@
 						</File>
 						<File Id="1039238787" Language="SFX">
 							<ShortName>sons_randoms-001.wav</ShortName>
-							<Path>SFX\sons_randoms-001_BC20C04D.wem</Path>
+							<Path>SFX\sons_randoms-001_EEAC79DC.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
@@ -1088,6 +1136,30 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
+				<Event Id="4049595702" Name="Play_mightyman_gros" ObjectPath="\Events\Default Work Unit\autre\Play_mightyman_gros">
+					<IncludedMemoryFiles>
+						<File Id="228368112" Language="SFX">
+							<ShortName>mightyman_gros.wav</ShortName>
+							<Path>SFX\mightyman_gros_734E2D24.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3869158349" Name="Play_mightyman_petit" ObjectPath="\Events\Default Work Unit\autre\Play_mightyman_petit">
+					<IncludedMemoryFiles>
+						<File Id="473828787" Language="SFX">
+							<ShortName>mightyman_petit.wav</ShortName>
+							<Path>SFX\mightyman_petit_7B9A45A4.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2657800888" Name="Play_mime_aterrisage" ObjectPath="\Events\Default Work Unit\autre\Play_mime_aterrisage">
+					<IncludedMemoryFiles>
+						<File Id="63180111" Language="SFX">
+							<ShortName>mime_aterrisage.wav</ShortName>
+							<Path>SFX\mime_aterrisage_53D4BBD1.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="3428643599" Name="Play_monocycle" ObjectPath="\Events\Default Work Unit\monsters\Play_monocycle">
 					<IncludedMemoryFiles>
 						<File Id="472020178" Language="SFX">
@@ -1244,7 +1316,7 @@
 					<IncludedMemoryFiles>
 						<File Id="499663917" Language="SFX">
 							<ShortName>projector_on.wav</ShortName>
-							<Path>SFX\projector_on_7BDA9A3F.wem</Path>
+							<Path>SFX\projector_on_AE01B56A.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
