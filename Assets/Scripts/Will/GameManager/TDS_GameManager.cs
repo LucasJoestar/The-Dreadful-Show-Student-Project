@@ -248,8 +248,12 @@ public static class TDS_GameManager
 
     public static void SetMainCamera(Camera _camera)
     {
-        MainAudio = _camera.gameObject;
         TDS_UIManager.Instance.SetMainCamera(_camera);
+    }
+
+    public static void SetMainAudio(GameObject _go)
+    {
+        MainAudio = _go;
     }
 
     /// <summary>

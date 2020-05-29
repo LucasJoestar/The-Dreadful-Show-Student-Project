@@ -83,6 +83,7 @@ public class TDS_SoundManager : MonoBehaviour
         AudioListener.pause = _doPause;
 
         // PAUSE
+        AkSoundEngine.PostEvent(_doPause ? "pause" : "unpaused", TDS_GameManager.MainAudio);
     }
 
     /// <summary>

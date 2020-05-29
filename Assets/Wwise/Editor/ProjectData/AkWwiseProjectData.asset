@@ -24,7 +24,7 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: 5728dc951eec2f4ba0da03385db6a701
     GuidInternal: 
-    m_lastTime: -8586110206543985962
+    m_lastTime: -8586108427678107607
     List:
     - name: Master Audio Bus
       guid: d8a41415a61d2a41a17e75ca0c2149f3
@@ -35,6 +35,15 @@ MonoBehaviour:
       - ElementName: Master Audio Bus
         ObjectType: 2
       Path: Default Work Unit\Master Audio Bus
+    - name: music bus
+      guid: 70b13f24cd4abd44aae2c7a8eb80eb5e
+      id: 3127962312
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: music bus
+        ObjectType: 2
+      Path: Default Work Unit\music bus
   BankWwu:
   - PhysicalPath: SoundBanks\Default Work Unit.wwu
     ParentPath: Default Work Unit
@@ -65,7 +74,7 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: cc3d7ab8a618c64db455f8be16d3f7da
     GuidInternal: 
-    m_lastTime: -8586108442729432942
+    m_lastTime: -8586108427678182498
     List:
     - name: ACROBAT
       guid: d9188ad2d1e8d34294cc1019f9e17537
@@ -243,6 +252,20 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: intro
+      guid: deec758ad6f57a44b25a2724ecf078e3
+      id: 1125500713
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: music
+        ObjectType: 4
+      - ElementName: intro
+        ObjectType: 3
+      Path: Default Work Unit\music\intro
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: jugler
       guid: f8bfb9f109b1fb41b30201909382c6c0
       id: 3614827090
@@ -312,6 +335,48 @@ MonoBehaviour:
       - ElementName: music
         ObjectType: 3
       Path: Default Work Unit\music\music
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: outro
+      guid: 89646e5c4ef4e94aa3742163fcc0defe
+      id: 4184794294
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: music
+        ObjectType: 4
+      - ElementName: outro
+        ObjectType: 3
+      Path: Default Work Unit\music\outro
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: pause
+      guid: 17fd74f097872d4984a71d1577826e6b
+      id: 3092587493
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: pause
+        ObjectType: 4
+      - ElementName: pause
+        ObjectType: 3
+      Path: Default Work Unit\pause\pause
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: pause
+      guid: 50b3c8b96a8de249b39677d385b3f76d
+      id: 3092587493
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: pause
+        ObjectType: 4
+      - ElementName: pause
+        ObjectType: 3
+      Path: Default Work Unit\pause\pause
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -1505,13 +1570,38 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: unpaused
+      guid: e86163795f030b49bc67aeb8ffe26b40
+      id: 1365518790
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: pause
+        ObjectType: 4
+      - ElementName: unpaused
+        ObjectType: 3
+      Path: Default Work Unit\pause\unpaused
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
   RtpcWwu:
   - PhysicalPath: Game Parameters\Default Work Unit.wwu
     ParentPath: Default Work Unit
     guid: 36f8251017abdb4a85abc88ad330292c
     GuidInternal: 
-    m_lastTime: -8586110206547845633
+    m_lastTime: -8586108427678222390
     List:
+    - name: bruitage_mix
+      guid: fcd86f31541eee4a81c9fe13319fe60e
+      id: 981565069
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: mix
+        ObjectType: 4
+      - ElementName: bruitage_mix
+        ObjectType: 13
+      Path: Default Work Unit\mix\bruitage_mix
     - name: ennemies_attack
       guid: c701273b62fa8c4abfc5bc19d3034e4b
       id: 3540893800
@@ -1530,13 +1620,66 @@ MonoBehaviour:
       - ElementName: foot_surface
         ObjectType: 13
       Path: Default Work Unit\foot_surface
+    - name: mix
+      guid: 2248a998e6d2464bafa37a7595143324
+      id: 1182670517
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: mix
+        ObjectType: 4
+      - ElementName: mix
+        ObjectType: 13
+      Path: Default Work Unit\mix\mix
+    - name: mix_music
+      guid: 8ccdc986a8bab5488dc85ba9a87d05ca
+      id: 3326784033
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: mix
+        ObjectType: 4
+      - ElementName: mix_music
+        ObjectType: 13
+      Path: Default Work Unit\mix\mix_music
   StateWwu:
   - PhysicalPath: States\Default Work Unit.wwu
     ParentPath: Default Work Unit
     guid: 860f0487bae3cd4ca7ba6237240ac2e7
     GuidInternal: 
-    m_lastTime: -8586110206337947003
-    List: []
+    m_lastTime: -8586108427678037800
+    List:
+    - name: pause_state
+      guid: 596ecdad78dd7244b4bfa9a65c1a4278
+      id: 1944582999
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: pause_state
+        ObjectType: 9
+      Path: Default Work Unit\pause_state
+      values:
+      - name: None
+        guid: 6ae27da56abc834ea7069f277aefee71
+        id: 748895195
+        PathAndIcons:
+        - ElementName: None
+          ObjectType: 8
+      - name: paused
+        guid: a91c1da576447b48a5d44ec7cbadbcd1
+        id: 319258907
+        PathAndIcons:
+        - ElementName: paused
+          ObjectType: 8
+      - name: unpaused
+        guid: f6bcd095c8327440af7cd3001529ba7d
+        id: 1365518790
+        PathAndIcons:
+        - ElementName: unpaused
+          ObjectType: 8
+      ValueGuids: []
+      ValueIcons: []
+      valuesInternal: []
   SwitchWwu:
   - PhysicalPath: Switches\Default Work Unit.wwu
     ParentPath: Default Work Unit
@@ -1667,5 +1810,6 @@ MonoBehaviour:
   - /The Dreadful Show/Events
   - /The Dreadful Show/Events/Default Work Unit
   - /The Dreadful Show/Events/Default Work Unit/music
+  - /The Dreadful Show/Events/Default Work Unit/pause
   autoPopulateEnabled: 1
   CurrentPluginConfig: 

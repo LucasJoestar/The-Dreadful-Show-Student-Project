@@ -1272,7 +1272,8 @@ public class TDS_UIManager : PunBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             photonView.viewID = 999;
-            SceneManager.sceneLoaded += RefreshUI; 
+            SceneManager.sceneLoaded += RefreshUI;
+            TDS_GameManager.SetMainAudio(gameObject);
         }
         else
         {
@@ -1299,6 +1300,10 @@ public class TDS_UIManager : PunBehaviour
         ActivateMenu(uiState);
         optionManager.ResetDisplayedSettings();
         TDS_SceneManager.OnLoadScene += CleanWorldCanvas;
+
+        // Play
+        AkSoundEngine.PostEvent("Play__music", TDS_GameManager.MainAudio);
+        Debug.LogError("PLAY !");
     }
 
     private void OnDestroy()

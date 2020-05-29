@@ -1156,6 +1156,8 @@ public class TDS_Camera : MonoBehaviour
         {
             AkSoundEngine.PostEvent("STOP_ALL", TDS_GameManager.MainAudio);
             Instance = null;
+
+            Debug.LogError("STOP ALL");
         }
     }
 
@@ -1176,7 +1178,6 @@ public class TDS_Camera : MonoBehaviour
         objectLayer = LayerMask.NameToLayer("Object");
 
         TDS_GameManager.SetMainCamera(camera);
-        AkSoundEngine.PostEvent("Play__music", TDS_GameManager.MainAudio);
     }
 	
 	// Update is called once per frame
