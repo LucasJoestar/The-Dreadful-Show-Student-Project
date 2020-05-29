@@ -190,6 +190,8 @@ public class TDS_UnicycleSiamese : TDS_Enemy
     protected override void Die()
     {
         base.Die();
+
+        AkSoundEngine.PostEvent("Stop_monocycle", gameObject);
         if (Area) Area.RemoveEnemy(this);
     }
     #endregion
@@ -211,7 +213,9 @@ public class TDS_UnicycleSiamese : TDS_Enemy
         hasReachedRightBound = Mathf.Abs(transform.position.x - bounds.XMin) >= Mathf.Abs(transform.position.x - bounds.XMax) ? true : false;
         base.Start();
         SetEnemyState(EnemyState.MakingDecision);
-        StartCoroutine(ResetAttackCoolDown()); 
+        StartCoroutine(ResetAttackCoolDown());
+
+        AkSoundEngine.PostEvent("Play_monocycle", gameObject);
     }
     #endregion
 

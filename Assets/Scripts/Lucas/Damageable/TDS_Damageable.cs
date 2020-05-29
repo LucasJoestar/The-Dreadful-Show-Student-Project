@@ -420,6 +420,13 @@ public abstract class TDS_Damageable : TDS_Object
         if (!string.IsNullOrEmpty(hitSoundEvent))
             AkSoundEngine.PostEvent(hitSoundEvent, gameObject);
 
+        // Play feedback sounds
+        AkSoundEngine.PostEvent("Play_FEEDBACK_HIT", gameObject);
+
+        // RTPC
+        //AkSoundEngine.SetRTPCValue("bruitage_mix", .5f);
+        //AkSoundEngine.SetRTPCValue("music_mix", .5f);
+
         return true;
     }
 
