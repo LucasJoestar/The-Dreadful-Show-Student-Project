@@ -68,10 +68,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be188c0a9f7e8bd4da47cefd51a3eea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 7087133616939732853}
   owner: {fileID: 0}
   attack: {fileID: 11400000, guid: 5b783ed432e74f242be4c42874729f99, type: 2}
-  hitSound: {fileID: 8300000, guid: 0cf16d85e3992844fa1d1dc73d092faf, type: 3}
+  hitSoundEvent: Play_OBJECT_PLASTIC
   collider: {fileID: 4458971642939108422}
   shadow: {fileID: 7992838211602191232}
   hitBox: {fileID: 4458971643463101261}
@@ -83,6 +82,7 @@ MonoBehaviour:
   bonusDamage: 2
   ObjectDurability: 2
   weight: 1
+  IsDropped: 0
 --- !u!212 &4458971642939108426
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -168,8 +168,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 1
+  instantiationId: 1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!82 &7087133616939732853
