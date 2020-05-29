@@ -199,7 +199,8 @@ public enum CustomEventType
     LoadNextLevel,
     PlayMusic,
     PlayCutscene,
-    SetUIQuotes
+    SetUIQuotes,
+    PlaySoundEvent
 }
 
 /// <summary>

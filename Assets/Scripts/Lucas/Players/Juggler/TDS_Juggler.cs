@@ -673,6 +673,9 @@ public class TDS_Juggler : TDS_Player
         }
 
         juggleKickOutHeight = 0;
+
+        // Play juggle sound
+        AkSoundEngine.PostEvent("Play_Juggle", gameObject);
     }
 
     // -----------
@@ -749,6 +752,9 @@ public class TDS_Juggler : TDS_Player
         }
 
         juggleKickOutHeight = 5f;
+
+        // Stop juggle sound
+        AkSoundEngine.PostEvent("Stop_Play_Juggle", gameObject);
     }
 
     /// <summary>
@@ -763,6 +769,9 @@ public class TDS_Juggler : TDS_Player
         }
 
         juggleKickOutHeight = 15;
+
+        // Stop juggle sound
+        AkSoundEngine.PostEvent("Stop_Play_Juggle", gameObject);
     }
 
     /// <summary>

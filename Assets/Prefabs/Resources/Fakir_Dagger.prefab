@@ -168,7 +168,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa49a71e1d33b749b3c0a4bef6819bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 1610903962220317501}
   range: 15
   speed: 12
   hitBox: {fileID: 7136871224362975264}
@@ -536,6 +535,21 @@ PrefabInstance:
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
       value: 0.7411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 1399727589811485407, guid: 71169cd45071ac94ba9fc202ff4188ca,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5322318924650535900, guid: 71169cd45071ac94ba9fc202ff4188ca,
+        type: 3}
+      propertyPath: triggerList.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5322318924650535900, guid: 71169cd45071ac94ba9fc202ff4188ca,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}

@@ -17,6 +17,8 @@ public class TDS_AnimTornadoSiamese : StateMachineBehaviour
         // Play sound on GameObject
         AkSoundEngine.SetRTPCValue("ennemies_attack", .4f, gameObject);
         AkSoundEngine.PostEvent("SIAMESE", gameObject);
+
+        Debug.LogError("Start Tornado");
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -30,6 +32,8 @@ public class TDS_AnimTornadoSiamese : StateMachineBehaviour
     {
         // Stop playing sound on GameObject
         AkSoundEngine.PostEvent("Stop_SIAMESE_TONRADO", gameObject);
+
+        Debug.LogError("Stop Tornado");
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

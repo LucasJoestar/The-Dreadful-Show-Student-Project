@@ -30,6 +30,8 @@ public class TDS_Destructible : TDS_Damageable
     private static readonly int destruction_Hash = Animator.StringToHash("Destruction");
     #endregion
 
+    [SerializeField] protected bool isSupply = false;
+
     /// <summary>
     /// All available loot for this destructible.
     /// </summary>
@@ -241,7 +243,6 @@ public class TDS_Destructible : TDS_Damageable
         base.Start();
     }
 
-    #region Editor
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
@@ -251,7 +252,6 @@ public class TDS_Destructible : TDS_Damageable
             if ((photonView.owner == null) && PhotonNetwork.connected && PhotonNetwork.isMasterClient) photonView.TransferOwnership(PhotonNetwork.masterClient);
         }
     }
-    #endregion
     #endregion
 
     #endregion
