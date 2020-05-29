@@ -115,6 +115,17 @@
 						</Curve>
 					</SwitchOnRTPC>
 				</SwitchGroup>
+				<SwitchGroup Name="music_switch" ID="{F5091C92-6F30-4BF8-8E71-AFD0DA7482C3}">
+					<PropertyList>
+						<Property Name="Color" Type="int16" Value="10"/>
+						<Property Name="OverrideColor" Type="bool" Value="True"/>
+					</PropertyList>
+					<ChildrenList>
+						<Switch Name="battle_theme" ID="{74CF8D4F-1107-4762-8ACD-46B9B90639B8}"/>
+						<Switch Name="titlescreen" ID="{003E9A4F-7DC8-4C5C-A5B6-47C5A9F5ADCD}"/>
+						<Switch Name="game_theme" ID="{D4CF0137-3553-40D8-AEFD-C22CAA685313}"/>
+					</ChildrenList>
+				</SwitchGroup>
 			</ChildrenList>
 		</WorkUnit>
 	</Switches>

@@ -14,11 +14,15 @@ namespace AK
     namespace EVENTS
     {
         static const AkUniqueID ACROBAT = 248488741U;
+        static const AkUniqueID BATTLE_THEME = 3421098005U;
         static const AkUniqueID BRUTAL_SIAMESE = 2390245931U;
         static const AkUniqueID FAKIR = 2888865648U;
+        static const AkUniqueID GAME_THEME = 2431730365U;
         static const AkUniqueID MIGHTYMAN = 2358710769U;
         static const AkUniqueID MIME = 2559194501U;
+        static const AkUniqueID PLAY__MUSIC = 899895346U;
         static const AkUniqueID PLAY_AMBIANCE_PLUIE = 3995323232U;
+        static const AkUniqueID PLAY_APROACHING_DEATH = 1749736639U;
         static const AkUniqueID PLAY_BARRAGE = 1948585674U;
         static const AkUniqueID PLAY_BELL_FALL = 356368927U;
         static const AkUniqueID PLAY_BODYFALL = 1500695173U;
@@ -36,6 +40,7 @@ namespace AK
         static const AkUniqueID PLAY_DRUNK = 4045789892U;
         static const AkUniqueID PLAY_DUMMY = 2175868442U;
         static const AkUniqueID PLAY_EAT = 2489068396U;
+        static const AkUniqueID PLAY_FEEDBACK_HIT = 2599681053U;
         static const AkUniqueID PLAY_FIREBALL_HIT = 3177064491U;
         static const AkUniqueID PLAY_FIREBALL_SPIT = 2915545918U;
         static const AkUniqueID PLAY_FIREBREATH = 694398836U;
@@ -84,13 +89,17 @@ namespace AK
         static const AkUniqueID PLAY_WINDOW_BREAK = 1544694806U;
         static const AkUniqueID PUNK = 1942555113U;
         static const AkUniqueID SIAMESE = 804534660U;
+        static const AkUniqueID STOP_ALL = 452547817U;
         static const AkUniqueID STOP_AMBIANCE_PLUIE = 2819974902U;
+        static const AkUniqueID STOP_APROACHING_DEATH = 3040299933U;
         static const AkUniqueID STOP_BURNING = 3057916297U;
         static const AkUniqueID STOP_CLOCK = 236049130U;
         static const AkUniqueID STOP_DRUNK = 411907754U;
         static const AkUniqueID STOP_MIME_FISH_REELING = 1341598556U;
+        static const AkUniqueID STOP_MUSIC = 2837384057U;
         static const AkUniqueID STOP_PLAY_JUGGLE = 1620583853U;
         static const AkUniqueID STOP_SIAMESE_TONRADO = 1391252741U;
+        static const AkUniqueID TITLESCREEN = 152105657U;
     } // namespace EVENTS
 
     namespace SWITCHES
@@ -121,6 +130,18 @@ namespace AK
                 static const AkUniqueID WOOD = 2058049674U;
             } // namespace SWITCH
         } // namespace FOOTSTEPS_SWITCH
+
+        namespace MUSIC_SWITCH
+        {
+            static const AkUniqueID GROUP = 2724869341U;
+
+            namespace SWITCH
+            {
+                static const AkUniqueID BATTLE_THEME = 3421098005U;
+                static const AkUniqueID GAME_THEME = 2431730365U;
+                static const AkUniqueID TITLESCREEN = 152105657U;
+            } // namespace SWITCH
+        } // namespace MUSIC_SWITCH
 
     } // namespace SWITCHES
 

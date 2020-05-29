@@ -6,20 +6,20 @@
 				<SoundcasterSession Name="New Soundcaster Session" ID="{63AF646D-9C33-4462-8465-385C30922E32}">
 					<ModuleList>
 						<Module>
-							<ObjectRef Name="Play_Juggle" ID="{E7003729-4BBD-4DFF-9B23-8579E1FA917B}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<ObjectRef Name="battle_theme" ID="{8D17B91B-4C53-44FB-8532-C91C7C50B4C3}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
 							<Position X="0" Y="0"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="Stop_Play_Juggle" ID="{8234542E-B0CA-4CBD-9A9A-B69C764C5807}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
-							<Position X="0" Y="2"/>
+							<ObjectRef Name="Play__music" ID="{5F968BC1-EF02-40D8-9C06-0DF42FB9F079}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="0" Y="1"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="MIME" ID="{5B348EEB-138A-4F15-ABCC-DF91D2E306E4}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<ObjectRef Name="game_theme" ID="{D1EF2D47-830C-4C58-8810-A8D1066B975C}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
 							<Position X="1" Y="0"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="ACROBAT" ID="{D28A18D9-E8D1-42D3-94CC-1019F9E17537}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
-							<Position X="1" Y="2"/>
+							<ObjectRef Name="titlescreen" ID="{71022DD3-B578-4595-BDDE-8CF33C8E4B13}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="2" Y="0"/>
 						</Module>
 						<Module>
 							<ObjectRef Name="Play_Ambiance_pluie" ID="{4AF5190A-AC63-40B9-95C6-F8D566306588}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
@@ -43,6 +43,7 @@
 					<CurrentStateList ShowAll="true"/>
 					<CurrentSwitchList ShowAll="true">
 						<CurrentSwitchRef Name="attaque_3" ID="{AABA20D6-8CA8-480E-BC3A-DA2D9AF32D48}"/>
+						<CurrentSwitchRef Name="game_theme" ID="{D4CF0137-3553-40D8-AEFD-C22CAA685313}"/>
 					</CurrentSwitchList>
 				</SoundcasterSession>
 			</ChildrenList>
