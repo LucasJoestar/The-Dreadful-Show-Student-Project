@@ -508,6 +508,17 @@
 								</Action>
 							</ChildrenList>
 						</Event>
+						<Event Name="Play_rire_mime" ID="{F0FFC323-183D-4CC1-BDAE-EFE677B3AF14}">
+							<ChildrenList>
+								<Action Name="" ID="{43EF8F17-138F-4976-85F1-C3BF8C830384}" ShortID="444433447">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="rire_mime" ID="{C72DDC13-47A6-4A52-9EBB-C158DCC688C2}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
 					</ChildrenList>
 				</Folder>
 				<Folder Name="amb" ID="{8BD1AEC4-4DE3-4F6E-8FCD-EEF2EFF7BF69}" ShortID="249906944">
@@ -1024,6 +1035,17 @@
 								</Action>
 							</ChildrenList>
 						</Event>
+						<Event Name="Play_projector_on" ID="{13F616C6-5629-404F-9047-9609DDFBE448}">
+							<ChildrenList>
+								<Action Name="" ID="{8BD060CB-527F-4F31-869A-BBB8C9426082}" ShortID="207238847">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="projector_on" ID="{DB312115-6BEF-4DF2-8F64-9FDACE89BB92}" WorkUnitID="{B0789196-2323-4243-AC08-783C802D3753}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
 					</ChildrenList>
 				</Folder>
 				<Event Name="STOP_ALL" ID="{90AABE33-2602-4217-9C8D-07FA133B8496}">
@@ -1235,6 +1257,21 @@
 									<ReferenceList>
 										<Reference Name="Target">
 											<ObjectRef Name="paused" ID="{A51D1CA9-4476-487B-A5D4-4EC7CBADBCD1}" WorkUnitID="{87040F86-E3BA-4CCD-A7BA-6237240AC2E7}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{C0ADE90E-B7C3-4B32-B36D-2E4D9F45F541}" ShortID="763336851">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="41"/>
+										<Property Name="Inclusion" Type="bool">
+											<ValueList>
+												<Value>False</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="titlescreen" ID="{71022DD3-B578-4595-BDDE-8CF33C8E4B13}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
 										</Reference>
 									</ReferenceList>
 								</Action>

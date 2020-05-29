@@ -3307,6 +3307,28 @@
 														<ActiveSource Name="SIAMES_BRUTAL_HIT_02" ID="{5C5C43D4-C382-4311-AAF3-7A967652BD09}" Platform="Linked"/>
 													</ActiveSourceList>
 												</Sound>
+												<Sound Name="SIAMES_BRUTAL_HIT_03" ID="{48DB25D1-4F50-4066-9AB6-D14C94608EEE}" ShortID="22591728">
+													<ReferenceList>
+														<Reference Name="Conversion">
+															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+														</Reference>
+														<Reference Name="OutputBus">
+															<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+														</Reference>
+													</ReferenceList>
+													<ChildrenList>
+														<AudioFileSource Name="SIAMES_BRUTAL_HIT_03" ID="{8AC85F85-398F-4510-A9FD-5C8ACFB7B339}">
+															<Language>SFX</Language>
+															<AudioFile>SIAMES_BRUTAL_HIT_03.wav</AudioFile>
+															<MediaIDList>
+																<MediaID ID="517193063"/>
+															</MediaIDList>
+														</AudioFileSource>
+													</ChildrenList>
+													<ActiveSourceList>
+														<ActiveSource Name="SIAMES_BRUTAL_HIT_03" ID="{8AC85F85-398F-4510-A9FD-5C8ACFB7B339}" Platform="Linked"/>
+													</ActiveSourceList>
+												</Sound>
 											</ChildrenList>
 										</RandomSequenceContainer>
 									</ChildrenList>
@@ -4354,6 +4376,48 @@
 										</GroupingList>
 									</GroupingInfo>
 								</SwitchContainer>
+								<Sound Name="rire_mime" ID="{C72DDC13-47A6-4A52-9EBB-C158DCC688C2}" ShortID="486274169">
+									<PropertyList>
+										<Property Name="Pitch" Type="int32">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{A180382C-4FF9-4D6E-AFFE-89E3A7C5732B}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="75"/>
+															<Property Name="Min" Type="Real64" Value="-50"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-4</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="rire_mime" ID="{6092CC97-F6BB-4833-9723-D1F5936CED82}">
+											<Language>SFX</Language>
+											<AudioFile>rire_mime.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="719989392"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="rire_mime" ID="{6092CC97-F6BB-4833-9723-D1F5936CED82}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
 							</ChildrenList>
 						</Folder>
 					</ChildrenList>
@@ -5367,6 +5431,33 @@
 											</ChildrenList>
 											<ActiveSourceList>
 												<ActiveSource Name="OBJECT_GENERIC_THROW" ID="{4C535FD9-9EFB-4C95-A944-AA0C4F80E828}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="projector_on" ID="{DB312115-6BEF-4DF2-8F64-9FDACE89BB92}" ShortID="929073865">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{33CA69B7-7DDB-46C2-B7E2-8B3FBED014B9}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{95DC2857-EC1E-4B2F-A0DA-03385DB6A701}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="projector_on" ID="{9E0216BB-8484-49A1-BEB7-6E484CB72567}">
+													<PropertyList>
+														<Property Name="LoopBegin" Type="Real64" Value="0.1827018199335"/>
+														<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+														<Property Name="TrimBegin" Type="Real64" Value="0.1827018199335"/>
+													</PropertyList>
+													<Language>SFX</Language>
+													<AudioFile>projector_on.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="499663917"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="projector_on" ID="{9E0216BB-8484-49A1-BEB7-6E484CB72567}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
 									</ChildrenList>
