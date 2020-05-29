@@ -43,6 +43,10 @@ public class TDS_DestructibleEditor : TDS_DamageableEditor
 
     /// <summary>SerializedProperty for <see cref="TDS_Destructible.lootMin"/> of type <see cref="int"/>.</summary>
     private SerializedProperty lootMin = null;
+
+
+    /// <summary>SerializedProperty for <see cref="TDS_Destructible.isSupply"/> of type <see cref="bool"/>.</summary>
+    private SerializedProperty isSupply = null;
     #endregion
 
     #region Foldouts
@@ -190,6 +194,7 @@ public class TDS_DestructibleEditor : TDS_DamageableEditor
     /// </summary>
     protected void DrawSettings()
     {
+        TDS_EditorUtility.Toggle("Is Supply", string.Empty, isSupply);
         TDS_EditorUtility.IntSlider("Loot Chance", "Chance in percentage to have drop on this destructible destruction", lootChance, 0, 100);
 
         GUILayout.Space(3);
@@ -219,7 +224,8 @@ public class TDS_DestructibleEditor : TDS_DamageableEditor
         lootChance = serializedObject.FindProperty("lootChance");
         lootMax = serializedObject.FindProperty("lootMax");
         lootMin = serializedObject.FindProperty("lootMin");
-        
+        isSupply = serializedObject.FindProperty("isSupply");
+
         // Loads the editor folded and unfolded values of this class
         isDestrUnfolded = EditorPrefs.GetBool("isDestrUnfolded", isDestrUnfolded);
         areDestrComponentsUnfolded = EditorPrefs.GetBool("areDestrComponentsUnfolded", areDestrComponentsUnfolded);

@@ -427,6 +427,11 @@ public class TDS_Event
                 TDS_SpawnerArea.OnOneAreaDesactivated -= DeductSpawnArea;
                 break;
 
+            // Wait that a certain amount of spawn area are desactivated
+            case CustomEventType.PlaySoundEvent:
+                AkSoundEngine.PostEvent(eventString, TDS_GameManager.MainAudio);
+                break;
+
             // Nobody here but us chicken
             default:
                 break;

@@ -58,16 +58,6 @@ public class TDS_SoundManager : MonoBehaviour
     /// Audio source used to play narrator quotes.
     /// </summary>
     [SerializeField] private AudioSource narratorSource = null;
-
-    /// <summary>
-    /// Audio source used to play all kind of UI stuff.
-    /// </summary>
-    [SerializeField] private AudioSource uiSource = null;
-
-    /// <summary>
-    /// Audio source used to play all kind of effects stuff.
-    /// </summary>
-    [SerializeField] private AudioSource effectsSource = null;
     #endregion
 
     #region Coroutines
@@ -315,11 +305,6 @@ public class TDS_SoundManager : MonoBehaviour
     /// <param name="_source">Audio source to use.</param>
     public void PlayEffectSound(AudioClip _clip, float _volumeScale, AudioSource _source = null)
     {
-        if (!_source)
-        {
-            if (!effectsSource) return;
-            _source = effectsSource;
-        }
         _source.PlayOneShot(_clip, _volumeScale);
     }
     #endregion

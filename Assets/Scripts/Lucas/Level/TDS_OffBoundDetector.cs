@@ -43,7 +43,7 @@ public class TDS_OffBoundDetector : MonoBehaviour
             TDS_Throwable _object = other.GetComponent<TDS_Throwable>();
 
             if (_object && _object.transform.position.x < TDS_Camera.Instance.CurrentBounds.XMin)
-                _object.DestroyThrowableObject();
+                _object.Destroy();
         }
     }
     #endregion

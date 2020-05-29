@@ -328,6 +328,10 @@ public class TDS_EventSystemEditor : Editor
                         TDS_EditorUtility.PropertyField("Bound min X", "Transform to use for minimum bound X value to wait", _event.FindPropertyRelative("eventTransform"));
                         break;
 
+                    case CustomEventType.PlaySoundEvent:
+                        TDS_EditorUtility.PropertyField("Sound Event", "Name of the sound event to call", _event.FindPropertyRelative("eventString"));
+                        break;
+
                     default:
                         // Mhmm...
                         break;
