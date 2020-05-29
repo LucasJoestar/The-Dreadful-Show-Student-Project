@@ -14,12 +14,16 @@
 							<Position X="0" Y="1"/>
 						</Module>
 						<Module>
+							<ObjectRef Name="Stop_music" ID="{76E235EF-7ACA-44AE-A8A2-0AA3FC48FA8A}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="0" Y="2"/>
+						</Module>
+						<Module>
 							<ObjectRef Name="game_theme" ID="{D1EF2D47-830C-4C58-8810-A8D1066B975C}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
 							<Position X="1" Y="0"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="unpaused" ID="{796361E8-035F-490B-BC67-AEB8FFE26B40}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
-							<Position X="1" Y="1"/>
+							<ObjectRef Name="reset_volume_music" ID="{5DEAE414-70E7-43B1-AD5C-B8AD4A0B0B0D}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="1" Y="2"/>
 						</Module>
 						<Module>
 							<ObjectRef Name="titlescreen" ID="{71022DD3-B578-4595-BDDE-8CF33C8E4B13}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
@@ -30,11 +34,15 @@
 							<Position X="2" Y="1"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="Play_Ambiance_pluie" ID="{4AF5190A-AC63-40B9-95C6-F8D566306588}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<ObjectRef Name="unpaused" ID="{796361E8-035F-490B-BC67-AEB8FFE26B40}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="2" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="intro" ID="{8A75ECDE-F5D6-447A-B25A-2724ECF078E3}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
 							<Position X="3" Y="0"/>
 						</Module>
 						<Module>
-							<ObjectRef Name="Stop_Ambiance_pluie" ID="{EDF8F2A9-76EB-4A28-9737-9941CB9AB7D2}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<ObjectRef Name="outro" ID="{5C6E6489-F44E-4AE9-A374-2163FCC0DEFE}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
 							<Position X="3" Y="1"/>
 						</Module>
 					</ModuleList>
@@ -57,11 +65,11 @@
 						</RTPCValue>
 					</RTPCValueList>
 					<CurrentStateList ShowAll="true">
-						<CurrentStateRef Name="paused" ID="{A51D1CA9-4476-487B-A5D4-4EC7CBADBCD1}"/>
+						<CurrentStateRef Name="None" ID="{A57DE26A-BC6A-4E83-A706-9F277AEFEE71}"/>
 					</CurrentStateList>
 					<CurrentSwitchList ShowAll="true">
 						<CurrentSwitchRef Name="attaque_3" ID="{AABA20D6-8CA8-480E-BC3A-DA2D9AF32D48}"/>
-						<CurrentSwitchRef Name="titlescreen" ID="{003E9A4F-7DC8-4C5C-A5B6-47C5A9F5ADCD}"/>
+						<CurrentSwitchRef Name="outro" ID="{E8A54E1D-61ED-432E-8F62-ACC2823FC0BC}"/>
 					</CurrentSwitchList>
 				</SoundcasterSession>
 			</ChildrenList>
