@@ -293,9 +293,9 @@ public class TDS_Event
                 TDS_LevelManager.Instance?.PlayCutscene(cutscene);
                 break;
 
-            // Plays a new music !
-            case CustomEventType.PlayMusic:
-                TDS_SoundManager.Instance?.PlayMusic((Music)eventInt, eventFloat);
+            // Plays a new sound !
+            case CustomEventType.PlaySoundEvent:
+                AkSoundEngine.PostEvent(eventString, TDS_GameManager.MainAudio);
                 break;
 
             // Remove UI curtains
@@ -425,11 +425,6 @@ public class TDS_Event
                 while (IsWaiting) yield return null;
 
                 TDS_SpawnerArea.OnOneAreaDesactivated -= DeductSpawnArea;
-                break;
-
-            // Wait that a certain amount of spawn area are desactivated
-            case CustomEventType.PlaySoundEvent:
-                AkSoundEngine.PostEvent(eventString, TDS_GameManager.MainAudio);
                 break;
 
             // Nobody here but us chicken

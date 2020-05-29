@@ -293,10 +293,8 @@ public class TDS_EventSystemEditor : Editor
                         TDS_EditorUtility.PropertyField("Cutscene", "Cutscene to play during this event.", _event.FindPropertyRelative("cutscene"));
                         break;
 
-                    case CustomEventType.PlayMusic:
-                        _event.FindPropertyRelative("eventInt").intValue = EditorGUILayout.IntPopup("Music", _event.FindPropertyRelative("eventInt").intValue, Enum.GetNames(typeof(Music)), (int[])Enum.GetValues(typeof(Music)));
-
-                        TDS_EditorUtility.FloatField("Fade Duration", "Time during which the previous music will fade out before the new one starts.", _event.FindPropertyRelative("eventFloat"));
+                    case CustomEventType.PlaySoundEvent:
+                        TDS_EditorUtility.PropertyField("Sound Event", "Name of the sound event to call", _event.FindPropertyRelative("eventString"));
                         break;
 
                     case CustomEventType.SetUIQuotes:
@@ -326,10 +324,6 @@ public class TDS_EventSystemEditor : Editor
 
                     case CustomEventType.WaitForEveryone:
                         TDS_EditorUtility.PropertyField("Bound min X", "Transform to use for minimum bound X value to wait", _event.FindPropertyRelative("eventTransform"));
-                        break;
-
-                    case CustomEventType.PlaySoundEvent:
-                        TDS_EditorUtility.PropertyField("Sound Event", "Name of the sound event to call", _event.FindPropertyRelative("eventString"));
                         break;
 
                     default:

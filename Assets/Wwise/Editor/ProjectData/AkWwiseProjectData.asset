@@ -40,7 +40,7 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: 1006ea0a9d7e324da8219c686cfb7962
     GuidInternal: 
-    m_lastTime: -8586109068068158832
+    m_lastTime: -8586108442726730169
     List:
     - name: ambiances
       guid: c1b0db17978f614c9f992ffef17dd752
@@ -65,7 +65,7 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: cc3d7ab8a618c64db455f8be16d3f7da
     GuidInternal: 
-    m_lastTime: -8586109068069365608
+    m_lastTime: -8586108442729432942
     List:
     - name: ACROBAT
       guid: d9188ad2d1e8d34294cc1019f9e17537
@@ -122,6 +122,20 @@ MonoBehaviour:
       - ElementName: basics
         ObjectType: 3
       Path: Default Work Unit\persos\basics\basics
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: battle_theme
+      guid: 1bb9178d534cfb448532c91c7c50b4c3
+      id: 3421098005
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: music
+        ObjectType: 4
+      - ElementName: battle_theme
+        ObjectType: 3
+      Path: Default Work Unit\music\battle_theme
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -182,6 +196,20 @@ MonoBehaviour:
       - ElementName: Fire_eater
         ObjectType: 3
       Path: Default Work Unit\persos\Fire_eater\Fire_eater
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: game_theme
+      guid: 472defd10c83584c8810a8d1066b975c
+      id: 2431730365
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: music
+        ObjectType: 4
+      - ElementName: game_theme
+        ObjectType: 3
+      Path: Default Work Unit\music\game_theme
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -273,6 +301,20 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: music
+      guid: 961a98e1537ad3418e39e5621cbe5753
+      id: 3991942870
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: music
+        ObjectType: 4
+      - ElementName: music
+        ObjectType: 3
+      Path: Default Work Unit\music\music
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: persos
       guid: 7f5250f4c6d75544857d091eb4d19a33
       id: 1731679499
@@ -287,6 +329,20 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: Play__music
+      guid: c18b965f02efd8409c060df42fb9f079
+      id: 899895346
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: music
+        ObjectType: 4
+      - ElementName: Play__music
+        ObjectType: 3
+      Path: Default Work Unit\music\Play__music
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: Play_Ambiance_pluie
       guid: 0a19f54a63acb94095c6f8d566306588
       id: 3995323232
@@ -298,6 +354,20 @@ MonoBehaviour:
       - ElementName: Play_Ambiance_pluie
         ObjectType: 3
       Path: Default Work Unit\amb\Play_Ambiance_pluie
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_APROACHING_DEATH
+      guid: 08d89fba56576c428800d5c75ee2760d
+      id: 1749736639
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_APROACHING_DEATH
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_APROACHING_DEATH
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -548,6 +618,20 @@ MonoBehaviour:
       - ElementName: Play_EAT
         ObjectType: 3
       Path: Default Work Unit\persos\Grande_dame\Play_EAT
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Play_FEEDBACK_HIT
+      guid: 6e534d965a949f448e2f329da62845a8
+      id: 2599681053
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Play_FEEDBACK_HIT
+        ObjectType: 3
+      Path: Default Work Unit\autre\Play_FEEDBACK_HIT
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -1265,6 +1349,18 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: STOP_ALL
+      guid: 33beaa90022617429c8d07fa133b8496
+      id: 452547817
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: STOP_ALL
+        ObjectType: 3
+      Path: Default Work Unit\STOP_ALL
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: Stop_Ambiance_pluie
       guid: a9f2f8edeb76284a97379941cb9ab7d2
       id: 2819974902
@@ -1276,6 +1372,20 @@ MonoBehaviour:
       - ElementName: Stop_Ambiance_pluie
         ObjectType: 3
       Path: Default Work Unit\amb\Stop_Ambiance_pluie
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: Stop_APROACHING_DEATH
+      guid: d3851c17dc035b46938633c23ee50df0
+      id: 3040299933
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: autre
+        ObjectType: 4
+      - ElementName: Stop_APROACHING_DEATH
+        ObjectType: 3
+      Path: Default Work Unit\autre\Stop_APROACHING_DEATH
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -1337,6 +1447,20 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
+    - name: Stop_music
+      guid: ef35e276ca7aae44a8a20aa3fc48fa8a
+      id: 2837384057
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: music
+        ObjectType: 4
+      - ElementName: Stop_music
+        ObjectType: 3
+      Path: Default Work Unit\music\Stop_music
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
     - name: Stop_Play_Juggle
       guid: 2e543482cab0bd4c9a9ab69c764c5807
       id: 1620583853
@@ -1364,6 +1488,20 @@ MonoBehaviour:
       - ElementName: Stop_SIAMESE_TONRADO
         ObjectType: 3
       Path: Default Work Unit\monsters\Stop_SIAMESE_TONRADO
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
+    - name: titlescreen
+      guid: d32d027178b59545bdde8cf33c8e4b13
+      id: 152105657
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: music
+        ObjectType: 4
+      - ElementName: titlescreen
+        ObjectType: 3
+      Path: Default Work Unit\music\titlescreen
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
@@ -1404,7 +1542,7 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: 195628f6399e6948865cf7fa78defe64
     GuidInternal: 
-    m_lastTime: -8586110206332381873
+    m_lastTime: -8586108442726590539
     List:
     - name: ENNEMIS_ATTACK_SWITCH
       guid: 696fe1d8172f8e47bf25c6f253d9f271
@@ -1486,6 +1624,37 @@ MonoBehaviour:
       ValueGuids: []
       ValueIcons: []
       valuesInternal: []
+    - name: music_switch
+      guid: 921c09f5306ff84b8e71afd0da7482c3
+      id: 2724869341
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: music_switch
+        ObjectType: 11
+      Path: Default Work Unit\music_switch
+      values:
+      - name: battle_theme
+        guid: 4f8dcf74071162478acd46b9b90639b8
+        id: 3421098005
+        PathAndIcons:
+        - ElementName: battle_theme
+          ObjectType: 10
+      - name: game_theme
+        guid: 3701cfd45335d840aefdc22caa685313
+        id: 2431730365
+        PathAndIcons:
+        - ElementName: game_theme
+          ObjectType: 10
+      - name: titlescreen
+        guid: 4f9a3e00c87d5c4ca5b647c5a9f5adcd
+        id: 152105657
+        PathAndIcons:
+        - ElementName: titlescreen
+          ObjectType: 10
+      ValueGuids: []
+      ValueIcons: []
+      valuesInternal: []
   TriggerWwu:
   - PhysicalPath: Triggers\Default Work Unit.wwu
     ParentPath: Default Work Unit
@@ -1495,8 +1664,8 @@ MonoBehaviour:
     List: []
   ExpandedItems:
   - /The Dreadful Show
-  - /The Dreadful Show/Switches
-  - /The Dreadful Show/Switches/Default Work Unit
-  - /The Dreadful Show/Switches/Default Work Unit/ENNEMIS_ATTACK_SWITCH
+  - /The Dreadful Show/Events
+  - /The Dreadful Show/Events/Default Work Unit
+  - /The Dreadful Show/Events/Default Work Unit/music
   autoPopulateEnabled: 1
   CurrentPluginConfig: 

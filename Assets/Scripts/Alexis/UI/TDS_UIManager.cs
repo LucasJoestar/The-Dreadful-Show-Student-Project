@@ -442,7 +442,9 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public IEnumerator ResetInGameUI()
     {
-        TDS_SoundManager.Instance.StopMusic(1.5f);
+        AkSoundEngine.PostEvent("Stop_music", TDS_GameManager.MainAudio);
+        Debug.LogError("Stop MUSIC");
+
         yield return new WaitForSeconds(1.5f);
         beardLadyLifeBar.ResetLifeBar(); 
         fatLadyLifeBar.ResetLifeBar();
@@ -559,7 +561,9 @@ public class TDS_UIManager : PunBehaviour
         switch (uiState)
         {
             case UIState.InMainMenu:
-                TDS_SoundManager.Instance.PlayMusic(Music.TitleScreen, 1f);
+                AkSoundEngine.PostEvent("titlescreen", TDS_GameManager.MainAudio);
+                Debug.LogError("Play TITLESCREEN");
+
                 mainMenuParent.SetActive(true);
                 roomSelectionMenuParent.SetActive(false);
                 characterSelectionMenuParent.SetActive(false);
