@@ -310,6 +310,9 @@ public class TDS_FatLady : TDS_Player
                 yield return null;
                 _timer += Time.deltaTime;
             }
+
+            if (_timer < .35f)
+                yield return new WaitForSeconds(.35f - _timer);
         }
 
         SetFatLadyAnim(FatLadyAnimState.StopPreparingAttack);

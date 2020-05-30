@@ -153,11 +153,10 @@ public abstract class TDS_FleeingThrowable : TDS_Throwable
     /// </summary>
     public override bool DropLocal()
     {
-        if (!base.DropLocal())
-            return false;
+        if (isHeld)
+            isFacingRight = owner.IsFacingRight;
 
-        isFacingRight = owner.IsFacingRight;
-        return true;
+        return base.DropLocal();
     }
 
     /// <summary> 

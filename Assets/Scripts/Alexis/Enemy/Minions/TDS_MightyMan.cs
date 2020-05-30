@@ -39,6 +39,8 @@ public class TDS_MightyMan : TDS_Minion
 
     #region Fields / Properties
     public bool IsDashing { get; set; }
+
+    public bool PlayFirstTaunt = true;
     #endregion
 
     #region Methods

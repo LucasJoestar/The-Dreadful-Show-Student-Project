@@ -1154,6 +1154,7 @@ public class TDS_Camera : MonoBehaviour
         // Nullify the singleton instance if needed
         if (Instance == this)
         {
+            AkSoundEngine.PostEvent("STOP_ALL", TDS_GameManager.MainAudio);
             Instance = null;
         }
     }
