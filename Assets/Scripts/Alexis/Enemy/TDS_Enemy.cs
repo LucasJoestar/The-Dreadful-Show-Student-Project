@@ -721,6 +721,8 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns></returns>
     public IEnumerator Waiting()
     {
+        agent.StopAgent();
+        SetAnimationState(0);
         targetLastPosition = playerTarget.transform.position; 
         Vector3 _offset = playerTarget.transform.position - targetLastPosition;
         TDS_Bounds _currentBounds = TDS_Camera.Instance.CurrentBounds; 
@@ -1243,7 +1245,9 @@ public abstract class TDS_Enemy : TDS_Character
                 break;
             case EnemyState.OutOfBattle:
                 animator.SetBool(isOutOfBattle_Hash, true); 
-                break; 
+                break;
+            case EnemyState.GettingInRange:
+                break;
             default:
                 animator.ResetTrigger(resetBehaviour_Hash); 
                 break;

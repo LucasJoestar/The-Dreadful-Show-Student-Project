@@ -56,7 +56,6 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     #endregion
 
     #region void 
-
     #region Online 
 
     /// <summary>
@@ -140,7 +139,7 @@ public class TDS_CharacterSelectionManager : PunBehaviour
             characterSelectionMenu.LocalElement.TriggerToggle();
             return;
         }
-        if (PhotonNetwork.isMasterClient && TDS_UIManager.Instance.LaunchGameButton && !TDS_GameManager.PlayersInfo.Any(p => p.IsReady == false))
+        if (PhotonNetwork.isMasterClient && !TDS_GameManager.PlayersInfo.Any(p => p.IsReady == false))
         {
             TDS_NetworkManager.Instance.LockRoom();
             TDS_UIManager.Instance?.LoadLevel();
@@ -293,7 +292,6 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
         if (PhotonNetwork.offlineMode) return;
-        base.OnPhotonPlayerConnected(newPlayer);
         characterSelectionMenu.AddNewPhotonPlayer(newPlayer);
         SendInfoToNewPlayer(newPlayer);
     }

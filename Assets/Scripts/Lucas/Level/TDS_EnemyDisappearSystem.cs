@@ -59,7 +59,7 @@ public class TDS_EnemyDisappearSystem : MonoBehaviour
                 continue;
             }
             _enemy.StopAll();
-            _enemy.PlayerTarget = null; 
+            _enemy.PlayerTarget = null;
             _enemy.Agent.SetDestination(new Vector3(collider.bounds.center.x, 0, _enemy.transform.position.z));
             _enemy.SetEnemyState(EnemyState.GettingInRange);
         }
