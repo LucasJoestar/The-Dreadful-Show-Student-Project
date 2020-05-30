@@ -177,13 +177,6 @@ public class TDS_FatLady : TDS_Player
     [SerializeField] private float snackRestaureTimer = 0;
     #endregion
 
-    #region Sounds
-    /// <summary>
-    /// Sound to play for when eating food.
-    /// </summary>
-    [SerializeField] private AudioClip eatSound = null;
-    #endregion
-
     #region Animator
     private readonly int isAngry_Hash = Animator.StringToHash("IsAngry");
     private readonly int prepareAttack_Hash = Animator.StringToHash("PrepareAttack");
@@ -285,7 +278,7 @@ public class TDS_FatLady : TDS_Player
                 if (dodgeTimer > DODGE_MINIMUM_TIMER)
                 {
                     StopDodge();
-                    SetAnimOnline(PlayerAnimState.Dodge);
+                    //SetAnimOnline(PlayerAnimState.Dodge);
                     break;
                 }
             }
@@ -317,11 +310,18 @@ public class TDS_FatLady : TDS_Player
                 yield return null;
                 _timer += Time.deltaTime;
             }
+
+            if (_timer < .35f)
+                yield return new WaitForSeconds(.35f - _timer);
         }
+
+        SetFatLadyAnim(FatLadyAnimState.StopPreparingAttack);
 
         // Executes the attack
         Attack(_isLight);
-        PreparingAttackCoroutine = null;
+
+        preparingAttackCoroutine = null;
+        isPreparingAttack = false;
         yield break;
     }
 
@@ -334,6 +334,7 @@ public class TDS_FatLady : TDS_Player
         if (!base.StopPreparingAttack()) return false;
 
         // Reset animation
+        SetFatLadyAnim(FatLadyAnimState.StopPreparingAttack);
         SetAnimOnline(PlayerAnimState.ComboBreaker);
         return true;
     }
@@ -393,7 +394,11 @@ public class TDS_FatLady : TDS_Player
                 break;
 
             case FatLadyAnimState.PrepareAttack:
-                animator.SetTrigger(prepareAttack_Hash);
+                animator.SetBool(prepareAttack_Hash, true);
+                break;
+
+            case FatLadyAnimState.StopPreparingAttack:
+                animator.SetBool(prepareAttack_Hash, false);
                 break;
 
             default:
@@ -418,6 +423,7 @@ public class TDS_FatLady : TDS_Player
     protected void PlayEat()
     {
         // Play eat sound
+        AkSoundEngine.PostEvent("Play_EAT", gameObject);
     }
     #endregion
 

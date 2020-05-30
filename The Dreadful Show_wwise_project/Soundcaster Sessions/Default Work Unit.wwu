@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{E528FD17-7F9A-431D-BC7E-C26747BD4CC5}" SchemaVersion="97">
+	<SoundcasterSessions>
+		<WorkUnit Name="Default Work Unit" ID="{E528FD17-7F9A-431D-BC7E-C26747BD4CC5}" PersistMode="Standalone">
+			<ChildrenList>
+				<SoundcasterSession Name="New Soundcaster Session" ID="{63AF646D-9C33-4462-8465-385C30922E32}">
+					<ModuleList>
+						<Module>
+							<ObjectRef Name="battle_theme" ID="{8D17B91B-4C53-44FB-8532-C91C7C50B4C3}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="0" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play__music" ID="{5F968BC1-EF02-40D8-9C06-0DF42FB9F079}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="0" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Stop_music" ID="{76E235EF-7ACA-44AE-A8A2-0AA3FC48FA8A}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="0" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="game_theme" ID="{D1EF2D47-830C-4C58-8810-A8D1066B975C}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="1" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_FEEDBACK_HIT" ID="{97FF99EF-C447-4529-8C39-76777DEB7108}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="1" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="reset_volume_music" ID="{5DEAE414-70E7-43B1-AD5C-B8AD4A0B0B0D}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="1" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="titlescreen" ID="{71022DD3-B578-4595-BDDE-8CF33C8E4B13}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="2" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="pause" ID="{B9C8B350-8D6A-49E2-B396-77D385B3F76D}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="2" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="unpaused" ID="{796361E8-035F-490B-BC67-AEB8FFE26B40}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="2" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="intro" ID="{8A75ECDE-F5D6-447A-B25A-2724ECF078E3}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="3" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="outro" ID="{5C6E6489-F44E-4AE9-A374-2163FCC0DEFE}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="3" Y="1"/>
+						</Module>
+					</ModuleList>
+					<RTPCValueList ShowAll="true">
+						<RTPCValue>
+							<GameParameterRef Name="music_mix" ID="{86C9CD8C-BAA8-48B5-8DC8-5BA9A87D05CA}"/>
+							<Value>1</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="ennemies_attack" ID="{3B2701C7-FA62-4A8C-BFC5-BC19D3034E4B}"/>
+							<Value>0</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="bruitage_mix" ID="{316FD8FC-1E54-4AEE-81C9-FE13319FE60E}"/>
+							<Value>1</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="foot_surface" ID="{E43EC714-A577-4FC5-9311-A7D2781E4882}"/>
+							<Value>0</Value>
+						</RTPCValue>
+					</RTPCValueList>
+					<CurrentStateList ShowAll="true">
+						<CurrentStateRef Name="unpaused" ID="{95D0BCF6-32C8-4074-AF7C-D3001529BA7D}"/>
+					</CurrentStateList>
+					<CurrentSwitchList ShowAll="true">
+						<CurrentSwitchRef Name="attaque_3" ID="{AABA20D6-8CA8-480E-BC3A-DA2D9AF32D48}"/>
+						<CurrentSwitchRef Name="game_theme" ID="{D4CF0137-3553-40D8-AEFD-C22CAA685313}"/>
+					</CurrentSwitchList>
+				</SoundcasterSession>
+				<SoundcasterSession Name="fghc" ID="{259DCC7C-3407-40B8-85CE-3C371D7F0AF8}">
+					<ModuleList>
+						<Module>
+							<ObjectRef Name="MIME" ID="{5B348EEB-138A-4F15-ABCC-DF91D2E306E4}" WorkUnitID="{B87A3DCC-18A6-4DC6-B455-F8BE16D3F7DA}"/>
+							<Position X="0" Y="0"/>
+						</Module>
+					</ModuleList>
+					<RTPCValueList ShowAll="true">
+						<RTPCValue>
+							<GameParameterRef Name="music_mix" ID="{86C9CD8C-BAA8-48B5-8DC8-5BA9A87D05CA}"/>
+							<Value>1</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="ennemies_attack" ID="{3B2701C7-FA62-4A8C-BFC5-BC19D3034E4B}"/>
+							<Value>0.4</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="bruitage_mix" ID="{316FD8FC-1E54-4AEE-81C9-FE13319FE60E}"/>
+							<Value>1</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="foot_surface" ID="{E43EC714-A577-4FC5-9311-A7D2781E4882}"/>
+							<Value>0</Value>
+						</RTPCValue>
+					</RTPCValueList>
+					<CurrentStateList ShowAll="true">
+						<CurrentStateRef Name="None" ID="{A57DE26A-BC6A-4E83-A706-9F277AEFEE71}"/>
+					</CurrentStateList>
+					<CurrentSwitchList ShowAll="true">
+						<CurrentSwitchRef Name="attaque_4" ID="{49B43592-6928-4B83-93E9-E20F7B2F0B3A}"/>
+						<CurrentSwitchRef Name="outro" ID="{E8A54E1D-61ED-432E-8F62-ACC2823FC0BC}"/>
+						<CurrentSwitchRef Name="concrete" ID="{BE07F8E4-E4EE-4BA3-ABC1-5FF3AF38F7CA}"/>
+					</CurrentSwitchList>
+				</SoundcasterSession>
+			</ChildrenList>
+		</WorkUnit>
+	</SoundcasterSessions>
+</WwiseDocument>

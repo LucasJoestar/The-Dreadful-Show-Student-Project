@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{F6285619-9E39-4869-865C-F7FA78DEFE64}" SchemaVersion="97">
+	<Switches>
+		<WorkUnit Name="Default Work Unit" ID="{F6285619-9E39-4869-865C-F7FA78DEFE64}" PersistMode="Standalone">
+			<ChildrenList>
+				<SwitchGroup Name="ENNEMIS_ATTACK_SWITCH" ID="{D8E16F69-2F17-478E-BF25-C6F253D9F271}">
+					<PropertyList>
+						<Property Name="Color" Type="int16" Value="16"/>
+						<Property Name="OverrideColor" Type="bool" Value="True"/>
+						<Property Name="UseGameParameter" Type="bool" Value="True"/>
+					</PropertyList>
+					<ChildrenList>
+						<Switch Name="attaque_1" ID="{9FC08902-4974-440F-85DD-DCD99E37F430}"/>
+						<Switch Name="attaque_2" ID="{C9D63AFD-34A5-4E1C-A462-5415F71A1835}"/>
+						<Switch Name="attaque_3" ID="{AABA20D6-8CA8-480E-BC3A-DA2D9AF32D48}"/>
+						<Switch Name="attaque_4" ID="{49B43592-6928-4B83-93E9-E20F7B2F0B3A}"/>
+						<Switch Name="attaque_5" ID="{8BEF29DC-8C29-41C5-8AF5-1758765B6407}"/>
+						<Switch Name="attaque_6" ID="{439C43B1-B6E8-48DA-B620-C48A3DAEB684}"/>
+					</ChildrenList>
+					<SwitchOnRTPC>
+						<GameParameterRef Name="ennemies_attack" ID="{3B2701C7-FA62-4A8C-BFC5-BC19D3034E4B}"/>
+						<Curve Name="" ID="{AE2433F9-B62F-4629-B246-7BF71182CFC2}">
+							<PropertyList>
+								<Property Name="Flags" Type="int32" Value="65537"/>
+							</PropertyList>
+							<PointList>
+								<Point>
+									<XPos>0</XPos>
+									<YPos>0</YPos>
+									<Flags>5</Flags>
+								</Point>
+								<Point>
+									<XPos>0.09</XPos>
+									<YPos>1</YPos>
+									<Flags>0</Flags>
+								</Point>
+								<Point>
+									<XPos>0.199</XPos>
+									<YPos>2</YPos>
+									<Flags>0</Flags>
+								</Point>
+								<Point>
+									<XPos>0.299</XPos>
+									<YPos>3</YPos>
+									<Flags>0</Flags>
+								</Point>
+								<Point>
+									<XPos>0.39865</XPos>
+									<YPos>4</YPos>
+									<Flags>0</Flags>
+								</Point>
+								<Point>
+									<XPos>0.499</XPos>
+									<YPos>5</YPos>
+									<Flags>0</Flags>
+								</Point>
+								<Point>
+									<XPos>0.599</XPos>
+									<YPos>6</YPos>
+									<Flags>0</Flags>
+								</Point>
+								<Point>
+									<XPos>1</XPos>
+									<YPos>0</YPos>
+									<Flags>37</Flags>
+								</Point>
+							</PointList>
+						</Curve>
+					</SwitchOnRTPC>
+				</SwitchGroup>
+				<SwitchGroup Name="footsteps_switch" ID="{8847A834-1A19-4FC1-9814-6DB5405F1C39}">
+					<PropertyList>
+						<Property Name="Color" Type="int16" Value="25"/>
+						<Property Name="OverrideColor" Type="bool" Value="True"/>
+						<Property Name="UseGameParameter" Type="bool" Value="True"/>
+					</PropertyList>
+					<ChildrenList>
+						<Switch Name="concrete" ID="{BE07F8E4-E4EE-4BA3-ABC1-5FF3AF38F7CA}"/>
+						<Switch Name="dirt" ID="{8337A956-8256-464B-BE89-BE58ACAF047D}"/>
+						<Switch Name="wood" ID="{06E404A2-3413-49DE-90E8-E338A06D202B}"/>
+					</ChildrenList>
+					<SwitchOnRTPC>
+						<GameParameterRef Name="foot_surface" ID="{E43EC714-A577-4FC5-9311-A7D2781E4882}"/>
+						<Curve Name="" ID="{80E92187-957D-451D-BCCA-14ADB605D253}">
+							<PropertyList>
+								<Property Name="Flags" Type="int32" Value="65537"/>
+							</PropertyList>
+							<PointList>
+								<Point>
+									<XPos>0</XPos>
+									<YPos>0</YPos>
+									<Flags>5</Flags>
+								</Point>
+								<Point>
+									<XPos>0.09966</XPos>
+									<YPos>1</YPos>
+									<Flags>0</Flags>
+								</Point>
+								<Point>
+									<XPos>0.2</XPos>
+									<YPos>2</YPos>
+									<Flags>0</Flags>
+								</Point>
+								<Point>
+									<XPos>0.3</XPos>
+									<YPos>3</YPos>
+									<Flags>0</Flags>
+								</Point>
+								<Point>
+									<XPos>1</XPos>
+									<YPos>3</YPos>
+									<Flags>37</Flags>
+								</Point>
+							</PointList>
+						</Curve>
+					</SwitchOnRTPC>
+				</SwitchGroup>
+				<SwitchGroup Name="music_switch" ID="{F5091C92-6F30-4BF8-8E71-AFD0DA7482C3}">
+					<PropertyList>
+						<Property Name="Color" Type="int16" Value="10"/>
+						<Property Name="OverrideColor" Type="bool" Value="True"/>
+					</PropertyList>
+					<ChildrenList>
+						<Switch Name="battle_theme" ID="{74CF8D4F-1107-4762-8ACD-46B9B90639B8}"/>
+						<Switch Name="titlescreen" ID="{003E9A4F-7DC8-4C5C-A5B6-47C5A9F5ADCD}"/>
+						<Switch Name="game_theme" ID="{D4CF0137-3553-40D8-AEFD-C22CAA685313}"/>
+						<Switch Name="intro" ID="{8B664F32-01B8-4688-93C4-3224B57110EA}"/>
+						<Switch Name="outro" ID="{E8A54E1D-61ED-432E-8F62-ACC2823FC0BC}"/>
+					</ChildrenList>
+				</SwitchGroup>
+			</ChildrenList>
+		</WorkUnit>
+	</Switches>
+</WwiseDocument>

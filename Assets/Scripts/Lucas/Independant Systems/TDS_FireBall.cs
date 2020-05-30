@@ -43,11 +43,6 @@ public class TDS_FireBall : TDS_Object
     [SerializeField] private Animator animator = null;
 
     /// <summary>
-    /// Audio track to play when the fire ball gets destroyed.
-    /// </summary>
-    [SerializeField] private AudioClip destroySound = null;
-
-    /// <summary>
     /// Indicates if the fire ball is actually destroying itself.
     /// </summary>
     [SerializeField] private bool isDestroying = false;
@@ -86,8 +81,6 @@ public class TDS_FireBall : TDS_Object
     {
         if (hitBox.IsActive) hitBox.Desactivate();
         animator.SetTrigger(explosion_Hash);
-
-        // Play explode sound
     }
 
     /// <summary>
@@ -137,6 +130,7 @@ public class TDS_FireBall : TDS_Object
         if (!photonView.isMine || isDestroying) return;
 
         isDestroying = true;
+        AkSoundEngine.PostEvent("Play_FIREBALL_HIT", gameObject);
 
         StopAllCoroutines();
         Invoke("CallExplode", .001f);

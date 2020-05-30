@@ -752,7 +752,7 @@ public class SpritesEditor : EditorWindow
                     }
 
                     _renderCamera.orthographicSize = 5;
-                    _renderCamera.transform.position = new Vector3(_bounds.center.x, _bounds.center.y, -10);
+                    _renderCamera.transform.position = new Vector3(_bounds.center.x, _bounds.center.y, _bounds.center.z - 10);
                     while (!(_viewport.Contains(_renderCamera.WorldToViewportPoint(_bounds.min)) && _viewport.Contains(_renderCamera.WorldToViewportPoint(_bounds.max))))
                     {
                         _renderCamera.orthographicSize++;

@@ -1075,7 +1075,10 @@ public abstract class TDS_Enemy : TDS_Character
             return;
 
         hitBox.Activate(_attack);
-        _attack.ApplyAttackBehaviour(this); 
+        _attack.ApplyAttackBehaviour(this);
+
+        // Play sound
+        _attack.PlaySound(gameObject);
     }
 
     /// <summary>

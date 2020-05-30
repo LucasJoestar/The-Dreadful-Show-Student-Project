@@ -437,7 +437,8 @@ public class TDS_UIManager : PunBehaviour
     /// </summary>
     public IEnumerator ResetInGameUI()
     {
-        TDS_SoundManager.Instance.StopMusic(1.5f);
+        AkSoundEngine.PostEvent("Stop_music", TDS_GameManager.MainAudio);
+
         yield return new WaitForSeconds(1.5f);
         beardLadyLifeBar.ResetLifeBar(); 
         fatLadyLifeBar.ResetLifeBar();
@@ -554,7 +555,8 @@ public class TDS_UIManager : PunBehaviour
         switch (uiState)
         {
             case UIState.InMainMenu:
-                TDS_SoundManager.Instance.PlayMusic(Music.TitleScreen, 1f);
+                AkSoundEngine.PostEvent("titlescreen", TDS_GameManager.MainAudio);
+
                 mainMenuParent.SetActive(true);
                 roomSelectionMenuParent.SetActive(false);
                 characterSelectionMenuParent.SetActive(false);
@@ -861,7 +863,8 @@ public class TDS_UIManager : PunBehaviour
         fatLadyLifeBar.ResetLifeBar();
         fireEaterLifeBar.ResetLifeBar();
         jugglerLifeBar.ResetLifeBar();
-        if(PhotonNetwork.offlineMode)
+
+        if (PhotonNetwork.offlineMode)
         {
             ResetLevel();
             return; 
@@ -880,12 +883,12 @@ public class TDS_UIManager : PunBehaviour
     /// <summary>
     /// Plays sound for when the curtains gets in.
     /// </summary>
-    public void PlayCurtainsIn() => TDS_SoundManager.Instance.PlayUISound(TDS_GameManager.AudioAsset.S_CurtainsIn);
+    public void PlayCurtainsIn() => AkSoundEngine.PostEvent("Play_CURTAINS_IN", TDS_GameManager.MainAudio);
 
     /// <summary>
     /// Plays sound for when the curtains gets out.
     /// </summary>
-    public void PlayCurtainsOut() => TDS_SoundManager.Instance.PlayUISound(TDS_GameManager.AudioAsset.S_CurtainsOut);
+    public void PlayCurtainsOut() => AkSoundEngine.PostEvent("Play_CURTAINS_OUT", TDS_GameManager.MainAudio);
 
     public void QuitGame() => Application.Quit();
 
@@ -896,10 +899,10 @@ public class TDS_UIManager : PunBehaviour
     {
         if(PhotonNetwork.offlineMode)
         {
-            TDS_SceneManager.Instance.PrepareSceneLoading(SceneManager.GetActiveScene().buildIndex, (int)UIState.InGame); 
+            TDS_SceneManager.Instance.PrepareSceneLoading(TDS_GameManager.CurrentSceneIndex, (int)UIState.InGame); 
         }
         else
-            TDS_SceneManager.Instance.PrepareOnlineSceneLoading(SceneManager.GetActiveScene().buildIndex, (int)UIState.InGame);
+            TDS_SceneManager.Instance.PrepareOnlineSceneLoading(TDS_GameManager.CurrentSceneIndex, (int)UIState.InGame);
     }
 
     /// <summary>
@@ -1250,7 +1253,8 @@ public class TDS_UIManager : PunBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             photonView.viewID = 999;
-            SceneManager.sceneLoaded += RefreshUI; 
+            SceneManager.sceneLoaded += RefreshUI;
+            TDS_GameManager.SetMainAudio(gameObject);
         }
         else
         {
@@ -1271,6 +1275,9 @@ public class TDS_UIManager : PunBehaviour
         ActivateMenu(uiState);
         optionManager.ResetDisplayedSettings();
         TDS_SceneManager.OnLoadScene += CleanWorldCanvas;
+
+        // Play
+        AkSoundEngine.PostEvent("Play__music", TDS_GameManager.MainAudio);
     }
 
     private void OnDestroy()

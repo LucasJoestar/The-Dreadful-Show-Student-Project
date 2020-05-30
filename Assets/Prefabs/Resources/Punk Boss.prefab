@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 962912110860224304}
   - component: {fileID: 3880478338200879862}
   - component: {fileID: 3878841778199330274}
-  - component: {fileID: 9134260908704297427}
+  - component: {fileID: 4779695127686559663}
   m_Layer: 10
   m_Name: Punk Boss
   m_TagString: Boss|Enemy|Punk Boss
@@ -141,8 +141,8 @@ MonoBehaviour:
   IsInvulnerable: 0
   healthCurrent: 300
   healthMax: 300
-  hitSounds: []
-  deathSounds: []
+  hitSoundEvent: 
+  deathSoundEvent: 
   hitBox: {fileID: 3878932235109849520}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
@@ -161,24 +161,7 @@ MonoBehaviour:
   throwBonusDamagesMax: 7
   throwBonusDamagesMin: 3
   throwAimingPoint: {x: 0, y: 0, z: 0}
-  foostepsConcrete:
-  - {fileID: 8300000, guid: 2bc604625e17d924f9514a7d9d9d4efe, type: 3}
-  - {fileID: 8300000, guid: 7c367fd5425af81409504d040642eb59, type: 3}
-  - {fileID: 8300000, guid: f290535d8adbb9946a1b46fbced9e561, type: 3}
-  - {fileID: 8300000, guid: 5b30aa12d42fbfc4d9e14fc87caa333f, type: 3}
-  - {fileID: 8300000, guid: a26e54f6011afa649a6f0873ba33b30f, type: 3}
-  foostepsGrass:
-  - {fileID: 8300000, guid: 5e7134105390f174d96ec8384dfc7a3b, type: 3}
-  - {fileID: 8300000, guid: bbc8d10e2e98c21438400601b90eb11b, type: 3}
-  - {fileID: 8300000, guid: 162204c841b7e50488401d2b040cb3ba, type: 3}
-  - {fileID: 8300000, guid: d2d4c44225b10c0428095188e0771901, type: 3}
-  - {fileID: 8300000, guid: 3aff501b835e810408e775f49019666a, type: 3}
-  foostepsWood:
-  - {fileID: 8300000, guid: 0e414625e69344a46b9cd7cb0912d6b5, type: 3}
-  - {fileID: 8300000, guid: f3af1417c983948429437d68b49fa766, type: 3}
-  - {fileID: 8300000, guid: 5c4f66e2199e0f245b38968a616217f4, type: 3}
-  - {fileID: 8300000, guid: 33096dc6f7608504892ffd2d8308d491, type: 3}
-  - {fileID: 8300000, guid: 99d0b072c8bc4984fa2df6221982a81e, type: 3}
+  foostepsSoundEvent: Play_FOOT_fireeater
   canBeDown: 0
   canThrow: 0
   doScaleOnPlayerAmount: 1
@@ -387,103 +370,28 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
---- !u!82 &9134260908704297427
-AudioSource:
+--- !u!114 &4779695127686559663
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3766194183301806836}
   m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
-    type: 2}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfa388358c0884e4e8aa76193895ab97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 1
+  isStaticObject: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!1 &3766230641221082066
 GameObject:
   m_ObjectHideFlags: 0

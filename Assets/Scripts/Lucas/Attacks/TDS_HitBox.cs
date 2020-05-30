@@ -125,10 +125,10 @@ public class TDS_HitBox : MonoBehaviour
         // and return before activating the hit box.
         if (_attack == null)
         {
-
             Debug.LogWarning("The given attack to activate " + Owner.name + "'s hit box is null ! Activation is canceled.");
             return;
         }
+
         CurrentAttack = _attack;
         collider.enabled = true;
         IsActive = true;

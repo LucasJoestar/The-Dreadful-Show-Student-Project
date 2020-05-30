@@ -7,10 +7,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3340567457088398535, guid: cbcb09eb06b2069448219913fc1ed493,
+    - target: {fileID: 739323423422745439, guid: cbcb09eb06b2069448219913fc1ed493,
         type: 3}
-      propertyPath: m_Name
-      value: SupersonicScrewdriver
+      propertyPath: viewIdField
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 739323423422745439, guid: cbcb09eb06b2069448219913fc1ed493,
+        type: 3}
+      propertyPath: instantiationId
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 3338963929045791089, guid: cbcb09eb06b2069448219913fc1ed493,
         type: 3}
@@ -77,57 +82,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.75
       objectReference: {fileID: 0}
-    - target: {fileID: 4865402268584119117, guid: cbcb09eb06b2069448219913fc1ed493,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.425
-      objectReference: {fileID: 0}
-    - target: {fileID: 4865402268584119117, guid: cbcb09eb06b2069448219913fc1ed493,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.075
-      objectReference: {fileID: 0}
-    - target: {fileID: 4865402268584119117, guid: cbcb09eb06b2069448219913fc1ed493,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 4865402268584119117, guid: cbcb09eb06b2069448219913fc1ed493,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 4532982596238788323, guid: cbcb09eb06b2069448219913fc1ed493,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300074, guid: f2883d437a753be449292fa70f150205,
-        type: 3}
-    - target: {fileID: 3444803831096782895, guid: cbcb09eb06b2069448219913fc1ed493,
-        type: 3}
-      propertyPath: hitSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 397b79acfe3fc7f4f9967814a2e68d4d, type: 3}
-    - target: {fileID: 3444803831096782895, guid: cbcb09eb06b2069448219913fc1ed493,
-        type: 3}
-      propertyPath: bouncePower
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3444803831096782895, guid: cbcb09eb06b2069448219913fc1ed493,
-        type: 3}
-      propertyPath: bonusDamage
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 3444803831096782895, guid: cbcb09eb06b2069448219913fc1ed493,
-        type: 3}
-      propertyPath: ObjectDurability
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3444803831096782895, guid: cbcb09eb06b2069448219913fc1ed493,
-        type: 3}
-      propertyPath: weight
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 3339952328888906788, guid: cbcb09eb06b2069448219913fc1ed493,
         type: 3}
       propertyPath: viewIdField
@@ -137,6 +91,11 @@ PrefabInstance:
         type: 3}
       propertyPath: instantiationId
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340567457088398535, guid: cbcb09eb06b2069448219913fc1ed493,
+        type: 3}
+      propertyPath: m_Name
+      value: SupersonicScrewdriver
       objectReference: {fileID: 0}
     - target: {fileID: 3365279542923471985, guid: cbcb09eb06b2069448219913fc1ed493,
         type: 3}
@@ -178,15 +137,61 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 0.09
       objectReference: {fileID: 0}
-    - target: {fileID: 739323423422745439, guid: cbcb09eb06b2069448219913fc1ed493,
+    - target: {fileID: 3444803831096782895, guid: cbcb09eb06b2069448219913fc1ed493,
         type: 3}
-      propertyPath: viewIdField
-      value: 0
+      propertyPath: hitSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 397b79acfe3fc7f4f9967814a2e68d4d, type: 3}
+    - target: {fileID: 3444803831096782895, guid: cbcb09eb06b2069448219913fc1ed493,
+        type: 3}
+      propertyPath: bouncePower
+      value: 0.2
       objectReference: {fileID: 0}
-    - target: {fileID: 739323423422745439, guid: cbcb09eb06b2069448219913fc1ed493,
+    - target: {fileID: 3444803831096782895, guid: cbcb09eb06b2069448219913fc1ed493,
         type: 3}
-      propertyPath: instantiationId
-      value: -1
+      propertyPath: bonusDamage
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3444803831096782895, guid: cbcb09eb06b2069448219913fc1ed493,
+        type: 3}
+      propertyPath: ObjectDurability
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3444803831096782895, guid: cbcb09eb06b2069448219913fc1ed493,
+        type: 3}
+      propertyPath: weight
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3444803831096782895, guid: cbcb09eb06b2069448219913fc1ed493,
+        type: 3}
+      propertyPath: hitSoundEvent
+      value: Play_OBJECT_SHATTERS
+      objectReference: {fileID: 0}
+    - target: {fileID: 4532982596238788323, guid: cbcb09eb06b2069448219913fc1ed493,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300074, guid: f2883d437a753be449292fa70f150205,
+        type: 3}
+    - target: {fileID: 4865402268584119117, guid: cbcb09eb06b2069448219913fc1ed493,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.425
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865402268584119117, guid: cbcb09eb06b2069448219913fc1ed493,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.075
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865402268584119117, guid: cbcb09eb06b2069448219913fc1ed493,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865402268584119117, guid: cbcb09eb06b2069448219913fc1ed493,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cbcb09eb06b2069448219913fc1ed493, type: 3}

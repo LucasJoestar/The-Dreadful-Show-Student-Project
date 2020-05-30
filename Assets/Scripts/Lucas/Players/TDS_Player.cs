@@ -348,20 +348,6 @@ public class TDS_Player : TDS_Character, IPunObservable
 
     /// <summary>Backing field for <see cref="PreparingAttackCoroutine"/>.</summary>
     protected Coroutine preparingAttackCoroutine = null;
-
-    /// <summary>
-    /// Reference of the coroutine used to prepare an attack.
-    /// </summary>
-    protected Coroutine PreparingAttackCoroutine
-    {
-        get { return preparingAttackCoroutine; }
-        set
-        {
-            preparingAttackCoroutine = value;
-
-            isPreparingAttack = value != null;
-        }
-    }
     #endregion
 
     #region Variables
@@ -745,6 +731,10 @@ public class TDS_Player : TDS_Character, IPunObservable
       
         // Activate the hit box
         hitBox.Activate(attacks[_attackIndex]);
+
+        // Play sound
+        attacks[_attackIndex].PlaySound(gameObject);
+
         return true;
     }
 
@@ -878,7 +868,7 @@ public class TDS_Player : TDS_Character, IPunObservable
                 if (dodgeTimer > DODGE_MINIMUM_TIMER)
                 {
                     StopDodge();
-                    SetAnimOnline(PlayerAnimState.Dodge);
+                    //SetAnimOnline(PlayerAnimState.Dodge);
                     break;
                 }
             }
@@ -887,7 +877,9 @@ public class TDS_Player : TDS_Character, IPunObservable
         }
 
         Attack(_isLight);
-        PreparingAttackCoroutine = null;
+
+        preparingAttackCoroutine = null;
+        isPreparingAttack = false;
         yield break;
     }
 
@@ -913,7 +905,6 @@ public class TDS_Player : TDS_Character, IPunObservable
         {
             NextAction = _isLight ? 1 : 2;
             return;
-            
         }
 
         CancelInvoke("BreakCombo");
@@ -922,7 +913,9 @@ public class TDS_Player : TDS_Character, IPunObservable
         interactionBox.DisplayInteractionFeedback(false);
 
         SetBonusDamages(0);
-        PreparingAttackCoroutine = StartCoroutine(PrepareAttack(_isLight));
+
+        isPreparingAttack = true;
+        preparingAttackCoroutine = StartCoroutine(PrepareAttack(_isLight));
     }
 
     /// <summary>
@@ -960,7 +953,8 @@ public class TDS_Player : TDS_Character, IPunObservable
         if (!isPreparingAttack) return false;
 
         StopCoroutine(preparingAttackCoroutine);
-        PreparingAttackCoroutine = null;
+        preparingAttackCoroutine = null;
+        isPreparingAttack = false;
 
         // Activates the detection box
         interactionBox.DisplayInteractionFeedback(true);
@@ -1017,6 +1011,9 @@ public class TDS_Player : TDS_Character, IPunObservable
 
         // Triggers the associated animation
         SetAnimOnline(PlayerAnimState.Dodge);
+
+        // Play sound
+        AkSoundEngine.PostEvent("Play_DODGE", gameObject); 
 
         // Get new constant movement
         Vector3 _movementDirection = new Vector3(_movement.x != 0 ? Mathf.Sign(_movement.x) : 0, 0, _movement.z != 0 ? Mathf.Sign(_movement.z) : 0);
@@ -1265,6 +1262,8 @@ public class TDS_Player : TDS_Character, IPunObservable
             if (movePlayerInViewCoroutine != null) StopMovingPlayerInView();
         }
 
+        AkSoundEngine.PostEvent("Stop_APROACHING_DEATH", TDS_GameManager.MainAudio);
+
         // Desactivates the detection box
         interactionBox.DisplayInteractionFeedback(false);
 
@@ -1278,11 +1277,21 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// <param name="_heal">Amount of health point to restore.</param>
     public override void Heal(int _heal)
     {
+        float _healthBefore = healthCurrent;
+
         base.Heal(_heal);
 
         if (photonView.isMine)
         {
             TDS_VFXManager.Instance.SpawnEffect(FXType.Heal, fxTransformPV);
+
+            // Stop feedback sound
+            float _treshold = healthMax / 4f;
+
+            if ((_healthBefore <= _treshold) && (healthCurrent > _treshold))
+            {
+                AkSoundEngine.PostEvent("Stop_APROACHING_DEATH", TDS_GameManager.MainAudio);
+            }
         }
     }
 
@@ -1368,12 +1377,15 @@ public class TDS_Player : TDS_Character, IPunObservable
         // Cannot hit the player while in cutscene !
         if (TDS_GameManager.IsInCutscene) return false;
 
+        float _healthBefore = healthCurrent;
+
         // Executes base method
         if (!base.TakeDamage(_damage))
         {
             if (photonView.isMine) TDS_Camera.Instance.StartScreenShake(.02f, .2f);
 
             // Play parry sound
+            AkSoundEngine.PostEvent("Play_PARRY", gameObject);
             return false;
         }
 
@@ -1391,7 +1403,12 @@ public class TDS_Player : TDS_Character, IPunObservable
             if (isDodging) StopDodge();
 
             // Play feedback sound
-            if (healthCurrent <= ((float)healthMax / 4f)) TDS_SoundManager.Instance.PlayEffectSound(TDS_GameManager.AudioAsset.S_approachDeath);
+            float _treshold = healthMax / 4f;
+
+            if ((_healthBefore > _treshold) && (healthCurrent <= _treshold))
+            {
+                AkSoundEngine.PostEvent("Play_APROACHING_DEATH", TDS_GameManager.MainAudio);
+            }
         }
 
         // If not dead, be just hit
@@ -1687,6 +1704,7 @@ public class TDS_Player : TDS_Character, IPunObservable
                 OnGetOnGround?.Invoke();
 
                 // Plays land sound
+                AkSoundEngine.PostEvent("Play_LAND_jump", gameObject);
             }
         }
 
@@ -1783,6 +1801,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         {
             isMoving = false;
             SetAnimOnline(PlayerAnimState.Idle);
+            SetAnimOnline(PlayerAnimState.Idle);
         }
 
         if (!isFacingRight) Flip();
@@ -1814,6 +1833,7 @@ public class TDS_Player : TDS_Character, IPunObservable
         rigidbody.AddForce(Vector3.up * JumpForce);
 
         // Plays jump sound
+        AkSoundEngine.PostEvent("Play_START_jump", gameObject);
 
         while (controller.GetButton(ButtonType.Jump) && _timer < JumpMaximumTime)
         {
@@ -2434,16 +2454,6 @@ public class TDS_Player : TDS_Character, IPunObservable
     }
     #endregion
 
-    #region Sound
-    /// <summary>
-    /// Plays dodge sound.
-    /// </summary>
-    protected void PlayDodge()
-    {
-        // Play dodge
-    }
-    #endregion
-
     #region Others
     /// <summary>
     /// Makes the player disappear before respawning.
@@ -2596,7 +2606,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     }
 
     // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
-    protected virtual void OnDestroy()
+    protected override void OnDestroy()
     {
         TDS_LevelManager.Instance?.RemoveOnlinePlayer(this);
     }

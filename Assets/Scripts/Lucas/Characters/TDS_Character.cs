@@ -362,24 +362,11 @@ public abstract class TDS_Character : TDS_Damageable
     #endregion
 
     #region Sound
-    /// <summary>
-    /// All this character's foosteps audio track for concrete ground.
-    /// </summary>
-    [SerializeField] protected AudioClip[] foostepsConcrete = new AudioClip[] { };
-
-    /// <summary>
-    /// All this character's foosteps audio track for grass.
-    /// </summary>
-    [SerializeField] protected AudioClip[] foostepsGrass = new AudioClip[] { };
-
-    /// <summary>
-    /// All this character's foosteps audio track for wood.
-    /// </summary>
-    [SerializeField] protected AudioClip[] foostepsWood = new AudioClip[] { };
+    [SerializeField] protected string foostepsSoundEvent = "Play_FOOT_jugler";
     #endregion
 
     #endregion
-
+    
     #region Methods
 
     #region Original Methods
@@ -734,36 +721,13 @@ public abstract class TDS_Character : TDS_Damageable
     #endregion
 
     #region Sound
-    protected void PlayAttackSound()
-    {
-        if (hitBox.CurrentAttack)
-        {
-            hitBox.CurrentAttack.PlaySound();
-        }
-    }
-
-    /// <summary>
-    /// Plays sound for a big strike blow.
-    /// </summary>
-    protected void PlayBlowBig()
-    {
-        // Play big blow
-    }
-
-    /// <summary>
-    /// Plays sound for a small strike blow.
-    /// </summary>
-    protected void PlayBlowSmall()
-    {
-        // Play small blow
-    }
-
     /// <summary>
     /// Plays sound for when this character's body fall down.
     /// </summary>
     protected void PlayBodyFall()
     {
         // Play body fall
+        AkSoundEngine.PostEvent("Play_BODYFALL", gameObject);
     }
 
     /// <summary>
@@ -772,6 +736,7 @@ public abstract class TDS_Character : TDS_Damageable
     protected void PlaySlide()
     {
         // Play slide
+        AkSoundEngine.PostEvent("Play_SLIDE", gameObject);
     }
 
     /// <summary>
@@ -780,14 +745,16 @@ public abstract class TDS_Character : TDS_Damageable
     protected void PlayBrutalHit()
     {
         // Play brutal hit
+        AkSoundEngine.PostEvent("Play_BRUTAL_HIT", gameObject);
     }
 
     /// <summary>
     /// Plays sound for this character's footsteps.
     /// </summary>
-    protected void PlayFootsteps()
+    protected virtual void PlayFootsteps()
     {
-        // Play footsteps
+        AkSoundEngine.SetRTPCValue("foot_surface", TDS_LevelManager.Instance.IsDirtGround ? .2f : .1f, gameObject);
+        AkSoundEngine.PostEvent(foostepsSoundEvent, gameObject);
     }
     #endregion
 

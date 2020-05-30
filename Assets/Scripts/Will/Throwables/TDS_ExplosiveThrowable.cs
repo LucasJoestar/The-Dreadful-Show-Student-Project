@@ -80,7 +80,10 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
 
         collider.enabled = false;
         hitBox.Activate(attack, owner);
-        DestroyThrowableObject(1); 
+        DestroyThrowableObject(1);
+
+        // Play sound
+        attack.PlaySound(gameObject);
     }
     #endregion
 
@@ -133,14 +136,16 @@ public class TDS_ExplosiveThrowable : TDS_Throwable
         if (!hasHit)
         {
             hasHit = true;
-            
+
             // Play explosive timer sound
+            AkSoundEngine.PostEvent("Play_PRESENT_TIMER", gameObject);
 
             if (PhotonNetwork.isMasterClient)
                 explosionCoroutine = StartCoroutine(SetupExplosion());
         }
 
-        // Play hit "drop" sound
+        // Play drop sound
+        AkSoundEngine.PostEvent("Play_OBJECT_GENERIC_FALL", gameObject);
 
         return; 
     }

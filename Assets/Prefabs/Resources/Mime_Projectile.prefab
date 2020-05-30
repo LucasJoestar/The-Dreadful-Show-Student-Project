@@ -62,8 +62,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 7520404184653947056}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 3
-  instantiationId: 3
+  viewIdField: 0
+  instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!65 &8085073300562836883
@@ -91,7 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa49a71e1d33b749b3c0a4bef6819bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 4577243853187862564}
   range: 15
   speed: 8
   hitBox: {fileID: 2160058379603458299}
@@ -366,6 +365,7 @@ MonoBehaviour:
       Color: {r: 0.25231397, g: 0.8490566, b: 0.2986929, a: 1}
     - Name: Player
       Color: {r: 0.097232126, g: 0.8962264, b: 0.6973913, a: 1}
+  IgnoreOwner: 1
 --- !u!1 &3458892220207803497
 GameObject:
   m_ObjectHideFlags: 0
@@ -614,6 +614,21 @@ PrefabInstance:
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
       value: 0.7411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 1399727589811485407, guid: 71169cd45071ac94ba9fc202ff4188ca,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5322318924650535900, guid: 71169cd45071ac94ba9fc202ff4188ca,
+        type: 3}
+      propertyPath: triggerList.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5322318924650535900, guid: 71169cd45071ac94ba9fc202ff4188ca,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71169cd45071ac94ba9fc202ff4188ca, type: 3}

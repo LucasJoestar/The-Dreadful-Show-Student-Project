@@ -578,6 +578,7 @@ MonoBehaviour:
       Color: {r: 0.8980392, g: 0.14117648, b: 0.14117648, a: 1}
     - Name: Hittable
       Color: {r: 0.8773585, g: 0.6957892, b: 0.16140087, a: 1}
+  IgnoreOwner: 1
 --- !u!65 &2724992961261145924
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -880,7 +881,7 @@ GameObject:
   - component: {fileID: 2736424129501502712}
   - component: {fileID: 2639395425091327318}
   - component: {fileID: 2643246706789267868}
-  - component: {fileID: 3915363867108071224}
+  - component: {fileID: 1831462781799268770}
   m_Layer: 9
   m_Name: Juggler
   m_TagString: Player|GameController
@@ -920,7 +921,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46afb548b06cab54da7400c370b424f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
   animator: {fileID: 2624376054273097410}
   burnEffect: {fileID: 0}
   collider: {fileID: 2728626678253547198}
@@ -932,8 +932,8 @@ MonoBehaviour:
   IsInvulnerable: 0
   healthCurrent: 100
   healthMax: 100
-  hitSounds: []
-  deathSounds: []
+  hitSoundEvent: 
+  deathSoundEvent: 
   hitBox: {fileID: 2643095751793456050}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
@@ -1141,7 +1141,6 @@ MonoBehaviour:
     - Name: Hittable
       Color: {r: 0.8773585, g: 0.6957892, b: 0.16140087, a: 1}
   juggleTransformIdealLocalPosition: {x: 0, y: 1, z: 0}
-  lockSound: {fileID: 8300000, guid: f79bc32bb66928441b767b2981468f0e, type: 3}
 --- !u!95 &2624376054273097410
 Animator:
   serializedVersion: 3
@@ -1296,103 +1295,28 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
---- !u!82 &3915363867108071224
-AudioSource:
+--- !u!114 &1831462781799268770
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2684015748255461392}
   m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
-    type: 2}
-  m_audioClip: {fileID: 8300000, guid: a237815c58fc010439bb4713cf367b99, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfa388358c0884e4e8aa76193895ab97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 1
+  isStaticObject: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!1 &2684134811677055906
 GameObject:
   m_ObjectHideFlags: 0

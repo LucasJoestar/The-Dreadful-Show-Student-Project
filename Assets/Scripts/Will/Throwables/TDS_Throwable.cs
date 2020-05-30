@@ -59,10 +59,7 @@ public class TDS_Throwable : TDS_Object
         }
     }
 
-    /// <summary>
-    /// Sound to play when this object hits something.
-    /// </summary>
-    [SerializeField] protected AudioClip hitSound = null;
+    [SerializeField] protected string hitSoundEvent = "EVENT";
 
     /// <summary>
     /// Collider of the object.
@@ -139,6 +136,8 @@ public class TDS_Throwable : TDS_Object
     public int Weight { get { return weight; } }
 
     public bool CanBeGrabbedByEnemies { get; private set; }
+
+    public bool IsDropped = false;
     #endregion
 
     #region Methods
@@ -221,8 +220,6 @@ public class TDS_Throwable : TDS_Object
             SetIndependant();
         }
 
-        // Play magic poof
-
         if (!feedbackFX) return;
 
         feedbackFX.gameObject.SetActive(true);
@@ -238,6 +235,8 @@ public class TDS_Throwable : TDS_Object
         rigidbody.isKinematic = false;
         collider.enabled = true;
         isHeld = false;
+
+        IsDropped = true;
 
         owner.RemoveThrowable();
         owner = null;
@@ -292,6 +291,7 @@ public class TDS_Throwable : TDS_Object
         ResetThrowable();
 
         // Play hit sound
+        AkSoundEngine.PostEvent(hitSoundEvent, gameObject);
     }
 
     /// <summary> 
@@ -325,6 +325,7 @@ public class TDS_Throwable : TDS_Object
         collider.enabled = false;
 
         // Play pick up sound
+        AkSoundEngine.PostEvent("Play_OBJECT_GENERIC_PICKUP", gameObject);
         return true;
     }
 
@@ -413,6 +414,7 @@ public class TDS_Throwable : TDS_Object
         isHeld = false;
 
         // Play throw sound
+        AkSoundEngine.PostEvent("Play_OBJECT_GENERIC_THROW", gameObject);
         return true;
     }
     #endregion
@@ -447,9 +449,16 @@ public class TDS_Throwable : TDS_Object
         if (hitBox.IsActive)
         {
             ResetThrowable();
-        }
 
-        // Play drop sound
+            // Play hit sound
+            AkSoundEngine.PostEvent(hitSoundEvent, gameObject);
+        }
+        else if (IsDropped)
+        {
+            // Play drop sound
+            AkSoundEngine.PostEvent(hitSoundEvent, gameObject);
+            IsDropped = false;
+        }
     }
 
     private void OnDestroy()

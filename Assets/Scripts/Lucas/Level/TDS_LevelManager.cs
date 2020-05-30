@@ -96,6 +96,9 @@ public class TDS_LevelManager : PunBehaviour
     /// </summary>
     [SerializeField] private TDS_Destructible[] jugglerSupplies = new TDS_Destructible[] { };
 
+    [SerializeField] private bool isDirtGround = false;
+    public bool IsDirtGround { get { return isDirtGround; } }
+
     /// <summary>
     /// Dictionary referencing all scene objects tags with their ID as key and tags as value.
     /// </summary>

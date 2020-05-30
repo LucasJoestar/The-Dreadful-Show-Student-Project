@@ -42,7 +42,6 @@ public class TDS_Siamese : TDS_Boss
     [SerializeField] private string[] splitingEnemiesNames = new string[] { };
     [SerializeField] private Vector3[] splitingPosition = new Vector3[] { };
     [SerializeField] private GameObject splittingPortrait = null;
-    [SerializeField] private AudioClip tornadoClip = null; 
     #endregion
 
     #region Methods
@@ -71,13 +70,18 @@ public class TDS_Siamese : TDS_Boss
         PhotonNetwork.Destroy(this.gameObject);
     }
 
+    public void PlayCostumeSound()
+    {
+        AkSoundEngine.SetRTPCValue("ennemies_attack", .1f, gameObject);
+        AkSoundEngine.PostEvent("SIAMESE", gameObject);
+    }
+
     #region Overriden Methods
     #endregion
 
     #endregion
 
     #region Unity Methods
-
     protected override void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;

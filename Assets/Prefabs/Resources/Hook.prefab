@@ -68,10 +68,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be188c0a9f7e8bd4da47cefd51a3eea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 5045007155668831490}
   owner: {fileID: 0}
   attack: {fileID: 11400000, guid: 9f527f04f1f24854eba0b01106bf2972, type: 2}
-  hitSound: {fileID: 8300000, guid: 0490db34053f9e140ab30b53d92f0907, type: 3}
+  hitSoundEvent: Play_OBJECT_SHARP
   collider: {fileID: 4227390829016078275}
   shadow: {fileID: 6453753117036512213}
   hitBox: {fileID: 4227390829565300936}
@@ -83,6 +82,7 @@ MonoBehaviour:
   bonusDamage: 0
   ObjectDurability: 1
   weight: 1
+  IsDropped: 0
 --- !u!65 &4227390829016078275
 BoxCollider:
   m_ObjectHideFlags: 0

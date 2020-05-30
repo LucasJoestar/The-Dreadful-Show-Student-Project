@@ -130,17 +130,10 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
 
     /// <summary>SerializedProperties for <see cref="TDS_Character.throwAimingPoint"/> of type <see cref="Vector3"/>.</summary>
     protected SerializedProperty throwAimingPoint = null;
-    #endregion
 
-    #region Sound
-    /// <summary>SerializedProperty for <see cref="TDS_Character.foostepsConcrete"/> of type <see cref="AudioClip"/>[].</summary>
-    private SerializedProperty foostepsConcrete = null;
 
-    /// <summary>SerializedProperty for <see cref="TDS_Character.foostepsGrass"/> of type <see cref="AudioClip"/>[].</summary>
-    private SerializedProperty foostepsGrass = null;
-
-    /// <summary>SerializedProperty for <see cref="TDS_Character.foostepsWood"/> of type <see cref="AudioClip"/>[].</summary>
-    private SerializedProperty foostepsWood = null;
+    /// <summary>SerializedProperties for <see cref="TDS_Character.foostepsSoundEvent"/> of type <see cref="string"/>.</summary>
+    protected SerializedProperty foostepsSoundEvent = null;
     #endregion
 
     #endregion
@@ -478,11 +471,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
     /// </summary>
     private void DrawCharacterSounds()
     {
-        TDS_EditorUtility.PropertyField("Concrete Footsteps", "Array of audio tracks used when the character walks on concrete ground", foostepsConcrete);
-        GUILayout.Space(3);
-        TDS_EditorUtility.PropertyField("Grass Footsteps", "Array of audio tracks used when the character walks on grass", foostepsGrass);
-        GUILayout.Space(3);
-        TDS_EditorUtility.PropertyField("Wood Footsteps", "Array of audio tracks used when the character walks on wood", foostepsWood);
+        TDS_EditorUtility.TextField("Footsteps Sound Event", string.Empty, foostepsSoundEvent);
     }
 
     /// <summary>
@@ -540,9 +529,7 @@ public class TDS_CharacterEditor : TDS_DamageableEditor
         throwBonusDamagesMin = serializedObject.FindProperty("throwBonusDamagesMin");
         throwAimingPoint = serializedObject.FindProperty("throwAimingPoint");
 
-        foostepsConcrete = serializedObject.FindProperty("foostepsConcrete");
-        foostepsGrass = serializedObject.FindProperty("foostepsGrass");
-        foostepsWood = serializedObject.FindProperty("foostepsWood");
+        foostepsSoundEvent = serializedObject.FindProperty("foostepsSoundEvent");
 
         // Loads the editor folded a unfolded values of this class
         isCharaUnfolded = EditorPrefs.GetBool("isCharaUnfolded", isCharaUnfolded);

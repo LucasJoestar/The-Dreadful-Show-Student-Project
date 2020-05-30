@@ -37,7 +37,8 @@ public class TDS_MightyManEditor : TDS_MinionEditor
     #endregion
 
     #region Fields / Properties
-
+    /// <summary>SerializedProperty for <see cref="TDS_Minion.playFirstTaunt"/> of type <see cref="bool"/>.</summary>
+    SerializedProperty playFirstTaunt = null;
     #endregion
 
     #region Methods
@@ -46,6 +47,14 @@ public class TDS_MightyManEditor : TDS_MinionEditor
     protected override void OnEnable()
     {
         base.OnEnable();
+
+        playFirstTaunt = serializedObject.FindProperty("PlayFirstTaunt");
+    }
+
+    protected override void DrawSettings()
+    {
+        TDS_EditorUtility.Toggle("Play First Taunt", string.Empty, playFirstTaunt);
+        base.DrawSettings();
     }
 
     public override void OnInspectorGUI()

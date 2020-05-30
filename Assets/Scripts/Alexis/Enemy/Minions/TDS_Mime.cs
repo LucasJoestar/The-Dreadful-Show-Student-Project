@@ -35,10 +35,6 @@ public class TDS_Mime : TDS_Minion
 
     #endregion
 
-    #region Fields / Properties
-    [SerializeField] private AudioClip fishingRodClip = null; 
-    #endregion
-
     #region Unity Methods
     #endregion
 }

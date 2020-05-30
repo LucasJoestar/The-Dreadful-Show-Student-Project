@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 114861555710338680}
   - component: {fileID: 114939482661549728}
   - component: {fileID: 114288389468539316}
-  - component: {fileID: 9205004923291455683}
+  - component: {fileID: 3027238097372434279}
   m_Layer: 10
   m_Name: Punk
   m_TagString: Enemy|Punk
@@ -236,8 +236,8 @@ MonoBehaviour:
   IsInvulnerable: 0
   healthCurrent: 75
   healthMax: 75
-  hitSounds: []
-  deathSounds: []
+  hitSoundEvent: 
+  deathSoundEvent: 
   hitBox: {fileID: 114523981913157094}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
@@ -256,24 +256,7 @@ MonoBehaviour:
   throwBonusDamagesMax: 3
   throwBonusDamagesMin: 0
   throwAimingPoint: {x: 0, y: 0, z: 0}
-  foostepsConcrete:
-  - {fileID: 8300000, guid: e5782623eaf2a8346af86722e0f623e7, type: 3}
-  - {fileID: 8300000, guid: c4aca18c488dd604ab6b7bddba5900dd, type: 3}
-  - {fileID: 8300000, guid: 23c706322e0c94345a0cf659bb27d607, type: 3}
-  - {fileID: 8300000, guid: 9d4265f016b35a946aca9d040f738409, type: 3}
-  - {fileID: 8300000, guid: c77da95e5cd97f440bfc8a12c1376ec5, type: 3}
-  foostepsGrass:
-  - {fileID: 8300000, guid: a05eded0f02f0584ebbb4a41dfbafadc, type: 3}
-  - {fileID: 8300000, guid: f81645d323988c84f9c6f829b004eedc, type: 3}
-  - {fileID: 8300000, guid: 1e79d07b7d60cc641acd7fb37d567ec4, type: 3}
-  - {fileID: 8300000, guid: 0795ed0c4c6e4a64a82fac96f21c6859, type: 3}
-  - {fileID: 8300000, guid: a39218a05d33ca14f929652b509997b1, type: 3}
-  foostepsWood:
-  - {fileID: 8300000, guid: f6fa9849a2de992469fc5f019695aa9d, type: 3}
-  - {fileID: 8300000, guid: f563edbd97ebc30488f836fcd0fca97d, type: 3}
-  - {fileID: 8300000, guid: 36061539557b43d4d98b77be61232c43, type: 3}
-  - {fileID: 8300000, guid: 7b76f5d1262594c4991642d93e0d97ae, type: 3}
-  - {fileID: 8300000, guid: 6a863246196cd8844acf8b75f562f205, type: 3}
+  foostepsSoundEvent: Play_FOOT_bearlady
   canBeDown: 1
   canThrow: 1
   doScaleOnPlayerAmount: 1
@@ -396,103 +379,28 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
---- !u!82 &9205004923291455683
-AudioSource:
+--- !u!114 &3027238097372434279
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1784521387282082}
   m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
-    type: 2}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfa388358c0884e4e8aa76193895ab97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 1
+  isStaticObject: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!1 &1881167624450526
 GameObject:
   m_ObjectHideFlags: 0

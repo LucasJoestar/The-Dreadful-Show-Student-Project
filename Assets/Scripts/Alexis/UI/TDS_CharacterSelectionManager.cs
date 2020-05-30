@@ -258,7 +258,10 @@ public class TDS_CharacterSelectionManager : PunBehaviour
     {
         if (!PhotonNetwork.offlineMode || !TDS_GameManager.PlayersInfo.Any(i => i.PlayerID == _playerId)) return;
         TDS_CharacterSelectionElement _elem = characterSelectionMenu.CharacterSelectionElements.Where(e => (e.PlayerInfo != null) && (e.PlayerInfo.PlayerID == _playerId) && (e.IsUsedLocally)).FirstOrDefault();
-        if (!_elem) return; 
+        if (!_elem) return;
+
+        TDS_SoundManager.Instance.PlayUIConfirm();
+
         if (_value > 0)
         {
             _elem.DisplayNextImage();

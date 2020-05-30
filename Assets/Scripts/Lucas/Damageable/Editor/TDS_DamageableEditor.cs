@@ -103,14 +103,13 @@ public class TDS_DamageableEditor : Editor
 
     /// <summary>SerializedProperty for <see cref="TDS_Damageable.healthMax"/> of type <see cref="int"/>.</summary>
     private SerializedProperty healthMax = null;
-    #endregion
 
-    #region Sound
-    /// <summary>SerializedProperty for <see cref="TDS_Damageable.hitSounds"/> of type <see cref="AudioClip"/>[].</summary>
-    private SerializedProperty hitSounds = null;
 
-    /// <summary>SerializedProperty for <see cref="TDS_Damageable.deathSounds"/> of type <see cref="AudioClip"/>[].</summary>
-    private SerializedProperty deathSounds = null;
+    /// <summary>SerializedProperty for <see cref="TDS_Damageable.hitSoundEvent"/> of type <see cref="string"/>.</summary>
+    private SerializedProperty hitSoundEvent = null;
+
+    /// <summary>SerializedProperty for <see cref="TDS_Damageable.deathSoundEvent"/> of type <see cref="string"/>.</summary>
+    private SerializedProperty deathSoundEvent = null;
     #endregion
 
     #endregion
@@ -462,9 +461,8 @@ public class TDS_DamageableEditor : Editor
     /// </summary>
     private void DrawDamagSoundsEditor()
     {
-        TDS_EditorUtility.PropertyField("Hit Sounds", "Sounds to play when the damageable gets hit", hitSounds);
-        GUILayout.Space(3);
-        TDS_EditorUtility.PropertyField("Death Sounds", "Sounds to play when the damageable die", deathSounds);
+        TDS_EditorUtility.TextField("Hit Sound Event", string.Empty, hitSoundEvent);
+        TDS_EditorUtility.TextField("Death Sound Event", string.Empty, deathSoundEvent);
     }
 
     /// <summary>
@@ -509,8 +507,8 @@ public class TDS_DamageableEditor : Editor
         healthCurrent = serializedObject.FindProperty("healthCurrent");
         healthMax = serializedObject.FindProperty("healthMax");
 
-        hitSounds = serializedObject.FindProperty("hitSounds");
-        deathSounds = serializedObject.FindProperty("deathSounds");
+        hitSoundEvent = serializedObject.FindProperty("hitSoundEvent");
+        deathSoundEvent = serializedObject.FindProperty("deathSoundEvent");
 
         // Loads the editor folded and unfolded values of this class
         isDamagUnfolded = EditorPrefs.GetBool("isDamagUnfolded", isDamagUnfolded);

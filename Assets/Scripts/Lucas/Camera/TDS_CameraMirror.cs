@@ -19,13 +19,13 @@ public class TDS_CameraMirror : MonoBehaviour
 
     private void Awake()
     {
-        camera.enabled = false;
+        camera.gameObject.SetActive(false);
     }
 
     private void OnBecameVisible()
     {
-        camera.enabled = true;
-
+        camera.gameObject.SetActive(true);
+        
         if (!rtStatic)
         {
             rtStatic = new RenderTexture(512, 512, 24);
@@ -56,7 +56,7 @@ public class TDS_CameraMirror : MonoBehaviour
 
     private void OnBecameInvisible()
     {
-        camera.enabled = false;
+        camera.gameObject.SetActive(false);
     }
     #endregion
 }

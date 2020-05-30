@@ -71,6 +71,10 @@ public class TDS_FireEater : TDS_Player
             isDrunk = value;
 
             // Play drunk sound
+            if (value)
+                AkSoundEngine.PostEvent("Play_Drunk", gameObject);
+            else
+                AkSoundEngine.PostEvent("stop_drunk", gameObject);
         }
     }
 
@@ -170,49 +174,6 @@ public class TDS_FireEater : TDS_Player
     /// Timer used to make the Fire Eater sober up, in the GetDrunkCoroutine method.
     /// </summary>
     [SerializeField] private float soberUpTimer = 0;
-    #endregion
-
-    #region Sounds
-    /// <summary>
-    /// Audio track to play when crashing.
-    /// </summary>
-    [SerializeField] private AudioClip crashSound = null;
-
-    /// <summary>
-    /// Audio track to play when drinking.
-    /// </summary>
-    [SerializeField] private AudioClip drinkSound = null;
-
-    /// <summary>
-    /// Audio track to play when spitting fire.
-    /// </summary>
-    [SerializeField] private AudioClip fireBreathSound = null;
-
-    /// <summary>
-    /// Audio track to play when puking.
-    /// </summary>
-    [SerializeField] private AudioClip pukeSound = null;
-
-    /// <summary>
-    /// Audio track to play when spitting a fire ball.
-    /// </summary>
-    [SerializeField] private AudioClip spitFireBallSound = null;
-
-    /// <summary>
-    /// Audio track to play when spitting alcohol.
-    /// </summary>
-    [SerializeField] private AudioClip spitSound = null;
-
-
-    /// <summary>
-    /// Audio track to play when hitting damageable with extinct torch.
-    /// </summary>
-    [SerializeField] private AudioClip[] attackExtinctHit = null;
-
-    /// <summary>
-    /// Audio track to play when hitting damageable with lighting torch.
-    /// </summary>
-    [SerializeField] private AudioClip[] attackFiretHit = null;
     #endregion
 
     #region Animator
@@ -394,7 +355,7 @@ public class TDS_FireEater : TDS_Player
                 if (dodgeTimer > DODGE_MINIMUM_TIMER)
                 {
                     StopDodge();
-                    SetAnimOnline(PlayerAnimState.Dodge);
+                    //SetAnimOnline(PlayerAnimState.Dodge);
                     break;
                 }
             }
@@ -425,7 +386,9 @@ public class TDS_FireEater : TDS_Player
 
         // Executes the attack
         Attack(_isLight);
-        PreparingAttackCoroutine = null;
+
+        preparingAttackCoroutine = null;
+        isPreparingAttack = false;
         yield break;
     }
 
@@ -450,6 +413,11 @@ public class TDS_FireEater : TDS_Player
         GameObject _fireBall = PhotonNetwork.Instantiate("FireBall", transform.position + (transform.right * .03f) + (Vector3.up * 1.35f), transform.rotation, 0);
 
         _fireBall.GetComponentInChildren<TDS_HitBox>().Activate(attacks[_isUltra == 0 ? 12 : 13], this);
+
+        // Play sounds
+        attacks[_isUltra == 0 ? 12 : 13].PlaySound(_fireBall);
+        AkSoundEngine.PostEvent("Play_FIREBALL_SPIT", gameObject);
+
         if (_isUltra != 0) _fireBall.transform.localScale *= 1.15f;
     }
 
@@ -615,7 +583,7 @@ public class TDS_FireEater : TDS_Player
     /// </summary>
     protected void PlayCrash()
     {
-        // Play crash
+        AkSoundEngine.PostEvent("Play_SPLAT", gameObject);
     }
 
     /// <summary>
@@ -623,31 +591,7 @@ public class TDS_FireEater : TDS_Player
     /// </summary>
     protected void PlayDrink()
     {
-        // Play drink
-    }
-
-    /// <summary>
-    /// Plays sound for when spitting fire.
-    /// </summary>
-    protected void PlayFireBreath()
-    {
-        // Play fire breath
-    }
-
-    /// <summary>
-    /// Plays sound for when puking.
-    /// </summary>
-    protected void PlayPuke()
-    {
-        // Play puke
-    }
-
-    /// <summary>
-    /// Plays sound for when spitting fire ball.
-    /// </summary>
-    protected void PlaySpitFireBall()
-    {
-        // Play spit fire ball
+        AkSoundEngine.PostEvent("Play_DRINK", gameObject);
     }
 
     /// <summary>
@@ -655,24 +599,7 @@ public class TDS_FireEater : TDS_Player
     /// </summary>
     protected void PlaySpit()
     {
-        // Play spit
-    }
-
-
-    /// <summary>
-    /// Plays sound for when hitting something with an extinct torch.
-    /// </summary>
-    protected void PlayExtinctAttack()
-    {
-        // Play extinct attack
-    }
-
-    /// <summary>
-    /// Plays sound for when hitting something with a lighting torch.
-    /// </summary>
-    protected void PlayFireAttack()
-    {
-        // Play fire attack
+        AkSoundEngine.PostEvent("Play_SPIT", gameObject);
     }
     #endregion
 

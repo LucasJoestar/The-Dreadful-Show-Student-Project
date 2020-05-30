@@ -115,15 +115,45 @@ public class TDS_InputManager : MonoBehaviour
         {
             SubscribeController(_controller);
         }
+
+        #if UNITY_EDITOR
+        Cursor.lockState = CursorLockMode.Confined;
+        #endif
     }
+
+    Vector3 mousePosition = Vector3.zero;
+    float mouseTimer = 0;
+    bool isMouseActive = true;
 
     // Update is called every frame, if the MonoBehaviour is enabled
     private void Update()
     {
         // Calls the OnUpdate event
         OnUpdate?.Invoke();
-    }
-    #endregion
 
-    #endregion
+        if (Input.mousePosition != mousePosition)
+        {
+            mousePosition = Input.mousePosition;
+            mouseTimer = 0;
+
+            if (!isMouseActive)
+            {
+                isMouseActive = true;
+                Cursor.visible = true;
+            }
+        }
+        else if (isMouseActive)
+        {
+            mouseTimer += Time.deltaTime;
+
+            if (mouseTimer > 2)
+            {
+                isMouseActive = false;
+                Cursor.visible = false;
+            }
+        }
+    }
+#endregion
+
+#endregion
 }

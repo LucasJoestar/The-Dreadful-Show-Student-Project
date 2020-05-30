@@ -170,14 +170,14 @@ public class TDS_CharacterMenuSelection : MonoBehaviour
     {
         TDS_CharacterSelectionElement _elem = characterSelectionElements.Where(e => (e.PlayerInfo == null) && (!e.IsUsedLocally)).FirstOrDefault();
         if (!_elem) return;
-        _elem.SetPlayerLocalID(_playerID); 
+        _elem.SetPlayerLocalID(_playerID);
     }
 
     public void RemoveLocalPlayer(int _playerID)
     {
         TDS_CharacterSelectionElement _elem = characterSelectionElements.Where(e => (e.PlayerInfo != null) && (e.PlayerInfo.PlayerID == _playerID) && (e.IsUsedLocally)).FirstOrDefault();
         if (!_elem) return;
-        _elem.RemovePlayerLocalID(); 
+        _elem.RemovePlayerLocalID();
     }
 
     public void LockLocalPlayerType(PlayerType _type, bool _isLocked)

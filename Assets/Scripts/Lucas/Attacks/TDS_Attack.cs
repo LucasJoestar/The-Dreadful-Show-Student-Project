@@ -52,7 +52,6 @@ public class TDS_Attack : ScriptableObject
     public string AttackName { get { return attackName; } }
 #endif
 
-
     /// <summary>
     /// Effect associated with this attack.
     /// </summary>
@@ -107,7 +106,13 @@ public class TDS_Attack : ScriptableObject
     [SerializeField, TextArea] protected string description = string.Empty;
 #endif
 
-    [SerializeField] private AudioClip[] attackClips = new AudioClip[] { }; 
+    [Header("Sound")]
+
+    [SerializeField] private string soundEvent = "ENEMY";
+    [SerializeField] private float soundRTPCValue = 0;
+
+    private bool hasSound = true;
+    private bool doUseRTPC = false;
     #endregion
 
     #region Methods
@@ -211,19 +216,22 @@ public class TDS_Attack : ScriptableObject
         return 1;
     }
 
-    public AudioClip GetRandomClip()
+    public void PlaySound(GameObject _object)
     {
-        if (attackClips.Length > 0)
+        if (hasSound)
         {
-            return attackClips[Random.Range(0, attackClips.Length)];
-        }
+            // Set event RTPC
+            if (doUseRTPC)
+                AkSoundEngine.SetRTPCValue("ennemies_attack", soundRTPCValue, _object);
 
-        return null;
+            AkSoundEngine.PostEvent(soundEvent, _object);
+        }
     }
 
-    public void PlaySound()
+    private void Awake()
     {
-        // Play sound
+        hasSound = !string.IsNullOrEmpty(soundEvent);
+        doUseRTPC = soundRTPCValue > 0;
     }
     #endregion
 }

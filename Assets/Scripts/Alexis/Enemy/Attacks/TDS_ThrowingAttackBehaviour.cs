@@ -75,7 +75,10 @@ public class TDS_ThrowingAttackBehaviour : TDS_EnemyAttack
             TDS_Projectile _proj = _thrownObject.GetComponent<TDS_Projectile>();
             _proj.HitBox.HittableTags = new Tags(_caster.HitBox.HittableTags.ObjectTags); 
             _proj.HitBox.Activate(this, _caster);
-            _proj.StartProjectileMovement(_dir, MaxRange); 
+            _proj.StartProjectileMovement(_dir, MaxRange);
+
+            // Play sound
+            PlaySound(_thrownObject);
         }
     }
     #endregion

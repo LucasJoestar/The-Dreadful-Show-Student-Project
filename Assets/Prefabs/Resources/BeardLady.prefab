@@ -249,7 +249,7 @@ GameObject:
   - component: {fileID: 7163849998883596992}
   - component: {fileID: 7078619270156273062}
   - component: {fileID: 7078821753995162720}
-  - component: {fileID: 2337266995441490946}
+  - component: {fileID: 5106692432164674777}
   m_Layer: 9
   m_Name: BeardLady
   m_TagString: Player|GameController
@@ -289,7 +289,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2008dea171426f848b3762480cf9032c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
   animator: {fileID: 7132007744230118298}
   burnEffect: {fileID: 0}
   collider: {fileID: 7152357070691168762}
@@ -301,8 +300,8 @@ MonoBehaviour:
   IsInvulnerable: 0
   healthCurrent: 150
   healthMax: 150
-  hitSounds: []
-  deathSounds: []
+  hitSoundEvent: 
+  deathSoundEvent: 
   hitBox: {fileID: 7078998788060092066}
   healthBar: {fileID: 0}
   throwable: {fileID: 0}
@@ -321,24 +320,7 @@ MonoBehaviour:
   throwBonusDamagesMax: 3
   throwBonusDamagesMin: 0
   throwAimingPoint: {x: 7.5, y: 0, z: 0}
-  foostepsConcrete:
-  - {fileID: 8300000, guid: 6cec7ee85aa04054c83f32bb5b9c700b, type: 3}
-  - {fileID: 8300000, guid: f91833bb068843046922681919e4f1f7, type: 3}
-  - {fileID: 8300000, guid: ff1cf12ac0313204babfab1d38299747, type: 3}
-  - {fileID: 8300000, guid: 20a7277c2d2d52449b130ee6a12442d6, type: 3}
-  - {fileID: 8300000, guid: 59af498678b128543a68bdf34270b923, type: 3}
-  foostepsGrass:
-  - {fileID: 8300000, guid: c2b60e7979d499540a0b50aa5e218e69, type: 3}
-  - {fileID: 8300000, guid: 38fce040bcf4f47468b04297e0d6932f, type: 3}
-  - {fileID: 8300000, guid: 4704754b63bb62f41bdc1c1354b9ede9, type: 3}
-  - {fileID: 8300000, guid: ba4b8afe4834d474bbb55cfab3777b1a, type: 3}
-  - {fileID: 8300000, guid: a509118bd05a28e4187d01b2b18ada9b, type: 3}
-  foostepsWood:
-  - {fileID: 8300000, guid: 24c5a1ac845e8b04da02db682fc3f974, type: 3}
-  - {fileID: 8300000, guid: 1225a77dad1db214ab467cdc7eb828ab, type: 3}
-  - {fileID: 8300000, guid: 4593c48e8438b1d4589bb3090cc68c3e, type: 3}
-  - {fileID: 8300000, guid: ffc71ec3999e35e4ebabf3b849e255a3, type: 3}
-  - {fileID: 8300000, guid: e1aaac343f82e40469aff803f75a7b5e, type: 3}
+  foostepsSoundEvent: Play_FOOT_bearlady
   controller:
     name: New Controller
     axis:
@@ -500,7 +482,6 @@ MonoBehaviour:
   beardMaxLife: 3
   growBeardTimer: 0
   healBeardTimer: 0
-  tornadoSound: {fileID: 8300000, guid: 649e6f5a68a88d84c8c185109e662312, type: 3}
 --- !u!95 &7132007744230118298
 Animator:
   serializedVersion: 3
@@ -655,103 +636,28 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
---- !u!82 &2337266995441490946
-AudioSource:
+--- !u!114 &5106692432164674777
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7181379643535501126}
   m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243117080404633996, guid: f0f4d8919da41f04f86c3616f9711a20,
-    type: 2}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfa388358c0884e4e8aa76193895ab97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 1
+  isStaticObject: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!1 &7182135673639146644
 GameObject:
   m_ObjectHideFlags: 0
@@ -936,6 +842,7 @@ MonoBehaviour:
       Color: {r: 0.8980392, g: 0.14117648, b: 0.14117648, a: 1}
     - Name: Hittable
       Color: {r: 0.8773585, g: 0.6957892, b: 0.16140087, a: 1}
+  IgnoreOwner: 1
 --- !u!65 &7152534036635644258
 BoxCollider:
   m_ObjectHideFlags: 0

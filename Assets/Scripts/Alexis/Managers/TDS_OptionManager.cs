@@ -34,15 +34,9 @@ public class TDS_OptionManager : MonoBehaviour
 	 *	-----------------------------------
 	*/
 
-    #region Events
-
-    #endregion
-
     #region Fields / Properties
     [Header("Audio")]
-    [SerializeField] private AudioMixer mixerMusic = null;
     [SerializeField] private AudioMixer mixerVoices = null;
-    [SerializeField] private AudioMixer mixerFX = null;
 
     [SerializeField] private Slider sliderMusic = null;
     [SerializeField] private Slider sliderVoices = null;
@@ -71,20 +65,19 @@ public class TDS_OptionManager : MonoBehaviour
     #region Set Volume
     private void SetMusicVolume(float _value)
     {
-        if (!mixerMusic) return;
-        mixerMusic.SetFloat("MusicVolume", _value);
+        // RTPC
+        AkSoundEngine.SetRTPCValue("music_mix", _value);
         PlayerPrefs.SetFloat("TDSMusicVolume", _value);
     }
     private void SetVoicesVolume(float _value)
     {
-        if (!mixerVoices) return;
         mixerVoices.SetFloat("VoicesVolume", _value);
         PlayerPrefs.SetFloat("TDSVoiceVolume", _value);
     }
     private void SetFXVolume(float _value)
     {
-        if (!mixerFX) return;
-        mixerFX.SetFloat("FXVolume", _value);
+        // RTPC
+        AkSoundEngine.SetRTPCValue("bruitage_mix", _value);
         PlayerPrefs.SetFloat("TDSFXVolume", _value);
     }
     #endregion
@@ -116,26 +109,17 @@ public class TDS_OptionManager : MonoBehaviour
     public void ResetDisplayedSettings()
     {
         float _value = 0;
-        if(mixerMusic)
-        {
-            _value = PlayerPrefs.GetFloat("TDSMusicVolume"); 
-            mixerMusic.SetFloat("MusicVolume", _value);
-            if (sliderMusic) sliderMusic.value = _value;
-        }
+        _value = PlayerPrefs.GetFloat("TDSMusicVolume");
+        AkSoundEngine.SetRTPCValue("music_mix", _value);
+        sliderMusic.value = _value;
 
-        if (mixerVoices)
-        {
-            _value = PlayerPrefs.GetFloat("TDSVoiceVolume");
-            mixerVoices.SetFloat("VoicesVolume" ,_value);
-            if (sliderVoices) sliderVoices.value = _value;
-        }
+        _value = PlayerPrefs.GetFloat("TDSVoiceVolume");
+        mixerVoices.SetFloat("VoicesVolume", _value);
+        sliderVoices.value = _value;
 
-        if(mixerFX)
-        {
-            _value = PlayerPrefs.GetFloat("TDSFXVolume");
-            mixerFX.SetFloat("FXVolume", _value);
-            if (sliderFX) sliderFX.value = _value;
-        }
+        _value = PlayerPrefs.GetFloat("TDSFXVolume");
+        AkSoundEngine.SetRTPCValue("bruitage_mix", _value);
+        sliderFX.value = _value;
 
 
         if (toggleFullScreen)

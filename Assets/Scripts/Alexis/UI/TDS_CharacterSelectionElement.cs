@@ -308,7 +308,9 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
         if (_axisValue > 0)
             DisplayNextImage();
         else
-            DisplayPreviousImage(); 
+            DisplayPreviousImage();
+
+        TDS_SoundManager.Instance.PlayUIConfirm();
     }
 
     public void TriggerToggle()

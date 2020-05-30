@@ -15,6 +15,10 @@ public class TDS_AnimFishingRodMime : StateMachineBehaviour
         }
 
         // Play sound on GameObject
+        AkSoundEngine.SetRTPCValue("ennemies_attack", .3f, gameObject);
+        AkSoundEngine.PostEvent("MIME", gameObject);
+
+        Debug.Log("Start Reeling");
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -27,6 +31,9 @@ public class TDS_AnimFishingRodMime : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         // Stop playing sound on GameObject
+        AkSoundEngine.PostEvent("Stop_MIME_FISH_REELING", gameObject);
+
+        Debug.Log("Stop Reeling");
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

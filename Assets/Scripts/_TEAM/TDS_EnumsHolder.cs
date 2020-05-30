@@ -197,7 +197,7 @@ public enum CustomEventType
     RemoveCurtains,
     SwitchArrow,
     LoadNextLevel,
-    PlayMusic,
+    PlaySoundEvent,
     PlayCutscene,
     SetUIQuotes
 }
@@ -262,7 +262,8 @@ public enum FatLadyAnimState
     Angry,
     Cool,
     Snack,
-    PrepareAttack
+    PrepareAttack,
+    StopPreparingAttack
 }
 
 /// <summary>

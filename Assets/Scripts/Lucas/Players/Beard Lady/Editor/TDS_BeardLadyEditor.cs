@@ -64,11 +64,6 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
     private SerializedProperty beardMaxLife = null;
     #endregion
 
-    #region Sound
-    /// <summary>SerializedProperties for <see cref="TDS_BeardLady.tornadoSound"/> of type <see cref="AudioClip"/>.</summary>
-    private SerializedProperty tornadoSound = null;
-    #endregion
-
     #endregion
 
     #region Foldouts
@@ -328,7 +323,7 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
     /// </summary>
     private void DrawBeardLadySounds()
     {
-        TDS_EditorUtility.PropertyField("Tornado", "Audio track for tornado attack", tornadoSound);
+
     }
 
     /// <summary>
@@ -375,8 +370,6 @@ public class TDS_BeardLadyEditor : TDS_PlayerEditor
         healBeardTimer = serializedObject.FindProperty("healBeardTimer");
         beardCurrentLife = serializedObject.FindProperty("beardCurrentLife");
         beardMaxLife = serializedObject.FindProperty("beardMaxLife");
-
-        tornadoSound = serializedObject.FindProperty("tornadoSound");
 
         // Loads the editor folded & unfolded values of this script
         isBeardLadyUnfolded = EditorPrefs.GetBool("isBeardLadyUnfolded", isBeardLadyUnfolded);

@@ -3,10 +3,6 @@ using UnityEngine;
 
 public class TDS_SupplyDestructible : TDS_Destructible
 {
-    #region Fields / Properties
-
-    #endregion
-
     #region Methods
     /// <summary>
     /// Loots a random object from a given list.
@@ -27,9 +23,15 @@ public class TDS_SupplyDestructible : TDS_Destructible
         return _loot;
     }
 
+    private bool hasLanded = false;
     private void OnCollisionEnter(Collision collision)
     {
-        // Play supply sound
+        if (isSupply && !hasLanded && (collision.gameObject.layer == LayerMask.NameToLayer("Ground")))
+        {
+            // Play supply sound
+            AkSoundEngine.PostEvent("Play_SUPPLY", gameObject);
+            hasLanded = true;
+        }
     }
     #endregion
 }
