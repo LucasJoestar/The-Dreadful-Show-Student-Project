@@ -28,6 +28,7 @@
 
             fixed4 frag(v2f_img i) : COLOR 
             { 
+                float rand = _SinTime.x*100000.0;
                 //Get the colors from the RenderTexture and the uv's 
                 //from the v2f_img struct 
                 fixed4 renderTex = tex2D(_MainTex, i.uv); 
@@ -36,11 +37,11 @@
                 fixed4 vignetteTex = tex2D(_VignetteTex, i.uv); 
 
                 //Process the Scratches UV and pixels 
-                half2 scratchesUV = half2(i.uv.x + (_RandomValue * _SinTime.z * _ScratchesXSpeed), i.uv.y + (_Time.x * _ScratchesYSpeed)); 
+                half2 scratchesUV = half2(i.uv.x + (_RandomValue * _SinTime.z * _ScratchesXSpeed*rand), i.uv.y + (_Time.x * _ScratchesYSpeed*rand)); 
                 fixed4 scratchesTex = tex2D(_ScratchesTex, scratchesUV); 
-         
+
                 //Process the Dust UV and pixels 
-                half2 dustUV = half2(i.uv.x + (_RandomValue * (_SinTime.z * _dustXSpeed)), i.uv.y + (_RandomValue * (_SinTime.z * _dustYSpeed))); 
+                half2 dustUV = half2(i.uv.x + (_RandomValue * (_SinTime.z * _dustXSpeed*rand)), i.uv.y + (_RandomValue * (_SinTime.z * _dustYSpeed*rand))); 
                 fixed4 dustTex = tex2D(_DustTex, dustUV); 
                 
                 //get the luminosity values from the render texture using the YIQ values. 
@@ -49,7 +50,7 @@
                 //Add the constant color to the luminosity values 
                 fixed4 finalColor = lum + lerp(_SepiaColor, _SepiaColor + 
                  fixed4(0.1f,0.1f,0.1f,1.0f), _RandomValue); 
-                finalColor = pow(finalColor, _Contrast); 
+                finalColor = pow(finalColor, _Contrast);
 
                 //Create a constant white color we can use to adjust opacity of effects 
                 fixed3 constantWhite = fixed3(1,1,1); 
@@ -57,9 +58,9 @@
                 //Composite together the different layers to create final Screen Effect 
                 finalColor = lerp(finalColor, finalColor * vignetteTex, _VignetteAmount); 
                 finalColor.rgb *= lerp(scratchesTex, constantWhite, (_RandomValue)); 
-                finalColor.rgb *= lerp(dustTex.rgb, constantWhite, (_RandomValue * _SinTime.z)); 
-                finalColor = lerp(renderTex, finalColor, _EffectAmount); 
-                 
+                finalColor.rgb *= lerp(dustTex.rgb, constantWhite, (_RandomValue * _SinTime.z));
+                finalColor = lerp(renderTex, finalColor, _EffectAmount);
+                
                 return finalColor; 
             }
         
@@ -72,10 +73,8 @@
             CGPROGRAM
             #pragma vertex vert_img
             #pragma fragment frag
-            //#pragma fragmentoption ARB_precision_hint_fastest
             #pragma target 3.0
             ENDCG
         }
     }
-    //FallBack off   
 }
