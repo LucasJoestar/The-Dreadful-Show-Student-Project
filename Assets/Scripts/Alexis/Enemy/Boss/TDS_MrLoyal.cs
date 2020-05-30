@@ -127,6 +127,9 @@ public class TDS_MrLoyal : TDS_Boss
     /// <returns></returns>
     public IEnumerator GetOutOfBattle()
     {
+        // Remove from available enemies
+        AllEnemies.Remove(this);
+
         /// Call the particle here
         TDS_VFXManager.Instance.SpawnEffect(FXType.MrLoyalTeleportation, transform.position); 
         /// Then wait some time and teleport Mr Loyal on his plateform
@@ -196,7 +199,10 @@ public class TDS_MrLoyal : TDS_Boss
         animator.SetBool(isOutOfBattle_Hash, false); 
         SetEnemyState(EnemyState.MakingDecision);
         Invoke("PlayRandomTaunt", Random.Range(tauntRateMin, tauntRateMax));
-        if (isEnraged) cats.ToList().ForEach(c => c.SetCatIndependant()); 
+        if (isEnraged) cats.ToList().ForEach(c => c.SetCatIndependant());
+
+        // Add to battle
+        AllEnemies.Add(this);
     }
 
     public override void ActivateEnemy(bool _hastoTaunt = false)

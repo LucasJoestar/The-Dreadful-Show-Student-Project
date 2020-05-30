@@ -470,18 +470,19 @@ public class TDS_Juggler : TDS_Player
 
             if (controller.GetButtonDown(ButtonType.Shoot) && canShoot)
             {
-                TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
-
                 IsPlayable = false;
-                if (targetEnemy) targetEnemy = null;
-                if (targetObject) targetObject = null;
                 SetAnimOnline(PlayerAnimState.Throw);
                 canShoot = false;
 
-                if (CurrentThrowableAmount == 0) break;
+                if (CurrentThrowableAmount == 0)
+                    break;
             }
         }
 
+        TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
+
+        targetEnemy = null;
+        targetObject = null;
         StopAiming();
 
         yield break;
@@ -501,12 +502,7 @@ public class TDS_Juggler : TDS_Player
             _screenPos.x *= 1920;
             _screenPos.y *= 1080;
 
-            if (targetEnemy.IsDead || !_cameraRect.Contains(_screenPos))
-            {
-                targetEnemy = null;
-                TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
-            }
-            else
+            if (!targetEnemy.IsDead && _cameraRect.Contains(_screenPos))
             {
                 aimTargetTransform.anchoredPosition = new Vector3(_screenPos.x, _screenPos.y, 0);
 
@@ -560,11 +556,12 @@ public class TDS_Juggler : TDS_Player
                     // Nullify target object
                     if (targetObject) targetObject = null;
 
+                    // Play sound
+                    if (!targetEnemy)
+                        AkSoundEngine.PostEvent("Play_Lock", gameObject);
+
                     // Set target enemy
                     targetEnemy = _enemy;
-
-                    // Play sound
-                    AkSoundEngine.PostEvent("Play_Lock", gameObject);
 
                     // Set aim target & arrow positions
                     aimTargetTransform.anchoredPosition = new Vector3(_enemyPosOnScreen.x, _enemyPosOnScreen.y, 0);
@@ -575,6 +572,12 @@ public class TDS_Juggler : TDS_Player
                     return;
                 }
             }
+        }
+
+        if (targetEnemy)
+        {
+            targetEnemy = null;
+            TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
         }
 
         // If no target, just let the player aim the point he wants, 'cause the juggler can do that. Yep

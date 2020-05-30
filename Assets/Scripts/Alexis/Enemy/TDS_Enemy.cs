@@ -1376,12 +1376,12 @@ public abstract class TDS_Enemy : TDS_Character
         if (!agent) agent = GetComponent<CustomNavMeshAgent>();
         OnDie += () => StopAllCoroutines();
         InitLifeBar();
-
-        if (!AllEnemies.Contains(this)) AllEnemies.Add(this);
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
+
         if (AllEnemies.Contains(this))
             AllEnemies.Remove(this);
     }
@@ -1403,17 +1403,15 @@ public abstract class TDS_Enemy : TDS_Character
             }
         }
 
+        if (!AllEnemies.Contains(this))
+            AllEnemies.Add(this);
+
         base.Start();
     }
 
     private void OnDisable()
     {
         if (AllEnemies.Contains(this)) AllEnemies.Remove(this);
-    }
-
-    private void OnEnable()
-    {
-        if (!AllEnemies.Contains(this)) AllEnemies.Add(this);
     }
 
     protected override void OnDrawGizmos()
