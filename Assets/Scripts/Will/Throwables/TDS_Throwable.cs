@@ -281,15 +281,16 @@ public class TDS_Throwable : TDS_Object
     /// </summary>
     protected virtual void OnHitSomething()
     {
-        if (!PhotonNetwork.isMasterClient)
-        {
-            Debug.LogError("ERRORRRRRR");
-            return;
-        }
-
         BounceObject();
         ResetThrowable();
 
+        // Play sound
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "CallHitSound", new object[] { });
+        CallHitSound();
+    }
+
+    protected void CallHitSound()
+    {
         // Play hit sound
         AkSoundEngine.PostEvent(hitSoundEvent, gameObject);
     }

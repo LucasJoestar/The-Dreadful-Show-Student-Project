@@ -821,12 +821,14 @@ public class TDS_Juggler : TDS_Player
     /// <returns>Returns true if successfully removed the throwable, false otherwise.</returns>
     public override bool RemoveThrowable()
     {
-        if (!throwable) return false;
+        if (!throwable)
+            return false;
 
-        if (!throwable.IsHeld || (throwable.Owner == this)) throwable.transform.SetParent(null, true);
+        if (throwable.transform.parent == handsTransform)
+            throwable.transform.SetParent(null, true);
 
         throwable = null;
-        
+
         if (CurrentThrowableAmount > 0)
         {
             Throwable = Throwables[0];
