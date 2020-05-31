@@ -307,6 +307,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns>Attack to cast</returns>
     protected virtual TDS_EnemyAttack GetAttack()
     {
+        if (!playerTarget) return null; 
         float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x); 
         //If the enemy has no attack, return null
         if (attacks == null || attacks.Length == 0) return null;

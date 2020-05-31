@@ -618,8 +618,10 @@ public class TDS_UIManager : PunBehaviour
                 StopAllCoroutines();
                 if (!PhotonNetwork.isMasterClient)
                 {
-                    TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, this.GetType(), "UpdateReadySettings", new object[] { PhotonNetwork.player.ID, false });
+                    buttonRestartGame.gameObject.SetActive(false);
+                    break;
                 }
+                buttonRestartGame.gameObject.SetActive(true);
                 buttonRestartGame.Select(); 
                 break; 
             default:
@@ -874,10 +876,6 @@ public class TDS_UIManager : PunBehaviour
             TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, this.GetType(), "ResetLevel", new object[] { });
             ResetLevel();
         }
-        else
-        {
-            TDS_RPCManager.Instance.CallRPC(PhotonTargets.MasterClient, photonView, this.GetType(), "UpdateReadySettings", new object[] { PhotonNetwork.player.ID, true });
-        }
     }
 
     /// <summary>
@@ -1125,7 +1123,6 @@ public class TDS_UIManager : PunBehaviour
             return; 
         }
         TDS_NetworkManager.Instance.PlayerNamePrefKey = _newName;
-        //if (playerNameField) playerNameField.text = _newName; 
     }
 
     public void StartLeavingRoom()
@@ -1209,16 +1206,6 @@ public class TDS_UIManager : PunBehaviour
 
         if (uiState == UIState.InCharacterSelection && launchGameButton)
             launchGameButton.interactable = (!TDS_GameManager.PlayersInfo.Any(p => p.IsReady == false) && TDS_GameManager.LocalIsReady) || (!TDS_GameManager.PlayersInfo.Any(p => p.IsReady == false));
-        if (uiState == UIState.InGameOver && buttonRestartGame)
-        {
-            if(PhotonNetwork.offlineMode)
-            {
-                buttonRestartGame.interactable = true;
-                return; 
-            }
-            buttonRestartGame.interactable = !TDS_GameManager.PlayersInfo.Any(p => p.IsReady == false);
-
-        }
     }
 
     /// <summary>
