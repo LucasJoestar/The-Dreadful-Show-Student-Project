@@ -217,7 +217,13 @@ public class TDS_MrLoyal : TDS_Boss
     {
         base.Die();
         CancelInvoke("PlayRandomTaunt");
-        cats.ToList().ForEach(c => c.DesactivateCat()); 
+        cats.ToList().ForEach(c => c.DesactivateCat());
+        foreach (TDS_Enemy e in AllEnemies)
+        {
+            e.IsPacific = true;
+            e.IsParalyzed = true;
+            e.StopAll();
+        }
     }
 
     protected override float StartAttack()

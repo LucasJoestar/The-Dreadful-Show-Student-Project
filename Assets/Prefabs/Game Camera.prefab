@@ -137,14 +137,15 @@ MonoBehaviour:
   _shader: {fileID: 4800000, guid: ff36925fda6982c4caf015b9b0d93de1, type: 3}
   oldFilmEffectAmount: 0.474
   sepiaColor: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 1}
-  vignetteTexture: {fileID: 2800000, guid: ab5e79ea8a40c2740b279c4b76b272e6, type: 3}
-  vignetteAmount: 0.5
+  vignetteTexture: {fileID: 2800000, guid: 06dee088789dec24b92802bb6c516cb5, type: 3}
+  vignetteAmount: 0.3
   scratchesTexture: {fileID: 2800000, guid: 2efa6373b80e5f8459f70c26486689a4, type: 3}
   scratchesYSpeed: 10
   scratchesXSpeed: 10
   dustTexture: {fileID: 2800000, guid: dc13a6c33302a2045b4206c222c412ae, type: 3}
   dustYSpeed: 10
   dustXSpeed: 10
+  flickIntensity: 0.5
 --- !u!114 &2851242311807730563
 MonoBehaviour:
   m_ObjectHideFlags: 0

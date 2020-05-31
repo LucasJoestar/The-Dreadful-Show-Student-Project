@@ -1,22 +1,48 @@
 fileFormatVersion: 2
 guid: d64189cf2ec7d8a4499ad53be3f8fb8e
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: Credits_0
-    21300002: Credits_Eva
-    21300004: Credits_Alexis
-    21300006: Credits_Willam
-    21300008: Credits_4
-    21300010: Credits_Colline
-    21300012: Credits_Lucas
-    21300014: Credits_Tom
-    21300016: Credits_8
-    21300018: Credits_Cyril
-    21300020: Credits_Simon
-    21300022: Head_MrLoyal
-    21300024: Credits_12
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: Credits_Matthieu
+  - first:
+      213: 21300002
+    second: Credits_Eva
+  - first:
+      213: 21300004
+    second: Credits_Alexis
+  - first:
+      213: 21300006
+    second: Credits_Willam
+  - first:
+      213: 21300008
+    second: Credits_4
+  - first:
+      213: 21300010
+    second: Credits_Colline
+  - first:
+      213: 21300012
+    second: Credits_Lucas
+  - first:
+      213: 21300014
+    second: Credits_Tom
+  - first:
+      213: 21300016
+    second: Credits_8
+  - first:
+      213: 21300018
+    second: Credits_Cyril
+  - first:
+      213: 21300020
+    second: Credits_Simon
+  - first:
+      213: 21300022
+    second: Head_MrLoyal
+  - first:
+      213: 21300024
+    second: Credits_12
   externalObjects: {}
-  serializedVersion: 9
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -71,7 +97,7 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
-  - serializedVersion: 2
+  - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -82,7 +108,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -93,7 +120,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -104,7 +132,8 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -115,6 +144,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -134,6 +164,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 7cd996c9f823caf4db99face21d38a4a
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -154,6 +185,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 7b3c94526cb857d4ab540ed86fab9874
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -174,6 +206,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 12830bcf05a74d144991948173613c34
+      internalID: 21300006
       vertices: []
       indices: 
       edges: []
@@ -194,6 +227,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: a6559abd059fe4c42b52761548395eff
+      internalID: 21300010
       vertices: []
       indices: 
       edges: []
@@ -214,6 +248,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 220fa15a017af5c42815ee1e534fc7b6
+      internalID: 21300012
       vertices: []
       indices: 
       edges: []
@@ -234,6 +269,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: fa91e447b5a85ef4e9b4adf6469adfcc
+      internalID: 21300014
       vertices: []
       indices: 
       edges: []
@@ -254,6 +290,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 5cb5814d263204841b8113a906e71da7
+      internalID: 21300018
       vertices: []
       indices: 
       edges: []
@@ -274,6 +311,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 9179a97d72c8c6c4eb1aa9c2ee262a83
+      internalID: 21300020
       vertices: []
       indices: 
       edges: []
@@ -294,6 +332,28 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 75a94146962d2c74a9b23478834384da
+      internalID: 21300022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Credits_Matthieu
+      rect:
+        serializedVersion: 2
+        x: 1353
+        y: 1371
+        width: 528
+        height: 564
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f134ff4c71ad9e2458f7144016eef953
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -302,10 +362,12 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: ceb82c3234fc9204a8df4bcd6d8cd5d4
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

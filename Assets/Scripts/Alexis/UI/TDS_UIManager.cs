@@ -1288,6 +1288,7 @@ public class TDS_UIManager : PunBehaviour
         }
     }
 
+#if UNITY_EDITOR
     private void OnGUI()
     {
         GUIStyle _style = new GUIStyle();
@@ -1297,6 +1298,8 @@ public class TDS_UIManager : PunBehaviour
         GUI.Label(new Rect(0, 0, 250, 100), (1 / Time.deltaTime).ToString(), _style);
         
     }
+#endif
+
     #endregion
 
     #endregion
