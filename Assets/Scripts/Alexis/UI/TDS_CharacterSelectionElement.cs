@@ -403,11 +403,6 @@ public class TDS_CharacterSelectionElement : MonoBehaviour
     {
         characterSelectionManager = TDS_UIManager.Instance.CharacterSelectionManager;
     }
-
-    private void OnGUI()
-    {
-        GUILayout.Box($"{characterSelectionImages[0].CanBeSelected} // {characterSelectionImages[1].CanBeSelected} // {characterSelectionImages[2].CanBeSelected} // {characterSelectionImages[3].CanBeSelected}") ;
-    }
     #endregion 
 
     #endregion

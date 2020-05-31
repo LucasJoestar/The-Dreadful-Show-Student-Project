@@ -1262,7 +1262,7 @@ public class TDS_Player : TDS_Character, IPunObservable
             if (movePlayerInViewCoroutine != null) StopMovingPlayerInView();
         }
 
-        AkSoundEngine.PostEvent("Stop_APROACHING_DEATH", TDS_GameManager.MainAudio);
+        AkSoundEngine.PostEvent("Stop_APROACHING_DEATH", gameObject);
 
         // Desactivates the detection box
         interactionBox.DisplayInteractionFeedback(false);
@@ -1407,7 +1407,7 @@ public class TDS_Player : TDS_Character, IPunObservable
 
             if ((_healthBefore > _treshold) && (healthCurrent <= _treshold))
             {
-                AkSoundEngine.PostEvent("Play_APROACHING_DEATH", TDS_GameManager.MainAudio);
+                AkSoundEngine.PostEvent("Play_APROACHING_DEATH", gameObject);
             }
         }
 

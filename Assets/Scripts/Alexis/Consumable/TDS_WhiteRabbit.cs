@@ -163,8 +163,7 @@ public class TDS_WhiteRabbit : TDS_Consumable
     private void Run()
     {
         if (!PhotonNetwork.isMasterClient) return;
-
-        float _x = goRight ? TDS_Camera.Instance.CurrentBounds.XMax + 1 : TDS_Camera.Instance.CurrentBounds.XMin - 1; 
+        float _x = goRight ? (TDS_Camera.Instance.CurrentBounds.XMax > transform.position.x + 25 ? transform.position.x + 25 : TDS_Camera.Instance.CurrentBounds.XMax) : TDS_Camera.Instance.CurrentBounds.XMin - 1;
         Vector3 _targetPosition = new Vector3(_x, transform.position.y, transform.position.z);
         agent.SetDestination(_targetPosition);
         TDS_RPCManager.Instance.CallRPC(PhotonTargets.All, photonView, GetType(), "Flip", new object[] { });

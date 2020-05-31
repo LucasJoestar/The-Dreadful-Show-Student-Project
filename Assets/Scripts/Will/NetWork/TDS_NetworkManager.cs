@@ -191,16 +191,6 @@ public class TDS_NetworkManager : PunBehaviour
 
         TDS_SceneManager.Instance.PrepareSceneLoading(0, (int)UIState.InMainMenu);
     }
-
-    #region Player   
-    /*
-    public void SetPlayerName(string _nickname)
-    {
-        PhotonNetwork.playerName = _nickname + " ";
-        PlayerPrefs.SetString(PlayerNamePrefKey, _nickname);
-    }
-    */
-    #endregion
     #endregion
 
     #region PhotonMethods

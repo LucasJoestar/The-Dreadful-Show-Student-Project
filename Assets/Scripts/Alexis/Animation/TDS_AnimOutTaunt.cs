@@ -11,7 +11,7 @@ public class TDS_AnimOutTaunt : StateMachineBehaviour
     {
         if (!owner) owner = animator.GetComponent<TDS_Enemy>();
         if (!owner) return;
-        if (animator.GetInteger("enemyState") == (int)EnemyState.Waiting) return; 
+        if (animator.GetInteger("enemyState") == (int)EnemyState.Waiting || animator.GetInteger("enemyState") == (int)EnemyState.None) return; 
         owner.SetEnemyState(EnemyState.MakingDecision); 
     }
 

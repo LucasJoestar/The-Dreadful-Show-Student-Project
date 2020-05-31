@@ -214,7 +214,7 @@ public class TDS_EventSystemEditor : Editor
 
                 TDS_EditorUtility.PropertyField("Event Type", "Type of this event", _eventType);
                 CustomEventType _eventTypeValue = (CustomEventType)_eventType.enumValueIndex;
-                if (_eventType.enumValueIndex > 8) _eventTypeValue += 12;
+                if (_eventType.enumValueIndex > 9) _eventTypeValue += 11;
 
                 TDS_EditorUtility.FloatField("Delay", "Delay before starting this event", _event.FindPropertyRelative("delay"));
 

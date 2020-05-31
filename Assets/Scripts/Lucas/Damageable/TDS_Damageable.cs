@@ -404,7 +404,8 @@ public abstract class TDS_Damageable : TDS_Object
     {
         if (PhotonNetwork.isMasterClient)
         {
-            if (IsInvulnerable || isDead) return false;
+            if (IsInvulnerable || isDead)
+                return false;
 
             HealthCurrent -= _damage;
             TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "TakeDamage", new object[] { healthCurrent });

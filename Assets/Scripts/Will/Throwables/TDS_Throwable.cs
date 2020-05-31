@@ -215,7 +215,11 @@ public class TDS_Throwable : TDS_Object
 
         if (owner)
         {
-            owner.RemoveThrowable();
+            if (owner is TDS_Juggler _juggler)
+                _juggler.RemoveThrowable(this);
+            else
+                owner.RemoveThrowable();
+
             isHeld = false;
             SetIndependant();
         }
@@ -238,7 +242,11 @@ public class TDS_Throwable : TDS_Object
 
         IsDropped = true;
 
-        owner.RemoveThrowable();
+        if (owner is TDS_Juggler _juggler)
+            _juggler.RemoveThrowable(this);
+        else
+            owner.RemoveThrowable();
+
         owner = null;
         return true;
     }
@@ -281,15 +289,16 @@ public class TDS_Throwable : TDS_Object
     /// </summary>
     protected virtual void OnHitSomething()
     {
-        if (!PhotonNetwork.isMasterClient)
-        {
-            Debug.LogError("ERRORRRRRR");
-            return;
-        }
-
         BounceObject();
         ResetThrowable();
 
+        // Play sound
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "CallHitSound", new object[] { });
+        CallHitSound();
+    }
+
+    protected void CallHitSound()
+    {
         // Play hit sound
         AkSoundEngine.PostEvent(hitSoundEvent, gameObject);
     }
@@ -314,7 +323,12 @@ public class TDS_Throwable : TDS_Object
         }
 
         if (owner && (owner != _owner))
-            owner.RemoveThrowable();
+        {
+            if (owner is TDS_Juggler _juggler)
+                _juggler.RemoveThrowable(this);
+            else
+                owner.RemoveThrowable();
+        }
 
         isHeld = true;
         owner = _owner;
@@ -405,7 +419,10 @@ public class TDS_Throwable : TDS_Object
         if (!isHeld)
             return false;
 
-        owner.RemoveThrowable();
+        if (owner is TDS_Juggler _juggler)
+            _juggler.RemoveThrowable(this);
+        else
+            owner.RemoveThrowable();
 
         rigidbody.isKinematic = false;
         rigidbody.velocity = TDS_ThrowUtility.GetProjectileVelocityAsVector3(transform.position, _finalPosition, _angle);
@@ -465,7 +482,10 @@ public class TDS_Throwable : TDS_Object
     {
         if (owner && PhotonNetwork.connected && gameObject.activeInHierarchy && !isDestroyed)
         {
-            owner.RemoveThrowable();
+            if (owner is TDS_Juggler _juggler)
+                _juggler.RemoveThrowable(this);
+            else
+                owner.RemoveThrowable();
         }
         if (hitBox.IsActive)
             hitBox.Desactivate();

@@ -32,13 +32,22 @@ public class SHACONTROLLER_OldMovieEffect : MonoBehaviour
     float dustYSpeed = 10.0f;
     [SerializeField, Range(0, 10)]
     float dustXSpeed = 10.0f;
+    //[SerializeField, Range(0, 30), Space(5)]
+    //int fpsEffect = 14;
+    [SerializeField, Range(0, 1), Space(20)]
+    float flickIntensity = .5f;
 
     Material screenMat;
-    float randomValue;
+    float randomValue = 1;
     #endregion
 
     #region Methods
     #region ShaderController
+    //void Flick()
+    //{
+    //    if (randomValue > 0f) randomValue = flickIntensity;
+    //    else randomValue = flickIntensity * -1f;
+    //}
     void OnRenderImage(RenderTexture sourceTexture, RenderTexture destinationTexture)
     {
             if(screenMat == null)
@@ -82,12 +91,19 @@ public class SHACONTROLLER_OldMovieEffect : MonoBehaviour
             DestroyImmediate(screenMat);
         }
     }
-
+    //void Start()
+    //{
+    //    InvokeRepeating("Flick", 1, (fpsEffect*0.024f)/60f);
+    //}
+     void FixedUpdate()
+    {
+        randomValue = Random.Range(flickIntensity * -1f, flickIntensity);
+    }
     void Update()
     {
         vignetteAmount = Mathf.Clamp01(vignetteAmount);
         oldFilmEffectAmount = Mathf.Clamp(oldFilmEffectAmount, 0f, 1.5f);
-        randomValue = Random.Range(-1f, 1f);
+        //randomValue = Random.Range(-1f, 1f);
     }
     #endregion
     #endregion

@@ -184,6 +184,7 @@ public enum CustomEventType
     WaitForObjectDeath,
     WaitForSpawnAreaDesactivation,
     WaitEndOfCutscene,
+    KillAllEnemies,
 
     // Online Events
     Narrator = 21,

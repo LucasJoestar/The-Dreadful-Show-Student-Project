@@ -246,6 +246,14 @@ public class TDS_Event
                 PhotonNetwork.Instantiate(prefab.name, eventTransform.position, eventTransform.rotation, 0);
                 break;
 
+            // Instantiate with Photon
+            case CustomEventType.KillAllEnemies:
+                while (TDS_Enemy.AllEnemies.Count > 0)
+                {
+                    TDS_Enemy.AllEnemies[0].TakeDamage(5000);
+                }
+                break;
+
             // Makes a cool fade before displaying loading screen, and loading next level
             case CustomEventType.LoadNextLevel:
                 if (!PhotonNetwork.isMasterClient) yield break;

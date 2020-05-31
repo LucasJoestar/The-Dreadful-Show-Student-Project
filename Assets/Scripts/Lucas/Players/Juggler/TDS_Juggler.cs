@@ -470,18 +470,19 @@ public class TDS_Juggler : TDS_Player
 
             if (controller.GetButtonDown(ButtonType.Shoot) && canShoot)
             {
-                TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
-
                 IsPlayable = false;
-                if (targetEnemy) targetEnemy = null;
-                if (targetObject) targetObject = null;
                 SetAnimOnline(PlayerAnimState.Throw);
                 canShoot = false;
 
-                if (CurrentThrowableAmount == 0) break;
+                if (CurrentThrowableAmount == 0)
+                    break;
             }
         }
 
+        TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
+
+        targetEnemy = null;
+        targetObject = null;
         StopAiming();
 
         yield break;
@@ -501,12 +502,7 @@ public class TDS_Juggler : TDS_Player
             _screenPos.x *= 1920;
             _screenPos.y *= 1080;
 
-            if (targetEnemy.IsDead || !_cameraRect.Contains(_screenPos))
-            {
-                targetEnemy = null;
-                TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
-            }
-            else
+            if (!targetEnemy.IsDead && _cameraRect.Contains(_screenPos))
             {
                 aimTargetTransform.anchoredPosition = new Vector3(_screenPos.x, _screenPos.y, 0);
 
@@ -560,11 +556,12 @@ public class TDS_Juggler : TDS_Player
                     // Nullify target object
                     if (targetObject) targetObject = null;
 
+                    // Play sound
+                    if (!targetEnemy)
+                        AkSoundEngine.PostEvent("Play_Lock", gameObject);
+
                     // Set target enemy
                     targetEnemy = _enemy;
-
-                    // Play sound
-                    AkSoundEngine.PostEvent("Play_Lock", gameObject);
 
                     // Set aim target & arrow positions
                     aimTargetTransform.anchoredPosition = new Vector3(_enemyPosOnScreen.x, _enemyPosOnScreen.y, 0);
@@ -575,6 +572,12 @@ public class TDS_Juggler : TDS_Player
                     return;
                 }
             }
+        }
+
+        if (targetEnemy)
+        {
+            targetEnemy = null;
+            TDS_UIManager.Instance.SetJugglerAimTargetAnim(JugglerAimTargetAnimState.Neutral);
         }
 
         // If no target, just let the player aim the point he wants, 'cause the juggler can do that. Yep
@@ -818,12 +821,14 @@ public class TDS_Juggler : TDS_Player
     /// <returns>Returns true if successfully removed the throwable, false otherwise.</returns>
     public override bool RemoveThrowable()
     {
-        if (!throwable) return false;
+        if (!throwable)
+            return false;
 
-        if (!throwable.IsHeld || (throwable.Owner == this)) throwable.transform.SetParent(null, true);
+        if (throwable.transform.parent == handsTransform)
+            throwable.transform.SetParent(null, true);
 
         throwable = null;
-        
+
         if (CurrentThrowableAmount > 0)
         {
             Throwable = Throwables[0];
@@ -834,7 +839,8 @@ public class TDS_Juggler : TDS_Player
         else
         {
             // Triggers event
-            if (photonView.isMine) OnHasObject?.Invoke(false);
+            if (photonView.isMine)
+                OnHasObject?.Invoke(false);
         }
 
         if (CurrentThrowableAmount < MaxThrowableAmount)
@@ -850,6 +856,51 @@ public class TDS_Juggler : TDS_Player
                 AkSoundEngine.PostEvent("Stop_Play_Juggle", gameObject);
             }
         }
+
+        return true;
+    }
+
+    public bool RemoveThrowable(TDS_Throwable _throwable)
+    {
+        if (throwable == _throwable)
+        {
+            RemoveThrowable();
+        }
+        if (Throwables.Contains(_throwable))
+        {
+            if (_throwable.transform.parent == objectAnchors[Throwables.IndexOf(_throwable)])
+                throwable.transform.SetParent(null, true);
+
+            // Updates juggling informations
+            UpdateJuggleParameters(false);
+
+            if (CurrentThrowableAmount < MaxThrowableAmount)
+            {
+                // Activates the detection box
+                interactionBox.DisplayInteractionFeedback(true);
+
+                if (CurrentThrowableAmount == 0)
+                {
+                    // Triggers event
+                    if (photonView.isMine)
+                        OnHasObject?.Invoke(false);
+
+                    SetAnim(PlayerAnimState.LostObject);
+
+                    // Stop juggle sound
+                    AkSoundEngine.PostEvent("Stop_Play_Juggle", gameObject);
+                }
+            }
+        }
+
+        return false;
+
+        if (!throwable)
+            return false;
+
+        
+
+        
 
         return true;
     }
@@ -882,33 +933,38 @@ public class TDS_Juggler : TDS_Player
         // Get if was juggling before taking this throwable
         bool _wasJuggling = CurrentThrowableAmount > 0;
 
-        if (!_throwable) return false;
-        Throwable = _throwable;
-        interactionBox.RemoveObject(_throwable.Collider);
+        if (!_throwable)
+            return false;
 
-        if (CurrentThrowableAmount > 0)
+        if ((throwable != _throwable) && !Throwables.Contains(_throwable))
         {
-            if (!_wasJuggling)
-            {
-                SetAnim(PlayerAnimState.HasObject);
+            Throwable = _throwable;
+            interactionBox.RemoveObject(_throwable.Collider);
 
-                // Play juggle sound
-                AkSoundEngine.PostEvent("Play_Juggle", gameObject);
+            if (CurrentThrowableAmount > 0)
+            {
+                if (!_wasJuggling)
+                {
+                    SetAnim(PlayerAnimState.HasObject);
+
+                    // Play juggle sound
+                    AkSoundEngine.PostEvent("Play_Juggle", gameObject);
+                }
+
+                // Updates juggling informations
+                UpdateJuggleParameters(true);
+
+                if (CurrentThrowableAmount == MaxThrowableAmount)
+                {
+                    // Desactivates the detection box
+                    interactionBox.DisplayInteractionFeedback(false);
+                }
             }
 
-            // Updates juggling informations
-            UpdateJuggleParameters(true);
-
-            if (CurrentThrowableAmount == MaxThrowableAmount)
-            {
-                // Desactivates the detection box
-                interactionBox.DisplayInteractionFeedback(false);
-            }
+            // Triggers event
+            if (photonView.isMine)
+                OnHasObject?.Invoke(true);
         }
-
-        // Triggers event
-        if (photonView.isMine) OnHasObject?.Invoke(true);
-
         return true;
     }
 

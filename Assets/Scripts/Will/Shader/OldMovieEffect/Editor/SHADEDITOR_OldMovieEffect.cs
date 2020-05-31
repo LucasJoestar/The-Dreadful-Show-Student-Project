@@ -15,6 +15,8 @@ public class SHADEDITOR_OldMovieEffect : Editor
     SerializedProperty dustTexture;
     SerializedProperty dustYSpeed;
     SerializedProperty dustXSpeed;
+    SerializedProperty flickIntensity;
+    //SerializedProperty fpsEffect;
     #endregion
 
     #region Meths
@@ -30,6 +32,8 @@ public class SHADEDITOR_OldMovieEffect : Editor
         dustTexture = serializedObject.FindProperty("dustTexture");
         dustYSpeed = serializedObject.FindProperty("dustYSpeed");
         dustXSpeed = serializedObject.FindProperty("dustXSpeed");
+        flickIntensity = serializedObject.FindProperty("flickIntensity");
+        //fpsEffect = serializedObject.FindProperty("fpsEffect");
     }
 
     public override void OnInspectorGUI()
@@ -46,6 +50,8 @@ public class SHADEDITOR_OldMovieEffect : Editor
         EditorGUILayout.PropertyField(dustTexture);
         EditorGUILayout.PropertyField(dustYSpeed);
         EditorGUILayout.PropertyField(dustXSpeed);
+        EditorGUILayout.PropertyField(flickIntensity);
+        //EditorGUILayout.PropertyField(fpsEffect);
 
         serializedObject.ApplyModifiedProperties();
     }

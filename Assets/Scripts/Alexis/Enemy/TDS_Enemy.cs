@@ -307,6 +307,7 @@ public abstract class TDS_Enemy : TDS_Character
     /// <returns>Attack to cast</returns>
     protected virtual TDS_EnemyAttack GetAttack()
     {
+        if (!playerTarget) return null; 
         float _distance = Mathf.Abs(transform.position.x - playerTarget.transform.position.x); 
         //If the enemy has no attack, return null
         if (attacks == null || attacks.Length == 0) return null;
@@ -1376,12 +1377,12 @@ public abstract class TDS_Enemy : TDS_Character
         if (!agent) agent = GetComponent<CustomNavMeshAgent>();
         OnDie += () => StopAllCoroutines();
         InitLifeBar();
-
-        if (!AllEnemies.Contains(this)) AllEnemies.Add(this);
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
+
         if (AllEnemies.Contains(this))
             AllEnemies.Remove(this);
     }
@@ -1391,17 +1392,22 @@ public abstract class TDS_Enemy : TDS_Character
     {
         if(PhotonNetwork.isMasterClient)
         {
-            if (photonView.owner == null) photonView.TransferOwnership(PhotonNetwork.masterClient);
-            // Scales up health on player amount
-            if (doScaleOnPlayerAmount)
-            {
-                for (int _i = 1; _i < TDS_LevelManager.Instance.AllPlayers.Length; _i++)
-                {
-                    HealthMax += (int)(healthMax * (healthScalePercent / 100f));
-                }
-                HealthCurrent = healthMax;
-            }
+            if (photonView.owner == null)
+                photonView.TransferOwnership(PhotonNetwork.masterClient);
         }
+
+        // Scales up health on player amount
+        if (doScaleOnPlayerAmount)
+        {
+            for (int _i = 1; _i < TDS_LevelManager.Instance.AllPlayers.Length; _i++)
+            {
+                HealthMax += (int)(healthMax * (healthScalePercent / 100f));
+            }
+            HealthCurrent = healthMax;
+        }
+
+        if (!AllEnemies.Contains(this))
+            AllEnemies.Add(this);
 
         base.Start();
     }
@@ -1409,11 +1415,6 @@ public abstract class TDS_Enemy : TDS_Character
     private void OnDisable()
     {
         if (AllEnemies.Contains(this)) AllEnemies.Remove(this);
-    }
-
-    private void OnEnable()
-    {
-        if (!AllEnemies.Contains(this)) AllEnemies.Add(this);
     }
 
     protected override void OnDrawGizmos()

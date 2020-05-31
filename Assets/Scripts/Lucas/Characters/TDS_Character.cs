@@ -508,6 +508,7 @@ public abstract class TDS_Character : TDS_Damageable
 
             if (!throwable.DropLocal())
                 RemoveThrowable();
+
             return true;
         }
 
