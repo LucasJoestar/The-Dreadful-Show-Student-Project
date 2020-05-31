@@ -25,7 +25,7 @@ public class TDS_OffBoundDetector : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         TDS_Player _player = other.GetComponent<TDS_Player>();
-        if (_player && _player.photonView.isMine)
+        if (_player && _player.photonView.isMine && !_player.IsDead)
         {
             TDS_Bounds _bounds = TDS_Camera.Instance.CurrentBounds;
             Vector3 _actualPosition = other.transform.position;

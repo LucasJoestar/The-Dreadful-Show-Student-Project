@@ -1288,7 +1288,7 @@ public class TDS_UIManager : PunBehaviour
         }
     }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
     private void OnGUI()
     {
         GUIStyle _style = new GUIStyle();
