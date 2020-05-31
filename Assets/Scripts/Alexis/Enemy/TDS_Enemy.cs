@@ -1392,16 +1392,18 @@ public abstract class TDS_Enemy : TDS_Character
     {
         if(PhotonNetwork.isMasterClient)
         {
-            if (photonView.owner == null) photonView.TransferOwnership(PhotonNetwork.masterClient);
-            // Scales up health on player amount
-            if (doScaleOnPlayerAmount)
+            if (photonView.owner == null)
+                photonView.TransferOwnership(PhotonNetwork.masterClient);
+        }
+
+        // Scales up health on player amount
+        if (doScaleOnPlayerAmount)
+        {
+            for (int _i = 1; _i < TDS_LevelManager.Instance.AllPlayers.Length; _i++)
             {
-                for (int _i = 1; _i < TDS_LevelManager.Instance.AllPlayers.Length; _i++)
-                {
-                    HealthMax += (int)(healthMax * (healthScalePercent / 100f));
-                }
-                HealthCurrent = healthMax;
+                HealthMax += (int)(healthMax * (healthScalePercent / 100f));
             }
+            HealthCurrent = healthMax;
         }
 
         if (!AllEnemies.Contains(this))

@@ -873,7 +873,7 @@ public class TDS_UIManager : PunBehaviour
         }
         if (PhotonNetwork.isMasterClient)
         {
-            TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, this.GetType(), "ResetLevel", new object[] { });
+            //TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, this.GetType(), "ResetLevel", new object[] { });
             ResetLevel();
         }
     }

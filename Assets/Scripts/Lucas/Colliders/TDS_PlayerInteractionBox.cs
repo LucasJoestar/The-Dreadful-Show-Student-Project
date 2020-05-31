@@ -221,6 +221,11 @@ public class TDS_PlayerInteractionBox : MonoBehaviour
             {
                 // Disable outline on remove from list
                 if (nearestCollider.gameObject.HasTag(OUTLINE_TAG)) nearestCollider.GetComponentInChildren<TDS_DiffuseOutline>().DisableOutline();
+
+                nearestCollider = null;
+
+                // Desactivate feedback
+                if (interactText.gameObject.activeInHierarchy) interactText.gameObject.SetActive(false);
             }
 
             // Desactivate feedback if needed
