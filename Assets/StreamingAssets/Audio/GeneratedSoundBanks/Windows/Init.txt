@@ -1,0 +1,38 @@
+Switch Group	ID	Name			Wwise Object Path	Notes
+	2066487578	ENNEMIS_ATTACK_SWITCH			\Default Work Unit\ENNEMIS_ATTACK_SWITCH	
+	3140091853	footsteps_switch			\Default Work Unit\footsteps_switch	
+
+Switch	ID	Name	Switch Group			Notes
+	4145357456	attaque_3	ENNEMIS_ATTACK_SWITCH			
+	4145357457	attaque_2	ENNEMIS_ATTACK_SWITCH			
+	4145357458	attaque_1	ENNEMIS_ATTACK_SWITCH			
+	4145357461	attaque_6	ENNEMIS_ATTACK_SWITCH			
+	4145357462	attaque_5	ENNEMIS_ATTACK_SWITCH			
+	4145357463	attaque_4	ENNEMIS_ATTACK_SWITCH			
+	841620460	concrete	footsteps_switch			
+	2058049674	wood	footsteps_switch			
+	2195636714	dirt	footsteps_switch			
+
+State Group	ID	Name			Wwise Object Path	Notes
+	1944582999	pause_state			\Default Work Unit\pause_state	
+
+State	ID	Name	State Group			Notes
+	319258907	paused	pause_state			
+	748895195	None	pause_state			
+	1365518790	unpaused	pause_state			
+
+Custom State	ID	Name	State Group	Owner		Notes
+	1051318908	paused	pause_state	\Master-Mixer Hierarchy\Default Work Unit\music bus		
+
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	981565069	bruitage_mix			\Default Work Unit\mix\bruitage_mix	
+	2883026413	music_mix			\Default Work Unit\mix\music_mix	
+
+Audio Bus	ID	Name			Wwise Object Path	Notes
+	3127962312	music bus			\Default Work Unit\music bus	
+	3803692087	Master Audio Bus			\Default Work Unit\Master Audio Bus	
+
+Audio Devices	ID	Name	Type				Notes
+	2317455096	No_Output	No Output			
+	3859886410	System	System			
+

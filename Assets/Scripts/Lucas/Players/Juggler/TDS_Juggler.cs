@@ -678,7 +678,8 @@ public class TDS_Juggler : TDS_Player
         juggleKickOutHeight = 0;
 
         // Play juggle sound
-        AkSoundEngine.PostEvent("Play_Juggle", gameObject);
+        if (CurrentThrowableAmount > 0)
+            AkSoundEngine.PostEvent("Play_Juggle", gameObject);
     }
 
     // -----------

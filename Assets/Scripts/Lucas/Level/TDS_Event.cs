@@ -264,11 +264,8 @@ public class TDS_Event
                 }
                 else TDS_SceneManager.Instance.PrepareSceneLoading(TDS_GameManager.CurrentSceneIndex + 1, (int)UIState.InGame);
 
-                if (TDS_GameManager.CurrentSceneIndex == 0)
-                    break;
-
                 //yield return new WaitForSeconds(1f);
-                
+
                 //if (!PhotonNetwork.offlineMode) TDS_LevelManager.Instance?.LocalPlayer?.FreezePlayer();
                 //else
                 //{
@@ -298,7 +295,7 @@ public class TDS_Event
 
             // Plays a cutscene
             case CustomEventType.PlayCutscene:
-                TDS_LevelManager.Instance?.PlayCutscene(cutscene);
+                TDS_LevelManager.Instance.PlayCutscene(cutscene);
                 break;
 
             // Plays a new sound !

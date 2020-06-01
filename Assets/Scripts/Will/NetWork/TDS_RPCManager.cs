@@ -166,7 +166,7 @@ public class TDS_RPCManager : PunBehaviour
     #endregion
 
     #region Unity Methods
-    private void LateUpdate()
+    public void LateUpdate()
     {
         if (!PhotonNetwork.connected) return; 
         // Send out RPC

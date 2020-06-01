@@ -41,13 +41,13 @@ public class TDS_ThrowableAnimal : TDS_FleeingThrowable
     /// <returns></returns>
     protected override IEnumerator Flee(Collider _collider)
     {
+        float _xMinDistance = _collider.bounds.extents.x + detector.Collider.bounds.size.x;
+        float _zMinDistance = _collider.bounds.extents.z + detector.Collider.bounds.size.z;
+
         yield return new WaitForSeconds(fleeDelay);
 
         // Trigger animation
         SetAnimationOnline(1);
-
-        float _xMinDistance = _collider.bounds.extents.x + detector.Collider.bounds.size.x;
-        float _zMinDistance = _collider.bounds.extents.z + detector.Collider.bounds.size.z;
 
         Vector3 _actualDestination = new Vector3();
         Vector3 _newDestination = new Vector3();

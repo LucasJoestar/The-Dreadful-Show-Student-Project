@@ -180,7 +180,7 @@ public class TDS_NetworkManager : PunBehaviour
             TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, TDS_UIManager.Instance.photonView, typeof(TDS_UIManager), "RemovePlayerLifeBar", new object[] { (int)TDS_GameManager.LocalPlayer });
         }
 
-        PhotonNetwork.SendOutgoingCommands();
+        TDS_RPCManager.Instance.LateUpdate();
         ForceLeave();
     }
 
