@@ -45,8 +45,12 @@ public class TDS_EnemyLifeBar : TDS_LifeBar
         {
             TDS_UIManager.Instance.StopFilling(this);
         }
-        Destroy(gameObject);
-        owner.OnDie -= DestroyLifeBar;
+
+        if (gameObject)
+            Destroy(gameObject);
+
+        if (owner)
+            owner.OnDie -= DestroyLifeBar;
     }
 
     /// <summary>

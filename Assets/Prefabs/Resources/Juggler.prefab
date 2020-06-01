@@ -952,24 +952,7 @@ MonoBehaviour:
   throwBonusDamagesMax: 12
   throwBonusDamagesMin: 5
   throwAimingPoint: {x: 7.5, y: 0, z: 0}
-  foostepsConcrete:
-  - {fileID: 8300000, guid: eba0dc87db877d349b540d02278c8490, type: 3}
-  - {fileID: 8300000, guid: 3ca9009aac277354380c93911c145688, type: 3}
-  - {fileID: 8300000, guid: 0fc1afa7f5b6fb640a9aa12caaf3b526, type: 3}
-  - {fileID: 8300000, guid: 2c0a9d435b049ae4ab66d2af32114ac5, type: 3}
-  - {fileID: 8300000, guid: cab7391a839c2e445ba9d747edee1a83, type: 3}
-  foostepsGrass:
-  - {fileID: 8300000, guid: 3e6dfd5adc6c47b4186eaddc3085c5f5, type: 3}
-  - {fileID: 8300000, guid: f56e0c84a8842b04aae6d07bc9fb3cd5, type: 3}
-  - {fileID: 8300000, guid: f8785c7bea8954a42856c94edaf795f4, type: 3}
-  - {fileID: 8300000, guid: bfb9c56c26b1ed245a6b323e469cb80a, type: 3}
-  - {fileID: 8300000, guid: f930fad72debc9f479f01906a44231c0, type: 3}
-  foostepsWood:
-  - {fileID: 8300000, guid: ba6278e3c1d5bdc4ba9e5629cfa79fdf, type: 3}
-  - {fileID: 8300000, guid: 193d6cfd819e2ce428828bf39a3df08a, type: 3}
-  - {fileID: 8300000, guid: 07675ec172c56714aa39e256453345e5, type: 3}
-  - {fileID: 8300000, guid: 297d61a02e3e7324fa4e33218a1ae83b, type: 3}
-  - {fileID: 8300000, guid: 1c515d00ef7baad4dbfa99d72054a95e, type: 3}
+  foostepsSoundEvent: Play_FOOT_jugler
   controller:
     name: New Controller
     axis:
@@ -1108,7 +1091,7 @@ MonoBehaviour:
   nextAction: 0
   WhatIsObstacle:
     serializedVersion: 2
-    m_Bits: 28673
+    m_Bits: 134246401
   playerType: 4
   Throwables: []
   juggleTransform: {fileID: 2677935996189847220}

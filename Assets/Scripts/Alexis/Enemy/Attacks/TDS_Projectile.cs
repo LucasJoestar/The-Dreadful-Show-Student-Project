@@ -157,6 +157,7 @@ public class TDS_Projectile : TDS_Object
 
     private void OnCollisionEnter(Collision collision)
     {
+        TDS_RPCManager.Instance.CallRPC(PhotonTargets.Others, photonView, GetType(), "PrepareDestruction", new object[] { });
         PrepareDestruction(); 
     }
     #endregion

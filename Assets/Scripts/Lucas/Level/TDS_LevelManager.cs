@@ -217,6 +217,11 @@ public class TDS_LevelManager : PunBehaviour
         currentCutscene = _cutscene;
         if (_cutscene.time == 0) _cutscene.Play();
         _cutscene.stopped += OnCutsceneStoped;
+
+        for (int _i = 0; _i < AllPlayers.Length; _i++)
+        {
+            AkSoundEngine.PostEvent("STOP_ALL", AllPlayers[_i].gameObject); 
+        }
     }
 
     /// <summary>

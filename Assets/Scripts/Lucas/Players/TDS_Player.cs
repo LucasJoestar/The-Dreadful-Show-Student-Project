@@ -1290,7 +1290,7 @@ public class TDS_Player : TDS_Character, IPunObservable
 
             if ((_healthBefore <= _treshold) && (healthCurrent > _treshold))
             {
-                AkSoundEngine.PostEvent("Stop_APROACHING_DEATH", TDS_GameManager.MainAudio);
+                AkSoundEngine.PostEvent("Stop_APROACHING_DEATH", gameObject);
             }
         }
     }
@@ -2282,7 +2282,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     /// 3 if attacking or dodging.</returns>
     public virtual int CheckActionsInputs()
     {
-        #if UNITY_EDITOR
+        #if UNITY_EDITOR || DEVELOPMENT_BUILD
         if (Input.GetKeyDown(KeyCode.M)) OnStartAttack += () => SetBonusDamages(200);
         #endif
 
@@ -2608,6 +2608,7 @@ public class TDS_Player : TDS_Character, IPunObservable
     // Destroying the attached Behaviour will result in the game or Scene receiving OnDestroy
     protected override void OnDestroy()
     {
+        base.OnDestroy();
         TDS_LevelManager.Instance?.RemoveOnlinePlayer(this);
     }
 
